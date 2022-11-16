@@ -1,0 +1,10 @@
+.app__wrapper {
+  .footer__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--saukko-main-black);
+    height: 200px;
+    width: 100%;
+  }
+}

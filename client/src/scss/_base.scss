@@ -1,0 +1,67 @@
+:root {
+  --saukko-main-white: #ffffff;
+  --saukko-main-black: #000000;
+  --saukko-main-font: Arial, Helvetica, sans-serif;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  scroll-behavior: smooth;
+  font-family: var(--saukko-main-font);
+}
+
+html {
+  body {
+    overflow-x: hidden;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: var(--saukko-main-white);
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--saukko-main-black);
+      font-family: var(--saukko-main-font);
+    }
+
+    label,
+    li,
+    p,
+    a {
+      color: var(--saukko-main-black);
+      font-family: var(--saukko-main-font);
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus {
+      outline: none;
+    }
+
+    button:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.app__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100vh;
+}

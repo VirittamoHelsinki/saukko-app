@@ -1,1 +1,5 @@
-@import "./_base";
+@import "base";
+@import "../components/Header/header";
+@import "../components/Footer/footer";
+@import "../components/Button/button";
+@import "../pages/loginpage";

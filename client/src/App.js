@@ -2,11 +2,11 @@
 import "./scss/index.scss";
 
 // importing page routing
-import Router from "./components/Router";
+import Router from "./components/Router/Router";
 
 // importing footer and header components
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 // main app
 const App = () => {

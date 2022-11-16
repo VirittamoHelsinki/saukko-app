@@ -1,5 +1,5 @@
 {
-  "name": "saukko-app",
+  "name": "saukko-back",
   "version": "1.0.0",
   "description": "\"# saukko-app\"",
   "main": "./server/index.js",
@@ -18,5 +18,6 @@
   "bugs": {
     "url": "https://github.com/VirittamoHelsinki/saukko-app/issues"
   },
-  "homepage": "https://github.com/VirittamoHelsinki/saukko-app#readme"
+  "homepage": "https://github.com/VirittamoHelsinki/saukko-app#readme",
+  "dependencies": {}
 }
