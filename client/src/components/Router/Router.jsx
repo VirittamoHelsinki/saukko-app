@@ -2,7 +2,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 
 // importing all pages which need routing
-import LoginPage from "../pages/LoginPage";
+import LoginPage from "../../pages/LoginPage";
 
 const Router = () => {
   let location = useLocation();
