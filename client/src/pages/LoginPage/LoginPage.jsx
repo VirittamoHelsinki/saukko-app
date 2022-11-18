@@ -2,13 +2,14 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-// import axios
+// import axios to connect to the backend with
 import axios from "axios";
 
 // importing components
 import Button from "../../components/Button/Button";
 
 const LoginPage = () => {
+  // stores form input info
   const formRef = useRef(),
     emailRef = useRef(),
     passwordRef = useRef();
@@ -16,12 +17,14 @@ const LoginPage = () => {
   // change page
   const navigate = useNavigate();
 
+  // processes the login after fields have been filled and the "login" button has been pressed
   const processLogin = (e) => {
     e.preventDefault();
 
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
+    // sending data from form to the backend
     axios
       .post("/login", {
         email: email,
@@ -57,6 +60,7 @@ const LoginPage = () => {
           />
           <Button type="submit" text="Kirjaudu sisään" />
         </form>
+        {/* navigate to the register page / form */}
         <Button
           onClick={() => {
             navigate("/register");

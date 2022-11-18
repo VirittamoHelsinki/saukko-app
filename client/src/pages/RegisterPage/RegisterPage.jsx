@@ -9,6 +9,7 @@ import axios from "axios";
 import Button from "../../components/Button/Button";
 
 const RegisterPage = () => {
+  // stores form input info
   const formRef = useRef(),
     emailRef = useRef(),
     passwordRef = useRef(),
@@ -17,13 +18,15 @@ const RegisterPage = () => {
   // change page
   const navigate = useNavigate();
 
-  const processLogin = (e) => {
+  // processes the registration after fields have been filled and the "register" button has been pressed
+  const processRegistration = (e) => {
     e.preventDefault();
 
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     const passwordConfirm = passwordConfirmRef.current.value;
 
+    // sending data from form to the backend
     axios
       .post("/register", {
         email: email,
@@ -40,6 +43,7 @@ const RegisterPage = () => {
     console.log(email);
     console.log(password);
     console.log(passwordConfirm);
+    // change page back to home page / login page
     navigate("/");
   };
 
@@ -47,7 +51,7 @@ const RegisterPage = () => {
     <main className="registerPage__wrapper">
       <div className="registerPage__container">
         <h1>Rekisteröidy:</h1>
-        <form ref={formRef} onSubmit={processLogin}>
+        <form ref={formRef} onSubmit={processRegistration}>
           <label htmlFor="">Sähköposti:</label>
           <input
             ref={emailRef}
