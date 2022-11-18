@@ -1,7 +1,42 @@
 :root {
+  // main colour scheme
   --saukko-main-white: #ffffff;
   --saukko-main-black: #000000;
-  --saukko-main-font: Arial, Helvetica, sans-serif;
+  --saukko-main: #0e688b;
+  --saukko-main-soft: #b1e7ff;
+  --saukkod-main-bright: #48c5f8;
+  --saukko-main-light: #107eab;
+  --saukko-main-active: #005379;
+  --saukko-main-dark: #003146;
+  --saukko-main-nearly-black: #000222;
+  --link-blue: #0479a4;
+  --link-disabled: #767676;
+  // grayscale
+  --grayscale-white: #fff;
+  --grayscale-slightly-gray: #fefefe;
+  --grayscale-light: #f8f8f8;
+  --grayscale-medium: #d2d2d2;
+  --grayscale-background-box: #f5f5f5;
+  --grayscale-tabs-border: #e6e6e6;
+  --grayscale-background-arrow: #dfdfdf;
+  --grayscale-medium-dark: #979797;
+  --grayscale-dark: #555555;
+  --grayscale-dark-text: #222222;
+  --grayscale-black: #000000;
+  // extra if necessary
+  --additional-red-light: #e5053a;
+  --additional-red-dark: #a31621;
+  --additional-purple-light: #420039;
+  --additional-yellow: #f9a21a;
+  --additional-skyblue: #48c5f8;
+  --additional-orange: #d14600;
+  --additional-green-light: #96ba3c;
+  --additional-green-dark: #006400;
+  --hover-gray: #eaeaea;
+  // font family & sizes
+  --base-font-size: 16px;
+  --base-font-size-mobile: 14px;
+  --saukko-main-font: "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 * {

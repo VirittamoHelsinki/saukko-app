@@ -1,0 +1,40 @@
+.app__wrapper {
+  .registerPage__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .registerPage__container {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--saukko-main-black);
+      border-radius: 10px;
+      padding: 25px;
+      gap: 10px;
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      label {
+        font-size: 16px;
+      }
+
+      input {
+        width: 250px;
+        height: 30px;
+        border-radius: 5px;
+        padding: 7px;
+        border: 1px solid var(--saukko-main-black);
+      }
+    }
+  }
+}

@@ -1,19 +1,39 @@
 // importing react packages
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
+// import axios
+import axios from "axios";
 
 // importing components
-import Button from "../components/Button/Button";
+import Button from "../../components/Button/Button";
 
 const LoginPage = () => {
   const formRef = useRef(),
     emailRef = useRef(),
     passwordRef = useRef();
 
+  // change page
+  const navigate = useNavigate();
+
   const processLogin = (e) => {
     e.preventDefault();
 
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
+
+    axios
+      .post("/login", {
+        email: email,
+        password: password,
+      })
+      .then(function (res) {
+        console.log(res);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+
     console.log(email);
     console.log(password);
   };
@@ -37,7 +57,12 @@ const LoginPage = () => {
           />
           <Button type="submit" text="Kirjaudu sisään" />
         </form>
-        <Button onClick={console.log("changed page")} text="Rekisteröidy" />
+        <Button
+          onClick={() => {
+            navigate("/register");
+          }}
+          text="Rekisteröidy"
+        />
       </div>
     </main>
   );
