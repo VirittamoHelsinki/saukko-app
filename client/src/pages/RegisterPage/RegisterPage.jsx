@@ -7,6 +7,7 @@ import axios from "axios";
 
 // importing components
 import Button from "../../components/Button/Button";
+import WavesHeader from "../../components/Header/WavesHeader";
 
 const RegisterPage = () => {
   // stores form input info
@@ -47,31 +48,46 @@ const RegisterPage = () => {
     navigate("/");
   };
 
+  // button styling/CSS
+  const buttonStyle = {
+    color: "var(--saukko-main-white)",
+    border: "var(--link-disabled)",
+    background: "var(--link-disabled)",
+  };
+
   return (
     <main className="registerPage__wrapper">
-      <div className="registerPage__container">
-        <h1>Rekisteröidy:</h1>
+      <WavesHeader />
+      <section className="registerPage__container">
+        <h2>Rekisteröidy</h2>
         <form ref={formRef} onSubmit={processRegistration}>
-          <label htmlFor="">Sähköposti:</label>
-          <input
-            ref={emailRef}
-            type="email"
-            placeholder="Kirjoita sähköpostiosoitteesi."
-          />
-          <label htmlFor="">Salasana:</label>
-          <input
-            ref={passwordRef}
-            type="password"
-            placeholder="Valitse salasanasi."
-          />
-          <input
-            ref={passwordConfirmRef}
-            type="password"
-            placeholder="Kirjoita salasana uudelleen."
-          />
-          <Button type="submit" text="Rekisteröidy" />
+          <section className="registerPage__container--form-text">
+            <label htmlFor="">Sähköposti *</label>
+            <input
+              ref={emailRef}
+              type="email"
+              placeholder="Kirjoita sähköpostiosoitteesi."
+            />
+            <label htmlFor="">Salasana *</label>
+            <input
+              ref={passwordRef}
+              type="password"
+              placeholder="Valitse salasanasi."
+            />
+            <input
+              ref={passwordConfirmRef}
+              type="password"
+              placeholder="Kirjoita salasana uudelleen."
+            />
+            <p>
+              Jos sinulla on jo tili <a href="/login">Kirjaudu sisään</a>
+            </p>
+          </section>
         </form>
-      </div>
+      </section>
+      <section className="registerPage__form--bottom">
+        <Button style={buttonStyle} type="submit" text="Luo Tili" />
+      </section>
     </main>
   );
 };
