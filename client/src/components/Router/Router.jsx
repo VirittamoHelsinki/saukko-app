@@ -6,6 +6,7 @@ import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
 import LandingPage from "../../pages/LandingPage/LandingPage";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
+import UserPage from "../../pages/UserPage/UserPage";
 
 const Router = () => {
   let location = useLocation();
@@ -18,6 +19,7 @@ const Router = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/home" element={<UserPage />} />
       </Routes>
     </>
   );
