@@ -19,5 +19,7 @@
     "url": "https://github.com/VirittamoHelsinki/saukko-app/issues"
   },
   "homepage": "https://github.com/VirittamoHelsinki/saukko-app#readme",
-  "dependencies": {}
+  "devDependencies": {
+    "@iconify/react": "^4.0.0"
+  }
 }
