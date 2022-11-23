@@ -1,5 +1,6 @@
 // importing necessary packages for routing
 import { Routes, Route, useLocation } from "react-router-dom";
+import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
 
 // importing all pages which need routing
 import LandingPage from "../../pages/LandingPage/LandingPage";
@@ -16,6 +17,7 @@ const Router = () => {
         <Route exact="true" path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </>
   );
