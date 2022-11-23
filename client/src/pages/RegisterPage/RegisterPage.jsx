@@ -86,7 +86,7 @@ const RegisterPage = () => {
         </form>
       </section>
       <section className="registerPage__form--bottom">
-        <Button style={buttonStyle} type="submit" text="Luo Tili" />
+        <Button style={buttonStyle} type="submit" text="Luo tili" />
       </section>
     </main>
   );
