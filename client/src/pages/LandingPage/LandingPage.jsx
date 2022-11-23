@@ -30,14 +30,14 @@ const LandingPage = () => {
       </section>
       <section className="landingPage__buttons">
         <Button
-          text="Kirjaudu Sisään"
+          text="Kirjaudu sisään"
           style={buttonStyle}
           onClick={() => {
             navigate("/login");
           }}
         />
         <Button
-          text="Luo Tili"
+          text="Luo tili"
           onClick={() => {
             navigate("/register");
           }}
