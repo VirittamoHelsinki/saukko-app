@@ -1,5 +1,5 @@
 // importing react packages
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // import axios to connect to the backend with
@@ -10,6 +10,10 @@ import Button from "../../components/Button/Button";
 import WavesHeader from "../../components/Header/WavesHeader";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState(""),
+    [password, setPassword] = useState(""),
+    [buttonDisabled, setButtonDisabled] = useState();
+
   // stores form input info
   const formRef = useRef(),
     emailRef = useRef(),
@@ -17,12 +21,9 @@ const LoginPage = () => {
 
   // change page
   const navigate = useNavigate();
-  console.log(navigate);
 
   // processes the login after fields have been filled and the "login" button has been pressed
-  const processLogin = (e) => {
-    e.preventDefault();
-
+  const processLogin = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
@@ -38,17 +39,27 @@ const LoginPage = () => {
       .catch(function (err) {
         console.log(err);
       });
-
-    console.log(email);
-    console.log(password);
   };
+
+  // enable login button style if fields are filled
+  useEffect(() => {
+    if (email.length > 0 && password.length > 0) {
+      return setButtonDisabled(false);
+    }
+    return setButtonDisabled(true);
+  }, [email, password]);
 
   // button styling/CSS
-  const buttonStyle = {
-    color: "var(--saukko-main-white)",
-    border: "var(--link-disabled)",
-    background: "var(--link-disabled)",
-  };
+  const buttonStyleDisabled = {
+      color: "var(--saukko-main-white)",
+      border: "var(--link-disabled)",
+      background: "var(--link-disabled)",
+    },
+    buttonStyleEnabled = {
+      color: "var(--saukko-main-white)",
+      border: "var(--saukko-main-black)",
+      background: "var(--saukko-main-black)",
+    };
 
   return (
     <main className="loginPage__wrapper">
@@ -61,12 +72,18 @@ const LoginPage = () => {
             <input
               ref={emailRef}
               type="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
               placeholder="Kirjoita sähköpostiosoitteesi."
             />
             <label htmlFor="">Salasana *</label>
             <input
               ref={passwordRef}
               type="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
               placeholder="Kirjoita salasanasi."
             />
             <a href="/forgot-password">Unohtuiko salasana?</a>
@@ -77,7 +94,14 @@ const LoginPage = () => {
         <p>
           Eikö ole vielä tiliä? <a href="/register">Luo tili</a>
         </p>
-        <Button style={buttonStyle} type="submit" text="Kirjaudu sisään" />
+        <Button
+          style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
+          onClick={() =>
+            buttonDisabled ? console.log("button disabled") : processLogin()
+          }
+          type="submit"
+          text="Kirjaudu sisään"
+        />
       </section>
     </main>
   );
