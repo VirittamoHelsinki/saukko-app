@@ -39,19 +39,24 @@ const RegisterPage = () => {
     console.log(passwordVal.validate(password));
     console.log(passwordVal.validate(passwordConfirm));
 
-    // sending data from form to the backend
-    axios
-      .post("/register", {
-        email: email,
-        password: password,
-        passwordConfirm: passwordConfirm,
-      })
-      .then(function (res) {
-        console.log(res);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    // check if passwords match
+    if (password === passwordConfirm) {
+      // sending data from form to the backend
+      axios
+        .post("/register", {
+          email: email,
+          password: password,
+          passwordConfirm: passwordConfirm,
+        })
+        .then(function (res) {
+          console.log(res);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    } else {
+      console.log("Salasanat eivät ole samoja.");
+    }
   };
 
   // enable login button style if fields are filled
