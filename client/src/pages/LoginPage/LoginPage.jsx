@@ -9,6 +9,10 @@ import axios from "axios";
 import Button from "../../components/Button/Button";
 import WavesHeader from "../../components/Header/WavesHeader";
 
+// form email and password validators
+import * as EmailValidator from "email-validator";
+import { passwordVal } from "../../utils/PasswordValidate";
+
 const LoginPage = () => {
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
@@ -26,6 +30,10 @@ const LoginPage = () => {
   const processLogin = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
+
+    // validate inputs
+    console.log(EmailValidator.validate(email));
+    console.log(passwordVal.validate(password));
 
     // sending data from form to the backend
     axios
