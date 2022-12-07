@@ -1,1 +1,11 @@
-@import "./_base";
+// importing all scss files for an easier global export to the app
+@import "base";
+@import "../components/Header/wavesheader";
+@import "../components/Footer/footer";
+@import "../components/Header/Waves/waves";
+@import "../components/UserNav/usernav";
+@import "../pages/./LoginPage/loginpage";
+@import "../pages/RegisterPage/registerpage";
+@import "../pages/LandingPage/landingpage";
+@import "../pages/ForgotPassword/forgotpassword";
+@import "../pages/UserPage/userpage";
