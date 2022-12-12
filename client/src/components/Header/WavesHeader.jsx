@@ -22,11 +22,11 @@ const Waves = () => {
   );
 };
 
-const WavesHeader = () => {
+const WavesHeader = (props) => {
   const navigate = useNavigate();
 
   return (
-    <main className="wavesHeader__wrapper">
+    <main style={props.style} className="wavesHeader__wrapper">
       <button onClick={() => navigate(-1)}>
         <Icon icon="typcn:arrow-left" />
       </button>
