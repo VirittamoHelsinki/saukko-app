@@ -27,7 +27,7 @@ const WavesHeader = (props) => {
 
   return (
     <main style={props.style} className="wavesHeader__wrapper">
-      <button onClick={() => navigate(-1)}>
+      <button id="backArrowSVG" onClick={() => navigate(-1)}>
         <Icon icon="typcn:arrow-left" />
       </button>
       <img src={HelsinkiLogo} alt="" />
