@@ -67,7 +67,7 @@ const ForgotPassword = () => {
 
   return (
     <main className="forgotPassword__wrapper">
-      <WavesHeader fill="#9fc9eb" />
+      <WavesHeader title="Saukko" fill="#9fc9eb" />
       <section className="forgotPassword__container">
         <h2>Unohtuiko salasana?</h2>
         <p>Lähetämme sähköpostin, jossa on ohjeet salasanan vaihtamiseen</p>

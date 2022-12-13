@@ -31,7 +31,7 @@ const WavesHeader = (props) => {
         <Icon icon="typcn:arrow-left" />
       </button>
       <img src={HelsinkiLogo} alt="" />
-      <h1>Saukko</h1>
+      <h1>{props.title}</h1>
       <Waves fill={props.fill} />
     </main>
   );

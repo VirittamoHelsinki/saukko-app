@@ -71,7 +71,7 @@ const LoginPage = () => {
 
   return (
     <main className="loginPage__wrapper">
-      <WavesHeader fill="#9fc9eb" />
+      <WavesHeader title="Saukko" fill="#9fc9eb" />
       <section className="loginPage__container">
         <h2>Kirjaudu sisään</h2>
         <form ref={formRef} onSubmit={processLogin}>
