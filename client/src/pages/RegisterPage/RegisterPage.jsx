@@ -81,7 +81,7 @@ const RegisterPage = () => {
 
   return (
     <main className="registerPage__wrapper">
-      <WavesHeader />
+      <WavesHeader fill="#9fc9eb" />
       <section className="registerPage__container">
         <h2>Rekisteröidy</h2>
         <form ref={formRef} onSubmit={processRegistration}>
