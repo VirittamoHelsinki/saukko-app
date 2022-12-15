@@ -57,18 +57,11 @@ const PersonalForm = () => {
 
   // enable login button style if fields are filled
   useEffect(() => {
-    if (
-      name.length > 0 &&
-      address.length > 0 &&
-      postalNum.length > 0 &&
-      city.length > 0 &&
-      phone.length > 0 &&
-      email.length > 0 &&
-      birthDate.length > 0
-    ) {
-      return setButtonDisabled(false);
-    }
-    return setButtonDisabled(true);
+    setButtonDisabled(
+      ![name, address, postalNum, city, phone, email, birthDate].every(
+        (input) => input.length > 0
+      )
+    );
   }, [name, address, postalNum, city, phone, email, birthDate]);
 
   // button styling/CSS

@@ -51,10 +51,7 @@ const LoginPage = () => {
 
   // enable login button style if fields are filled
   useEffect(() => {
-    if (email.length > 0 && password.length > 0) {
-      return setButtonDisabled(false);
-    }
-    return setButtonDisabled(true);
+    setButtonDisabled(![email, password].every((input) => input.length > 0));
   }, [email, password]);
 
   // button styling/CSS

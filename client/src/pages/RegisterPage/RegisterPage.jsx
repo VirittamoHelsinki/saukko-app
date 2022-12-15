@@ -61,10 +61,9 @@ const RegisterPage = () => {
 
   // enable login button style if fields are filled
   useEffect(() => {
-    if (email.length > 0 && password.length > 0 && passwordConfirm.length > 0) {
-      return setButtonDisabled(false);
-    }
-    return setButtonDisabled(true);
+    setButtonDisabled(
+      ![email, password, passwordConfirm].every((input) => input.length > 0)
+    );
   }, [email, password, passwordConfirm]);
 
   // button styling/CSS
