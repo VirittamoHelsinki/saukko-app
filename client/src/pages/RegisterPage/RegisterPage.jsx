@@ -1,6 +1,6 @@
 // importing react packages
 import React, { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 // import axios
 import axios from "axios";
@@ -26,7 +26,7 @@ const RegisterPage = () => {
     passwordConfirmRef = useRef();
 
   // change page
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // processes the registration after fields have been filled and the "register" button has been pressed
   const processRegistration = () => {

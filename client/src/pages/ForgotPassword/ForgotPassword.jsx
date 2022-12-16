@@ -1,6 +1,6 @@
 // importing react packages
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 // import axios to connect to the backend with
 import axios from "axios";
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
     emailRef = useRef();
 
   // change page
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // processes the login after fields have been filled and the "login" button has been pressed
   const processForgotPassword = (e) => {

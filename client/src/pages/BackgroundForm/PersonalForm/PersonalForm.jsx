@@ -1,6 +1,6 @@
 // importing react packages
 import React, { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 // import axios
 // import axios from "axios";
@@ -13,28 +13,47 @@ import WavesHeader from "../../../components/Header/WavesHeader";
 import * as EmailValidator from "email-validator";
 
 const PersonalForm = () => {
-  // store change for input field length check
-  const [name, setName] = useState(""),
-    [address, setAddress] = useState(""),
-    [postalNum, setPostalNum] = useState(""),
-    [city, setCity] = useState(""),
-    [phone, setPhone] = useState(""),
-    [email, setEmail] = useState(""),
-    [birthDate, setBirthDate] = useState(""),
-    [buttonDisabled, setButtonDisabled] = useState();
+  // enables/disables the next step button
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  // stores form input info
-  const formRef = useRef(),
-    nameRef = useRef(),
-    addressRef = useRef(),
-    postalNumRef = useRef(),
-    cityRef = useRef(),
-    phoneRef = useRef(),
-    emailRef = useRef(),
-    birthDateRef = useRef();
+  // store change for input field length check
+  const [formState, setFormState] = useState({
+    name: "",
+    address: "",
+    postalNum: "",
+    city: "",
+    phone: "",
+    email: "",
+    birthDate: "",
+  });
+
+  const { name, address, postalNum, city, phone, email, birthDate } = formState;
+
+  // pulls form input values when submitted
+  const refs = {
+    formRef: useRef(),
+    nameRef: useRef(),
+    addressRef: useRef(),
+    postalNumRef: useRef(),
+    cityRef: useRef(),
+    phoneRef: useRef(),
+    emailRef: useRef(),
+    birthDateRef: useRef(),
+  };
+
+  const {
+    formRef,
+    nameRef,
+    addressRef,
+    postalNumRef,
+    cityRef,
+    phoneRef,
+    emailRef,
+    birthDateRef,
+  } = refs;
 
   // change page
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   // processes the registration after fields have been filled and the "register" button has been pressed
   const processForm = () => {
@@ -88,18 +107,20 @@ const PersonalForm = () => {
               ref={nameRef}
               type="name"
               onChange={(e) => {
-                setName(e.target.value);
+                setFormState({ ...formState, name: e.target.value });
               }}
               placeholder="Kirjoita koko nimesi"
+              value={formState.name}
             />
             <label htmlFor="">Osoite *</label>
             <input
               ref={addressRef}
               onChange={(e) => {
-                setAddress(e.target.value);
+                setFormState({ ...formState, address: e.target.value });
               }}
               type="text"
               placeholder="Kirjoita osoitteesi"
+              value={formState.address}
             />
             <div className="personalForm__container--form-double-container">
               <div className="personalForm__container--form-double">
@@ -107,10 +128,11 @@ const PersonalForm = () => {
                 <input
                   ref={postalNumRef}
                   onChange={(e) => {
-                    setPostalNum(e.target.value);
+                    setFormState({ ...formState, postalNum: e.target.value });
                   }}
                   type="number"
                   placeholder="Kirjoita postinumerosi"
+                  value={formState.postalNum}
                 />
               </div>
               <div className="personalForm__container--form-double">
@@ -118,10 +140,11 @@ const PersonalForm = () => {
                 <input
                   ref={cityRef}
                   onChange={(e) => {
-                    setCity(e.target.value);
+                    setFormState({ ...formState, city: e.target.value });
                   }}
                   type="text"
                   placeholder="Kirjoita kaupunkisi"
+                  value={formState.city}
                 />
               </div>
             </div>
@@ -129,28 +152,31 @@ const PersonalForm = () => {
             <input
               ref={phoneRef}
               onChange={(e) => {
-                setPhone(e.target.value);
+                setFormState({ ...formState, phone: e.target.value });
               }}
               type="number"
               placeholder="Kirjoita puhelin-numerosi"
+              value={formState.phone}
             />
             <label htmlFor="">Sähköposti *</label>
             <input
               ref={emailRef}
               onChange={(e) => {
-                setEmail(e.target.value);
+                setFormState({ ...formState, email: e.target.value });
               }}
               type="email"
               placeholder="Kirjoita sähköpostiosoitteesi"
+              value={formState.email}
             />
             <label htmlFor="">Syntymäpäivä *</label>
             <input
               ref={birthDateRef}
               onChange={(e) => {
-                setBirthDate(e.target.value);
+                setFormState({ ...formState, birthDate: e.target.value });
               }}
               type="date"
               placeholder="Valitse syntymäpäiväsi"
+              value={formState.birthDate}
             />
             <p>
               Tuliko ongelma vastaan? <a href="/">Pyydä apua</a>
