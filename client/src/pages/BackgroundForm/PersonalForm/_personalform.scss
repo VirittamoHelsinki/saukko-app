@@ -24,17 +24,18 @@
       margin-top: 375px;
       width: 100%;
 
-      h2 {
-        font-size: 24px;
-        font-weight: bold;
-        text-align: center;
-      }
-
       .personalForm__container--form-text {
         display: flex;
         flex-direction: column;
-        margin-top: 30px;
         gap: 10px;
+
+        h2 {
+          font-size: 24px;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom: 16px;
+          top: 0;
+        }
 
         input {
           width: 100%;
@@ -90,6 +91,16 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      margin-top: 16px;
+      width: 100%;
+    }
+
+    .personalForm__form--bottom-step2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin-top: 16px;
       width: 100%;
     }
   }
