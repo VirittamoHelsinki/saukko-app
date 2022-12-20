@@ -1,5 +1,7 @@
 // importing react packages
+
 import React, { useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // import axios to connect to the backend with
@@ -10,20 +12,43 @@ import Button from "../../components/Button/Button";
 import WavesHeader from "../../components/Header/WavesHeader";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   // stores form input info
-  const formRef = useRef(),
+  /*const formRef = useRef(),
     emailRef = useRef(),
     passwordRef = useRef();
 
   // change page
   const navigate = useNavigate();
-  console.log(navigate);
+  console.log(navigate);*/
 
   // processes the login after fields have been filled and the "login" button has been pressed
-  const processLogin = (e) => {
+  const processLogin = async (e) => {
     e.preventDefault();
+    const response = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
 
-    const email = emailRef.current.value;
+    const data = await response.json();
+
+    if (data.user) {
+      localStorage.setItem("token", data.user);
+      console.log("Login success");
+      window.location.href = "/home";
+    } else {
+      console.log("Wrong data");
+    }
+    console.log(data);
+    /*const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
     // sending data from form to the backend
@@ -40,7 +65,7 @@ const LoginPage = () => {
       });
 
     console.log(email);
-    console.log(password);
+    console.log(password);*/
   };
 
   // button styling/CSS
@@ -55,29 +80,31 @@ const LoginPage = () => {
       <WavesHeader />
       <section className="loginPage__container">
         <h2>Kirjaudu sisään</h2>
-        <form ref={formRef} onSubmit={processLogin}>
+        <form onSubmit={processLogin}>
           <section className="loginPage__container--form-text">
             <label htmlFor="">Sähköposti *</label>
             <input
-              ref={emailRef}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               type="email"
               placeholder="Kirjoita sähköpostiosoitteesi."
             />
             <label htmlFor="">Salasana *</label>
             <input
-              ref={passwordRef}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
               type="password"
               placeholder="Kirjoita salasanasi."
             />
             <a href="/forgot-password">Unohtuiko salasana?</a>
           </section>
+          <section className="loginPage__form--bottom">
+            <p>
+              Eikö ole vielä tiliä? <a href="/register">Luo tili</a>
+            </p>
+            <Button style={buttonStyle} type="submit" text="Kirjaudu sisään" />
+          </section>
         </form>
-      </section>
-      <section className="loginPage__form--bottom">
-        <p>
-          Eikö ole vielä tiliä? <a href="/register">Luo tili</a>
-        </p>
-        <Button style={buttonStyle} type="submit" text="Kirjaudu sisään" />
       </section>
     </main>
   );
