@@ -6,8 +6,8 @@ import React, { useRef, useEffect, useState } from "react";
 // import axios from "axios";
 
 // importing components
-import Button from "../../../components/Button/Button";
-import WavesHeader from "../../../components/Header/WavesHeader";
+import Button from "../../components/Button/Button";
+import WavesHeader from "../../components/Header/WavesHeader";
 
 // form email and password validators
 import * as EmailValidator from "email-validator";
@@ -28,9 +28,29 @@ const PersonalForm = () => {
     phone: "",
     email: "",
     birthDate: "",
+    workPlace: "",
+    workTasks: "",
+    contactPerson: "",
+    workNumber: "",
+    workAddress: "",
+    studyGoals: "",
   });
 
-  const { name, address, postalNum, city, phone, email, birthDate } = formState;
+  const {
+    name,
+    address,
+    postalNum,
+    city,
+    phone,
+    email,
+    birthDate,
+    workPlace,
+    workTasks,
+    contactPerson,
+    workNumber,
+    workAddress,
+    studyGoals,
+  } = formState;
 
   // pulls form input values when submitted
   const refs = {
@@ -42,6 +62,12 @@ const PersonalForm = () => {
     phoneRef: useRef(),
     emailRef: useRef(),
     birthDateRef: useRef(),
+    workPlace: useRef(),
+    workTasks: useRef(),
+    contactPerson: useRef(),
+    workNumber: useRef(),
+    workAddress: useRef(),
+    studyGoals: useRef(),
   };
 
   const {
@@ -53,6 +79,12 @@ const PersonalForm = () => {
     phoneRef,
     emailRef,
     birthDateRef,
+    workPlaceRef,
+    workTasksRef,
+    contactPersonRef,
+    workNumberRef,
+    workAddressRef,
+    studyGoalsRef,
   } = refs;
 
   // change page
@@ -69,6 +101,12 @@ const PersonalForm = () => {
         phone: phoneRef.current.value,
         email: emailRef.current.value,
         birthDate: birthDateRef.current.value,
+        workPlace: workPlaceRef.current.value,
+        workTasks: workTasksRef.current.value,
+        contactPerson: contactPersonRef.current.value,
+        workNumber: workNumberRef.current.value,
+        workAddress: workAddressRef.current.value,
+        studyGoals: studyGoalsRef.current.value,
       },
     ];
 
@@ -80,11 +118,37 @@ const PersonalForm = () => {
   // enable login button style if fields are filled
   useEffect(() => {
     setButtonDisabled(
-      ![name, address, postalNum, city, phone, email, birthDate].every(
-        (input) => input.length > 0
-      )
+      ![
+        name,
+        address,
+        postalNum,
+        city,
+        phone,
+        email,
+        birthDate,
+        workPlace,
+        workTasks,
+        contactPerson,
+        workNumber,
+        workAddress,
+        studyGoals,
+      ].every((input) => input.length > 0)
     );
-  }, [name, address, postalNum, city, phone, email, birthDate]);
+  }, [
+    name,
+    address,
+    postalNum,
+    city,
+    phone,
+    email,
+    birthDate,
+    workPlace,
+    workTasks,
+    contactPerson,
+    workNumber,
+    workAddress,
+    studyGoals,
+  ]);
 
   // button styling/CSS
   const buttonStyleDisabled = {
@@ -191,15 +255,9 @@ const PersonalForm = () => {
               </p>
               <section className="personalForm__form--bottom">
                 <Button
-                  style={
-                    buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled
-                  }
-                  onClick={() =>
-                    buttonDisabled
-                      ? console.log("button disabled")
-                      : processForm() + setCurrentStep(2)
-                  }
-                  type="submit"
+                  style={buttonStyleEnabled}
+                  onClick={() => setCurrentStep(currentStep + 1)}
+                  type=""
                   text="Seuraava"
                 />
               </section>
@@ -210,79 +268,73 @@ const PersonalForm = () => {
               <h2>Työpaikan tiedot</h2>
               <label htmlFor="">Työpaikkasi nimi *</label>
               <input
-                ref={nameRef}
+                ref={workPlaceRef}
                 type="name"
                 onChange={(e) => {
-                  setFormState({ ...formState, name: e.target.value });
+                  setFormState({ ...formState, workPlace: e.target.value });
                 }}
-                placeholder="Kirjoita koko nimesi"
-                value={formState.name}
+                placeholder="Kirjoita työpaikkasi nimi"
+                value={formState.workPlace}
               />
               <label htmlFor="">Työtehtäväsi *</label>
               <input
-                ref={addressRef}
+                ref={workTasksRef}
                 onChange={(e) => {
-                  setFormState({ ...formState, address: e.target.value });
+                  setFormState({ ...formState, workTasks: e.target.value });
                 }}
                 type="text"
-                placeholder="Kirjoita osoitteesi"
-                value={formState.address}
+                placeholder="Syötä työtehtäväsi"
+                value={formState.workTasks}
               />
               <label htmlFor="">Työpaikan yhteyshenkilö *</label>
               <input
-                ref={phoneRef}
+                ref={contactPersonRef}
                 onChange={(e) => {
-                  setFormState({ ...formState, phone: e.target.value });
+                  setFormState({ ...formState, contactPerson: e.target.value });
                 }}
-                type="number"
-                placeholder="Kirjoita puhelin-numerosi"
-                value={formState.phone}
+                type="name"
+                placeholder="Kirjoita yhteyshenkilön nimi"
+                value={formState.contactPerson}
               />
               <label htmlFor="">Työpaikan puhelinnumero *</label>
               <input
-                ref={emailRef}
+                ref={workNumberRef}
                 onChange={(e) => {
-                  setFormState({ ...formState, email: e.target.value });
+                  setFormState({ ...formState, workNumber: e.target.value });
                 }}
-                type="email"
-                placeholder="Kirjoita sähköpostiosoitteesi"
-                value={formState.email}
+                type="number"
+                placeholder="Syötä työpaikan puhelinnumero"
+                value={formState.workNumber}
               />
               <label htmlFor="">Työpaikan osoite *</label>
               <input
-                ref={birthDateRef}
+                ref={workAddressRef}
                 onChange={(e) => {
-                  setFormState({ ...formState, birthDate: e.target.value });
+                  setFormState({ ...formState, workAddress: e.target.value });
                 }}
                 type="text"
-                placeholder="Valitse syntymäpäiväsi"
-                value={formState.birthDate}
+                placeholder="Kirjota työpaikan osoite"
+                value={formState.workAddress}
               />
 
               <label htmlFor="">Omat tavoitteesi *</label>
               <input
-                ref={birthDateRef}
+                ref={studyGoalsRef}
                 onChange={(e) => {
-                  setFormState({ ...formState, birthDate: e.target.value });
+                  setFormState({ ...formState, studyGoals: e.target.value });
                 }}
                 type="text"
-                placeholder="Valitse syntymäpäiväsi"
-                value={formState.birthDate}
+                placeholder="Listaa opiskelu tavoitteesi"
+                value={formState.studyGoals}
               />
               <p>
                 Tuliko ongelma vastaan? <a href="/">Pyydä apua</a>
               </p>
               <section className="personalForm__form--bottom-step2">
                 <Button
-                  style={
-                    buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled
-                  }
-                  onClick={() =>
-                    buttonDisabled
-                      ? console.log("button disabled")
-                      : setCurrentStep(1)
-                  }
-                  type="submit"
+                  style={buttonStyleEnabled}
+                  onClick={() => setCurrentStep(currentStep - 1)}
+                  type=""
                   text="Takaisin"
                 />
                 <Button
@@ -292,7 +344,7 @@ const PersonalForm = () => {
                   onClick={() =>
                     buttonDisabled
                       ? console.log("button disabled")
-                      : processForm() + setCurrentStep(2)
+                      : processForm()
                   }
                   type="submit"
                   text="Lähetä"
