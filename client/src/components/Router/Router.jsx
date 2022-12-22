@@ -8,6 +8,7 @@ import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import UserPage from "../../pages/UserPage/UserPage";
 import BackgroundForm from "../../pages/BackgroundForm/BackgroundForm";
 import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
+import PickAccontType from "../../pages/PickAccountType/PickAccountType";
 
 const Router = () => {
   let location = useLocation();
@@ -22,6 +23,7 @@ const Router = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/home" element={<UserPage />} />
         <Route path="/background-form" element={<BackgroundForm />} />
+        <Route path="/account-type" element={<PickAccontType />} />
       </Routes>
     </>
   );
