@@ -1,6 +1,6 @@
 .app__wrapper {
   // main wrapper for the register page
-  .personalForm__wrapper {
+  .firstLogin__wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -17,14 +17,14 @@
       }
     }
 
-    .personalForm__container {
+    .firstLogin__container {
       display: flex;
       flex-direction: column;
       padding: 0px 36px 36px 36px;
       margin-top: 375px;
       width: 100%;
 
-      .personalForm__container--form-text {
+      .firstLogin__container--form-text {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -48,11 +48,11 @@
         p {
           text-align: center;
         }
-        .personalForm__container--form-double-container {
+        .firstLogin__container--form-double-container {
           display: flex;
           width: 100%;
           gap: 8px;
-          .personalForm__container--form-double {
+          .firstLogin__container--form-double {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -85,7 +85,7 @@
       }
     }
 
-    .personalForm__form--bottom {
+    .firstLogin__form--bottom {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -95,7 +95,7 @@
       width: 100%;
     }
 
-    .personalForm__form--bottom-step2 {
+    .firstLogin__form--bottom-step2 {
       display: flex;
       justify-content: center;
       align-items: center;

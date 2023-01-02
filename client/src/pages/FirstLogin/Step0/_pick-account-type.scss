@@ -5,23 +5,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-bottom: 225px;
     height: 100%;
-
-    .wavesHeader__wrapper {
-      background: var(--link-blue);
-
-      h1,
-      img,
-      #backArrowSVG {
-        filter: invert(100%);
-      }
-    }
 
     .pickAccountType__container {
       display: flex;
       flex-direction: column;
       padding: 0px 36px 0px 36px;
-      margin-top: 72px;
       width: 100%;
       gap: 64px;
 

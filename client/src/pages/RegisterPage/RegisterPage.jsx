@@ -47,6 +47,7 @@ const RegisterPage = () => {
           email: email,
           password: password,
           passwordConfirm: passwordConfirm,
+          firstlLogin: true,
         })
         .then(function (res) {
           console.log(res);

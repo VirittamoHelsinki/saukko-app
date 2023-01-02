@@ -1,31 +1,36 @@
 // importing react packages
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+
+// importing context
+import { FormContext, StepContext } from "../Context";
 
 // importing components
-import Button from "../../components/Button/Button";
-import WavesHeader from "../../components/Header/WavesHeader";
+import Button from "../../../components/Button/Button";
 
-const PickAccontType = () => {
-  // initialize navigation
-  const navigate = useNavigate();
+const Step0 = () => {
+  // sending data to parent component from child
+  const { formData, setFormData } = useContext(FormContext);
+
+  // updating form step
+  const { currentStep, setCurrentStep } = useContext(StepContext);
 
   // process button click
   const processClick = (value) => {
-    const accType = {
-      type: value,
-    };
+    // send data to parent component
+    setFormData({ ...formData, accountType: value });
 
-    console.table(accType);
+    // temp log
+    console.table({ accountType: value });
 
-    navigate("/home");
+    // go to next step
+    setCurrentStep(currentStep + 1);
   };
 
   return (
     <main className="pickAccountType__wrapper">
-      <WavesHeader title="Tilityypit" fill="#0000bf" />
       <section className="pickAccountType__container">
         <div className="pickAccountType__container--text">
-          <h2>Valitse</h2>
+          <h2>Valitse tilityyppi</h2>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
             hendrerit pretium purus at cursus. Cras eu nisi eget odio euismod
@@ -33,11 +38,11 @@ const PickAccontType = () => {
           </p>
         </div>
         <div className="pickAccountType__container--buttons">
-          <Button onClick={() => processClick("student")} text="Oppilas" />
+          <Button onClick={() => processClick("client")} text="Asiakas" />
           <Button onClick={() => processClick("teacher")} text="Opettaja" />
           <Button
             onClick={() => processClick("supervisor")}
-            text="Työpaikan ohjaaja"
+            text="Työpaikkaohjaaja"
           />
         </div>
       </section>
@@ -45,4 +50,4 @@ const PickAccontType = () => {
   );
 };
 
-export default PickAccontType;
+export default Step0;
