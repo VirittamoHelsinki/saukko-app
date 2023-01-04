@@ -32,28 +32,29 @@ const Step1 = () => {
 
   // pulls form input values when submitted
   const refs = {
-    formRef: useRef(),
-    nameRef: useRef(),
-    addressRef: useRef(),
-    postalNumRef: useRef(),
-    cityRef: useRef(),
-    phoneRef: useRef(),
-    emailRef: useRef(),
-    birthDateRef: useRef(),
-  };
-
-  const {
-    nameRef,
-    addressRef,
-    postalNumRef,
-    cityRef,
-    phoneRef,
-    emailRef,
-    birthDateRef,
-  } = refs;
+      formRef: useRef(),
+      nameRef: useRef(),
+      addressRef: useRef(),
+      postalNumRef: useRef(),
+      cityRef: useRef(),
+      phoneRef: useRef(),
+      emailRef: useRef(),
+      birthDateRef: useRef(),
+    },
+    {
+      nameRef,
+      addressRef,
+      postalNumRef,
+      cityRef,
+      phoneRef,
+      emailRef,
+      birthDateRef,
+    } = refs;
 
   const handleSubmit = () => {
-    const personalData = {
+    // send data to parent component
+    setFormData({
+      ...formData,
       name: nameRef.current.value,
       address: addressRef.current.value,
       postalNum: postalNumRef.current.value,
@@ -61,11 +62,7 @@ const Step1 = () => {
       phone: phoneRef.current.value,
       email: emailRef.current.value,
       birthDate: birthDateRef.current.value,
-    };
-    console.table(personalData);
-
-    // send data to parent component
-    setFormData({ ...formData, personalData });
+    });
 
     // go to next step
     setCurrentStep(currentStep + 1);

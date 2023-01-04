@@ -38,23 +38,22 @@ const Step2 = () => {
 
   // pulls form input values when submitted
   const refs = {
-    formRef: useRef(),
-    workPlace: useRef(),
-    workTasks: useRef(),
-    contactPerson: useRef(),
-    workNumber: useRef(),
-    workAddress: useRef(),
-    studyGoals: useRef(),
-  };
-
-  const {
-    workPlaceRef,
-    workTasksRef,
-    contactPersonRef,
-    workNumberRef,
-    workAddressRef,
-    studyGoalsRef,
-  } = refs;
+      formRef: useRef(),
+      workPlace: useRef(),
+      workTasks: useRef(),
+      contactPerson: useRef(),
+      workNumber: useRef(),
+      workAddress: useRef(),
+      studyGoals: useRef(),
+    },
+    {
+      workPlaceRef,
+      workTasksRef,
+      contactPersonRef,
+      workNumberRef,
+      workAddressRef,
+      studyGoalsRef,
+    } = refs;
 
   // enable login button style if fields are filled
   useEffect(() => {
@@ -78,16 +77,15 @@ const Step2 = () => {
   ]);
 
   const handleSubmit = () => {
-    const workData = {
+    setFormData({
+      ...formData,
       workPlace: workPlaceRef.current.value,
       workTasks: workTasksRef.current.value,
       contactPerson: contactPersonRef.current.value,
       workNumber: workNumberRef.current.value,
       workAddress: workAddressRef.current.value,
       studyGoals: studyGoalsRef.current.value,
-    };
-    console.table(workData);
-    setFormData({ ...formData, workData });
+    });
   };
 
   // button styling/CSS

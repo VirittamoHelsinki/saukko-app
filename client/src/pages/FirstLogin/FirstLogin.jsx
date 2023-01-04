@@ -1,6 +1,6 @@
 // importing react packages
 import React, { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // importing components
 import WavesHeader from "../../components/Header/WavesHeader";
@@ -28,9 +28,11 @@ const PersonalForm = () => {
   // context for form inputs filled
   const [stepsFilled, setStepsFilled] = useState(false, false);
 
+  const navigate = useNavigate();
   // processes the registration after fields have been filled and the "register" button has been pressed
   const processForm = () => {
     console.table(formData);
+    navigate("/home");
   };
 
   // browser window scroll-to-top on step change
@@ -43,7 +45,7 @@ const PersonalForm = () => {
       <WavesHeader title="Taustatiedot" fill="#0000bf" />
       <section className="firstLogin__container">
         <FormContext.Provider value={{ formData, setFormData }}>
-          <form onSubmit={processForm}>
+          <div className="firstLogin__container--form">
             <StepContext.Provider value={{ currentStep, setCurrentStep }}>
               <ButtonContext.Provider value={{ stepsFilled, setStepsFilled }}>
                 {(() => {
@@ -60,7 +62,7 @@ const PersonalForm = () => {
                 })()}
               </ButtonContext.Provider>
             </StepContext.Provider>
-          </form>
+          </div>
         </FormContext.Provider>
       </section>
     </main>
