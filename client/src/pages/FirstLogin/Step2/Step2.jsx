@@ -38,13 +38,12 @@ const Step2 = () => {
 
   // pulls form input values when submitted
   const refs = {
-      formRef: useRef(),
-      workPlace: useRef(),
-      workTasks: useRef(),
-      contactPerson: useRef(),
-      workNumber: useRef(),
-      workAddress: useRef(),
-      studyGoals: useRef(),
+      workPlaceRef: useRef(),
+      workTasksRef: useRef(),
+      contactPersonRef: useRef(),
+      workNumberRef: useRef(),
+      workAddressRef: useRef(),
+      studyGoalsRef: useRef(),
     },
     {
       workPlaceRef,
@@ -79,12 +78,12 @@ const Step2 = () => {
   const handleSubmit = () => {
     setFormData({
       ...formData,
-      workPlace: workPlaceRef.current.value,
-      workTasks: workTasksRef.current.value,
-      contactPerson: contactPersonRef.current.value,
-      workNumber: workNumberRef.current.value,
-      workAddress: workAddressRef.current.value,
-      studyGoals: studyGoalsRef.current.value,
+      workPlace: workPlaceRef?.current.value,
+      workTasks: workTasksRef?.current.value,
+      contactPerson: contactPersonRef?.current.value,
+      workNumber: workNumberRef?.current.value,
+      workAddress: workAddressRef?.current.value,
+      studyGoals: studyGoalsRef?.current.value,
     });
   };
 

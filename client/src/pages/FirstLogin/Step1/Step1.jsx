@@ -32,7 +32,6 @@ const Step1 = () => {
 
   // pulls form input values when submitted
   const refs = {
-      formRef: useRef(),
       nameRef: useRef(),
       addressRef: useRef(),
       postalNumRef: useRef(),

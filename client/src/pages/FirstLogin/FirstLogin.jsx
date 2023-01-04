@@ -1,6 +1,5 @@
 // importing react packages
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 // importing components
 import WavesHeader from "../../components/Header/WavesHeader";
@@ -27,13 +26,6 @@ const PersonalForm = () => {
 
   // context for form inputs filled
   const [stepsFilled, setStepsFilled] = useState(false, false);
-
-  const navigate = useNavigate();
-  // processes the registration after fields have been filled and the "register" button has been pressed
-  const processForm = () => {
-    console.table(formData);
-    navigate("/home");
-  };
 
   // browser window scroll-to-top on step change
   useEffect(() => {
