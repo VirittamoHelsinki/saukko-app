@@ -5,20 +5,23 @@ import WavesHeader from "../../components/Header/WavesHeader";
 const UserPage = () => {
   return (
     <main className="userPage__wrapper">
-      <WavesHeader title="Tervetuloa, Nimi" fill="#9fc9eb" />
+      <WavesHeader title="Tervetuloa, Nimi" fill="#9fc9eb" disabled="true" />
       <UserNav />
       <section className="userPage__container">
         <section className="userPage__container--accomplishments">
           <div className="userPage__container--accomplishments-title">
             <h2>Omat suoritukset</h2>
-            <li>Jatka</li>
+            <a href="/">Jatka</a>
           </div>
           <div className="userPage__container--accomplishments-degrees">
             <div className="userPage__container--accomplishments-degrees-item">
               <h3>Tieto- ja viestintätekniikan perustutkinto</h3>
               <p>Tieto- ja viestintätekniikan perustutkinto</p>
+              <div className="userPage__container--accomplishments-degree-progressBar">
+                <p>0%</p>
+                <div className="temp-progress-bar"></div>
+              </div>
             </div>
-            <div className="userPage__container--accomplishments-degree-progressBar"></div>
           </div>
         </section>
         <section className="userPage__container--teachers">

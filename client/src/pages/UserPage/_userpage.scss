@@ -10,19 +10,65 @@
     background: var(--saukko-main-white);
     text-align: center;
 
-    img {
-      position: absolute;
-      width: 90px;
-      height: auto;
-      top: 36px;
-    }
-
     .userPage__container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 36px;
       gap: 10px;
+
+      h2 {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .userPage__container--accomplishments {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+
+        .userPage__container--accomplishments-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .userPage__container--accomplishments-degrees {
+          display: flex;
+          flex-direction: column;
+
+          .userPage__container--accomplishments-degrees-item {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            background: var(--saukko-main);
+            padding: 12px;
+            gap: 12px;
+
+            p {
+              font-size: 12px;
+            }
+
+            .userPage__container--accomplishments-degree-progressBar {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-end;
+
+              p {
+                color: var(--link-blue);
+              }
+
+              .temp-progress-bar {
+                background: var(--saukko-main-white);
+                height: 8px;
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
