@@ -33,11 +33,16 @@ const UserPage = () => {
               <h3>Jonna Virtanen</h3>
               <p>Tieto- ja viestintätekniikan opettaja</p>
             </div>
+            <div className="userPage__container--teachers-list-item">
+              <h3>Sami Virtanen</h3>
+              <p>Tieto- ja viestintätekniikan opettaja</p>
+            </div>
           </div>
         </section>
         <section className="userPage__container--degrees">
           <div className="userPage__container--degrees-title">
             <h2>Muut tutkinnot/e-Perusteet</h2>
+            <a href="/">Tutustu</a>
           </div>
           <div className="userPage__container--degrees-list">
             <div className="userPage__container--degrees-list-item">

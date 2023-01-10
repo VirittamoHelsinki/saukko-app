@@ -29,12 +29,14 @@ const WavesHeader = (props) => {
   let location = useLocation();
   const navigate = useNavigate();
 
+  // check current page return setIndex true or false
   useEffect(() => {
     setInIndex(location.pathname === "/home");
   }, [location.pathname]);
 
   return (
     <main style={props.style} className="wavesHeader__wrapper">
+      {/* do not render backwards arrow on specific pages */}
       {!inIndex === true ? (
         <button id="backArrowSVG" onClick={() => navigate(-1)}>
           <Icon icon="typcn:arrow-left" />

@@ -8,19 +8,24 @@
     height: 100vh;
     width: 100%;
     background: var(--saukko-main-white);
-    text-align: center;
+    text-align: left;
 
     .userPage__container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 36px;
-      gap: 10px;
+      padding: 0px 36px 36px 36px;
+      margin-top: 82px;
+      gap: 22px;
 
       h2 {
         font-size: 16px;
         font-weight: 600;
+      }
+
+      h3 {
+        font-size: 18px;
       }
 
       .userPage__container--accomplishments {
@@ -42,7 +47,6 @@
           .userPage__container--accomplishments-degrees-item {
             display: flex;
             flex-direction: column;
-            text-align: left;
             background: var(--saukko-main);
             padding: 12px;
             gap: 12px;
@@ -67,6 +71,37 @@
               }
             }
           }
+        }
+      }
+      .userPage__container--teachers {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+
+        .userPage__container--teachers-list {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          .userPage__container--teachers-list-item {
+            background: var(--hover-gray);
+            border: 2px solid var(--saukko-main-black);
+            padding: 6px;
+          }
+        }
+      }
+
+      .userPage__container--degrees {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+
+        .userPage__container--degrees-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
       }
     }
