@@ -149,7 +149,7 @@ const Step2 = () => {
       />
 
       <label htmlFor="">Omat tavoitteesi *</label>
-      <input
+      <textarea
         ref={studyGoalsRef}
         onChange={(e) => {
           setFormState({ ...formState, studyGoals: e.target.value });

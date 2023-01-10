@@ -45,6 +45,18 @@
           border: 2px solid var(--saukko-main-black);
         }
 
+        textarea {
+          width: 100%;
+          height: 56px;
+          padding: 7px;
+          min-height: 56px;
+          max-height: 250px;
+          resize: vertical;
+          background: none;
+          color: var(--saukko-main-black);
+          border: 2px solid var(--saukko-main-black);
+        }
+
         p {
           text-align: center;
         }
