@@ -16,7 +16,7 @@
       justify-content: center;
       align-items: center;
       padding: 0px 36px 36px 36px;
-      margin-top: 82px;
+      margin-top: 140px;
       gap: 22px;
 
       h2 {
@@ -25,7 +25,7 @@
       }
 
       h3 {
-        font-size: 18px;
+        font-size: 14px;
       }
 
       .userPage__container--accomplishments {
@@ -102,6 +102,34 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
+        }
+
+        .userPage__container--degrees-list {
+          display: flex;
+
+          .userPage__container--degrees-list-item {
+            display: flex;
+            flex-direction: column;
+            background: var(--hover-gray);
+            border: 2px solid var(--saukko-main-black);
+            height: 150px;
+            width: 150px;
+
+            .userPage__container--degrees-list-item-top {
+              background: var(--additional-skyblue);
+              padding: 12px;
+              height: 50%;
+              width: 100%;
+            }
+
+            .userPage__container--degrees-list-item-bottom {
+              display: flex;
+              justify-content: space-between;
+              padding: 12px;
+              height: 50%;
+              width: 100%;
+            }
+          }
         }
       }
     }
