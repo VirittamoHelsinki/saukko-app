@@ -14,7 +14,11 @@
       padding: 0px 36px 86px 36px;
       margin-top: 225px;
       width: 100%;
-      gap: 22px;
+      gap: 20px;
+
+      h2 {
+        font-size: 18px;
+      }
 
       input {
         width: 100%;
@@ -22,13 +26,13 @@
         background: none;
         padding: 15px;
         color: var(--saukko-main-black);
-        border: 2px solid var(--saukko-main-grey);
+        border: 2px solid var(--grayscale-medium-dark);
       }
 
       .searchPage__container--list {
         display: flex;
         flex-direction: column;
-        gap: 22px;
+        gap: 8px;
 
         .searchPage__container--list-item {
           display: flex;
@@ -37,6 +41,10 @@
           border: 2px solid var(--saukko-main-black);
           padding: 12px;
           gap: 30px;
+
+          h3 {
+            font-size: 16px;
+          }
 
           .searchPage__container--list-item-bottom {
             display: flex;
@@ -48,7 +56,13 @@
               justify-content: space-between;
             }
 
+            p {
+              font-size: 12px;
+            }
+
             li {
+              font-size: 18px;
+              font-weight: 600;
               text-align: end;
             }
           }

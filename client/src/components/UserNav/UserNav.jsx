@@ -32,7 +32,7 @@ const UserNav = () => {
         <UserNavIcon
           icon="ic:baseline-search"
           rotate={1}
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/search")}
         />
         {/* user icon */}
         <UserNavIcon
@@ -40,10 +40,10 @@ const UserNav = () => {
           onClick={() => navigate("/home")}
         />
         {/* sign out icon */}
-        <UserNavIcon
+        {/* <UserNavIcon
           icon="mdi:sign-out-variant"
           onClick={() => navigate("/")}
-        />
+        /> */}
       </section>
     </main>
   );

@@ -6,21 +6,38 @@ import UserNav from "../../components/UserNav/UserNav";
 import WavesHeader from "../../components/Header/WavesHeader";
 
 // controls how many degrees are shown at once and renders them
-const CheckLength = ({ filteredList }) => {
+const CheckLength = ({ filteredList, degrees }) => {
   return (
     <>
-      {filteredList.map((degree, index) => (
-        <div key={index} className="searchPage__container--list-item">
-          <h3>{degree.title}</h3>
-          <div className="searchPage__container--list-item-bottom">
-            <div>
-              <p>{degree.diary}</p>
-              <p>{degree.code}</p>
+      {filteredList.length > 0 ? (
+        filteredList.map((degree, index) => (
+          <div key={index} className="searchPage__container--list-item">
+            <h3>{degree.title}</h3>
+            <div className="searchPage__container--list-item-bottom">
+              <div>
+                <p>Diaari: {degree.diary}</p>
+                <p>Koodi: {degree.code}</p>
+              </div>
+              <li>&#8250;</li>
             </div>
-            <li>&#8250;</li>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <>
+          {degrees.map((degree, index) => (
+            <div key={index} className="searchPage__container--list-item">
+              <h3>{degree.title}</h3>
+              <div className="searchPage__container--list-item-bottom">
+                <div>
+                  <p>Diaari: {degree.diary}</p>
+                  <p>Koodi: {degree.code}</p>
+                </div>
+                <li>&#8250;</li>
+              </div>
+            </div>
+          ))}
+        </>
+      )}
     </>
   );
 };
@@ -74,11 +91,7 @@ const SearchPage = () => {
 
   return (
     <main className="searchPage__wrapper">
-      <WavesHeader
-        title="Ammatilliset koulutukset"
-        fill="#9fc9eb"
-        disabled="false"
-      />
+      <WavesHeader title="Koulutukset" fill="#9fc9eb" disabled="false" />
       <UserNav />
       <section className="searchPage__container">
         <input
@@ -88,7 +101,7 @@ const SearchPage = () => {
         />
         <h2>Ammatilliset koulutukset</h2>
         <div className="searchPage__container--list">
-          <CheckLength filteredList={filteredList} />
+          <CheckLength filteredList={filteredList} degrees={degrees} />
         </div>
       </section>
     </main>
