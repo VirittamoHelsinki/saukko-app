@@ -1,0 +1,71 @@
+.app__wrapper {
+  .searchPage__wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    background: var(--saukko-main-white);
+    text-align: left;
+
+    .searchPage__container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0px 36px 86px 36px;
+      margin-top: 225px;
+      width: 100%;
+      gap: 22px;
+
+      input {
+        width: 100%;
+        height: 52px;
+        background: none;
+        padding: 15px;
+        color: var(--saukko-main-black);
+        border: 2px solid var(--saukko-main-grey);
+      }
+
+      .searchPage__container--list {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+
+        .searchPage__container--list-item {
+          display: flex;
+          flex-direction: column;
+          background: var(--additional-turquoise);
+          border: 2px solid var(--saukko-main-black);
+          padding: 12px;
+          gap: 30px;
+
+          .searchPage__container--list-item-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            div {
+              display: flex;
+              justify-content: space-between;
+            }
+
+            li {
+              text-align: end;
+            }
+          }
+        }
+
+        .searchPage__container--list-item:nth-of-type(4n + 2) {
+          background: var(--additional-yellow); /* dark green */
+        }
+
+        .searchPage__container--list-item:nth-of-type(4n + 3) {
+          background: var(--additional-pink); /* light blue */
+        }
+
+        .searchPage__container--list-item:nth-of-type(4n + 4) {
+          background: var(--additional-skyblue); /* light green */
+        }
+      }
+    }
+  }
+}
