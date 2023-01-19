@@ -19,15 +19,15 @@ const LoginPage = () => {
     [buttonDisabled, setButtonDisabled] = useState();
 
   // stores form input info
-  const formRef = useRef(),
+  /*const formRef = useRef(),
     emailRef = useRef(),
-    passwordRef = useRef();
+    passwordRef = useRef();*/
 
   // change page
   // const navigate = useNavigate();
 
   // processes the login after fields have been filled and the "login" button has been pressed
-  const processLogin = () => {
+  /* const processLogin = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
@@ -47,6 +47,34 @@ const LoginPage = () => {
       .catch(function (err) {
         console.log(err);
       });
+  };*/
+
+  const loginUser = async (e) => {
+    // event.preventDefault();
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    const response = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.user) {
+      localStorage.setItem("token", data.user);
+      console.log("Login success");
+      window.location.href = "/home";
+    } else {
+      console.log("Wrong data");
+    }
+    console.log(data);
   };
 
   // enable login button style if fields are filled
@@ -71,11 +99,11 @@ const LoginPage = () => {
       <WavesHeader title="Saukko" fill="#9fc9eb" />
       <section className="loginPage__container">
         <h2>Kirjaudu sisään</h2>
-        <form ref={formRef} onSubmit={processLogin}>
+        <form onSubmit={loginUser}>
           <section className="loginPage__container--form-text">
             <label htmlFor="">Sähköposti *</label>
             <input
-              ref={emailRef}
+              // ref={emailRef}
               type="email"
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -84,7 +112,7 @@ const LoginPage = () => {
             />
             <label htmlFor="">Salasana *</label>
             <input
-              ref={passwordRef}
+              // ref={passwordRef}
               type="password"
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -102,7 +130,7 @@ const LoginPage = () => {
         <Button
           style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
           onClick={() =>
-            buttonDisabled ? console.log("button disabled") : processLogin()
+            buttonDisabled ? console.log("button disabled") : loginUser()
           }
           type="submit"
           text="Kirjaudu sisään"

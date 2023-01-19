@@ -1,20 +1,10 @@
 const express = require("express");
-<<<<<<< HEAD
-const index = express();
-
-index.get("/", (req, res) => {
-  res.send("...");
-});
-
-index.listen(3001, () => {
-  console.log("Server running on port 3001");
-=======
-const mongoose = require("mongoose");
 const cors = require("cors");
-const userSchema = require("./models/user.model");
-const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const app = express();
+const User = require("./models/user.model");
+const jwt = require("jsonwebtoken");
 
 app.use(cors());
 app.use(express.json());
@@ -28,29 +18,24 @@ mongoose.connect(mongodb, () => {
   console.log("Database connected");
 });
 
-/*// require database connection
-const dbConnect = require("./db/dbConnect");
-
-// execute database connection
-dbConnect();*/
-
+// Register
 app.post("/api/register", async (req, res) => {
   console.log(req.body);
   try {
-    await userSchema.create({
-      // name: req.body.name,
+    await User.create({
       email: req.body.email,
       password: req.body.password,
       confirmPassword: req.body.confirmPassword,
     });
     res.json({ status: "ok" });
   } catch (error) {
-    res.json({ status: "Error", error: "User already exists" });
+    res.json({ status: "Error", error: "Duplicate email" });
   }
 });
 
+// Login
 app.post("/api/login", async (req, res) => {
-  const user = await userSchema.findOne({
+  const user = await User.findOne({
     email: req.body.email,
     password: req.body.password,
   });
@@ -69,7 +54,38 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+//
+// app.get("/api/quote", async (req, res) => {
+//   const token = req.headers["x-access-token"];
+
+//   try {
+//     const decoded = jwt.verify(token, "secret123");
+//     const email = decoded.email;
+//     const user = await User.findOne({ email: email });
+
+//     return res.json({ status: "ok", quote: user.quote });
+//   } catch (error) {
+//     console.log(error);
+//     res.json({ status: "Error", error: "Invalid token" });
+//   }
+// });
+
+// // Creating quotes...
+// app.post("/api/quote", async (req, res) => {
+//   const token = req.headers["x-access-token"];
+
+//   try {
+//     const decoded = jwt.verify(token, "secret123");
+//     const email = decoded.email;
+//     await User.updateOne({ email: email }, { $set: { quote: req.body.quote } });
+
+//     return res.json({ status: "ok" });
+//   } catch (error) {
+//     console.log(error);
+//     res.json({ status: "Error", error: "Invalid token" });
+//   }
+// });
+
 app.listen(3000, () => {
-  console.log(`Servers running on port 3000`);
->>>>>>> 2bd361f717df2770e986ba7290eafa315f274efe
+  console.log("Server running on port 3000");
 });
