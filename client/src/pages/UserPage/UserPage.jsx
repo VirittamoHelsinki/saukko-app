@@ -9,10 +9,8 @@ const UserPage = () => {
   const tempData = {
     accomplishments: [
       {
-        id: 0,
-        title: "Tieto- ja viestintätekniikan perustutkinto",
-        description: "Tieto- ja viestintätekniikan perustutkinto",
-        progress: 0,
+        tasksDone: 5,
+        combinedTasks: 28,
       },
     ],
 

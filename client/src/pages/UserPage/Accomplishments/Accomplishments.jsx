@@ -6,19 +6,14 @@ const Accomplishments = (props) => {
         <a href="/">Jatka</a>
       </div>
       <div className="userPage__container--accomplishments-degrees">
-        {props.data.map((item, index) => (
-          <div
-            key={index}
-            className="userPage__container--accomplishments-degrees-item"
-          >
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-            <div className="userPage__container--accomplishments-degree-progressBar">
-              <p>{item.progress + "%"}</p>
-              <div className="temp-progress-bar"></div>
-            </div>
-          </div>
-        ))}
+        <div className="userPage__container--accomplishments-degrees-item">
+          <h3>{props.data[0].tasksDone}</h3>
+          <p>Tehtävää tehty</p>
+        </div>
+        <div className="userPage__container--accomplishments-degrees-item">
+          <h3>{props.data[0].combinedTasks}</h3>
+          <p>Yhteensä</p>
+        </div>
       </div>
     </section>
   );

@@ -16,7 +16,7 @@
       justify-content: center;
       align-items: center;
       padding: 0px 36px 36px 36px;
-      margin-top: 140px;
+      margin-top: 180px;
       width: 100%;
       gap: 22px;
 
@@ -44,33 +44,29 @@
         .userPage__container--accomplishments-degrees {
           display: flex;
           flex-direction: column;
+          gap: 6px;
 
           .userPage__container--accomplishments-degrees-item {
             display: flex;
             flex-direction: column;
-            background: var(--saukko-main);
+            background: var(--additional-turquoise);
+            border: 2px solid var(--saukko-main-black);
             padding: 12px;
-            gap: 12px;
+            height: 75px;
+
+            h3 {
+              font-size: 32px;
+              color: var(--saukko-main-black);
+            }
 
             p {
               font-size: 12px;
+              font-weight: 600;
             }
+          }
 
-            .userPage__container--accomplishments-degree-progressBar {
-              display: flex;
-              flex-direction: column;
-              align-items: flex-end;
-
-              p {
-                color: var(--link-blue);
-              }
-
-              .temp-progress-bar {
-                background: var(--saukko-main-white);
-                height: 8px;
-                width: 100%;
-              }
-            }
+          .userPage__container--accomplishments-degrees-item:last-of-type {
+            background: var(--additional-yellow);
           }
         }
       }
