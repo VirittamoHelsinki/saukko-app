@@ -1,5 +1,7 @@
+import { useEffect } from "react";
+
 // importing necessary packages for routing
-import { Routes, Route, useLocation, useEffect } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 // importing all pages which need routing
 import LandingPage from "../../pages/LandingPage/LandingPage";
