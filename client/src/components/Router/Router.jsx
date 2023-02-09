@@ -1,5 +1,5 @@
 // importing necessary packages for routing
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useEffect } from "react-router-dom";
 
 // importing all pages which need routing
 import LandingPage from "../../pages/LandingPage/LandingPage";
@@ -12,10 +12,16 @@ import SearchPage from "../../pages/SearchPage/SearchPage";
 
 const Router = () => {
   let location = useLocation();
+  let path = location.pathname;
+
+  // browser window scroll-to-top on path change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [path]);
 
   return (
     <>
-      <Routes key={location.pathname} location={location}>
+      <Routes key={path} location={location}>
         {/* placeholder paths and pages */}
         <Route exact="true" path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
