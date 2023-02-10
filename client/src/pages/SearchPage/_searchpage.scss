@@ -38,10 +38,12 @@
         .searchPage__container--list-item {
           display: flex;
           flex-direction: column;
+          justify-content: space-between;
           background: var(--additional-turquoise);
           border: 2px solid var(--saukko-main-black);
+          max-height: 125px;
+          height: 125px;
           padding: 12px;
-          gap: 30px;
 
           h3 {
             font-size: 16px;
