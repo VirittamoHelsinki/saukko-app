@@ -103,6 +103,8 @@
 
         .userPage__container--degrees-list {
           display: flex;
+          max-width: 100%;
+          gap: 6px;
 
           .userPage__container--degrees-list-item {
             display: flex;

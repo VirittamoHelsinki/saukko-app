@@ -7,12 +7,10 @@ import Degrees from "./Degrees/Degrees";
 
 const UserPage = () => {
   const tempData = {
-    accomplishments: [
-      {
-        tasksDone: 5,
-        combinedTasks: 28,
-      },
-    ],
+    accomplishments: {
+      tasksDone: 5,
+      combinedTasks: 28,
+    },
 
     teachers: [
       {
@@ -28,6 +26,11 @@ const UserPage = () => {
     ],
 
     degrees: [
+      {
+        id: 0,
+        name: "Tieto- ja viestintätekniikan perustutkinto",
+        points: 180,
+      },
       {
         id: 0,
         name: "Tieto- ja viestintätekniikan perustutkinto",

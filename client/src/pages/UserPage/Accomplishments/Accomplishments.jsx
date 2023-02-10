@@ -7,11 +7,11 @@ const Accomplishments = (props) => {
       </div>
       <div className="userPage__container--accomplishments-degrees">
         <div className="userPage__container--accomplishments-degrees-item">
-          <h3>{props.data[0].tasksDone}</h3>
+          <h3>{props.data.tasksDone}</h3>
           <p>Tehtävää tehty</p>
         </div>
         <div className="userPage__container--accomplishments-degrees-item">
-          <h3>{props.data[0].combinedTasks}</h3>
+          <h3>{props.data.combinedTasks}</h3>
           <p>Yhteensä</p>
         </div>
       </div>

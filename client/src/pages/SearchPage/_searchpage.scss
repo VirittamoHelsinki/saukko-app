@@ -32,6 +32,7 @@
       .searchPage__container--list {
         display: flex;
         flex-direction: column;
+        width: 100%;
         gap: 8px;
 
         .searchPage__container--list-item {
@@ -78,6 +79,40 @@
 
         .searchPage__container--list-item:nth-of-type(4n + 4) {
           background: var(--additional-skyblue); /* light green */
+        }
+      }
+      .searchPage__container--list-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+
+        .pagination__button {
+          background: var(--saukko-main-white);
+          border-radius: 50%;
+          border: none;
+          height: 40px;
+          width: 40px;
+        }
+
+        .pagination__button--active {
+          color: var(--saukko-main-white);
+          background: var(--saukko-main-black);
+        }
+
+        .searchPage__container--list-pagination-arrows {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+
+          .arrow__button {
+            font-weight: 600;
+            background: none;
+            border: none;
+          }
         }
       }
     }
