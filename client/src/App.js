@@ -6,11 +6,11 @@ import Router from "./components/Router/Router";
 
 // main app
 const App = () => {
-  return (
-    <main className="app__wrapper">
-      <Router />
-    </main>
-  );
+	return (
+		<main className="app__wrapper">
+			<Router />
+		</main>
+	);
 };
 
 export default App;
