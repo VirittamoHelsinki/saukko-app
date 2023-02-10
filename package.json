@@ -45,7 +45,6 @@
     "escape-string-regexp": "^4.0.0",
     "eslint": "^8.33.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-scope": "^7.1.1",
     "eslint-utils": "^3.0.0",
@@ -210,6 +209,7 @@
     "yocto-queue": "^0.1.0"
   },
   "devDependencies": {
+    "eslint-config-prettier": "^8.6.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.1.1"
   },
@@ -217,8 +217,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install"
   },
-  "lint-staged":{
-    "**/*.{js,jsx,ts,tsx}":[
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
       "npx prettier --write",
       "npx eslint --fix"
     ]
