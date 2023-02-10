@@ -1,5 +1,5 @@
 // importing react components
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // importing components
 import UserNav from "../../components/UserNav/UserNav";
@@ -114,6 +114,11 @@ const SearchPage = () => {
   const handlePageClick = (pageNum) => {
     setCurrentPage(pageNum);
   };
+
+  // prevents staying on selected number page while changing search terms
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredList]);
 
   return (
     <main className="searchPage__wrapper">
