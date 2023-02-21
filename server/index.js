@@ -1,64 +1,37 @@
 const express = require("express");
 const mongoose = require("mongoose");
+require("dotenv").config();
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const userSchema = require("./models/user.model");
-const jwt = require("jsonwebtoken");
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+  })
+);
 
+// connecting database
 mongoose.set("strictQuery", true);
-
-const mongodb =
-  "mongodb+srv://Zabi:Saukko@cluster0.l8cr0jo.mongodb.net/?retryWrites=true&w=majority";
-
-mongoose.connect(mongodb, () => {
-  console.log("Database connected");
-});
-
-/*// require database connection
-const dbConnect = require("./db/dbConnect");
-
-// execute database connection
-dbConnect();*/
-
-app.post("/api/register", async (req, res) => {
-  console.log(req.body);
-  try {
-    await userSchema.create({
-      // name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      confirmPassword: req.body.confirmPassword,
-    });
-    res.json({ status: "ok" });
-  } catch (error) {
-    res.json({ status: "Error", error: "User already exists" });
-  }
-});
-
-app.post("/api/login", async (req, res) => {
-  const user = await userSchema.findOne({
-    email: req.body.email,
-    password: req.body.password,
+mongoose
+  .connect(process.env.MDB_CONNECT, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Database connected!");
+  })
+  .catch((error) => {
+    console.log("Unable to connect database");
   });
 
-  if (user) {
-    const token = jwt.sign(
-      {
-        name: user.name,
-        email: user.email,
-      },
-      "secret123"
-    );
-    return res.json({ status: "ok", user: token });
-  } else {
-    return res.json({ status: "Error", user: false });
-  }
-});
+app.use("/auth", require("./routers/userRouter"));
 
-app.listen(3000, () => {
-  console.log(`Servers running on port 3000`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Servers running on port ${PORT}`);
 });

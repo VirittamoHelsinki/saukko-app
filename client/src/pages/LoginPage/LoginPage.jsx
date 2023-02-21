@@ -1,8 +1,8 @@
 // importing react packages
 
-import React, { useRef } from "react";
+/*import React, { useRef } from "react";*/
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+/*import { useNavigate } from "react-router-dom";*/
 
 // import axios to connect to the backend with
 import axios from "axios";
@@ -27,27 +27,27 @@ const LoginPage = () => {
   // processes the login after fields have been filled and the "login" button has been pressed
   const processLogin = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:3000/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+
+    try {
+      const loginData = {
         email,
         password,
-      }),
-    });
+      };
 
-    const data = await response.json();
+      axios
+        .post("http://localhost:5000/auth/login", loginData)
+        .then(function (res) {
+          console.log(res);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
 
-    if (data.user) {
-      localStorage.setItem("token", data.user);
-      console.log("Login success");
-      window.location.href = "/home";
-    } else {
-      console.log("Wrong data");
+      console.log(email, password);
+    } catch (err) {
+      console.error(err);
     }
-    console.log(data);
+
     /*const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
@@ -80,6 +80,7 @@ const LoginPage = () => {
       <WavesHeader />
       <section className="loginPage__container">
         <h2>Kirjaudu sisään</h2>
+
         <form onSubmit={processLogin}>
           <section className="loginPage__container--form-text">
             <label htmlFor="">Sähköposti *</label>
@@ -102,9 +103,14 @@ const LoginPage = () => {
             <p>
               Eikö ole vielä tiliä? <a href="/register">Luo tili</a>
             </p>
-            <Button style={buttonStyle} type="submit" text="Kirjaudu sisään" />
           </section>
         </form>
+        <Button
+          style={buttonStyle}
+          onClick={processLogin}
+          type="submit"
+          text="Kirjaudu sisään"
+        />
       </section>
     </main>
   );

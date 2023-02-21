@@ -1,7 +1,7 @@
 // importing react packages
-import React, { useRef } from "react";
+/*import React, { useRef } from "react";*/
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+/*import { useNavigate } from "react-router-dom";*/
 
 // import axios
 import axios from "axios";
@@ -14,9 +14,9 @@ const RegisterPage = () => {
   // const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordVerify, setPasswordVerify] = useState("");
 
-  const navigate = useNavigate();
+  /*const navigate = useNavigate();*/
 
   // stores form input info
   /*const formRef = useRef(),
@@ -30,24 +30,26 @@ const RegisterPage = () => {
   // processes the registration after fields have been filled and the "register" button has been pressed
   const processRegistration = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:3000/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // name,
+
+    try {
+      const registerData = {
         email,
         password,
-        confirmPassword,
-      }),
-    });
+        passwordVerify,
+      };
 
-    const data = await response.json();
-    console.log(data);
+      axios
+        .post("http://localhost:5000/auth/", registerData)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-    if (data.status === "ok") {
-      navigate("/login", { replace: true });
+      console.log(email, password, passwordVerify);
+    } catch (err) {
+      console.error(err);
     }
 
     /*const email = emailRef.current.value;
@@ -87,6 +89,7 @@ const RegisterPage = () => {
       <WavesHeader />
       <section className="registerPage__container">
         <h2>Rekisteröidy</h2>
+
         <form onSubmit={processRegistration}>
           <section className="registerPage__container--form-text">
             <label htmlFor="">Sähköposti *</label>
@@ -104,9 +107,9 @@ const RegisterPage = () => {
               placeholder="Valitse salasanasi."
             />
             <input
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)}
+              value={passwordVerify}
               type="password"
+              onChange={(e) => setPasswordVerify(e.target.value)}
               placeholder="Kirjoita salasana uudelleen."
             />
             <p>
