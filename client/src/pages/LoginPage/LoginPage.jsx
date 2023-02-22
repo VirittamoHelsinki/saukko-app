@@ -1,13 +1,7 @@
 // importing react packages
-<<<<<<< HEAD
 
-/*import React, { useRef } from "react";*/
-import { useState } from "react";
+import { useState, useEffect } from "react";
 /*import { useNavigate } from "react-router-dom";*/
-=======
-import React, { useRef, useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
->>>>>>> 5be051f79fa770894dc780aad6d9de17ace04406
 
 // import axios to connect to the backend with
 import axios from "axios";
@@ -17,74 +11,32 @@ import Button from "../../components/Button/Button";
 import WavesHeader from "../../components/Header/WavesHeader";
 
 // form email and password validators
-import * as EmailValidator from "email-validator";
-import { passwordVal } from "../../utils/PasswordValidate";
+/*import * as EmailValidator from "email-validator";
+import { passwordVal } from "../../utils/PasswordValidate";*/
 
 const LoginPage = () => {
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
     [buttonDisabled, setButtonDisabled] = useState();
 
-  // stores form input info
-  /*const formRef = useRef(),
-    emailRef = useRef(),
-    passwordRef = useRef();*/
-
-  // change page
-  // const navigate = useNavigate();
-
   // processes the login after fields have been filled and the "login" button has been pressed
-<<<<<<< HEAD
-  const processLogin = async (e) => {
-    e.preventDefault();
+  const processLogin = async (e = undefined) => {
+    if (e !== undefined) {
+      e.preventDefault();
+    }
 
     try {
       const loginData = {
-=======
-  /* const processLogin = () => {
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-
-    // validate inputs
-    console.log(EmailValidator.validate(email));
-    console.log(passwordVal.validate(password));
-
-    // sending data from form to the backend
-    axios
-      .post("/login", {
-        email: email,
-        password: password,
-      })
-      .then(function (res) {
-        console.log(res);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-  };*/
-
-  const loginUser = async (e) => {
-    // event.preventDefault();
-    if (e && e.preventDefault) {
-      e.preventDefault();
-    }
-    const response = await fetch("http://localhost:3000/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
->>>>>>> 5be051f79fa770894dc780aad6d9de17ace04406
         email,
         password,
       };
 
       axios
         .post("http://localhost:5000/auth/login", loginData)
-        .then(function (res) {
+        .then((res) => {
           console.log(res);
         })
-        .catch(function (err) {
+        .catch((err) => {
           console.log(err);
         });
 
@@ -92,7 +44,6 @@ const LoginPage = () => {
     } catch (err) {
       console.error(err);
     }
-<<<<<<< HEAD
 
     /*const email = emailRef.current.value;
     const password = passwordRef.current.value;
@@ -112,9 +63,6 @@ const LoginPage = () => {
 
     console.log(email);
     console.log(password);*/
-=======
-    console.log(data);
->>>>>>> 5be051f79fa770894dc780aad6d9de17ace04406
   };
 
   // enable login button style if fields are filled
@@ -139,12 +87,8 @@ const LoginPage = () => {
       <WavesHeader title="Saukko" fill="#9fc9eb" />
       <section className="loginPage__container">
         <h2>Kirjaudu sisään</h2>
-<<<<<<< HEAD
 
         <form onSubmit={processLogin}>
-=======
-        <form onSubmit={loginUser}>
->>>>>>> 5be051f79fa770894dc780aad6d9de17ace04406
           <section className="loginPage__container--form-text">
             <label htmlFor="">Sähköposti *</label>
             <input
@@ -166,21 +110,12 @@ const LoginPage = () => {
             />
             <a href="/forgot-password">Unohtuiko salasana?</a>
           </section>
-<<<<<<< HEAD
           <section className="loginPage__form--bottom">
             <p>
               Eikö ole vielä tiliä? <a href="/register">Luo tili</a>
             </p>
           </section>
-=======
->>>>>>> 5be051f79fa770894dc780aad6d9de17ace04406
         </form>
-        <Button
-          style={buttonStyle}
-          onClick={processLogin}
-          type="submit"
-          text="Kirjaudu sisään"
-        />
       </section>
       <section className="loginPage__form--bottom">
         <p>
@@ -189,7 +124,7 @@ const LoginPage = () => {
         <Button
           style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
           onClick={() =>
-            buttonDisabled ? console.log("button disabled") : loginUser()
+            buttonDisabled ? console.log("button disabled") : processLogin()
           }
           type="submit"
           text="Kirjaudu sisään"
