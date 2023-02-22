@@ -1,9 +1,6 @@
 // importing react packages
 
 import { useState, useEffect } from "react";
-/*import { useNavigate } from "react-router-dom";*/
-
-// import axios
 import axios from "axios";
 
 // importing components
@@ -101,7 +98,7 @@ const RegisterPage = () => {
               onClick={() =>
                 buttonDisabled
                   ? console.log("button disabled")
-                  : processRegistration()
+                  : processRegistration
               }
               type="submit"
               text="Luo tili"

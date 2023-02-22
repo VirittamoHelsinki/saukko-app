@@ -20,11 +20,7 @@ const LoginPage = () => {
     [buttonDisabled, setButtonDisabled] = useState();
 
   // processes the login after fields have been filled and the "login" button has been pressed
-  const processLogin = async (e = undefined) => {
-    if (e !== undefined) {
-      e.preventDefault();
-    }
-
+  const processLogin = async (e) => {
     try {
       const loginData = {
         email,
