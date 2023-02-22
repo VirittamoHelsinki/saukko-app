@@ -1,7 +1,12 @@
 // importing react packages
+<<<<<<< HEAD
 /*import React, { useRef } from "react";*/
 import { useState } from "react";
 /*import { useNavigate } from "react-router-dom";*/
+=======
+import React, { useRef, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+>>>>>>> 5be051f79fa770894dc780aad6d9de17ace04406
 
 // import axios
 import axios from "axios";
@@ -10,6 +15,7 @@ import axios from "axios";
 import Button from "../../components/Button/Button";
 import WavesHeader from "../../components/Header/WavesHeader";
 
+<<<<<<< HEAD
 const RegisterPage = () => {
   // const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,22 +23,86 @@ const RegisterPage = () => {
   const [passwordVerify, setPasswordVerify] = useState("");
 
   /*const navigate = useNavigate();*/
+=======
+// form email and password validators
+import * as EmailValidator from "email-validator";
+import { passwordVal } from "../../utils/PasswordValidate";
+
+const RegisterPage = () => {
+  /*const [email, setEmail] = useState(""),
+    [password, setPassword] = useState(""),
+    [passwordConfirm, setPasswordConfirm] = useState(""),
+    [buttonDisabled, setButtonDisabled] = useState();
+>>>>>>> 5be051f79fa770894dc780aad6d9de17ace04406
 
   // stores form input info
-  /*const formRef = useRef(),
+  const formRef = useRef(),
     emailRef = useRef(),
     passwordRef = useRef(),
     passwordConfirmRef = useRef();
 
   // change page
-  const navigate = useNavigate();*/
+  // const navigate = useNavigate();
 
   // processes the registration after fields have been filled and the "register" button has been pressed
+  const processRegistration = () => {
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    const passwordConfirm = passwordConfirmRef.current.value;
+
+    // validate inputs
+    console.log(EmailValidator.validate(email));
+    console.log(passwordVal.validate(password));
+    console.log(passwordVal.validate(passwordConfirm));
+
+    // check if passwords match
+    if (password === passwordConfirm) {
+      // sending data from form to the backend
+      axios
+        .post("/register", {
+          email: email,
+          password: password,
+          passwordConfirm: passwordConfirm,
+        })
+        .then(function (res) {
+          console.log(res);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    } else {
+      console.log("Salasanat eivät ole samoja.");
+    }
+  };*/
+
+  // enable login button style if fields are filled
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState();
+
+  const navigate = useNavigate();
+
   const processRegistration = async (e) => {
+<<<<<<< HEAD
     e.preventDefault();
 
     try {
       const registerData = {
+=======
+    // e.preventDefault();
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+
+    const response = await fetch("http://localhost:3000/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+>>>>>>> 5be051f79fa770894dc780aad6d9de17ace04406
         email,
         password,
         passwordVerify,
@@ -51,42 +121,29 @@ const RegisterPage = () => {
     } catch (err) {
       console.error(err);
     }
-
-    /*const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-    const passwordConfirm = passwordConfirmRef.current.value;
-
-    // sending data from form to the backend
-    axios
-      .post("/register", {
-        email: email,
-        password: password,
-        passwordConfirm: passwordConfirm,
-      })
-      .then(function (res) {
-        console.log(res);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-
-    console.log(email);
-    console.log(password);
-    console.log(passwordConfirm);
-    // change page back to home page / login page
-    navigate("/");*/
   };
 
   // button styling/CSS
-  const buttonStyle = {
-    color: "var(--saukko-main-white)",
-    border: "var(--link-disabled)",
-    background: "var(--link-disabled)",
-  };
+  const buttonStyleDisabled = {
+      color: "var(--saukko-main-white)",
+      border: "var(--link-disabled)",
+      background: "var(--link-disabled)",
+    },
+    buttonStyleEnabled = {
+      color: "var(--saukko-main-white)",
+      border: "var(--saukko-main-black)",
+      background: "var(--saukko-main-black)",
+    };
+
+  useEffect(() => {
+    setButtonDisabled(
+      ![email, password, confirmPassword].every((input) => input.length > 0)
+    );
+  }, [email, password, confirmPassword]);
 
   return (
     <main className="registerPage__wrapper">
-      <WavesHeader />
+      <WavesHeader title="Saukko" fill="#9fc9eb" />
       <section className="registerPage__container">
         <h2>Rekisteröidy</h2>
 
@@ -94,19 +151,24 @@ const RegisterPage = () => {
           <section className="registerPage__container--form-text">
             <label htmlFor="">Sähköposti *</label>
             <input
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              // ref={emailRef}
               type="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
               placeholder="Kirjoita sähköpostiosoitteesi."
             />
             <label htmlFor="">Salasana *</label>
             <input
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              // ref={passwordRef}
               type="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
               placeholder="Valitse salasanasi."
             />
             <input
+<<<<<<< HEAD
               value={passwordVerify}
               type="password"
               onChange={(e) => setPasswordVerify(e.target.value)}
@@ -148,7 +210,13 @@ export default RegisterPage;
             />
             <input
               ref={passwordConfirmRef}
+=======
+              // ref={passwordConfirmRef}
+>>>>>>> 5be051f79fa770894dc780aad6d9de17ace04406
               type="password"
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+              }}
               placeholder="Kirjoita salasana uudelleen."
             />
             <p>
@@ -158,12 +226,19 @@ export default RegisterPage;
         </form>
       </section>
       <section className="registerPage__form--bottom">
-        <Button style={buttonStyle} type="submit" text="Luo tili" />
+        <Button
+          style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
+          onClick={() =>
+            buttonDisabled
+              ? console.log("button disabled")
+              : processRegistration()
+          }
+          type="submit"
+          text="Luo tili"
+        />
       </section>
     </main>
   );
 };
 
 export default RegisterPage;
-
- */
