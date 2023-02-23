@@ -23,15 +23,15 @@ const UserNav = () => {
           icon="material-symbols:house-outline"
           onClick={() => navigate("/home")}
         />
-        {/* book icon */}
-        <UserNavIcon
-          icon="material-symbols:menu-book-outline-sharp"
-          onClick={() => navigate("/home")}
-        />
         {/* search icon */}
         <UserNavIcon
           icon="ic:baseline-search"
           rotate={1}
+          onClick={() => navigate("/search")}
+        />
+        {/* book icon */}
+        <UserNavIcon
+          icon="material-symbols:menu-book-outline-sharp"
           onClick={() => navigate("/home")}
         />
         {/* user icon */}
@@ -40,10 +40,15 @@ const UserNav = () => {
           onClick={() => navigate("/home")}
         />
         {/* sign out icon */}
-        <UserNavIcon
+        {/* <UserNavIcon
           icon="mdi:sign-out-variant"
+<<<<<<< HEAD
+          onClick={() => navigate("/")}
+        /> */}
+=======
           onClick={(localStorage.removeItem("token"), () => navigate("/"))}
         />
+>>>>>>> origin/dev
       </section>
     </main>
   );
