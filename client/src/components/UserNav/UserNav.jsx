@@ -42,8 +42,13 @@ const UserNav = () => {
         {/* sign out icon */}
         {/* <UserNavIcon
           icon="mdi:sign-out-variant"
+<<<<<<< HEAD
           onClick={() => navigate("/")}
         /> */}
+=======
+          onClick={(localStorage.removeItem("token"), () => navigate("/"))}
+        />
+>>>>>>> origin/dev
       </section>
     </main>
   );
