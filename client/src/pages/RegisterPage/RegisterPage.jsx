@@ -1,6 +1,6 @@
 // importing react packages
-
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // importing components
@@ -13,6 +13,8 @@ const RegisterPage = () => {
   const [passwordVerify, setPasswordVerify] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState();
 
+  const navigate = useNavigate();
+
   const processRegistration = async (e) => {
     e.preventDefault();
 
@@ -23,7 +25,7 @@ const RegisterPage = () => {
         passwordVerify,
       };
 
-      axios
+      await axios
         .post("http://localhost:5000/auth/", registerData)
         .then((res) => {
           console.log(res);
@@ -31,6 +33,7 @@ const RegisterPage = () => {
         .catch((err) => {
           console.log(err);
         });
+      navigate("/");
 
       console.log(email, password, passwordVerify);
     } catch (err) {
@@ -95,10 +98,10 @@ const RegisterPage = () => {
           <section className="registerPage__form--bottom">
             <Button
               style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
-              onClick={() =>
+              onClick={(e) =>
                 buttonDisabled
                   ? console.log("button disabled")
-                  : processRegistration
+                  : processRegistration(e)
               }
               type="submit"
               text="Luo tili"

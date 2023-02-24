@@ -1,9 +1,8 @@
 // importing react packages
-
+import React, { useContext } from "react";
 import { useState, useEffect } from "react";
-/*import { useNavigate } from "react-router-dom";*/
-
-// import axios to connect to the backend with
+import AuthContext from "../../components/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // importing components
@@ -19,15 +18,19 @@ const LoginPage = () => {
     [password, setPassword] = useState(""),
     [buttonDisabled, setButtonDisabled] = useState();
 
+  const { getLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   // processes the login after fields have been filled and the "login" button has been pressed
   const processLogin = async (e) => {
+    e.preventDefault();
     try {
       const loginData = {
         email,
         password,
       };
 
-      axios
+      await axios
         .post("http://localhost:5000/auth/login", loginData)
         .then((res) => {
           console.log(res);
@@ -35,30 +38,13 @@ const LoginPage = () => {
         .catch((err) => {
           console.log(err);
         });
+      await getLoggedIn();
+      navigate("/home");
 
       console.log(email, password);
     } catch (err) {
       console.error(err);
     }
-
-    /*const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-
-    // sending data from form to the backend
-    axios
-      .post("/login", {
-        email: email,
-        password: password,
-      })
-      .then(function (res) {
-        console.log(res);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-
-    console.log(email);
-    console.log(password);*/
   };
 
   // enable login button style if fields are filled
@@ -88,7 +74,6 @@ const LoginPage = () => {
           <section className="loginPage__container--form-text">
             <label htmlFor="">Sähköposti *</label>
             <input
-              // ref={emailRef}
               type="email"
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -97,7 +82,6 @@ const LoginPage = () => {
             />
             <label htmlFor="">Salasana *</label>
             <input
-              // ref={passwordRef}
               type="password"
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -119,8 +103,8 @@ const LoginPage = () => {
         </p>
         <Button
           style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
-          onClick={() =>
-            buttonDisabled ? console.log("button disabled") : processLogin()
+          onClick={(e) =>
+            buttonDisabled ? console.log("button disabled") : processLogin(e)
           }
           type="submit"
           text="Kirjaudu sisään"
