@@ -9,10 +9,6 @@ import axios from "axios";
 import Button from "../../components/Button/Button";
 import WavesHeader from "../../components/Header/WavesHeader";
 
-// form email and password validators
-/*import * as EmailValidator from "email-validator";
-import { passwordVal } from "../../utils/PasswordValidate";*/
-
 const LoginPage = () => {
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState(""),
