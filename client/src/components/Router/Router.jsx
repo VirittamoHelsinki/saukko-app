@@ -9,8 +9,7 @@ import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import UserPage from "../../pages/UserPage/UserPage";
 import BackgroundForm from "../../pages/BackgroundForm/BackgroundForm";
 import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
-import ProtectedRoutes from "../../pages/ProtectedRoutes";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../utils/context/AuthContext";
 
 const Router = () => {
   let location = useLocation();

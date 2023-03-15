@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 import React, { useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import AuthContext from "../../utils/context/AuthContext";
 
 // icon component
 const UserNavIcon = (props) => {

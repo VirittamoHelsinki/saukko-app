@@ -1,7 +1,7 @@
 // importing react packages
 import React, { useContext } from "react";
 import { useState, useEffect } from "react";
-import AuthContext from "../../components/context/AuthContext";
+import AuthContext from "../../utils/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
