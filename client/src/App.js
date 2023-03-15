@@ -1,7 +1,8 @@
 // importing all sass styling
 import "./scss/index.scss";
 import axios from "axios";
-import { AuthContextProvider } from "./components/context/AuthContext";
+// import { AuthContextProvider } from "./components/context/AuthContext";
+import { AuthContextProvider } from "./utils/context/AuthContext";
 
 // importing page routing
 import Router from "./components/Router/Router";
