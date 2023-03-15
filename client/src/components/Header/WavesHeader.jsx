@@ -1,5 +1,6 @@
 // import necessary react components
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 
 // import helsinki logo
@@ -23,13 +24,26 @@ const Waves = (props) => {
 };
 
 const WavesHeader = (props) => {
+  const [inIndex, setInIndex] = useState();
+
+  let location = useLocation();
   const navigate = useNavigate();
+
+  // check current page return setIndex true or false
+  useEffect(() => {
+    setInIndex(location.pathname === "/home");
+  }, [location.pathname]);
 
   return (
     <main style={props.style} className="wavesHeader__wrapper">
-      <button id="backArrowSVG" onClick={() => navigate(-1)}>
-        <Icon icon="typcn:arrow-left" />
-      </button>
+      {/* do not render backwards arrow on specific pages */}
+      {!inIndex === true ? (
+        <button id="backArrowSVG" onClick={() => navigate(-1)}>
+          <Icon icon="typcn:arrow-left" />
+        </button>
+      ) : (
+        <></>
+      )}
       <img src={HelsinkiLogo} alt="" />
       <h1>{props.title}</h1>
       <Waves fill={props.fill} />

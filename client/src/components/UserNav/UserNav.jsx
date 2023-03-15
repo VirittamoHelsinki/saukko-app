@@ -22,6 +22,7 @@ const UserNav = () => {
 
   const LogOut = async () => {
     await axios.get("http://localhost:5000/auth/logout");
+    localStorage.removeItem("token")
     await getLoggedIn();
     navigate("/");
   };
@@ -34,15 +35,15 @@ const UserNav = () => {
           icon="material-symbols:house-outline"
           onClick={() => navigate("/home")}
         />
-        {/* book icon */}
-        <UserNavIcon
-          icon="material-symbols:menu-book-outline-sharp"
-          onClick={() => navigate("/home")}
-        />
         {/* search icon */}
         <UserNavIcon
           icon="ic:baseline-search"
           rotate={1}
+          onClick={() => navigate("/search")}
+        />
+        {/* book icon */}
+        <UserNavIcon
+          icon="material-symbols:menu-book-outline-sharp"
           onClick={() => navigate("/home")}
         />
         {/* user icon */}
@@ -52,6 +53,7 @@ const UserNav = () => {
         />
         {/* sign out icon */}
         <UserNavIcon icon="mdi:sign-out-variant" onClick={LogOut} />
+        />
       </section>
     </main>
   );

@@ -8,21 +8,129 @@
     height: 100vh;
     width: 100%;
     background: var(--saukko-main-white);
-    text-align: center;
-
-    img {
-      position: absolute;
-      width: 90px;
-      height: auto;
-      top: 36px;
-    }
+    text-align: left;
 
     .userPage__container {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      padding: 0px 36px 36px 36px;
+      margin-top: 180px;
+      width: 100%;
+      gap: 22px;
+
+      h2 {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      h3 {
+        font-size: 14px;
+      }
+
+      .userPage__container--accomplishments {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+
+        .userPage__container--accomplishments-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .userPage__container--accomplishments-degrees {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+
+          .userPage__container--accomplishments-degrees-item {
+            display: flex;
+            flex-direction: column;
+            background: var(--additional-turquoise);
+            border: 2px solid var(--saukko-main-black);
+            padding: 12px;
+            height: 75px;
+
+            h3 {
+              font-size: 32px;
+              color: var(--saukko-main-black);
+            }
+
+            p {
+              font-size: 12px;
+              font-weight: 600;
+            }
+          }
+
+          .userPage__container--accomplishments-degrees-item:last-of-type {
+            background: var(--additional-yellow);
+          }
+        }
+      }
+      .userPage__container--teachers {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+
+        .userPage__container--teachers-list {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          .userPage__container--teachers-list-item {
+            background: var(--hover-gray);
+            border: 2px solid var(--saukko-main-black);
+            padding: 6px;
+          }
+        }
+      }
+
+      .userPage__container--degrees {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+
+        .userPage__container--degrees-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .userPage__container--degrees-list {
+          display: flex;
+          max-width: 100%;
+          gap: 6px;
+
+          .userPage__container--degrees-list-item {
+            display: flex;
+            flex-direction: column;
+            background: var(--hover-gray);
+            border: 2px solid var(--saukko-main-black);
+            height: 150px;
+            width: 150px;
+
+            .userPage__container--degrees-list-item-top {
+              background: var(--additional-skyblue);
+              padding: 12px;
+              height: 50%;
+              width: 100%;
+            }
+
+            .userPage__container--degrees-list-item-bottom {
+              display: flex;
+              justify-content: space-between;
+              padding: 12px;
+              height: 50%;
+              width: 100%;
+            }
+          }
+        }
+      }
     }
   }
 }
