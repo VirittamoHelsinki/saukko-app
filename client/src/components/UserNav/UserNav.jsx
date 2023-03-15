@@ -1,6 +1,9 @@
 // import necessary react components
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import axios from "axios";
+import React, { useContext } from "react";
+import AuthContext from "../../utils/context/AuthContext";
 
 // icon component
 const UserNavIcon = (props) => {
@@ -13,7 +16,16 @@ const UserNavIcon = (props) => {
 
 // user navigation bar
 const UserNav = () => {
+  const { getLoggedIn } = useContext(AuthContext);
+
   const navigate = useNavigate();
+
+  const LogOut = async () => {
+    await axios.get("http://localhost:5000/auth/logout");
+    localStorage.removeItem("token")
+    await getLoggedIn();
+    navigate("/");
+  };
 
   return (
     <main className="userNav__wrapper">
@@ -40,15 +52,8 @@ const UserNav = () => {
           onClick={() => navigate("/home")}
         />
         {/* sign out icon */}
-        {/* <UserNavIcon
-          icon="mdi:sign-out-variant"
-<<<<<<< HEAD
-          onClick={() => navigate("/")}
-        /> */}
-=======
-          onClick={(localStorage.removeItem("token"), () => navigate("/"))}
+        <UserNavIcon icon="mdi:sign-out-variant" onClick={LogOut} />
         />
->>>>>>> origin/dev
       </section>
     </main>
   );
