@@ -53,7 +53,7 @@ const UserNav = () => {
         />
         {/* sign out icon */}
         <UserNavIcon icon="mdi:sign-out-variant" onClick={LogOut} />
-        />
+        
       </section>
     </main>
   );
