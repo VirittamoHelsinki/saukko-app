@@ -1,7 +1,23 @@
+// importing all sass styling
 import "./scss/index.scss";
+import axios from "axios";
+// import { AuthContextProvider } from "./components/context/AuthContext";
+import { AuthContextProvider } from "./utils/context/AuthContext";
 
+// importing page routing
+import Router from "./components/Router/Router";
+
+axios.defaults.withCredentials = true;
+
+// main app
 const App = () => {
-  return <div className="app__wrapper"></div>;
+  return (
+    <main className="app__wrapper">
+      <AuthContextProvider>
+        <Router />
+      </AuthContextProvider>
+    </main>
+  );
 };
 
 export default App;

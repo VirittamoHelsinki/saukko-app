@@ -1,22 +1,21 @@
 {
-  "name": "saukko-app",
-  "version": "1.0.0",
-  "description": "\"# saukko-app\"",
-  "main": "./server/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/VirittamoHelsinki/saukko-app.git"
-  },
-  "keywords": [
-    "saukko"
-  ],
-  "author": "Virittämö Helsinki",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/VirittamoHelsinki/saukko-app/issues"
-  },
-  "homepage": "https://github.com/VirittamoHelsinki/saukko-app#readme"
+    "name": "saukko-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "husky": "^8.0.3",
+        "lint-staged": "^13.2.2",
+        "prettier": "^2.8.8"
+    },
+    "lint-staged": {
+        "*.{js,jsx}": [
+            "prettier --write"
+        ]
+    }
 }

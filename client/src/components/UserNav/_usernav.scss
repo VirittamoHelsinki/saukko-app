@@ -1,0 +1,32 @@
+.app__wrapper {
+  // main wrapper for the user navigation
+  .userNav__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--saukko-main);
+    border-top: 2px solid var(--saukko-main-black);
+    padding: 0px 36px 0px 36px;
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    bottom: 0%;
+
+    .userNav__container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      button {
+        background: none;
+        border: none;
+      }
+
+      svg {
+        width: auto;
+        height: 25px;
+      }
+    }
+  }
+}
