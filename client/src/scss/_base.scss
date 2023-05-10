@@ -1,123 +1,123 @@
 :root {
-  // main colour scheme
-  --saukko-main-white: #ffffff;
-  --saukko-main-black: #000000;
-  --saukko-main: #9fc9eb;
-  --saukko-main-soft: #b1e7ff;
-  --saukkod-main-bright: #48c5f8;
-  --saukko-main-light: #107eab;
-  --saukko-main-active: #005379;
-  --saukko-main-dark: #003146;
-  --saukko-main-nearly-black: #000222;
-  --saukko-main-grey: #666666;
-  --link-blue: #0000bf;
-  --link-disabled: #cccccc;
-  // grayscale
-  --grayscale-white: #fff;
-  --grayscale-slightly-gray: #fefefe;
-  --grayscale-light: #f8f8f8;
-  --grayscale-medium: #d2d2d2;
-  --grayscale-background-box: #f5f5f5;
-  --grayscale-tabs-border: #e6e6e6;
-  --grayscale-background-arrow: #dfdfdf;
-  --grayscale-medium-dark: #979797;
-  --grayscale-dark: #555555;
-  --grayscale-dark-text: #222222;
-  --grayscale-black: #000000;
-  // extra if necessary
-  --additional-red-light: #e5053a;
-  --additional-red-dark: #a31621;
-  --additional-purple-light: #420039;
-  --additional-pink: #f5a3c7;
-  --additional-yellow: #ffc61e;
-  --additional-skyblue: #9fc9eb;
-  --additional-orange: #d14600;
-  --additional-turquoise: #00d7a7;
-  --additional-green-light: #96ba3c;
-  --additional-green-dark: #006400;
-  --hover-gray: #eaeaea;
-  // font family & sizes
-  --base-font-size: 16px;
-  --base-font-size-mobile: 14px;
-  --saukko-main-font: Arial, sans-serif;
+    // main colour scheme
+    --saukko-main-white: #ffffff;
+    --saukko-main-black: #000000;
+    --saukko-main: #9fc9eb;
+    --saukko-main-soft: #b1e7ff;
+    --saukkod-main-bright: #48c5f8;
+    --saukko-main-light: #107eab;
+    --saukko-main-active: #005379;
+    --saukko-main-dark: #003146;
+    --saukko-main-nearly-black: #000222;
+    --saukko-main-grey: #666666;
+    --link-blue: #0000bf;
+    --link-disabled: #cccccc;
+    // grayscale
+    --grayscale-white: #fff;
+    --grayscale-slightly-gray: #fefefe;
+    --grayscale-light: #f8f8f8;
+    --grayscale-medium: #d2d2d2;
+    --grayscale-background-box: #f5f5f5;
+    --grayscale-tabs-border: #e6e6e6;
+    --grayscale-background-arrow: #dfdfdf;
+    --grayscale-medium-dark: #979797;
+    --grayscale-dark: #555555;
+    --grayscale-dark-text: #222222;
+    --grayscale-black: #000000;
+    // extra if necessary
+    --additional-red-light: #e5053a;
+    --additional-red-dark: #a31621;
+    --additional-purple-light: #420039;
+    --additional-pink: #f5a3c7;
+    --additional-yellow: #ffc61e;
+    --additional-skyblue: #9fc9eb;
+    --additional-orange: #d14600;
+    --additional-turquoise: #00d7a7;
+    --additional-green-light: #96ba3c;
+    --additional-green-dark: #006400;
+    --hover-gray: #eaeaea;
+    // font family & sizes
+    --base-font-size: 16px;
+    --base-font-size-mobile: 14px;
+    --saukko-main-font: Arial, sans-serif;
 }
 
 // global styling
 * {
-  margin: 0px;
-  padding: 0px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  list-style: none;
-  text-decoration: none;
-  scroll-behavior: smooth;
-  font-family: var(--saukko-main-font);
+    margin: 0px;
+    padding: 0px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    scroll-behavior: smooth;
+    font-family: var(--saukko-main-font);
 }
 
 html {
-  body {
-    overflow-x: hidden;
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background: var(--saukko-main-white);
+    body {
+        overflow-x: hidden;
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background: var(--saukko-main-white);
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      color: var(--saukko-main-black);
-      font-family: var(--saukko-main-font);
-    }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: var(--saukko-main-black);
+            font-family: var(--saukko-main-font);
+        }
 
-    label,
-    li,
-    p {
-      color: var(--saukko-main-black);
-      font-size: var(--base-font-size-mobile);
-    }
+        label,
+        li,
+        p {
+            color: var(--saukko-main-black);
+            font-size: var(--base-font-size-mobile);
+        }
 
-    a {
-      font-family: var(--saukko-main-font);
-      text-decoration: underline;
-      color: var(--link-blue);
-      font-size: var(--base-font-size-mobile);
-    }
+        a {
+            font-family: var(--saukko-main-font);
+            text-decoration: underline;
+            color: var(--link-blue);
+            font-size: var(--base-font-size-mobile);
+        }
 
-    img {
-      max-width: 100%;
-    }
+        img {
+            max-width: 100%;
+        }
 
-    input:focus,
-    select:focus,
-    textarea:focus,
-    button:focus {
-      outline: none;
-    }
+        input:focus,
+        select:focus,
+        textarea:focus,
+        button:focus {
+            outline: none;
+        }
 
-    button:hover {
-      cursor: pointer;
-    }
+        button:hover {
+            cursor: pointer;
+        }
 
-    .button__container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 56px;
-      background: none;
-      color: var(--saukko-main-black);
-      border: 2px solid var(--saukko-main-black);
+        .button__container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 56px;
+            background: none;
+            color: var(--saukko-main-black);
+            border: 2px solid var(--saukko-main-black);
+        }
     }
-  }
 }
 
 .app__wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-  height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100vh;
 }
