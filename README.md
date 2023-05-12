@@ -22,7 +22,7 @@ With Saukko, users have the freedom to learn and progress at their own pace, fit
 Saukko revolutionizes the traditional approach to earning degrees by offering working professionals a flexible and efficient pathway to complete their education while advancing their careers. It empowers individuals to take control of their learning journey, achieve their academic goals, and unlock new opportunities for personal and professional growth.
 <br><br>
 
-## **Usage**
+## **Initital Setup**
 
 ```ts
 git clone https://github.com/VirittamoHelsinki/saukko-app.git
