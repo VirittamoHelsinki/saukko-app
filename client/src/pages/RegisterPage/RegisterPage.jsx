@@ -98,23 +98,23 @@ const RegisterPage = () => {
                             <a href="/login">Kirjaudu sisään</a>
                         </p>
                     </section>
-                    <section className="registerPage__form--bottom">
-                        <Button
-                            style={
-                                buttonDisabled
-                                    ? buttonStyleDisabled
-                                    : buttonStyleEnabled
-                            }
-                            onClick={(e) =>
-                                buttonDisabled
-                                    ? console.log("button disabled")
-                                    : processRegistration(e)
-                            }
-                            type="submit"
-                            text="Luo tili"
-                        />{" "}
-                    </section>
                 </form>
+            </section>
+            <section className="registerPage__form--bottom">
+                <Button
+                    style={
+                        buttonDisabled
+                            ? buttonStyleDisabled
+                            : buttonStyleEnabled
+                    }
+                    onClick={(e) =>
+                        buttonDisabled
+                            ? console.log("button disabled")
+                            : processRegistration(e)
+                    }
+                    type="submit"
+                    text="Luo tili"
+                />{" "}
             </section>
         </main>
     );
