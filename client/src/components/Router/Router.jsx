@@ -13,6 +13,8 @@ import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
 import FirstLogin from "../../pages/FirstLogin/FirstLogin";
 import SearchPage from "../../pages/SearchPage/SearchPage";
 import AuthContext from "../../utils/context/AuthContext";
+import HomePageAfterLoggedIn from "../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn";
+
 
 const Router = () => {
     let location = useLocation();
@@ -44,6 +46,8 @@ const Router = () => {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/first-login" element={<FirstLogin />} />
                 <Route path="/search" element={<SearchPage />} />
+                <Route path="/logged-user" element={ <HomePageAfterLoggedIn/>} />
+              
 
                 {!loggedIn && (
                     <>

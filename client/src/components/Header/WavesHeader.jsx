@@ -50,18 +50,29 @@ const WavesHeader = (props) => {
     return (
         <main style={props.style} className="wavesHeader__wrapper">
             {/* do not render backwards arrow on specific pages */}
-            {!inIndex === true ? (
+            {/* {!inIndex === true ? (
                 <button id="backArrowSVG" onClick={() => navigate(-1)}>
                     <Icon icon="typcn:arrow-left" />
                 </button>
             ) : (
                 <></>
+            )} */}
+             {!props.disabled && (
+                <button id="backArrowSVG" onClick={() => navigate(-1)}>
+                    <Icon icon="typcn:arrow-left" />
+                </button>
             )}
             <img src={HelsinkiLogo} alt="" />
             <h1>{props.title}</h1>
+            {/* {props.secondTitle  && <h2>{props.secondTitle}</h2>} */}
+            <h2>{props.secondTitle}</h2>
             <Waves fill={props.fill} />
         </main>
     );
 };
 
 export default WavesHeader;
+
+
+
+
