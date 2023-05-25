@@ -100,17 +100,6 @@ html {
         button:hover {
             cursor: pointer;
         }
-
-        .button__container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 56px;
-            background: none;
-            color: var(--saukko-main-black);
-            border: 2px solid var(--saukko-main-black);
-        }
     }
 }
 

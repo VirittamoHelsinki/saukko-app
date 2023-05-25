@@ -46,7 +46,6 @@ const WavesHeader = (props) => {
     useEffect(() => {
         setInIndex(location.pathname === "/home");
     }, [location.pathname]);
-
     return (
         <main style={props.style} className="wavesHeader__wrapper">
             {/* do not render backwards arrow on specific pages */}
