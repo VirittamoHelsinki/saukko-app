@@ -6,6 +6,7 @@ import React, { useContext } from "react";
 
 // importing all pages which need routing
 import LandingPage from "../../pages/LandingPage/LandingPage";
+import ChooseRole from "../../pages/ChooseRole/ChooseRole";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import UserPage from "../../pages/UserPage/UserPage";
@@ -27,7 +28,7 @@ const Router = () => {
             loggedIn &&
             (path === "/" ||
                 path === "/login" ||
-                path === "/register" ||
+                path === "/register-customer" ||
                 path === "/forgot-password")
         ) {
             navigate("/home");
@@ -54,8 +55,12 @@ const Router = () => {
                             path="/"
                             element={<LandingPage />}
                         />
+                        <Route path="/choose-role" element={<ChooseRole />} />
                         <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
+                        <Route
+                            path="/register-customer"
+                            element={<RegisterPage />}
+                        />
                     </>
                 )}
                 {loggedIn && (
