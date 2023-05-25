@@ -1,12 +1,27 @@
-// Import react packages
-import React from 'react'
+// Import react packages & dependencies
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Import components
 import WavesHeader from "../../components/Header/WavesHeader";
 import Button from "../../components/Button/Button";
 import UserNav from "../../components/UserNav/UserNav";
+import AuthContext from "../../utils/context/AuthContext";
 
 function ProfilePage() {
+
+    // Logout (DOESN'T WORK YET)
+    const { getLoggedIn } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+  
+    const LogOut = async () => {
+        await axios.get("http://localhost:5000/auth/logout");
+        localStorage.removeItem("token")
+        await getLoggedIn();
+        navigate("/");
+    };
 
     // Button styling / CSS
     const buttonStyle = {
@@ -41,10 +56,7 @@ function ProfilePage() {
                 <Button
                     text="Kirjaudu Ulos"
                     style={buttonStyle}
-                    /* onClick={() => {
-                        navigate("/register-customer");
-                    }} */
-
+                    onClick={LogOut}
                     icon={"grommet-icons:logout"}
                 />
           </section>
