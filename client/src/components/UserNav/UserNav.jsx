@@ -52,7 +52,7 @@ const UserNav = () => {
           onClick={() => navigate("/home")}
         />
         {/* sign out icon */}
-        <UserNavIcon icon="mdi:sign-out-variant" onClick={LogOut} />
+        {/* <UserNavIcon icon="mdi:sign-out-variant" onClick={LogOut} /> */}
         
       </section>
     </main>

@@ -1,0 +1,48 @@
+.app__wrapper {
+
+    .profile__wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+
+        h2 {
+            margin-top: 23px;
+            z-index: 1;
+        }
+  
+        .profile__container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 200px;
+            margin-bottom: 150px;
+            width: 100%;
+            
+            .profile__container--name, 
+            .profile__container--email, 
+            .profile__container--password {
+                border-bottom: 2px solid lightgray;
+            }
+                        
+            p {
+                color: var(--saukko-main-grey);
+                padding: 30px;
+            }
+        }
+
+        .profile__logout {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            text-align: center;
+            padding: 0px 36px 36px 36px;
+            width: 100%;
+            bottom: 0;
+        }
+    }
+}
+  
+  

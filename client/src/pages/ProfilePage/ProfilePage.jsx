@@ -1,24 +1,33 @@
 import React from 'react'
 
 import WavesHeader from "../../components/Header/WavesHeader";
+import Button from "../../components/Button/Button";
 
 function ProfilePage() {
   return (
-    <main className="profilePage__wrapper">
-        <WavesHeader title="Profiili" fill="#9fc9eb" />
-        <section className="profilePage__info">
-          <div className="profilePage__info__name">
-            <h1>Nimi</h1>
-          </div>
-          <div className="profilePage__info__email">
-            <h1>Sähköposti</h1>
-          </div>
-          <div className="profilePage__info__changePassword">
-            <h1>Vaihda Salasana</h1>
-          </div>
+    <main className="profile__wrapper">
+        <WavesHeader 
+            title="Saukko"
+            secondTitle="Profiili"
+            disabled={true} 
+        />
+
+        <section className="profile__container">
+            <div className="profile__container--name">
+                <p>Nimi</p>
+            </div>
+            <div className="profile__container--email">
+                <p>Sähköposti</p>
+            </div>
+            <div className="profile__container--password">
+                <p>Vaihda salasana</p>
+            </div>
         </section>
-        <div className="profilePage__logOut"></div>
+        <section className="profile__logout">
+            <Button />
+        </section>
     </main>
+
   )
 }
 

@@ -15,6 +15,8 @@ import FirstLogin from "../../pages/FirstLogin/FirstLogin";
 import SearchPage from "../../pages/SearchPage/SearchPage";
 import ProfilePage from "../../pages/ProfilePage/ProfilePage";
 import AuthContext from "../../utils/context/AuthContext";
+import HomePageAfterLoggedIn from "../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn";
+
 
 const Router = () => {
     let location = useLocation();
@@ -47,6 +49,8 @@ const Router = () => {
                 <Route path="/first-login" element={<FirstLogin />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/logged-user" element={ <HomePageAfterLoggedIn/>} />
+              
 
                 {!loggedIn && (
                     <>
