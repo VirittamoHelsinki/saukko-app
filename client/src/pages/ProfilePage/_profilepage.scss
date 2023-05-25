@@ -16,31 +16,47 @@
             display: flex;
             flex-direction: column;
             margin-top: 200px;
-            margin-bottom: 150px;
+            margin-bottom: 170px;
             width: 100%;
             
-            .profile__container--name, 
-            .profile__container--email, 
-            .profile__container--password {
-                border-bottom: 2px solid lightgray;
+            div {
+                border-bottom: 1px solid var(--saukko-light-grey);
+                display: flex;
             }
                         
             p {
                 color: var(--saukko-main-grey);
                 padding: 30px;
             }
+            
+            .profile__container--label {
+                width: 140px;
+                padding-right: 0px;
+
+            }
         }
 
         .profile__logout {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            text-align: center;
-            padding: 0px 36px 36px 36px;
+            padding: 0px 36px 0px 36px;
             width: 100%;
-            bottom: 0;
+
+            .button__container {
+                flex-direction: row-reverse;
+                justify-content: center;
+                gap: 5px;
+                height: 40px;
+                padding-left: 70px;
+
+                .button__icon{
+                    width: 20px;
+                    margin: 0;
+                }
+
+                .button__text {
+                    font-size: 15px;
+                    margin: 0;
+                }
+            }
         }
     }
 }
