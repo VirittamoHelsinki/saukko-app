@@ -73,6 +73,7 @@ const Router = () => {
                         <Route path="/first-login" element={<FirstLogin />} />
                         <Route path="/search" element={<SearchPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/logged-user" element={ <HomePageAfterLoggedIn/>} />
                     </>
                 )}
             </Routes>
