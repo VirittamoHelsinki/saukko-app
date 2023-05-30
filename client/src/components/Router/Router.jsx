@@ -12,6 +12,7 @@ import LoginInfo from '../../pages/CreateAccountCustomer/LoginInfo/LoginInfo';
 import GeneralInfo from '../../pages/CreateAccountCustomer/GeneralInfo/GeneralInfo';
 import WorkInfo from '../../pages/CreateAccountCustomer/WorkInfo/WorkInfo';
 import AccountCreated from '../../pages/CreateAccountCustomer/AccountCreated/AccountCreated';
+import AccountFailed from '../../pages/CreateAccountCustomer/AccountFailed/AccountFailed';
 import RegisterPage from '../../pages/RegisterPage/RegisterPage';
 import UserPage from '../../pages/UserPage/UserPage';
 import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
@@ -62,6 +63,7 @@ const Router = () => {
             <Route path='/general-info' element={<GeneralInfo />} />
             <Route path='/work-info' element={<WorkInfo />} />
             <Route path='/account-created' element={<AccountCreated />} />
+            <Route path='/account-failed' element={<AccountFailed />} />
           </>
         )}
         {loggedIn && (

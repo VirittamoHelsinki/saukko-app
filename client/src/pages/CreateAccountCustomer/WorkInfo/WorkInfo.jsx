@@ -1,14 +1,15 @@
-// importing react packages
+// Importing react packages
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../../useStore';
 import axios from 'axios';
 
-// importing components
+// Importing components
 import Button from '../../../components/Button/Button';
 import WavesHeader from '../../../components/Header/WavesHeader';
 
 const WorkingInfo = () => {
+  // State variables for storing form input values
   const {
     name,
     email,
@@ -32,10 +33,16 @@ const WorkingInfo = () => {
     setGoals,
   } = useStore();
 
+  // State variable for button disabled state
   const [buttonDisabled, setButtonDisabled] = useState();
 
   const navigate = useNavigate();
 
+  /**
+   * Function to handle the form submission and register the customer.
+   * It sends a POST request with form data to the server.
+   * If successful, navigates to '/account-created'; otherwise, navigates to '/account-failed'.
+   */
   const processRegistration = async (e) => {
     e.preventDefault();
 
@@ -72,7 +79,7 @@ const WorkingInfo = () => {
     }
   };
 
-  // button styling/CSS
+  // Button styling/CSS
   const buttonStyleDisabled = {
       color: 'var(--saukko-main-white)',
       border: 'var(--link-disabled)',
@@ -86,6 +93,7 @@ const WorkingInfo = () => {
       margin: '5% 0',
     };
 
+  // Check if all input fields are filled to enable/disable the button
   useEffect(() => {
     setButtonDisabled(
       ![
@@ -108,6 +116,7 @@ const WorkingInfo = () => {
 
   return (
     <main className='workInfo__wrapper'>
+      {/* Header component */}
       <WavesHeader
         title='Saukko'
         fill='#9fc9eb'
@@ -118,6 +127,7 @@ const WorkingInfo = () => {
 
         <form onSubmit={processRegistration}>
           <section className='workInfo__container--form-text'>
+            {/* Work place input */}
             <label htmlFor=''>Työpaikkasi *</label>
             <input
               value={work}
@@ -126,6 +136,7 @@ const WorkingInfo = () => {
                 setWork(e.target.value);
               }}
             />
+            {/* Job description input */}
             <label htmlFor=''>Työtehtävät mitä teet työssäsi *</label>
             <textarea
               value={workDescription}
@@ -135,6 +146,7 @@ const WorkingInfo = () => {
               cols='30'
               rows='10'
             ></textarea>
+            {/* Contact person input */}
             <label htmlFor=''>Työpaikan yhteyshenkilö *</label>
             <input
               value={contactPerson}
@@ -143,6 +155,7 @@ const WorkingInfo = () => {
                 setContactPerson(e.target.value);
               }}
             />
+            {/* Work phone number input */}
             <label htmlFor=''>Työpaikan puhelinnumero *</label>
             <input
               value={workPhoneNumber}
@@ -151,6 +164,7 @@ const WorkingInfo = () => {
                 setWorkPhoneNumber(e.target.value);
               }}
             />
+            {/* Work address input */}
             <label htmlFor=''>Työpaikan osoite *</label>
             <input
               value={workAddress}
@@ -159,6 +173,7 @@ const WorkingInfo = () => {
                 setWorkAddress(e.target.value);
               }}
             />
+            {/* Goals input */}
             <label htmlFor=''>Omat taivotteesi *</label>
             <textarea
               value={goals}
@@ -168,6 +183,7 @@ const WorkingInfo = () => {
               cols='30'
               rows='10'
             ></textarea>
+            {/* Button component */}
             <Button
               style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
               onClick={(e) =>

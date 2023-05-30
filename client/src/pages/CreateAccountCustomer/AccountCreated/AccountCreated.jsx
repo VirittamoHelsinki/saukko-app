@@ -1,14 +1,15 @@
-// importing react packages
+// Importing react packages
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 
-// importing components
+// Importing components
 import WavesHeader from '../../../components/Header/WavesHeader';
 
 const AccountCreated = () => {
   const navigate = useNavigate();
 
+  // Redirects after 5 seconds to logged user page
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigate('/logged-user');

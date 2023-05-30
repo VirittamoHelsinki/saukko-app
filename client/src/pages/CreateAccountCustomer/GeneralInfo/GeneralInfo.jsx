@@ -1,13 +1,14 @@
-// importing react packages
+// Importing react packages
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../../useStore';
 
-// importing components
+// Importing components
 import Button from '../../../components/Button/Button';
 import WavesHeader from '../../../components/Header/WavesHeader';
 
 const GeneralInfo = () => {
+  // State variables for storing form input values
   const {
     address,
     setAddress,
@@ -21,11 +22,12 @@ const GeneralInfo = () => {
     setBirth,
   } = useStore();
 
+  // State variable for button disabled state
   const [buttonDisabled, setButtonDisabled] = useState();
 
   const navigate = useNavigate();
 
-  // button styling/CSS
+  // Button styling/CSS
   const buttonStyleDisabled = {
       color: 'var(--saukko-main-white)',
       border: 'var(--link-disabled)',
@@ -41,6 +43,7 @@ const GeneralInfo = () => {
       margin: '5% 0',
     };
 
+  // Check if all input fields are filled to enable/disable the button
   useEffect(() => {
     setButtonDisabled(
       ![address, postNumber, city, phone, birth].every(
@@ -51,6 +54,7 @@ const GeneralInfo = () => {
 
   return (
     <main className='generalInfo__wrapper'>
+      {/* Header component */}
       <WavesHeader
         title='Saukko'
         fill='#9fc9eb'
@@ -61,6 +65,7 @@ const GeneralInfo = () => {
 
         <form>
           <section className='generalInfo__container--form-text'>
+            {/* Address input */}
             <label htmlFor=''>Osoite *</label>
             <input
               value={address}
@@ -69,8 +74,9 @@ const GeneralInfo = () => {
                 setAddress(e.target.value);
               }}
             />
-            <div className='container'>
+            <div className=' generalInfo__container--two-fields'>
               <div className='input-container'>
+                {/* Post number input */}
                 <label htmlFor=''>Postin numero *</label>
                 <input
                   value={postNumber}
@@ -81,6 +87,7 @@ const GeneralInfo = () => {
                 />
               </div>
               <div className='input-container'>
+                {/* City input */}
                 <label htmlFor=''>Kaupunki *</label>
                 <input
                   value={city}
@@ -91,6 +98,7 @@ const GeneralInfo = () => {
                 />
               </div>
             </div>
+            {/* Phone input */}
             <label htmlFor=''>Puhelin *</label>
             <input
               value={phone}
@@ -99,6 +107,7 @@ const GeneralInfo = () => {
                 setPhone(e.target.value);
               }}
             />
+            {/* Date of birth input */}
             <label htmlFor=''>Syntymä aika *</label>
             <input
               value={birth}
@@ -107,13 +116,13 @@ const GeneralInfo = () => {
                 setBirth(e.target.value);
               }}
             />
+            {/* Button component */}
             <Button
               style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
-              onClick={
-                (e) =>
-                  buttonDisabled
-                    ? console.log('button disabled')
-                    : navigate('/work-info') //processRegistration(e)
+              onClick={(e) =>
+                buttonDisabled
+                  ? console.log('button disabled')
+                  : navigate('/work-info')
               }
               type='submit'
               text='Seuraava'

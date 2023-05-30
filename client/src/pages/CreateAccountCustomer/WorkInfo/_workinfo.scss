@@ -1,4 +1,4 @@
-// main wrapper for the work info page
+// Main wrapper for the work info page
 
 .workInfo__wrapper {
   display: flex;
@@ -70,17 +70,5 @@
       padding: 7px;
       border: 1px solid var(--saukko-main-black);
     }
-  }
-
-  .workInfo__form--bottom {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    text-align: center;
-    padding: 0px 36px 36px 36px;
-    width: 100%;
-    bottom: 0;
   }
 }
