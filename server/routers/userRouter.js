@@ -8,7 +8,7 @@ const config = require('../utils/config')
 // Register a new user
 router.post("/", async (req, res) => {
 
-  
+
   const body = req.body;
 
   // Validation checks if any of the required fields are empty
@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
     const newUser = new User({
       email: body.email,
       passwordHash: passwordHash,
-      role: 'customer',
+      role: body.role,
     });
 
     // Save the new user to the database
