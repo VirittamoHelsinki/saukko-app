@@ -3,6 +3,7 @@ import { create } from 'zustand';
 // Create a custom hook called useStore using Zustand library
 const useStore = create((set) => ({
   // Define initial state variables
+  role: 'customer',
   name: '',
   email: '',
   password: '',
@@ -20,6 +21,7 @@ const useStore = create((set) => ({
   goals: '',
 
   // Define setter functions to update state variables
+  setRole: (role) => set({ role }),
   setName: (name) => set({ name }),
   setEmail: (email) => set({ email }),
   setPassword: (password) => set({ password }),

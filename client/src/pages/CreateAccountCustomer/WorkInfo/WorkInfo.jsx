@@ -11,6 +11,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 const WorkingInfo = () => {
   // State variables for storing form input values
   const {
+    role,
     name,
     email,
     password,
@@ -48,6 +49,7 @@ const WorkingInfo = () => {
 
     try {
       const registerData = {
+        role,
         name,
         email,
         password,
