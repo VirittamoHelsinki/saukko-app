@@ -18,6 +18,7 @@ import UserPage from '../../pages/UserPage/UserPage';
 import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
 import FirstLogin from '../../pages/FirstLogin/FirstLogin';
 import SearchPage from '../../pages/SearchPage/SearchPage';
+import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
 
@@ -71,6 +72,8 @@ const Router = () => {
             <Route path='/home' element={<UserPage />} />
             <Route path='/first-login' element={<FirstLogin />} />
             <Route path='/search' element={<SearchPage />} />
+            <Route path='/profile' element={<ProfilePage />} />
+            <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
           </>
         )}
       </Routes>
