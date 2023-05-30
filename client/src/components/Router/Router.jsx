@@ -6,12 +6,14 @@ import React, { useContext } from "react";
 
 // importing all pages which need routing
 import LandingPage from "../../pages/LandingPage/LandingPage";
+import ChooseRole from "../../pages/ChooseRole/ChooseRole";
 import LoginPage from "../../pages/LoginPage/LoginPage";
 import RegisterPage from "../../pages/RegisterPage/RegisterPage";
 import UserPage from "../../pages/UserPage/UserPage";
 import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
 import FirstLogin from "../../pages/FirstLogin/FirstLogin";
 import SearchPage from "../../pages/SearchPage/SearchPage";
+import ProfilePage from "../../pages/ProfilePage/ProfilePage";
 import AuthContext from "../../utils/context/AuthContext";
 import HomePageAfterLoggedIn from "../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn";
 
@@ -28,7 +30,7 @@ const Router = () => {
             loggedIn &&
             (path === "/" ||
                 path === "/login" ||
-                path === "/register" ||
+                path === "/register-customer" ||
                 path === "/forgot-password")
         ) {
             navigate("/home");
@@ -46,6 +48,7 @@ const Router = () => {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/first-login" element={<FirstLogin />} />
                 <Route path="/search" element={<SearchPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/logged-user" element={ <HomePageAfterLoggedIn/>} />
               
 
@@ -56,8 +59,12 @@ const Router = () => {
                             path="/"
                             element={<LandingPage />}
                         />
+                        <Route path="/choose-role" element={<ChooseRole />} />
                         <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
+                        <Route
+                            path="/register-customer"
+                            element={<RegisterPage />}
+                        />
                     </>
                 )}
                 {loggedIn && (
@@ -65,6 +72,7 @@ const Router = () => {
                         <Route path="/home" element={<UserPage />} />
                         <Route path="/first-login" element={<FirstLogin />} />
                         <Route path="/search" element={<SearchPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/logged-user" element={ <HomePageAfterLoggedIn/>} />
                     </>
                 )}
