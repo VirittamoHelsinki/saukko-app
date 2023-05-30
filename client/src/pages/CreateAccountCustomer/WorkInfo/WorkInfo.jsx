@@ -9,7 +9,12 @@ import Button from '../../../components/Button/Button';
 import WavesHeader from '../../../components/Header/WavesHeader';
 
 const WorkingInfo = () => {
-  // State variables for storing form input values
+  /**
+   * State variables for storing form input values
+   * Role variable has the default value "customer"
+   * to inform the backend to which role the data belongs
+   */
+
   const {
     role,
     name,
