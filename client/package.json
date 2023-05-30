@@ -18,7 +18,8 @@
     "react-router": "^6.4.3",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
-    "swiper": "^8.4.5"
+    "swiper": "^8.4.5",
+    "zustand": "^4.3.8"
   },
   "scripts": {
     "start": "react-scripts start",
