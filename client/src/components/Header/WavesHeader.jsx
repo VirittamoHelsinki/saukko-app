@@ -10,11 +10,11 @@ import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
 const Waves = (props) => {
   return (
     <svg
-      className='karos-waves'
       xmlns='http://www.w3.org/2000/svg'
       aria-hidden='true'
       width='100%'
       height='85'
+      fill={props.fill}
     >
       <defs>
         <pattern
@@ -31,7 +31,7 @@ const Waves = (props) => {
           />
         </pattern>
       </defs>
-      <rect fill={'url(#korosBasic)'} width='100%' height='85' />
+      <rect fill='url(#korosBasic)' width='100%' height='85' />
     </svg>
   );
 };
