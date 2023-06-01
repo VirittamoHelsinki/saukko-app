@@ -21,6 +21,7 @@ import SearchPage from '../../pages/SearchPage/SearchPage';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
+import Notification from '../Notification/Notification';
 
 const Router = () => {
   let location = useLocation();
@@ -65,6 +66,7 @@ const Router = () => {
             <Route path='/work-info' element={<WorkInfo />} />
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/account-failed' element={<AccountFailed />} />
+            {/* <Route path='/notification'  element={<Notification/>}/> */}
           </>
         )}
         {loggedIn && (

@@ -30,3 +30,8 @@ const AccountCreated = () => {
 };
 
 export default AccountCreated;
+
+
+
+
+
