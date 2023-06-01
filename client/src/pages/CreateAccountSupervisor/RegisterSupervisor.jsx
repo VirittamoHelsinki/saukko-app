@@ -75,7 +75,6 @@ const RegisterSupervisor = () => {
       await axios
         .post('http://localhost:5000/auth/', registerData)
         .then((res) => {
-          // setRole('supervisor');
           console.log(res);
         })
         .catch((err) => {
@@ -124,6 +123,16 @@ const RegisterSupervisor = () => {
     workAddress,
     workPhoneNumber,
   ]);
+
+  /**
+   * Sets the role to supervisor to indicate to the
+   * backend the specific role to which the data
+   * belongs.
+   */
+
+  useEffect(() => {
+    setRole('supervisor');
+  }, []);
 
   return (
     <main className='registerSupervisor__wrapper'>
