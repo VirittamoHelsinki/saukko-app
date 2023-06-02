@@ -10,9 +10,9 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 
 const WorkingInfo = () => {
   /**
-   * State variables for storing form input values
-   * Role variable has the default value "customer"
-   * to inform the backend to which role the data belongs
+   * State variables for storing form input values.
+   * The role variable indicates to the backend the
+   * specific role to which the data belongs.
    */
 
   const {
