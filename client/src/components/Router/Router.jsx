@@ -72,12 +72,12 @@ const Router = () => {
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/account-failed' element={<AccountFailed />} />
             <Route
-              path='/form-supervisor-sent'
-              element={<NotificationSupervisor />}
-            />
-            <Route
               path='/register-supervisor'
               element={<RegisterSupervisor />}
+            />
+            <Route
+              path='/form-supervisor-sent'
+              element={<NotificationSupervisor />}
             />
           </>
         )}

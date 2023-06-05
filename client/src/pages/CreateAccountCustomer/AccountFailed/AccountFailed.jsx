@@ -1,35 +1,24 @@
 // Importing react packages
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Icon } from '@iconify/react';
+import React from 'react';
 
 // Importing components
-import WavesHeader from '../../../components/Header/WavesHeader';
+import Notification from '../../../components/Notification/Notification';
 
 const AccountFailed = () => {
-  const navigate = useNavigate();
-
-  // Redirects after 5 seconds to login info page
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      navigate('/login-info');
-    }, 5000);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
+  const header = '#9fc9eb';
+  const body = '#fff';
   return (
-    <main className='accountFailed__wrapper'>
-      <WavesHeader title='Saukko' fill='#9fc9eb' disabled='true' />
-      <section className='accountFailed__container'>
-        <h2>Jotain meni vikaan</h2>
-        <Icon
-          icon='zondicons:exclamation-solid'
-          className='accountFailed__container--icon'
-        />
-        <p>Rekisteröinti epäonnistui. Yritä myöhemmin uudelleen.</p>
-      </section>
-    </main>
+    <div>
+      <Notification
+        headerColor={header}
+        bodyColor={body}
+        heading='Jotain meni vikaan'
+        icon='zondicons:exclamation-solid'
+        iconColor={'#a31621'}
+        paragraph={'Rekisteröinti epäonnistui. Yritä myöhemmin uudelleen.'}
+        navigatePage={'/choose-role'}
+      />
+    </div>
   );
 };
 

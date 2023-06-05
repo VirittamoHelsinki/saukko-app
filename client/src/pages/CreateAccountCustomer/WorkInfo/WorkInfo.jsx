@@ -17,6 +17,7 @@ const WorkingInfo = () => {
 
   const {
     role,
+    setRole,
     name,
     email,
     password,
@@ -120,6 +121,16 @@ const WorkingInfo = () => {
     workAddress,
     goals,
   ]);
+
+  /**
+   * Sets the role to supervisor to indicate to the
+   * backend the specific role to which the data
+   * belongs.
+   */
+
+  useEffect(() => {
+    setRole('customer');
+  }, []);
 
   return (
     <main className='workInfo__wrapper'>
