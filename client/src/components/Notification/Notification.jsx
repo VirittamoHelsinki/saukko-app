@@ -9,6 +9,7 @@ const Notification = ({
   bodyColor,
   heading,
   icon,
+  iconColor,
   paragraph,
   navigatePage,
 }) => {
@@ -36,7 +37,13 @@ const Notification = ({
         style={{ background: bodyColor }}
       >
         <h2>{heading}</h2>
-        {icon && <Icon icon={icon} className='notification__container--icon' />}
+        {icon && (
+          <Icon
+            icon={icon}
+            style={{ color: iconColor }}
+            className='notification__container--icon'
+          />
+        )}
         {paragraph && <p>{paragraph}</p>}
       </section>
     </main>
