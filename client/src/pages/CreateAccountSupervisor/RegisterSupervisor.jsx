@@ -55,7 +55,7 @@ const RegisterSupervisor = () => {
   /**
    * Function to handle the form submission and register the customer.
    * It sends a POST request with form data to the server.
-   * If successful, navigates to '/account-created'; otherwise, navigates to '/account-failed'.
+   * If successful, navigates to '/form-supervisor-sent'; otherwise, navigates to '/account-failed'.
    */
   const processRegistration = async (e) => {
     e.preventDefault();
@@ -80,7 +80,7 @@ const RegisterSupervisor = () => {
         .catch((err) => {
           console.log(err);
         });
-      navigate('/account-created');
+      navigate('/form-supervisor-sent');
     } catch (err) {
       console.error(err);
       navigate('/account-failed');
@@ -141,7 +141,7 @@ const RegisterSupervisor = () => {
         title='Saukko'
         secondTitle='Luo tili'
         fill='#f5a3c7'
-        style={{ background: '#f5a3c7' }}
+        header='#f5a3c7'
       />
       <section className='registerSupervisor__container'>
         <h2>Työpaikkaohjaajan tiedot</h2>
