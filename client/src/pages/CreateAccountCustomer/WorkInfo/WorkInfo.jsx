@@ -123,7 +123,7 @@ const WorkingInfo = () => {
   ]);
 
   /**
-   * Sets the role to supervisor to indicate to the
+   * Sets the role to customer to indicate to the
    * backend the specific role to which the data
    * belongs.
    */
