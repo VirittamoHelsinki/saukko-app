@@ -1,12 +1,12 @@
-// import necessary react components
+// Import necessary react components
 import { useNavigate, useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 
-// import helsinki logo
+// Import helsinki logo
 import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
 
-// waves SVG
+// Waves SVG
 const Waves = (props) => {
   return (
     <svg
@@ -37,19 +37,10 @@ const Waves = (props) => {
 };
 
 const WavesHeader = (props) => {
-  const [inIndex, setInIndex] = useState();
-
-  let location = useLocation();
   const navigate = useNavigate();
 
-  // check current page return setIndex true or false
-  useEffect(() => {
-    setInIndex(location.pathname === '/home');
-  }, [location.pathname]);
   return (
-    <main style={props.style} className='wavesHeader__wrapper'>
-      {/* do not render backwards arrow on specific pages */}
-
+    <main style={{ background: props.header }} className='wavesHeader__wrapper'>
       {!props.disabled && (
         <button id='backArrowSVG' onClick={() => navigate(-1)}>
           <Icon icon='typcn:arrow-left' />

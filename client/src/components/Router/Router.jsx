@@ -14,6 +14,7 @@ import WorkInfo from '../../pages/CreateAccountCustomer/WorkInfo/WorkInfo';
 import AccountCreated from '../../pages/CreateAccountCustomer/AccountCreated/AccountCreated';
 import AccountFailed from '../../pages/CreateAccountCustomer/AccountFailed/AccountFailed';
 import RegisterSupervisor from '../../pages/CreateAccountSupervisor/RegisterSupervisor';
+import NotificationSupervisor from '../../pages/CreateAccountSupervisor/NotificationSupervisor';
 import RegisterPage from '../../pages/RegisterPage/RegisterPage';
 import UserPage from '../../pages/UserPage/UserPage';
 import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
@@ -67,11 +68,14 @@ const Router = () => {
             <Route path='/work-info' element={<WorkInfo />} />
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/account-failed' element={<AccountFailed />} />
-             <Route
+            <Route
+              path='/form-supervisor-sent'
+              element={<NotificationSupervisor />}
+            />
+            <Route
               path='/register-supervisor'
               element={<RegisterSupervisor />}
             />
-
           </>
         )}
         {loggedIn && (
