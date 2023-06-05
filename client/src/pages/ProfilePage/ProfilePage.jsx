@@ -33,11 +33,7 @@ function ProfilePage() {
     
     return (
       <main className="profile__wrapper">
-          <WavesHeader 
-              title="Saukko"
-              secondTitle="Profiili"
-              disabled={true} 
-          />
+			<WavesHeader title="Saukko" secondTitle="Profiili" fill="#9fc9eb" disabled={false} />
 
           <section className="profile__container">
               <div>

@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 
 // importing components
-import UserNav from "../../components/UserNav/UserNav";
-import WavesHeader from "../../components/Header/WavesHeader";
+import UserNav from "../../../components/UserNav/UserNav";
+import WavesHeader from "../../../components/Header/WavesHeader";
 
 // import temp data
 import { degrees } from "./tempData";
