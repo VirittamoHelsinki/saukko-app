@@ -5,6 +5,7 @@
 @import '../components/UserNav/usernav';
 @import '../components/Button/button';
 @import '../components/Notification/notification';
+@import '../components/ChooseDegreeNav/choosedegreenav';
 @import '../pages/./LoginPage/loginpage';
 @import '../pages/RegisterPage/registerpage';
 @import '../pages/CreateAccountCustomer/LoginInfo/logininfo';
@@ -18,7 +19,10 @@
 @import '../pages/ChooseRole/chooserole';
 @import '../pages/ForgotPassword/forgotpassword';
 @import '../pages/UserPage/userpage';
-@import '../pages/SearchPage/searchpage';
+@import '../pages/ChooseDegree/SearchPage/searchpage';
 @import '../pages/FirstLogin/firstlogin';
 @import '../pages/FirstLogin/Step0/pick-account-type';
 @import '../pages/HomePageAfterLoggedIn/homepageafterloggedin';
+@import '../pages/ProfilePage/Profilepage';
+@import '../pages/ChooseDegree/DegreeInfo/degreeinfo';
+

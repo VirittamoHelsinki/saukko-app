@@ -49,7 +49,7 @@ const UserNav = () => {
         {/* user icon */}
         <UserNavIcon
           icon="material-symbols:person-outline"
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/profile")}
         />
         {/* sign out icon */}
         {/* <UserNavIcon icon="mdi:sign-out-variant" onClick={LogOut} /> */}
