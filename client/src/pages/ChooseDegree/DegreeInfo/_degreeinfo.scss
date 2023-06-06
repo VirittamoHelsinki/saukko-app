@@ -14,22 +14,6 @@
             margin-bottom: 170px;
             width: 100%;
 
-            .degreeInfo__container--nav {
-                display: flex;
-                justify-content: space-between;
-                padding: 20px;
-
-                div {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    gap: 5px;
-
-                    svg {
-                        font-size: 40px;
-                    }
-                }
-            }
         }
     }
 }
