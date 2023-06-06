@@ -10,29 +10,27 @@ router.post("/", async (req, res) => {
 
 
   const body = req.body;
+  console.log(body)
+  console.log(body.email)
 
   // Validation checks if any of the required fields are empty
-  if (!body.email || !body.password || !body.passwordVerify) {
+  if (!body.email || !body.password) {
+    console.log("email or password empty")
     return res.status(400).json({ errorMessage: "Empty Field" });
   }
 
   // Check if the password is shorter than 6 characters
   if (body.password.length < 6) {
+    console.log("password too short")
     return res
       .status(400)
       .json({ errorMessage: "Password must be longer" });
   }
 
-  // Check if the passwords do not match
-  if (body.password !== body.passwordVerify) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Passwords not matching " });
-  }
-
   // Check if there is an existing user with the same email address
   const existingUser = await User.findOne({ email: body.email });
   if (existingUser) {
+    console.log("user already exists")
     return res
       .status(400)
       .json({ errorMessage: "User already exists" });
@@ -60,7 +58,8 @@ router.post("/", async (req, res) => {
       },
       config.JWT_SECRET,
     );
-
+    
+    console.log('user created')
     // send token via HTTP-only cookie
     res.status(201).cookie("token", token, { httpOnly: true }).send();
 
