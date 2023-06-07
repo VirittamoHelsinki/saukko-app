@@ -8,10 +8,8 @@ const config = require('../utils/config')
 // Register a new user
 router.post("/", async (req, res) => {
 
-
+  // Retrieve the request body
   const body = req.body;
-  console.log(body)
-  console.log(body.email)
 
   // Validation checks if any of the required fields are empty
   if (!body.email || !body.password) {
@@ -22,18 +20,14 @@ router.post("/", async (req, res) => {
   // Check if the password is shorter than 6 characters
   if (body.password.length < 6) {
     console.log("password too short")
-    return res
-      .status(400)
-      .json({ errorMessage: "Password must be longer" });
+    return res.status(400).json({ errorMessage: "Password must be longer" });
   }
 
   // Check if there is an existing user with the same email address
   const existingUser = await User.findOne({ email: body.email });
   if (existingUser) {
     console.log("user already exists")
-    return res
-      .status(400)
-      .json({ errorMessage: "User already exists" });
+    return res.status(400).json({ errorMessage: "User already exists" });
   }
 
   // Generate a salt and hash the password
@@ -41,8 +35,9 @@ router.post("/", async (req, res) => {
   const passwordHash = await bcrypt.hash(body.password, salt);
 
   try {
-    // Create a new user object
+    // Create a new user object, with the provided name, email, password and role
     const newUser = new User({
+      name: body.name,
       email: body.email,
       passwordHash: passwordHash,
       role: body.role,
@@ -60,6 +55,7 @@ router.post("/", async (req, res) => {
     );
     
     console.log('user created')
+
     // send token via HTTP-only cookie
     res.status(201).cookie("token", token, { httpOnly: true }).send();
 
@@ -76,15 +72,15 @@ router.post("/login", async (req, res) => {
 
     // Check if email or password fields are empty
     if (!email || !password) {
+      console.log("email or password empty")
       return res.status(400).json({ errorMessage: "Empty Field" });
     }
     
     // Check if user with the provided email exists
     const existingUser = await User.findOne({ email: email });
     if (!existingUser) {
-      return res
-      .status(401)
-      .json({ errorMessage: "Wrong email/password" });
+      console.log("user does not exist")
+      return res.status(401).json({ errorMessage: "Wrong email/password" });
     }
 
     // Check if the provided password matches the hashed password stored in the database
@@ -94,17 +90,19 @@ router.post("/login", async (req, res) => {
     );
 
     if (!passwordCorrect) {
+      console.log("incorrect password")
       return res.status(401).json({ errorMessage: "Incorrect password" });
     }
 
-    // Create a token for the user
+    // Create a token for the user, with the user id, name and role
     const token = jwt.sign(
       {
         id: existingUser._id,
+        name: existingUser.name,
         role: existingUser.role,
       },
       config.JWT_SECRET,
-      { expiresIn: 1 * 60 }
+      { expiresIn: 5 * 60 } // token expires in 5 minutes
     );
 
     // Send token via HTTP-only cookie
@@ -122,14 +120,20 @@ router.get("/loggedIn", (req, res) => {
   try {
     // Retrieve token from cookies
     const token = req.cookies.token;
-    if (!token) return res.json({ loggedIn: false });
+    if (!token) {
+      console.log("no token")
+      return res.json({ loggedIn: false });
+    }
 
     // Verify the token using the JWT_SECRET
     const decoded = jwt.verify(token, config.JWT_SECRET);
 
+    console.log("token verified")
+
     // If the token is valid, respond with loggedIn:true and the decoded user information
     res.json({ loggedIn: true, user: decoded });
   } catch (err) {
+    console.error(err.message);
     // If there is an error, respond with loggedIn:false
     res.json({ loggedIn: false });
   }
