@@ -19,8 +19,8 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(cookieParser()); // Parse cookies
 app.use(
     cors({
-        // Set the allowed origin for CORS
-        origin: ["http://localhost:3000"],
+        // Set the allowed origin for CORS, import from config.js
+        origin: [config.ALLOWED_ORIGINS],
         credentials: true, // Enable sending cookies in CORS requests
     })
 );
