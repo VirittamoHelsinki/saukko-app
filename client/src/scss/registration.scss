@@ -1,5 +1,5 @@
-// Main wrapper for the register supervisor page
-.registerSupervisor__wrapper {
+// Main wrapper for the registration pages
+.register__wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,7 +8,7 @@
   align-items: center;
   height: 100%;
 
-  .registerSupervisor__container {
+  .register__container {
     display: flex;
     flex-direction: column;
     padding: 0px 36px 0px 36px;
@@ -23,7 +23,7 @@
       text-align: center;
     }
 
-    .registerSupervisor__container--form-text {
+    .register__container--form-text {
       display: flex;
       flex-direction: column;
       margin-top: 30px;
@@ -70,7 +70,7 @@
       border: 1px solid var(--saukko-main-black);
     }
   }
-  .registerSupervisor__form--bottom {
+  .register__form--bottom {
     display: flex;
     flex-direction: column;
     justify-content: center;

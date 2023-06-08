@@ -9,7 +9,7 @@ import axios from 'axios';
 import Button from '../../components/Button/Button';
 import WavesHeader from '../../components/Header/WavesHeader';
 
-const RegisterSupervisor = () => {
+const RegisterTeacher = () => {
   /**
    * State variables for storing form input values.
    * The role variable indicates to the backend the
@@ -27,12 +27,12 @@ const RegisterSupervisor = () => {
     setPassword,
     passwordVerify,
     setPasswordVerify,
-    work,
-    setWork,
-    workAddress,
-    setWorkAddress,
-    workPhoneNumber,
-    setWorkPhoneNumber,
+    academy,
+    setAcademy,
+    education,
+    setEducation,
+    phone,
+    setPhone,
   } = useStore();
 
   // State variables for password visibility toggling
@@ -53,9 +53,9 @@ const RegisterSupervisor = () => {
   };
 
   /**
-   * Function to handle the form submission and register the customer.
+   * Function to handle the form submission and register the teacher.
    * It sends a POST request with form data to the server.
-   * If successful, navigates to '/form-supervisor-sent'; otherwise, navigates to '/account-failed'.
+   * If successful, navigates to '/form-teacher-sent'; otherwise, navigates to '/account-failed'.
    */
   const processRegistration = async (e) => {
     e.preventDefault();
@@ -67,9 +67,9 @@ const RegisterSupervisor = () => {
         email,
         password,
         passwordVerify,
-        work,
-        workAddress,
-        workPhoneNumber,
+        academy,
+        education,
+        phone,
       };
       console.log('Form data about to be sent to DB: ', registerData);
       await axios
@@ -80,7 +80,7 @@ const RegisterSupervisor = () => {
         .catch((err) => {
           console.log(err);
         });
-      navigate('/form-supervisor-sent');
+      navigate('/form-teacher-sent');
     } catch (err) {
       console.error(err);
       navigate('/account-failed');
@@ -104,34 +104,20 @@ const RegisterSupervisor = () => {
   // Check if all input fields are filled to enable/disable the button
   useEffect(() => {
     setButtonDisabled(
-      ![
-        name,
-        email,
-        password,
-        passwordVerify,
-        work,
-        workAddress,
-        workPhoneNumber,
-      ].every((input) => input.length > 0)
+      ![name, email, password, passwordVerify, academy, education, phone].every(
+        (input) => input.length > 0
+      )
     );
-  }, [
-    name,
-    email,
-    password,
-    passwordVerify,
-    work,
-    workAddress,
-    workPhoneNumber,
-  ]);
+  }, [name, email, password, passwordVerify, academy, education, phone]);
 
   /**
-   * Sets the role to supervisor to indicate to the
+   * Sets the role to teacher to indicate to the
    * backend the specific role to which the data
    * belongs.
    */
 
   useEffect(() => {
-    setRole('supervisor');
+    setRole('teacher');
   }, []);
 
   return (
@@ -140,11 +126,11 @@ const RegisterSupervisor = () => {
       <WavesHeader
         title='Saukko'
         secondTitle='Luo tili'
-        fill='#f5a3c7'
-        header='#f5a3c7'
+        fill='#ffe977'
+        header='#ffe977'
       />
       <section className='register__container'>
-        <h2>Työpaikkaohjaajan tiedot</h2>
+        <h2>Opettajan tiedot</h2>
 
         <form>
           <section className='register__container--form-text'>
@@ -217,31 +203,31 @@ const RegisterSupervisor = () => {
                 </span>
               )}
             </div>
-            {/* Work place input */}
-            <label htmlFor=''>Työpaikka *</label>
+            {/* Academy input */}
+            <label htmlFor=''>Oppilaitos *</label>
             <input
-              value={workAddress}
+              value={academy}
               type='text'
               onChange={(e) => {
-                setWorkAddress(e.target.value);
+                setAcademy(e.target.value);
               }}
             />
-            {/* Work title input */}
-            <label htmlFor=''>Työpaikka titteli *</label>
+            {/* Education input */}
+            <label htmlFor=''>Koulutusala *</label>
             <input
-              value={work}
+              value={education}
               type='text'
               onChange={(e) => {
-                setWork(e.target.value);
+                setEducation(e.target.value);
               }}
             />
-            {/* Work phone number input */}
-            <label htmlFor=''>Puhelin *</label>
+            {/* Phone input */}
+            <label htmlFor=''>Puhelinnumero *</label>
             <input
-              value={workPhoneNumber}
+              value={phone}
               type='text'
               onChange={(e) => {
-                setWorkPhoneNumber(e.target.value);
+                setPhone(e.target.value);
               }}
             />
             <p>
@@ -265,4 +251,4 @@ const RegisterSupervisor = () => {
   );
 };
 
-export default RegisterSupervisor;
+export default RegisterTeacher;
