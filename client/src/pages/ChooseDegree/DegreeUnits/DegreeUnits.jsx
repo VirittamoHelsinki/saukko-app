@@ -40,7 +40,7 @@ function DegreeUnits() {
 
             <div className="degreeUnits__container--units">
               {units.map((unit, index) => (
-                  <div key={unit._id} className="degreeUnits__container--units-unit">
+                  <div key={unit._id} className={`degreeUnits__container--units-unit ${checkedUnits.includes(unit._id) && 'checked'}`}>
                     <div
                       className={`degreeUnits__container--units-unit-checkbox ${checkedUnits.includes(unit._id) && 'checked'}`}
                       onClick={() => handleCheckboxChange(unit._id)}

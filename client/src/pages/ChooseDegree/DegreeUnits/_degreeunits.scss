@@ -59,6 +59,10 @@
           justify-content: flex-start;
           gap: 5px;
           background-color: var(--grayscale-background-box);
+
+          &.checked {
+            background-color: var(--list-checked);
+          }
   
           .degreeUnits__container--units-unit-checkbox {
               margin-right: 5px;
