@@ -14,7 +14,9 @@ import WorkInfo from '../../pages/CreateAccountCustomer/WorkInfo/WorkInfo';
 import AccountCreated from '../../pages/CreateAccountCustomer/AccountCreated/AccountCreated';
 import AccountFailed from '../../pages/CreateAccountCustomer/AccountFailed/AccountFailed';
 import RegisterSupervisor from '../../pages/CreateAccountSupervisor/RegisterSupervisor';
+import RegisterTeacher from '../../pages/CreateAccountTeacher/RegisterTeacher';
 import NotificationSupervisor from '../../pages/CreateAccountSupervisor/NotificationSupervisor';
+import NotificationTeacher from '../../pages/CreateAccountTeacher/NotificationTeacher';
 import RegisterPage from '../../pages/RegisterPage/RegisterPage';
 import UserPage from '../../pages/UserPage/UserPage';
 import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
@@ -24,7 +26,6 @@ import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
-import Notification from '../Notification/Notification';
 
 const Router = () => {
   let location = useLocation();
@@ -58,7 +59,7 @@ const Router = () => {
         <Route path='/search' element={<SearchPage />} />
         <Route path='/degree-info' element={<DegreeInfo />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path='/profile' element={<ProfilePage />} />
 
         {!loggedIn && (
           <>
@@ -75,9 +76,14 @@ const Router = () => {
               path='/register-supervisor'
               element={<RegisterSupervisor />}
             />
+            <Route path='/register-teacher' element={<RegisterTeacher />} />
             <Route
               path='/form-supervisor-sent'
               element={<NotificationSupervisor />}
+            />
+            <Route
+              path='/form-teacher-sent'
+              element={<NotificationTeacher />}
             />
           </>
         )}
