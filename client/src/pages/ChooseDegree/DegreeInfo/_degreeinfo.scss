@@ -14,6 +14,36 @@
             margin-bottom: 170px;
             width: 100%;
 
+            .degreeInfo__container--info {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                text-align: left;
+                margin: 30px 0px;
+
+                .degreeInfo__container--info--block {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+                    
+                    h1 {
+                        margin-bottom: 15px;
+                        text-align: center;
+                        text-decoration: underline;
+                    }
+                    
+                    &.dark {
+                        background-color: var(--grayscale-background-box);
+                    }
+                }
+            }
+            
+            h1, h2, p {
+                margin-left: 15px;
+                margin-right: 15px;
+                font-size: var(--base-font-size);
+            }
+
         }
     }
 }
