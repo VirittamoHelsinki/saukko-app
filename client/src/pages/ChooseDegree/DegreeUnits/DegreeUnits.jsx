@@ -12,6 +12,14 @@ import { units } from "./unitsTempData";
 
 function DegreeUnits() {
 
+  const [filteredUnits, setFilteredUnits] = useState(units);
+
+  const handleSearchResult = (event) => {
+    setFilteredUnits(units.filter((unit) => 
+      unit.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
+    ))
+	};
+
   const [checkedUnits, setCheckedUnits] = useState([]);
 
   const handleCheckboxChange = (unitId) => {
@@ -30,8 +38,7 @@ function DegreeUnits() {
             <h1>Valitse tutkinnon osat</h1>
             <div className="degreeUnits__container--searchField">
 					    <input
-					    	/* value={searchResult}
-					    	onChange={handleSearchResult} */
+					    	onChange={handleSearchResult}
 					    	placeholder="Etsi tutkinnonosat"
 					    />
 					    <Icon icon="material-symbols:search" hFlip={true} />
@@ -39,8 +46,12 @@ function DegreeUnits() {
 
 
             <div className="degreeUnits__container--units">
-              {units.map((unit, index) => (
-                  <div key={unit._id} className={`degreeUnits__container--units-unit ${checkedUnits.includes(unit._id) && 'checked'}`}>
+              {filteredUnits.map((unit, index) => (
+                  <div 
+                    key={unit._id} 
+                    className={`degreeUnits__container--units-unit ${checkedUnits.includes(unit._id) && 'checked'}`}
+                    // Link to UnitInfo page
+                  >
                     <div
                       className={`degreeUnits__container--units-unit-checkbox ${checkedUnits.includes(unit._id) && 'checked'}`}
                       onClick={() => handleCheckboxChange(unit._id)}

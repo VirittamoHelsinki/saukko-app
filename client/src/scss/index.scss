@@ -1,5 +1,6 @@
 // importing all scss files for an easier global export to the app
 @import 'base';
+@import 'registration';
 @import '../components/Header/wavesheader';
 @import '../components/Footer/footer';
 @import '../components/UserNav/usernav';
@@ -13,8 +14,6 @@
 @import '../pages/CreateAccountCustomer/WorkInfo/workinfo';
 @import '../pages/CreateAccountCustomer/AccountCreated/accountcreated';
 @import '../pages/CreateAccountCustomer/AccountFailed/accountfailed';
-@import '../pages/CreateAccountSupervisor/registersupervisor';
-@import '../pages/CreateAccountSupervisor/notificationsupervisor';
 @import '../pages/LandingPage/landingpage';
 @import '../pages/ChooseRole/chooserole';
 @import '../pages/ForgotPassword/forgotpassword';
