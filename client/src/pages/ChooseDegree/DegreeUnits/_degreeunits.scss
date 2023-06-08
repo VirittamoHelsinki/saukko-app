@@ -61,12 +61,18 @@
           background-color: var(--grayscale-background-box);
   
           .degreeUnits__container--units-unit-checkbox {
-            margin-right: 5px;
-            border: 2px solid var(--saukko-main-grey);
-            border-radius: 50%;
-            height: 20px;
-            width: 20px;
-            flex-shrink: 0;
+              margin-right: 5px;
+              background-color: var(--saukko-main-white);
+              border: 2px solid var(--saukko-main-grey);
+              border-radius: 50%;
+              width: 20px;
+              height: 20px;
+              flex-shrink: 0;
+
+              &.checked {
+                border: 2px solid var(--checkbox-green);
+                background-color: var(--checkbox-green);
+              }
           }
           
           .degreeUnits__container--units-unit-arrow {
