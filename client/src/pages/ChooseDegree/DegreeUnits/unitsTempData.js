@@ -780,5 +780,112 @@ export const units = [
       }
   ]
 },
+{
+    "_id": 8518883,
+    "name": {
+        "fi": "Opiskelija toimii rakentavassa vuorovaikutuksessa moninaisten verkostojen kanssa",
+        "sv": "Den studerande arbetar i konstruktiv interaktion med flera olika nätverk"
+    },
+    "criteria": [
+        {
+            "_id": "8392651",
+            "fi": "tunnistaa sosiaalisen tietovarannon rakentumisen ja merkityksen yhteiskunnassa ja vuorovaikutuksessa ja huomioi sen toiminnassaan",
+            "sv": "känner till hur den sociala kunskapen byggs upp och vilken betydelse den har i samhället och interaktionen samt beaktar den i sitt arbete"
+        },
+        {
+            "_id": "8392652",
+            "fi": "tunnistaa kriittisen tiedonhankinnan ja tiedonjakamisen merkityksen positiivisessa ja negatiivisessa vaikuttamisessa ja huomioi sen toiminnassaan",
+            "sv": "identifierar betydelsen av kritisk informationssökning och informationsdelning i positiv och negativ påverkan och beaktar detta i sitt arbete"
+        },
+        {
+            "_id": "8392653",
+            "fi": "kommunikoi kieli- , kulttuuri- ja katsomustietoisesti sekä rohkaisee ja tukee yhteisen ymmärryksen löytämiseen myös ilman yhteistä kieltä",
+            "sv": "kommunicerar på ett språk-, kultur- och åskådningsmedvetet sätt samt uppmuntrar till och stöder i att hitta en gemensam förståelse även utan ett gemensamt språk"
+        },
+        {
+            "_id": "8392654",
+            "fi": "arvioi kriittisesti hankkimaansa tietoa ja välittää sitä vastuullisesti ja monikanavaisesti",
+            "sv": "utvärderar kritiskt den information hen inhämtat och kommunicerar om den på ett ansvarsfullt sätt genom att använda flera kanaler"
+        },
+        {
+            "_id": "8392655",
+            "fi": "tietää sananvapauden ja -vastuun merkityksen ja toimii rakentavasti haastavissa vuorovaikutustilanteissa",
+            "sv": "förstår betydelsen av yttrandefrihet och ansvar och arbetar konstruktivt i utmanande interaktionssituationer"
+        },
+        {
+            "_id": "8392656",
+            "fi": "hyödyntää toiminnan kannalta merkityksellisiä verkostoja ja niissä toimivia asiantuntijoita sekä arvostaa muiden osaamista ja taitavuutta",
+            "sv": "använder sig av nätverk och sakkunniga som är viktiga för arbetet samt uppskattar andras kunnande och skicklighet"
+        }
+    ]
+},
+{
+    "_id": 8518885,
+    "name": {
+        "fi": "Opiskelija edistää tavoitteellisesti yhdenvertaisuutta ja tasa-arvoa",
+        "sv": "Den studerande främjar jämställdhet och likabehandling på ett målmedvetet sätt"
+    },
+    "criteria": [
+        {
+            "_id": "8392658",
+            "fi": "havainnoi toimintaympäristön vahvuuksia ja kehittämiskohteita",
+            "sv": "ser styrkor och utvecklingsbehov i verksamhetsmiljön"
+        },
+        {
+            "_id": "8392659",
+            "fi": "suunnittelee, toteuttaa ja arvioi ohjausprosessin tai toimintakokonaisuuden osallisuuden, yhdenvertaisuuden ja tasa-arvon vahvistamiseksi",
+            "sv": "planerar, genomför och utvärderar handledningsprocessen eller verksamhetshelheten med syfte att stärka delaktighet, likabehandling och jämställdhet"
+        },
+        {
+            "_id": "8392660",
+            "fi": "toimii antirasistista ja rauhaa rakentavaa toimintamallia ja ajattelua vahvistaen omassa toimintaympäristössään",
+            "sv": "arbetar genom att stärka antirasistiska och fredsskapande verksamhetsmodeller och tankesätt i sin egen verksamhetsmiljö"
+        }
+    ]
+},
+{
+    "_id": 8518886,
+    "name": {
+        "fi": "Opiskelija arvioi, ylläpitää ja kehittää ammattitaitoaan",
+        "sv": "Den studerande utvärderar, upprätthåller och utvecklar sin yrkesmässighet"
+    },
+    "criteria": [
+        {
+            "_id": "8392662",
+            "fi": "käsittelee rohkeasti omia asenteitaan ja tunnistaa omat kehittämistarpeensa",
+            "sv": "hanterar modigt sina attityder och identifierar sina egna utvecklingsbehov"
+        },
+        {
+            "_id": "8392663",
+            "fi": "kehittää omia tunnetaitojaan ja tietää tunnetaitojen merkityksen vuorovaikutustilanteissa",
+            "sv": "utvecklar sina egna emotionella färdigheter och känner till betydelsen av de emotionella färdigheterna i interaktionssituationer"
+        },
+        {
+            "_id": "8392664",
+            "fi": "reflektoi oman elämäntilanteensa vaikutusta työskentelyynsä ja tunnistaa omat rajansa",
+            "sv": "reflekterar över hur den egna livssituationen inverkar på arbetet och känner till sina egna gränser"
+        },
+        {
+            "_id": "8392665",
+            "fi": "vahvistaa aktiivisesti omaa osaamistaan moninaisia tietolähteitä käyttäen ja seuraa ajankohtaista keskustelua",
+            "sv": "stärker aktivt sitt eget kunnande genom att använda många olika informationskällor och följa med den aktuella diskussionen"
+        },
+        {
+            "_id": "8392666",
+            "fi": "arvioi realistisesti työnsä vaikuttavuutta, tuloksia ja laatua",
+            "sv": "utvärderar realistiskt effekterna, resultaten och kvaliteten av sitt arbete"
+        },
+        {
+            "_id": "8392667",
+            "fi": "toimii myötätuntoisesti ihmisen arvokkuutta kunnioittaen",
+            "sv": "arbetar på ett empatiskt sätt genom att högakta människors värdighet"
+        },
+        {
+            "_id": "8392668",
+            "fi": "toimii luottaen omaan pystyvyyteensä ihmisten osallisuuden rakentajana ja ihmisen arvokkuuden vahvistajana sekä tasa-arvon ja yhdenvertaisuuden edistäjänä",
+            "sv": "arbetar genom att lita på sin egen förmåga att främja människors delaktighet och stärka människors värdighet samt främja jämställdhet och likabehandling"
+        }
+    ]
+}
 
 ]

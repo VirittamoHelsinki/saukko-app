@@ -6,12 +6,14 @@ import { Icon } from "@iconify/react";
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from "../../../components/UserNav/UserNav";
 import PageNumbers from "../../../components/PageNumbers/PageNumbers";
+import Button from "../../../components/Button/Button";
 
 // import temporary data
 import { units } from "./unitsTempData";
 
 function DegreeUnits() {
 
+  // Searchbar functionality
   const [filteredUnits, setFilteredUnits] = useState(units);
 
   const handleSearchResult = (event) => {
@@ -20,6 +22,7 @@ function DegreeUnits() {
     ))
 	};
 
+  // Checkbox functionality
   const [checkedUnits, setCheckedUnits] = useState([]);
 
   const handleCheckboxChange = (unitId) => {
