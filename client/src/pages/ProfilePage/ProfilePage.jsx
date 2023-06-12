@@ -11,9 +11,11 @@ import AuthContext from "../../utils/context/AuthContext";
 
 function ProfilePage() {
 
-    // Logout (DOESN'T WORK YET)
-    const { getLoggedIn } = useContext(AuthContext);
-
+    // User info from AuthContext
+    const { getLoggedIn, user } = useContext(AuthContext);
+    console.log(user);
+    
+    // Logout
     const navigate = useNavigate();
   
     const LogOut = async () => {
@@ -38,11 +40,11 @@ function ProfilePage() {
             <section className="profile__container">
                 <div>
                     <p className="profile__container--label">Nimi</p>
-                    <p className="profile__container--value">User Example</p>
+                    <p className="profile__container--value">{user.name}</p>
                 </div>
                 <div>
                     <p className="profile__container--label">Sähköposti</p>
-                    <p className="profile__container--value">example@email.com</p>
+                    <p className="profile__container--value">{user.email}</p>
                 </div>
                 <div>
                     <p className="profile__container--label">Vaihda salasana</p>
