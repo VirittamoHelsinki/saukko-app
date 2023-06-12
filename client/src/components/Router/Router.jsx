@@ -58,7 +58,6 @@ const Router = () => {
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/search' element={<SearchPage />} />
         <Route path='/degree-info' element={<DegreeInfo />} />
-        <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
 
         {!loggedIn && (
@@ -70,7 +69,6 @@ const Router = () => {
             <Route path='/login-info' element={<LoginInfo />} />
             <Route path='/general-info' element={<GeneralInfo />} />
             <Route path='/work-info' element={<WorkInfo />} />
-            <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/account-failed' element={<AccountFailed />} />
             <Route
               path='/register-supervisor'
@@ -94,6 +92,7 @@ const Router = () => {
             <Route path='/search' element={<SearchPage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
+            <Route path='/account-created' element={<AccountCreated />} />
           </>
         )}
       </Routes>
