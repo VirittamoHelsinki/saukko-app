@@ -1,20 +1,20 @@
-// import necessary react components
+// Import necessary react components
 import { useNavigate, useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 
-// import helsinki logo
+// Import helsinki logo
 import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
 
-// waves SVG
+// Waves SVG
 const Waves = (props) => {
   return (
     <svg
-      className='karos-waves'
       xmlns='http://www.w3.org/2000/svg'
       aria-hidden='true'
       width='100%'
       height='85'
+      fill={props.fill}
     >
       <defs>
         <pattern
@@ -31,25 +31,16 @@ const Waves = (props) => {
           />
         </pattern>
       </defs>
-      <rect fill={'url(#korosBasic)'} width='100%' height='85' />
+      <rect fill='url(#korosBasic)' width='100%' height='85' />
     </svg>
   );
 };
 
 const WavesHeader = (props) => {
-  const [inIndex, setInIndex] = useState();
-
-  let location = useLocation();
   const navigate = useNavigate();
 
-  // check current page return setIndex true or false
-  useEffect(() => {
-    setInIndex(location.pathname === '/home');
-  }, [location.pathname]);
   return (
-    <main style={props.style} className='wavesHeader__wrapper'>
-      {/* do not render backwards arrow on specific pages */}
-
+    <main style={{ background: props.header }} className='wavesHeader__wrapper'>
       {!props.disabled && (
         <button id='backArrowSVG' onClick={() => navigate(-1)}>
           <Icon icon='typcn:arrow-left' />

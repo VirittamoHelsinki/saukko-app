@@ -1,9 +1,12 @@
 // importing react components
 import { useEffect, useState } from "react";
 
+// importing dependecies
+import { Icon } from "@iconify/react";
+
 // importing components
-import UserNav from "../../components/UserNav/UserNav";
-import WavesHeader from "../../components/Header/WavesHeader";
+import UserNav from "../../../components/UserNav/UserNav";
+import WavesHeader from "../../../components/Header/WavesHeader";
 
 // import temp data
 import { degrees } from "./tempData";
@@ -122,14 +125,17 @@ const SearchPage = () => {
 
 	return (
 		<main className="searchPage__wrapper">
-			<WavesHeader title="Koulutukset" fill="#9fc9eb" disabled={false} />
+			<WavesHeader title="Koulutukset" secondTitle="Ammatilliset koulutukset" fill="#9fc9eb" disabled={false} />
 			<UserNav />
 			<section className="searchPage__container">
-				<input
-					value={searchResult}
-					onChange={handleSearchResult}
-					placeholder="Etsi koulutus"
-				/>
+				<div className="searchPage__container--searchField">
+					<input
+						value={searchResult}
+						onChange={handleSearchResult}
+						placeholder="Etsi koulutus"
+					/>
+					<Icon icon="material-symbols:search" hFlip={true} />
+				</div>
 				<h2>Ammatilliset koulutukset</h2>
 				<div className="searchPage__container--list">
 					<CheckLength

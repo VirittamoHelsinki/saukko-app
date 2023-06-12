@@ -7,10 +7,13 @@ import Notification from '../../components/Notification/Notification';
 import * as EmailValidator from 'email-validator';
 
 const ForgotPassword = () => {
+  const color ='#9fc9eb'
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [notificationVisible, setNotificationVisible] = useState(false);
+
+
 
   const formRef = useRef();
   const emailRef = useRef();
@@ -59,7 +62,7 @@ const ForgotPassword = () => {
 
   return (
     <main className='forgotPassword__wrapper'>
-      {!notificationVisible && <WavesHeader title='Saukko' fill='#9fc9eb' />}
+      {!notificationVisible && <WavesHeader title='Saukko' fill='#9fc9eb'  header={color} />}
       {!notificationVisible && (
         <section className='forgotPassword__container'>
           <h2>Unohtuiko salasana?</h2>
@@ -74,7 +77,7 @@ const ForgotPassword = () => {
                 onChange={(e) => {
                   setEmail(e.target.value);
                 }}
-                placeholder='Kirjoita sähköpostiosoitteesi.'
+              
               />
             </section>
           </form>
@@ -93,7 +96,9 @@ const ForgotPassword = () => {
 
       {notificationVisible && (
         <Notification
-          navigatePage='/logged-user'
+          navigatePage='/change-password'
+          headerColor={color}
+          bodyColor={color}
           heading='Tarkista sähköpostisi'
           icon='gg:check-o'
         />

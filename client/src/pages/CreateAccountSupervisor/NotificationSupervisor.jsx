@@ -2,16 +2,17 @@
 import React from 'react';
 
 // Importing components
-import Notification from '../../../components/Notification/Notification';
+import Notification from '../../components/Notification/Notification';
 
-const AccountCreated = () => {
-  const color = '#9fc9eb';
+const NotificationSupervisor = () => {
+  const color = '#f5a3c7';
+
   return (
     <div>
       <Notification
         headerColor={color}
         bodyColor={color}
-        heading='Tili on luotu!'
+        heading='Lomake on lähetetty!'
         icon='gg:check-o'
         navigatePage={'/logged-user'}
       />
@@ -19,4 +20,4 @@ const AccountCreated = () => {
   );
 };
 
-export default AccountCreated;
+export default NotificationSupervisor;

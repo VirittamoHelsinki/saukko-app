@@ -1,0 +1,21 @@
+.app__wrapper {
+
+    .degreeInfo__wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100%;
+  
+        .degreeInfo__container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 200px;
+            margin-bottom: 170px;
+            width: 100%;
+
+        }
+    }
+}
+  
+  

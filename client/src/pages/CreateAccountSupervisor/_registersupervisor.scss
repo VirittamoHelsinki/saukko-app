@@ -1,5 +1,5 @@
-// Main wrapper for the work info page
-.workInfo__wrapper {
+// Main wrapper for the register supervisor page
+.registerSupervisor__wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,7 +8,7 @@
   align-items: center;
   height: 100%;
 
-  .workInfo__container {
+  .registerSupervisor__container {
     display: flex;
     flex-direction: column;
     padding: 0px 36px 0px 36px;
@@ -23,7 +23,7 @@
       text-align: center;
     }
 
-    .workInfo__container--form-text {
+    .registerSupervisor__container--form-text {
       display: flex;
       flex-direction: column;
       margin-top: 30px;
@@ -68,6 +68,35 @@
       height: 30px;
       padding: 7px;
       border: 1px solid var(--saukko-main-black);
+    }
+  }
+  .registerSupervisor__form--bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    text-align: center;
+    padding: 0px 36px 36px 36px;
+    width: 100%;
+    bottom: 0;
+  }
+  .password__container {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .password-icon {
+      position: absolute;
+      top: 55%;
+      right: 1rem;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .eye-off,
+    .eye-on {
+      font-size: 22px;
     }
   }
 }
