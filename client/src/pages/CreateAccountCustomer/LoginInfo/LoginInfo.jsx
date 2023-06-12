@@ -101,7 +101,6 @@ const LoginInfo = () => {
                   setPassword(e.target.value);
                 }}
               />
-              {console.log('password length', password.length)}
               {password.length > 0 && (
                 <span
                   className='password-icon'
