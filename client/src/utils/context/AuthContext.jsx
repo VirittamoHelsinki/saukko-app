@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 const AuthContextProvider = (props) => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState('');
 
   const getLoggedIn = async () => {
     try {
@@ -12,6 +13,7 @@ const AuthContextProvider = (props) => {
         "http://localhost:5000/auth/loggedIn"
       );
       setLoggedIn(loggedInRes.data.loggedIn);
+      setUser(loggedInRes.data.user);
       console.log(loggedInRes.data);
     } catch (err) {
       console.error(err);
@@ -23,7 +25,7 @@ const AuthContextProvider = (props) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ loggedIn, getLoggedIn }}>
+    <AuthContext.Provider value={{ loggedIn, getLoggedIn, user }}>
       {props.children}
     </AuthContext.Provider>
   );
