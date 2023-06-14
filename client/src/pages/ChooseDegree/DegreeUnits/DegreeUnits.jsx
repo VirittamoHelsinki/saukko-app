@@ -1,5 +1,6 @@
 // Import React packages
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Import libraries
 import { Icon } from '@iconify/react';
@@ -13,6 +14,7 @@ import Button from "../../../components/Button/Button";
 import { units } from './unitsTempData';
 
 function DegreeUnits() {
+  const navigate = useNavigate();
   
   // Searchbar logic
   const [filteredUnits, setFilteredUnits] = useState(units);
@@ -39,7 +41,7 @@ function DegreeUnits() {
     
   // Pagination logic
   const [page, setPage] = useState(1);
-  const unitsPerPage = 10;
+  const unitsPerPage = 4;
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -57,21 +59,6 @@ function DegreeUnits() {
     }
   };
 
-  // Button styling / CSS
-    const backButtonStyle = {
-      color: "var(--link-blue)",
-      background: "var(--saukko-main-white)",
-      border: "2px solid var(--link-blue)"
-  };
-
-    const forwardButtonStyle = {
-      color: "var(--link-blue)",
-      background: "var(--link-blue)",
-      color: "var(--saukko-main-white)",
-      border: "2px solid var(--link-blue)"
-  };
-
-  
   return (
     <main className="degreeUnits__wrapper">
       <WavesHeader title="Saukko" secondTitle="Autoalan perustutkinto" fill="#9fc9eb" />
@@ -119,16 +106,14 @@ function DegreeUnits() {
           <div className="degreeUnits__container--buttons-back">
             <Button
               text="Takaisin"
-              style={backButtonStyle}
-              /* onClick={} */ 
+              onClick={() => navigate('/degree-info')} // later fix to degree-info/:id
               icon={"formkit:arrowleft"}
             />
           </div>
           <div className="degreeUnits__container--buttons-forward">
             <Button
               text="Valitse tutkinnonosat"
-              style={forwardButtonStyle}
-              /* onClick={} */ 
+              onClick={() => navigate('/confirm-selection')}
               icon={"formkit:arrowright"}
             />
           </div>

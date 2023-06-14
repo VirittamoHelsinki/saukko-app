@@ -117,6 +117,17 @@
         .degreeUnits__container--buttons-back {
           .button__container {
             flex-direction: row-reverse;
+            color: var(--link-blue);
+            background: var(--saukko-main-white);
+            border: 2px solid var(--link-blue);
+          }
+        }
+
+        .degreeUnits__container--buttons-forward {
+          .button__container {
+            background: var(--link-blue);
+            color: var(--saukko-main-white);
+            border: 2px solid var(--link-blue);
           }
         }
       }
