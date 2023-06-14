@@ -99,7 +99,26 @@
         margin: 10px;
         display: flex;
         justify-content: center;
+        align-items: center;
         gap: 5px;
+
+        .button__container {
+          gap: 10px;
+          
+          .button__icon{
+            width: 25px;
+          }
+
+          .button__text {
+            font-size: 15px;
+          }
+        }
+
+        .degreeUnits__container--buttons-back {
+          .button__container {
+            flex-direction: row-reverse;
+          }
+        }
       }
     }
   }

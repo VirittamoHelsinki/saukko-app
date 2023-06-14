@@ -116,19 +116,22 @@ function DegreeUnits() {
         />
 
         <div className="degreeUnits__container--buttons">
-          <Button
-            className="degreeUnits__container--buttons-back"
-            text="Takaisin"
-            style={backButtonStyle}
-            /* onClick={} */ 
-            icon={"formkit:arrowleft"}
-          />
-          <Button
-            text="Valitse tutkinnonosat"
-            style={forwardButtonStyle}
-            /* onClick={} */ 
-            icon={"formkit:arrowright"}
-          />
+          <div className="degreeUnits__container--buttons-back">
+            <Button
+              text="Takaisin"
+              style={backButtonStyle}
+              /* onClick={} */ 
+              icon={"formkit:arrowleft"}
+            />
+          </div>
+          <div className="degreeUnits__container--buttons-forward">
+            <Button
+              text="Valitse tutkinnonosat"
+              style={forwardButtonStyle}
+              /* onClick={} */ 
+              icon={"formkit:arrowright"}
+            />
+          </div>
         </div>
       </section>
       <UserNav />
