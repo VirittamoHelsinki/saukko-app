@@ -1,5 +1,6 @@
 // Importing react packages
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
+import AuthContext from '../../../utils/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../../useStore';
 import axios from 'axios';
@@ -43,6 +44,7 @@ const WorkingInfo = () => {
   // State variable for button disabled state
   const [buttonDisabled, setButtonDisabled] = useState();
 
+  const { getLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
 
   /**
@@ -76,11 +78,12 @@ const WorkingInfo = () => {
         .post('http://localhost:5000/auth/', registerData)
         .then((res) => {
           console.log(res);
+          navigate('/account-created');
         })
         .catch((err) => {
           console.log(err);
         });
-      navigate('/account-created');
+      await getLoggedIn();
     } catch (err) {
       console.error(err);
       navigate('/account-failed');
