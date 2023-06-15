@@ -5,6 +5,7 @@ import React from "react";
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from "../../../components/UserNav/UserNav";
 import PageNumbers from "../../../components/PageNumbers/PageNumbers";
+import Hyperlink from "../../../components/Hyperlink/Hyperlink";
 
 function DegreeInfo() {
   return (
@@ -43,6 +44,7 @@ function DegreeInfo() {
                 <p>31. Heinäkuuta 2026</p>
               </div>
             </div>
+            <Hyperlink linkText={"Lue lisää tästä linkistä"} linkSource={"https://eperusteet.opintopolku.fi/#/fi/ammatillinenperustutkinto/3397336/tiedot"}/>
         </section>
         <UserNav />
     </main>
