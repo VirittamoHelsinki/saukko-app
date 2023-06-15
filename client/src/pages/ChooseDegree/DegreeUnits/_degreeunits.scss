@@ -1,0 +1,136 @@
+.app__wrapper {
+
+  .degreeUnits__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+
+    .degreeUnits__container {
+      display: flex;
+      flex-direction: column;
+      margin-top: 200px;
+      margin-bottom: 50px;
+      flex-grow: 1;
+      overflow-y: auto;
+      width: 100%;
+
+      .degreeUnits__container--searchField {
+        display: flex;
+        align-items: center;
+        border: 2px solid var(--grayscale-medium-dark);
+        margin: 0px 20px;
+
+        input {
+          width: 100%;
+          height: 52px;
+          background: none;
+          padding: 15px;
+          color: var(--saukko-main-black);
+          border: none;
+        }
+
+        svg {
+          padding-right: 10px;
+          font-size: 40px;
+          color: var(--grayscale-medium-dark);
+        }
+      }
+      
+      h1 {
+        margin: 40px;
+        text-align: center;
+        text-decoration: underline;
+        font-size: var(--base-font-size);
+      }
+
+      p {
+        font-size: 15px;
+      }
+
+      .degreeUnits__container--units {
+        margin-top: 20px;
+
+        .degreeUnits__container--units-unit {
+          margin-top: 5px;
+          padding: 10px 20px;
+          height: 80px;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          gap: 5px;
+          background-color: var(--grayscale-background-box);
+
+          &.checked {
+            background-color: var(--list-checked);
+          }
+  
+          .degreeUnits__container--units-unit-checkbox {
+              margin-right: 5px;
+              background-color: var(--saukko-main-white);
+              border: 2px solid var(--saukko-main-grey);
+              border-radius: 50%;
+              width: 20px;
+              height: 20px;
+              flex-shrink: 0;
+
+              &.checked {
+                border: 2px solid var(--checkbox-green);
+                background-color: var(--checkbox-green);
+              }
+          }
+          
+          .degreeUnits__container--units-unit-arrow {
+            margin-left: auto;
+            font-size: 30px;
+            flex-shrink: 0;
+          }
+        }
+      }
+
+      nav {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        align-self: center;
+      }
+
+      .degreeUnits__container--buttons {
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+
+        .button__container {
+          gap: 10px;
+          
+          .button__icon{
+            width: 25px;
+          }
+
+          .button__text {
+            font-size: 15px;
+          }
+        }
+
+        .degreeUnits__container--buttons-back {
+          .button__container {
+            flex-direction: row-reverse;
+            color: var(--link-blue);
+            background: var(--saukko-main-white);
+            border: 2px solid var(--link-blue);
+          }
+        }
+
+        .degreeUnits__container--buttons-forward {
+          .button__container {
+            background: var(--link-blue);
+            color: var(--saukko-main-white);
+            border: 2px solid var(--link-blue);
+          }
+        }
+      }
+    }
+  }
+}
