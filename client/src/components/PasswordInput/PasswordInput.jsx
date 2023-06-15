@@ -16,7 +16,7 @@ const PasswordInput = (props) => {
   return (
     <>
       <div className='password__wrapper'>
-        <label htmlFor=''>{props.textLabel}</label>
+        <label htmlFor=''>{props.label}</label>
         <div className='password__container'>
           <input
             type={showPassword ? 'text' : 'password'}

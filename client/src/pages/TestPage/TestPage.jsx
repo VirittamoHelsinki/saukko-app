@@ -8,8 +8,9 @@ const TestPage = () => {
   return (
     <main className='testpage__wrapper'>
       <section className='testpage__container'>
-        <PasswordInput textLabel='Password *' />
-        <PasswordInput />
+        <PasswordInput label='Vanha salasana *' />
+        <PasswordInput label='Uusi salasana *' />
+        <PasswordInput label='Vahvista salasana *' />
       </section>
     </main>
   );
