@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const config = require('../utils/config')
+// const { sendResetPasswordEmail } = require('../mailer'); This is for password reset, making it later
 
 // Register a new user
 router.post("/", async (req, res) => {
@@ -64,6 +65,46 @@ router.post("/", async (req, res) => {
     res.status(500).send();
   }
 });
+
+//forgot-password
+router.post("/forgot-password", async (req, res) => {
+  
+  // Retrieve the email from the request body
+  const { email } = req.body;
+
+  // Check if the email field is empty
+  if (!email) {
+    console.log("email empty")
+    return res.status(400).json({ errorMessage: "Empty Field" });
+  }
+
+  // Check if there is an existing user with the provided email address
+  const existUser = await User.findOne({ email: email });
+
+  // If there is no user with the provided email address, return with no error message
+  if (!existUser) {
+    console.log("user's email does not exist")
+    return res.json({ errorMessage: "" });
+  }
+
+  // Create a token for the user
+  const newPasswordToken = jwt.sign(
+    {
+      _id: existUser._id,
+    },
+    config.JWT_SECRET,
+    { expiresIn: 30 * 60 } // url expires in 15 minutes
+  );
+  
+  try {
+    // sendResetPasswordEmail(existUser) This is for password reset, making it later
+    res.status(200).json({ message: "Password reset link sent to email" })
+  } catch (err) {
+    console.log(err.message)
+    res.status(400).send();
+  }
+
+})
 
 // login
 router.post("/login", async (req, res) => {
