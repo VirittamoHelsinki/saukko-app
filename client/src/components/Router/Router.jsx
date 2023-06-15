@@ -5,6 +5,7 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
 
 // importing all pages which need routing
+import TestPage from '../../pages/TestPage/TestPage';
 import LandingPage from '../../pages/LandingPage/LandingPage';
 import ChooseRole from '../../pages/ChooseRole/ChooseRole';
 import LoginPage from '../../pages/LoginPage/LoginPage';
@@ -55,6 +56,8 @@ const Router = () => {
     <>
       <Routes key={location.pathname} location={location}>
         {/* placeholder paths and pages */}
+
+        <Route path='/test-page' element={<TestPage />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/search' element={<SearchPage />} />
