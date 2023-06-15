@@ -19,6 +19,8 @@ const useStore = create((set) => ({
   workPhoneNumber: '',
   workAddress: '',
   goals: '',
+  academy: '',
+  education: '',
 
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
@@ -37,6 +39,8 @@ const useStore = create((set) => ({
   setWorkPhoneNumber: (workPhoneNumber) => set({ workPhoneNumber }),
   setWorkAddress: (workAddress) => set({ workAddress }),
   setGoals: (goals) => set({ goals }),
+  setAcademy: (academy) => set({ academy }),
+  setEducation: (education) => set({ education }),
 
   // Define a resetForm function to reset all state variables to their initial values
   resetForm: () =>
@@ -56,6 +60,8 @@ const useStore = create((set) => ({
       workPhoneNumber: '',
       workAddress: '',
       goals: '',
+      academy: '',
+      education: '',
     }),
 }));
 

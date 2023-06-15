@@ -57,15 +57,13 @@ const ChangePassword = () => {
     color: "var(--saukko-main-white)",
     border: "var(--link-disabled)",
     background: "var(--link-disabled)",
-    paddingLeft: "12%",
-    margin: "5% 0",
+   
   };
   const buttonStyleEnabled = {
     color: "var(--saukko-main-white)",
     border: "var(--saukko-main-black)",
     background: "var(--saukko-main-black)",
-    paddingLeft: "12%",
-    margin: "5% 0",
+    
   };
 
 
@@ -89,7 +87,7 @@ const ChangePassword = () => {
                   className="password-input"
                   onChange={(e) => {
                     setPassword(e.target.value);
-                    // checkButtonDisabled();
+                    
                   }}
                 />
                 {console.log("password length", password.length)}
@@ -106,7 +104,7 @@ const ChangePassword = () => {
                   </span>
                 )}
               </div>
-
+               {/* Password verification input */}
               <label htmlFor="confirmPassword">Vahvista salasana *</label>
               <div className="password__container">
                 <input
@@ -115,15 +113,15 @@ const ChangePassword = () => {
                   className="password-input"
                   onChange={(e) => {
                     setConfirmPassword(e.target.value);
-                    // checkButtonDisabled();
+                  
                   }}
                 />
-                {password.length > 0 && (
+                {confirmPassword.length > 0 && (
                   <span
                     className="password-icon"
                     onClick={togglePasswordVerifyVisibility}
                   >
-                    {showPassword ? (
+                    {showPasswordVerify? (
                       <Icon icon="mdi:eye-off-outline" className="eye-off" />
                     ) : (
                       <Icon icon="mdi:eye-outline" className="eye-on" />
@@ -147,7 +145,7 @@ const ChangePassword = () => {
       )}
       {notificationVisible && (
         <Notification
-          navigatePage="/logged-user"
+          navigatePage="/login"
           headerColor={color}
           bodyColor={color}
           heading="Salasana on vaihdettu!"
