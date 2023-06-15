@@ -34,6 +34,14 @@ function DegreeInfo() {
                 <h2>Voimaantulo</h2>
                 <p>1. elokuuta 2018</p>
               </div>
+              <div className="degreeInfo__container--info--block dark">
+                <h2>Voimassaolon päättyminen</h2>
+                <p>31. Heinäkuuta 2022</p>
+              </div>
+              <div className="degreeInfo__container--info--block">
+                <h2>Siirtymäajan päättymisaika</h2>
+                <p>31. Heinäkuuta 2026</p>
+              </div>
             </div>
         </section>
         <UserNav />
