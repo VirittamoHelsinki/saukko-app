@@ -16,18 +16,31 @@
       width: 100%;
       gap: 20px;
 
+      .searchPage__container--searchField {
+        display: flex;
+        align-items: center;
+        border: 2px solid var(--grayscale-medium-dark);
+
+        input {
+          width: 100%;
+          height: 52px;
+          background: none;
+          padding: 15px;
+          color: var(--saukko-main-black);
+          border: none;
+        }
+
+        svg {
+          padding-right: 10px;
+          font-size: 40px;
+          color: var(--grayscale-medium-dark);
+        }
+      }
+
       h2 {
         font-size: 18px;
       }
 
-      input {
-        width: 100%;
-        height: 52px;
-        background: none;
-        padding: 15px;
-        color: var(--saukko-main-black);
-        border: 2px solid var(--grayscale-medium-dark);
-      }
 
       .searchPage__container--list {
         display: flex;
