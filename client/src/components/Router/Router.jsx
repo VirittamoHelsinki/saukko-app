@@ -23,6 +23,7 @@ import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
 import FirstLogin from '../../pages/FirstLogin/FirstLogin';
 import SearchPage from '../../pages/ChooseDegree/SearchPage/SearchPage';
 import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
+import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
@@ -62,6 +63,8 @@ const Router = () => {
         <Route path='/degree-info' element={<DegreeInfo />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/change-password' element={<ChangePassword/>}/>
+        <Route path='/degree-units' element={<DegreeUnits />} />
+        <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
 
         {!loggedIn && (
