@@ -1,0 +1,18 @@
+.testpage__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  align-items: center;
+  height: 100%;
+
+  .testpage__container {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 36px 0px 36px;
+    width: 100%;
+    height: 100vh;
+    margin-top: 57%;
+  }
+}
