@@ -1,0 +1,73 @@
+// Main wrapper for the work info page
+.workInfo__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  align-items: center;
+  height: 100%;
+
+  .workInfo__container {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 36px 0px 36px;
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    margin-top: 57%;
+
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .workInfo__container--form-text {
+      display: flex;
+      flex-direction: column;
+      margin-top: 30px;
+      gap: 10px;
+
+      input {
+        width: 100%;
+        height: 56px;
+        background: none;
+        color: var(--saukko-main-black);
+        border: 2px solid var(--saukko-main-black);
+      }
+      textarea {
+        padding: 7px;
+        color: var(--saukko-main-black);
+        border: 2px solid var(--saukko-main-black);
+      }
+
+      p {
+        text-align: center;
+        margin-top: 30px;
+        color: #7b7b7b;
+      }
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    width: 100%;
+    height: 100%;
+    gap: 8px;
+
+    label {
+      font-size: 16px;
+    }
+
+    input {
+      width: 250px;
+      height: 30px;
+      padding: 7px;
+      border: 1px solid var(--saukko-main-black);
+    }
+  }
+}
