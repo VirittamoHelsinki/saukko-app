@@ -1,13 +1,17 @@
 // Import react packages & dependencies
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from "../../../components/UserNav/UserNav";
 import PageNumbers from "../../../components/PageNumbers/PageNumbers";
 import Hyperlink from "../../../components/Hyperlink/Hyperlink";
+import Button from "../../../components/Button/Button";
 
 function DegreeInfo() {
+  const navigate = useNavigate();
+
   return (
     <main className="degreeInfo__wrapper">
         <WavesHeader title="Saukko" secondTitle="Autoalan perustutkinto" fill="#9fc9eb" />
@@ -45,6 +49,24 @@ function DegreeInfo() {
               </div>
             </div>
             <Hyperlink linkText={"Lue lisää tästä linkistä"} linkSource={"https://eperusteet.opintopolku.fi/#/fi/ammatillinenperustutkinto/3397336/tiedot"}/>
+            
+          <div className="degreeInfo__container--buttons">
+            <div className="degreeInfo__container--buttons-back">
+              <Button
+                text="Takaisin"
+                onClick={() => navigate('/degree-info')} // later fix to degree-info/:id
+                icon={"formkit:arrowleft"}
+              />
+            </div>
+            <div className="degreeInfo__container--buttons-forward">
+              <Button
+                text="Valitse tutkinto"
+                onClick={() => navigate('/confirm-selection')}
+                icon={"formkit:arrowright"}
+              />
+            </div>
+          </div>
+
         </section>
         <UserNav />
     </main>
