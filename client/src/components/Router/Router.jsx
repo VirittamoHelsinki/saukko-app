@@ -27,11 +27,13 @@ import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
+import Userdashboard from '../../pages/UserDashboard/Userdashboard';
 
 const Router = () => {
   let location = useLocation();
-  const { loggedIn } = useContext(AuthContext);
-
+  const { loggedIn, user } = useContext(AuthContext);
+  console.log(loggedIn)
+  console.log(user)
   const path = location.path;
   const navigate = useNavigate();
 
@@ -62,6 +64,8 @@ const Router = () => {
         <Route path='/degree-units' element={<DegreeUnits />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
+        
+      
 
         {!loggedIn && (
           <>
@@ -96,6 +100,7 @@ const Router = () => {
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
             <Route path='/account-created' element={<AccountCreated />} />
+            <Route path='/userdashboard' element={<Userdashboard/>} />
           </>
         )}
       </Routes>
