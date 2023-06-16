@@ -11,7 +11,7 @@ const app = express();
 const userRouter = require("./routers/userRouter");
 
 // Import the edu router for fetching ePerusteet
-const eduRouter = require("./routers/eduRouter");
+const eReqRouter = require("./routers/eReqRouter");
 
 // Import the User model and JWT library (not used here...)
 /* const User = require("./models/userModel");
@@ -45,7 +45,7 @@ mongoose.connect(config.MONGODB_URI, {
 app.use('/auth', userRouter);
 
 // Set up routes for ePerusteet fetching
-app.use('/api', eduRouter);
+app.use('/api', eReqRouter);
 
 // Start the server
 const PORT = config.PORT || 5000;
