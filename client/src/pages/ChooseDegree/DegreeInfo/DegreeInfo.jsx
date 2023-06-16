@@ -54,14 +54,14 @@ function DegreeInfo() {
             <div className="degreeInfo__container--buttons-back">
               <Button
                 text="Takaisin"
-                onClick={() => navigate('/degree-info')} // later fix to degree-info/:id
+                onClick={() => navigate('/search')}
                 icon={"formkit:arrowleft"}
               />
             </div>
             <div className="degreeInfo__container--buttons-forward">
               <Button
                 text="Valitse tutkinto"
-                onClick={() => navigate('/confirm-selection')}
+                onClick={() => navigate('/degree-units')}
                 icon={"formkit:arrowright"}
               />
             </div>
