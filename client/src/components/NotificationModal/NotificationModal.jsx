@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import WarningIcon from '@mui/icons-material/Warning';
+import { Icon } from '@iconify/react';
 import Typography from '@mui/material/Typography';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -42,8 +42,30 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-export default function CustomizedDialogs() {
+export default function CustomizedDialogs(props) {
   const [open, setOpen] = useState(false);
+
+  let icon = 'material-symbols:info';
+  let bgColor = '#fff';
+  let color = '#000';
+
+  if (props.type === 'alert') {
+    icon = 'zondicons:exclamation-solid';
+    bgColor = '#fff4b4';
+    color = '#d18200';
+  } else if (props.type === 'info') {
+    icon = 'material-symbols:info';
+    bgColor = '#e5eff8';
+    color = '#0062b9';
+  } else if (props.type === 'success') {
+    icon = 'material-symbols:check-circle';
+    bgColor = '#e2f5f3';
+    color = '#007a64';
+  } else if (props.type === 'warning') {
+    icon = 'material-symbols:warning';
+    bgColor = '#f6e2e6';
+    color = '#b01038';
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -64,8 +86,9 @@ export default function CustomizedDialogs() {
         open={open}
         sx={{
           '& .MuiDialog-paper': {
-            background: '#f6e2e6',
-            borderLeft: 'solid 8px #b01038',
+            background: bgColor,
+            borderLeft: 'solid 8px',
+            color,
           },
           '& .MuiDialogTitle-root': {
             marginLeft: '35px',
@@ -74,26 +97,27 @@ export default function CustomizedDialogs() {
           },
         }}
       >
-        <WarningIcon
-          sx={{
+        {/* Props available for NotificationModal's icon: alert, info, success, warning  */}
+
+        <Icon
+          icon={icon}
+          style={{
             position: 'absolute',
-            left: 18,
-            top: 17,
-            color: '#b01038',
+            left: '16px',
+            top: '16px',
+            fontSize: '27px',
+            color: color,
           }}
         />
+
         <BootstrapDialogTitle
           id='customized-dialog-title'
           onClose={handleClose}
         >
-          Modal title
+          {props.title}
         </BootstrapDialogTitle>
         <DialogContent>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
-          </Typography>
+          <Typography gutterBottom>{props.body}</Typography>
         </DialogContent>
       </BootstrapDialog>
     </div>
