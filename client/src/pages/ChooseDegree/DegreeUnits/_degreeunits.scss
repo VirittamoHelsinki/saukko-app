@@ -103,10 +103,9 @@
         gap: 5px;
 
         .button__container {
-          gap: 10px;
-          
           .button__icon{
             width: 25px;
+            flex-shrink: 0;
           }
 
           .button__text {
@@ -115,6 +114,7 @@
         }
 
         .degreeUnits__container--buttons-back {
+          width: 40%;
           .button__container {
             flex-direction: row-reverse;
             color: var(--link-blue);
@@ -124,6 +124,7 @@
         }
 
         .degreeUnits__container--buttons-forward {
+          width: 60%;
           .button__container {
             background: var(--link-blue);
             color: var(--saukko-main-white);
