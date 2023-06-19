@@ -1,24 +1,52 @@
 import icone from '../../assets/Internallink.svg'
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import AuthContext from '../../utils/context/AuthContext';
 
 const NotificationBadge = (props) => {
-  const {number1,number2, backgroundColor1, backgroundColor2}= props
 
-  const badgeStyle1 ={
-    backgroundColor: backgroundColor1,
-    width:'180px',
-    height:'116px'
-  
+  const { user } = useContext(AuthContext)
+  const role = user?.role;
+  const { number1, number2 } = props
+  let badgeStyle1 = {}
+  let badgeStyle2 = {}
+
+  if (role === 'teacher') {
+    badgeStyle1 = {
+      backgroundColor: '#FFC61E',
+      width: '180px',
+      height: '116px',
+    };
+    badgeStyle2 = {
+      backgroundColor: '#FFE49C',
+      width: '180px',
+      height: '116px',
+    };
+  } else if (role === 'supervisor') {
+    badgeStyle1 = {
+      backgroundColor: '#f5a3c7',
+      width: '180px',
+      height: '116px',
+    };
+    badgeStyle2 = {
+      backgroundColor: '#ffdbeb',
+      width: '180px',
+      height: '116px',
+    };
+  } else if (role === 'customer') {
+    badgeStyle1 = {
+      backgroundColor: '#9FC9EB',
+      width: '180px',
+      height: '116px',
+    };
+    badgeStyle2 = {
+      backgroundColor: '#D0E6F7',
+      width: '180px',
+      height: '116px',
+    };
+
   }
 
-  const badgeStyle2 = {
-    backgroundColor: backgroundColor2,
-    width:'180px',
-    height:'116px'
-  }
-
- 
   return (
     <div className='notificationbadge-container'>
       <div className='badge' style={badgeStyle1}>
@@ -40,6 +68,8 @@ const NotificationBadge = (props) => {
 };
 
 export default NotificationBadge;
+
+
 
 
 

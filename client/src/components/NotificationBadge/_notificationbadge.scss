@@ -2,18 +2,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 10px;
   margin: 15px;
   gap: 14px;
 }
 .text{
   font-size: 14px;
-  padding-left: 8px;
+  padding-left: 10px;
 }
 .bottom-container{
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 15px;
 }
 .icone-style{
   width: 48px;
@@ -22,7 +22,13 @@
   color: black;
 }
 .numberstyle{
+  display: flex;
+  align-items: center;
   font-size: 40px;
   font-weight: 700;
-  padding: 10px;
-}
+  padding-left: 10px;
+  margin-top: 10px;
+  
+  }
+
+ 
