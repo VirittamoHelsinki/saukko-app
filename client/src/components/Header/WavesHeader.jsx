@@ -1,12 +1,12 @@
 // Import necessary react components
 import { useNavigate, useLocation } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Icon } from '@iconify/react';
 
 // Import helsinki logo
 import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
+import AuthContext from '../../utils/context/AuthContext';
 
-// Waves SVG
 const Waves = (props) => {
   return (
     <svg
@@ -38,9 +38,32 @@ const Waves = (props) => {
 
 const WavesHeader = (props) => {
   const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+  const user = auth.user;
+  const role = user?.role;
+
+  const getHeaderColor = () => {
+    // Define color based on role
+    switch (role) {
+      case 'customer':
+        return '#9fc9eb';
+      case 'teacher':
+        return '#FFC61E';
+      case 'supervisor':
+        return '#f5a3c7';
+      default:
+        return '#9fc9eb';
+    }
+  };
+
+  const headerColor = getHeaderColor();
+
+  const wrapperStyle = {
+    backgroundColor: headerColor,
+  };
 
   return (
-    <main style={{ background: props.header }} className='wavesHeader__wrapper'>
+    <main className='wavesHeader__wrapper' style={wrapperStyle}>
       {!props.disabled && (
         <button id='backArrowSVG' onClick={() => navigate(-1)}>
           <Icon icon='typcn:arrow-left' />
@@ -49,7 +72,8 @@ const WavesHeader = (props) => {
       <img src={HelsinkiLogo} alt='' />
       <h1>{props.title}</h1>
       <h2>{props.secondTitle}</h2>
-      <Waves fill={props.fill} />
+      <Waves fill={headerColor} />
+
     </main>
   );
 };
@@ -59,3 +83,10 @@ WavesHeader.defaultProps = {
 };
 
 export default WavesHeader;
+
+
+
+
+
+
+
