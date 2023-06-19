@@ -1,5 +1,6 @@
 // importing react components
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 // importing dependecies
 import { Icon } from "@iconify/react";
@@ -17,10 +18,12 @@ const CheckLength = ({ filteredList, degrees, paginate, currentPage }) => {
 	const endIndex = startIndex + paginate;
 	const list = filteredList.length > 0 ? filteredList : degrees;
 
+	const navigate = useNavigate();
+
 	return (
 		<>
 			{list.slice(startIndex, endIndex).map((degree, index) => (
-				<div key={index} className="searchPage__container--list-item">
+				<div key={index} className="searchPage__container--list-item" onClick={() => navigate('/degree-info')}>
 					<h3>{degree.title}</h3>
 					<div className="searchPage__container--list-item-bottom">
 						<div>

@@ -1,12 +1,17 @@
 // Import react packages & dependencies
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from "../../../components/UserNav/UserNav";
 import PageNumbers from "../../../components/PageNumbers/PageNumbers";
+import Hyperlink from "../../../components/Hyperlink/Hyperlink";
+import Button from "../../../components/Button/Button";
 
 function DegreeInfo() {
+  const navigate = useNavigate();
+
   return (
     <main className="degreeInfo__wrapper">
         <WavesHeader title="Saukko" secondTitle="Autoalan perustutkinto" fill="#9fc9eb" />
@@ -34,7 +39,34 @@ function DegreeInfo() {
                 <h2>Voimaantulo</h2>
                 <p>1. elokuuta 2018</p>
               </div>
+              <div className="degreeInfo__container--info--block dark">
+                <h2>Voimassaolon päättyminen</h2>
+                <p>31. Heinäkuuta 2022</p>
+              </div>
+              <div className="degreeInfo__container--info--block">
+                <h2>Siirtymäajan päättymisaika</h2>
+                <p>31. Heinäkuuta 2026</p>
+              </div>
             </div>
+            <Hyperlink linkText={"Lue lisää tästä linkistä"} linkSource={"https://eperusteet.opintopolku.fi/#/fi/ammatillinenperustutkinto/3397336/tiedot"}/>
+            
+          <div className="degreeInfo__container--buttons">
+            <div className="degreeInfo__container--buttons-back">
+              <Button
+                text="Takaisin"
+                onClick={() => navigate('/search')}
+                icon={"formkit:arrowleft"}
+              />
+            </div>
+            <div className="degreeInfo__container--buttons-forward">
+              <Button
+                text="Valitse tutkinto"
+                onClick={() => navigate('/degree-units')}
+                icon={"formkit:arrowright"}
+              />
+            </div>
+          </div>
+
         </section>
         <UserNav />
     </main>
