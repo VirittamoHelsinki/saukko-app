@@ -4,9 +4,9 @@ import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import WarningIcon from '@mui/icons-material/Warning';
 import Typography from '@mui/material/Typography';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -63,9 +63,25 @@ export default function CustomizedDialogs() {
         aria-labelledby='customized-dialog-title'
         open={open}
         sx={{
-          color: 'success.main',
+          '& .MuiDialog-paper': {
+            background: '#f6e2e6',
+            borderLeft: 'solid 8px #b01038',
+          },
+          '& .MuiDialogTitle-root': {
+            marginLeft: '35px',
+            fontSize: '0.875 rem',
+            fontWeight: '700',
+          },
         }}
       >
+        <WarningIcon
+          sx={{
+            position: 'absolute',
+            left: 18,
+            top: 17,
+            color: '#b01038',
+          }}
+        />
         <BootstrapDialogTitle
           id='customized-dialog-title'
           onClose={handleClose}
