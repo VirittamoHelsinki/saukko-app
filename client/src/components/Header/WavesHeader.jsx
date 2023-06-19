@@ -7,10 +7,7 @@ import { Icon } from '@iconify/react';
 import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
 import AuthContext from '../../utils/context/AuthContext';
 
-// Waves SVG
 const Waves = (props) => {
-
- 
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -40,31 +37,33 @@ const Waves = (props) => {
 };
 
 const WavesHeader = (props) => {
-  const auth = useContext(AuthContext)
-  const user = auth.user
   const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+  const user = auth.user;
+  const role = user?.role;
 
-  // Define a CSS class and color based on the role props
-  let roleClass = '';
-  let roleColor = '';
+  const getHeaderColor = () => {
+    // Define color based on role
+    switch (role) {
+      case 'customer':
+        return '#9fc9eb';
+      case 'teacher':
+        return '#FFC61E';
+      case 'supervisor':
+        return '#f5a3c7';
+      default:
+        return '#9fc9eb';
+    }
+  };
 
-  if (user?.role==='teacher'){
-   
-    roleColor ='#ffe977';
-  }else if (user?.role === 'supervisor'){
-    
-    roleColor = '#f5a3c7';
-  }else if (user?.role ==='customer'){
-   
-    roleColor = '#9fc9eb';
-  } 
-  
-  // Apply the role color as inline style
-  const roleStyle = {color:roleColor}
+  const headerColor = getHeaderColor();
 
+  const wrapperStyle = {
+    backgroundColor: headerColor,
+  };
 
   return (
-    <main className='wavesHeader__wrapper'>
+    <main className='wavesHeader__wrapper' style={wrapperStyle}>
       {!props.disabled && (
         <button id='backArrowSVG' onClick={() => navigate(-1)}>
           <Icon icon='typcn:arrow-left' />
@@ -72,8 +71,9 @@ const WavesHeader = (props) => {
       )}
       <img src={HelsinkiLogo} alt='' />
       <h1>{props.title}</h1>
-      {/* <h2>{name}</h2> */}
-      {/* <Waves fill={roleStyle} /> */}
+      <h2>{props.secondTitle}</h2>
+      <Waves fill={headerColor} />
+
     </main>
   );
 };
@@ -83,5 +83,10 @@ WavesHeader.defaultProps = {
 };
 
 export default WavesHeader;
+
+
+
+
+
 
 
