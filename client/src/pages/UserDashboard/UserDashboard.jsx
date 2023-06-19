@@ -3,7 +3,7 @@ import WavesHeader from '../../components/Header/WavesHeader';
 import NotificationBadge from '../../components/NotificationBadge/NotificationBadge';
 import AuthContext from '../../utils/context/AuthContext';
 
-const Userdashboard = () => {
+const UserDashboard = () => {
   const auth = useContext(AuthContext)
   const user = auth.user
   console.log(user)
@@ -29,7 +29,7 @@ const Userdashboard = () => {
   );
 };
 
-export default Userdashboard;
+export default UserDashboard;
 
 
 

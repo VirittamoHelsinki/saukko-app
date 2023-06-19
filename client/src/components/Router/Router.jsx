@@ -28,6 +28,7 @@ import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
+import UserDashboard from '../../pages/UserDashboard/UserDashboard';
 
 const Router = () => {
   let location = useLocation();
@@ -99,6 +100,7 @@ const Router = () => {
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
             <Route path='/account-created' element={<AccountCreated />} />
+            <Route path='/userdashboard' element={<UserDashboard />} />
           </>
         )}
       </Routes>
