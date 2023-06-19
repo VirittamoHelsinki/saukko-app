@@ -18,8 +18,8 @@ const Userdashboard = () => {
       <div style={{ marginTop: '55%' }}>
         <h3 style={{ marginLeft: '15px', fontSize: '18px' }}>Ilmoitukset</h3>
         <NotificationBadge
-          number1={8}
-          number2={4}
+          number1={10}
+          number2={5}
         />
       </div>
 
