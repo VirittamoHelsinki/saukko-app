@@ -8,6 +8,7 @@ import NotificationModal from '../../components/NotificationModal/NotificationMo
 
 const TestPage = () => {
   const { password, passwordOld, passwordVerify } = useStore();
+
   return (
     <main className='testpage__wrapper'>
       <section className='testpage__container'>
@@ -22,9 +23,10 @@ const TestPage = () => {
 
       <section>
         <NotificationModal
-          type='alert'
+          type='info'
           title='Vahvistus ei onnistunut'
           body='Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia tempore porro ex repudiandae. Architecto, ad voluptatem! Libero ad harum sint tempore ex enim dignissimos, corporis fugiat quasi veniam! Possimus, iste!'
+          open={true}
         />
       </section>
     </main>

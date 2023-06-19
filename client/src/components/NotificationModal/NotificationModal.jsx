@@ -1,4 +1,23 @@
-import React, { useState } from 'react';
+/**
+ * The NotificationModal component accepts the prop "type" to indicate what type of notification:
+ * - alert
+ * - info
+ * - success
+ * - warning
+ * The props title and body are for text changes
+ * Use the handleClickOpen function to trigger the NotificationModal
+ *
+ * Example usage:
+ * <NotificationModal
+ *   type='warning'
+ *   title='Vahvistus ei onnistunut'
+ *   body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+ * />
+ *
+ */
+
+import React, { useState, useEffect } from 'react';
+import useStore from '../../useStore';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -43,6 +62,7 @@ function BootstrapDialogTitle(props) {
 }
 
 export default function CustomizedDialogs(props) {
+  const { openNotificationModal, setOpenNotificationModal } = useStore();
   const [open, setOpen] = useState(false);
 
   let icon = 'material-symbols:info';
@@ -77,13 +97,15 @@ export default function CustomizedDialogs(props) {
 
   return (
     <div>
+      <p>THis is the props open: {props.open}</p>
       <Button variant='outlined' onClick={handleClickOpen}>
         Open dialog
       </Button>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby='customized-dialog-title'
-        open={open}
+        open={props.open}
+        // open={openNotificationModal}
         sx={{
           '& .MuiDialog-paper': {
             background: bgColor,
