@@ -78,7 +78,6 @@ function DegreeUnits() {
               className={`degreeUnits__container--units-unit ${
                 checkedUnits.includes(unit._id) && 'checked'
               }`}
-              onClick={() => navigate('/unit-info')} // later navigate to unit-info/:id
             >
               <div
                 className={`degreeUnits__container--units-unit-checkbox ${
@@ -92,7 +91,11 @@ function DegreeUnits() {
               <p key={unit._id}>
                 <b>{getUnitNumber(unit._id)}.</b> {unit.name.fi}
               </p>
-              <Icon icon="iconamoon:arrow-right-2-light" className="degreeUnits__container--units-unit-arrow" />
+              <Icon 
+                icon="iconamoon:arrow-right-2-light" 
+                className="degreeUnits__container--units-unit-arrow" 
+                onClick={() => navigate('/unit-info')} // later navigate to unit-info/:id
+              />
             </div>
           ))}
         </div>
