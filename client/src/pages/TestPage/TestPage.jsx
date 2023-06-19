@@ -4,6 +4,7 @@ import useStore from '../../useStore';
 
 // Importing components
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
+import NotificationModal from '../../components/NotificationModal/NotificationModal';
 
 const TestPage = () => {
   const { password, passwordOld, passwordVerify } = useStore();
@@ -17,6 +18,10 @@ const TestPage = () => {
         <p>This is the old password: {passwordOld}</p>
         <p>This is the new password: {password}</p>
         <p>This is the verify password: {passwordVerify}</p>
+      </section>
+
+      <section>
+        <NotificationModal />
       </section>
     </main>
   );
