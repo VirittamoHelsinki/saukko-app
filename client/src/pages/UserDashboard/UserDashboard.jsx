@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import WavesHeader from '../../components/Header/WavesHeader';
 import NotificationBadge from '../../components/NotificationBadge/NotificationBadge';
+import UnitStatus from '../../components/UnitStatus/UnitStatus';
 import AuthContext from '../../utils/context/AuthContext';
 
 const UserDashboard = () => {
@@ -22,6 +23,11 @@ const UserDashboard = () => {
           number2={5}
         />
       </div>
+      <div>
+        <UnitStatus
+          status={3}
+          subheader='1. Tieto- ja viestintätekniikan perustehtävät' />
+      </div>
 
 
 
@@ -30,6 +36,8 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+
+
 
 
 
