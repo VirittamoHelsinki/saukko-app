@@ -5,6 +5,7 @@ import useStore from '../../useStore';
 // Importing components
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
+import InfoList from '../../components/InfoList/InfoList';
 import Button from '@mui/material/Button';
 
 const TestPage = () => {
@@ -20,8 +21,33 @@ const TestPage = () => {
     setOpenNotificationModal(true);
   };
 
+  const data = [
+    {
+      title: 'Asiakkaan nimi',
+      content: 'Alex Tenerio',
+    },
+    {
+      title: 'Koulutus',
+      content: 'Tieto- ja viestintätekniikan perustutkinto',
+    },
+    {
+      title: 'Työpaikka',
+      content: 'Lorem ipsum OY',
+    },
+    {
+      title: 'Opettaja',
+      content: 'Sanna Virtanen',
+    },
+    {
+      title: 'Ohjaaja',
+      content: 'Jonna Koskinen',
+    },
+  ];
+
   return (
     <main className='testpage__wrapper'>
+      <InfoList title='tiedot' data={data} />
+
       <section className='testpage__container'>
         <PasswordInput value='passwordOld' label='Vanha salasana *' />
         <PasswordInput value='password' label='Uusi salasana *' />
