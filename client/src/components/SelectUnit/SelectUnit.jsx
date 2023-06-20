@@ -9,7 +9,7 @@ function SelectUnit({ unit, allUnits }) {
   // Check / uncheck unit using toggleUnit function from UnitsStore
   const toggleUnit = useUnitsStore((state) => state.toggleUnit);
   const handleCheckboxChange = () => {
-    toggleUnit(unit._id);
+    toggleUnit(unit);
   };
 
   // Get all checked units from store
