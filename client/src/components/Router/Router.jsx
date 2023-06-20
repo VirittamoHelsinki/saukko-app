@@ -28,12 +28,9 @@ import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
-<<<<<<< HEAD
 import ChangePassword from '../../pages/ChangePassword/ChangePassword';
 
-=======
 import UserDashboard from '../../pages/UserDashboard/UserDashboard';
->>>>>>> f0a23a00e1e08a8b1d7708e38a2c3ceeb8e45966
 
 const Router = () => {
   let location = useLocation();
@@ -69,7 +66,7 @@ const Router = () => {
         <Route path='/search' element={<SearchPage />} />
         <Route path='/degree-info' element={<DegreeInfo />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-        <Route path='/change-password' element={<ChangePassword/>}/>
+        <Route path='/reset-password/:token' element={<ChangePassword />} />
         <Route path='/degree-units' element={<DegreeUnits />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
@@ -84,7 +81,8 @@ const Router = () => {
             <Route path='/general-info' element={<GeneralInfo />} />
             <Route path='/work-info' element={<WorkInfo />} />
             <Route path='/account-failed' element={<AccountFailed />} />
-          
+            <Route path='/reset-password/:token' element={<ChangePassword />} />
+
             <Route
               path='/register-supervisor'
               element={<RegisterSupervisor />}
