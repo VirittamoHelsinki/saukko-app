@@ -34,7 +34,7 @@ const TestPage = () => {
 
       <section>
         <NotificationModal
-          type='info'
+          type='warning'
           title='Vahvistus ei onnistunut'
           body='Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia tempore porro ex repudiandae. Architecto, ad voluptatem! Libero ad harum sint tempore ex enim dignissimos, corporis fugiat quasi veniam! Possimus, iste!'
           open={openNotificationModal}
