@@ -32,9 +32,25 @@ function ConfirmSelection() {
           <h1 className='confirmSelection__container--secondtitle'>Valitsemasi tutkinnonosat</h1>
           <div className='confirmSelection__container--units'>
             {console.log(console.log('checked units confirm selection page: ', checkedUnits))}
-            {checkedUnits.map((unit) => (
+            {checkedUnits?.map((unit) => (
               <SelectUnit key={unit._id} unit={unit} allUnits={units}/>
             ))}
+          </div>
+          <div className="confirmSelection__container--buttons">
+            <div className="confirmSelection__container--buttons-back">
+              <Button
+                text="Takaisin"
+                onClick={() => navigate('/degree-units')} // later fix to degree-units/:id
+                icon={"formkit:arrowleft"}
+              />
+            </div>
+            <div className="confirmSelection__container--buttons-forward">
+              <Button
+                text="Valitse tutkinnonosat"
+                // onClick={() => navigate('/')} FIX WHEN CONFIRMATION POP UP READY
+                icon={"formkit:arrowright"}
+              />
+            </div>
           </div>
         </section>
         <UserNav />
