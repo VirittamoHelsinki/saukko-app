@@ -1,6 +1,9 @@
 // Import react packages & dependencies
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -22,6 +25,22 @@ function ConfirmSelection() {
   // Get checked units from unitsStore
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
+  // Pop-up confirmation
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const PopUpStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '80%',
+    bgcolor: 'var(--saukko-main-white)',
+    boxShadow: 24,
+    p: 4,
+  };
+  
   return (
     <main className='confirmSelection__wrapper'>
         <WavesHeader title='Saukko' secondTitle={degree.name} />
@@ -47,13 +66,45 @@ function ConfirmSelection() {
             <div className="confirmSelection__container--buttons-forward">
               <Button
                 text="Valitse tutkinnonosat"
-                // onClick={() => navigate('/')} FIX WHEN CONFIRMATION POP UP READY
                 icon={"formkit:arrowright"}
+                onClick={handleOpen}
               />
             </div>
           </div>
         </section>
         <UserNav />
+
+        
+      {/* Pop-up component */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={PopUpStyle}>
+          <h3>Haluan suorittaa {degree.name} osien suoria näyttöjä</h3>
+          <p id="modal-modal-description" sx={{ mt: 2 }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+          </p>
+          <div className="modal__buttons">
+            <div className="modal__buttons-confirm">
+              <Button
+                text="Vahvista"
+                onClick={() => navigate('/degree-units')} // later fix to degree-units/:id
+              />
+            </div>
+            <div className="modal__buttons-cancel">
+              <Button
+                text="Peruuta"
+                onClick={handleOpen}
+              />
+            </div>
+          </div>
+        </Box>
+      </Modal>
+
+
     </main>
   );
 }
