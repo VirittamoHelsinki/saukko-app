@@ -1,0 +1,21 @@
+.app__wrapper {
+
+  .confirmSelection__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+
+    .confirmSelection__container {
+      display: flex;
+      flex-direction: column;
+      margin-top: 200px;
+      margin-bottom: 50px;
+      width: 100%;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+  }
+}
+
