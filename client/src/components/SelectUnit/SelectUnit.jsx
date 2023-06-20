@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+import useUnitsStore from '../../unitsStore';
 
 function SelectUnit({ unit, allUnits }) {
   const navigate = useNavigate();
-
-  // Checkbox logic
-  const [checkedUnits, setCheckedUnits] = useState([]);
-
-  const handleCheckboxChange = (unitId) => {
-    if (checkedUnits.includes(unitId)) {
-      setCheckedUnits(checkedUnits.filter((id) => id !== unitId));
-    } else {
-      setCheckedUnits([...checkedUnits, unitId]);
-    }
+  
+  // Check / uncheck unit using toggleUnit function from UnitsStore
+  const toggleUnit = useUnitsStore((state) => state.toggleUnit);
+  const handleCheckboxChange = () => {
+    toggleUnit(unit._id);
   };
+
+  // Get all checked units from store
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+  console.log('Checked units:', checkedUnits);
 
   // Number units
   const getUnitNumber = (id) => {
@@ -35,10 +35,9 @@ function SelectUnit({ unit, allUnits }) {
         className={`degreeUnits__container--units-unit-checkbox ${
           checkedUnits.includes(unit._id) && 'checked'
         }`}
-        onClick={() => handleCheckboxChange(unit._id)}
+        onClick={handleCheckboxChange}
       >
         {checkedUnits.includes(unit._id) && <Icon icon="mdi:tick" color="white" />}
-        {console.log(checkedUnits)}
       </div>
       <p key={unit._id}>
         <b>{getUnitNumber(unit._id)}.</b> {unit.name.fi}

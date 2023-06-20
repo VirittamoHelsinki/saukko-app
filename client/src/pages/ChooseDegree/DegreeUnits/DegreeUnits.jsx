@@ -55,7 +55,7 @@ function DegreeUnits() {
 
         <div className="degreeUnits__container--units">
           {currentUnits.map((unit) => (
-            <SelectUnit unit={unit} allUnits={units}/>
+            <SelectUnit key={unit._id} unit={unit} allUnits={units}/>
           ))}
         </div>
 

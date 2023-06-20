@@ -6,10 +6,13 @@ const useUnitsStore = create((set) => ({
   toggleUnit: (unitId) => {
     set((state) => {
       const isChecked = state.checkedUnits.includes(unitId);
-      const updatedUnits = isChecked
-        ? state.checkedUnits.filter((id) => id !== unitId)
-        : [...state.checkedUnits, unitId];
+      const updatedUnits = 
+        // Uncheck unit
+        isChecked ? state.checkedUnits.filter((id) => id !== unitId)
+        // Check unit
+        : [...state.checkedUnits, unitId]; 
 
+      // Update state with new array of checked units
       return { checkedUnits: updatedUnits };
     });
   },
