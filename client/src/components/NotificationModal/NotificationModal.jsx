@@ -5,20 +5,28 @@
  * - success
  * - warning
  * The props title and body are for text changes
- * Use the handleClickOpen function to trigger the NotificationModal
  *
  * Example usage:
+ *
  * <NotificationModal
  *   type='warning'
  *   title='Vahvistus ei onnistunut'
  *   body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
  * />
  *
+ * // Set to true the setOpenNotificationModal from useStore.js
+ *
+ * const handleClickOpen = () => {
+ *  setOpenNotificationModal(true);
+ * };
+ *
+ * <Button onClick={handleClickOpen}>
+ *  Open Notification Modal
+ * </Button>
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import useStore from '../../useStore';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -62,8 +70,7 @@ function BootstrapDialogTitle(props) {
 }
 
 export default function CustomizedDialogs(props) {
-  const { openNotificationModal, setOpenNotificationModal } = useStore();
-  const [open, setOpen] = useState(false);
+  const { setOpenNotificationModal } = useStore();
 
   let icon = 'material-symbols:info';
   let bgColor = '#fff';
@@ -87,25 +94,16 @@ export default function CustomizedDialogs(props) {
     color = '#b01038';
   }
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
-    setOpen(false);
+    setOpenNotificationModal(false);
   };
 
   return (
     <div>
-      <p>THis is the props open: {props.open}</p>
-      <Button variant='outlined' onClick={handleClickOpen}>
-        Open dialog
-      </Button>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby='customized-dialog-title'
         open={props.open}
-        // open={openNotificationModal}
         sx={{
           '& .MuiDialog-paper': {
             background: bgColor,
@@ -119,8 +117,6 @@ export default function CustomizedDialogs(props) {
           },
         }}
       >
-        {/* Props available for NotificationModal's icon: alert, info, success, warning  */}
-
         <Icon
           icon={icon}
           style={{

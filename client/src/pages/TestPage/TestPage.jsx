@@ -5,9 +5,20 @@ import useStore from '../../useStore';
 // Importing components
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
+import Button from '@mui/material/Button';
 
 const TestPage = () => {
-  const { password, passwordOld, passwordVerify } = useStore();
+  const {
+    password,
+    passwordOld,
+    passwordVerify,
+    openNotificationModal,
+    setOpenNotificationModal,
+  } = useStore();
+
+  const handleClickOpen = () => {
+    setOpenNotificationModal(true);
+  };
 
   return (
     <main className='testpage__wrapper'>
@@ -26,8 +37,12 @@ const TestPage = () => {
           type='info'
           title='Vahvistus ei onnistunut'
           body='Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia tempore porro ex repudiandae. Architecto, ad voluptatem! Libero ad harum sint tempore ex enim dignissimos, corporis fugiat quasi veniam! Possimus, iste!'
-          open={true}
+          open={openNotificationModal}
         />
+
+        <Button variant='outlined' onClick={handleClickOpen}>
+          Open dialog
+        </Button>
       </section>
     </main>
   );
