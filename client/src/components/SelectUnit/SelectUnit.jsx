@@ -9,7 +9,7 @@ function SelectUnit({ unit, allUnits }) {
   // Check / uncheck unit using toggleUnit function from UnitsStore
   const toggleUnit = useUnitsStore((state) => state.toggleUnit);
   const handleCheckboxChange = () => {
-    toggleUnit(unit._id);
+    toggleUnit(unit);
   };
 
   // Get all checked units from store
@@ -27,24 +27,24 @@ function SelectUnit({ unit, allUnits }) {
   return (
     <div
       key={unit._id}
-      className={`degreeUnits__container--units-unit ${
-        checkedUnits.includes(unit._id) && 'checked'
+      className={`selectUnit__container--units-unit ${
+        checkedUnits.includes(unit) && 'checked'
       }`}
     >
       <div
-        className={`degreeUnits__container--units-unit-checkbox ${
-          checkedUnits.includes(unit._id) && 'checked'
+        className={`selectUnit__container--units-unit-checkbox ${
+          checkedUnits.includes(unit) && 'checked'
         }`}
         onClick={handleCheckboxChange}
       >
-        {checkedUnits.includes(unit._id) && <Icon icon="mdi:tick" color="white" />}
+        {checkedUnits.includes(unit) && <Icon icon="mdi:tick" color="white" />}
       </div>
-      <p key={unit._id}>
+      <p>
         <b>{getUnitNumber(unit._id)}.</b> {unit.name.fi}
       </p>
       <Icon 
         icon="iconamoon:arrow-right-2-light" 
-        className="degreeUnits__container--units-unit-arrow" 
+        className="selectUnit__container--units-unit-arrow" 
         onClick={() => navigate('/unit-info')} // later navigate to unit-info/:id
       />
     </div>
