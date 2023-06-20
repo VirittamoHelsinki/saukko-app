@@ -5,6 +5,7 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
 
 // importing all pages which need routing
+import TestPage from '../../pages/TestPage/TestPage';
 import LandingPage from '../../pages/LandingPage/LandingPage';
 import ChooseRole from '../../pages/ChooseRole/ChooseRole';
 import LoginPage from '../../pages/LoginPage/LoginPage';
@@ -27,8 +28,12 @@ import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
+<<<<<<< HEAD
 import ChangePassword from '../../pages/ChangePassword/ChangePassword';
 
+=======
+import UserDashboard from '../../pages/UserDashboard/UserDashboard';
+>>>>>>> f0a23a00e1e08a8b1d7708e38a2c3ceeb8e45966
 
 const Router = () => {
   let location = useLocation();
@@ -57,6 +62,8 @@ const Router = () => {
     <>
       <Routes key={location.pathname} location={location}>
         {/* placeholder paths and pages */}
+
+        <Route path='/test-page' element={<TestPage />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/search' element={<SearchPage />} />
@@ -101,6 +108,7 @@ const Router = () => {
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
             <Route path='/account-created' element={<AccountCreated />} />
+            <Route path='/userdashboard' element={<UserDashboard />} />
           </>
         )}
       </Routes>
