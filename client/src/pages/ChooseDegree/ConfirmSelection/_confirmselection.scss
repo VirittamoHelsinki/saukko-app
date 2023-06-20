@@ -10,11 +10,29 @@
     .confirmSelection__container {
       display: flex;
       flex-direction: column;
+      gap: 20px;
       margin-top: 200px;
       margin-bottom: 50px;
       width: 100%;
       flex-grow: 1;
       overflow-y: auto;
+
+      .confirmSelection__container--title {
+        text-decoration: underline;
+        font-size: 16px;
+        text-align: center;
+      }
+
+      .confirmSelection__container--desc {
+        text-align: center;
+      }
+
+      .confirmSelection__container--secondtitle {
+        margin-left: 10px;
+        margin-right: 10px;
+        text-decoration: underline;
+        font-size: 16px;
+      }
     }
   }
 }
