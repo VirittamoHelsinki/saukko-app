@@ -8,7 +8,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Button from '../../../components/Button/Button';
-import { degrees } from '../SearchPage/tempData';
+import { units } from '../DegreeUnits/unitsTempData';
 import useUnitsStore from '../../../unitsStore';
 
 function ConfirmSelection() {
@@ -32,8 +32,8 @@ function ConfirmSelection() {
           <h1 className='confirmSelection__container--secondtitle'>Valitsemasi tutkinnonosat</h1>
           <div className='confirmSelection__container--units'>
             {console.log(console.log('checked units confirm selection page: ', checkedUnits))}
-            {checkedUnits.map((unitId) => (
-              <p>{unitId}</p>
+            {checkedUnits.map((unit) => (
+              <SelectUnit key={unit._id} unit={unit} allUnits={units}/>
             ))}
           </div>
         </section>
