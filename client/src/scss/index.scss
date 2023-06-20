@@ -10,6 +10,8 @@
 @import '../components/PageNumbers/PageNumbers';
 @import '../components/Hyperlink/Hyperlink';
 @import '../components/PasswordInput/passwordinput';
+@import '../components/SelectUnit/selectunit';
+@import '../components/InfoList/infolist';
 @import '../pages/./TestPage/testpage';
 @import '../pages/./LoginPage/loginpage';
 @import '../pages/RegisterPage/registerpage';
@@ -29,3 +31,4 @@
 @import '../pages/ChooseDegree/SearchPage/searchpage';
 @import '../pages/ChooseDegree/DegreeInfo/degreeinfo';
 @import '../pages/ChooseDegree/DegreeUnits/degreeunits';
+@import '../pages/ChooseDegree/ConfirmSelection/confirmselection';

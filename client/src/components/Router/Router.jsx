@@ -25,6 +25,7 @@ import FirstLogin from '../../pages/FirstLogin/FirstLogin';
 import SearchPage from '../../pages/ChooseDegree/SearchPage/SearchPage';
 import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
 import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
+import ConfirmSelection from '../../pages/ChooseDegree/ConfirmSelection/ConfirmSelection';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
@@ -64,6 +65,7 @@ const Router = () => {
         <Route path='/search' element={<SearchPage />} />
         <Route path='/degree-info' element={<DegreeInfo />} />
         <Route path='/degree-units' element={<DegreeUnits />} />
+        <Route path='/confirm-selection' element={<ConfirmSelection />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
 
@@ -101,6 +103,10 @@ const Router = () => {
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/userdashboard' element={<UserDashboard />} />
+            <Route path='/search' element={<SearchPage />} />
+            <Route path='/degree-info' element={<DegreeInfo />} />
+            <Route path='/degree-units' element={<DegreeUnits />} />
+            <Route path='/confirm-selection' element={<ConfirmSelection />} />
           </>
         )}
       </Routes>

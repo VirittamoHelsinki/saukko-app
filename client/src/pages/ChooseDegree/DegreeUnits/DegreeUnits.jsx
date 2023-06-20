@@ -11,6 +11,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNumbers from "../../../components/PageNumbers/PageNumbers";
 import Button from "../../../components/Button/Button";
+import SelectUnit from "../../../components/SelectUnit/SelectUnit";
 import { units } from './unitsTempData';
 
 function DegreeUnits() {
@@ -25,18 +26,7 @@ function DegreeUnits() {
       units.filter((unit) =>
       unit.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
       )
-      );
-  };
-    
-  // Checkbox logic
-  const [checkedUnits, setCheckedUnits] = useState([]);
-  
-  const handleCheckboxChange = (unitId) => {
-    if (checkedUnits.includes(unitId)) {
-      setCheckedUnits(checkedUnits.filter((id) => id !== unitId));
-    } else {
-      setCheckedUnits([...checkedUnits, unitId]);
-    }
+    );
   };
     
   // Pagination logic
@@ -51,14 +41,6 @@ function DegreeUnits() {
   const indexOfFirstUnit = indexOfLastUnit - unitsPerPage;
   const currentUnits = filteredUnits.slice(indexOfFirstUnit, indexOfLastUnit);
 
-  // Number units
-  const getUnitNumber = (id) => {
-    const foundUnit = units.find(unit => unit._id === id);
-    if (foundUnit) {
-      return units.indexOf(foundUnit) + 1;
-    }
-  };
-
   return (
     <main className="degreeUnits__wrapper">
       <WavesHeader title="Saukko" secondTitle="Autoalan perustutkinto" fill="#9fc9eb" />
@@ -72,31 +54,8 @@ function DegreeUnits() {
         </div>
 
         <div className="degreeUnits__container--units">
-          {currentUnits.map((unit, index) => (
-            <div
-              key={unit._id}
-              className={`degreeUnits__container--units-unit ${
-                checkedUnits.includes(unit._id) && 'checked'
-              }`}
-            >
-              <div
-                className={`degreeUnits__container--units-unit-checkbox ${
-                  checkedUnits.includes(unit._id) && 'checked'
-                }`}
-                onClick={() => handleCheckboxChange(unit._id)}
-              >
-                {checkedUnits.includes(unit._id) && <Icon icon="mdi:tick" color="white" />}
-                {console.log(checkedUnits)}
-              </div>
-              <p key={unit._id}>
-                <b>{getUnitNumber(unit._id)}.</b> {unit.name.fi}
-              </p>
-              <Icon 
-                icon="iconamoon:arrow-right-2-light" 
-                className="degreeUnits__container--units-unit-arrow" 
-                onClick={() => navigate('/unit-info')} // later navigate to unit-info/:id
-              />
-            </div>
+          {currentUnits.map((unit) => (
+            <SelectUnit key={unit._id} unit={unit} allUnits={units}/>
           ))}
         </div>
 
