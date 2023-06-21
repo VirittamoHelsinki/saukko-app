@@ -1,22 +1,16 @@
-// importing react components
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
-
-// importing dependecies
 import { Icon } from "@iconify/react";
-
-// importing components
 import UserNav from "../../../components/UserNav/UserNav";
 import WavesHeader from "../../../components/Header/WavesHeader";
-
-// import temp data
 import { degrees } from "./tempData";
+import DegreeContext from '../../../utils/context/DegreeContext';
 
 // controls how many degrees are shown at once and renders them
-const CheckLength = ({ filteredList, degrees, paginate, currentPage }) => {
+const CheckLength = ({ filteredList, degreeData, paginate, currentPage }) => {
 	const startIndex = (currentPage - 1) * paginate;
 	const endIndex = startIndex + paginate;
-	const list = filteredList.length > 0 ? filteredList : degrees;
+	const list = filteredList.length > 0 ? filteredList : degreeData;
 
 	const navigate = useNavigate();
 
@@ -24,11 +18,11 @@ const CheckLength = ({ filteredList, degrees, paginate, currentPage }) => {
 		<>
 			{list.slice(startIndex, endIndex).map((degree, index) => (
 				<div key={index} className="searchPage__container--list-item" onClick={() => navigate('/degree-info')}>
-					<h3>{degree.title}</h3>
+					<h3>{degree.name.fi}</h3>
 					<div className="searchPage__container--list-item-bottom">
 						<div>
-							<p>Diaari: {degree.diary}</p>
-							<p>Koodi: {degree.code}</p>
+							<p>Diaari: {degree.diaryNumber}</p>
+							<p>Koodi: {degree.eduCodeValue}</p>
 						</div>
 						<li>&#8250;</li>
 					</div>
@@ -101,13 +95,17 @@ const SearchPage = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [paginate, setPaginate] = useState(5);
 
+  // Get degrees from DegreeContext
+  const { degreeData } = useContext(DegreeContext);
+  console.log('Searchpage degrees:', degreeData);
+
 	const handleSearchResult = (event) => {
 		const searchValue = event.target.value;
-		const updatedDegreesList = [...degrees];
+		const updatedDegreesList = [...degreeData];
 		setSearchResult(searchValue);
 		setFilteredList(
 			updatedDegreesList.filter((degree) =>
-				degree.title.toLowerCase().includes(searchValue.toLowerCase())
+				degree.name.fi.toLowerCase().includes(searchValue.toLowerCase())
 			)
 		);
 	};
@@ -143,7 +141,7 @@ const SearchPage = () => {
 				<div className="searchPage__container--list">
 					<CheckLength
 						filteredList={filteredList}
-						degrees={degrees}
+						degreeData={degreeData}
 						paginate={paginate}
 						currentPage={currentPage}
 					/>
