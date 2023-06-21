@@ -8,26 +8,26 @@ import Hyperlink from '../../components/Hyperlink/Hyperlink';
 
 const ContractInfo = () => {
   const data = [
-    // {
-    //   title: 'Asiakkaan nimi',
-    //   content: 'Alex Tenerio',
-    // },
-    // {
-    //   title: 'Koulutus',
-    //   content: 'Tieto- ja viestintätekniikan perustutkinto',
-    // },
-    // {
-    //   title: 'Työpaikka',
-    //   content: 'Lorem ipsum OY',
-    // },
-    // {
-    //   title: 'Opettaja',
-    //   content: 'Sanna Virtanen',
-    // },
-    // {
-    //   title: 'Ohjaaja',
-    //   content: 'Jonna Koskinen',
-    // },
+    {
+      title: 'Asiakkaan nimi',
+      content: 'Alex Tenerio',
+    },
+    {
+      title: 'Koulutus',
+      content: 'Tieto- ja viestintätekniikan perustutkinto',
+    },
+    {
+      title: 'Työpaikka',
+      content: 'Lorem ipsum OY',
+    },
+    {
+      title: 'Opettaja',
+      content: 'Sanna Virtanen',
+    },
+    {
+      title: 'Ohjaaja',
+      content: 'Jonna Koskinen',
+    },
   ];
   return (
     <main className='contractInfo__wrapper'>
