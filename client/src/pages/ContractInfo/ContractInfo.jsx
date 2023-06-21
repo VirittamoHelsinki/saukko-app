@@ -5,6 +5,7 @@ import React from 'react';
 import WavesHeader from '../../components/Header/WavesHeader';
 import InfoList from '../../components/InfoList/InfoList';
 import Hyperlink from '../../components/Hyperlink/Hyperlink';
+import UserNav from '../../components/UserNav/UserNav';
 
 const ContractInfo = () => {
   const data = [
@@ -60,6 +61,7 @@ const ContractInfo = () => {
           />
         </section>
       </div>
+      <UserNav />
     </main>
   );
 };
