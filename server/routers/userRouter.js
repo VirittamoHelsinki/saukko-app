@@ -1,13 +1,13 @@
 // Import required modules and libraries
-const router = require("express").Router();
+const userRouter = require("express").Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const config = require('../utils/config')
-// const { sendResetPasswordEmail } = require('../mailer'); This is for password reset, making it later
+const { sendResetPasswordEmail } = require('../mailer');
 
 // Register a new user
-router.post("/", async (req, res) => {
+userRouter.post("/", async (req, res) => {
 
   // Retrieve the request body
   const body = req.body;
@@ -35,25 +35,21 @@ router.post("/", async (req, res) => {
   const salt = await bcrypt.genSalt();
   const passwordHash = await bcrypt.hash(body.password, salt);
 
+  
   try {
     // Create a new user object, with the provided name, email, password and role
     const newUser = new User({
       name: body.name,
       email: body.email,
-      passwordHash: passwordHash,
+      passwordHash,
       role: body.role,
     });
 
     // Save the new user to the database
-    const savedUser = await newUser.save();
+    await newUser.save();
 
     // Create a token for the user
-    const token = jwt.sign(
-      {
-        id: savedUser._id,
-      },
-      config.JWT_SECRET,
-    );
+    const token = await newUser.generateJWT()
     
     console.log('user created')
 
@@ -67,7 +63,7 @@ router.post("/", async (req, res) => {
 });
 
 //forgot-password
-router.post("/forgot-password", async (req, res) => {
+userRouter.post("/forgot-password", async (req, res) => {
   
   // Retrieve the email from the request body
   const { email } = req.body;
@@ -84,30 +80,21 @@ router.post("/forgot-password", async (req, res) => {
   // If there is no user with the provided email address, return with no error message
   if (!existUser) {
     console.log("user's email does not exist")
-    return res.json({ errorMessage: "" });
+    return res.json({ message: "Password reset link sent to email" });
   }
-
-  // Create a token for the user
-  const newPasswordToken = jwt.sign(
-    {
-      _id: existUser._id,
-    },
-    config.JWT_SECRET,
-    { expiresIn: 30 * 60 } // url expires in 15 minutes
-  );
   
   try {
-    // sendResetPasswordEmail(existUser) This is for password reset, making it later
+    sendResetPasswordEmail(existUser)
     res.status(200).json({ message: "Password reset link sent to email" })
   } catch (err) {
     console.log(err.message)
-    res.status(400).send();
+    res.status(400).json({ errorMessage: err.message })
   }
 
 })
 
 // login
-router.post("/login", async (req, res) => {
+userRouter.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -129,23 +116,14 @@ router.post("/login", async (req, res) => {
       password,
       existingUser.passwordHash
     );
-
+    
     if (!passwordCorrect) {
       console.log("incorrect password")
       return res.status(401).json({ errorMessage: "Incorrect password" });
     }
 
     // Create a token for the user, with the user id, name and role
-    const token = jwt.sign(
-      {
-        id: existingUser._id,
-        email: existingUser.email,
-        name: existingUser.name,
-        role: existingUser.role,
-      },
-      config.JWT_SECRET,
-      { expiresIn: 5 * 60 } // token expires in 5 minutes
-    );
+    const token = await existingUser.generateJWT()
 
     // Send token via HTTP-only cookie
     res.cookie("token", token, { httpOnly: true }).send(
@@ -158,7 +136,7 @@ router.post("/login", async (req, res) => {
 });
 
 // Checks if user is logged in
-router.get("/loggedIn", (req, res) => {
+userRouter.get("/loggedIn", (req, res) => {
   try {
     // Retrieve token from cookies
     const token = req.cookies.token;
@@ -168,12 +146,12 @@ router.get("/loggedIn", (req, res) => {
     }
 
     // Verify the token using the JWT_SECRET
-    const decoded = jwt.verify(token, config.JWT_SECRET);
+    const validateUser = jwt.verify(token, config.JWT_SECRET);
 
     console.log("token verified")
 
     // If the token is valid, respond with loggedIn:true and the decoded user information
-    res.json({ loggedIn: true, user: decoded });
+    res.json({ loggedIn: true, user: validateUser });
   } catch (err) {
     console.error(err.message);
     // If there is an error, respond with loggedIn:false
@@ -182,7 +160,7 @@ router.get("/loggedIn", (req, res) => {
 });
 
 // logout
-router.get("/logout", (req, res) => {
+userRouter.get("/logout", (req, res) => {
   // Clear the token cookie
   res.cookie("token", "", {
     httpOnly: true,
@@ -190,4 +168,4 @@ router.get("/logout", (req, res) => {
   }).send(console.log("Logged out"));
 });
 
-module.exports = router
+module.exports = userRouter
