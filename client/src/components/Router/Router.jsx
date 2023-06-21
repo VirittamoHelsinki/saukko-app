@@ -5,6 +5,7 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
 
 // importing all pages which need routing
+import TestPage from '../../pages/TestPage/TestPage';
 import LandingPage from '../../pages/LandingPage/LandingPage';
 import ChooseRole from '../../pages/ChooseRole/ChooseRole';
 import LoginPage from '../../pages/LoginPage/LoginPage';
@@ -23,9 +24,12 @@ import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
 import FirstLogin from '../../pages/FirstLogin/FirstLogin';
 import SearchPage from '../../pages/ChooseDegree/SearchPage/SearchPage';
 import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
+import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
+import ConfirmSelection from '../../pages/ChooseDegree/ConfirmSelection/ConfirmSelection';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
+import UserDashboard from '../../pages/UserDashboard/UserDashboard';
 
 const Router = () => {
   let location = useLocation();
@@ -54,10 +58,14 @@ const Router = () => {
     <>
       <Routes key={location.pathname} location={location}>
         {/* placeholder paths and pages */}
+
+        <Route path='/test-page' element={<TestPage />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/search' element={<SearchPage />} />
         <Route path='/degree-info' element={<DegreeInfo />} />
+        <Route path='/degree-units' element={<DegreeUnits />} />
+        <Route path='/confirm-selection' element={<ConfirmSelection />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
 
@@ -70,7 +78,6 @@ const Router = () => {
             <Route path='/login-info' element={<LoginInfo />} />
             <Route path='/general-info' element={<GeneralInfo />} />
             <Route path='/work-info' element={<WorkInfo />} />
-            <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/account-failed' element={<AccountFailed />} />
             <Route
               path='/register-supervisor'
@@ -94,6 +101,12 @@ const Router = () => {
             <Route path='/search' element={<SearchPage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
+            <Route path='/account-created' element={<AccountCreated />} />
+            <Route path='/userdashboard' element={<UserDashboard />} />
+            <Route path='/search' element={<SearchPage />} />
+            <Route path='/degree-info' element={<DegreeInfo />} />
+            <Route path='/degree-units' element={<DegreeUnits />} />
+            <Route path='/confirm-selection' element={<ConfirmSelection />} />
           </>
         )}
       </Routes>

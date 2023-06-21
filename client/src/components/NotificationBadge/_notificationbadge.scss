@@ -1,0 +1,34 @@
+.notificationbadge-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+  gap: 14px;
+}
+.text{
+  font-size: 14px;
+  padding-left: 10px;
+}
+.bottom-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.icone-style{
+  width: 48px;
+  height: 48px;
+  font-size: bold;
+  color: black;
+}
+.numberstyle{
+  display: flex;
+  align-items: center;
+  font-size: 40px;
+  font-weight: 700;
+  padding-left: 10px;
+  margin-top: 10px;
+  
+  }
+
+ 

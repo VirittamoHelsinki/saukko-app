@@ -1,5 +1,6 @@
 // Importing react packages
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
+import AuthContext from '../../utils/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../useStore';
 import { Icon } from '@iconify/react';
@@ -42,6 +43,7 @@ const RegisterSupervisor = () => {
   // State variable for button disabled state
   const [buttonDisabled, setButtonDisabled] = useState();
 
+  const { getLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
 
   // Toggle password visibility for password input
@@ -76,11 +78,12 @@ const RegisterSupervisor = () => {
         .post('http://localhost:5000/auth/', registerData)
         .then((res) => {
           console.log(res);
+          navigate('/form-supervisor-sent');
         })
         .catch((err) => {
           console.log(err);
         });
-      navigate('/form-supervisor-sent');
+      await getLoggedIn();
     } catch (err) {
       console.error(err);
       navigate('/account-failed');
@@ -177,7 +180,6 @@ const RegisterSupervisor = () => {
                   setPassword(e.target.value);
                 }}
               />
-              {console.log('password length', password.length)}
               {password.length > 0 && (
                 <span
                   className='password-icon'

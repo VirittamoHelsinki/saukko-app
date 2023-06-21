@@ -8,6 +8,7 @@ const useStore = create((set) => ({
   email: '',
   password: '',
   passwordVerify: '',
+  passwordOld: '',
   address: '',
   postNumber: '',
   city: '',
@@ -21,6 +22,7 @@ const useStore = create((set) => ({
   goals: '',
   academy: '',
   education: '',
+  openNotificationModal: false,
 
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
@@ -28,6 +30,7 @@ const useStore = create((set) => ({
   setEmail: (email) => set({ email }),
   setPassword: (password) => set({ password }),
   setPasswordVerify: (passwordVerify) => set({ passwordVerify }),
+  setPasswordOld: (passwordOld) => set({ passwordOld }),
   setAddress: (address) => set({ address }),
   setPostNumber: (postNumber) => set({ postNumber }),
   setCity: (city) => set({ city }),
@@ -41,6 +44,8 @@ const useStore = create((set) => ({
   setGoals: (goals) => set({ goals }),
   setAcademy: (academy) => set({ academy }),
   setEducation: (education) => set({ education }),
+  setOpenNotificationModal: (openNotificationModal) =>
+    set({ openNotificationModal }),
 
   // Define a resetForm function to reset all state variables to their initial values
   resetForm: () =>
