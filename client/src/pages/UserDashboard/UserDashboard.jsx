@@ -28,9 +28,6 @@ const UserDashboard = () => {
           status={3}
           subheader='1. Tieto- ja viestintätekniikan perustehtävät' />
       </div>
-
-
-
     </div>
   );
 };
