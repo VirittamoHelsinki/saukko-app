@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Icon } from "@iconify/react";
 import UserNav from "../../../components/UserNav/UserNav";
 import WavesHeader from "../../../components/Header/WavesHeader";
-import { degrees } from "./tempData";
 import DegreeContext from '../../../utils/context/DegreeContext';
 
 // controls how many degrees are shown at once and renders them
@@ -113,7 +112,7 @@ const SearchPage = () => {
 	const pageCount =
 		filteredList.length > 0
 			? Math.ceil(filteredList.length / paginate)
-			: Math.ceil(degrees.length / paginate);
+			: Math.ceil(degreeData.length / paginate);
 
 	const handlePageClick = (pageNum) => {
 		setCurrentPage(pageNum);
