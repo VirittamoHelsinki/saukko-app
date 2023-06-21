@@ -76,6 +76,61 @@
         }
       }
     }
+
+    .popup__wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(8px);
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .popup__container {
+      background-color: white;
+      border: none;
+      width: 85%;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .popup__container--title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .popup__container--text {
+      margin-bottom: 20px;
+    }
+    
+    .popup__container--buttons {
+      display: flex;
+      flex-direction: column;
+
+      .button__container {
+        margin-bottom: 10px;
+      }
+    }
+    
+    .popup__container--buttons-confirm {
+      .button__container {
+        background-color: var(--link-blue);
+        border: none;
+        color: var(--saukko-main-white);
+      }
+    }
+
+    .popup__container--buttons-cancel {
+      .button__container {
+        background-color: var(--saukko-main-white);
+        border: 2px solid var(--link-blue);
+        color: var(--link-blue);
+      }
+    }
   }
 }
-
