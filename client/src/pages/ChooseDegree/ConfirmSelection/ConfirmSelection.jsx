@@ -8,8 +8,10 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Button from '../../../components/Button/Button';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import { units } from '../DegreeUnits/unitsTempData';
 import useUnitsStore from '../../../unitsStore';
+import useStore from '../../../useStore';
 
 function ConfirmSelection() {
   const navigate = useNavigate();
@@ -40,6 +42,18 @@ function ConfirmSelection() {
     if (popupContainer && !popupContainer.contains(clickedElement)) {
       handlePopupClose();
     }
+  };
+
+  // NotificationModal logic
+
+  const {
+    openNotificationModal,
+    setOpenNotificationModal,
+  } = useStore();
+
+  const handleNotificationModalOpen = () => {
+    // Set to true the setOpenNotificationModal from useStore.js
+    setOpenNotificationModal(true);
   };
 
   return (
@@ -86,7 +100,7 @@ function ConfirmSelection() {
                 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
               </p>
               <div className="popup__container--buttons">
-                <div className="popup__container--buttons-confirm">
+                <div className="popup__container--buttons-confirm" onClick={() => { handlePopupClose(); handleNotificationModalOpen();}}>
                   <Button text="Vahvista"/>
                 </div>
                 <div className="popup__container--buttons-cancel" onClick={handlePopupClose}>
@@ -97,6 +111,14 @@ function ConfirmSelection() {
           </div>
         )}
       </>
+
+      <NotificationModal
+        type='success'
+        title='Pyyntö lähetetty'
+        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+        open={openNotificationModal}
+      />
+
     </main>
   );
 }
