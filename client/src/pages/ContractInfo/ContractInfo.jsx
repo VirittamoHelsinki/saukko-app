@@ -1,4 +1,4 @@
-// Import ract packages & dependencies
+// Import react packages & dependencies
 import React from 'react';
 
 // Import components
