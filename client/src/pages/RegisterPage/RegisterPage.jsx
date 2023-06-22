@@ -35,7 +35,6 @@ const RegisterPage = () => {
                 });
             navigate("/");
 
-            console.log(email, password, passwordVerify);
         } catch (err) {
             console.error(err);
         }
