@@ -1,22 +1,22 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Icon } from "@iconify/react";
-import UserNav from "../../../components/UserNav/UserNav";
-import WavesHeader from "../../../components/Header/WavesHeader";
+import { Icon } from '@iconify/react';
+import UserNav from '../../../components/UserNav/UserNav';
+import WavesHeader from '../../../components/Header/WavesHeader';
 import DegreeContext from '../../../utils/context/DegreeContext';
 
 // controls how many degrees are shown at once and renders them
-const CheckLength = ({ filteredList, degreeData, paginate, currentPage }) => {
+const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
 	const startIndex = (currentPage - 1) * paginate;
 	const endIndex = startIndex + paginate;
-	const list = filteredList.length > 0 ? filteredList : degreeData;
+	const list = filteredList.length > 0 ? filteredList : allDegrees;
 
 	const navigate = useNavigate();
 
 	return (
 		<>
 			{list.slice(startIndex, endIndex).map((degree, index) => (
-				<div key={index} className="searchPage__container--list-item" onClick={() => navigate('/degree-info')}>
+				<div key={index} className="searchPage__container--list-item" onClick={() => navigate('/degree-info')}> {/* Fix to degree/info/:id */}
 					<h3>{degree.name.fi}</h3>
 					<div className="searchPage__container--list-item-bottom">
 						<div>
@@ -95,12 +95,12 @@ const SearchPage = () => {
 	const [paginate, setPaginate] = useState(5);
 
   // Get degrees from DegreeContext
-  const { degreeData } = useContext(DegreeContext);
-  console.log('Searchpage degrees:', degreeData);
+  const { allDegrees } = useContext(DegreeContext);
+  console.log('Searchpage degrees:', allDegrees);
 
 	const handleSearchResult = (event) => {
 		const searchValue = event.target.value;
-		const updatedDegreesList = [...degreeData];
+		const updatedDegreesList = [...allDegrees];
 		setSearchResult(searchValue);
 		setFilteredList(
 			updatedDegreesList.filter((degree) =>
@@ -112,7 +112,7 @@ const SearchPage = () => {
 	const pageCount =
 		filteredList.length > 0
 			? Math.ceil(filteredList.length / paginate)
-			: Math.ceil(degreeData.length / paginate);
+			: Math.ceil(allDegrees.length / paginate);
 
 	const handlePageClick = (pageNum) => {
 		setCurrentPage(pageNum);
@@ -140,7 +140,7 @@ const SearchPage = () => {
 				<div className="searchPage__container--list">
 					<CheckLength
 						filteredList={filteredList}
-						degreeData={degreeData}
+						allDegrees={allDegrees}
 						paginate={paginate}
 						currentPage={currentPage}
 					/>

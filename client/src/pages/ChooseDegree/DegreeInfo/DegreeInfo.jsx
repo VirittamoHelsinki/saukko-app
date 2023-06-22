@@ -1,6 +1,7 @@
 // Import react packages & dependencies
-import React from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import DegreeContext from '../../../utils/context/DegreeContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -11,10 +12,23 @@ import Button from "../../../components/Button/Button";
 
 function DegreeInfo() {
   const navigate = useNavigate();
+  
+  // Set path & get degree from DegreeContext
+  const { setPath, degree } = useContext(DegreeContext);
+  const params = useParams();
+  
+  useEffect(() => {
+    setPath(params.degreeId);
+  }, []);
 
+  console.log('degree from context', degree)
+
+  // Check if degree object is empty  
+  const degreeFound = Object.keys(degree).length > 0 ? true : false
+  
   return (
     <main className="degreeInfo__wrapper">
-        <WavesHeader title="Saukko" secondTitle="Autoalan perustutkinto" fill="#9fc9eb" />
+        <WavesHeader title="Saukko" secondTitle={degreeFound ? degree.name.fi : 'Tutkinnon nimi'} />
         <section className="degreeInfo__container">
             <PageNumbers activePage={1}/>
             <div className="degreeInfo__container--info">

@@ -6,17 +6,18 @@ const DegreeContext = createContext();
 const DegreeContextProvider = (props) => {
 
   // Initialize state
-  const [degreeData, setDegreeData] = useState([]);
+  const [allDegrees, setAllDegrees] = useState([]);
+  const [degree, setDegree] = useState({});
+  const [path, setPath] = useState('');
   
-  // Fetch degree data from server
+  // Fetch all degrees from server
   const getDegrees = async () => {
     try {
       const degreesResponse = await axios.get(
         'http://localhost:5000/api/degrees'
       );
       // Set state
-      setDegreeData(degreesResponse.data);
-      console.log('DegreeContext', degreeData);
+      setAllDegrees(degreesResponse.data);
     } catch (err) {
       console.error(err);
     }
@@ -26,8 +27,25 @@ const DegreeContextProvider = (props) => {
     getDegrees();
   }, []);
 
+  // Fetch degree by id
+  const getDegree = async () => {
+    try {
+      const degreeResponse = await axios.get(
+        `http://localhost:5000/api/degree/${path}`
+      );
+      // Set state
+      setDegree(degreeResponse.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getDegree();
+  }, [path]);
+
   return (
-    <DegreeContext.Provider value={{ degreeData }}>
+    <DegreeContext.Provider value={{ degree, allDegrees, setPath }}>
       {props.children}
     </DegreeContext.Provider>
   );

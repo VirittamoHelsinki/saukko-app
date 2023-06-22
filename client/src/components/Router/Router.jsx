@@ -64,7 +64,7 @@ const Router = () => {
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/search' element={<SearchPage />} />
-        <Route path='/degree-info' element={<DegreeInfo />} />
+        <Route path='/degree-info/:degreeId' element={<DegreeInfo />} />
         <Route path='/degree-units' element={<DegreeUnits />} />
         <Route path='/confirm-selection' element={<ConfirmSelection />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
