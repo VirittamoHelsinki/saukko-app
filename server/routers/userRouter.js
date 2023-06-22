@@ -106,7 +106,7 @@ userRouter.post("/validate-token", async (req, res) => {
 })
 
 // reset-password
-userRouter.post("/reset-password", async (req, res) => {
+userRouter.post("/reset-password", (req, res) => {
 
   // Retrieve the token from the request body
   const token = req.body.token || null
@@ -127,9 +127,9 @@ userRouter.post("/reset-password", async (req, res) => {
   }
 
   // validate the token
-  jwt.verify(token, config.JWT_SECRET, async (err, decoded) => {
+  jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
     if (err) {
-      console.log(err.message)
+      console.log("Invalid token:",err.message)
       return res.status(401).json({ errorMessage: "Invalid token" })
     }
 
@@ -146,10 +146,10 @@ userRouter.post("/reset-password", async (req, res) => {
       try {
         exitsUser.setPassword(newPassword)
         exitsUser.save()
-        console.log("password reset")
+        console.log("password reset successful")
         return res.status(200).json({ message: "Password reset successful" })
       } catch (err) {
-        console.log(err.message)
+        console.log("password reset failed:", err.message)
         return res.status(400).json({ errorMessage: "Password reset failed" })
       }
     })
