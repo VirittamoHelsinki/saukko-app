@@ -14,7 +14,6 @@ function ProfilePage() {
 
   // User info from AuthContext
   const { getLoggedIn, user } = useContext(AuthContext);
-  console.log('Logged in user:', user);
   
   // Logout
   const navigate = useNavigate();

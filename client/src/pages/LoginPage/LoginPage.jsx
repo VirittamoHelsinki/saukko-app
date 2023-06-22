@@ -37,7 +37,6 @@ const LoginPage = () => {
       await getLoggedIn();
       navigate('/home');
 
-      console.log(email, password);
     } catch (err) {
       console.error(err);
     }
