@@ -14,7 +14,6 @@ const AuthContextProvider = (props) => {
       );
       setLoggedIn(loggedInRes.data.loggedIn);
       setUser(loggedInRes.data.user);
-      console.log(loggedInRes.data);
     } catch (err) {
       console.error(err);
     }
