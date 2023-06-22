@@ -16,7 +16,7 @@ const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
 	return (
 		<>
 			{list.slice(startIndex, endIndex).map((degree, index) => (
-				<div key={index} className="searchPage__container--list-item" onClick={() => navigate('/degree-info')}> {/* Fix to degree/info/:id */}
+				<div key={index} className="searchPage__container--list-item" onClick={() => navigate(`/degree-info/${degree._id}`)}>
 					<h3>{degree.name.fi}</h3>
 					<div className="searchPage__container--list-item-bottom">
 						<div>
