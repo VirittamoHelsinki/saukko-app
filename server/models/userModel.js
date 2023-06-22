@@ -1,5 +1,6 @@
 // Import required modules and libraries
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../utils/config');
 
@@ -24,6 +25,16 @@ const userSchema = new mongoose.Schema({
 });
 
 // next are the methods that we can use on the User model
+
+// method to check if password is correct
+userSchema.methods.isValidPassword = function isValidPassword(password) {
+  return bcrypt.compareSync(password, this.passwordHash);
+}
+
+// method to set passwordHash
+userSchema.methods.setPassword = function setPassword(password) {
+  this.passwordHash = bcrypt.hashSync(password, 10);
+}
 
 // method to generate reset-password token
 userSchema.methods.generateResetPasswordToken = function generateResetPasswordToken() {
