@@ -16,7 +16,8 @@ const UserNavIcon = (props) => {
 
 // user navigation bar
 const UserNav = () => {
-  const { getLoggedIn } = useContext(AuthContext);
+
+  const { getLoggedIn, user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -25,6 +26,18 @@ const UserNav = () => {
     localStorage.removeItem("token")
     await getLoggedIn();
     navigate("/");
+  };
+
+  const getNavColor = () => {
+    if (user.role === "teacher") {
+      return "#FFC61E";
+    } else if (user.role === "customer") {
+      return "#9fc9eb";
+    } else if (user.role === "supervisor") {
+      return "#f5a3c7";
+    } else {
+      return "#9fc9eb";
+    }
   };
 
   return (
@@ -53,7 +66,7 @@ const UserNav = () => {
         />
         {/* sign out icon */}
         {/* <UserNavIcon icon="mdi:sign-out-variant" onClick={LogOut} /> */}
-        
+
       </section>
     </main>
   );
