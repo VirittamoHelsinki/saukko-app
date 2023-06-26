@@ -16,15 +16,15 @@ export default function SimpleAccordion() {
     <div>
       <Accordion>
         <AccordionSummary
-          style={{ backgroundColor: '#FFF4B4', height: '40px' }}
+          sx={{ backgroundColor: '#FFF4B4' }}
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>Kesken</Typography>
+          <Typography sx={{ fontWeight: '600' }}>Kesken</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography style={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography sx={{ display: 'flex', flexDirection: 'column' }}>
             <a href="">Alex Tenorio</a>
             <a href="">Oea Romana</a>
             <a href="">Emiliya Pere</a>
@@ -34,15 +34,15 @@ export default function SimpleAccordion() {
       </Accordion>
       <Accordion>
         <AccordionSummary
-          style={{ backgroundColor: '#efeff0' }}
+          sx={{ backgroundColor: '#efeff0' }}
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography style={{ color: '#fffff' }}>Aloittamatta</Typography>
+          <Typography sx={{ fontWeight: '600' }} >Aloittamatta</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography style={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography sx={{ display: 'flex', flexDirection: 'column' }}>
             <a href="">Alex Tenorio</a>
             <a href="">Oea Romana</a>
             <a href="">Emiliya Pere</a>
@@ -51,15 +51,15 @@ export default function SimpleAccordion() {
       </Accordion>
       <Accordion>
         <AccordionSummary
-          style={{ backgroundColor: '#E2F5F3' }}
+          sx={{ backgroundColor: '#E2F5F3' }}
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel3a-content"
           id="panel3a-header"
         >
-          <Typography style={{ color: '#FFFFFF' }}>Suorittanut</Typography>
+          <Typography sx={{ fontWeight: '600' }}>Suorittanut</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography style={{ display: 'flex', flexDirection: 'column' }}>
+          <Typography sx={{ display: 'flex', flexDirection: 'column' }}>
             <a href="">Alex Tenorio</a>
             <a href="">Oea Romana</a>
             <a href="">Emiliya Pere</a>
@@ -69,5 +69,3 @@ export default function SimpleAccordion() {
     </div>
   );
 }
-
-

@@ -2,20 +2,17 @@
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import axios from "axios";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "../../utils/context/AuthContext";
-import document from '../../assets/document.svg'
-import customers from '../../assets/customers.svg'
+
 
 // icon component
 const UserNavIcon = (props) => {
   return (
     <button onClick={props.onClick}>
-      {props.icon ? (
-        <Icon icon={props.icon} rotate={props.rotate} />
-      ) : (
-        <img src={props.image} alt="icon" />
-      )}
+
+      <Icon icon={props.icon} rotate={props.rotate} />
+
     </button>
   );
 };
@@ -23,8 +20,28 @@ const UserNavIcon = (props) => {
 // user navigation bar
 const UserNav = () => {
   const { getLoggedIn, user } = useContext(AuthContext);
-
   const navigate = useNavigate();
+  const role = user?.role;
+
+  const getHeaderColor = () => {
+    // Define color based on role
+    switch (role) {
+      case 'customer':
+        return '#9fc9eb';
+      case 'teacher':
+        return '#FFC61E';
+      case 'supervisor':
+        return '#f5a3c7';
+      default:
+        return '#9fc9eb';
+    }
+  };
+
+  const headerColor = getHeaderColor();
+
+  const wrapperStyle = {
+    backgroundColor: headerColor,
+  };
 
   const LogOut = async () => {
     await axios.get("http://localhost:5000/auth/logout");
@@ -32,19 +49,6 @@ const UserNav = () => {
     await getLoggedIn();
     navigate("/");
   };
-  const getNavColor = () => {
-    if (user.role === "teacher") {
-      return "#FFC61E";
-    } else if (user.role === "customer") {
-      return "#9fc9eb";
-    } else if (user.role === "supervisor") {
-      return "#f5a3c7";
-    } else {
-      return "#9fc9eb";
-    }
-  };
-
-
 
   const renderIcons = () => {
     if (user.role === "teacher") {
@@ -57,10 +61,13 @@ const UserNav = () => {
           />
           {/* book icon */}
           <UserNavIcon
-            img
-
-
-          // onClick={() => navigate("/userdashboard")}
+            icon="healthicons:i-documents-accepted"
+          // onClick={() => navigate("/")}
+          />
+          {/* persons icon */}
+          <UserNavIcon
+            icon="fontisto:persons"
+          // onClick={() => navigate("/")}
           />
           {/* user icon */}
           <UserNavIcon
@@ -96,7 +103,7 @@ const UserNav = () => {
   };
 
   return (
-    <main className={`userNav__wrapper ${getNavColor()}`}>
+    <main className="userNav__wrapper" style={wrapperStyle}>
       <section className="userNav__container">
         {renderIcons()}
       </section>
@@ -106,3 +113,8 @@ const UserNav = () => {
 };
 
 export default UserNav;
+
+
+
+
+
