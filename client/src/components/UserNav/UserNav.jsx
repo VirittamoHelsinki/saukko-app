@@ -16,7 +16,6 @@ const UserNavIcon = (props) => {
 
 // user navigation bar
 const UserNav = () => {
-
   const { getLoggedIn, user } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -27,7 +26,6 @@ const UserNav = () => {
     await getLoggedIn();
     navigate("/");
   };
-
   const getNavColor = () => {
     if (user.role === "teacher") {
       return "#FFC61E";
@@ -39,6 +37,8 @@ const UserNav = () => {
       return "#9fc9eb";
     }
   };
+
+
 
   return (
     <main className="userNav__wrapper">
