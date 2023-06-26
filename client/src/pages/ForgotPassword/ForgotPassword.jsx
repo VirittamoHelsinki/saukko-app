@@ -29,7 +29,7 @@ const ForgotPassword = () => {
     }
 
     axios
-      .post('/forgot-password', {
+      .post('http://localhost:5000/auth/forgot-password', {
         email: email,
       })
       .then(function (res) {

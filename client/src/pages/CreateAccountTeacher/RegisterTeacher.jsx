@@ -73,7 +73,6 @@ const RegisterTeacher = () => {
         education,
         phone,
       };
-      console.log('Form data about to be sent to DB: ', registerData);
       await axios
         .post('http://localhost:5000/auth/', registerData)
         .then((res) => {
@@ -166,7 +165,6 @@ const RegisterTeacher = () => {
                   setPassword(e.target.value);
                 }}
               />
-              {console.log('password length', password.length)}
               {password.length > 0 && (
                 <span
                   className='password-icon'

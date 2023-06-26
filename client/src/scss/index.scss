@@ -10,6 +10,9 @@
 @import '../components/PageNumbers/PageNumbers';
 @import '../components/Hyperlink/Hyperlink';
 @import '../components/PasswordInput/passwordinput';
+@import '../components/SelectUnit/selectunit';
+@import '../components/InfoList/infolist';
+@import '../components/UnitStatus/unitstatus';
 @import '../pages/./TestPage/testpage';
 @import '../pages/./LoginPage/loginpage';
 @import '../pages/RegisterPage/registerpage';
@@ -25,8 +28,12 @@
 @import '../pages/FirstLogin/firstlogin';
 @import '../pages/FirstLogin/Step0/pick-account-type';
 @import '../pages/HomePageAfterLoggedIn/homepageafterloggedin';
-@import '../pages/ChangePassword/changepassword';
+@import '../pages/ResetPassword/ResetPassword';
 @import '../pages/ProfilePage/Profilepage';
 @import '../pages/ChooseDegree/SearchPage/searchpage';
 @import '../pages/ChooseDegree/DegreeInfo/degreeinfo';
 @import '../pages/ChooseDegree/DegreeUnits/degreeunits';
+@import '../pages/ChooseDegree/ConfirmSelection/confirmselection';
+@import '../pages/UserDashboard/userdashboard';
+@import '../pages/ContractInfo/contractinfo';
+

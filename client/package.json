@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.11.0",
     "@iconify/icons-typcn": "^1.2.3",
     "@iconify/react": "^4.1.0",
+    "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.133",
     "@mui/material": "^5.13.4",
     "@testing-library/jest-dom": "^5.16.5",

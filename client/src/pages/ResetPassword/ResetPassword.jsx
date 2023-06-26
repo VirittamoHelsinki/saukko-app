@@ -6,7 +6,7 @@
 // import Notification from "../../components/Notification/Notification";
 // import { loadingButtonClasses } from "@mui/lab";
 
-// const ChangePassword = () => {
+// const ResetPassword = () => {
 //   const [password, setPassword] = useState("");
 //   const [confirmPassword, setConfirmPassword] = useState("");
 //   const [showPassword, setShowPassword] = useState(false);
@@ -157,7 +157,7 @@
 //   );
 // };
 
-// export default ChangePassword;
+// export default ResetPassword;
 
 
 import React, { useEffect, useRef, useState } from "react";
@@ -168,7 +168,7 @@ import Button from "../../components/Button/Button";
 import WavesHeader from "../../components/Header/WavesHeader";
 import Notification from "../../components/Notification/Notification";
 
-const ChangePassword = () => {
+const ResetPassword = () => {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -319,7 +319,7 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ResetPassword;
 
 
 

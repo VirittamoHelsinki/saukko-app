@@ -25,12 +25,14 @@ import FirstLogin from '../../pages/FirstLogin/FirstLogin';
 import SearchPage from '../../pages/ChooseDegree/SearchPage/SearchPage';
 import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
 import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
+import ConfirmSelection from '../../pages/ChooseDegree/ConfirmSelection/ConfirmSelection';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
-import ChangePassword from '../../pages/ChangePassword/ChangePassword';
+import ResetPassword from '../../pages/ResetPassword/ResetPassword';
 
 import UserDashboard from '../../pages/UserDashboard/UserDashboard';
+import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 
 const Router = () => {
   let location = useLocation();
@@ -47,7 +49,7 @@ const Router = () => {
         path === '/register-customer' ||
         path === '/forgot-password')
     ) {
-      navigate('/home');
+      navigate('/userdashboard');
     }
   }, [loggedIn, path, navigate]);
 
@@ -66,10 +68,14 @@ const Router = () => {
         <Route path='/search' element={<SearchPage />} />
         <Route path='/degree-info' element={<DegreeInfo />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-        <Route path='/reset-password/:token' element={<ChangePassword />} />
+        <Route path='/reset-password/:token' element={<ResetPassword />} />
         <Route path='/degree-units' element={<DegreeUnits />} />
+        <Route path='/degree-info/:degreeId' element={<DegreeInfo />} />
+        <Route path='/degree-units/:degreeId' element={<DegreeUnits />} />
+        <Route path='/confirm-selection/:degreeId' element={<ConfirmSelection />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/contract-info' element={<ContractInfo />} />
 
         {!loggedIn && (
           <>
@@ -81,7 +87,7 @@ const Router = () => {
             <Route path='/general-info' element={<GeneralInfo />} />
             <Route path='/work-info' element={<WorkInfo />} />
             <Route path='/account-failed' element={<AccountFailed />} />
-            <Route path='/reset-password/:token' element={<ChangePassword />} />
+            <Route path='/reset-password/:token' element={<ResetPassword />} />
 
             <Route
               path='/register-supervisor'
@@ -107,6 +113,11 @@ const Router = () => {
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/userdashboard' element={<UserDashboard />} />
+            <Route path='/search' element={<SearchPage />} />
+            <Route path='/degree-info/:degreeId' element={<DegreeInfo />} />
+            <Route path='/degree-units/:degreeId' element={<DegreeUnits />} />
+            <Route path='/confirm-selection/:degreeId' element={<ConfirmSelection />} />
+            <Route path='/contract-info' element={<ContractInfo />} />
           </>
         )}
       </Routes>

@@ -73,7 +73,6 @@ const RegisterSupervisor = () => {
         workAddress,
         workPhoneNumber,
       };
-      console.log('Form data about to be sent to DB: ', registerData);
       await axios
         .post('http://localhost:5000/auth/', registerData)
         .then((res) => {

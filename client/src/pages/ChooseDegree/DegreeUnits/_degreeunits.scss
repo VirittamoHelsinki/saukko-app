@@ -51,42 +51,6 @@
 
       .degreeUnits__container--units {
         margin-top: 20px;
-
-        .degreeUnits__container--units-unit {
-          margin-top: 5px;
-          padding: 10px 20px;
-          height: 80px;
-          display: flex;
-          align-items: flex-start;
-          justify-content: flex-start;
-          gap: 5px;
-          background-color: var(--grayscale-background-box);
-
-          &.checked {
-            background-color: var(--list-checked);
-          }
-  
-          .degreeUnits__container--units-unit-checkbox {
-              margin-right: 5px;
-              background-color: var(--saukko-main-white);
-              border: 2px solid var(--saukko-main-grey);
-              border-radius: 50%;
-              width: 20px;
-              height: 20px;
-              flex-shrink: 0;
-
-              &.checked {
-                border: 2px solid var(--checkbox-green);
-                background-color: var(--checkbox-green);
-              }
-          }
-          
-          .degreeUnits__container--units-unit-arrow {
-            margin-left: auto;
-            font-size: 30px;
-            flex-shrink: 0;
-          }
-        }
       }
 
       nav {
@@ -96,7 +60,7 @@
       }
 
       .degreeUnits__container--buttons {
-        margin: 10px;
+        margin: 15px;
         display: flex;
         justify-content: center;
         align-items: center;
