@@ -30,6 +30,7 @@ import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
 import UserDashboard from '../../pages/UserDashboard/UserDashboard';
+import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 
 const Router = () => {
   let location = useLocation();
@@ -68,6 +69,7 @@ const Router = () => {
         <Route path='/confirm-selection' element={<ConfirmSelection />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/contract-info' element={<ContractInfo />} />
 
         {!loggedIn && (
           <>
@@ -107,6 +109,7 @@ const Router = () => {
             <Route path='/degree-info' element={<DegreeInfo />} />
             <Route path='/degree-units' element={<DegreeUnits />} />
             <Route path='/confirm-selection' element={<ConfirmSelection />} />
+            <Route path='/contract-info' element={<ContractInfo />} />
           </>
         )}
       </Routes>
