@@ -20,8 +20,11 @@ export default function SimpleAccordion() {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+        
         >
+
           <Typography sx={{ fontWeight: '600' }}>Kesken</Typography>
+
         </AccordionSummary>
         <AccordionDetails>
           <Typography sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -40,6 +43,7 @@ export default function SimpleAccordion() {
           id="panel2a-header"
         >
           <Typography sx={{ fontWeight: '600' }} >Aloittamatta</Typography>
+
         </AccordionSummary>
         <AccordionDetails>
           <Typography sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -56,7 +60,9 @@ export default function SimpleAccordion() {
           aria-controls="panel3a-content"
           id="panel3a-header"
         >
+
           <Typography sx={{ fontWeight: '600' }}>Suorittanut</Typography>
+
         </AccordionSummary>
         <AccordionDetails>
           <Typography sx={{ display: 'flex', flexDirection: 'column' }}>

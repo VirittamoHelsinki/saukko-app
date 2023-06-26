@@ -1,6 +1,6 @@
-// Import React packages
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// Import react packages
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Import libraries
 import { Icon } from '@iconify/react';
@@ -12,38 +12,52 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNumbers from "../../../components/PageNumbers/PageNumbers";
 import Button from "../../../components/Button/Button";
 import SelectUnit from "../../../components/SelectUnit/SelectUnit";
-import { units } from './unitsTempData';
+import DegreeContext from '../../../utils/context/DegreeContext';
 
 function DegreeUnits() {
   const navigate = useNavigate();
+
+  // Set path & get degree from DegreeContext
+  const { setPath, degree } = useContext(DegreeContext);
+  const params = useParams();
+  
+  useEffect(() => {
+    setPath(params.degreeId);
+  }, []);
+  
+  // Save degree units to state once degree is fetched
+  const degreeUnits = degree.units
+  const [filteredUnits, setFilteredUnits] = useState(degreeUnits);
+
+  useEffect(() => {
+    setFilteredUnits(degreeUnits);
+  }, [degree]);
   
   // Searchbar logic
-  const [filteredUnits, setFilteredUnits] = useState(units);
-  
   const handleSearchResult = (event) => {
     setPage(1); // Reset to the first page
     setFilteredUnits(
-      units.filter((unit) =>
+      degree.units.filter((unit) =>
       unit.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
       )
     );
   };
-    
+
   // Pagination logic
   const [page, setPage] = useState(1);
   const unitsPerPage = 4;
-
+  
   const handlePageChange = (event, value) => {
     setPage(value);
   };
-
+  
   const indexOfLastUnit = page * unitsPerPage;
   const indexOfFirstUnit = indexOfLastUnit - unitsPerPage;
-  const currentUnits = filteredUnits.slice(indexOfFirstUnit, indexOfLastUnit);
+  const currentUnits = filteredUnits?.slice(indexOfFirstUnit, indexOfLastUnit);
 
   return (
     <main className="degreeUnits__wrapper">
-      <WavesHeader title="Saukko" secondTitle="Autoalan perustutkinto" fill="#9fc9eb" />
+      <WavesHeader title="Saukko" secondTitle={degree.name.fi} fill="#9fc9eb" />
       <section className="degreeUnits__container">
         <PageNumbers activePage={2}/>
         <h1>Valitse tutkinnon osat</h1>
@@ -54,13 +68,13 @@ function DegreeUnits() {
         </div>
 
         <div className="degreeUnits__container--units">
-          {currentUnits.map((unit) => (
-            <SelectUnit key={unit._id} unit={unit} allUnits={units}/>
+          {currentUnits?.map((unit) => (
+            <SelectUnit key={unit._id} unit={unit} allUnits={degree.units}/>
           ))}
         </div>
 
         <Pagination
-          count={Math.ceil(filteredUnits.length / unitsPerPage)}
+          count={Math.ceil(filteredUnits?.length / unitsPerPage)}
           page={page}
           onChange={handlePageChange}
         />
@@ -69,14 +83,14 @@ function DegreeUnits() {
           <div className="degreeUnits__container--buttons-back">
             <Button
               text="Takaisin"
-              onClick={() => navigate('/degree-info')} // later fix to degree-info/:id
+              onClick={() => navigate(`/degree-info/${degree._id}`)}
               icon={"formkit:arrowleft"}
             />
           </div>
           <div className="degreeUnits__container--buttons-forward">
             <Button
               text="Valitse tutkinnonosat"
-              onClick={() => navigate('/confirm-selection')}
+              onClick={() => navigate(`/confirm-selection/${degree._id}`)}
               icon={"formkit:arrowright"}
             />
           </div>

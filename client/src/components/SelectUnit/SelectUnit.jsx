@@ -45,7 +45,7 @@ function SelectUnit({ unit, allUnits }) {
       <Icon 
         icon="iconamoon:arrow-right-2-light" 
         className="selectUnit__container--units-unit-arrow" 
-        onClick={() => navigate('/unit-info')} // later navigate to unit-info/:id
+        /* onClick={() => navigate(`/unit-info/${degree._id}`)} */
       />
     </div>
   )

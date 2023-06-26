@@ -1,8 +1,8 @@
 // importing all sass styling
 import "./scss/index.scss";
 import axios from "axios";
-// import { AuthContextProvider } from "./components/context/AuthContext";
 import { AuthContextProvider } from "./utils/context/AuthContext";
+import { DegreeContextProvider } from "./utils/context/DegreeContext";
 
 // importing page routing
 import Router from "./components/Router/Router";
@@ -14,7 +14,9 @@ const App = () => {
   return (
     <main className="app__wrapper">
       <AuthContextProvider>
-        <Router />
+        <DegreeContextProvider>
+          <Router />
+        </DegreeContextProvider>
       </AuthContextProvider>
     </main>
   );
