@@ -35,7 +35,7 @@ const LoginPage = () => {
           console.log(err);
         });
       await getLoggedIn();
-      navigate('/home');
+      navigate('/userdashboard');
 
     } catch (err) {
       console.error(err);
@@ -49,10 +49,10 @@ const LoginPage = () => {
 
   // button styling/CSS
   const buttonStyleDisabled = {
-      color: 'var(--saukko-main-white)',
-      border: 'var(--link-disabled)',
-      background: 'var(--link-disabled)',
-    },
+    color: 'var(--saukko-main-white)',
+    border: 'var(--link-disabled)',
+    background: 'var(--link-disabled)',
+  },
     buttonStyleEnabled = {
       color: 'var(--saukko-main-white)',
       border: 'var(--saukko-main-black)',

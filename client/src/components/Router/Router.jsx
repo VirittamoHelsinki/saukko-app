@@ -47,7 +47,7 @@ const Router = () => {
         path === '/register-customer' ||
         path === '/forgot-password')
     ) {
-      navigate('/home');
+      navigate('/userdashboard');
     }
   }, [loggedIn, path, navigate]);
 
