@@ -1,9 +1,11 @@
 
+import { Accordion } from '@mui/material';
 import React, { useContext } from 'react';
 import WavesHeader from '../../components/Header/WavesHeader';
 import NotificationBadge from '../../components/NotificationBadge/NotificationBadge';
 import UnitStatus from '../../components/UnitStatus/UnitStatus';
 import AuthContext from '../../utils/context/AuthContext';
+import SimpleAccordion from './SimpleAccordion/SimpleAccordion';
 
 const UserDashboard = () => {
   const auth = useContext(AuthContext);
@@ -26,7 +28,7 @@ const UserDashboard = () => {
       <div>
         {user?.role === 'supervisor' && (
           <>
-            <h3 className='headingStyle'>Omat suoritukset</h3>
+            <h3 className='headingStyle'>Asiakkaan suoritukset</h3>
             <UnitStatus
               status={1}
               subheader="1. Tieto- ja viestintätekniikan perustehtävät"
@@ -74,6 +76,18 @@ const UserDashboard = () => {
             />
           </>
         )}
+        {
+          user?.role === 'teacher' && (
+
+            <>
+              <h3 className='headingStyle'>Asiakkaiden suoritukset</h3>
+              <SimpleAccordion></SimpleAccordion>
+
+            </>
+
+
+          )
+        }
 
       </div>
     </div>
