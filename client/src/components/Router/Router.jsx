@@ -65,8 +65,8 @@ const Router = () => {
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/search' element={<SearchPage />} />
         <Route path='/degree-info/:degreeId' element={<DegreeInfo />} />
-        <Route path='/degree-units' element={<DegreeUnits />} />
-        <Route path='/confirm-selection' element={<ConfirmSelection />} />
+        <Route path='/degree-units/:degreeId' element={<DegreeUnits />} />
+        <Route path='/confirm-selection/:degreeId' element={<ConfirmSelection />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
@@ -106,9 +106,9 @@ const Router = () => {
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/userdashboard' element={<UserDashboard />} />
             <Route path='/search' element={<SearchPage />} />
-            <Route path='/degree-info' element={<DegreeInfo />} />
-            <Route path='/degree-units' element={<DegreeUnits />} />
-            <Route path='/confirm-selection' element={<ConfirmSelection />} />
+            <Route path='/degree-info/:degreeId' element={<DegreeInfo />} />
+            <Route path='/degree-units/:degreeId' element={<DegreeUnits />} />
+            <Route path='/confirm-selection/:degreeId' element={<ConfirmSelection />} />
             <Route path='/contract-info' element={<ContractInfo />} />
           </>
         )}

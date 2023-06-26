@@ -36,6 +36,7 @@ const DegreeContextProvider = (props) => {
       // Set state
       setDegree(degreeResponse.data);
     } catch (err) {
+      setDegree({})
       console.error(err);
     }
   };
