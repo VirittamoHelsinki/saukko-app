@@ -24,6 +24,9 @@ function DegreeUnits() {
   useEffect(() => {
     setPath(params.degreeId);
   }, []);
+
+  // Check if degree object is empty  
+  const degreeFound = Object.keys(degree).length > 0 ? true : false
   
   // Save degree units to state once degree is fetched
   const degreeUnits = degree.units
@@ -57,7 +60,7 @@ function DegreeUnits() {
 
   return (
     <main className="degreeUnits__wrapper">
-      <WavesHeader title="Saukko" secondTitle={degree.name.fi} fill="#9fc9eb" />
+      <WavesHeader title="Saukko" secondTitle={degreeFound && degree.name.fi} />
       <section className="degreeUnits__container">
         <PageNumbers activePage={2}/>
         <h1>Valitse tutkinnon osat</h1>
