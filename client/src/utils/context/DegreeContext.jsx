@@ -8,7 +8,7 @@ const DegreeContextProvider = (props) => {
   // Initialize state
   const [allDegrees, setAllDegrees] = useState([]);
   const [degree, setDegree] = useState({});
-  const [path, setPath] = useState('');
+  const [degreeId, setDegreeId] = useState('');
   
   // Fetch all degrees from server
   const getDegrees = async () => {
@@ -31,7 +31,7 @@ const DegreeContextProvider = (props) => {
   const getDegree = async () => {
     try {
       const degreeResponse = await axios.get(
-        `http://localhost:5000/api/degree/${path}`
+        `http://localhost:5000/api/degree/${degreeId}`
       );
       // Set state
       setDegree(degreeResponse.data);
@@ -43,10 +43,13 @@ const DegreeContextProvider = (props) => {
 
   useEffect(() => {
     getDegree();
-  }, [path]);
+  }, [degreeId]);
+
+  // Check if degree object is empty  
+  const degreeFound = Object.keys(degree).length > 0 ? true : false
 
   return (
-    <DegreeContext.Provider value={{ degree, allDegrees, setPath }}>
+    <DegreeContext.Provider value={{ degree, allDegrees, setDegreeId, degreeFound }}>
       {props.children}
     </DegreeContext.Provider>
   );

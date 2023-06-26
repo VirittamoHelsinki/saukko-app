@@ -9,7 +9,6 @@ import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Button from '../../../components/Button/Button';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
-/* import { units } from '../DegreeUnits/unitsTempData'; */
 import useUnitsStore from '../../../unitsStore';
 import useStore from '../../../useStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
@@ -18,11 +17,11 @@ function ConfirmSelection() {
   const navigate = useNavigate();
 
   // Set path & get degree units from DegreeContext
-  const { setPath, degree } = useContext(DegreeContext);
+  const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
   const params = useParams();
   
   useEffect(() => {
-    setPath(params.degreeId);
+    setDegreeId(params.degreeId);
   }, []);
 
   // Get checked units from unitsStore
@@ -49,29 +48,27 @@ function ConfirmSelection() {
   };
 
   // NotificationModal logic
-
   const {
     openNotificationModal,
     setOpenNotificationModal,
   } = useStore();
 
   const handleNotificationModalOpen = () => {
-    // Set to true the setOpenNotificationModal from useStore.js
     setOpenNotificationModal(true);
   };
 
   return (
     <main className='confirmSelection__wrapper'>
-        <WavesHeader title='Saukko' secondTitle={degree.name.fi} />
+        <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
         <section className='confirmSelection__container'>
           <PageNumbers activePage={3}/>
           <h1 className='confirmSelection__container--title'>Vahvista pyyntö</h1>
-          <p className='confirmSelection__container--desc'>{`Olet hakemassa ${degree.name.fi} osien suoria näyttöjä`} </p>
+          <p className='confirmSelection__container--desc'>{`Olet hakemassa ${degreeFound && degree.name.fi} osien suoria näyttöjä`} </p>
           <h1 className='confirmSelection__container--secondtitle'>Valitsemasi tutkinnonosat</h1>
           <div className='confirmSelection__container--units'>
             {console.log(console.log('checked units confirm selection page: ', checkedUnits))}
             {checkedUnits?.map((unit) => (
-              <SelectUnit key={unit._id} unit={unit} allUnits={degree.units}/>
+              <SelectUnit key={unit._id} unit={unit} allUnits={degreeFound && degree.units}/>
             ))}
           </div>
           <div className="confirmSelection__container--buttons">
@@ -79,7 +76,7 @@ function ConfirmSelection() {
               <Button
                 text="Takaisin"
                 icon={"formkit:arrowleft"}
-                onClick={() => navigate(`/degree-units/${degree._id}`)}
+                onClick={() => navigate(`/degrees/${degree._id}/units`)}
               />
             </div>
             <div className="confirmSelection__container--buttons-forward">
@@ -91,7 +88,7 @@ function ConfirmSelection() {
             </div>
           </div>
         </section>
-        <UserNav />
+        {/* <UserNav /> */}
 
       {/* Pop-up confirmation component */}
       <>

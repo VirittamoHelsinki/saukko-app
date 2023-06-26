@@ -18,7 +18,7 @@ function SelectUnit({ unit, allUnits }) {
 
   // Number units
   const getUnitNumber = (id) => {
-    const foundUnit = allUnits.find(unit => unit._id === id);
+    const foundUnit = allUnits && allUnits.find(unit => unit._id === id);
     if (foundUnit) {
       return allUnits.indexOf(foundUnit) + 1;
     }

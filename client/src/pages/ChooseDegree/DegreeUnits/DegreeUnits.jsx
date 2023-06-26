@@ -18,15 +18,12 @@ function DegreeUnits() {
   const navigate = useNavigate();
 
   // Set path & get degree from DegreeContext
-  const { setPath, degree } = useContext(DegreeContext);
+  const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
   const params = useParams();
   
   useEffect(() => {
-    setPath(params.degreeId);
+    setDegreeId(params.degreeId);
   }, []);
-
-  // Check if degree object is empty  
-  const degreeFound = Object.keys(degree).length > 0 ? true : false
   
   // Save degree units to state once degree is fetched
   const degreeUnits = degree.units
@@ -86,20 +83,20 @@ function DegreeUnits() {
           <div className="degreeUnits__container--buttons-back">
             <Button
               text="Takaisin"
-              onClick={() => navigate(`/degree-info/${degree._id}`)}
+              onClick={() => navigate(`/degrees/${degree._id}`)}
               icon={"formkit:arrowleft"}
             />
           </div>
           <div className="degreeUnits__container--buttons-forward">
             <Button
               text="Valitse tutkinnonosat"
-              onClick={() => navigate(`/confirm-selection/${degree._id}`)}
+              onClick={() => navigate('confirm-selection')}
               icon={"formkit:arrowright"}
             />
           </div>
         </div>
       </section>
-      <UserNav />
+      {/* <UserNav /> */}
     </main>
   );
 }

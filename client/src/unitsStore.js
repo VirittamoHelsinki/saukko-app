@@ -16,6 +16,10 @@ const useUnitsStore = create((set) => ({
       return { checkedUnits: updatedUnits };
     });
   },
+
+  clearCheckedUnits: () => {
+    set({ checkedUnits: [] });
+  },
 }));
 
 export default useUnitsStore;

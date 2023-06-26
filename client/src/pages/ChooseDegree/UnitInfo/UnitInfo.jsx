@@ -11,11 +11,8 @@ function UnitInfo() {
   const navigate = useNavigate();
 
   // Get degree from DegreeContext
-  const { degree } = useContext(DegreeContext);
+  const { degree, degreeFound } = useContext(DegreeContext);
   console.log('degree', degree)
-
-  // Check if degree object is empty  
-  const degreeFound = Object.keys(degree).length > 0 ? true : false
 
   // Find unit & save to state
   const params = useParams();

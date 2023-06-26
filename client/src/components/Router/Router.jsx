@@ -64,16 +64,14 @@ const Router = () => {
         <Route path='/test-page' element={<TestPage />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/first-login' element={<FirstLogin />} />
-        <Route path='/degrees' element={<SearchPage />}>
-          <Route path=':degreeId' element={<DegreeInfo />}>
-            <Route path='units' element={<DegreeUnits />}>
-              <Route path=':unitId' element={<UnitInfo />} />
-              <Route path='confirm-selection' element={<ConfirmSelection />} />
-            </Route>
-          </Route>
-        </Route>        <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
+        <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
+        <Route path='/degrees' element={<SearchPage />} />
+        <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
+        <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
+        <Route path='/degrees/:degreeId/units/:unitId' element={<UnitInfo />} />
+        <Route path='/degrees/:degreeId/units/confirm-selection' element={<ConfirmSelection />} />
 
         {!loggedIn && (
           <>
@@ -109,15 +107,12 @@ const Router = () => {
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/userdashboard' element={<UserDashboard />} />
-            <Route path='/degrees' element={<SearchPage />}>
-              <Route path=':degreeId' element={<DegreeInfo />}>
-                <Route path='units' element={<DegreeUnits />}>
-                  <Route path=':unitId' element={<UnitInfo />} />
-                  <Route path='confirm-selection' element={<ConfirmSelection />} />
-                </Route>
-              </Route>
-            </Route>            
             <Route path='/contract-info' element={<ContractInfo />} />
+            <Route path='/degrees' element={<SearchPage />} />
+            <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
+            <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
+            <Route path='/degrees/:degreeId/units/:unitId' element={<UnitInfo />} />
+            <Route path='/degrees/:degreeId/units/confirm-selection' element={<ConfirmSelection />} />
           </>
         )}
       </Routes>
