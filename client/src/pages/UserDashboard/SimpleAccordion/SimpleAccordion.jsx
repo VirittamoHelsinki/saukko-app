@@ -16,12 +16,12 @@ export default function SimpleAccordion() {
     <div>
       <Accordion>
         <AccordionSummary
-          style={{ backgroundColor: '#FFF4B4', height: '40px' }}
+          style={{ backgroundColor: '#FFF4B4' }}
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>Kesken</Typography>
+          <Typography style={{ fontWeight: '600' }}>Kesken</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography style={{ display: 'flex', flexDirection: 'column' }}>
@@ -39,7 +39,7 @@ export default function SimpleAccordion() {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography style={{ color: '#fffff' }}>Aloittamatta</Typography>
+          <Typography style={{ fontWeight: '600' }}>Aloittamatta</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography style={{ display: 'flex', flexDirection: 'column' }}>
@@ -56,7 +56,7 @@ export default function SimpleAccordion() {
           aria-controls="panel3a-content"
           id="panel3a-header"
         >
-          <Typography style={{ color: '#FFFFFF' }}>Suorittanut</Typography>
+          <Typography style={{ fontWeight: '600' }}>Suorittanut</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography style={{ display: 'flex', flexDirection: 'column' }}>
