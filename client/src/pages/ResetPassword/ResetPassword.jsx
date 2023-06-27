@@ -1,10 +1,10 @@
 // import React, { useEffect, useRef, useState } from "react";
+// import { useParams } from "react-router-dom";
 // import axios from "axios";
+// import { Icon } from "@iconify/react";
 // import Button from "../../components/Button/Button";
 // import WavesHeader from "../../components/Header/WavesHeader";
-// import { Icon } from "@iconify/react";
 // import Notification from "../../components/Notification/Notification";
-// import { loadingButtonClasses } from "@mui/lab";
 
 // const ResetPassword = () => {
 //   const [password, setPassword] = useState("");
@@ -13,11 +13,32 @@
 //   const [notificationVisible, setNotificationVisible] = useState(false);
 //   const [showPasswordVerify, setShowPasswordVerify] = useState(false);
 //   const [buttonDisabled, setButtonDisabled] = useState(true);
+//   const [isLoading, setIsLoading] = useState(false);
 //   const passwordRef = useRef();
 //   const confirmPasswordRef = useRef();
+//   const { token } = useParams();
+//   const [validToken, setValidToken] = useState(false)
 //   const color = "#9fc9eb";
 
-//   const processResetPassword = (e) => {
+
+//   const validateToken = async () => {
+//     try {
+//       const response = await axios.post("http://localhost:5000/auth/validate-token", {
+//         token: token
+//       });
+//       return response.data.isvalid;
+//     } catch (error) {
+//       console.log(error);
+//       return false;
+//     }
+//   };
+
+//   useEffect(() => {
+//     const isValidToken = validateToken()
+//     setValidToken(isValidToken)
+//   }, [])
+
+//   const processResetPassword = async (e) => {
 //     e.preventDefault();
 
 //     // validate password and confirm password fields
@@ -26,22 +47,22 @@
 //       return;
 //     }
 
-//     // sending data to the backend
-//     axios
-//       .post("/reset-password", {
-//         password: password,
-//       })
-//       .then(function (res) {
-//         console.log(res);
-//         // setNotificationVisible(true); //when backend fix then we have to uncomment this section
-//       })
-//       .catch(function (err) {
-//         console.log(err);
-//       });
-//     setNotificationVisible(true);
+//     // Set isLoading to true when the request starts
+//     setIsLoading(true);
 
-//     console.log(password);
-//     console.log(confirmPassword);
+//     // sending data to the backend
+//     try {
+//       const response = await axios.post("http://localhost:5000/auth/reset-password", {
+//         token: token,
+//         newPassword: password,
+//       });
+//       console.log(response);
+//       setNotificationVisible(true);
+//     } catch (error) {
+//       console.log(error);
+//     } finally {
+//       setIsLoading(false);
+//     }
 //   };
 
 //   // Toggle password visibility for password input
@@ -57,20 +78,25 @@
 //   const buttonStyleDisabled = {
 //     color: "var(--saukko-main-white)",
 //     border: "var(--link-disabled)",
-//     background: "var(--link-disabled)",
-
+//     background: "var(--link-disabled)"
 //   };
 //   const buttonStyleEnabled = {
 //     color: "var(--saukko-main-white)",
 //     border: "var(--saukko-main-black)",
-//     background: "var(--saukko-main-black)",
-
+//     background: "var(--saukko-main-black)"
 //   };
 
+//   useEffect(() => {
+//     const updateButtonDisabled = async () => {
+//       setButtonDisabled(password === "" || confirmPassword === "");
+//     };
+//     updateButtonDisabled();
+//   }, [password, confirmPassword]);
 
-//   useEffect (()=>{
-//     setButtonDisabled(password === "" || confirmPassword === "")
-//   },[password,confirmPassword ])
+//   if (!validToken) {
+//     console.log('invalid token');
+//     return null;
+//   }
 
 //   return (
 //     <main className="resetPassword__wrapper">
@@ -88,10 +114,8 @@
 //                   className="password-input"
 //                   onChange={(e) => {
 //                     setPassword(e.target.value);
-
 //                   }}
 //                 />
-//                 {console.log("password length", password.length)}
 //                 {password.length > 0 && (
 //                   <span
 //                     className="password-icon"
@@ -105,7 +129,7 @@
 //                   </span>
 //                 )}
 //               </div>
-//                {/* Password verification input */}
+//               {/* Password verification input */}
 //               <label htmlFor="confirmPassword">Vahvista salasana *</label>
 //               <div className="password__container">
 //                 <input
@@ -114,7 +138,6 @@
 //                   className="password-input"
 //                   onChange={(e) => {
 //                     setConfirmPassword(e.target.value);
-
 //                   }}
 //                 />
 //                 {confirmPassword.length > 0 && (
@@ -122,7 +145,7 @@
 //                     className="password-icon"
 //                     onClick={togglePasswordVerifyVisibility}
 //                   >
-//                     {showPasswordVerify? (
+//                     {showPasswordVerify ? (
 //                       <Icon icon="mdi:eye-off-outline" className="eye-off" />
 //                     ) : (
 //                       <Icon icon="mdi:eye-outline" className="eye-on" />
@@ -132,12 +155,10 @@
 //               </div>
 //               <div className="resetPassword__form--bottom">
 //                 <Button
-//                   style={
-//                     buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled
-//                   }
+//                   style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
 //                   onClick={processResetPassword}
 //                   type="submit"
-//                   text="Vaihda salasana"
+//                   text={isLoading ? "Loading..." : "Vaihda salasana"}
 //                 />
 //               </div>
 //             </section>
@@ -159,7 +180,6 @@
 
 // export default ResetPassword;
 
-
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -169,7 +189,6 @@ import WavesHeader from "../../components/Header/WavesHeader";
 import Notification from "../../components/Notification/Notification";
 
 const ResetPassword = () => {
-
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -180,9 +199,30 @@ const ResetPassword = () => {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const { token } = useParams();
+  const [validToken, setValidToken] = useState(false);
   const color = "#9fc9eb";
 
-  const processResetPassword = (e) => {
+  const validateToken = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/auth/validate-token", {
+        token: token
+      });
+      console.log(response)
+      if (response.status === 200) {
+        setValidToken(true)
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const isValidToken = validateToken();
+    setValidToken(isValidToken);
+  }, []);
+
+  const processResetPassword = async (e) => {
     e.preventDefault();
 
     // validate password and confirm password fields
@@ -190,25 +230,23 @@ const ResetPassword = () => {
       console.log("Passwords do not match");
       return;
     }
+
     // Set isLoading to true when the request starts
     setIsLoading(true);
 
     // sending data to the backend
-    axios
-      .post("/reset-password", {
-        password: password,
-        token: token
-      })
-      .then(function (res) {
-        console.log(res);
-        setNotificationVisible(true);
-      })
-      .catch(function (err) {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsLoading(false);
+    try {
+      const response = await axios.post("http://localhost:5000/auth/reset-password", {
+        token: token,
+        newPassword: password,
       });
+      console.log(response);
+      setNotificationVisible(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Toggle password visibility for password input
@@ -233,14 +271,21 @@ const ResetPassword = () => {
   };
 
   useEffect(() => {
-    // console.log(token)
-    setButtonDisabled(password === "" || confirmPassword === "");
+    const updateButtonDisabled = async () => {
+      setButtonDisabled(password === "" || confirmPassword === "");
+    };
+    updateButtonDisabled();
   }, [password, confirmPassword]);
+
+  if (validToken === false) {
+    console.log('invalid token');
+
+  }
 
   return (
     <main className="resetPassword__wrapper">
-      {!notificationVisible && <WavesHeader title="Saukko" fill="#9fc9eb" />}
-      {!notificationVisible && (
+      {validToken && !notificationVisible && <WavesHeader title="Saukko" fill="#9fc9eb" />}
+      {validToken && !notificationVisible && (
         <section className="resetPassword__container">
           <h2>Vaihda salasana</h2>
           <form onSubmit={processResetPassword}>
@@ -294,9 +339,7 @@ const ResetPassword = () => {
               </div>
               <div className="resetPassword__form--bottom">
                 <Button
-                  style={
-                    buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled
-                  }
+                  style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
                   onClick={processResetPassword}
                   type="submit"
                   text={isLoading ? "Loading..." : "Vaihda salasana"}
@@ -320,6 +363,12 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+
+
+
+
+
+
 
 
 

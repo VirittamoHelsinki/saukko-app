@@ -96,7 +96,7 @@ const ForgotPassword = () => {
 
       {notificationVisible && (
         <Notification
-          navigatePage='/reset-password/:token'
+          navigatePage="/login"
           headerColor={color}
           bodyColor={color}
           heading='Tarkista sähköpostisi'
