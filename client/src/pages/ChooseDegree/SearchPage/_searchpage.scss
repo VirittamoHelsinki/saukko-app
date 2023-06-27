@@ -52,8 +52,6 @@
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          background: var(--additional-turquoise);
-          border: 2px solid var(--saukko-main-black);
           max-height: 125px;
           height: 125px;
           padding: 12px;
@@ -82,19 +80,17 @@
               text-align: end;
             }
           }
+
+          &:nth-child(even) {
+            background-color: var(--additional-light-yellow);
+          }
+        
+          &:nth-child(odd) {
+            background-color: var(--additional-light-blue);
+          }
         }
 
-        .searchPage__container--list-item:nth-of-type(4n + 2) {
-          background: var(--additional-yellow); /* dark green */
-        }
 
-        .searchPage__container--list-item:nth-of-type(4n + 3) {
-          background: var(--additional-pink); /* light blue */
-        }
-
-        .searchPage__container--list-item:nth-of-type(4n + 4) {
-          background: var(--additional-skyblue); /* light green */
-        }
       }
       .searchPage__container--list-pagination {
         display: flex;

@@ -9,9 +9,9 @@ import Pagination from '@mui/material/Pagination';
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
-import PageNumbers from "../../../components/PageNumbers/PageNumbers";
-import Button from "../../../components/Button/Button";
-import SelectUnit from "../../../components/SelectUnit/SelectUnit";
+import PageNumbers from '../../../components/PageNumbers/PageNumbers';
+import Button from '../../../components/Button/Button';
+import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import DegreeContext from '../../../utils/context/DegreeContext';
 
 function DegreeUnits() {
@@ -56,18 +56,18 @@ function DegreeUnits() {
   const currentUnits = filteredUnits?.slice(indexOfFirstUnit, indexOfLastUnit);
 
   return (
-    <main className="degreeUnits__wrapper">
-      <WavesHeader title="Saukko" secondTitle={degreeFound && degree.name.fi} />
-      <section className="degreeUnits__container">
+    <main className='degreeUnits__wrapper'>
+      <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
+      <section className='degreeUnits__container'>
         <PageNumbers activePage={2}/>
         <h1>Valitse tutkinnon osat</h1>
 
-        <div className="degreeUnits__container--searchField">
-          <input onChange={handleSearchResult} placeholder="Etsi tutkinnonosat" />
-          <Icon icon="material-symbols:search" hFlip={true} />
+        <div className='degreeUnits__container--searchField'>
+          <input onChange={handleSearchResult} placeholder='Etsi tutkinnonosat' />
+          <Icon icon='material-symbols:search' hFlip={true} />
         </div>
 
-        <div className="degreeUnits__container--units">
+        <div className='degreeUnits__container--units'>
           { currentUnits ? 
             currentUnits.map((unit) => (
               <SelectUnit key={unit._id} unit={unit} allUnits={degree.units}/>
@@ -81,19 +81,19 @@ function DegreeUnits() {
           onChange={handlePageChange}
         />
 
-        <div className="degreeUnits__container--buttons">
-          <div className="degreeUnits__container--buttons-back">
+        <div className='degreeUnits__container--buttons'>
+          <div className='degreeUnits__container--buttons-back'>
             <Button
-              text="Takaisin"
+              text='Takaisin'
               onClick={() => navigate(`/degrees/${degree._id}`)}
-              icon={"formkit:arrowleft"}
+              icon={'formkit:arrowleft'}
             />
           </div>
-          <div className="degreeUnits__container--buttons-forward">
+          <div className='degreeUnits__container--buttons-forward'>
             <Button
-              text="Valitse tutkinnonosat"
+              text='Valitse tutkinnonosat'
               onClick={() => navigate('confirm-selection')}
-              icon={"formkit:arrowright"}
+              icon={'formkit:arrowright'}
             />
           </div>
         </div>
