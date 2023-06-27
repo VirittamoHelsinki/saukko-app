@@ -108,11 +108,6 @@ const Router = () => {
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/userdashboard' element={<UserDashboard />} />
             <Route path='/contract-info' element={<ContractInfo />} />
-            <Route path='/degrees' element={<SearchPage />} />
-            <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
-            <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
-            <Route path='/degrees/:degreeId/units/:unitId' element={<UnitInfo />} />
-            <Route path='/degrees/:degreeId/units/confirm-selection' element={<ConfirmSelection />} />
           </>
         )}
       </Routes>
