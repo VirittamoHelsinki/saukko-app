@@ -38,7 +38,7 @@ function DegreeInfo() {
   
   return (
     <main className='degreeInfo__wrapper'>
-      <WavesHeader title='Saukko' secondTitle={degreeFound ? degree.name.fi : 'Tutkinnon nimi'} />
+      <WavesHeader title='Saukko' secondTitle={degreeFound ? degree.name.fi : 'ei dataa APIsta'} />
       <section className='degreeInfo__container'>
         <PageNumbers activePage={1}/>
         <div className='degreeInfo__container--info'>
@@ -49,27 +49,27 @@ function DegreeInfo() {
           </div>
           <div className='degreeInfo__container--info--block dark'>
             <h2>Perusteen nimi</h2>
-            <p>{degreeFound ? degree.name.fi : 'Degree name'}</p>
+            <p>{degreeFound ? degree.name.fi : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block'>
             <h2>Määräyksen diaarinumero</h2>
-            <p>{degreeFound ? degree.diaryNumber : '123456'}</p>
+            <p>{degreeFound ? degree.diaryNumber : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block dark'>
             <h2>Määräyksen päätöspäivämäärä</h2>
-            <p>{degreeFound ? parseDate(degree.regulationDate) : '123456'}</p>
+            <p>{degreeFound ? parseDate(degree.regulationDate) : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block'>
             <h2>Voimaantulo</h2>
-            <p>{degreeFound ? parseDate(degree.validFrom) : '123456'}</p>
+            <p>{degreeFound ? parseDate(degree.validFrom) : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block dark'>
             <h2>Voimassaolon päättyminen</h2>
-            <p>{degreeFound ? parseDate(degree.expiry) : '123456'}</p>
+            <p>{degreeFound ? parseDate(degree.expiry) : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block'>
             <h2>Siirtymäajan päättymisaika</h2>
-            <p>{degreeFound ? parseDate(degree.transitionEnds) : '123456'}</p>
+            <p>{degreeFound ? parseDate(degree.transitionEnds) : 'ei dataa APIsta'}</p>
           </div>
         </div>
         

@@ -68,9 +68,11 @@ function DegreeUnits() {
         </div>
 
         <div className="degreeUnits__container--units">
-          {currentUnits?.map((unit) => (
-            <SelectUnit key={unit._id} unit={unit} allUnits={degree.units}/>
-          ))}
+          { currentUnits ? 
+            currentUnits.map((unit) => (
+              <SelectUnit key={unit._id} unit={unit} allUnits={degree.units}/>
+            ))
+          : 'ei dataa APIsta'}
         </div>
 
         <Pagination
