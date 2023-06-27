@@ -88,7 +88,7 @@ function ConfirmSelection() {
             </div>
           </div>
         </section>
-        {/* <UserNav /> */}
+        <UserNav />
 
       {/* Pop-up confirmation component */}
       <>

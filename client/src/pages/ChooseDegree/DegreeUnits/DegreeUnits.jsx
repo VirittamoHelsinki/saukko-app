@@ -96,7 +96,7 @@ function DegreeUnits() {
           </div>
         </div>
       </section>
-      {/* <UserNav /> */}
+      <UserNav />
     </main>
   );
 }

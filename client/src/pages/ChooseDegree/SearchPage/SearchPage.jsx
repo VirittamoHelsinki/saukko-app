@@ -126,7 +126,7 @@ const SearchPage = () => {
 	return (
 		<main className="searchPage__wrapper">
 			<WavesHeader title="Koulutukset" secondTitle="Ammatilliset koulutukset" disabled={false} />
-			{/* <UserNav /> */}
+			<UserNav />
 			<section className="searchPage__container">
 				<div className="searchPage__container--searchField">
 					<input

@@ -95,7 +95,7 @@ function DegreeInfo() {
           </div>
         </div>
       </section>
-      {/* <UserNav /> */}
+      <UserNav />
     </main>
   )
 }
