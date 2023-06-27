@@ -14,17 +14,14 @@ function DegreeInfo() {
   const navigate = useNavigate();
   
   // Set path & get degree from DegreeContext
-  const { setPath, degree } = useContext(DegreeContext);
+  const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
   const params = useParams();
   
   useEffect(() => {
-    setPath(params.degreeId);
+    setDegreeId(params.degreeId);
   }, []);
 
   console.log('degree from context:', degree)
-
-  // Check if degree object is empty  
-  const degreeFound = Object.keys(degree).length > 0 ? true : false
 
   // Parse date
   function parseDate(milliseconds) {
@@ -85,14 +82,14 @@ function DegreeInfo() {
           <div className='degreeInfo__container--buttons-back'>
             <Button
               text='Takaisin'
-              onClick={() => navigate('/search')}
+              onClick={() => navigate('/degrees')}
               icon={'formkit:arrowleft'}
             />
           </div>
           <div className='degreeInfo__container--buttons-forward'>
             <Button
               text='Valitse tutkinto'
-              onClick={() => navigate(`/degree-units/${degree._id}`)}
+              onClick={() => navigate(`/degrees/${degree._id}/units`)}
               icon={'formkit:arrowright'}
             />
           </div>

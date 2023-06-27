@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import useUnitsStore from '../../unitsStore';
+import DegreeContext from '../../utils/context/DegreeContext';
+
 
 function SelectUnit({ unit, allUnits }) {
   const navigate = useNavigate();
+
+  // Get degree from degreeContext
+  const { degree } = useContext(DegreeContext);
   
   // Check / uncheck unit using toggleUnit function from UnitsStore
   const toggleUnit = useUnitsStore((state) => state.toggleUnit);
@@ -18,7 +23,7 @@ function SelectUnit({ unit, allUnits }) {
 
   // Number units
   const getUnitNumber = (id) => {
-    const foundUnit = allUnits.find(unit => unit._id === id);
+    const foundUnit = allUnits && allUnits.find(unit => unit._id === id);
     if (foundUnit) {
       return allUnits.indexOf(foundUnit) + 1;
     }
@@ -45,7 +50,7 @@ function SelectUnit({ unit, allUnits }) {
       <Icon 
         icon="iconamoon:arrow-right-2-light" 
         className="selectUnit__container--units-unit-arrow" 
-        /* onClick={() => navigate(`/unit-info/${degree._id}`)} */
+        onClick={() => navigate(`/degrees/${degree._id}/units/${unit._id}`)}
       />
     </div>
   )
