@@ -30,6 +30,8 @@ import ConfirmSelection from '../../pages/ChooseDegree/ConfirmSelection/ConfirmS
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
+import ResetPassword from '../../pages/ResetPassword/ResetPassword';
+
 import UserDashboard from '../../pages/UserDashboard/UserDashboard';
 import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 
@@ -64,6 +66,7 @@ const Router = () => {
         <Route path='/test-page' element={<TestPage />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/first-login' element={<FirstLogin />} />
+        <Route path='/reset-password/:token' element={<ResetPassword />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
@@ -83,6 +86,8 @@ const Router = () => {
             <Route path='/general-info' element={<GeneralInfo />} />
             <Route path='/work-info' element={<WorkInfo />} />
             <Route path='/account-failed' element={<AccountFailed />} />
+            <Route path='/reset-password/:token' element={<ResetPassword />} />
+
             <Route
               path='/register-supervisor'
               element={<RegisterSupervisor />}
