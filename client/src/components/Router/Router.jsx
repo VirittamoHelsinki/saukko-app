@@ -25,6 +25,7 @@ import FirstLogin from '../../pages/FirstLogin/FirstLogin';
 import SearchPage from '../../pages/ChooseDegree/SearchPage/SearchPage';
 import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
 import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
+import UnitInfo from '../../pages/ChooseDegree/UnitInfo/UnitInfo';
 import ConfirmSelection from '../../pages/ChooseDegree/ConfirmSelection/ConfirmSelection';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
@@ -65,17 +66,15 @@ const Router = () => {
         <Route path='/test-page' element={<TestPage />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/first-login' element={<FirstLogin />} />
-        <Route path='/search' element={<SearchPage />} />
-        <Route path='/degree-info' element={<DegreeInfo />} />
-        <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
-        <Route path='/degree-units' element={<DegreeUnits />} />
-        <Route path='/degree-info/:degreeId' element={<DegreeInfo />} />
-        <Route path='/degree-units/:degreeId' element={<DegreeUnits />} />
-        <Route path='/confirm-selection/:degreeId' element={<ConfirmSelection />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
+        <Route path='/degrees' element={<SearchPage />} />
+        <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
+        <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
+        <Route path='/degrees/:degreeId/units/:unitId' element={<UnitInfo />} />
+        <Route path='/degrees/:degreeId/units/confirm-selection' element={<ConfirmSelection />} />
 
         {!loggedIn && (
           <>
@@ -113,10 +112,6 @@ const Router = () => {
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/userdashboard' element={<UserDashboard />} />
-            <Route path='/search' element={<SearchPage />} />
-            <Route path='/degree-info/:degreeId' element={<DegreeInfo />} />
-            <Route path='/degree-units/:degreeId' element={<DegreeUnits />} />
-            <Route path='/confirm-selection/:degreeId' element={<ConfirmSelection />} />
             <Route path='/contract-info' element={<ContractInfo />} />
           </>
         )}
