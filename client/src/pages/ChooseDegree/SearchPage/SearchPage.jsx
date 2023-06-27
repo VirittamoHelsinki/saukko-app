@@ -16,7 +16,7 @@ const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
 	return (
 		<>
 			{list.slice(startIndex, endIndex).map((degree, index) => (
-				<div key={index} className="searchPage__container--list-item" onClick={() => navigate(`/degree-info/${degree._id}`)}>
+				<div key={index} className="searchPage__container--list-item" onClick={() => navigate(`${degree._id}`)}>
 					<h3>{degree.name.fi}</h3>
 					<div className="searchPage__container--list-item-bottom">
 						<div>
@@ -125,7 +125,7 @@ const SearchPage = () => {
 
 	return (
 		<main className="searchPage__wrapper">
-			<WavesHeader title="Koulutukset" secondTitle="Ammatilliset koulutukset" fill="#9fc9eb" disabled={false} />
+			<WavesHeader title="Koulutukset" secondTitle="Ammatilliset koulutukset" disabled={false} />
 			<UserNav />
 			<section className="searchPage__container">
 				<div className="searchPage__container--searchField">

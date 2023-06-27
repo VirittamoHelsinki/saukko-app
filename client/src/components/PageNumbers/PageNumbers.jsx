@@ -33,17 +33,17 @@ const PageNumbers = ({ activePage }) => {
         <div className="page-numbers__wrapper--text">
           <span 
           className={`page-text ${activePage >= 1 ? 'active' : ''}`} 
-          onClick={() => navigate(`/degree-info/${degree._id}`)}>
+          onClick={() => navigate(`/degrees/${degree._id}`)}>
             Valitse tutkinto
           </span>
           <span 
           className={`page-text ${activePage >= 2 ? 'active' : ''}`} 
-          onClick={() => navigate(`/degree-units/${degree._id}`)}>
+          onClick={() => navigate(`/degrees/${degree._id}/units`)}>
             Valitse tutkinnonosat
           </span>
           <span 
           className={`page-text ${activePage === 3 ? 'active' : ''}`} 
-          onClick={() => navigate(`/confirm-selection/${degree._id}`)}>
+          onClick={() => navigate(`/degrees/${degree._id}/units/confirm-selection`)}>
             Vahvista pyyntö
           </span>
         </div>

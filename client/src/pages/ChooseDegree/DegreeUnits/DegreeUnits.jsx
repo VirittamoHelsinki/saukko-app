@@ -18,11 +18,11 @@ function DegreeUnits() {
   const navigate = useNavigate();
 
   // Set path & get degree from DegreeContext
-  const { setPath, degree } = useContext(DegreeContext);
+  const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
   const params = useParams();
   
   useEffect(() => {
-    setPath(params.degreeId);
+    setDegreeId(params.degreeId);
   }, []);
   
   // Save degree units to state once degree is fetched
@@ -57,7 +57,7 @@ function DegreeUnits() {
 
   return (
     <main className="degreeUnits__wrapper">
-      <WavesHeader title="Saukko" secondTitle={degree.name.fi} fill="#9fc9eb" />
+      <WavesHeader title="Saukko" secondTitle={degreeFound && degree.name.fi} />
       <section className="degreeUnits__container">
         <PageNumbers activePage={2}/>
         <h1>Valitse tutkinnon osat</h1>
@@ -74,7 +74,7 @@ function DegreeUnits() {
         </div>
 
         <Pagination
-          count={Math.ceil(filteredUnits?.length / unitsPerPage)}
+          count={filteredUnits && Math.ceil(filteredUnits.length / unitsPerPage)}
           page={page}
           onChange={handlePageChange}
         />
@@ -83,14 +83,14 @@ function DegreeUnits() {
           <div className="degreeUnits__container--buttons-back">
             <Button
               text="Takaisin"
-              onClick={() => navigate(`/degree-info/${degree._id}`)}
+              onClick={() => navigate(`/degrees/${degree._id}`)}
               icon={"formkit:arrowleft"}
             />
           </div>
           <div className="degreeUnits__container--buttons-forward">
             <Button
               text="Valitse tutkinnonosat"
-              onClick={() => navigate(`/confirm-selection/${degree._id}`)}
+              onClick={() => navigate('confirm-selection')}
               icon={"formkit:arrowright"}
             />
           </div>
