@@ -17,6 +17,14 @@ async function fetchData(url) {
   }
 }
 
+router.get('/business/:id', async (req, res) => {
+  try {
+    const businessData = await fetchData(`http://avoindata.prh.fi/opendata/bis/v1/${req.params.id}`);
+    res.json({BusinessId: businessData.results[0].businessId, name: businessData.results[0].name});
+  } catch (error) {
+    res.status(500).json({ error: "Business not found" });
+  }
+});
 
 //Fetch all degrees from ePerusteet
 router.get('/degrees', async (req, res) => {
@@ -25,7 +33,6 @@ router.get('/degrees', async (req, res) => {
     const degrees = await fetchData(`${ePerusteAPI}/perusteet?sivukoko=100000&voimassa=true`);
 
     degrees.data.forEach(degree => {
-      console.log(degree.nimi.fi);
       diaryNumber = String(degree.diaarinumero);
       diaryYear = parseInt(diaryNumber.substring(diaryNumber.length - 4));
       if(diaryYear>2018 && degree.koulutukset[0]){
