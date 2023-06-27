@@ -31,26 +31,28 @@ userRouter.post("/", async (req, res) => {
     return res.status(400).json({ errorMessage: "User already exists" });
   }
 
-  // Generate a salt and hash the password
-  const salt = await bcrypt.genSalt();
-  const passwordHash = await bcrypt.hash(body.password, salt);
+  // // Generate a salt and hash the password
+  // const salt = await bcrypt.genSalt();
+  // const passwordHash = await bcrypt.hash(body.password, salt);
 
-  
+
   try {
     // Create a new user object, with the provided name, email, password and role
     const newUser = new User({
       name: body.name,
       email: body.email,
-      passwordHash,
       role: body.role,
     });
 
-    // Save the new user to the database
-    await newUser.save();
+    // set password to the user object
+    await newUser.setPassword(body.password)
+
+    // save the user object to the database
+    await newUser.save()
 
     // Create a token for the user
     const token = await newUser.generateJWT()
-    
+
     console.log('user created')
 
     // send token via HTTP-only cookie
@@ -64,7 +66,7 @@ userRouter.post("/", async (req, res) => {
 
 //forgot-password
 userRouter.post("/forgot-password", async (req, res) => {
-  
+
   // Retrieve the email from the request body
   const { email } = req.body;
 
@@ -82,7 +84,7 @@ userRouter.post("/forgot-password", async (req, res) => {
     console.log("user's email does not exist")
     return res.json({ message: "Password reset link sent to email" });
   }
-  
+
   try {
     sendResetPasswordEmail(existUser)
     res.status(200).json({ message: "Password reset link sent to email" })
@@ -91,6 +93,67 @@ userRouter.post("/forgot-password", async (req, res) => {
     res.status(400).json({ errorMessage: err.message })
   }
 
+})
+// validate token function
+userRouter.post("/validate-token", async (req, res) => {
+  jwt.verify(req.body.token, config.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      console.log(err.message)
+      return res.status(401).json({ errorMessage: "Invalid token" })
+    }
+    res.status(200).json({ message: "Token is valid" })
+  })
+})
+
+// reset-password
+userRouter.post("/reset-password", (req, res) => {
+
+  // Retrieve the token from the request body
+  const token = req.body.token || null
+  
+  // Retrieve the new password from the request body
+  const newPassword = req.body.newPassword || null
+  
+  // check if the token is null, return with an error message
+  if (token === null) {
+    console.log("no token")
+    return res.status(400).json({ errorMessage: "No token" })
+  }
+
+  // check if the new password is null, return with an error message
+  if (newPassword === null) {
+    console.log("password required")
+    return res.status(400).json({ errorMessage: "password required" })
+  }
+
+  // validate the token
+  jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      console.log("Invalid token:",err.message)
+      return res.status(401).json({ errorMessage: "Invalid token" })
+    }
+
+    // check if the user exists by using the decoded id
+    User.findById(decoded.id).then(exitsUser => {
+
+      // if the user does not exist, return with an error message
+      if (!exitsUser) {
+        console.log("user does not exist")
+        return res.status(401).json({ errorMessage: "User does not exist" })
+      }
+
+      // set the new password and save the user object
+      try {
+        exitsUser.setPassword(newPassword)
+        exitsUser.save()
+        console.log("password reset successful")
+        return res.status(200).json({ message: "Password reset successful" })
+      } catch (err) {
+        console.log("password reset failed:", err.message)
+        return res.status(400).json({ errorMessage: "Password reset failed" })
+      }
+    })
+  })
 })
 
 // login
@@ -103,7 +166,7 @@ userRouter.post("/login", async (req, res) => {
       console.log("email or password empty")
       return res.status(400).json({ errorMessage: "Empty Field" });
     }
-    
+
     // Check if user with the provided email exists
     const existingUser = await User.findOne({ email: email });
     if (!existingUser) {
@@ -116,7 +179,7 @@ userRouter.post("/login", async (req, res) => {
       password,
       existingUser.passwordHash
     );
-    
+
     if (!passwordCorrect) {
       console.log("incorrect password")
       return res.status(401).json({ errorMessage: "Incorrect password" });
@@ -141,7 +204,7 @@ userRouter.get("/loggedIn", (req, res) => {
     // Retrieve token from cookies
     const token = req.cookies.token;
     if (!token) {
-      console.log("no token")
+      console.log("token unverified")
       return res.json({ loggedIn: false });
     }
 
