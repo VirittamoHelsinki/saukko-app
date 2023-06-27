@@ -74,7 +74,7 @@ function DegreeUnits() {
         </div>
 
         <Pagination
-          count={Math.ceil(filteredUnits?.length / unitsPerPage)}
+          count={filteredUnits && Math.ceil(filteredUnits.length / unitsPerPage)}
           page={page}
           onChange={handlePageChange}
         />
