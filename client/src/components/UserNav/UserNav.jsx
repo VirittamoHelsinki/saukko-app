@@ -51,7 +51,7 @@ const UserNav = () => {
   };
 
   const renderIcons = () => {
-    if (user.role === "teacher") {
+    if (user?.role === "teacher") {
       return (
         <>
           {/* home icon */}
@@ -77,7 +77,7 @@ const UserNav = () => {
 
         </>
       );
-    } else if (user.role === "customer" || user.role === "supervisor") {
+    } else if (user?.role === "customer" || user?.role === "supervisor") {
       return (
         <>
           {/* home icon */}

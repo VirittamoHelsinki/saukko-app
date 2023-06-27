@@ -89,7 +89,6 @@ function DegreeInfo() {
           <div className='degreeInfo__container--buttons-forward'>
             <Button
               text='Valitse tutkinto'
-              /* this link shouldn't work until degree rendered */
               onClick={() => navigate(`/degrees/${degree._id}/units`)}
               icon={'formkit:arrowright'}
             />
