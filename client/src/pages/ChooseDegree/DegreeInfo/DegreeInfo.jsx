@@ -40,7 +40,7 @@ function DegreeInfo() {
     <main className='degreeInfo__wrapper'>
       <WavesHeader title='Saukko' secondTitle={degreeFound ? degree.name.fi : 'ei dataa APIsta'} />
       <section className='degreeInfo__container'>
-        <PageNumbers activePage={1}/>
+        <PageNumbers activePage={1} totalPages={3}/>
         <div className='degreeInfo__container--info'>
           <div className='degreeInfo__container--info--block'>
             <h1>Tutkinnon suorittaneen osaaminen</h1>
