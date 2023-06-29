@@ -1,9 +1,9 @@
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Icon } from '@iconify/react';
 import UserNav from '../../../components/UserNav/UserNav';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import DegreeContext from '../../../utils/context/DegreeContext';
+import Searchbar from '../../../components/Searchbar/Searchbar';
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
@@ -89,26 +89,24 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
 };
 
 const SearchPage = () => {
-	const [searchResult, setSearchResult] = useState("");
-	const [filteredList, setFilteredList] = useState([]);
-	const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 	const [paginate, setPaginate] = useState(5);
-
+	const [filteredList, setFilteredList] = useState([]);
+  
   // Get degrees from DegreeContext
   const { allDegrees } = useContext(DegreeContext);
-  console.log('Searchpage degrees:', allDegrees);
-
-	const handleSearchResult = (event) => {
-		const searchValue = event.target.value;
-		const updatedDegreesList = [...allDegrees];
-		setSearchResult(searchValue);
+  
+  // Searchbar logic
+	const handleSearch = (event) => {
+    setCurrentPage(1) // Reset page when searching
 		setFilteredList(
-			updatedDegreesList.filter((degree) =>
-				degree.name.fi.toLowerCase().includes(searchValue.toLowerCase())
+			allDegrees.filter((degree) =>
+				degree.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
 			)
 		);
 	};
 
+  // Pagination logic
 	const pageCount =
 		filteredList.length > 0
 			? Math.ceil(filteredList.length / paginate)
@@ -118,24 +116,12 @@ const SearchPage = () => {
 		setCurrentPage(pageNum);
 	};
 
-	// prevents staying on selected number page while changing search terms
-	useEffect(() => {
-		setCurrentPage(1);
-	}, [filteredList]);
-
 	return (
 		<main className="searchPage__wrapper">
 			<WavesHeader title="Koulutukset" secondTitle="Ammatilliset koulutukset" disabled={false} />
 			<UserNav />
 			<section className="searchPage__container">
-				<div className="searchPage__container--searchField">
-					<input
-						value={searchResult}
-						onChange={handleSearchResult}
-						placeholder="Etsi koulutus"
-					/>
-					<Icon icon="material-symbols:search" hFlip={true} />
-				</div>
+        <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'}/>
 				<h2>Ammatilliset koulutukset</h2>
 				<div className="searchPage__container--list">
 					<CheckLength

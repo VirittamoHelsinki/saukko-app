@@ -3,7 +3,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import libraries
-import { Icon } from '@iconify/react';
 import Pagination from '@mui/material/Pagination';
 
 // Import components
@@ -13,6 +12,7 @@ import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import Button from '../../../components/Button/Button';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import DegreeContext from '../../../utils/context/DegreeContext';
+import Searchbar from '../../../components/Searchbar/Searchbar';
 
 function DegreeUnits() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ function DegreeUnits() {
   }, [degree]);
   
   // Searchbar logic
-  const handleSearchResult = (event) => {
+  const handleSearch = (event) => {
     setPage(1); // Reset to the first page
     setFilteredUnits(
       degree.units.filter((unit) =>
@@ -61,11 +61,7 @@ function DegreeUnits() {
       <section className='degreeUnits__container'>
         <PageNumbers activePage={2}/>
         <h1>Valitse tutkinnon osat</h1>
-
-        <div className='degreeUnits__container--searchField'>
-          <input onChange={handleSearchResult} placeholder='Etsi tutkinnonosat' />
-          <Icon icon='material-symbols:search' hFlip={true} />
-        </div>
+        <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinnonosat'}/>
 
         <div className='degreeUnits__container--units'>
           { currentUnits ? 
