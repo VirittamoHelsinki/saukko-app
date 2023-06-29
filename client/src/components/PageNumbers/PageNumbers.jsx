@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
 import DegreeContext from '../../utils/context/DegreeContext';
 
-const PageNumbers = ({ activePage, totalPages }) => {
+const PageNumbers = ({ activePage }) => {
   const navigate = useNavigate();
 
   // Get degree from DegreeContext
@@ -13,41 +13,39 @@ const PageNumbers = ({ activePage, totalPages }) => {
   return (
     <div className="page-numbers__wrapper">
       <div className="page-numbers__wrapper--numbers">
-        {[...Array(totalPages)].map((_, pageIndex) => {
-          const page = pageIndex + 1;
-          const isCurrentPage = activePage === page;
-          const isPageDone = activePage > page;
-          const isPageClickable = activePage >= page;
-          const circleClassName = `circle ${isCurrentPage ? 'active' : isPageDone ? 'done' : ''}`;
-
-          return (
-            <div key={pageIndex} className={circleClassName}>
-              {isCurrentPage ? (
-                <span className={`number ${isPageClickable ? 'active' : ''}`}>{page}</span>
-              ) : (
-                <Icon icon="mdi:tick" color="white" />
-              )}
-            </div>
-          );
-        })}
+        <div className={`circle ${activePage === 1 ? 'active' : 'done'}`}>
+          {activePage === 1 ? 
+            <span className={`number ${activePage >= 1 ? 'active' : ''}`}>1</span> 
+            : <Icon icon="mdi:tick" color="white" />}
+        </div>
+        <div className={`line ${activePage >= 2 ? 'active' : ''}`} />
+        <div className={`circle ${activePage === 2 ? 'active' : ''} ${activePage >= 3 ? 'done' : ''}`}>
+          {activePage <= 2 ? 
+            <span className={`number ${activePage >= 2 ? 'active' : ''}`}>2</span> 
+            : <Icon icon="mdi:tick" color="white" />}
+        </div>
+        <div className={`line ${activePage >= 3 ? 'active' : ''}`} />
+        <div className={`circle ${activePage >= 3 ? 'active' : ''}`}>
+          <span className={`number ${activePage === 3 ? 'active' : ''}`}>3</span>
+        </div>
       </div>
       <div>
         <div className="page-numbers__wrapper--text">
-          {[...Array(totalPages)].map((_, pageIndex) => {
-            const page = pageIndex + 1;
-            const isPageClickable = activePage >= page;
-            const textClassName = `page-text ${activePage >= page ? 'active' : ''}`;
-
-            return (
-              <span
-                key={pageIndex}
-                className={textClassName}
-                onClick={() => navigate(`/degrees/${degree._id}/units/confirm-selection`)}
-              >
-                {`Page ${page}`}
-              </span>
-            );
-          })}
+          <span 
+          className={`page-text ${activePage >= 1 ? 'active' : ''}`} 
+          onClick={() => navigate(`/degrees/${degree._id}`)}>
+            Valitse tutkinto
+          </span>
+          <span 
+          className={`page-text ${activePage >= 2 ? 'active' : ''}`} 
+          onClick={() => navigate(`/degrees/${degree._id}/units`)}>
+            Valitse tutkinnonosat
+          </span>
+          <span 
+          className={`page-text ${activePage === 3 ? 'active' : ''}`} 
+          onClick={() => navigate(`/degrees/${degree._id}/units/confirm-selection`)}>
+            Vahvista pyyntö
+          </span>
         </div>
       </div>
     </div>
@@ -55,8 +53,7 @@ const PageNumbers = ({ activePage, totalPages }) => {
 };
 
 PageNumbers.propTypes = {
-  activePage: PropTypes.number.isRequired,
-  totalPages: PropTypes.number.isRequired,
+  activePage: PropTypes.number.isRequired
 };
 
 export default PageNumbers;
