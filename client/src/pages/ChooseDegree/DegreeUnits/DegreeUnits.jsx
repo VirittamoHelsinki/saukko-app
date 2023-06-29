@@ -9,10 +9,10 @@ import Pagination from '@mui/material/Pagination';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNumbers from '../../../components/PageNumbers/PageNumbers';
-import Button from '../../../components/Button/Button';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import DegreeContext from '../../../utils/context/DegreeContext';
 import Searchbar from '../../../components/Searchbar/Searchbar';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 function DegreeUnits() {
   const navigate = useNavigate();
@@ -77,22 +77,7 @@ function DegreeUnits() {
           onChange={handlePageChange}
         />
 
-        <div className='degreeUnits__container--buttons'>
-          <div className='degreeUnits__container--buttons-back'>
-            <Button
-              text='Takaisin'
-              onClick={() => navigate(`/degrees/${degree._id}`)}
-              icon={'formkit:arrowleft'}
-            />
-          </div>
-          <div className='degreeUnits__container--buttons-forward'>
-            <Button
-              text='Valitse tutkinnonosat'
-              onClick={() => navigate('confirm-selection')}
-              icon={'formkit:arrowright'}
-            />
-          </div>
-        </div>
+        <PageNavigationButtons handleBack={() => navigate(`/degrees/${degree._id}`)} handleForward={() => navigate(`/degrees/${degree._id}/units/confirm-selection`)} forwardButtonText={'Valitse tutkinnonosat'}/>
       </section>
       <UserNav />
     </main>

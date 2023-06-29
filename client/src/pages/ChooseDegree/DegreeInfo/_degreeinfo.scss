@@ -45,46 +45,6 @@
         margin-right: 15px;
         font-size: var(--base-font-size);
       }
-
-      .degreeInfo__container--buttons {
-        margin: 15px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-
-        .button__container {                  
-          .button__icon{
-            width: 25px;
-            flex-shrink: 0;
-          }
-
-          .button__text {
-            font-size: 15px;
-          }
-        }
-  
-        .degreeInfo__container--buttons-back {
-          width: 40%;
-
-          .button__container {
-            flex-direction: row-reverse;
-            color: var(--link-blue);
-            background: var(--saukko-main-white);
-            border: 2px solid var(--link-blue);
-          }
-        }
-
-        .degreeInfo__container--buttons-forward {
-          width: 60%;
-
-          .button__container {
-            background: var(--link-blue);
-            color: var(--saukko-main-white);
-            border: 2px solid var(--link-blue);
-          }
-        }
-      }
     }
   }
 }

@@ -8,7 +8,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import Hyperlink from '../../../components/Hyperlink/Hyperlink';
-import Button from '../../../components/Button/Button';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 function DegreeInfo() {
   const navigate = useNavigate();
@@ -78,22 +78,7 @@ function DegreeInfo() {
           linkSource={degree.examInfoURL}
         />
           
-        <div className='degreeInfo__container--buttons'>
-          <div className='degreeInfo__container--buttons-back'>
-            <Button
-              text='Takaisin'
-              onClick={() => navigate('/degrees')}
-              icon={'formkit:arrowleft'}
-            />
-          </div>
-          <div className='degreeInfo__container--buttons-forward'>
-            <Button
-              text='Valitse tutkinto'
-              onClick={() => navigate(`/degrees/${degree._id}/units`)}
-              icon={'formkit:arrowright'}
-            />
-          </div>
-        </div>
+        <PageNavigationButtons handleBack={() => navigate('/degrees')} handleForward={() => navigate(`/degrees/${degree._id}/units`)} forwardButtonText={'Valitse tutkinto'}/>
       </section>
       <UserNav />
     </main>
