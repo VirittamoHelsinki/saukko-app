@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Icon } from '@iconify/react';
-import img from '../../assets/team-img.png';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import Button from '../../components/Button/Button';
+import AuthContext from '../../utils/context/AuthContext';
 
 const UpdateHomePageAfterLogin = () => {
+  const { user } = useContext(AuthContext)
   const buttonStyle = {
     color: 'var(--saukko-main-white)',
     background: 'var(--link-blue)',
@@ -19,7 +20,7 @@ const UpdateHomePageAfterLogin = () => {
     <main className='loggedpage__wrapper'>
       <WavesHeader
         fill='#9fc9eb'
-        secondTitle='Tervetuloa, Alex'
+        secondTitle={`Tervetuloa, ${user?.name}`}
         title='Saukko'
         disabled={true}
       />
@@ -35,12 +36,8 @@ const UpdateHomePageAfterLogin = () => {
         <Button
           text='Selaa muita tutkintoja'
           icon={"formkit:arrowright"}
-          style={buttonStyle}
-
-        />
+          style={buttonStyle} />
       </section>
-
-
       <UserNav></UserNav>
     </main>
   );
