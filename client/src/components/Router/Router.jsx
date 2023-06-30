@@ -70,7 +70,7 @@ const Router = () => {
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-        <Route path='/Update-logged-user' element={<UpdateHomePageAfterLogin />} />
+        <Route path='/update-logged-user' element={<UpdateHomePageAfterLogin />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
         <Route path='/degrees' element={<SearchPage />} />
