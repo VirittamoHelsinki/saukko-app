@@ -1,0 +1,80 @@
+
+.app__wrapper {
+  .loggedpage__wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: var(--saukko-main-white);
+    text-align: center;
+    padding-top: 10px;
+
+    
+    h1 {
+      font-size: 18px;
+}
+    h2{
+      font-size: 30px;
+      padding: 10px;
+      z-index: 1;
+      margin-top: 23px;
+     
+    }
+    .logged__user__container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 222px;
+      margin: auto; 
+      margin-top: auto; 
+      width: 90%;
+      height: 45%;
+      gap: 10px;
+      border: 2px solid black;
+      background-color: var(--saukkod-bright);
+     
+   
+      
+      h2 {
+        font-size: 18px;
+        padding: 5px;
+        text-align: center;
+        font-size: bold;
+        margin-top: 33px;
+      }
+      
+      p {
+        font-size: 16px;
+        text-align: center;
+        margin-left: 16px;
+        margin-right: 16px;
+        margin-bottom: 32px;
+      }
+   
+    }
+    @media (max-width: 375px) {
+      .logged__user__container {
+        height:40%;
+         h2 {
+          font-size: 16px;
+         }
+        icon {
+          height: 50px;
+          width: 50px;
+          margin-bottom: 8px;
+        }
+        p {
+          font-size: 14px;
+           margin-bottom: 25px;
+        }
+       
+      }
+  }
+   
+  }
+}
+
+
+
+
