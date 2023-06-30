@@ -3,16 +3,16 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import libraries
-import { Icon } from '@iconify/react';
 import Pagination from '@mui/material/Pagination';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
-import PageNumbers from "../../../components/PageNumbers/PageNumbers";
-import Button from "../../../components/Button/Button";
-import SelectUnit from "../../../components/SelectUnit/SelectUnit";
+import PageNumbers from '../../../components/PageNumbers/PageNumbers';
+import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import DegreeContext from '../../../utils/context/DegreeContext';
+import Searchbar from '../../../components/Searchbar/Searchbar';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 function DegreeUnits() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ function DegreeUnits() {
   }, [degree]);
   
   // Searchbar logic
-  const handleSearchResult = (event) => {
+  const handleSearch = (event) => {
     setPage(1); // Reset to the first page
     setFilteredUnits(
       degree.units.filter((unit) =>
@@ -56,21 +56,19 @@ function DegreeUnits() {
   const currentUnits = filteredUnits?.slice(indexOfFirstUnit, indexOfLastUnit);
 
   return (
-    <main className="degreeUnits__wrapper">
-      <WavesHeader title="Saukko" secondTitle={degreeFound && degree.name.fi} />
-      <section className="degreeUnits__container">
+    <main className='degreeUnits__wrapper'>
+      <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
+      <section className='degreeUnits__container'>
         <PageNumbers activePage={2}/>
         <h1>Valitse tutkinnon osat</h1>
+        <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinnonosat'}/>
 
-        <div className="degreeUnits__container--searchField">
-          <input onChange={handleSearchResult} placeholder="Etsi tutkinnonosat" />
-          <Icon icon="material-symbols:search" hFlip={true} />
-        </div>
-
-        <div className="degreeUnits__container--units">
-          {currentUnits?.map((unit) => (
-            <SelectUnit key={unit._id} unit={unit} allUnits={degree.units}/>
-          ))}
+        <div className='degreeUnits__container--units'>
+          { currentUnits ? 
+            currentUnits.map((unit) => (
+              <SelectUnit key={unit._id} unit={unit} allUnits={degree.units}/>
+            ))
+          : 'ei dataa APIsta'}
         </div>
 
         <Pagination
@@ -79,22 +77,7 @@ function DegreeUnits() {
           onChange={handlePageChange}
         />
 
-        <div className="degreeUnits__container--buttons">
-          <div className="degreeUnits__container--buttons-back">
-            <Button
-              text="Takaisin"
-              onClick={() => navigate(`/degrees/${degree._id}`)}
-              icon={"formkit:arrowleft"}
-            />
-          </div>
-          <div className="degreeUnits__container--buttons-forward">
-            <Button
-              text="Valitse tutkinnonosat"
-              onClick={() => navigate('confirm-selection')}
-              icon={"formkit:arrowright"}
-            />
-          </div>
-        </div>
+        <PageNavigationButtons handleBack={() => navigate(`/degrees/${degree._id}`)} handleForward={() => navigate(`/degrees/${degree._id}/units/confirm-selection`)} forwardButtonText={'Valitse tutkinnonosat'}/>
       </section>
       <UserNav />
     </main>

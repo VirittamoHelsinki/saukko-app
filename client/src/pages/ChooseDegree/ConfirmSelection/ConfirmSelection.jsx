@@ -7,6 +7,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import useUnitsStore from '../../../unitsStore';
@@ -71,22 +72,11 @@ function ConfirmSelection() {
               <SelectUnit key={unit._id} unit={unit} allUnits={degreeFound && degree.units}/>
             ))}
           </div>
-          <div className="confirmSelection__container--buttons">
-            <div className="confirmSelection__container--buttons-back">
-              <Button
-                text="Takaisin"
-                icon={"formkit:arrowleft"}
-                onClick={() => navigate(`/degrees/${degree._id}/units`)}
-              />
-            </div>
-            <div className="confirmSelection__container--buttons-forward">
-              <Button
-                text="Valitse tutkinnonosat"
-                icon={"formkit:arrowright"}
-                onClick={handlePopupOpen}
-              />
-            </div>
-          </div>
+          <PageNavigationButtons 
+            handleBack={() => navigate(`/degrees/${degree._id}/units`)} 
+            handleForward={handlePopupOpen} 
+            forwardButtonText={'Valitse tutkinnonosat'}
+          />
         </section>
         <UserNav />
 

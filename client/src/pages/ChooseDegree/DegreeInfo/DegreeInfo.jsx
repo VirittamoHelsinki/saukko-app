@@ -8,7 +8,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import Hyperlink from '../../../components/Hyperlink/Hyperlink';
-import Button from '../../../components/Button/Button';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 function DegreeInfo() {
   const navigate = useNavigate();
@@ -38,9 +38,9 @@ function DegreeInfo() {
   
   return (
     <main className='degreeInfo__wrapper'>
-      <WavesHeader title='Saukko' secondTitle={degreeFound ? degree.name.fi : 'Tutkinnon nimi'} />
+      <WavesHeader title='Saukko' secondTitle={degreeFound ? degree.name.fi : 'ei dataa APIsta'} />
       <section className='degreeInfo__container'>
-        <PageNumbers activePage={1}/>
+        <PageNumbers activePage={1} totalPages={3}/>
         <div className='degreeInfo__container--info'>
           <div className='degreeInfo__container--info--block'>
             <h1>Tutkinnon suorittaneen osaaminen</h1>
@@ -49,27 +49,27 @@ function DegreeInfo() {
           </div>
           <div className='degreeInfo__container--info--block dark'>
             <h2>Perusteen nimi</h2>
-            <p>{degreeFound ? degree.name.fi : 'Degree name'}</p>
+            <p>{degreeFound ? degree.name.fi : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block'>
             <h2>Määräyksen diaarinumero</h2>
-            <p>{degreeFound ? degree.diaryNumber : '123456'}</p>
+            <p>{degreeFound ? degree.diaryNumber : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block dark'>
             <h2>Määräyksen päätöspäivämäärä</h2>
-            <p>{degreeFound ? parseDate(degree.regulationDate) : '123456'}</p>
+            <p>{degreeFound ? parseDate(degree.regulationDate) : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block'>
             <h2>Voimaantulo</h2>
-            <p>{degreeFound ? parseDate(degree.validFrom) : '123456'}</p>
+            <p>{degreeFound ? parseDate(degree.validFrom) : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block dark'>
             <h2>Voimassaolon päättyminen</h2>
-            <p>{degreeFound ? parseDate(degree.expiry) : '123456'}</p>
+            <p>{degreeFound ? parseDate(degree.expiry) : 'ei dataa APIsta'}</p>
           </div>
           <div className='degreeInfo__container--info--block'>
             <h2>Siirtymäajan päättymisaika</h2>
-            <p>{degreeFound ? parseDate(degree.transitionEnds) : '123456'}</p>
+            <p>{degreeFound ? parseDate(degree.transitionEnds) : 'ei dataa APIsta'}</p>
           </div>
         </div>
         
@@ -78,22 +78,7 @@ function DegreeInfo() {
           linkSource={degree.examInfoURL}
         />
           
-        <div className='degreeInfo__container--buttons'>
-          <div className='degreeInfo__container--buttons-back'>
-            <Button
-              text='Takaisin'
-              onClick={() => navigate('/degrees')}
-              icon={'formkit:arrowleft'}
-            />
-          </div>
-          <div className='degreeInfo__container--buttons-forward'>
-            <Button
-              text='Valitse tutkinto'
-              onClick={() => navigate(`/degrees/${degree._id}/units`)}
-              icon={'formkit:arrowright'}
-            />
-          </div>
-        </div>
+        <PageNavigationButtons handleBack={() => navigate('/degrees')} handleForward={() => navigate(`/degrees/${degree._id}/units`)} forwardButtonText={'Valitse tutkinto'}/>
       </section>
       <UserNav />
     </main>
