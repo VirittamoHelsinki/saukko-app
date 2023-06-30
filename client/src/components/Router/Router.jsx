@@ -34,6 +34,8 @@ import ResetPassword from '../../pages/ResetPassword/ResetPassword';
 
 import UserDashboard from '../../pages/UserDashboard/UserDashboard';
 import ContractInfo from '../../pages/ContractInfo/ContractInfo';
+import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
+import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 
 const Router = () => {
   let location = useLocation();
@@ -68,6 +70,7 @@ const Router = () => {
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
+        <Route path='/Update-logged-user' element={<UpdateHomePageAfterLogin />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
         <Route path='/degrees' element={<SearchPage />} />
