@@ -33,7 +33,7 @@ import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAft
 import ResetPassword from '../../pages/ResetPassword/ResetPassword';
 import UserDashboard from '../../pages/UserDashboard/UserDashboard';
 import ContractInfo from '../../pages/ContractInfo/ContractInfo';
-import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
+
 
 
 const Router = () => {
@@ -69,7 +69,6 @@ const Router = () => {
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-        <Route path='/update-logged-user' element={<UpdateHomePageAfterLogin />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
         <Route path='/degrees' element={<SearchPage />} />
