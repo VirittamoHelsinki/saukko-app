@@ -1,0 +1,20 @@
+.app__wrapper {
+  .evaluationUnits__wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    background: var(--saukko-main-white);
+    text-align: left;
+
+    .evaluationUnits__container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0px 36px 86px 36px;
+      margin-top: 225px;
+      width: 100%;
+      gap: 20px;
+    }
+  }
+}

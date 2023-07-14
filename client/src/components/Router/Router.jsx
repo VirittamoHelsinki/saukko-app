@@ -81,10 +81,10 @@ const Router = () => {
         <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
         <Route path='/degrees/:degreeId/units/:unitId' element={<UnitInfo />} />
         <Route path='/degrees/:degreeId/units/confirm-selection' element={<ConfirmSelection />} />
-        <Route path='/evalution-form' element={<CustomerForm />} />
-        <Route path='/evalution-workplace' element={<EvaluationWorkplace />} />
-        <Route path='/evalution-units' element={<EvaluationUnits />} />
-        <Route path='/evalution-activate' element={<ActivateEvaluation />} />
+        <Route path='/evaluation-form' element={<CustomerForm />} />
+        <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
+        <Route path='/evaluation-units' element={<EvaluationUnits />} />
+        <Route path='/evaluation-activate' element={<ActivateEvaluation />} />
 
         {!loggedIn && (
           <>

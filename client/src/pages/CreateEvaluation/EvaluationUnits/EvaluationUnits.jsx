@@ -1,7 +1,13 @@
 import React from 'react';
 
 function EvaluationUnits() {
-  return <div>EvaluationUnits</div>;
+  return (
+    <main className='evaluationUnits__wrapper'>
+      <section className='evaluationUnits__container'>
+        EvaluationUnits
+      </section>
+    </main>
+  );
 }
 
 export default EvaluationUnits;
