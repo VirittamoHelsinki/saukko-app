@@ -35,8 +35,10 @@ import UserDashboard from '../../pages/UserDashboard/UserDashboard';
 import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
-
-
+import CustomerForm from '../../pages/CreateEvaluation/CustomerForm/CustomerForm';
+import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
+import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/EvaluationUnits';
+import ActivateEvaluation from '../../pages/CreateEvaluation/ActivateEvaluation/ActivateEvaluation';
 
 const Router = () => {
   let location = useLocation();
@@ -79,6 +81,10 @@ const Router = () => {
         <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
         <Route path='/degrees/:degreeId/units/:unitId' element={<UnitInfo />} />
         <Route path='/degrees/:degreeId/units/confirm-selection' element={<ConfirmSelection />} />
+        <Route path='/evaluation-form' element={<CustomerForm />} />
+        <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
+        <Route path='/evaluation-units' element={<EvaluationUnits />} />
+        <Route path='/evaluation-activate' element={<ActivateEvaluation />} />
 
         {!loggedIn && (
           <>
