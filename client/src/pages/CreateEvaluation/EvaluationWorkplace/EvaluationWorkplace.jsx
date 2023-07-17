@@ -9,7 +9,19 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import Searchbar from '../../../components/Searchbar/Searchbar';
 
 // Import MUI components
-import { Accordion, AccordionSummary, AccordionDetails, Radio, FormControlLabel, Pagination, createTheme, Typography } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Radio from '@mui/material/Radio';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Pagination from '@mui/material/Pagination';
+import { createTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const mockData = [
@@ -19,8 +31,16 @@ const mockData = [
     name: 'Arbonus OY',
     customerId: '123',
     supervisors: [
-      '960484',
-      '960438'
+      {
+        _id: '67890',
+        firstName: 'Kaisa',
+        lastName: 'Virtanen'
+      },
+      {
+        _id: '68943',
+        firstName: 'Sami',
+        lastName: 'Virtanen'
+      },
     ],
     units: [
       '56789',
@@ -33,8 +53,16 @@ const mockData = [
     name: 'Aimet OY',
     customerId: '567',
     supervisors: [
-      '960483',
-      '960439'
+      {
+        _id: '67890',
+        firstName: 'Kaisa',
+        lastName: 'Virtanen'
+      },
+      {
+        _id: '68943',
+        firstName: 'Sami',
+        lastName: 'Virtanen'
+      },
     ],
     units: [
       '56780',
@@ -87,6 +115,14 @@ function EvaluationWorkplace() {
       },
     },
   });
+
+  // Supervisor selection logic
+  const [selectedSupervisor, setSelectedSupervisor] = useState('');
+
+  const handleSupervisor = (event) => {
+    setSelectedSupervisor(event.target.value);
+  };
+  console.log('Selected supervisor:', selectedSupervisor);
   
   return (
     <main className='evaluationWorkplace__wrapper'>
@@ -96,11 +132,10 @@ function EvaluationWorkplace() {
         <h1>Valitse työpaikka ja ohjaaja</h1>
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'}/>
 
-        {/* Workplace accordions */}
+        {/* Workplaces list */}
         <div>
           { filteredWorkplaces ? 
             filteredWorkplaces.map((workplace) => (
-
               <Accordion 
                 key={workplace.name}
                 disableGutters 
@@ -128,7 +163,7 @@ function EvaluationWorkplace() {
                     control={<Radio 
                       checked={selectedWorkplace === workplace.name}
                       onChange={handleChange}
-                      onClick={(event) => event.stopPropagation()}
+                      onClick={(event) => event.stopPropagation()} // Prevent expanding accordion when clicking radio button
                       value={workplace.name}
                       name="radio-buttons"
                       inputProps={{ 'aria-label': 'A' }}
@@ -139,10 +174,25 @@ function EvaluationWorkplace() {
                   />
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                    malesuada lacus ex, sit amet blandit leo lobortis eget.
-                  </Typography>
+                  <Typography>Y-tunnus: {workplace.businessId}</Typography>
+                  <Typography>Valitse työpaikkaohjaaja: *</Typography>
+
+                  {/* Supervisors dropdown menu */}
+                  <FormControl fullWidth>
+                    <InputLabel>Valitse</InputLabel>
+                    <Select
+                      value={selectedSupervisor}
+                      label="Supervisor"
+                      onChange={handleSupervisor}
+                    >
+                      {workplace.supervisors.map((supervisor) => (
+                        <MenuItem key={supervisor._id} value={supervisor._id}>
+                          {supervisor.firstName} {supervisor.lastName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
                 </AccordionDetails>
               </Accordion>
 
@@ -150,6 +200,7 @@ function EvaluationWorkplace() {
           : 'ei dataa APIsta'}
         </div>
 
+        {/* Pagination */}
         {workplaces?.length > 15 && 
           <Pagination
             count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
@@ -158,6 +209,8 @@ function EvaluationWorkplace() {
           />
         }
       </section>
+
+      {/* Back and forward buttons */}
       <PageNavigationButtons 
         handleBack={() => navigate(`/evaluation-form`)} 
         handleForward={() => navigate(`/evaluation-units`)} 
