@@ -48,8 +48,7 @@ function EvaluationWorkplace() {
 
   // Fetch workplaces & save to state
   const [workplaces, setWorkplaces] = useState(mockData);
-  const [filteredWorkplaces, setFilteredWorkplaces] = useState();
-  console.log(workplaces)
+  const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
 
   // Radio button logic
   const [selectedWorkplace, setSelectedWorkplace] = useState('a');
@@ -73,12 +72,11 @@ function EvaluationWorkplace() {
   // Searchbar logic
   const handleSearch = (event) => {
     setPage(1); // Reset to the first page
-    /* setFilteredWorkplaces(
+    setFilteredWorkplaces(
       workplaces.filter((workplace) =>
-      workplace.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
+      workplace.name.toLowerCase().includes(event.target.value.toLowerCase())
       )
-    ); */
-    console.log(event.target.value)
+    );
   };  
 
   // Radio button color
@@ -100,8 +98,8 @@ function EvaluationWorkplace() {
 
         {/* Workplace accordions */}
         <div>
-          { workplaces ? 
-            workplaces.map((workplace) => (
+          { filteredWorkplaces ? 
+            filteredWorkplaces.map((workplace) => (
 
               <Accordion 
                 key={workplace.name}
