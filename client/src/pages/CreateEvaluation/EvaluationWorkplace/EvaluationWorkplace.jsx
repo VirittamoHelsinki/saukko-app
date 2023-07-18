@@ -54,12 +54,12 @@ const mockData = [
     customerId: '567',
     supervisors: [
       {
-        _id: '67890',
+        _id: '67895',
         firstName: 'Kaisa',
         lastName: 'Virtanen'
       },
       {
-        _id: '68943',
+        _id: '68948',
         firstName: 'Sami',
         lastName: 'Virtanen'
       },
@@ -107,6 +107,22 @@ function EvaluationWorkplace() {
     );
   };  
 
+  // Supervisor selection logic
+  const [selectedSupervisorId, setSelectedSupervisorId] = useState();
+  const [selectedSupervisor, setSelectedSupervisor] = useState(null);
+  
+  const handleSupervisor = (workplace) => (event) => {
+    console.log('Workplace:', workplace);
+    const selectedSupervisorId = event.target.value;
+    console.log('Selected Supervisor ID:', selectedSupervisorId);
+    const selectedSupervisor = workplace.supervisors.find(
+      (supervisor) => supervisor._id === selectedSupervisorId
+    );
+  
+    setSelectedSupervisor(selectedSupervisor);
+    setSelectedSupervisorId(selectedSupervisorId);
+  };
+
   // Radio button color
   const theme = createTheme({
     palette: {
@@ -115,14 +131,6 @@ function EvaluationWorkplace() {
       },
     },
   });
-
-  // Supervisor selection logic
-  const [selectedSupervisor, setSelectedSupervisor] = useState('');
-
-  const handleSupervisor = (event) => {
-    setSelectedSupervisor(event.target.value);
-  };
-  console.log('Selected supervisor:', selectedSupervisor);
   
   return (
     <main className='evaluationWorkplace__wrapper'>
@@ -160,31 +168,59 @@ function EvaluationWorkplace() {
                 >
                   <FormControlLabel
                     value={workplace.name}
-                    control={<Radio 
-                      checked={selectedWorkplace === workplace.name}
-                      onChange={handleChange}
-                      onClick={(event) => event.stopPropagation()} // Prevent expanding accordion when clicking radio button
-                      value={workplace.name}
-                      name="radio-buttons"
-                      inputProps={{ 'aria-label': 'A' }}
-                      theme={theme}
-                    />}
-                    label={workplace.name}
+                    control=
+                      {<Radio 
+                        checked={selectedWorkplace === workplace.name}
+                        onChange={handleChange}
+                        onClick={(event) => event.stopPropagation()} // Prevent expanding accordion when clicking radio button
+                        value={workplace.name}
+                        name="radio-buttons"
+                        inputProps={{ 'aria-label': 'A' }}
+                        theme={theme}
+                      />}
+                    label={
+                      <div>
+                        <Typography 
+                          variant="body1" 
+                          sx={{
+                            fontSize: '15px',
+                            fontWeight: selectedWorkplace === workplace.name ? 'bold' : 'normal',
+                          }}>
+                          {workplace.name}
+                        </Typography>
+                        <Typography variant="caption" color="textSecondary">
+                          Y-tunnus: {workplace.businessId}
+                        </Typography>
+                      </div>
+                    }
                     aria-label={workplace.name}
                   />
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Typography>Y-tunnus: {workplace.businessId}</Typography>
-                  <Typography>Valitse työpaikkaohjaaja: *</Typography>
+                  <Typography variant="caption" sx={{fontWeight: 'bold'}}>Valitse työpaikkaohjaaja: *</Typography>
 
                   {/* Supervisors dropdown menu */}
-                  <FormControl fullWidth>
-                    <InputLabel>Valitse</InputLabel>
+                  <FormControl fullWidth sx={{
+                    '& .MuiSelect-select': {
+                      border: '2px solid black',
+                      borderRadius: '0',
+                    }
+                  }}>
                     <Select
-                      value={selectedSupervisor}
+                      value=''
                       label="Supervisor"
-                      onChange={handleSupervisor}
+                      onChange={handleSupervisor(workplace)}
+                      displayEmpty
+                      renderValue={() => {
+                        if (!selectedSupervisorId) {
+                          return <Typography>Valitse</Typography>;
+                        } else {
+                          const supervisor = workplace.supervisors.find((supervisor) => supervisor._id === selectedSupervisorId);
+                          return supervisor ? `${supervisor.firstName} ${supervisor.lastName}` : '';
+                        }
+                      }}
                     >
+                      <MenuItem value="">Valitse</MenuItem>
                       {workplace.supervisors.map((supervisor) => (
                         <MenuItem key={supervisor._id} value={supervisor._id}>
                           {supervisor.firstName} {supervisor.lastName}
