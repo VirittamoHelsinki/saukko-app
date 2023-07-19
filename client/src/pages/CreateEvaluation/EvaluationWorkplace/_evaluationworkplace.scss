@@ -22,6 +22,53 @@
         text-decoration: underline;
         font-size: var(--base-font-size);
       }
+
+      /* Workplaces accordion */
+      .workplaces-accordion {
+        border: none;
+      }
+
+      .workplaces-accordion:nth-of-type(even) {
+        background-color: var(--accordion-background-grey);
+      }
+
+      .workplaces-accordion.selected {
+        background-color: #E2F5F3;
+      }
+
+      .workplaces-accordion:before {
+        display: none; // Remove line between accordions
+      }
+
+      /* Supervisors dropdown selection */
+      .accordion-title {
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 0px;
+        margin-bottom: 10px;
+      }
+      
+      .supervisors__wrapper {
+        border: 2px solid black;
+        box-shadow: none;
+
+        .MuiAccordionSummary-root {
+          border-bottom: 1px solid #CCC;
+        }
+
+        .MuiAccordionDetails-root {
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
+      }
+
+      .supervisors__wrapper-details {
+        display: flex;
+        justify-content: space-between;
+        margin: 0px;
+      }
     }
   }
 }
