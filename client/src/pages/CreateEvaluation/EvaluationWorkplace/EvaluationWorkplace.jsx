@@ -76,7 +76,7 @@ function EvaluationWorkplace() {
   const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
 
   // Radio button logic
-  const [selectedWorkplace, setSelectedWorkplace] = useState('a');
+  const [selectedWorkplace, setSelectedWorkplace] = useState();
 
   const handleSelectWorkplace = (event) => {
     setSelectedWorkplace(event.target.value);
@@ -113,15 +113,6 @@ function EvaluationWorkplace() {
     console.log('set sup id', selectedSupervisorId)
     // ERROR first old id
   };
-
-  // Radio button theme
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#0000BF',
-      },
-    },
-  });
   
   return (
     <main className='evaluationWorkplace__wrapper'>
@@ -141,11 +132,7 @@ function EvaluationWorkplace() {
                 disableGutters 
                 square
               >
-                <AccordionSummary 
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls='panel1a-content'
-                  id='panel1a-header'
-                >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <FormControlLabel
                     value={workplace.name}
                     control=
@@ -156,24 +143,18 @@ function EvaluationWorkplace() {
                         value={workplace.name}
                         name='radio-buttons'
                         inputProps={{ 'aria-label': 'A' }}
-                        theme={theme}
+                        theme={createTheme({palette: {primary: {main: '#0000BF'}}})}
                       />}
                     label={
-                      <div>
-                        <Typography 
-                          variant='body1' 
-                          sx={{
-                            fontSize: '15px',
-                            fontWeight: selectedWorkplace === workplace.name ? 'bold' : 'normal',
-                          }}>
+                      <div className='radio__label'>
+                        <p className={`radio__label-name ${selectedWorkplace === workplace.name ? 'selected' : ''}`}>
                           {workplace.name}
-                        </Typography>
-                        <Typography variant='caption' color='textSecondary'>
-                          Y-tunnus: {workplace.businessId}
-                        </Typography>
+                        </p>
+                        <p className='radio__label-businessid'>
+                          {workplace.businessId}
+                        </p>
                       </div>
                     }
-                    aria-label={workplace.name}
                   />
                 </AccordionSummary>
                 <AccordionDetails>
@@ -195,10 +176,8 @@ function EvaluationWorkplace() {
                     ))}
                     </AccordionDetails>
                   </Accordion>
-
                 </AccordionDetails>
               </Accordion>
-
             ))
           : 'ei dataa APIsta'}
         </div>

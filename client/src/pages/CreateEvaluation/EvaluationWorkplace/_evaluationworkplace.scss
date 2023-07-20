@@ -26,6 +26,7 @@
       /* Workplaces accordion */
       .workplaces-accordion {
         border: none;
+        box-shadow: none;
       }
 
       .workplaces-accordion:nth-of-type(even) {
@@ -38,6 +39,18 @@
 
       .workplaces-accordion:before {
         display: none; // Remove line between accordions
+      }
+
+      .radio__label-name {
+        font-size: 18px;
+      }
+
+      .radio__label-name.selected {
+        font-weight: bold;
+      }
+
+      .radio__label-businessid {
+        font-size: 16px;
       }
 
       /* Supervisors dropdown selection */
