@@ -189,14 +189,13 @@ function EvaluationWorkplace() {
             onChange={handlePageChange}
           />
         }
-      </section>
-
       {/* Back and forward buttons */}
       <PageNavigationButtons 
         handleBack={() => navigate(`/evaluation-form`)} 
         handleForward={() => navigate(`/evaluation-units`)} 
         forwardButtonText={'Seuraava'}
       />
+      </section>
       <UserNav />
     </main>
   );

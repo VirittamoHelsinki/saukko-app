@@ -11,6 +11,7 @@ function EvaluationUnits() {
     <main className='evaluationUnits__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='evaluationUnits__container'>
+        <div>Stepper here (waiting for update)</div>
         EvaluationUnits
         <PageNavigationButtons handleBack={() => navigate(`/evaluation-workplace`)} handleForward={() => navigate(`/evaluation-summary`)} forwardButtonText={'Seuraava'}/>
       </section>      

@@ -11,6 +11,7 @@ function EvaluationForm() {
     <main className='evaluationForm__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='evaluationForm__container'>
+        <div>Stepper here (waiting for update)</div>
         <h1>Lisää asiakkaan tiedot</h1>
 
         {/* Customer information form */}
