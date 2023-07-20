@@ -1,18 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
-function CustomerForm() {
+function EvaluationForm() {
   const navigate = useNavigate();
 
   return (
-    <main className='customerForm__wrapper'>
+    <main className='evaluationForm__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
-      <section className='customerForm__container'>
-        <PageNumbers activePage={1}/>
+      <section className='evaluationForm__container'>
+        <div>Stepper here (waiting for update)</div>
         <h1>Lisää asiakkaan tiedot</h1>
 
         {/* Customer information form */}
@@ -58,4 +57,4 @@ function CustomerForm() {
   );
 };
 
-export default CustomerForm;
+export default EvaluationForm;
