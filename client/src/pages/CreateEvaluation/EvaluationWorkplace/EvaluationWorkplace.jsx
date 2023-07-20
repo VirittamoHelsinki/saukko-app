@@ -24,7 +24,7 @@ import { createTheme } from '@mui/material/styles';
 const mockData = [
   {
     _id: '1',
-    businessId: '1',
+    businessId: '070 - 5658 -9',
     name: 'Arbonus OY',
     customerId: '123',
     supervisors: [
@@ -46,7 +46,7 @@ const mockData = [
   },
   {
     _id: '2',
-    businessId: '2',
+    businessId: '070 - 5658 -9',
     name: 'Aimet OY',
     customerId: '567',
     supervisors: [
@@ -110,9 +110,8 @@ function EvaluationWorkplace() {
   const toggleSupervisor = (supervisorId) => () => {
     console.log('params sup id', supervisorId)
     setSelectedSupervisorId(supervisorId);
-    console.log('set sup id', selectedSupervisorId)
-    // ERROR first old id
   };
+  console.log('set sup id', selectedSupervisorId)
   
   return (
     <main className='evaluationWorkplace__wrapper'>
@@ -151,7 +150,7 @@ function EvaluationWorkplace() {
                           {workplace.name}
                         </p>
                         <p className='radio__label-businessid'>
-                          {workplace.businessId}
+                          Y- tunnus: {workplace.businessId}
                         </p>
                       </div>
                     }

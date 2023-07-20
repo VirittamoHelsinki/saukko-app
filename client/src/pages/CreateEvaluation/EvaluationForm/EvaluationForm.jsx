@@ -4,13 +4,13 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
-function CustomerForm() {
+function EvaluationForm() {
   const navigate = useNavigate();
 
   return (
-    <main className='customerForm__wrapper'>
+    <main className='evaluationForm__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
-      <section className='customerForm__container'>
+      <section className='evaluationForm__container'>
         <h1>Lisää asiakkaan tiedot</h1>
 
         {/* Customer information form */}
@@ -56,4 +56,4 @@ function CustomerForm() {
   );
 };
 
-export default CustomerForm;
+export default EvaluationForm;

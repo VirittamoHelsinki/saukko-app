@@ -1,5 +1,5 @@
 .app__wrapper {
-  .activateEvaluation__wrapper {
+  .summary__wrapper {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -7,7 +7,7 @@
     background: var(--saukko-main-white);
     text-align: left;
 
-    .activateEvaluation__container {
+    .summary__container {
       display: flex;
       flex-direction: column;
       justify-content: center;

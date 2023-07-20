@@ -12,7 +12,7 @@ function EvaluationUnits() {
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='evaluationUnits__container'>
         EvaluationUnits
-        <PageNavigationButtons /* handleBack={() => navigate(`/`)} */ /* handleForward={() => navigate(`/evaluation-workplace`)} */ forwardButtonText={'Seuraava'}/>
+        <PageNavigationButtons handleBack={() => navigate(`/evaluation-workplace`)} handleForward={() => navigate(`/evaluation-summary`)} forwardButtonText={'Seuraava'}/>
       </section>      
       <UserNav />
     </main>
