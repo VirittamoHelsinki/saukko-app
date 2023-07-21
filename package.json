@@ -18,5 +18,9 @@
         "*.{js,jsx}": [
             "prettier --write"
         ]
+    },
+    "dependencies": {
+        "hds-react": "^2.16.0",
+        "react-scroll": "^1.8.9"
     }
 }
