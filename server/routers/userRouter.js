@@ -36,7 +36,8 @@ userRouter.post("/", async (req, res) => {
   try {
     // Create a new user object, with the provided name, email, password and role
     let newUserObject = {
-      name: body.name,
+      firstName: body.firstName,
+      lastName: body.lastName,
       email: body.email,
       role: body.role
     }

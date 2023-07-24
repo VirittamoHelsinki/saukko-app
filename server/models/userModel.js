@@ -6,8 +6,11 @@ const config = require('../utils/config');
 
 // This is default schema for a user
 const userSchema = new mongoose.Schema({
-    name: {
+    firstName: {
         type: String 
+    },
+    lastName: {
+        type: String
     },
     email: {
         type: String,
@@ -54,7 +57,8 @@ userSchema.methods.generateResetPasswordLink = function generateResetPasswordLin
 userSchema.methods.generateJWT = function generateJWT() {
   return jwt.sign({
     email: this.email,
-    name: this.name,
+    firstName: this.firstName,
+    lastName: this.lastName,
     role: this.role,
   }, config.JWT_SECRET,
   { expiresIn: 30 * 60 })
