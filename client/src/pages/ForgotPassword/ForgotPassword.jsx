@@ -7,7 +7,7 @@ import Notification from '../../components/Notification/Notification';
 import * as EmailValidator from 'email-validator';
 
 const ForgotPassword = () => {
-  const color = '#9fc9eb'
+  const color = '#00005E'
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -66,7 +66,7 @@ const ForgotPassword = () => {
       {!notificationVisible && (
         <section className='forgotPassword__container'>
           <h2>Unohtuiko salasana?</h2>
-          <p>Lähetämme sähköpostin, jossa on ohjeet salasanan vaihtamiseen</p>
+          <p>Täytä sähköpostiosoitteesi alle, jotta saat<br></br>ohjeet salasanasi vaihtamiseen. </p>
           <form ref={formRef} onSubmit={processForgotPassword}>
             <section className='forgotPassword__container--form-text'>
               <label htmlFor='email'>Sähköposti *</label>
@@ -100,7 +100,9 @@ const ForgotPassword = () => {
           headerColor={color}
           bodyColor={color}
           heading='Tarkista sähköpostisi'
+          headingColor={'white'}
           icon='gg:check-o'
+          iconColor={'white'}
         />
       )}
     </main>
@@ -108,3 +110,6 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+
+
+
