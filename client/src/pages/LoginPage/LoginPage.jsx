@@ -4,15 +4,19 @@ import { useState, useEffect } from 'react';
 import AuthContext from '../../utils/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import alert from '../../assets/circle-red.svg'
 // importing components
 import Button from '../../components/Button/Button';
 import WavesHeader from '../../components/Header/WavesHeader';
+import PasswordInput from '../../components/PasswordInput/PasswordInput';
+import { Icon } from '@iconify/react';
 
 const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState(''),
     [buttonDisabled, setButtonDisabled] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { getLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -26,22 +30,23 @@ const LoginPage = () => {
         password,
       };
 
-      await axios
-        .post('http://localhost:5000/auth/login', loginData)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      await axios.post('http://localhost:5000/auth/login', loginData);
       await getLoggedIn();
       navigate('/userdashboard');
 
     } catch (err) {
-      console.error(err);
+      // Handle the error here
+      if (err.response && err.response.status === 401) {
+        // 401 status code means unauthorized (wrong password)
+        setErrorMessage('Salasana väärin');
+      } else {
+        console.error(err);
+      }
     }
   };
-
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
   // enable login button style if fields are filled
   useEffect(() => {
     setButtonDisabled(![email, password].every((input) => input.length > 0));
@@ -61,7 +66,7 @@ const LoginPage = () => {
 
   return (
     <main className='loginPage__wrapper'>
-      <WavesHeader title='Saukko' fill='#9fc9eb' />
+      <WavesHeader title='Saukko' fill='#00005E' />
       <section className='loginPage__container'>
         <h2>Kirjaudu sisään</h2>
 
@@ -73,24 +78,49 @@ const LoginPage = () => {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              placeholder='Kirjoita sähköpostiosoitteesi.'
+
             />
             <label htmlFor=''>Salasana *</label>
-            <input
-              type='password'
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              placeholder='Kirjoita salasanasi.'
-            />
-            <a href='/forgot-password'>Unohtuiko salasana?</a>
+            <div className="password__container">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="password-input"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
+              {password.length > 0 && (
+                <span
+                  className="password-icon"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <Icon icon="mdi:eye-off-outline" className="eye-off" />
+                  ) : (
+                    <Icon icon="mdi:eye-outline" className="eye-on" />
+                  )}
+                </span>
+              )}
+            </div>
+            {errorMessage && (
+              <div className='error__container'>
+                <div className='error__msg__container'>
+                  <img src={alert} alt="alert" />
+                  <p className="error-message">{errorMessage}</p>
+                </div>
+                <div className='forgot-password-link'>
+                  <a href='/forgot-password'>Unohtuiko salasana?</a>
+                </div>
+              </div>
+            )}
+
+            {!errorMessage && <a href='/forgot-password'>Unohtuiko salasana?</a>}
+
           </section>
         </form>
       </section>
       <section className='loginPage__form--bottom'>
-        <p>
-          Eikö ole vielä tiliä? <a href='/register'>Luo tili</a>
-        </p>
+
         <Button
           style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
           onClick={(e) =>
@@ -105,3 +135,8 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+
+
+
+

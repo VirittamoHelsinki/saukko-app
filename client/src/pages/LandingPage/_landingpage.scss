@@ -7,29 +7,40 @@
     height: 100%;
     width: 100%;
     padding: 36px;
-    background: var(--saukko-main);
+    background: var( --saukko-main-blue);
     text-align: center;
 
     h1 {
       font-size: 78px;
       font-weight: bold;
+      padding: 10px;
+      color: var(--saukko-main-white);
     }
 
     p {
       font-size: 18px;
+      color: var(--saukko-main-white);
+      margin-bottom: 180px;
     }
+    .landingPage__logoContainer{
+  
+     margin-top: 290px;
+     padding: 5px;
 
+}
     .landingPage__textcontainer {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+     
     }
 
     .landingPage__buttons {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      margin-bottom: 100px;
     }
   }
 }

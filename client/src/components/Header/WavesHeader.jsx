@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 
 // Import helsinki logo
 import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
+import HelsinkiWhiteLogo from '../../assets/Helsinki_white_logo.png'
 import AuthContext from '../../utils/context/AuthContext';
 
 const Waves = (props) => {
@@ -42,6 +43,10 @@ const WavesHeader = (props) => {
   const user = auth.user;
   const role = user?.role;
 
+  // Determine which logo to use based on the role
+  const logoToUse = role ? HelsinkiLogo : HelsinkiWhiteLogo;
+  const logoColor = role ? 'black' : 'white'
+
   const getHeaderColor = () => {
     // Define color based on role
     switch (role) {
@@ -52,7 +57,7 @@ const WavesHeader = (props) => {
       case 'supervisor':
         return '#f5a3c7';
       default:
-        return '#9fc9eb';
+        return '#00005E';
     }
   };
 
@@ -66,10 +71,10 @@ const WavesHeader = (props) => {
     <main className='wavesHeader__wrapper' style={wrapperStyle}>
       {!props.disabled && (
         <button id='backArrowSVG' onClick={() => navigate(-1)}>
-          <Icon icon='typcn:arrow-left' />
+          <Icon icon='typcn:arrow-left' style={{ color: logoColor }} />
         </button>
       )}
-      <img src={HelsinkiLogo} alt='' />
+      <img src={logoToUse} alt='' />
       <h1>{props.title}</h1>
       <h2>{props.secondTitle}</h2>
       <Waves fill={headerColor} />
@@ -83,6 +88,12 @@ WavesHeader.defaultProps = {
 };
 
 export default WavesHeader;
+
+
+
+
+
+
 
 
 
