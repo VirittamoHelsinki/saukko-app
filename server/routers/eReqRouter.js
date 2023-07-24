@@ -1,7 +1,6 @@
 
 const router = require("express").Router();
 const jp = require('jsonpath')
-const { get } = require('axios')
 
 //ePerusteet API URL
 const ePerusteAPI = 'https://eperusteet.opintopolku.fi/eperusteet-service/api/external';
@@ -9,8 +8,12 @@ const ePerusteAPI = 'https://eperusteet.opintopolku.fi/eperusteet-service/api/ex
 //Function for fetching data from URL
 async function fetchData(url) {
   try {
-    const response = await get(url);
-    return response.data;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error);
     throw new Error('Failed to fetch data');
