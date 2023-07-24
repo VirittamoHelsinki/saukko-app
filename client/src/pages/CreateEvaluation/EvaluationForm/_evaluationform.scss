@@ -7,7 +7,6 @@
     min-height: 100vh;
 
     .evaluationForm__container {
-      display: flex;
       flex-direction: column;
       margin-top: 200px;
       margin-bottom: 50px;
@@ -39,14 +38,64 @@
           }
 
           input, textarea {
-            border: 2px solid black;
             padding: 16px;
             font-family: var(--saukko-main-font);
             font-size: 16px;  
           }
 
+          .form-input {
+            border: 2px solid black;
+          }
+
           textarea {
             height: 164px;
+          }
+
+          /* Date picker style */
+          .MuiTextField-root {
+            flex-direction: row;
+            flex-wrap: nowrap;
+
+            fieldset {
+              border: 2px solid black;
+              border-radius: 0%;
+
+              input::placeholder {
+                color: black;
+              }
+            }
+          }
+
+          .MuiOutlinedInput-root {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-end;
+
+          }
+
+          .MuiOutlinedInput-input::placeholder {
+            opacity: 1;
+          }
+
+          /* Calendar icon */
+          .MuiInputAdornment-root {
+            margin-top: 7px;
+            align-self: flex-start;
+            
+            svg {
+              color: black;
+            }
+          }
+
+          /* Selected day in the calendar */
+          .MuiPickersDay-root.Mui-selected {
+              border: 2px solid black;
+          }
+          
+          .MuiPickersDay-root {
+              border: 2px solid black;
           }
         }
       }
