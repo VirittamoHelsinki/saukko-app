@@ -83,6 +83,12 @@
             opacity: 1;
           }
 
+          .Mui-error {
+            fieldset {
+              border: none;
+            }
+          }
+
           /* Calendar icon */
           .MuiInputAdornment-root {
             margin-top: 7px;
