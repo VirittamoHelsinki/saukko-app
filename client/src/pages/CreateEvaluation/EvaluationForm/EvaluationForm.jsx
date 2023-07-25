@@ -36,6 +36,10 @@ function EvaluationForm() {
            '&:not(.Mui-selected)': {
               borderRadius: '0px',
             },
+            '&.MuiPickersDay-root:not(.Mui-selected)': {
+              borderColor: '#0072C6',
+              backgroundColor: 'white',
+            }
           }
         }
       }
@@ -66,7 +70,7 @@ function EvaluationForm() {
           <div className='form__startDate'>
             <label>Asiakkuuden aloituspäivä *</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <ThemeProvider theme={theme}>
+              <ThemeProvider theme={theme}>
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
                   slotProps={{ 
@@ -78,9 +82,29 @@ function EvaluationForm() {
           </div>
           <div className='form__endDate'>
             <label>Asiakkuuden lopetuspäivä *</label>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <ThemeProvider theme={theme}>
+                <DesktopDatePicker 
+                  format='DD.MM.YYYY'
+                  slotProps={{ 
+                    textField: { placeholder: currentDate },
+                  }}
+                />
+              </ThemeProvider>
+            </LocalizationProvider>
           </div>
           <div className='form__extensionEndDate'>
             <label>Täydennysjakson päättymispäivä *</label>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <ThemeProvider theme={theme}>
+                <DesktopDatePicker 
+                  format='DD.MM.YYYY'
+                  slotProps={{ 
+                    textField: { placeholder: currentDate },
+                  }}
+                />
+              </ThemeProvider>
+            </LocalizationProvider>
           </div>
           <div className='form__tasks'>
             <label>Työtehtäväsi *</label>
