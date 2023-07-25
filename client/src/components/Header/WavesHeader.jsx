@@ -45,6 +45,7 @@ const WavesHeader = (props) => {
 
   // Determine which logo to use based on the role
   const logoToUse = role ? HelsinkiLogo : HelsinkiWhiteLogo;
+  //Determine which color to use
   const logoColor = role ? 'black' : 'white'
 
   const getHeaderColor = () => {

@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../utils/config');
 
+// This is default schema for a user
 const userSchema = new mongoose.Schema({
     name: {
         type: String 
@@ -59,7 +60,6 @@ userSchema.methods.generateJWT = function generateJWT() {
   { expiresIn: 30 * 60 })
 }
 
-
 // Transform the returned object to remove the passwordHash and __v properties
 userSchema.set('toJSON', {
     transform: (document, returnedObject) => {
@@ -69,5 +69,25 @@ userSchema.set('toJSON', {
 });
 
 const User = mongoose.model('User', userSchema);
+
+User.addProperties = function addProperties(role) {
+  if (role === "customer") {
+    userSchema.add({ // add here the properties for the customer if needed
+
+    }) 
+  } else if (role === "teacher") {
+    userSchema.add({ // add here the properties for the teacher if needed
+
+    }) 
+  } else if (role === "supervisor") {
+    userSchema.add({ // add here the properties for the supervisor if needed
+
+    })
+  } else if (role === "admin") {
+    userSchema.add({ // add here the properties for the admin if needed
+
+    }) 
+  }
+}
 
 module.exports = User;
