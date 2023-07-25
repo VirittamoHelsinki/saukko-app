@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import components
@@ -6,29 +6,40 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
-// Import libraries
-import { Icon } from '@iconify/react';
-
 // Import MUI
 import dayjs from 'dayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function EvaluationForm() {
-  
   const navigate = useNavigate();
 
   const currentDate = dayjs().format('DD.MM.YYYY');
 
+  // Calendar pop up styling
   const theme = createTheme({
     palette: {
       primary: {
         main: '#0000BF',
       },
     },
+    components: {
+      MuiButtonBase: {
+        styleOverrides: {
+          root: {
+           '&.Mui-selected': {
+              borderRadius: '0px',
+            },
+           '&:not(.Mui-selected)': {
+              borderRadius: '0px',
+            },
+          }
+        }
+      }
+    }
   });
 
   return (
