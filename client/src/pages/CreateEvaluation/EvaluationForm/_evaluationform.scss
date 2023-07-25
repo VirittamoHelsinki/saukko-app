@@ -57,9 +57,6 @@
             flex-wrap: nowrap;
 
             fieldset {
-              border: 2px solid black;
-              border-radius: 0%;
-
               input::placeholder {
                 color: black;
               }
@@ -72,7 +69,14 @@
             flex-direction: row;
             flex-wrap: nowrap;
             align-items: flex-end;
+            border: 2px solid black;
+            border-radius: 0%;
+          }
 
+          .Mui-focused {
+            fieldset {
+              border: none;
+            }
           }
 
           .MuiOutlinedInput-input::placeholder {
@@ -87,15 +91,6 @@
             svg {
               color: black;
             }
-          }
-
-          /* Selected day in the calendar */
-          .MuiPickersDay-root.Mui-selected {
-              border: 2px solid black;
-          }
-          
-          .MuiPickersDay-root {
-              border: 2px solid black;
           }
         }
       }

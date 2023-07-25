@@ -11,18 +11,25 @@ import { Icon } from '@iconify/react';
 
 // Import MUI
 import dayjs from 'dayjs';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
 function EvaluationForm() {
+  
   const navigate = useNavigate();
 
   const currentDate = dayjs().format('DD.MM.YYYY');
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#0000BF',
+      },
+    },
+  });
 
   return (
     <main className='evaluationForm__wrapper'>
@@ -48,12 +55,14 @@ function EvaluationForm() {
           <div className='form__startDate'>
             <label>Asiakkuuden aloituspäivä *</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ThemeProvider theme={theme}>
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
                   slotProps={{ 
                     textField: { placeholder: currentDate },
                   }}
                 />
+              </ThemeProvider>
             </LocalizationProvider>
           </div>
           <div className='form__endDate'>
