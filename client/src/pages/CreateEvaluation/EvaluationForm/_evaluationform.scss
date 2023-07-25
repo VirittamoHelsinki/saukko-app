@@ -36,6 +36,10 @@
             font-size: 14px;
             font-weight: 600;
           }
+          
+          .disabled {
+            color: #999898;
+          }
 
           input, textarea {
             padding: 16px;
@@ -96,6 +100,15 @@
             
             svg {
               color: black;
+            }
+          }
+
+          /* Disabled date picker style */
+          .Mui-disabled {
+            border-color: #999898;
+
+            svg {
+              color: #999898;
             }
           }
         }

@@ -1,7 +1,8 @@
+// Import react packages
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Import components
+// Import custom components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
@@ -16,7 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 function EvaluationForm() {
   const navigate = useNavigate();
 
-  // State variables to track form inputs
+  // Save form inputs to state
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,18 +27,31 @@ function EvaluationForm() {
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
 
-     // Function to handle form submission
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Create the user object
+    // Form validation: check for empty fields
+    if (!firstName || !lastName || !email || !startDate || !endDate || !workTasks || !workGoals) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    // Form validation: Regex for email format
+    const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+    if (!emailPattern.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    // Create user object
     const user = {
       firstName,
       lastName,
       email,
     };
 
-    // Create the evaluation object
+    // Create evaluation object
     const evaluation = {
       startDate,
       endDate,
@@ -45,11 +59,11 @@ function EvaluationForm() {
       workGoals,
     };
 
-    // Do something with the user and evaluation objects (e.g., save them to a database)
+    // Log objects. Later save these to temp store
     console.log('User:', user);
     console.log('Evaluation:', evaluation);
 
-    // Navigate to the next page (or perform other actions)
+    // Navigate to the next page
     // navigate(`/evaluation-workplace`);
   };
 
@@ -147,10 +161,11 @@ function EvaluationForm() {
             </LocalizationProvider>
           </div>
           <div className='form__extensionEndDate'>
-            <label>Täydennysjakson päättymispäivä *</label>
+            <label className='disabled'>Täydennysjakson päättymispäivä *</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker 
+                  disabled={true}
                   format='DD.MM.YYYY'
                   slotProps={{ 
                     textField: { placeholder: currentDate },
