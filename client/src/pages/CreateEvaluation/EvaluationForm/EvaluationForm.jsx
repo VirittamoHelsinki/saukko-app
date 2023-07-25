@@ -1,11 +1,12 @@
 // Import react packages
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import custom components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+import AuthContext from '../../../utils/context/AuthContext';
 
 // Import MUI
 import dayjs from 'dayjs';
@@ -16,6 +17,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function EvaluationForm() {
   const navigate = useNavigate();
+
+  // Get user from AuthContext
+  const { user } = useContext(AuthContext);
 
   // Save form inputs to state
   const [firstName, setFirstName] = useState('');
@@ -45,14 +49,20 @@ function EvaluationForm() {
     }
 
     // Create user object
-    const user = {
+    const customer = {
       firstName,
       lastName,
       email,
+      role: 'customer',
     };
+    
+    // Find teacher id from logged in user
+    const teacherId = user ? user._id : ''
 
     // Create evaluation object
     const evaluation = {
+      customerId: '1', // After user created -> server generates id -> fetch that
+      teacherId: teacherId,
       startDate,
       endDate,
       workTasks,
@@ -60,16 +70,14 @@ function EvaluationForm() {
     };
 
     // Log objects. Later save these to temp store
-    console.log('User:', user);
+    console.log('Customer:', customer);
     console.log('Evaluation:', evaluation);
 
     // Navigate to the next page
     // navigate(`/evaluation-workplace`);
   };
 
-  const currentDate = dayjs().format('DD.MM.YYYY');
-
-  // Calendar pop up styling
+  // Calendar style
   const theme = createTheme({
     palette: {
       primary: {
@@ -136,11 +144,8 @@ function EvaluationForm() {
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
-                  slotProps={{ 
-                    textField: { placeholder: currentDate },
-                  }}
                   value={startDate}
-                  onChange={(date) => setStartDate(date.toISOString())}
+                  onChange={(date) => setStartDate(date)}
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -151,11 +156,8 @@ function EvaluationForm() {
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
-                  slotProps={{ 
-                    textField: { placeholder: currentDate },
-                  }}
                   value={endDate}
-                  onChange={(date) => setEndDate(date.toISOString())}
+                  onChange={(date) => setEndDate(date)}
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -167,11 +169,8 @@ function EvaluationForm() {
                 <DesktopDatePicker 
                   disabled={true}
                   format='DD.MM.YYYY'
-                  slotProps={{ 
-                    textField: { placeholder: currentDate },
-                  }}
                   value={extensionEndDate}
-                  onChange={(date) => setExtensionEndDate(date.toISOString())}
+                  onChange={(date) => setExtensionEndDate(date)}
                 />
               </ThemeProvider>
             </LocalizationProvider>
