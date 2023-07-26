@@ -35,6 +35,9 @@ import UserDashboard from '../../pages/UserDashboard/UserDashboard';
 import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
+import CompanyInfo from '../../pages/CompanyInfo/CompanyInfo';
+
+
 import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/EvaluationForm';
 import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
 import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/EvaluationUnits';
@@ -69,6 +72,7 @@ const Router = () => {
         {/* placeholder paths and pages */}
 
         <Route path='/test-page' element={<TestPage />} />
+        <Route path='/company-info' element={<CompanyInfo />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
