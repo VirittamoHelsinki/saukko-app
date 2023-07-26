@@ -1,0 +1,57 @@
+.heading_style {
+  color: #1A1A1A;
+  font-family: Helsinki Grotesk;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+ 
+}
+
+.text_input {
+  position: relative;
+  padding-left: 10px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  background-color: white;
+  height: 50px;
+  margin: 16px 16px 10px 16px;
+  border: 2px solid black;
+
+
+}
+
+input::placeholder {
+  color: rgb(199, 199, 199) !important;
+}
+
+.icone-style {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: end;
+  position: absolute;
+  margin-top: -48px;
+  margin-left: 77%;
+  padding: 2px;
+
+}
+
+.edit-icone-style {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: end;
+  position: absolute;
+  margin-top: -80px;
+  margin-left: 75%;
+  padding: 27px;
+
+}
+
+.työpaikkä_tiedot {
+  margin: 16px 16px 10px 16px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}

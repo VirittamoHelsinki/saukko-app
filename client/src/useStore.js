@@ -6,6 +6,7 @@ const useStore = create((set) => ({
   role: '',
   name: '',
   email: '',
+  emailError: '',
   password: '',
   passwordVerify: '',
   passwordOld: '',
@@ -22,12 +23,21 @@ const useStore = create((set) => ({
   goals: '',
   academy: '',
   education: '',
+  businessID: '',
+  businessIDError: '',
+  editedCompanyName: '',
+  companyName: null,
+  työpaikkaohjaajat: [],
+  firstName: '',
+  lastName: '',
+  työpaikkaohjaajaEmail: '',
   openNotificationModal: false,
 
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
   setName: (name) => set({ name }),
   setEmail: (email) => set({ email }),
+  setEmailError: (value) => set(() => ({ emailError: value })),
   setPassword: (password) => set({ password }),
   setPasswordVerify: (passwordVerify) => set({ passwordVerify }),
   setPasswordOld: (passwordOld) => set({ passwordOld }),
@@ -45,13 +55,21 @@ const useStore = create((set) => ({
   setAcademy: (academy) => set({ academy }),
   setEducation: (education) => set({ education }),
   setOpenNotificationModal: (openNotificationModal) =>
-    set({ openNotificationModal }),
-
+  set({ openNotificationModal }),
+  setBusinessId: (value) => set(() => ({ businessID: value })),
+  setBusinessIdError: (value) => set(() => ({ businessIDError: value })),
+  setCompanyName: (value) => set(() => ({ companyName: value })),
+  setEditedCompanyName: (value) => set(() => ({ editedCompanyName: value })),
+  setTyöpaikkaohjaajat: (value) => set(() => ({ työpaikkaohjaajat: value })),
+  setFirstName: (value) => set(() => ({ firstName: value })),
+  setLastName: (value) => set(() => ({ lastName: value })),
+  setTyöpaikkaohjaajaEmail: (value) => set(() => ({ työpaikkaohjaajaEmail: value })),
   // Define a resetForm function to reset all state variables to their initial values
   resetForm: () =>
     set({
       name: '',
       email: '',
+      emailError: '',
       password: '',
       passwordVerify: '',
       address: '',
@@ -67,6 +85,11 @@ const useStore = create((set) => ({
       goals: '',
       academy: '',
       education: '',
+      businessID: '',
+      businessIDError: '',
+      firstName: '',
+      lastName: '',
+      työpaikkaohjaajaEmail: '',
     }),
 }));
 
