@@ -7,7 +7,6 @@
     min-height: 100vh;
 
     .evaluationForm__container {
-      display: flex;
       flex-direction: column;
       margin-top: 200px;
       margin-bottom: 50px;
@@ -37,16 +36,80 @@
             font-size: 14px;
             font-weight: 600;
           }
+          
+          .disabled {
+            color: #999898;
+          }
 
           input, textarea {
-            border: 2px solid black;
             padding: 16px;
             font-family: var(--saukko-main-font);
             font-size: 16px;  
           }
 
+          .form-input {
+            border: 2px solid black;
+          }
+
           textarea {
             height: 164px;
+          }
+
+          /* Date picker style */
+          .MuiTextField-root {
+            flex-direction: row;
+            flex-wrap: nowrap;
+
+            fieldset {
+              input::placeholder {
+                color: black;
+              }
+            }
+          }
+
+          .MuiOutlinedInput-root {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-end;
+            border: 2px solid black;
+            border-radius: 0%;
+          }
+
+          .Mui-focused {
+            fieldset {
+              border: none;
+            }
+          }
+
+          .MuiOutlinedInput-input::placeholder {
+            opacity: 1;
+          }
+
+          .Mui-error {
+            fieldset {
+              border: none;
+            }
+          }
+
+          /* Calendar icon */
+          .MuiInputAdornment-root {
+            margin-top: 7px;
+            align-self: flex-start;
+            
+            svg {
+              color: black;
+            }
+          }
+
+          /* Disabled date picker style */
+          .Mui-disabled {
+            border-color: #999898;
+
+            svg {
+              color: #999898;
+            }
           }
         }
       }
