@@ -4,8 +4,7 @@ import { Icon } from '@iconify/react';
 import useUnitsStore from '../../unitsStore';
 import DegreeContext from '../../utils/context/DegreeContext';
 
-
-function SelectUnit({ unit, allUnits }) {
+function SelectUnit({ unit, allUnits, redirectURL }) {
   const navigate = useNavigate();
 
   // Get degree from degreeContext
@@ -50,7 +49,7 @@ function SelectUnit({ unit, allUnits }) {
       <Icon 
         icon="iconamoon:arrow-right-2-light" 
         className="selectUnit__container--units-unit-arrow" 
-        /* onClick={() => navigate(`/degrees/${degree._id}/units/${unit._id}`)} */
+        onClick={redirectURL ? () => navigate(redirectURL) : undefined}
       />
     </div>
   )
