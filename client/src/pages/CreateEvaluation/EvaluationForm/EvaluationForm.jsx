@@ -2,11 +2,12 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Import custom components
+// Import local files & components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import AuthContext from '../../../utils/context/AuthContext';
+import useEvaluationStore from '../../../evaluationStore';
 
 // Import MUI
 import dayjs from 'dayjs';
@@ -30,6 +31,10 @@ function EvaluationForm() {
   const [extensionEndDate, setExtensionEndDate] = useState(dayjs().format('DD.MM.YYYY'));
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
+
+  // Setter functions from useEvaluationStore
+  const setCustomer = useEvaluationStore((state) => state.setCustomer);
+  const setEvaluation = useEvaluationStore((state) => state.setEvaluation);
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -56,25 +61,22 @@ function EvaluationForm() {
       role: 'customer',
     };
     
-    // Find teacher id from logged in user
-    const teacherId = user ? user._id : ''
-
     // Create evaluation object
     const evaluation = {
       customerId: '1', // After user created -> server generates id -> fetch that
-      teacherId: teacherId,
+      teacherId: user ? user._id : '',
       startDate,
       endDate,
       workTasks,
       workGoals,
     };
 
-    // Log objects. Later save these to temp store
-    console.log('Customer:', customer);
-    console.log('Evaluation:', evaluation);
-
+    // Save objects to temporary store
+    setCustomer(customer);
+    setEvaluation(evaluation);
+    
     // Navigate to the next page
-    // navigate(`/evaluation-workplace`);
+    navigate(`/evaluation-workplace`);
   };
 
   // Calendar style
