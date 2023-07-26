@@ -1,12 +1,17 @@
 import React, { useRef } from 'react';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { scroller } from 'react-scroll';
-import { Accordion } from 'hds-react';
 import { TextInput } from 'hds-react';
 import { Icon } from '@iconify/react';
 import { IconCrossCircle, IconSearch } from 'hds-react';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import useStore from '../../useStore';
+import WavesHeader from '../../components/Header/WavesHeader';
+
 
 
 
@@ -54,11 +59,6 @@ const CompanyInfo = () => {
     setEditedCompanyName(value);
   };
 
-  // const handleEmailChange = (event) => {
-  //   const value = event.target.value;
-  //   setEmail(value);
-  //   setEmailError('');
-  // };
   const scrollToPageNavigation = () => {
     scroller.scrollTo('pageNavigation', {
       duration: 500,
@@ -120,16 +120,21 @@ const CompanyInfo = () => {
   };
 
   return (
+
     <div>
-      <div style={{ backgroundColor: ' #F2F2F2;', margin: '16px', }}>
+      <WavesHeader title='Saukko' fill='#9fc9eb' secondTitle='Lisää uusi työpaikka' />
+      <div style={{ margin: '16px', marginBottom: '28px', marginTop: '300px' }}>
         <Accordion
-          card
-          border
           className="heading_style"
-          heading="1. Työpaikka tiedot"
-          language="en"
-          style={{ margin: '5%', paddingTop: '17px', paddingBottom: '17px' }}
+          sx={{ backgroundColor: '#F2F2F2', paddingTop: '17px', paddingBottom: '20px' }}
         >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>1. Työpaikka tiedot</Typography>
+          </AccordionSummary>
           <form >
             <div>
               <label className="työpaikkä_tiedot" htmlFor="business-id-input">
@@ -178,15 +183,22 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
-      <div style={{ backgroundColor: ' #F2F2F2;', margin: '16px' }}>
+      <div style={{ margin: '16px', marginBottom: '28px' }}>
         <Accordion
           card
           border
           className="heading_style"
           heading="2. Työpaikkaohjaajan tiedot"
           language="en"
-          style={{ margin: '5%', paddingTop: '17px', paddingBottom: '17px' }}
+          style={{ backgroundColor: '#F2F2F2', paddingTop: '17px', paddingBottom: '17px' }}
         >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>2. Työpaikkaohjaajan tiedot</Typography>
+          </AccordionSummary>
           <form >
             <div className='ohjaajat-info' >
               {työpaikkaohjaajat.slice().reverse().map((ohjaaja, index) => (
@@ -278,7 +290,7 @@ const CompanyInfo = () => {
                 style={{
                   marginLeft: '17%',
                   marginBottom: '30px',
-                  backgroundColor: 'blue',
+                  backgroundColor: '#0000BF',
                   color: 'white',
                   marginTop: '25px',
                   width: '65%'
@@ -291,13 +303,17 @@ const CompanyInfo = () => {
         </Accordion>
       </div>
       {/* Adding the functionality of the button later */}
-      <PageNavigationButtons
-        forwardButtonText={'Seurava'} />
+      <PageNavigationButtons forwardButtonText={'Seurava'} style={{ marginBottom: '90px' }} />
+
     </div>
   );
 };
 
 export default CompanyInfo;
+
+
+
+
 
 
 

@@ -19,7 +19,7 @@ const ResetPassword = () => {
   const { token } = useParams();
   const [validToken, setValidToken] = useState(false);
   const [message, setMessage] = useState("")
-  const color = "#9fc9eb";
+  const color = "#00005E";
 
   const checkValidToken = async () => {
     if (validToken) {
@@ -191,7 +191,10 @@ const ResetPassword = () => {
           headerColor={color}
           bodyColor={color}
           heading="Salasana on vaihdettu!"
-          icon="gg:check-o"
+          headingColor={'white'}
+          icon='gg:check-o'
+          iconColor={'white'}
+
         />
       )}
     </main>
@@ -199,4 +202,6 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+
+
 
