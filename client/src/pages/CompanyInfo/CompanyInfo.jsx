@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
@@ -11,6 +11,7 @@ import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import useStore from '../../useStore';
 import WavesHeader from '../../components/Header/WavesHeader';
+import UserNav from '../../components/UserNav/UserNav';
 
 
 
@@ -57,14 +58,6 @@ const CompanyInfo = () => {
   const handleCompanyName = (event) => {
     const value = event.target.value;
     setEditedCompanyName(value);
-  };
-
-  const scrollToPageNavigation = () => {
-    scroller.scrollTo('pageNavigation', {
-      duration: 500,
-      smooth: true,
-      offset: 500,
-    });
   };
 
 
@@ -115,7 +108,7 @@ const CompanyInfo = () => {
       setFirstName('');
       setLastName('');
       setTyöpaikkaohjaajaEmail('');
-      scrollToPageNavigation();
+
     }
   };
 
@@ -285,7 +278,7 @@ const CompanyInfo = () => {
                 />
               </div>
               <Button
-                ref={pageNavigationRef}
+
                 text="Lisää toinen ohjaaja"
                 style={{
                   marginLeft: '17%',
@@ -303,18 +296,19 @@ const CompanyInfo = () => {
         </Accordion>
       </div>
       {/* Adding the functionality of the button later */}
-      <PageNavigationButtons forwardButtonText={'Seurava'} style={{ marginBottom: '90px' }} />
 
+      <PageNavigationButtons forwardButtonText={'Seurava'} style={{ marginBottom: '30px' }} />
+
+
+      <div style={{ marginTop: '80px' }}>
+        <UserNav></UserNav>
+      </div>
     </div>
+
   );
 };
 
 export default CompanyInfo;
-
-
-
-
-
 
 
 
