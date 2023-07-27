@@ -20,6 +20,14 @@
     const evaluation = useEvaluationStore((state) => state.evaluation);
     const workplace = useEvaluationStore((state) => state.workplace);
     const supervisor = useEvaluationStore((state) => state.supervisor);
+  
+  Clear store:
+
+    const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
+
+    const yourSubmitHandler {
+      clearEvaluation();
+    }
 */
 
 import { create } from 'zustand';
@@ -34,6 +42,15 @@ const useEvaluationStore = create((set) => ({
   setEvaluation: (evaluation) => set({ evaluation }),
   setWorkplace: (workplace) => set({ workplace }),
   setSupervisor: (supervisor) => set({ supervisor }),
+
+  clearEvaluation: () => {
+    set({ 
+      customer: null, 
+      evaluation: null,
+      supervisor: null,
+      workplace: null,
+    });
+  },
 }));
 
 export default useEvaluationStore;

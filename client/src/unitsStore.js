@@ -3,13 +3,13 @@
 
   Import:
 
-  import useUnitsStore from '../../../unitsStore';
+    import useUnitsStore from '../../../unitsStore';
 
   Get checked units:
 
     const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
-  After saving units to DB, remember to clear store:
+  Clear store:
 
     const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
 

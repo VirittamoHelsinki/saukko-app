@@ -26,6 +26,7 @@
  */
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import useStore from '../../useStore';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -35,6 +36,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Icon } from '@iconify/react';
 import Typography from '@mui/material/Typography';
+import { Navigate } from 'react-router';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -70,6 +72,7 @@ function BootstrapDialogTitle(props) {
 }
 
 export default function CustomizedDialogs(props) {
+  const navigate = useNavigate();
   const { setOpenNotificationModal } = useStore();
 
   let icon = 'material-symbols:info';
@@ -96,6 +99,7 @@ export default function CustomizedDialogs(props) {
 
   const handleClose = () => {
     setOpenNotificationModal(false);
+    props.redirectLink && navigate(props.redirectLink)
   };
 
   return (

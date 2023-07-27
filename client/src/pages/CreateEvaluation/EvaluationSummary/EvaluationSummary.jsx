@@ -9,21 +9,28 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import InfoList from '../../../components/InfoList/InfoList';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../evaluationStore';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import useUnitsStore from '../../../unitsStore';
+import useStore from '../../../useStore';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
 
-  // Get data from evaluationStore
+  // Get data & functions from evaluationStore
   const customer = useEvaluationStore((state) => state.customer);
   const evaluation = useEvaluationStore((state) => state.evaluation);
   const workplace = useEvaluationStore((state) => state.workplace);
   const supervisor = useEvaluationStore((state) => state.supervisor);
+  const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
 
   console.log('Customer from store:', customer);
   console.log('Evaluation from store:', evaluation);
   console.log('Workplace from store:', workplace);
   console.log('Supervisor from store:', supervisor);
+
+  // Get data & functions from unitsStore
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+  const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
 
   const summaryData = [
     {
@@ -54,18 +61,25 @@ function EvaluationSummary() {
       title: 'Työpaikkaohjaaja',
       content: supervisor ? `${supervisor.firstName} ${supervisor.lastName}` : '',
     },
-  ]
+  ];
+  console.log('summary data', summaryData);
 
-  console.log('summary data', summaryData)
-
-  // Get checked units from unitsStore
-  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+  // NotificationModal logic
+  const {
+    openNotificationModal,
+    setOpenNotificationModal,
+  } = useStore();
 
   const handleSendToServer = () => {
-    // Send data to server
+    // Create user in DB with temporary password and send invitation email
+    // Create evaluation in DB with user._id from DB
+
+    // Clear data from storage
+    clearEvaluation();
+    clearCheckedUnits();
 
     // Trigger NotificationModal
-    console.log('click')
+    setOpenNotificationModal(true);
   }
 
   return (
@@ -86,6 +100,13 @@ function EvaluationSummary() {
         />
       </section>
       <UserNav />
+      <NotificationModal
+        type='success'
+        title='Kutsut lähetetty!'
+        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+        open={openNotificationModal}
+        redirectLink='/userdashboard'
+      />
     </main>
   );
 }
