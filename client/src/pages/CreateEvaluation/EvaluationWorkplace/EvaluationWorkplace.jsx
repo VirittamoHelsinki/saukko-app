@@ -94,6 +94,16 @@ function EvaluationWorkplace() {
   };
   console.log('Workplace form store:', workplaceFromStore)
 
+  // Supervisor selection logic
+  const toggleSupervisor = (supervisorId) => () => {
+    // Find supervisor object by id
+    const allSupervisors = workplaces.flatMap(workplace => workplace.supervisors);
+    const foundSupervisorObj = allSupervisors.find(supervisor => supervisor._id === supervisorId);
+    // Save to store
+    setSupervisor(foundSupervisorObj) 
+  };
+  console.log('Supervisor form store:', supervisorFromStore)
+  
   // Pagination logic
   const [page, setPage] = useState(1);
   const workplacesPerPage = 15;
@@ -116,16 +126,15 @@ function EvaluationWorkplace() {
     );
   };  
 
-  // Supervisor selection logic
-  const toggleSupervisor = (supervisorId) => () => {
-    // Find supervisor object by id
-    const allSupervisors = workplaces.flatMap(workplace => workplace.supervisors);
-    const foundSupervisorObj = allSupervisors.find(supervisor => supervisor._id === supervisorId);
-    // Save to store
-    setSupervisor(foundSupervisorObj) 
+  // Validate data and redirect
+  const validationHandler = () => {
+    if (workplaceFromStore && supervisorFromStore) {
+      navigate('/evaluation-units')
+    } else {
+      alert('Choose workplace and supervisor')
+    }
   };
-  console.log('Supervisor form store:', supervisorFromStore)
-  
+
   return (
     <main className='evaluationWorkplace__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
@@ -153,8 +162,6 @@ function EvaluationWorkplace() {
                         onChange={handleSelectWorkplace}
                         onClick={(event) => event.stopPropagation()} // Prevent expanding accordion when clicking radio button
                         value={workplace._id}
-                        name='radio-buttons'
-                        inputProps={{ 'aria-label': 'A' }}
                         theme={createTheme({palette: {primary: {main: '#0000BF'}}})}
                       />}
                     label={
@@ -205,7 +212,7 @@ function EvaluationWorkplace() {
       {/* Back and forward buttons */}
       <PageNavigationButtons 
         handleBack={() => navigate(`/evaluation-form`)} 
-        handleForward={() => navigate(`/evaluation-units`)} 
+        handleForward={validationHandler} 
         forwardButtonText={'Seuraava'}
       />
       </section>
