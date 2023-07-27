@@ -6,6 +6,7 @@ import { DegreeContextProvider } from "./utils/context/DegreeContext";
 
 // importing page routing
 import Router from "./components/Router/Router";
+import { InternalDegreeContextProvider } from "./utils/context/InternalDegreeContext";
 
 axios.defaults.withCredentials = true;
 
@@ -14,9 +15,11 @@ const App = () => {
   return (
     <main className="app__wrapper">
       <AuthContextProvider>
-        <DegreeContextProvider>
+       <InternalDegreeContextProvider>
+       <DegreeContextProvider>
           <Router />
         </DegreeContextProvider>
+       </InternalDegreeContextProvider>
       </AuthContextProvider>
     </main>
   );
