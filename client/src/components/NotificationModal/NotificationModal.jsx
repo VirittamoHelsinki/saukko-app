@@ -36,7 +36,6 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Icon } from '@iconify/react';
 import Typography from '@mui/material/Typography';
-import { Navigate } from 'react-router';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
