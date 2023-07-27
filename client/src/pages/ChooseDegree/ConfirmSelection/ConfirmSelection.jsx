@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
-import PageNumbers from '../../../components/PageNumbers/PageNumbers';
+import Stepper from '../../../components/Stepper/Stepper';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
@@ -20,7 +20,7 @@ function ConfirmSelection() {
   // Set path & get degree units from DegreeContext
   const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
   const params = useParams();
-  
+
   useEffect(() => {
     setDegreeId(params.degreeId);
   }, []);
@@ -42,60 +42,94 @@ function ConfirmSelection() {
   const handleOutsideClick = (event) => {
     const popupContainer = document.querySelector('.popup__container');
     const clickedElement = event.target;
-  
+
     if (popupContainer && !popupContainer.contains(clickedElement)) {
       handlePopupClose();
     }
   };
 
   // NotificationModal logic
-  const {
-    openNotificationModal,
-    setOpenNotificationModal,
-  } = useStore();
+  const { openNotificationModal, setOpenNotificationModal } = useStore();
 
   const handleNotificationModalOpen = () => {
     setOpenNotificationModal(true);
   };
 
+  // Text for stepper's labels
+  const labelStepper = [
+    'Tutkintotiedot',
+    'Valitse tutkinnonosat',
+    'Määritä tehtävät',
+    'Vahvista',
+  ];
+
   return (
     <main className='confirmSelection__wrapper'>
-        <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
-        <section className='confirmSelection__container'>
-          <PageNumbers activePage={3}/>
-          <h1 className='confirmSelection__container--title'>Vahvista pyyntö</h1>
-          <p className='confirmSelection__container--desc'>{`Olet hakemassa ${degreeFound && degree.name.fi} osien suoria näyttöjä`} </p>
-          <h1 className='confirmSelection__container--secondtitle'>Valitsemasi tutkinnonosat</h1>
-          <div className='confirmSelection__container--units'>
-            {console.log(console.log('checked units confirm selection page: ', checkedUnits))}
-            {checkedUnits?.map((unit) => (
-              <SelectUnit key={unit._id} unit={unit} allUnits={degreeFound && degree.units}/>
-            ))}
-          </div>
-          <PageNavigationButtons 
-            handleBack={() => navigate(`/degrees/${degree._id}/units`)} 
-            handleForward={handlePopupOpen} 
-            forwardButtonText={'Valitse tutkinnonosat'}
-          />
-        </section>
-        <UserNav />
+      <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
+      <section className='confirmSelection__container'>
+        <Stepper
+          activePage={2}
+          totalPages={4}
+          label={labelStepper}
+          url={`/degrees/${degree._id}`}
+        />
+        <h1 className='confirmSelection__container--title'>Vahvista pyyntö</h1>
+        <p className='confirmSelection__container--desc'>
+          {`Olet hakemassa ${
+            degreeFound && degree.name.fi
+          } osien suoria näyttöjä`}{' '}
+        </p>
+        <h1 className='confirmSelection__container--secondtitle'>
+          Valitsemasi tutkinnonosat
+        </h1>
+        <div className='confirmSelection__container--units'>
+          {console.log(
+            console.log('checked units confirm selection page: ', checkedUnits)
+          )}
+          {checkedUnits?.map((unit) => (
+            <SelectUnit
+              key={unit._id}
+              unit={unit}
+              allUnits={degreeFound && degree.units}
+            />
+          ))}
+        </div>
+        <PageNavigationButtons
+          handleBack={() => navigate(`/degrees/${degree._id}/units`)}
+          handleForward={handlePopupOpen}
+          forwardButtonText={'Valitse tutkinnonosat'}
+        />
+      </section>
+      <UserNav />
 
       {/* Pop-up confirmation component */}
       <>
         {isOpen && (
-          <div className="popup__wrapper" onClick={handleOutsideClick}>
-            <div className="popup__container">
-              <h2 className="popup__container--title">Haluan suorittaa {degree.name.fi} -osien suoria näyttöjä</h2>
-              <p className="popup__container--text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+          <div className='popup__wrapper' onClick={handleOutsideClick}>
+            <div className='popup__container'>
+              <h2 className='popup__container--title'>
+                Haluan suorittaa {degree.name.fi} -osien suoria näyttöjä
+              </h2>
+              <p className='popup__container--text'>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis
               </p>
-              <div className="popup__container--buttons">
-                <div className="popup__container--buttons-confirm" onClick={() => { handlePopupClose(); handleNotificationModalOpen();}}>
-                  <Button text="Vahvista"/>
+              <div className='popup__container--buttons'>
+                <div
+                  className='popup__container--buttons-confirm'
+                  onClick={() => {
+                    handlePopupClose();
+                    handleNotificationModalOpen();
+                  }}
+                >
+                  <Button text='Vahvista' />
                 </div>
-                <div className="popup__container--buttons-cancel" onClick={handlePopupClose}>
-                  <Button text="Peruuta"/>
+                <div
+                  className='popup__container--buttons-cancel'
+                  onClick={handlePopupClose}
+                >
+                  <Button text='Peruuta' />
                 </div>
               </div>
             </div>
@@ -109,7 +143,6 @@ function ConfirmSelection() {
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
       />
-
     </main>
   );
 }
