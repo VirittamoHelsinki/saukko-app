@@ -143,7 +143,7 @@ const CompanyInfo = () => {
                 value={businessID}
                 onChange={handleBusinessId}
               />
-              <div className="icone-style">
+              <div className="cross-icone-style">
                 <IconCrossCircle
                   className="custom-icon"
                   aria-hidden="true"
@@ -297,8 +297,8 @@ const CompanyInfo = () => {
       </div>
       {/* Adding the functionality of the button later */}
 
-      <PageNavigationButtons forwardButtonText={'Seurava'} style={{ marginBottom: '30px' }} />
-      <div style={{ marginBottom: '80px' }} >
+      <PageNavigationButtons forwardButtonText={'Seurava'} />
+      <div style={{ marginBottom: '90px' }} >
         <UserNav></UserNav>
       </div>
     </div>

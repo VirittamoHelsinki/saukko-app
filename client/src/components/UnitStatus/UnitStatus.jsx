@@ -43,10 +43,10 @@ const UnitStatus = ({ status, subheader, link }) => {
   return (
     <main className='unitstatus-wrapper' style={{ backgroundColor }}>
       <div className='unitstatus'>
-        <div>{img}</div>
+        <div className='icone-img-style'>{img}</div>
         <h1>{header}</h1>
 
-        <Link to={link}><img className="right-angle-icon" src={rightAngle} alt="Angle Icone" /></Link>
+        <Link to={link}><img className="icone-img-style" src={rightAngle} alt="Angle Icone" /></Link>
 
       </div>
 
