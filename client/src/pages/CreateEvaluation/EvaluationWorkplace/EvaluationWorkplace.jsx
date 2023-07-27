@@ -7,6 +7,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
+import Stepper from '../../../components/Stepper/Stepper';
 import useEvaluationStore from '../../../evaluationStore';
 
 // Import libraries
@@ -135,11 +136,24 @@ function EvaluationWorkplace() {
     }
   };
 
+  // Stepper labels
+  const labelStepper = [
+    'Lisää tiedot',
+    'Valitse työpaikka',
+    'Valitse tutkinnonosat',
+    'Aktivoi suoritus',
+  ];
+  
   return (
     <main className='evaluationWorkplace__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='evaluationWorkplace__container'>
-        <div>Stepper here (waiting for update)</div>
+        <Stepper
+            activePage={2}
+            totalPages={4}
+            label={labelStepper}
+            url={'/evaluation-workplace'}
+        />
         <h1>Valitse työpaikka ja ohjaaja</h1>
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'}/>
 

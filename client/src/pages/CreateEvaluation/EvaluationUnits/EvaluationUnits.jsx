@@ -4,6 +4,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
+import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../unitsStore';
 
 const mockData = [
@@ -88,11 +89,24 @@ function EvaluationUnits() {
     }
   };
 
+  // Stepper labels
+  const labelStepper = [
+    'Lisää tiedot',
+    'Valitse työpaikka',
+    'Valitse tutkinnonosat',
+    'Aktivoi suoritus',
+  ];
+  
   return (
     <main className='evaluationUnits__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='evaluationUnits__container'>
-        <div>Stepper here (waiting for update)</div>
+        <Stepper
+            activePage={3}
+            totalPages={4}
+            label={labelStepper}
+            url={'/evaluation-units'}
+        />
         <h1>Degree name (FIX)</h1> {/* Degree name from workplace here */}
 
         <div className='evaluationUnits__container--units'>

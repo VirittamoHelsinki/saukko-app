@@ -10,6 +10,7 @@ import InfoList from '../../../components/InfoList/InfoList';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../evaluationStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../unitsStore';
 import useStore from '../../../useStore';
 
@@ -82,11 +83,24 @@ function EvaluationSummary() {
     setOpenNotificationModal(true);
   }
 
+  // Stepper labels
+  const labelStepper = [
+    'Lisää tiedot',
+    'Valitse työpaikka',
+    'Valitse tutkinnonosat',
+    'Aktivoi suoritus',
+  ];
+  
   return (
     <main className='summary__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='summary__container'>
-        <div>Stepper here (waiting for update)</div>
+        <Stepper
+            activePage={4}
+            totalPages={4}
+            label={labelStepper}
+            url={'/evaluation-summary'}
+        />
         <InfoList title={'Yhteenveto'} data={summaryData}/>
         <h1>Degree name (FIX THIS)</h1> {/* Degree name from workplace */}
         {console.log(console.log('checked units evaluation summary page: ', checkedUnits))}
