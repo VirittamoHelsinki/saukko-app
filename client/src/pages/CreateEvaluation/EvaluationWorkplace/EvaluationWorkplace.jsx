@@ -80,6 +80,7 @@ function EvaluationWorkplace() {
 
   const handleSelectWorkplace = (event) => {
     setSelectedWorkplace(event.target.value);
+    
   };
 
   // Pagination logic

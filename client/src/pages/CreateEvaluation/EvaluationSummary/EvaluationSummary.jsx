@@ -7,34 +7,36 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InfoList from '../../../components/InfoList/InfoList';
+import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../evaluationStore';
+import useUnitsStore from '../../../unitsStore';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
 
-  // Get customer data from store
+  // Get customer & evaluation data from evaluationStore
   const customer = useEvaluationStore((state) => state.customer);
   const evaluation = useEvaluationStore((state) => state.evaluation);
 
-  console.log('Customer from store:', customer)
-  console.log('Evaluation from store:', evaluation)
+  console.log('Customer from store:', customer);
+  console.log('Evaluation from store:', evaluation);
 
   const summaryData = [
     {
       title: 'Nimi',
-      content: `${customer.firstName} ${customer.lastname}`,
+      content: customer ? `${customer.firstName} ${customer.lastname}` : '',
     },
     {
       title: 'Sähköposti',
-      content: customer.email,
+      content: customer ? customer.email : '',
     },
     {
       title: 'Asiakkuuden aloituspäivä',
-      content: evaluation.startDate.format('DD.MM.YYYY'),
+      content: evaluation ? evaluation.startDate.format('DD.MM.YYYY') : '',
     },
     {
       title: 'Asiakkuuden lopetuspäivä',
-      content: evaluation.endDate.format('DD.MM.YYYY'),
+      content: evaluation ? evaluation.endDate.format('DD.MM.YYYY'): '',
     },
     {
       title: 'Työpaikka',
@@ -52,13 +54,32 @@ function EvaluationSummary() {
 
   console.log('summary data', summaryData)
 
+  // Get checked units from unitsStore
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+
+  const handleSendToServer = () => {
+    // Send data to server
+
+    // Trigger NotificationModal
+    console.log('click')
+  }
+
   return (
     <main className='summary__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='summary__container'>
         <div>Stepper here (waiting for update)</div>
         <InfoList title={'Yhteenveto'} data={summaryData}/>
-        <PageNavigationButtons handleBack={() => navigate(`/evaluation-units`)} /* handleForward={() => handlePopUp()} */ forwardButtonText={'Seuraava'}/>
+        <h1>Degree name (UPDATE)</h1>
+        {console.log(console.log('checked units evaluation summary page: ', checkedUnits))}
+        {checkedUnits?.map((unit) => (
+          <SelectUnit key={unit._id} unit={unit} allUnits={checkedUnits && checkedUnits}/>
+        ))}
+        <PageNavigationButtons 
+          handleBack={() => navigate(`/evaluation-units`)} 
+          handleForward={handleSendToServer}
+          forwardButtonText={'Seuraava'}
+        />
       </section>
       <UserNav />
     </main>

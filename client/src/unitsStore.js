@@ -1,11 +1,15 @@
 /* 
-  After saving chosen units to DB remember to clear store!
+  Get checked units:
 
-  const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
+    const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
-  const yourSubmitHandler {
-    clearCheckedUnits();
-  }
+  After saving units to DB, remember to clear store:
+
+    const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
+
+    const yourSubmitHandler {
+      clearCheckedUnits();
+    }
 */
 
 import { create } from 'zustand';
