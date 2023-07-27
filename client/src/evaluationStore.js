@@ -1,3 +1,27 @@
+/* 
+  USAGE
+
+  Import:
+
+    import useEvaluationStore from '../../../evaluationStore';
+
+  Set data:
+
+    const setCustomer = useEvaluationStore((state) => state.setCustomer);
+    const setEvaluation = useEvaluationStore((state) => state.setEvaluation);
+    const setWorkplace = useEvaluationStore((state) => state.setWorkplace);
+    const setSupervisor = useEvaluationStore((state) => state.setSupervisor);
+
+    setEvaluation(someData);
+
+  Access data:
+
+    const customer = useEvaluationStore((state) => state.customer);
+    const evaluation = useEvaluationStore((state) => state.evaluation);
+    const workplace = useEvaluationStore((state) => state.workplace);
+    const supervisor = useEvaluationStore((state) => state.supervisor);
+*/
+
 import { create } from 'zustand';
 
 const useEvaluationStore = create((set) => ({
@@ -13,12 +37,3 @@ const useEvaluationStore = create((set) => ({
 }));
 
 export default useEvaluationStore;
-
-/* 
-  Access data in another component:
-
-  import useEvaluationStore from '../../../evaluationStore';
-
-  const customer = useEvaluationStore((state) => state.customer);
-  const evaluation = useEvaluationStore((state) => state.evaluation);
-*/

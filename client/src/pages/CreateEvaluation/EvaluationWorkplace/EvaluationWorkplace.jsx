@@ -1,11 +1,13 @@
+// Import react packages
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Import components
+// Import local files & components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
+import useEvaluationStore from '../../../evaluationStore';
 
 // Import libraries
 import { Icon } from '@iconify/react';
@@ -75,13 +77,22 @@ function EvaluationWorkplace() {
   const [workplaces, setWorkplaces] = useState(mockData);
   const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
 
-  // Radio button logic
-  const [selectedWorkplace, setSelectedWorkplace] = useState();
+  // Setter functions from evaluationStore
+  const setWorkplace = useEvaluationStore((state) => state.setWorkplace);
+  const setSupervisor = useEvaluationStore((state) => state.setSupervisor);
 
+  // Getter function from evaluationStore
+  const workplaceFromStore = useEvaluationStore((state) => state.workplace);
+  const supervisorFromStore = useEvaluationStore((state) => state.supervisor);
+
+  // Workplace selection logic
   const handleSelectWorkplace = (event) => {
-    setSelectedWorkplace(event.target.value);
-    
+    // Find workplace by id
+    const workplaceObj = workplaces.find(workplace => workplace._id === event.target.value)
+    // Save to store
+    setWorkplace(workplaceObj)
   };
+  console.log('Workplace form store:', workplaceFromStore)
 
   // Pagination logic
   const [page, setPage] = useState(1);
@@ -106,13 +117,14 @@ function EvaluationWorkplace() {
   };  
 
   // Supervisor selection logic
-  const [selectedSupervisorId, setSelectedSupervisorId] = useState(null);
-
   const toggleSupervisor = (supervisorId) => () => {
-    console.log('params sup id', supervisorId)
-    setSelectedSupervisorId(supervisorId);
+    // Find supervisor object by id
+    const allSupervisors = workplaces.flatMap(workplace => workplace.supervisors);
+    const foundSupervisorObj = allSupervisors.find(supervisor => supervisor._id === supervisorId);
+    // Save to store
+    setSupervisor(foundSupervisorObj) 
   };
-  console.log('set sup id', selectedSupervisorId)
+  console.log('Supervisor form store:', supervisorFromStore)
   
   return (
     <main className='evaluationWorkplace__wrapper'>
@@ -127,7 +139,7 @@ function EvaluationWorkplace() {
           { filteredWorkplaces ? 
             filteredWorkplaces.map((workplace) => (
               <Accordion 
-                className={`workplaces-accordion ${selectedWorkplace === workplace.name ? 'selected' : ''}`}
+                className={`workplaces-accordion ${workplaceFromStore === workplace ? 'selected' : ''}`}
                 key={workplace._id} 
                 disableGutters 
                 square
@@ -137,17 +149,17 @@ function EvaluationWorkplace() {
                     value={workplace.name}
                     control=
                       {<Radio 
-                        checked={selectedWorkplace === workplace.name}
+                        checked={workplaceFromStore === workplace}
                         onChange={handleSelectWorkplace}
                         onClick={(event) => event.stopPropagation()} // Prevent expanding accordion when clicking radio button
-                        value={workplace.name}
+                        value={workplace._id}
                         name='radio-buttons'
                         inputProps={{ 'aria-label': 'A' }}
                         theme={createTheme({palette: {primary: {main: '#0000BF'}}})}
                       />}
                     label={
                       <div className='radio__label'>
-                        <p className={`radio__label-name ${selectedWorkplace === workplace.name ? 'selected' : ''}`}>
+                        <p className={`radio__label-name ${workplaceFromStore === workplace ? 'selected' : ''}`}>
                           {workplace.name}
                         </p>
                         <p className='radio__label-businessid'>
@@ -171,7 +183,7 @@ function EvaluationWorkplace() {
                         onClick={toggleSupervisor(supervisor._id)}
                       >
                         <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
-                        {supervisor._id === selectedSupervisorId && <Icon icon="mdi:tick"/>}
+                        {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
                       </div>
                     ))}
                     </AccordionDetails>

@@ -14,17 +14,21 @@ import useUnitsStore from '../../../unitsStore';
 function EvaluationSummary() {
   const navigate = useNavigate();
 
-  // Get customer & evaluation data from evaluationStore
+  // Get data from evaluationStore
   const customer = useEvaluationStore((state) => state.customer);
   const evaluation = useEvaluationStore((state) => state.evaluation);
+  const workplace = useEvaluationStore((state) => state.workplace);
+  const supervisor = useEvaluationStore((state) => state.supervisor);
 
   console.log('Customer from store:', customer);
   console.log('Evaluation from store:', evaluation);
+  console.log('Workplace from store:', workplace);
+  console.log('Supervisor from store:', supervisor);
 
   const summaryData = [
     {
       title: 'Nimi',
-      content: customer ? `${customer.firstName} ${customer.lastname}` : '',
+      content: customer ? `${customer.firstName} ${customer.lastName}` : '',
     },
     {
       title: 'Sähköposti',
@@ -40,15 +44,15 @@ function EvaluationSummary() {
     },
     {
       title: 'Työpaikka',
-      content: '', // Fix when getting workplaces from DB
+      content: workplace ? workplace.name : '', 
     },
     {
       title: 'Y - tunnus',
-      content: '', // Fix when getting workplaces from DB
+      content:  workplace ? workplace.businessId : '',
     },
     {
       title: 'Työpaikkaohjaaja',
-      content: '', 
+      content: supervisor ? `${supervisor.firstName} ${supervisor.lastName}` : '',
     },
   ]
 
@@ -70,7 +74,7 @@ function EvaluationSummary() {
       <section className='summary__container'>
         <div>Stepper here (waiting for update)</div>
         <InfoList title={'Yhteenveto'} data={summaryData}/>
-        <h1>Degree name (UPDATE)</h1>
+        <h1>Degree name (FIX THIS)</h1> {/* Degree name from workplace */}
         {console.log(console.log('checked units evaluation summary page: ', checkedUnits))}
         {checkedUnits?.map((unit) => (
           <SelectUnit key={unit._id} unit={unit} allUnits={checkedUnits && checkedUnits}/>

@@ -32,7 +32,7 @@ function EvaluationForm() {
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
 
-  // Setter functions from useEvaluationStore
+  // Setter functions from evaluationStore
   const setCustomer = useEvaluationStore((state) => state.setCustomer);
   const setEvaluation = useEvaluationStore((state) => state.setEvaluation);
 
