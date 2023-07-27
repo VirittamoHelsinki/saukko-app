@@ -104,7 +104,7 @@ function DegreeUnits() {
           handleForward={() =>
             navigate(`/degrees/${degree._id}/units/confirm-selection`)
           }
-          forwardButtonText={'Valitse tutkinnonosat'}
+          forwardButtonText={'Seuraava'}
         />
       </section>
       <UserNav />
