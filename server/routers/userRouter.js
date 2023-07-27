@@ -31,25 +31,40 @@ userRouter.post("/", async (req, res) => {
     return res.status(400).json({ errorMessage: "User already exists" });
   }
 
-  // // Generate a salt and hash the password
-  // const salt = await bcrypt.genSalt();
-  // const passwordHash = await bcrypt.hash(body.password, salt);
-
+  User.addProperties(body.role) // add unique properties to the user object based on the role
 
   try {
     // Create a new user object, with the provided name, email, password and role
-    const newUser = new User({
+    let newUserObject = {
       name: body.name,
       email: body.email,
-      role: body.role,
-    });
+      role: body.role
+    }
+
+    if (newUserObject.role === "customer") { // add customer's unique properties from the body to the user object
+
+    } 
+
+    if (newUserObject.role === "teacher") { // add teacher's unique properties from the body to the user object
+      
+    } 
+
+    if (newUserObject.role === "supervisor") { // add supervisor's unique properties from the body to the user object
+      
+    } 
+
+    if (newUserObject.role === "admin") { // add admin's unique properties from the body to the user object
+      
+    } 
+
+    const newUser = new User(newUserObject);
 
     // set password to the user object
     await newUser.setPassword(body.password)
 
     // save the user object to the database
     await newUser.save()
-
+  
     // Create a token for the user
     const token = await newUser.generateJWT()
 

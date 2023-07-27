@@ -1,7 +1,6 @@
 
 const router = require("express").Router();
 const jp = require('jsonpath')
-const { get } = require('axios')
 
 //ePerusteet API URL
 const ePerusteAPI = 'https://eperusteet.opintopolku.fi/eperusteet-service/api/external';
@@ -9,15 +8,19 @@ const ePerusteAPI = 'https://eperusteet.opintopolku.fi/eperusteet-service/api/ex
 //Function for fetching data from URL
 async function fetchData(url) {
   try {
-    const response = await get(url);
-    return response.data;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error('Error fetching data:', error);
     throw new Error('Failed to fetch data');
   }
 }
 
-router.get('/business/:id', async (req, res) => {
+router.get(['/business/:id', '/external/business/:id'], async (req, res) => {
   try {
     const businessData = await fetchData(`http://avoindata.prh.fi/opendata/bis/v1/${req.params.id}`);
     res.json({BusinessId: businessData.results[0].businessId, name: businessData.results[0].name});
@@ -27,7 +30,7 @@ router.get('/business/:id', async (req, res) => {
 });
 
 //Fetch all degrees from ePerusteet
-router.get('/degrees', async (req, res) => {
+router.get(['/degrees', '/external/degrees'], async (req, res) => {
   try {
     const degreeList = [];
     const degrees = await fetchData(`${ePerusteAPI}/perusteet?sivukoko=100000&voimassa=true`);
@@ -48,15 +51,17 @@ router.get('/degrees', async (req, res) => {
 });
 
 
-//F
-router.get('/degree/:id', async (req, res) => {
+//Fetch degree information from ePerusteet
+router.get(['/degree/:id', '/external/degree/:id'], async (req, res) => {
   try {
     const degreeData = await fetchData(`${ePerusteAPI}/peruste/${req.params.id}`);
     const degreeUnits = await fetchData(`${ePerusteAPI}/peruste/${req.params.id}/tutkinnonOsat`);
     let unitList = [];
+    let modulex;
 
     degreeUnits.forEach(unit => {
       let modules = jp.query(unit, '$..arviointi.arvioinninKohdealueet[*]');
+      modulex = modules;
       
       let assessmentList = [];
 
@@ -67,7 +72,6 @@ router.get('/degree/:id', async (req, res) => {
         criteria.forEach(criterion => {
           criteriaList.push({_id: criterion._id, fi: criterion.fi, sv: criterion.sv, en: criterion.en});
         });
-
         assessmentList.push({_id: module.koodi.id, name: {fi: module.otsikko.fi, sv: module.otsikko.sv, en: module.otsikko.en}, criteria: criteriaList});
       });
 

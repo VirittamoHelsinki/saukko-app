@@ -6,7 +6,9 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-
+    h1{
+      color: var(--saukko-main-white);
+    }
     .loginPage__container {
       display: flex;
       flex-direction: column;
@@ -14,6 +16,8 @@
       margin-bottom: 80px;
       width: 100%;
       gap: 10px;
+
+     
 
       h2 {
         font-size: 24px;
@@ -37,6 +41,25 @@
 
         a {
           text-align: right;
+        }
+        .password__container {
+          display: flex;
+          align-items: center;
+          position: relative;
+         
+          .password-icon {
+            position: absolute;
+            top: 57%;
+            right: 1rem;
+            transform: translateY(-50%);
+            cursor: pointer;
+          }
+      
+          .eye-off,
+          .eye-on {
+            font-size: 22px;
+          }
+         
         }
       }
     }
@@ -74,5 +97,21 @@
       bottom: 0;
       gap: 65px;
     }
+    
   }
+}
+ .error-message{
+color: #B01038;
+;
+}
+
+.error__container{
+  display: flex;
+  align-items: center;
+  gap:55px
+}
+.error__msg__container{
+  display: flex;
+  align-items: center;
+  gap:4px
 }

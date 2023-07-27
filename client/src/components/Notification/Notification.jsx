@@ -7,6 +7,7 @@ const Notification = ({
   headerColor,
   bodyColor,
   heading,
+  headingColor,
   icon,
   iconColor,
   paragraph,
@@ -29,13 +30,14 @@ const Notification = ({
         title='Saukko'
         fill={headerColor}
         header={headerColor}
+
         disabled='true'
       />
       <section
         className='notification__container'
         style={{ background: bodyColor }}
       >
-        <h2>{heading}</h2>
+        <h2 style={{ color: headingColor }}>{heading}</h2>
         {icon && (
           <Icon
             icon={icon}
