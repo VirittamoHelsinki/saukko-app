@@ -298,9 +298,7 @@ const CompanyInfo = () => {
       {/* Adding the functionality of the button later */}
 
       <PageNavigationButtons forwardButtonText={'Seurava'} style={{ marginBottom: '30px' }} />
-
-
-      <div style={{ marginTop: '80px' }}>
+      <div style={{ marginBottom: '80px' }} >
         <UserNav></UserNav>
       </div>
     </div>
