@@ -20,6 +20,7 @@ function ConfirmSelection() {
   // Set path & get degree units from DegreeContext
   const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
   const params = useParams();
+  const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
     setDegreeId(params.degreeId);
@@ -63,6 +64,29 @@ function ConfirmSelection() {
     'Vahvista',
   ];
 
+  // Toggle text editable mode
+  const handleEditToggle = () => {
+    setIsEditable((prevState) => !prevState);
+  };
+
+  // Button styling/CSS
+  const buttonStyleSave = {
+      background: '#0000bf',
+      color: '#fff',
+      border: 'red',
+      padding: '1rem',
+      marginTop: '20px',
+      width: '90%',
+    },
+    buttonStyleEdit = {
+      background: '#fff',
+      color: '#0000bf',
+      border: 'solid 2px #0000bf',
+      padding: '0 1rem',
+      marginTop: '20px',
+      width: '90%',
+    };
+
   return (
     <main className='confirmSelection__wrapper'>
       <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
@@ -73,15 +97,20 @@ function ConfirmSelection() {
           label={labelStepper}
           url={`/degrees/${degree._id}`}
         />
-        <h1 className='confirmSelection__container--title'>Vahvista pyyntö</h1>
-        <p className='confirmSelection__container--desc'>
-          {`Olet hakemassa ${
-            degreeFound && degree.name.fi
-          } osien suoria näyttöjä`}{' '}
-        </p>
-        <h1 className='confirmSelection__container--secondtitle'>
-          Valitsemasi tutkinnonosat
-        </h1>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Button
+            onClick={handleEditToggle}
+            type='submit'
+            style={isEditable ? buttonStyleSave : buttonStyleEdit}
+            text={isEditable ? 'Lopeta muokkaus' : 'Muokkaa tietoja'}
+            icon={'mingcute:pencil-line'}
+          />
+        </div>
         <div className='confirmSelection__container--units'>
           {console.log(
             console.log('checked units confirm selection page: ', checkedUnits)
