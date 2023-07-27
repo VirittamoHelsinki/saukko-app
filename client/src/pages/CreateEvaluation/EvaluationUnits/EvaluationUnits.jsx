@@ -4,6 +4,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
+import useUnitsStore from '../../../unitsStore';
 
 const mockData = [
   {
@@ -75,12 +76,24 @@ const mockData = [
 function EvaluationUnits() {
   const navigate = useNavigate();
 
+  // Get units from unitStore
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+
+  // Check if at least one unit is chosen and redirect
+  const handleValidation = () => {
+    if (checkedUnits.length > 0) {
+      navigate('/evaluation-summary')
+    } else {
+      alert('Choose units')
+    }
+  };
+
   return (
     <main className='evaluationUnits__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='evaluationUnits__container'>
         <div>Stepper here (waiting for update)</div>
-        <h1>Degree name</h1>
+        <h1>Degree name (FIX)</h1> {/* Degree name from workplace here */}
 
         <div className='evaluationUnits__container--units'>
           { mockData ? 
@@ -90,7 +103,7 @@ function EvaluationUnits() {
           : 'ei dataa APIsta'}
         </div>
 
-        <PageNavigationButtons handleBack={() => navigate(`/evaluation-workplace`)} handleForward={() => navigate(`/evaluation-summary`)} forwardButtonText={'Seuraava'}/>
+        <PageNavigationButtons handleBack={() => navigate(`/evaluation-workplace`)} handleForward={handleValidation} forwardButtonText={'Seuraava'}/>
       </section>      
       <UserNav />
     </main>

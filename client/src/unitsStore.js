@@ -1,4 +1,10 @@
 /* 
+  USAGE
+
+  Import:
+
+  import useUnitsStore from '../../../unitsStore';
+
   Get checked units:
 
     const checkedUnits = useUnitsStore((state) => state.checkedUnits);
