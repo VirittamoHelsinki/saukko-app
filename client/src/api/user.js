@@ -9,4 +9,8 @@ const fetchLoggedIn = async () => {
   return response
 }
 
-export { fetchLoggedIn }
+const logoutUser = async () => {
+  await axios.get(baseURL + middleURL + '/logout');
+};
+
+export { fetchLoggedIn, logoutUser }
