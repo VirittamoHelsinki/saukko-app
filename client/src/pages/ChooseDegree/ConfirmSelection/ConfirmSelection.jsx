@@ -84,7 +84,7 @@ function ConfirmSelection() {
     });
   };
 
-  // Button styling/CSS
+  // Edit button styling
   const buttonStyleSave = {
       background: '#0000bf',
       color: '#fff',
@@ -137,7 +137,11 @@ function ConfirmSelection() {
                   onChange={(event) => handleUnitChange(index, event)}
                   tagName='p'
                   disabled={!isEditable}
-                  className={isEditable ? 'border-input' : ''}
+                  className={
+                    isEditable
+                      ? 'confirmSelection__container--border-input '
+                      : 'confirmSelection__container--selected-units '
+                  }
                 />
               </div>
             );

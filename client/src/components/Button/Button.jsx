@@ -9,7 +9,7 @@ const Button = (props) => {
         onClick={props.onClick}
         type={props.type}
         style={props.style}
-        iconeStyle={props.iconeStyle}
+        /* iconeStyle={props.iconeStyle} */
         onSubmit={props.onSubmit}
       >
         {/* text displayed on button */}
