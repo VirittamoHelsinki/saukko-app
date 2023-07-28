@@ -1,3 +1,23 @@
+/* 
+  USAGE
+
+  Import:
+
+    import useUnitsStore from '../../../unitsStore';
+
+  Get checked units:
+
+    const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+
+  Clear store:
+
+    const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
+
+    const yourSubmitHandler {
+      clearCheckedUnits();
+    }
+*/
+
 import { create } from 'zustand';
 
 const useUnitsStore = create((set) => ({

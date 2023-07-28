@@ -26,6 +26,7 @@
  */
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import useStore from '../../useStore';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -70,6 +71,7 @@ function BootstrapDialogTitle(props) {
 }
 
 export default function CustomizedDialogs(props) {
+  const navigate = useNavigate();
   const { setOpenNotificationModal } = useStore();
 
   let icon = 'material-symbols:info';
@@ -96,6 +98,7 @@ export default function CustomizedDialogs(props) {
 
   const handleClose = () => {
     setOpenNotificationModal(false);
+    props.redirectLink && navigate(props.redirectLink)
   };
 
   return (
