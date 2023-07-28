@@ -135,5 +135,11 @@
         color: var(--link-blue);
       }
     }
+    .border-input {
+      border: solid 2px #1a1a1a;
+      padding: 1rem;
+      width: 100%;
+      margin: 15px 0;
+    }
   }
 }

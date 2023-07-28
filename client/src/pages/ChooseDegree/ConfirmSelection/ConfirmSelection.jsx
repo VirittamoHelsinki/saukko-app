@@ -6,13 +6,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
-import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import useUnitsStore from '../../../unitsStore';
 import useStore from '../../../useStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
+import ContentEditable from 'react-contenteditable';
 
 function ConfirmSelection() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ function ConfirmSelection() {
   }, []);
 
   // Get checked units from unitsStore
-  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+  const { checkedUnits, setUnitAtIndex } = useUnitsStore();
 
   // Pop-up logic
   const [isOpen, setIsOpen] = useState(false);
@@ -67,6 +67,21 @@ function ConfirmSelection() {
   // Toggle text editable mode
   const handleEditToggle = () => {
     setIsEditable((prevState) => !prevState);
+  };
+
+  // Handle text changes
+  const handleUnitChange = (index, event) => {
+    const updatedValue = event.target.value;
+
+    // Update the entire checkedUnits array with the modified value
+    const newCheckedUnits = checkedUnits.map((unit, idx) =>
+      idx === index ? { ...unit, name: { fi: updatedValue } } : unit
+    );
+
+    setUnitAtIndex(index, {
+      ...checkedUnits[index],
+      name: { fi: updatedValue },
+    });
   };
 
   // Button styling/CSS
@@ -112,16 +127,21 @@ function ConfirmSelection() {
           />
         </div>
         <div className='confirmSelection__container--units'>
-          {console.log(
-            console.log('checked units confirm selection page: ', checkedUnits)
-          )}
-          {checkedUnits?.map((unit) => (
-            <SelectUnit
-              key={unit._id}
-              unit={unit}
-              allUnits={degreeFound && degree.units}
-            />
-          ))}
+          {checkedUnits?.map((unit, index) => {
+            console.log('unit.name.fi:', unit?.name?.fi);
+
+            return (
+              <div key={index}>
+                <ContentEditable
+                  html={unit?.name?.fi ?? ''}
+                  onChange={(event) => handleUnitChange(index, event)}
+                  tagName='p'
+                  disabled={!isEditable}
+                  className={isEditable ? 'border-input' : ''}
+                />
+              </div>
+            );
+          })}
         </div>
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${degree._id}/units`)}

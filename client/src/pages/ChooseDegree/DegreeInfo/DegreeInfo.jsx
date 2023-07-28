@@ -34,6 +34,9 @@ function DegreeInfo() {
     setTransitionEnds,
   } = useStore();
 
+  const [isContentChanged, setIsContentChanged] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
+
   // State variables to keep track of original text
   const [originalDegreeName, setOriginalDegreeName] = useState(degreeName);
   const [originalDegreeDescription, setOriginalDegreeDescription] =
@@ -46,9 +49,7 @@ function DegreeInfo() {
   const [originalTransitionEnds, setOriginalTransitionEnds] =
     useState(transitionEnds);
 
-  const [isContentChanged, setIsContentChanged] = useState(false);
-
-  const [isEditable, setIsEditable] = useState(false);
+  // useRefs
   const degreeNameRef = useRef(null);
   const degreeDescriptionRef = useRef(null);
   const diaryNumberRef = useRef(null);
