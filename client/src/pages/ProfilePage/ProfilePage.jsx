@@ -1,7 +1,6 @@
 // Import react packages & dependencies
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Icon } from '@iconify/react';
 
 // Import components

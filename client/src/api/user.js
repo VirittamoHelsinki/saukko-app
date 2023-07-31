@@ -25,4 +25,19 @@ const forgotPassword = async (email) => {
     return response
 }
 
-export { forgotPassword, fetchLoggedIn, logoutUser, loginUser }
+const tokenValidation = async (token) => {
+    const response = await axios.post(baseURL + middleURL + '/validate-token', {
+      token: token,
+    })
+    return response
+}
+
+const resetPassword = async (token, newPassword) => {
+    const response = await axios.post(baseURL + middleURL + '/reset-password', {
+      token: token,
+      newPassword: newPassword,
+    })
+    return response
+}
+
+export { forgotPassword, fetchLoggedIn, logoutUser, loginUser, tokenValidation, resetPassword }
