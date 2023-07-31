@@ -42,6 +42,7 @@ import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/Evaluati
 import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
 import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/EvaluationUnits';
 import EvaluationSummary from '../../pages/CreateEvaluation/EvaluationSummary/EvaluationSummary';
+import CompanySearchPage from '../../pages/CompanyInfo/CompanySearchPage/CompanySearchPage';
 
 const Router = () => {
   let location = useLocation();
@@ -89,6 +90,7 @@ const Router = () => {
         <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
         <Route path='/evaluation-units' element={<EvaluationUnits />} />
         <Route path='/evaluation-summary' element={<EvaluationSummary />} />
+        <Route path='/internal/degrees' element={<CompanySearchPage />} />
 
         {!loggedIn && (
           <>

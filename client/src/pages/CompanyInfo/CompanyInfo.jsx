@@ -12,11 +12,10 @@ import PageNavigationButtons from '../../components/PageNavigationButtons/PageNa
 import useStore from '../../useStore';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
-
-
-
+import { useNavigate } from 'react-router';
 
 const CompanyInfo = () => {
+  const navigate = useNavigate();
   const {
     businessID,
     setBusinessId,
@@ -34,8 +33,6 @@ const CompanyInfo = () => {
     setLastName,
     työpaikkaohjaajaEmail,
     setTyöpaikkaohjaajaEmail,
-    setEmail,
-    setEmailError,
   } = useStore();
 
   const pageNavigationRef = useRef(null);
@@ -116,6 +113,9 @@ const CompanyInfo = () => {
 
     <div>
       <WavesHeader title='Saukko' fill='#9fc9eb' secondTitle='Lisää uusi työpaikka' />
+      <div>
+        {/* steper will add here */}
+      </div>
       <div style={{ margin: '16px', marginBottom: '28px', marginTop: '300px' }}>
         <Accordion
           className="heading_style"
@@ -295,9 +295,7 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
-      {/* Adding the functionality of the button later */}
-
-      <PageNavigationButtons forwardButtonText={'Seurava'} />
+      <PageNavigationButtons handleForward={() => navigate(`../internal/degrees`)} forwardButtonText={'Seurava'} />
       <div style={{ marginBottom: '90px' }} >
         <UserNav></UserNav>
       </div>
@@ -307,6 +305,11 @@ const CompanyInfo = () => {
 };
 
 export default CompanyInfo;
+
+
+
+
+
 
 
 
