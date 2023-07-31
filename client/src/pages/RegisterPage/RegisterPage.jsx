@@ -26,6 +26,7 @@ const RegisterPage = () => {
             };
 
             await axios
+                // REFACTOR this to extract url if this page is still used
                 .post("http://localhost:5000/auth/", registerData)
                 .then((res) => {
                     console.log(res);

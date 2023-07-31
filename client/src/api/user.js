@@ -13,4 +13,11 @@ const logoutUser = async () => {
   await axios.get(baseURL + middleURL + '/logout');
 };
 
-export { fetchLoggedIn, logoutUser }
+const forgotPassword = async (email) => {
+    const response = await axios.post(`${baseURL}${middleURL}/forgot-password`, {
+      email: email,
+    });
+    return response;
+};
+
+export { forgotPassword, fetchLoggedIn, logoutUser }
