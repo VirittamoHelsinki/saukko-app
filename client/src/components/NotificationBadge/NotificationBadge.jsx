@@ -14,8 +14,8 @@ const NotificationBadge = (props) => {
   if (role === 'teacher') {
     badgeStyle1 = {
       backgroundColor: '#FFC61E',
-      width: '180px',
-      height: '116px',
+      width: '60%',
+      height: '50%px',
     };
     badgeStyle2 = {
       backgroundColor: '#FFE49C',

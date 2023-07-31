@@ -13,8 +13,11 @@ import useStore from '../../useStore';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import { fetchCompanyData } from '../../api/workplace';
+import { useNavigate } from 'react-router';
+import Stepper from '../../components/Stepper/Stepper';
 
 const CompanyInfo = () => {
+  const navigate = useNavigate();
   const {
     businessID,
     setBusinessId,
@@ -32,10 +35,14 @@ const CompanyInfo = () => {
     setLastName,
     työpaikkaohjaajaEmail,
     setTyöpaikkaohjaajaEmail,
-    setEmail,
-    setEmailError,
   } = useStore();
-
+  // Text for stepper's labels
+  const labelStepper = [
+    'Lisää tiedot',
+    'Valitse tutkinto',
+    'Valitse tutkinnonosat',
+    'Vahvista',
+  ];
   const pageNavigationRef = useRef(null);
 
   const handleBusinessId = (event) => {
@@ -113,7 +120,15 @@ const CompanyInfo = () => {
 
     <div>
       <WavesHeader title='Saukko' fill='#9fc9eb' secondTitle='Lisää uusi työpaikka' />
-      <div style={{ margin: '16px', marginBottom: '28px', marginTop: '300px' }}>
+      <div className='stepper__container'>
+        <Stepper
+          activePage={1}
+          totalPages={4}
+          label={labelStepper}
+          url={`../internal/degrees`}
+        />
+      </div>
+      <div style={{ margin: '16px', marginBottom: '28px', marginTop: '60px' }}>
         <Accordion
           className="heading_style"
           sx={{ backgroundColor: '#F2F2F2', paddingTop: '17px', paddingBottom: '20px' }}
@@ -140,7 +155,7 @@ const CompanyInfo = () => {
                 value={businessID}
                 onChange={handleBusinessId}
               />
-              <div className="icone-style">
+              <div className="cross-icone-style">
                 <IconCrossCircle
                   className="custom-icon"
                   aria-hidden="true"
@@ -292,12 +307,8 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
-      {/* Adding the functionality of the button later */}
-
-      <PageNavigationButtons forwardButtonText={'Seurava'} style={{ marginBottom: '30px' }} />
-
-
-      <div style={{ marginTop: '80px' }}>
+      <PageNavigationButtons handleForward={() => navigate(`../internal/degrees`)} forwardButtonText={'Seurava'} />
+      <div style={{ marginBottom: '90px' }} >
         <UserNav></UserNav>
       </div>
     </div>
@@ -306,6 +317,11 @@ const CompanyInfo = () => {
 };
 
 export default CompanyInfo;
+
+
+
+
+
 
 
 
