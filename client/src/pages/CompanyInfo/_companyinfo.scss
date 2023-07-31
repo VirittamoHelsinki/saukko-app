@@ -55,3 +55,12 @@ input::placeholder {
   padding-top: 15px;
   padding-bottom: 10px;
 }
+.stepper__container{
+  display: flex;
+  flex-direction: column;
+  margin-top: 200px;
+  margin-bottom: 50px;
+  flex-grow: 1;
+  overflow-y: auto;
+  width: 100%;
+}

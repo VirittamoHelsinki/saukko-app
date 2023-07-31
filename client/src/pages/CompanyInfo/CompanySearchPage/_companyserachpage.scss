@@ -38,7 +38,7 @@
 
           h3 {
             font-size: 16px;
-            padding: 10px;
+            
           }
 
           .company__searchPage__container--list-item-bottom {
@@ -53,8 +53,7 @@
 
             p {
               font-size: 12px;
-              padding-left: 10px;
-              margin-bottom: 30px;
+             
             }
 
             li {
@@ -111,4 +110,14 @@
       }
     }
   }
+}
+
+.stepper__container{
+  display: flex;
+  flex-direction: column;
+  margin-top: 2px;
+  margin-bottom: 15px;
+  flex-grow: 1;
+  overflow-y: auto;
+  width: 100%;
 }

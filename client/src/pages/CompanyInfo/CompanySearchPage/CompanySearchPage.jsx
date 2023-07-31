@@ -1,28 +1,31 @@
-import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import UserNav from '../../../components/UserNav/UserNav';
 import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
+import Stepper from '../../../components/Stepper/Stepper';
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({ filteredList, allInternalDegrees, paginate, currentPage }) => {
   const startIndex = (currentPage - 1) * paginate;
   const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
+  const navigate = useNavigate();
+
 
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
-        <div key={index} className="company__searchPage__container--list-item" >
+        <div key={index} className="company__searchPage__container--list-item" onClick={() => navigate(`../internal/degrees/${degree._id}/units`)}>
           <h3>{degree.name.fi}</h3>
           <div className="company__searchPage__container--list-item-bottom">
             <div>
               <p>Diaari: {degree.diaryNumber}</p>
               <p>Koodi: {degree.eduCodeValue}</p>
             </div>
-
+            <li>&#8250;</li>
           </div>
         </div>
       ))}
@@ -114,12 +117,27 @@ const CompanySearchPage = () => {
   const handlePageClick = (pageNum) => {
     setCurrentPage(pageNum);
   };
+  // Text for stepper's labels
+  const labelStepper = [
+    'Lisää tiedot',
+    'Valitse tutkinto',
+    'Valitse tutkinnonosat',
+    'Vahvista',
+  ];
 
   return (
     <main className="company__searchPage__wrapper">
       <WavesHeader title="Koulutukset" secondTitle="Lisää uusi työpaikka" disabled={false} />
-      <UserNav />
+
       <section className="company__searchPage__container">
+        <div className='stepper__container'>
+          <Stepper
+            activePage={2}
+            totalPages={4}
+            label={labelStepper}
+
+          />
+        </div>
 
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
         <h2>Ammatilliset tutkinnot</h2>
@@ -136,11 +154,15 @@ const CompanySearchPage = () => {
           pageCount={pageCount}
           handlePageClick={handlePageClick}
         />
-        <PageNavigationButtons
-          handleForward={() => navigate(`../internal/degrees/units`)} forwardButtonText={'Seurava'} />
+        {/* <PageNavigationButtons
+          forwardButtonText={'Seurava'} /> */}
       </section>
+      <UserNav />
     </main>
   );
 };
 
 export default CompanySearchPage;
+
+
+

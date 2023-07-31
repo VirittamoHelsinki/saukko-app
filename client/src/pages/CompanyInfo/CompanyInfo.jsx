@@ -13,6 +13,7 @@ import useStore from '../../useStore';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import { useNavigate } from 'react-router';
+import Stepper from '../../components/Stepper/Stepper';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -34,7 +35,13 @@ const CompanyInfo = () => {
     työpaikkaohjaajaEmail,
     setTyöpaikkaohjaajaEmail,
   } = useStore();
-
+  // Text for stepper's labels
+  const labelStepper = [
+    'Lisää tiedot',
+    'Valitse tutkinto',
+    'Valitse tutkinnonosat',
+    'Vahvista',
+  ];
   const pageNavigationRef = useRef(null);
 
   const handleBusinessId = (event) => {
@@ -113,10 +120,15 @@ const CompanyInfo = () => {
 
     <div>
       <WavesHeader title='Saukko' fill='#9fc9eb' secondTitle='Lisää uusi työpaikka' />
-      <div>
-        {/* steper will add here */}
+      <div className='stepper__container'>
+        <Stepper
+          activePage={1}
+          totalPages={4}
+          label={labelStepper}
+          url={`../internal/degrees`}
+        />
       </div>
-      <div style={{ margin: '16px', marginBottom: '28px', marginTop: '300px' }}>
+      <div style={{ margin: '16px', marginBottom: '28px', marginTop: '60px' }}>
         <Accordion
           className="heading_style"
           sx={{ backgroundColor: '#F2F2F2', paddingTop: '17px', paddingBottom: '20px' }}

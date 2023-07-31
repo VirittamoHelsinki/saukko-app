@@ -49,7 +49,7 @@ export const InternalDegreeContextProvider = (props) => {
 
   return (
     <div>
-      <InternalDegreeContext.Provider value={{ internalDegree, allInternalDegrees, setinternalDegreeId, degreeFound }}>
+      <InternalDegreeContext.Provider value={{ internalDegree, allInternalDegrees, setinternalDegreeId, degreeFound, internalDegreeId }}>
         {props.children}
       </InternalDegreeContext.Provider>
     </div>
