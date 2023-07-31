@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+import Stepper from '../../../components/Stepper/Stepper';
 import AuthContext from '../../../utils/context/AuthContext';
 import useEvaluationStore from '../../../evaluationStore';
 
@@ -32,7 +33,7 @@ function EvaluationForm() {
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
 
-  // Setter functions from useEvaluationStore
+  // Setter functions from evaluationStore
   const setCustomer = useEvaluationStore((state) => state.setCustomer);
   const setEvaluation = useEvaluationStore((state) => state.setEvaluation);
 
@@ -79,6 +80,14 @@ function EvaluationForm() {
     navigate(`/evaluation-workplace`);
   };
 
+  // Stepper labels
+  const labelStepper = [
+    'Lisää tiedot',
+    'Valitse työpaikka',
+    'Valitse tutkinnonosat',
+    'Aktivoi suoritus',
+  ];
+
   // Calendar style
   const theme = createTheme({
     palette: {
@@ -110,7 +119,12 @@ function EvaluationForm() {
     <main className='evaluationForm__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='evaluationForm__container'>
-        <div>Stepper here (waiting for update)</div>
+      <Stepper
+          activePage={1}
+          totalPages={4}
+          label={labelStepper}
+          url={'/evaluation-form'}
+      />
         <h1>Lisää asiakkaan tiedot</h1>
 
         {/* Customer information form */}
