@@ -27,9 +27,9 @@ function EvaluationForm() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [startDate, setStartDate] = useState(dayjs().format('DD.MM.YYYY'));
-  const [endDate, setEndDate] = useState(dayjs().format('DD.MM.YYYY'));
-  const [extensionEndDate, setExtensionEndDate] = useState(dayjs().format('DD.MM.YYYY'));
+  const [startDate, setStartDate] = useState(dayjs());
+  const [endDate, setEndDate] = useState(dayjs());
+  const [extensionEndDate, setExtensionEndDate] = useState(dayjs());
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
 
