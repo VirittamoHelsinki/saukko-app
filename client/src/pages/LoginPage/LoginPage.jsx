@@ -10,6 +10,7 @@ import Button from '../../components/Button/Button';
 import WavesHeader from '../../components/Header/WavesHeader';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import { Icon } from '@iconify/react';
+import { loginUser } from '../../api/user';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +31,7 @@ const LoginPage = () => {
         password,
       };
 
-      await axios.post('http://localhost:5000/auth/login', loginData);
+      await loginUser(loginData);
       await getLoggedIn();
       navigate('/userdashboard');
 

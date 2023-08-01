@@ -1,5 +1,5 @@
-import React, { useEffect, useState, createContext } from "react";
-import axios from "axios";
+import React, { useEffect, useState, createContext } from 'react';
+import { fetchLoggedIn } from '../../api/user.js';
 
 const AuthContext = createContext();
 
@@ -9,11 +9,9 @@ const AuthContextProvider = (props) => {
 
   const getLoggedIn = async () => {
     try {
-      const loggedInRes = await axios.get(
-        "http://localhost:5000/auth/loggedIn"
-      );
-      setLoggedIn(loggedInRes.data.loggedIn);
-      setUser(loggedInRes.data.user);
+      const response = await fetchLoggedIn()
+      setLoggedIn(response.data.loggedIn);
+      setUser(response.data.user);
     } catch (err) {
       console.error(err);
     }

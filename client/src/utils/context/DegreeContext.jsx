@@ -1,6 +1,6 @@
 import React, { useEffect, useState, createContext } from 'react';
 import useUnitsStore from '../../unitsStore';
-import axios from 'axios';
+import { fetchAll, fetchById } from '../../api/degree.js';
 
 const DegreeContext = createContext();
 
@@ -11,37 +11,29 @@ const DegreeContextProvider = (props) => {
   const [degree, setDegree] = useState({});
   const [degreeId, setDegreeId] = useState('');
   
-  // Fetch all degrees from server
+  // Fetch all degrees from ePerusteet
   useEffect(() => {
     const getDegrees = async () => {
       try {
-        const degreesResponse = await axios.get(
-          'http://localhost:5000/api/degrees'
-        );
-        // Set state
-        setAllDegrees(degreesResponse.data);
+        const response = await fetchAll();
+        setAllDegrees(response.data);
       } catch (err) {
         console.error(err);
       }
     };
-  
     getDegrees();
   }, []);
-  
+
   // Fetch degree by id
   useEffect(() => {
     const getDegree = async () => {
       try {
-        const degreeResponse = await axios.get(
-          `http://localhost:5000/api/degree/${degreeId}`
-        );
-        // Set state
+        const degreeResponse = await fetchById(degreeId);
         setDegree(degreeResponse.data);
       } catch (err) {
         console.error(err);
       }
     };
-    
     setDegree({});
     getDegree();
   }, [degreeId]);

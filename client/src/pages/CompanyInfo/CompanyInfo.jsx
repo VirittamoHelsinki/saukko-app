@@ -12,6 +12,7 @@ import PageNavigationButtons from '../../components/PageNavigationButtons/PageNa
 import useStore from '../../useStore';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
+import { fetchCompanyData } from '../../api/workplace';
 import { useNavigate } from 'react-router';
 import Stepper from '../../components/Stepper/Stepper';
 
@@ -64,10 +65,9 @@ const CompanyInfo = () => {
     setEditedCompanyName(value);
   };
 
-
   const fetchCompanyName = async (businessID) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/business/${businessID}`);
+      const response = await fetchCompanyData(businessID);
       if (!response.ok) {
         setCompanyName('');
         throw new Error('Failed to fetch company name');
