@@ -1,6 +1,6 @@
 // Importing React packages
 import React from 'react';
-import useStore from '../../useStore';
+import useStore from '../../store/useStore';
 
 // Importing components
 import PasswordInput from '../../components/PasswordInput/PasswordInput';

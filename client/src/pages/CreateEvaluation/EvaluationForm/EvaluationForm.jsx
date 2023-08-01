@@ -8,7 +8,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Stepper from '../../../components/Stepper/Stepper';
 import AuthContext from '../../../utils/context/AuthContext';
-import useEvaluationStore from '../../../evaluationStore';
+import useEvaluationStore from '../../../store/evaluationStore';
 
 // Import MUI
 import dayjs from 'dayjs';

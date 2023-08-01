@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import useStore from '../../../useStore';
+import useStore from '../../../store/useStore';
 
 // Import components
 import DegreeContext from '../../../utils/context/DegreeContext';

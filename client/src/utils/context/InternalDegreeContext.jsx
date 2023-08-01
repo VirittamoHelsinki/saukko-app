@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import useUnitsStore from '../../unitsStore';
+import useUnitsStore from '../../store/unitsStore';
 import { fetchAll, fetchById } from '../../api/degree.js';
 
 const InternalDegreeContext = createContext();

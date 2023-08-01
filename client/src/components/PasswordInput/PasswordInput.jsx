@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import useStore from '../../useStore';
+import useStore from '../../store/useStore';
 import { Icon } from '@iconify/react';
 
 /**
