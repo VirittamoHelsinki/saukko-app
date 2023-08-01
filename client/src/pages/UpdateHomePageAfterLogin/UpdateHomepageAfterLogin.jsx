@@ -20,7 +20,7 @@ const UpdateHomePageAfterLogin = () => {
     <main className='loggedpage__wrapper'>
       <WavesHeader
         fill='#9fc9eb'
-        secondTitle={`Tervetuloa, ${user?.name}`}
+        secondTitle={`Tervetuloa, ${user?.firstName} ${user?.lastName}`}
         title='Saukko'
         disabled={true}
       />
