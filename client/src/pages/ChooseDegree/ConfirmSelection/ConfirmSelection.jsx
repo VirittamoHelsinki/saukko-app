@@ -74,9 +74,9 @@ function ConfirmSelection() {
     const updatedValue = event.target.value;
 
     // Update the entire checkedUnits array with the modified value
-    const newCheckedUnits = checkedUnits.map((unit, idx) =>
-      idx === index ? { ...unit, name: { fi: updatedValue } } : unit
-    );
+    // const newCheckedUnits = checkedUnits.map((unit, idx) =>
+    //   idx === index ? { ...unit, name: { fi: updatedValue } } : unit
+    // );
 
     setUnitAtIndex(index, {
       ...checkedUnits[index],

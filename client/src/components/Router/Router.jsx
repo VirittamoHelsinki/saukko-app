@@ -27,6 +27,7 @@ import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
 import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
 import UnitInfo from '../../pages/ChooseDegree/UnitInfo/UnitInfo';
 import ConfirmSelection from '../../pages/ChooseDegree/ConfirmSelection/ConfirmSelection';
+import SpecifyTasks from '../../pages/ChooseDegree/SpecifyTasks/SpecifyTasks';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
@@ -36,7 +37,6 @@ import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import CompanyInfo from '../../pages/CompanyInfo/CompanyInfo';
-
 
 import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/EvaluationForm';
 import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
@@ -77,14 +77,24 @@ const Router = () => {
         <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-        <Route path='/update-logged-user' element={<UpdateHomePageAfterLogin />} />
+        <Route
+          path='/update-logged-user'
+          element={<UpdateHomePageAfterLogin />}
+        />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
         <Route path='/degrees' element={<SearchPage />} />
         <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
         <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
         <Route path='/degrees/:degreeId/units/:unitId' element={<UnitInfo />} />
-        <Route path='/degrees/:degreeId/units/confirm-selection' element={<ConfirmSelection />} />
+        <Route
+          path='/degrees/:degreeId/units/confirm-selection'
+          element={<ConfirmSelection />}
+        />
+        <Route
+          path='/degrees/:degreeId/units/tasks'
+          element={<SpecifyTasks />}
+        />
         <Route path='/evaluation-form' element={<EvaluationForm />} />
         <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
         <Route path='/evaluation-units' element={<EvaluationUnits />} />
