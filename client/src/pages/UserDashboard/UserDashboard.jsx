@@ -18,7 +18,7 @@ const UserDashboard = () => {
       <div>
         <WavesHeader
           title="Saukko"
-          secondTitle={`Tervetuloa, ${user?.name}`}
+          secondTitle={`Tervetuloa, ${user?.firstName}`}
           disabled={true}
         />
       </div>

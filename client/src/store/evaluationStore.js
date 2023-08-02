@@ -3,7 +3,7 @@
 
   Import:
 
-    import useEvaluationStore from '../../../evaluationStore';
+    import useEvaluationStore from '../../../store/evaluationStore';
 
   Set data:
 

@@ -10,8 +10,8 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
-import useUnitsStore from '../../../unitsStore';
-import useStore from '../../../useStore';
+import useUnitsStore from '../../../store/unitsStore';
+import useStore from '../../../store/useStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
 
 function ConfirmSelection() {

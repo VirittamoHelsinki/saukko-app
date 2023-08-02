@@ -8,11 +8,11 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InfoList from '../../../components/InfoList/InfoList';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
-import useEvaluationStore from '../../../evaluationStore';
+import useEvaluationStore from '../../../store/evaluationStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import Stepper from '../../../components/Stepper/Stepper';
-import useUnitsStore from '../../../unitsStore';
-import useStore from '../../../useStore';
+import useUnitsStore from '../../../store/unitsStore';
+import useStore from '../../../store/useStore';
 
 function EvaluationSummary() {
   const navigate = useNavigate();

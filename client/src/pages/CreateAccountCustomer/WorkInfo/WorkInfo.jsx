@@ -2,7 +2,7 @@
 import { React, useState, useEffect, useContext } from 'react';
 import AuthContext from '../../../utils/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import useStore from '../../../useStore';
+import useStore from '../../../store/useStore';
 import axios from 'axios';
 
 // Importing components

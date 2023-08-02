@@ -9,7 +9,7 @@ import { Icon } from '@iconify/react';
 import { IconCrossCircle, IconSearch } from 'hds-react';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
-import useStore from '../../useStore';
+import useStore from '../../store/useStore';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import { fetchCompanyData } from '../../api/workplace';

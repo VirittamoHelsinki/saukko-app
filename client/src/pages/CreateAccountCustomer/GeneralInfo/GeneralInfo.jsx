@@ -1,7 +1,7 @@
 // Importing react packages
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useStore from '../../../useStore';
+import useStore from '../../../store/useStore';
 
 // Importing components
 import Button from '../../../components/Button/Button';

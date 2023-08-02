@@ -31,11 +31,10 @@ function ProfilePage() {
   
   return (
     <main className='profile__wrapper'>
-	    <WavesHeader title='Saukko' secondTitle={user?.name} disabled={false} />
+	    <WavesHeader title='Saukko' secondTitle='Profiili' disabled={false} />
       <section className='profile__container'>
-        <h1 className='profile__container--title'>Profiili</h1>
         <div className='profile__container--row'>
-          <p className='profile__container--row-value'>{user?.name}</p>
+          <p className='profile__container--row-value'>{user?.firstName} {user?.lastName}</p>
           <Icon icon='iconamoon:arrow-right-2' className='profile__container-row-arrow'/>
         </div>
         <div className='profile__container--row'>

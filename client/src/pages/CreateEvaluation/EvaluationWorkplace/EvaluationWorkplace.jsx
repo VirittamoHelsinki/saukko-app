@@ -8,7 +8,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Stepper from '../../../components/Stepper/Stepper';
-import useEvaluationStore from '../../../evaluationStore';
+import useEvaluationStore from '../../../store/evaluationStore';
 
 // Import libraries
 import { Icon } from '@iconify/react';
