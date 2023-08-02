@@ -45,7 +45,9 @@ function SpecifyTasks() {
         />
 
         <PageNavigationButtons
-          handleBack={() => navigate(`/degrees/${degree._id}/units`)}
+          handleBack={() =>
+            navigate(`/degrees/${degree._id}/units/confirm-selection`)
+          }
           handleForward={''}
           forwardButtonText={'Vahvista valinnat'}
         />

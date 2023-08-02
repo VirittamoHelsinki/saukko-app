@@ -149,46 +149,11 @@ function ConfirmSelection() {
         </div>
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${degree._id}/units`)}
-          handleForward={handlePopupOpen}
+          handleForward={() => navigate(`/degrees/${degree._id}/units/tasks`)}
           forwardButtonText={'Vahvista valinnat'}
         />
       </section>
       <UserNav />
-
-      {/* Pop-up confirmation component */}
-      <>
-        {isOpen && (
-          <div className='popup__wrapper' onClick={handleOutsideClick}>
-            <div className='popup__container'>
-              <h2 className='popup__container--title'>
-                Haluan suorittaa {degree.name.fi} -osien suoria näyttöjä
-              </h2>
-              <p className='popup__container--text'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis
-              </p>
-              <div className='popup__container--buttons'>
-                <div
-                  className='popup__container--buttons-confirm'
-                  onClick={() => {
-                    handlePopupClose();
-                    handleNotificationModalOpen();
-                  }}
-                >
-                  <Button text='Vahvista' />
-                </div>
-                <div
-                  className='popup__container--buttons-cancel'
-                  onClick={handlePopupClose}
-                >
-                  <Button text='Peruuta' />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </>
 
       <NotificationModal
         type='success'
