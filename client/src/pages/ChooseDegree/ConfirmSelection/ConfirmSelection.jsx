@@ -150,7 +150,7 @@ function ConfirmSelection() {
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${degree._id}/units`)}
           handleForward={handlePopupOpen}
-          forwardButtonText={'Valitse tutkinnonosat'}
+          forwardButtonText={'Vahvista valinnat'}
         />
       </section>
       <UserNav />
