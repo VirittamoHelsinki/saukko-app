@@ -14,36 +14,10 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import useUnitsStore from '../../../unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-const images = [
-  {
-    label: 'San Francisco – Oakland Bay Bridge, United States',
-    imgPath:
-      'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-  {
-    label: 'Bird',
-    imgPath:
-      'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-  {
-    label: 'Bali, Indonesia',
-    imgPath:
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
-  },
-  {
-    label: 'Goč, Serbia',
-    imgPath:
-      'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-];
+import DynamicTextFields from '../../../components/DynamicTextFields/DynamicTextFields';
 
 function SpecifyTasks() {
   const navigate = useNavigate();
@@ -81,14 +55,46 @@ function SpecifyTasks() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleStepChange = (step) => {
-    setActiveStep(step);
+  // State to store the list of text fields for each step
+  const [textFields, setTextFields] = useState(
+    Array.from({ length: maxSteps }, () => [''])
+  );
+
+  // Function to handle adding a new text field
+  const handleAddTextField = () => {
+    setTextFields((prevFields) => {
+      const newFields = [...prevFields];
+      newFields[activeStep] = [...(newFields[activeStep] || []), ''];
+      return newFields;
+    });
   };
 
+  // Function to handle changes in the text fields
+  const handleTextFieldChange = (stepIndex, fieldIndex, value) => {
+    setTextFields((prevFields) => {
+      const newFields = [...prevFields];
+      newFields[stepIndex][fieldIndex] = value;
+      return newFields;
+    });
+  };
+
+  // Preserve textFields state when navigating between steps
+  useEffect(() => {
+    // Check if the active step index is within the bounds of the textFields array
+    if (activeStep >= 0 && activeStep < textFields.length) {
+      // Set the text fields for the active step
+      setTextFields((prevFields) => {
+        const newFields = [...prevFields];
+        newFields[activeStep] = textFields[activeStep] || '';
+        return newFields;
+      });
+    }
+  }, [activeStep]);
+
   return (
-    <main className='confirmSelection__wrapper'>
+    <main className='specifyTasks__wrapper'>
       <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
-      <section className='confirmSelection__container'>
+      <section className='specifyTasks__container'>
         <Stepper
           activePage={3}
           totalPages={4}
@@ -134,41 +140,27 @@ function SpecifyTasks() {
             elevation={0}
             sx={{
               display: 'flex',
-              alignItems: 'center',
-              height: 50,
+              flexDirection: 'column',
+              height: 170,
               pl: 2,
               bgcolor: 'background.default',
             }}
           >
-            {/* <Typography>{images[activeStep].label}</Typography> */}
+            <form>
+              <Typography>{checkedUnits[activeStep]?.name?.fi}</Typography>
 
-            <Typography>{checkedUnits[activeStep]?.name?.fi}</Typography>
+              {textFields[activeStep]?.map((textField, index) => (
+                <DynamicTextFields
+                  key={index}
+                  value={textField}
+                  onChange={(event) =>
+                    handleTextFieldChange(activeStep, index, event.target.value)
+                  }
+                />
+              ))}
+              <Button onClick={handleAddTextField}>Add Text Field</Button>
+            </form>
           </Paper>
-          <SwipeableViews
-            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-            index={activeStep}
-            onChangeIndex={handleStepChange}
-            enableMouseEvents
-          >
-            {images.map((step, index) => (
-              <div key={step.label}>
-                {Math.abs(activeStep - index) <= 2 ? (
-                  <Box
-                    component='img'
-                    sx={{
-                      height: 255,
-                      display: 'block',
-                      maxWidth: 400,
-                      overflow: 'hidden',
-                      width: '100%',
-                    }}
-                    src={step.imgPath}
-                    alt={step.label}
-                  />
-                ) : null}
-              </div>
-            ))}
-          </SwipeableViews>
         </Box>
 
         <PageNavigationButtons
