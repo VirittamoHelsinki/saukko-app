@@ -1,20 +1,19 @@
-import React, { useEffect, useRef } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { scroller } from 'react-scroll';
+
 import { TextInput } from 'hds-react';
-import { Icon } from '@iconify/react';
 import { IconCrossCircle, IconSearch } from 'hds-react';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
-import useStore from '../../store/useStore';
+import { fetchCompanyData } from '../../api/workplace';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
-import { fetchCompanyData } from '../../api/workplace';
 import { useNavigate } from 'react-router';
 import Stepper from '../../components/Stepper/Stepper';
+import useStore from '../../store/useStore';
+
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -43,7 +42,7 @@ const CompanyInfo = () => {
     'Valitse tutkinnonosat',
     'Vahvista',
   ];
-  const pageNavigationRef = useRef(null);
+
 
   const handleBusinessId = (event) => {
     const value = event.target.value;
@@ -64,6 +63,7 @@ const CompanyInfo = () => {
     const value = event.target.value;
     setEditedCompanyName(value);
   };
+
 
   const fetchCompanyName = async (businessID) => {
     try {
@@ -99,33 +99,44 @@ const CompanyInfo = () => {
     }
   };
 
+  const createTyöpaikkaohjaaja = (firstName, lastName, työpaikkaohjaajaEmail) => {
+    return {
+      firstName,
+      lastName,
+      email: työpaikkaohjaajaEmail,
+      role: 'supervisor'
+    };
+  };
   const addTyöpaikkaohjaaja = (event) => {
-    event.preventDefault();
     if (firstName && lastName && työpaikkaohjaajaEmail) {
-      const newTyöpaikkaohjaaja = {
-        firstName,
-        lastName,
-        email: työpaikkaohjaajaEmail,
-        role: 'supervisor'
-      };
+      const newTyöpaikkaohjaaja = createTyöpaikkaohjaaja(firstName, lastName, työpaikkaohjaajaEmail);
       setTyöpaikkaohjaajat([...työpaikkaohjaajat, newTyöpaikkaohjaaja]);
       setFirstName('');
       setLastName('');
       setTyöpaikkaohjaajaEmail('');
-
     }
   };
+
+  const handleForward = () => {
+    if (firstName && lastName && työpaikkaohjaajaEmail) {
+      const newTyöpaikkaohjaaja = createTyöpaikkaohjaaja(firstName, lastName, työpaikkaohjaajaEmail);
+      addTyöpaikkaohjaaja(newTyöpaikkaohjaaja);
+    }
+    navigate(`../internal/degrees`);
+  };
+
+
 
   return (
 
     <div>
       <WavesHeader title='Saukko' fill='#9fc9eb' secondTitle='Lisää uusi työpaikka' />
-      <div className='stepper__container'>
+      <div className='info__stepper__container'>
         <Stepper
           activePage={1}
           totalPages={4}
           label={labelStepper}
-          url={`../internal/degrees`}
+          url={`../company-info`}
         />
       </div>
       <div style={{ margin: '16px', marginBottom: '28px', marginTop: '60px' }}>
@@ -155,19 +166,17 @@ const CompanyInfo = () => {
                 value={businessID}
                 onChange={handleBusinessId}
               />
-              <div className="cross-icone-style">
-                <IconCrossCircle
-                  className="custom-icon"
-                  aria-hidden="true"
-                  onClick={handleClearBusinessId}
-                />
-                <IconSearch className="custom-icon" aria-hidden="true" onClick={handleSearchClick} />
-              </div>
-              {/* {businessIDError && (
-                <span style={{ color: 'red', fontSize: '14px' }}>{businessIDError}</span>
-              )} */}
-            </div>
 
+              <IconCrossCircle
+                className="cross-icone-style"
+                aria-hidden="true"
+                onClick={handleClearBusinessId}
+              />
+              <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} />
+
+
+            </div>
+            <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} />
             <div>
               {companyName !== null && (
                 <div>
@@ -307,8 +316,9 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
-      <PageNavigationButtons handleForward={() => navigate(`../internal/degrees`)} forwardButtonText={'Seurava'} />
-      <div style={{ marginBottom: '90px' }} >
+      <PageNavigationButtons handleForward={handleForward} forwardButtonText={'Seuraava'} />
+
+      <div style={{ marginBottom: '90px' }}>
         <UserNav></UserNav>
       </div>
     </div>
@@ -317,6 +327,13 @@ const CompanyInfo = () => {
 };
 
 export default CompanyInfo;
+
+
+
+
+
+
+
 
 
 

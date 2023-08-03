@@ -5,9 +5,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
-
-    h1 {
+    height: 100vh;
+    h1{
       color: var(--saukko-main-white);
     }
 
@@ -95,7 +94,7 @@
       text-align: center;
       padding: 0px 36px 36px 36px;
       width: 100%;
-      bottom: 0;
+      bottom: 40px;
       gap: 65px;
     }
   }

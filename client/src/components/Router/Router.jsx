@@ -44,6 +44,7 @@ import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/Evalua
 import EvaluationSummary from '../../pages/CreateEvaluation/EvaluationSummary/EvaluationSummary';
 import CompanySearchPage from '../../pages/CompanyInfo/CompanySearchPage/CompanySearchPage';
 import CompanyDegreeUnits from '../../pages/CompanyInfo/CompanyDegreeUnits/CompanyDegreeUnits';
+import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelection/DegreeConfirmSelection';
 
 const Router = () => {
   let location = useLocation();
@@ -93,6 +94,7 @@ const Router = () => {
         <Route path='/evaluation-summary' element={<EvaluationSummary />} />
         <Route path='/internal/degrees' element={<CompanySearchPage />} />
         <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
+        <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
 
         {!loggedIn && (
           <>
@@ -133,6 +135,7 @@ const Router = () => {
             <Route path='/contract-info' element={<ContractInfo />} />
             <Route path='/internal/degrees' element={<CompanySearchPage />} />
             <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
+            <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
           </>
         )}
       </Routes>

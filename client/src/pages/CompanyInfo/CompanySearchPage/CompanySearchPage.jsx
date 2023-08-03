@@ -135,6 +135,7 @@ const CompanySearchPage = () => {
             activePage={2}
             totalPages={4}
             label={labelStepper}
+            url={`../internal/degrees`}
 
           />
         </div>
