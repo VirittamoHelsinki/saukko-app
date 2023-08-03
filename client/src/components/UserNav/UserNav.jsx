@@ -1,10 +1,10 @@
 // import necessary react components
-import { useNavigate } from "react-router-dom";
-import { Icon } from "@iconify/react";
-import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import AuthContext from "../../utils/context/AuthContext";
-
+import { useNavigate } from 'react-router-dom';
+import { Icon } from '@iconify/react';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
+import AuthContext from '../../utils/context/AuthContext';
+import { logoutUser } from '../../api/user';
 
 // icon component
 const UserNavIcon = (props) => {
@@ -44,57 +44,57 @@ const UserNav = () => {
   };
 
   const LogOut = async () => {
-    await axios.get("http://localhost:5000/auth/logout");
-    localStorage.removeItem("token")
+    await logoutUser();
+    localStorage.removeItem('token')
     await getLoggedIn();
-    navigate("/");
+    navigate('/');
   };
 
   const renderIcons = () => {
-    if (user?.role === "teacher") {
+    if (user?.role === 'teacher') {
       return (
         <>
           {/* home icon */}
           <UserNavIcon
-            icon="material-symbols:house-outline"
-            onClick={() => navigate("/userdashboard")}
+            icon='material-symbols:house-outline'
+            onClick={() => navigate('/userdashboard')}
           />
           {/* book icon */}
           <UserNavIcon
-            icon="healthicons:i-documents-accepted"
-          // onClick={() => navigate("/")}
+            icon='healthicons:i-documents-accepted'
+          // onClick={() => navigate('/')}
           />
           {/* persons icon */}
           <UserNavIcon
-            icon="fontisto:persons"
-          // onClick={() => navigate("/")}
+            icon='fontisto:persons'
+          // onClick={() => navigate('/')}
           />
           {/* user icon */}
           <UserNavIcon
-            icon="material-symbols:person-outline"
-            onClick={() => navigate("/profile")}
+            icon='material-symbols:person-outline'
+            onClick={() => navigate('/profile')}
           />
 
         </>
       );
-    } else if (user?.role === "customer" || user?.role === "supervisor") {
+    } else if (user?.role === 'customer' || user?.role === 'supervisor') {
       return (
         <>
           {/* home icon */}
           <UserNavIcon
-            icon="material-symbols:house-outline"
-            onClick={() => navigate("/userdashboard")}
+            icon='material-symbols:house-outline'
+            onClick={() => navigate('/userdashboard')}
           />
           {/* book icon */}
           <UserNavIcon
-            icon="material-symbols:menu-book-outline-sharp"
-          // onClick={() => navigate("/home")}
+            icon='material-symbols:menu-book-outline-sharp'
+          // onClick={() => navigate('/home')}
           />
 
           {/* user icon */}
           <UserNavIcon
-            icon="material-symbols:person-outline"
-            onClick={() => navigate("/profile")}
+            icon='material-symbols:person-outline'
+            onClick={() => navigate('/profile')}
           />
 
         </>
@@ -103,8 +103,8 @@ const UserNav = () => {
   };
 
   return (
-    <main className="userNav__wrapper" style={wrapperStyle}>
-      <section className="userNav__container">
+    <main className='userNav__wrapper' style={wrapperStyle}>
+      <section className='userNav__container'>
         {renderIcons()}
       </section>
     </main>

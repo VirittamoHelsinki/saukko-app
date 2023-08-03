@@ -13,7 +13,6 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
-import useStore from '../../../useStore';
 import { useLocation } from 'react-router-dom';
 
 function CompanyDegreeUnits() {

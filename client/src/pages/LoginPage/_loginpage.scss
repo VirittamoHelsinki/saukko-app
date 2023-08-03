@@ -9,15 +9,15 @@
     h1{
       color: var(--saukko-main-white);
     }
+
     .loginPage__container {
       display: flex;
       flex-direction: column;
       padding: 0px 36px 0px 36px;
       margin-bottom: 80px;
+      margin-top: 250px;
       width: 100%;
       gap: 10px;
-
-     
 
       h2 {
         font-size: 24px;
@@ -42,6 +42,7 @@
         a {
           text-align: right;
         }
+
         .password__container {
           display: flex;
           align-items: center;
@@ -59,7 +60,6 @@
           .eye-on {
             font-size: 22px;
           }
-         
         }
       }
     }
@@ -97,21 +97,21 @@
       bottom: 40px;
       gap: 65px;
     }
-    
   }
 }
- .error-message{
-color: #B01038;
-;
+
+.error-message {
+  color: #B01038;
 }
 
-.error__container{
+.error__container {
   display: flex;
   align-items: center;
-  gap:55px
+  gap: 55px;
 }
-.error__msg__container{
+
+.error__msg__container {
   display: flex;
   align-items: center;
-  gap:4px
+  gap: 4px;
 }

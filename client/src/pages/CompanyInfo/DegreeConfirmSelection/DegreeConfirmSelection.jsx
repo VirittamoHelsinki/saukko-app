@@ -10,12 +10,11 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
-import useUnitsStore from '../../../unitsStore';
-import useStore from '../../../useStore';
-
 import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
 import Stepper from '../../../components/Stepper/Stepper';
 import { padding } from '@mui/system';
+import useUnitsStore from '../../../store/unitsStore';
+import useStore from '../../../store/useStore';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
@@ -101,6 +100,7 @@ function DegreeConfirmSelection() {
         title='Uusi työpaikka lisätty'
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
+        redirectLink='/evaluation-summary'
       />
 
     </main>

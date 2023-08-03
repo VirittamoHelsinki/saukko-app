@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Button from '../../components/Button/Button';
 import WavesHeader from '../../components/Header/WavesHeader';
 import Notification from '../../components/Notification/Notification';
 import * as EmailValidator from 'email-validator';
+import { forgotPassword } from '../../api/user';
 
 const ForgotPassword = () => {
   const color = '#00005E'
@@ -13,12 +13,10 @@ const ForgotPassword = () => {
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [notificationVisible, setNotificationVisible] = useState(false);
 
-
-
   const formRef = useRef();
   const emailRef = useRef();
 
-  const processForgotPassword = (e) => {
+  const processForgotPassword = async (e) => {
     e.preventDefault();
 
     const email = emailRef.current.value;
@@ -28,17 +26,13 @@ const ForgotPassword = () => {
       return;
     }
 
-    axios
-      .post('http://localhost:5000/auth/forgot-password', {
-        email: email,
-      })
-      .then(function (res) {
-        console.log(res);
-        setNotificationVisible(true);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    try {
+      const res = await forgotPassword(email);
+      console.log(res);
+      setNotificationVisible(true);
+    } catch (error) {
+      console.log(error);
+    }
 
     // setNotificationVisible(true);
     console.log(email);

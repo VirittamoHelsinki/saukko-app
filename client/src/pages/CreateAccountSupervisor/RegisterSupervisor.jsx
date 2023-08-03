@@ -2,7 +2,7 @@
 import { React, useState, useEffect, useContext } from 'react';
 import AuthContext from '../../utils/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import useStore from '../../useStore';
+import useStore from '../../store/useStore';
 import { Icon } from '@iconify/react';
 import axios from 'axios';
 
@@ -74,6 +74,7 @@ const RegisterSupervisor = () => {
         workPhoneNumber,
       };
       await axios
+        // REFACTOR this to extract url if this page is still used
         .post('http://localhost:5000/auth/', registerData)
         .then((res) => {
           console.log(res);

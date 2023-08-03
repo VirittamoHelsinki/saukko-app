@@ -135,6 +135,7 @@ const Router = () => {
             <Route path='/contract-info' element={<ContractInfo />} />
             <Route path='/internal/degrees' element={<CompanySearchPage />} />
             <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
+            <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
           </>
         )}
       </Routes>

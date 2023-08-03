@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import Button from "../../components/Button/Button";
 import WavesHeader from "../../components/Header/WavesHeader";
 import Notification from "../../components/Notification/Notification";
+import { tokenValidation, resetPassword } from '../../api/user';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -31,9 +32,7 @@ const ResetPassword = () => {
   useEffect(() => {
     const validateToken = async () => {
       try {
-        const response = await axios.post("http://localhost:5000/auth/validate-token", {
-          token: token
-        });
+        const response = await tokenValidation(token);
         console.log(response);
         if (response.status === 200) {
           setValidToken(true);
@@ -73,11 +72,7 @@ const ResetPassword = () => {
 
     // sending data to the backend
     try {
-      const response = await axios.post("http://localhost:5000/auth/reset-password", {
-        token: token,
-        newPassword: password,
-      });
-      console.log(response);
+      await resetPassword(token, password);
       setNotificationVisible(true);
     } catch (error) {
       console.log(error);

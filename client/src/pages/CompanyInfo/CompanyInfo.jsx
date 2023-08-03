@@ -1,20 +1,18 @@
-// import React, { useEffect, useRef } from 'react';
 // import Accordion from '@mui/material/Accordion';
 // import AccordionSummary from '@mui/material/AccordionSummary';
 // import Typography from '@mui/material/Typography';
 // import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-// import { scroller } from 'react-scroll';
 // import { TextInput } from 'hds-react';
-// import { Icon } from '@iconify/react';
 // import { IconCrossCircle, IconSearch } from 'hds-react';
 // import Button from '../../components/Button/Button';
 // import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
-// import useStore from '../../useStore';
+// import useStore from '../../store/useStore';
 // import WavesHeader from '../../components/Header/WavesHeader';
 // import UserNav from '../../components/UserNav/UserNav';
+// import { fetchCompanyData } from '../../api/workplace';
 // import { useNavigate } from 'react-router';
 // import Stepper from '../../components/Stepper/Stepper';
-// import { alignProperty } from '@mui/material/styles/cssUtils';
+
 
 // const CompanyInfo = () => {
 //   const navigate = useNavigate();
@@ -36,6 +34,7 @@
 //     työpaikkaohjaajaEmail,
 //     setTyöpaikkaohjaajaEmail,
 //   } = useStore();
+
 //   // Text for stepper's labels
 //   const labelStepper = [
 //     'Lisää tiedot',
@@ -65,10 +64,9 @@
 //     setEditedCompanyName(value);
 //   };
 
-
 //   const fetchCompanyName = async (businessID) => {
 //     try {
-//       const response = await fetch(`http://localhost:5000/api/business/${businessID}`);
+//       const response = await fetchCompanyData(businessID);
 //       if (!response.ok) {
 //         setCompanyName('');
 //         throw new Error('Failed to fetch company name');
@@ -100,21 +98,30 @@
 //     }
 //   };
 
+//   const createTyöpaikkaohjaaja = (firstName, lastName, työpaikkaohjaajaEmail) => {
+//     return {
+//       firstName,
+//       lastName,
+//       email: työpaikkaohjaajaEmail,
+//       role: 'supervisor'
+//     };
+//   };
 //   const addTyöpaikkaohjaaja = (event) => {
-//     event.preventDefault();
 //     if (firstName && lastName && työpaikkaohjaajaEmail) {
-//       const newTyöpaikkaohjaaja = {
-//         firstName,
-//         lastName,
-//         email: työpaikkaohjaajaEmail,
-//         role: 'supervisor'
-//       };
+//       const newTyöpaikkaohjaaja = createTyöpaikkaohjaaja(firstName, lastName, työpaikkaohjaajaEmail);
 //       setTyöpaikkaohjaajat([...työpaikkaohjaajat, newTyöpaikkaohjaaja]);
 //       setFirstName('');
 //       setLastName('');
 //       setTyöpaikkaohjaajaEmail('');
-
 //     }
+//   };
+
+//   const handleForward = () => {
+//     if (firstName && lastName && työpaikkaohjaajaEmail) {
+//       const newTyöpaikkaohjaaja = createTyöpaikkaohjaaja(firstName, lastName, työpaikkaohjaajaEmail);
+//       addTyöpaikkaohjaaja(newTyöpaikkaohjaaja);
+//     }
+//     navigate(`../internal/degrees`);
 //   };
 
 
@@ -308,9 +315,9 @@
 //           </form>
 //         </Accordion>
 //       </div>
-//       <PageNavigationButtons handleForward={() => navigate(`../internal/degrees`)} forwardButtonText={'Seuraava'} />
-//       <div style={{ marginBottom: '90px' }}>
+//       <PageNavigationButtons handleForward={handleForward} forwardButtonText={'Seuraava'} />
 
+//       <div style={{ marginBottom: '90px' }}>
 //         <UserNav></UserNav>
 //       </div>
 //     </div>
@@ -320,96 +327,21 @@
 
 // export default CompanyInfo;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { scroller } from 'react-scroll';
+
 import { TextInput } from 'hds-react';
 import { IconCrossCircle, IconSearch } from 'hds-react';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
-import useStore from '../../useStore';
+import { fetchCompanyData } from '../../api/workplace';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import { useNavigate } from 'react-router';
 import Stepper from '../../components/Stepper/Stepper';
+import useStore from '../../store/useStore';
 
 
 const CompanyInfo = () => {
@@ -462,9 +394,23 @@ const CompanyInfo = () => {
   };
 
 
+  // const fetchCompanyName = async (businessID) => {
+  //   try {
+  //     const response = await fetch(`http://localhost:5000/api/business/${businessID}`);
+  //     if (!response.ok) {
+  //       setCompanyName('');
+  //       throw new Error('Failed to fetch company name');
+  //     }
+  //     const data = await response.json();
+  //     setCompanyName(data);
+  //   } catch (error) {
+  //     throw new Error('Failed to fetch company name');
+  //   }
+  // };
+
   const fetchCompanyName = async (businessID) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/business/${businessID}`);
+      const response = await fetchCompanyData(businessID);
       if (!response.ok) {
         setCompanyName('');
         throw new Error('Failed to fetch company name');

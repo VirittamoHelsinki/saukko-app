@@ -4,7 +4,6 @@ import { create } from 'zustand';
 const useStore = create((set) => ({
   // Define initial state variables
   role: '',
-  name: '',
   email: '',
   emailError: '',
   password: '',
@@ -43,7 +42,6 @@ const useStore = create((set) => ({
 
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
-  setName: (name) => set({ name }),
   setEmail: (email) => set({ email }),
   setEmailError: (value) => set(() => ({ emailError: value })),
   setPassword: (password) => set({ password }),
