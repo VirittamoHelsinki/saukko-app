@@ -13,9 +13,13 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
+import useStore from '../../../useStore';
+import { useLocation } from 'react-router-dom';
 
 function CompanyDegreeUnits() {
   const navigate = useNavigate();
+  const location = useLocation();
+
 
   // Set path & get degree from DegreeContext
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalDegreeContext);
@@ -27,6 +31,7 @@ function CompanyDegreeUnits() {
 
   // Save degree units to state once degree is fetched
   const degreeUnits = internalDegree.units;
+
   const [filteredUnits, setFilteredUnits] = useState(degreeUnits);
 
   useEffect(() => {
@@ -57,23 +62,28 @@ function CompanyDegreeUnits() {
 
   // Text for stepper's labels
   const labelStepper = [
-    'Tutkintotiedot',
+    'Lisää tiedot',
+    'Valitse tutkinto',
     'Valitse tutkinnonosat',
-    'Määritä tehtävät',
     'Vahvista',
   ];
 
+
+
   return (
     <main className='degreeUnits__wrapper'>
-      <WavesHeader title='Saukko' secondTitle={degreeFound && internalDegree.name.fi} />
+      <WavesHeader title='Saukko' secondTitle='Lisää uusi työpaikka' />
       <section className='degreeUnits__container'>
         <Stepper
-          activePage={2}
+          activePage={3}
           totalPages={4}
           label={labelStepper}
-          url={`/degrees/${internalDegree._id}`}
+          url={`../internal/degrees/${internalDegree._id}/units/`}
+
         />
-        <h1>Valitse tutkinnon osat</h1>
+
+        <h2>{degreeFound && internalDegree.name.fi} </h2>
+
         <Searchbar
           handleSearch={handleSearch}
           placeholder={'Etsi tutkinnonosat'}
@@ -86,6 +96,8 @@ function CompanyDegreeUnits() {
                 key={unit._id}
                 unit={unit}
                 allUnits={internalDegree.units}
+
+
               />
             ))
             : 'ei dataa APIsta'}
@@ -100,11 +112,13 @@ function CompanyDegreeUnits() {
         />
 
         <PageNavigationButtons
-          handleBack={() => navigate(`/degrees/${internalDegree._id}`)}
-          handleForward={() =>
-            navigate(`/degrees/${internalDegree._id}/units/confirm-selection`)
-          }
-          forwardButtonText={'Valitse tutkinnonosat'}
+          handleBack={() => navigate(`../internal/degrees`)}
+          handleForward={() => {
+
+            navigate(`../internal/degrees/${internalDegree._id}/units/confirm-selection`);
+
+          }}
+          forwardButtonText={'Seuraava'}
         />
       </section>
       <UserNav />
@@ -113,3 +127,4 @@ function CompanyDegreeUnits() {
 }
 
 export default CompanyDegreeUnits;
+

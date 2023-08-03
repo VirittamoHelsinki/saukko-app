@@ -23,7 +23,7 @@ const useStore = create((set) => ({
   goals: '',
   academy: '',
   education: '',
-  businessID: '',
+  businessID: [],
   businessIDError: '',
   editedCompanyName: '',
   companyName: null,
