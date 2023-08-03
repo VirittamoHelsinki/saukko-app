@@ -71,7 +71,7 @@ function SpecifyTasks() {
   // Dots Stepper
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
-  const maxSteps = images.length;
+  const maxSteps = checkedUnits.length;
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -95,7 +95,7 @@ function SpecifyTasks() {
           label={labelStepper}
           url={`/degrees/${degree._id}/units/tasks`}
         />
-        <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+        <Box>
           <MobileStepper
             steps={maxSteps}
             position='static'
@@ -140,9 +140,11 @@ function SpecifyTasks() {
               bgcolor: 'background.default',
             }}
           >
-            <Typography>{images[activeStep].label}</Typography>
+            {/* <Typography>{images[activeStep].label}</Typography> */}
+
+            <Typography>{checkedUnits[activeStep]?.name?.fi}</Typography>
           </Paper>
-          <AutoPlaySwipeableViews
+          <SwipeableViews
             axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
             index={activeStep}
             onChangeIndex={handleStepChange}
@@ -166,7 +168,7 @@ function SpecifyTasks() {
                 ) : null}
               </div>
             ))}
-          </AutoPlaySwipeableViews>
+          </SwipeableViews>
         </Box>
 
         <PageNavigationButtons
