@@ -16,6 +16,10 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import useUnitsStore from '../../../unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
+import {
+  CriteriaFieldsProvider,
+  useCriteriaFieldsContext,
+} from '../../../utils/context/CriteriaFieldsContext';
 
 function SpecifyTasks() {
   const navigate = useNavigate();
@@ -23,7 +27,9 @@ function SpecifyTasks() {
   // Set path & get degree units from DegreeContext
   const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
   const params = useParams();
-  const [isEditable, setIsEditable] = useState(false);
+  const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
+
+  console.log('TextFields: ', criteriaFields);
 
   useEffect(() => {
     setDegreeId(params.degreeId);
@@ -54,14 +60,14 @@ function SpecifyTasks() {
   };
 
   // State to store the list of text fields for each step
-  const [textFields, setTextFields] = useState(
-    Array.from({ length: maxSteps }, () => [''])
-  );
+  //   const [textFields, setTextFields] = useState(
+  //     Array.from({ length: maxSteps }, () => [''])
+  //   );
 
   // Handle adding a new text field to the list of text
   // fields for the current step
   const handleAddTextField = () => {
-    setTextFields((prevFields) => {
+    setCriteriaFields((prevFields) => {
       const newFields = [...prevFields];
       newFields[activeStep] = [...(newFields[activeStep] || []), ''];
       return newFields;
@@ -70,7 +76,7 @@ function SpecifyTasks() {
 
   // Handle changes in the text fields
   const handleTextFieldChange = (stepIndex, fieldIndex, value) => {
-    setTextFields((prevFields) => {
+    setCriteriaFields((prevFields) => {
       const newFields = [...prevFields];
       newFields[activeStep][fieldIndex] = value;
       return newFields;
@@ -80,9 +86,9 @@ function SpecifyTasks() {
   // Preserve textFields state when navigating between steps
   useEffect(() => {
     // Check if the active step index is within the bounds of the textFields array
-    if (activeStep >= 0 && activeStep < textFields.length) {
+    if (activeStep >= 0 && activeStep < criteriaFields.length) {
       // Set the text fields for the active step
-      setTextFields((prevFields) => {
+      setCriteriaFields((prevFields) => {
         const newFields = [...prevFields];
         newFields[activeStep] = newFields[activeStep] || [''];
         return newFields;
@@ -138,7 +144,7 @@ function SpecifyTasks() {
             <form>
               <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
 
-              {textFields[activeStep]?.map((textField, index) => (
+              {criteriaFields[activeStep]?.map((textField, index) => (
                 <div key={index}>
                   <input
                     type='text'
