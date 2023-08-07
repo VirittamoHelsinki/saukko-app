@@ -135,17 +135,7 @@ function SpecifyTasks() {
               </Button>
             }
           />
-          <Paper
-            square
-            elevation={0}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              height: 170,
-              pl: 2,
-              bgcolor: 'background.default',
-            }}
-          >
+          <Paper square elevation={0}>
             <form>
               <Typography>{checkedUnits[activeStep]?.name?.fi}</Typography>
 
