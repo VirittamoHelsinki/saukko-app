@@ -21,14 +21,22 @@
         flex-direction: column;
         gap: 13px;
         background: var(--accordion-background-grey);
-        padding: 3rem 1rem;
+        padding: 1.5rem 1rem;
         margin: 20px;
+
+        h3 {
+          font-size: 0.95rem;
+          margin-bottom: 0.6rem;
+        }
 
         input {
           height: 60px;
           width: 100%;
           padding: 1rem;
           margin-bottom: 14px;
+          font-size: 1rem;
+          border-radius: 1;
+          border: solid 2px;
         }
       }
       .add-criteria-btn {

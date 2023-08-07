@@ -60,7 +60,7 @@ function SpecifyTasks() {
     Array.from({ length: maxSteps }, () => [''])
   );
 
-  // Function to handle adding a new text field
+  // Handle adding a new text field
   const handleAddTextField = () => {
     setTextFields((prevFields) => {
       const newFields = [...prevFields];
@@ -69,7 +69,7 @@ function SpecifyTasks() {
     });
   };
 
-  // Function to handle changes in the text fields
+  // Handle changes in the text fields
   const handleTextFieldChange = (stepIndex, fieldIndex, value) => {
     setTextFields((prevFields) => {
       const newFields = [...prevFields];
@@ -137,7 +137,7 @@ function SpecifyTasks() {
           />
           <Paper square elevation={0}>
             <form>
-              <Typography>{checkedUnits[activeStep]?.name?.fi}</Typography>
+              <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
 
               {textFields[activeStep]?.map((textField, index) => (
                 <DynamicTextFields
