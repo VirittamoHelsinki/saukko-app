@@ -92,9 +92,9 @@ function SpecifyTasks() {
   }, [activeStep]);
 
   return (
-    <main className='specifyTasks__wrapper'>
+    <main className='specify-tasks__wrapper'>
       <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
-      <section className='specifyTasks__container'>
+      <section className='specify-tasks__container'>
         <Stepper
           activePage={3}
           totalPages={4}
@@ -148,7 +148,13 @@ function SpecifyTasks() {
                   }
                 />
               ))}
-              <Button onClick={handleAddTextField}>Add Text Field</Button>
+              <Button
+                onClick={handleAddTextField}
+                className='add-criteria-btn'
+                sx={{ paddingLeft: 0, textTransform: 'none' }}
+              >
+                + Lisää arviointikriteeri
+              </Button>
             </form>
           </Paper>
         </Box>

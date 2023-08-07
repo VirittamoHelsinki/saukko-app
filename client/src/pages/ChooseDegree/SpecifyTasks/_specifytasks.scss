@@ -1,12 +1,12 @@
 .app__wrapper {
-  .specifyTasks__wrapper {
+  .specify-tasks__wrapper {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
 
-    .specifyTasks__container {
+    .specify-tasks__container {
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -30,6 +30,14 @@
           padding: 1rem;
           margin-bottom: 14px;
         }
+      }
+      .add-criteria-btn {
+        background: var(--link-blue);
+        width: 50%;
+        font-size: 0.85rem;
+        font-weight: 300;
+        color: #fff;
+        border-radius: 0;
       }
     }
   }
