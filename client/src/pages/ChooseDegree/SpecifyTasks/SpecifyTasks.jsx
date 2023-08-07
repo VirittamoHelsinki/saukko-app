@@ -10,14 +10,12 @@ import Stepper from '../../../components/Stepper/Stepper';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
 import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import useUnitsStore from '../../../unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
-import DynamicTextFields from '../../../components/DynamicTextFields/DynamicTextFields';
 
 function SpecifyTasks() {
   const navigate = useNavigate();
@@ -60,7 +58,8 @@ function SpecifyTasks() {
     Array.from({ length: maxSteps }, () => [''])
   );
 
-  // Handle adding a new text field
+  // Handle adding a new text field to the list of text
+  // fields for the current step
   const handleAddTextField = () => {
     setTextFields((prevFields) => {
       const newFields = [...prevFields];
@@ -73,7 +72,7 @@ function SpecifyTasks() {
   const handleTextFieldChange = (stepIndex, fieldIndex, value) => {
     setTextFields((prevFields) => {
       const newFields = [...prevFields];
-      newFields[stepIndex][fieldIndex] = value;
+      newFields[activeStep][fieldIndex] = value;
       return newFields;
     });
   };
@@ -85,7 +84,7 @@ function SpecifyTasks() {
       // Set the text fields for the active step
       setTextFields((prevFields) => {
         const newFields = [...prevFields];
-        newFields[activeStep] = textFields[activeStep] || '';
+        newFields[activeStep] = newFields[activeStep] || [''];
         return newFields;
       });
     }
@@ -140,13 +139,19 @@ function SpecifyTasks() {
               <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
 
               {textFields[activeStep]?.map((textField, index) => (
-                <DynamicTextFields
-                  key={index}
-                  value={textField}
-                  onChange={(event) =>
-                    handleTextFieldChange(activeStep, index, event.target.value)
-                  }
-                />
+                <div key={index}>
+                  <input
+                    type='text'
+                    value={textField}
+                    onChange={(event) =>
+                      handleTextFieldChange(
+                        activeStep,
+                        index,
+                        event.target.value
+                      )
+                    }
+                  />
+                </div>
               ))}
               <Button
                 onClick={handleAddTextField}
