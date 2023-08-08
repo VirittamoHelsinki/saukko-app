@@ -17,7 +17,7 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import useUnitsStore from '../../../unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
 import {
-  CriteriaFieldsProvider,
+  CriteriaFieldsContextProvider,
   useCriteriaFieldsContext,
 } from '../../../utils/context/CriteriaFieldsContext';
 
@@ -28,15 +28,22 @@ function SpecifyTasks() {
   const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
   const params = useParams();
   const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
+  console.log('CriteriaFields: ', criteriaFields);
+  const [isLoading, setIsLoading] = useState(true);
 
-  console.log('TextFields: ', criteriaFields);
+  useEffect(() => {
+    // Check if the criteriaFields are populated (initialized)
+    if (criteriaFields.length > 0) {
+      setIsLoading(false); // Set loading to false when criteriaFields are populated
+    }
+  }, [criteriaFields]);
 
   useEffect(() => {
     setDegreeId(params.degreeId);
   }, []);
 
   // Get checked units from unitsStore
-  const { checkedUnits, setUnitAtIndex } = useUnitsStore();
+  const { checkedUnits } = useUnitsStore();
 
   // Text for stepper's labels
   const labelStepper = [
@@ -96,90 +103,101 @@ function SpecifyTasks() {
     }
   }, [activeStep]);
 
+  console.log('maxsteps: ', maxSteps);
+
   return (
-    <main className='specify-tasks__wrapper'>
-      <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
-      <section className='specify-tasks__container'>
-        <Stepper
-          activePage={3}
-          totalPages={4}
-          label={labelStepper}
-          url={`/degrees/${degree._id}/units/tasks`}
+    <CriteriaFieldsContextProvider maxSteps={maxSteps}>
+      <main className='specify-tasks__wrapper'>
+        <WavesHeader
+          title='Saukko'
+          secondTitle={degreeFound && degree.name.fi}
         />
-        <Box>
-          <MobileStepper
-            steps={maxSteps}
-            position='static'
-            activeStep={activeStep}
-            nextButton={
-              <Button
-                size='small'
-                onClick={handleNext}
-                disabled={activeStep === maxSteps - 1}
-              >
-                Seuraava
-                {theme.direction === 'rtl' ? (
-                  <KeyboardArrowLeft />
-                ) : (
-                  <KeyboardArrowRight />
-                )}
-              </Button>
-            }
-            backButton={
-              <Button
-                size='small'
-                onClick={handleBack}
-                disabled={activeStep === 0}
-              >
-                {theme.direction === 'rtl' ? (
-                  <KeyboardArrowRight />
-                ) : (
-                  <KeyboardArrowLeft />
-                )}
-                Edellinen
-              </Button>
-            }
+        <section className='specify-tasks__container'>
+          <Stepper
+            activePage={3}
+            totalPages={4}
+            label={labelStepper}
+            url={`/degrees/${degree._id}/units/tasks`}
           />
-          <Paper square elevation={0}>
-            <form>
-              <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
+          <Box>
+            <MobileStepper
+              steps={maxSteps}
+              position='static'
+              activeStep={activeStep}
+              nextButton={
+                <Button
+                  size='small'
+                  onClick={handleNext}
+                  disabled={activeStep === maxSteps - 1}
+                >
+                  Seuraava
+                  {theme.direction === 'rtl' ? (
+                    <KeyboardArrowLeft />
+                  ) : (
+                    <KeyboardArrowRight />
+                  )}
+                </Button>
+              }
+              backButton={
+                <Button
+                  size='small'
+                  onClick={handleBack}
+                  disabled={activeStep === 0}
+                >
+                  {theme.direction === 'rtl' ? (
+                    <KeyboardArrowRight />
+                  ) : (
+                    <KeyboardArrowLeft />
+                  )}
+                  Edellinen
+                </Button>
+              }
+            />
+            <Paper square elevation={0}>
+              {/* {isLoading ? ( */}
+              {/* <div>Loading...</div> // You can show a loading indicator here */}
+              {/* ) : ( */}
+              <form>
+                <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
 
-              {criteriaFields[activeStep]?.map((textField, index) => (
-                <div key={index}>
-                  <input
-                    type='text'
-                    value={textField}
-                    onChange={(event) =>
-                      handleTextFieldChange(
-                        activeStep,
-                        index,
-                        event.target.value
-                      )
-                    }
-                  />
-                </div>
-              ))}
-              <Button
-                onClick={handleAddTextField}
-                className='add-criteria-btn'
-                sx={{ paddingLeft: 0, textTransform: 'none' }}
-              >
-                + Lisää arviointikriteeri
-              </Button>
-            </form>
-          </Paper>
-        </Box>
+                {criteriaFields[activeStep]?.map((textField, index) => (
+                  <div key={index}>
+                    <input
+                      type='text'
+                      value={textField}
+                      onChange={(event) =>
+                        handleTextFieldChange(
+                          activeStep,
+                          index,
+                          event.target.value
+                        )
+                      }
+                    />
+                  </div>
+                ))}
+                <Button
+                  onClick={handleAddTextField}
+                  className='add-criteria-btn'
+                  sx={{ paddingLeft: 0, textTransform: 'none' }}
+                >
+                  + Lisää arviointikriteeri
+                </Button>
+              </form>
+              {/* )} */}
+            </Paper>
+          </Box>
 
-        <PageNavigationButtons
-          handleBack={() =>
-            navigate(`/degrees/${degree._id}/units/confirm-selection`)
-          }
-          handleForward={''}
-          forwardButtonText={'Vahvista valinnat'}
-        />
-      </section>
-      <UserNav />
-    </main>
+          <PageNavigationButtons
+            handleBack={() =>
+              navigate(`/degrees/${degree._id}/units/confirm-selection`)
+            }
+            handleForward={''}
+            forwardButtonText={'Vahvista valinnat'}
+          />
+        </section>
+        <UserNav />
+      </main>
+    </CriteriaFieldsContextProvider>
   );
 }
 
