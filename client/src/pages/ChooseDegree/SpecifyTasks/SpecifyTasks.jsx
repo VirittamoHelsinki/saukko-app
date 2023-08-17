@@ -50,7 +50,7 @@ function SpecifyTasks() {
     'Tutkintotiedot',
     'Valitse tutkinnonosat',
     'Määritä tehtävät',
-    'Vahvista',
+    'Yhteenveto',
   ];
 
   // Dots Stepper

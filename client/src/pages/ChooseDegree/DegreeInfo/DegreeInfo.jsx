@@ -68,7 +68,7 @@ function DegreeInfo() {
     'Tutkintotiedot',
     'Valitse tutkinnonosat',
     'Määritä tehtävät',
-    'Vahvista',
+    'Yhteenveto',
   ];
 
   useEffect(() => {

@@ -60,7 +60,7 @@ function DegreeUnits() {
     'Tutkintotiedot',
     'Valitse tutkinnonosat',
     'Määritä tehtävät',
-    'Vahvista',
+    'Yhteenveto',
   ];
 
   return (

@@ -61,7 +61,7 @@ function ConfirmSelection() {
     'Tutkintotiedot',
     'Valitse tutkinnonosat',
     'Määritä tehtävät',
-    'Vahvista',
+    'Yhteenveto',
   ];
 
   // Toggle text editable mode
