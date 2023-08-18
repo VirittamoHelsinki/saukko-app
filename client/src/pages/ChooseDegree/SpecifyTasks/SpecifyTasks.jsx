@@ -191,8 +191,10 @@ function SpecifyTasks() {
             handleBack={() =>
               navigate(`/degrees/${degree._id}/units/confirm-selection`)
             }
-            handleForward={''}
-            forwardButtonText={'Vahvista valinnat'}
+            handleForward={() =>
+              navigate(`/degrees/${degree._id}/units/tasks/summary`)
+            }
+            forwardButtonText={'Tallenna ja jatka'}
           />
         </section>
         <UserNav />

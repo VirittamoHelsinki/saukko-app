@@ -28,6 +28,7 @@ import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
 import UnitInfo from '../../pages/ChooseDegree/UnitInfo/UnitInfo';
 import ConfirmSelection from '../../pages/ChooseDegree/ConfirmSelection/ConfirmSelection';
 import SpecifyTasks from '../../pages/ChooseDegree/SpecifyTasks/SpecifyTasks';
+import Summary from '../../pages/ChooseDegree/Summary/Summary';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
@@ -95,6 +96,8 @@ const Router = () => {
           path='/degrees/:degreeId/units/tasks'
           element={<SpecifyTasks />}
         />
+        <Route path='/degrees/:degreeId/units/summary' element={<Summary />} />
+
         <Route path='/evaluation-form' element={<EvaluationForm />} />
         <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
         <Route path='/evaluation-units' element={<EvaluationUnits />} />
