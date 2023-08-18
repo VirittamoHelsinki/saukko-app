@@ -96,7 +96,7 @@ const Router = () => {
           path='/degrees/:degreeId/units/tasks'
           element={<SpecifyTasks />}
         />
-        <Route path='/degrees/:degreeId/units/summary' element={<Summary />} />
+        <Route path='/degrees/:degreeId/summary' element={<Summary />} />
 
         <Route path='/evaluation-form' element={<EvaluationForm />} />
         <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
