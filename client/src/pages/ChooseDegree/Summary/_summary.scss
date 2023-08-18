@@ -30,9 +30,20 @@
         font-size: 1rem;
       }
       hr {
-        margin: 10px 0;
+        margin: 17px 0;
         color: #9c9c9c;
         border: solid 1px;
+      }
+      li {
+        padding: 10px 0;
+        font-size: 1.1rem;
+      }
+      strong {
+        font-size: 1rem;
+      }
+      .mb {
+        margin-bottom: 20px;
+        display: block;
       }
     }
   }
