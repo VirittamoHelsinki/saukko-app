@@ -1,5 +1,3 @@
-// CriteriaFieldsContext.js
-
 import { createContext, useContext, useState } from 'react';
 
 const CriteriaFieldsContext = createContext();

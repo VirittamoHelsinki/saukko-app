@@ -1,8 +1,6 @@
-// Import react packages & dependencies
-import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
@@ -10,38 +8,30 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import useStore from '../../../useStore';
 import useUnitsStore from '../../../unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
-import {
-  CriteriaFieldsContextProvider,
-  useCriteriaFieldsContext,
-} from '../../../utils/context/CriteriaFieldsContext';
+import { useCriteriaFieldsContext } from '../../../utils/context/CriteriaFieldsContext';
 
 function Summary() {
   const navigate = useNavigate();
 
   const {
-    degreeName,
-    setDegreeName,
     degreeDescription,
-    setDegreeDescription,
     diaryNumber,
-    setDiaryNumber,
     regulationDate,
-    setRegulationDate,
     validFrom,
-    setValidFrom,
     expiry,
-    setExpiry,
     transitionEnds,
-    setTransitionEnds,
   } = useStore();
 
   // Set path & get degree units from DegreeContext
-  const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
-  const params = useParams();
-  const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
+  const { degree, degreeFound } = useContext(DegreeContext);
+  const { criteriaFields } = useCriteriaFieldsContext();
 
   // Get checked units from unitsStore
   const { checkedUnits } = useUnitsStore();
+
+  // Remove HTML p tags from degree description
+  const regex = /(<([^>]+)>)/gi;
+  const degreeDescriptionCleaned = degreeDescription.replace(regex, '');
 
   // Text for stepper's labels
   const labelStepper = [
@@ -78,7 +68,9 @@ function Summary() {
           ))}
         </div>
         <div className='section-title'> Tutkinnon suorittaneen osaaminen</div>
-        <div className='summary__container--box'>{degreeDescription}</div>
+        <div className='summary__container--box'>
+          {degreeDescriptionCleaned}
+        </div>
 
         <div className='section-title'> Tutkintotiedot</div>
         <ul className='summary__container--box'>
