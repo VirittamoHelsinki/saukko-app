@@ -90,9 +90,7 @@ function Summary() {
           handleBack={() =>
             navigate(`/degrees/${degree._id}/units/confirm-selection`)
           }
-          handleForward={() =>
-            navigate(`/degrees/${degree._id}/units/tasks/summary`)
-          }
+          handleForward={() => navigate(`/userdashboard`)}
           forwardButtonText={'Tallenna tiedot'}
         />
       </section>
