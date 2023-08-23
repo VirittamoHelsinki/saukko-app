@@ -8,9 +8,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
-import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import useUnitsStore from '../../../unitsStore';
-import useStore from '../../../useStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
 import ContentEditable from 'react-contenteditable';
 
@@ -28,9 +26,6 @@ function ConfirmSelection() {
 
   // Get checked units from unitsStore
   const { checkedUnits, setUnitAtIndex } = useUnitsStore();
-
-  // NotificationModal logic
-  const { openNotificationModal } = useStore();
 
   // Text for stepper's labels
   const labelStepper = [
@@ -125,13 +120,6 @@ function ConfirmSelection() {
         />
       </section>
       <UserNav />
-
-      <NotificationModal
-        type='success'
-        title='Pyyntö lähetetty'
-        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
-        open={openNotificationModal}
-      />
     </main>
   );
 }
