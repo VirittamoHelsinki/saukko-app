@@ -5,8 +5,8 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import useStore from '../../../useStore';
-import useUnitsStore from '../../../unitsStore';
+import useStore from '../../../store/useStore';
+import useUnitsStore from '../../../store/unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
 import { useCriteriaFieldsContext } from '../../../utils/context/CriteriaFieldsContext';
 

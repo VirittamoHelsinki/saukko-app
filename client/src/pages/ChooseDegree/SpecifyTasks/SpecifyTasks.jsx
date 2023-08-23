@@ -14,7 +14,7 @@ import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import useUnitsStore from '../../../unitsStore';
+import useUnitsStore from '../../../store/unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
 import {
   CriteriaFieldsContextProvider,

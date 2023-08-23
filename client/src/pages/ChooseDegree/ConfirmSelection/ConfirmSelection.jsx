@@ -8,7 +8,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
-import useUnitsStore from '../../../unitsStore';
+import useUnitsStore from '../../../store/unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
 import ContentEditable from 'react-contenteditable';
 
