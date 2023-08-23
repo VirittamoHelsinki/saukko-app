@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 
 // Import helsinki logo
 import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
-import HelsinkiWhiteLogo from '../../assets/Helsinki_white_logo.png'
+import HelsinkiWhiteLogo from '../../assets/Helsinki_white_logo.png';
 import AuthContext from '../../utils/context/AuthContext';
 
 const Waves = (props) => {
@@ -46,7 +46,7 @@ const WavesHeader = (props) => {
   // Determine which logo to use based on the role
   const logoToUse = role ? HelsinkiLogo : HelsinkiWhiteLogo;
   //Determine which color to use
-  const logoColor = role ? 'black' : 'white'
+  const logoColor = role ? 'black' : 'white';
 
   const getHeaderColor = () => {
     // Define color based on role
@@ -79,7 +79,6 @@ const WavesHeader = (props) => {
       <h1>{props.title}</h1>
       <h2>{props.secondTitle}</h2>
       <Waves fill={headerColor} />
-
     </main>
   );
 };
@@ -89,16 +88,3 @@ WavesHeader.defaultProps = {
 };
 
 export default WavesHeader;
-
-
-
-
-
-
-
-
-
-
-
-
-

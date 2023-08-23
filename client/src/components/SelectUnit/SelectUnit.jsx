@@ -4,10 +4,9 @@ import useUnitsStore from '../../store/unitsStore';
 import DegreeContext from '../../utils/context/DegreeContext';
 
 function SelectUnit({ unit, allUnits }) {
-
   // Get degree from degreeContext
   const { degree } = useContext(DegreeContext);
-  
+
   // Check / uncheck unit using toggleUnit function from UnitsStore
   const toggleUnit = useUnitsStore((state) => state.toggleUnit);
   const handleCheckboxChange = () => {
@@ -20,12 +19,12 @@ function SelectUnit({ unit, allUnits }) {
 
   // Number units
   const getUnitNumber = (id) => {
-    const foundUnit = allUnits && allUnits.find(unit => unit._id === id);
+    const foundUnit = allUnits && allUnits.find((unit) => unit._id === id);
     if (foundUnit) {
       return allUnits.indexOf(foundUnit) + 1;
     }
   };
-  
+
   return (
     <div
       key={unit._id}
@@ -39,18 +38,17 @@ function SelectUnit({ unit, allUnits }) {
         }`}
         onClick={handleCheckboxChange}
       >
-        {checkedUnits.includes(unit) && <Icon icon="mdi:tick" color="white" />}
+        {checkedUnits.includes(unit) && <Icon icon='mdi:tick' color='white' />}
       </div>
       <p>
         <b>{getUnitNumber(unit._id)}.</b> {unit.name.fi}
       </p>
-      <Icon 
-        icon="iconamoon:arrow-right-2-light" 
-        className="selectUnit__container--units-unit-arrow" 
+      <Icon
+        icon='iconamoon:arrow-right-2-light'
+        className='selectUnit__container--units-unit-arrow'
       />
     </div>
-  )
+  );
 }
 
 export default SelectUnit;
-

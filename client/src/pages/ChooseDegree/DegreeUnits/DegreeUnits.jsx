@@ -60,7 +60,7 @@ function DegreeUnits() {
     'Tutkintotiedot',
     'Valitse tutkinnonosat',
     'Määritä tehtävät',
-    'Vahvista',
+    'Yhteenveto',
   ];
 
   return (
@@ -104,7 +104,7 @@ function DegreeUnits() {
           handleForward={() =>
             navigate(`/degrees/${degree._id}/units/confirm-selection`)
           }
-          forwardButtonText={'Valitse tutkinnonosat'}
+          forwardButtonText={'Seuraava'}
         />
       </section>
       <UserNav />
