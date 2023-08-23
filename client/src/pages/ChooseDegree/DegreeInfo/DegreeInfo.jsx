@@ -194,8 +194,6 @@ function DegreeInfo() {
     }
   }
 
-  console.log('degreeName: ', degreeName);
-
   // Button styling/CSS
   const buttonStyleSave = {
       background: '#0000bf',
