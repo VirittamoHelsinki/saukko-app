@@ -28,7 +28,6 @@ function SpecifyTasks() {
   const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
   const params = useParams();
   const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
-  console.log('CriteriaFields: ', criteriaFields);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -65,11 +64,6 @@ function SpecifyTasks() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
-  // State to store the list of text fields for each step
-  //   const [textFields, setTextFields] = useState(
-  //     Array.from({ length: maxSteps }, () => [''])
-  //   );
 
   // Handle adding a new text field to the list of text
   // fields for the current step
@@ -155,7 +149,7 @@ function SpecifyTasks() {
             />
             <Paper square elevation={0}>
               {/* {isLoading ? ( */}
-              {/* <div>Loading...</div> // You can show a loading indicator here */}
+              {/* <div>Loading...</div> */}
               {/* ) : ( */}
               <form>
                 <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
