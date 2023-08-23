@@ -1,5 +1,5 @@
-
 import { Accordion } from '@mui/material';
+import SideNavigation408c8a6e from 'hds-react/SideNavigation-408c8a6e';
 import React, { useContext } from 'react';
 import WavesHeader from '../../components/Header/WavesHeader';
 import NotificationBadge from '../../components/NotificationBadge/NotificationBadge';
@@ -14,19 +14,19 @@ const UserDashboard = () => {
   console.log(user);
 
   return (
-    <div>
+    <main className='dashboardPage__wrapper'>
       <div>
         <WavesHeader
           title="Saukko"
-          secondTitle={`Tervetuloa, ${user?.name}`}
+          secondTitle={`Tervetuloa, ${user?.firstName}`}
           disabled={true}
         />
       </div>
       <div style={{ marginTop: '55%' }}>
-        <h3 style={{ marginLeft: '15px', fontSize: '18px' }}>Ilmoitukset</h3>
+        <h3 style={{ marginLeft: '15px', fontSize: '20px' }}>Ilmoitukset</h3>
         <NotificationBadge number1={10} number2={5} />
       </div>
-      <div style={{ marginBottom: '70px' }}>
+      <div style={{ marginBottom: '50px' }}>
         {user?.role === 'supervisor' && (
           <>
             <h3 className='headingStyle'>Asiakkaan suoritukset</h3>
@@ -79,24 +79,25 @@ const UserDashboard = () => {
         )}
         {
           user?.role === 'teacher' && (
-
             <>
               <h3 className='headingStyle'>Asiakkaiden suoritukset</h3>
               <SimpleAccordion></SimpleAccordion>
 
             </>
-
-
           )
         }
 
       </div>
       <UserNav></UserNav>
-    </div>
+    </main>
   );
 };
 
 export default UserDashboard;
+
+
+
+
 
 
 

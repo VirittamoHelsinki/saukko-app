@@ -3,7 +3,7 @@
 
   Import:
 
-    import useUnitsStore from '../../../unitsStore';
+    import useUnitsStore from '../../../store/unitsStore';
 
   Get checked units:
 

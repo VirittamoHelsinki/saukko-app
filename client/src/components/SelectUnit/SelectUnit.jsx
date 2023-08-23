@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Icon } from '@iconify/react';
-import useUnitsStore from '../../unitsStore';
+import useUnitsStore from '../../store/unitsStore';
 import DegreeContext from '../../utils/context/DegreeContext';
 
 function SelectUnit({ unit, allUnits }) {

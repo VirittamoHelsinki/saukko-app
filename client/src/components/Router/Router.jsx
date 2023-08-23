@@ -43,6 +43,9 @@ import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/Evaluati
 import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
 import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/EvaluationUnits';
 import EvaluationSummary from '../../pages/CreateEvaluation/EvaluationSummary/EvaluationSummary';
+import CompanySearchPage from '../../pages/CompanyInfo/CompanySearchPage/CompanySearchPage';
+import CompanyDegreeUnits from '../../pages/CompanyInfo/CompanyDegreeUnits/CompanyDegreeUnits';
+import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelection/DegreeConfirmSelection';
 
 const Router = () => {
   let location = useLocation();
@@ -102,6 +105,9 @@ const Router = () => {
         <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
         <Route path='/evaluation-units' element={<EvaluationUnits />} />
         <Route path='/evaluation-summary' element={<EvaluationSummary />} />
+        <Route path='/internal/degrees' element={<CompanySearchPage />} />
+        <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
+        <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
 
         {!loggedIn && (
           <>
@@ -140,6 +146,9 @@ const Router = () => {
             <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/userdashboard' element={<UserDashboard />} />
             <Route path='/contract-info' element={<ContractInfo />} />
+            <Route path='/internal/degrees' element={<CompanySearchPage />} />
+            <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
+            <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
           </>
         )}
       </Routes>

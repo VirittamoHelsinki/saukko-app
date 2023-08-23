@@ -6,7 +6,8 @@ import { DegreeContextProvider } from './utils/context/DegreeContext';
 import { CriteriaFieldsContextProvider } from './utils/context/CriteriaFieldsContext';
 
 // importing page routing
-import Router from './components/Router/Router';
+import Router from "./components/Router/Router";
+import { InternalDegreeContextProvider } from "./utils/context/InternalDegreeContext";
 
 axios.defaults.withCredentials = true;
 
@@ -15,11 +16,13 @@ const App = () => {
   return (
     <main className='app__wrapper'>
       <AuthContextProvider>
-        <DegreeContextProvider>
-          <CriteriaFieldsContextProvider>
-            <Router />
+       <InternalDegreeContextProvider>
+       <DegreeContextProvider>
+       <CriteriaFieldsContextProvider>
+          <Router />
           </CriteriaFieldsContextProvider>
         </DegreeContextProvider>
+       </InternalDegreeContextProvider>
       </AuthContextProvider>
     </main>
   );

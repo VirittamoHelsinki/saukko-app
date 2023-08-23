@@ -1,7 +1,7 @@
 // Importing react packages
 import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useStore from '../../../useStore';
+import useStore from '../../../store/useStore';
 import { Icon } from '@iconify/react';
 
 // Importing components

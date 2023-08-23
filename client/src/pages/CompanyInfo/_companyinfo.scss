@@ -26,27 +26,25 @@ input::placeholder {
   color: rgb(199, 199, 199) !important;
 }
 
-.icone-style {
+.cross-icone-style {
   display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  justify-content: end;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  margin-top: -48px;
-  margin-left: 77%;
-  padding: 2px;
+  margin-top: -125px;
+  margin-left: 50%;
+  padding: 75px;
+
 
 }
 
-.edit-icone-style {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  justify-content: end;
+.search-icone-style {
+  
   position: absolute;
   margin-top: -80px;
   margin-left: 75%;
-  padding: 27px;
+  padding: 33px;
+ 
 
 }
 
@@ -54,4 +52,13 @@ input::placeholder {
   margin: 16px 16px 10px 16px;
   padding-top: 15px;
   padding-bottom: 10px;
+}
+.info__stepper__container{
+  display: flex;
+  flex-direction: column;
+  margin-top: 200px;
+  margin-bottom: 50px;
+  flex-grow: 1;
+  overflow-y: auto;
+  width: 100%;
 }
