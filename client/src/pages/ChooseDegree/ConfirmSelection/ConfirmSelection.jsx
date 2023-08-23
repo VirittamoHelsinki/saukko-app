@@ -29,32 +29,8 @@ function ConfirmSelection() {
   // Get checked units from unitsStore
   const { checkedUnits, setUnitAtIndex } = useUnitsStore();
 
-  // Pop-up logic
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handlePopupOpen = () => {
-    setIsOpen(true);
-  };
-
-  const handlePopupClose = () => {
-    setIsOpen(false);
-  };
-
-  const handleOutsideClick = (event) => {
-    const popupContainer = document.querySelector('.popup__container');
-    const clickedElement = event.target;
-
-    if (popupContainer && !popupContainer.contains(clickedElement)) {
-      handlePopupClose();
-    }
-  };
-
   // NotificationModal logic
-  const { openNotificationModal, setOpenNotificationModal } = useStore();
-
-  const handleNotificationModalOpen = () => {
-    setOpenNotificationModal(true);
-  };
+  const { openNotificationModal } = useStore();
 
   // Text for stepper's labels
   const labelStepper = [
@@ -72,11 +48,6 @@ function ConfirmSelection() {
   // Handle text changes
   const handleUnitChange = (index, event) => {
     const updatedValue = event.target.value;
-
-    // Update the entire checkedUnits array with the modified value
-    // const newCheckedUnits = checkedUnits.map((unit, idx) =>
-    //   idx === index ? { ...unit, name: { fi: updatedValue } } : unit
-    // );
 
     setUnitAtIndex(index, {
       ...checkedUnits[index],
