@@ -1,25 +1,41 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-// Define the departments subdocument schema
-const departmentSchema = new mongoose.Schema({
-  id: String,
-  name: String,
-  supervisors: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User" 
-  }]
-});
+const { ObjectId } = mongoose.Schema.Types
 
-// Define the main workplace schema
 const workplaceSchema = new mongoose.Schema({
-  workplaceId: mongoose.Schema.Types.ObjectId,
-  businessId: String,
-  name: String,
-  customerId: String,
-  departments: [departmentSchema]
-});
+    businessId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    customerId: {
+        type: ObjectId,
+        ref: 'User'
+    },
+    supervisors: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
+    departments: [{
+        id: {
+            type: ObjectId,
+            required: true
+        },
+        name: {
+            type: String,
+            required: true
+        },
+        supervisors: [{
+            type: ObjectId,
+            ref: 'User'
+        }],
+    }]
+})
 
-// Create the Workplace model
-const Workplace = mongoose.model("Workplace", workplaceSchema);
+const Workplace = mongoose.model('Workplace', workplaceSchema)
 
-module.exports = Workplace;
+module.exports = Workplace
