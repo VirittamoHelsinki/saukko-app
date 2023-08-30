@@ -23,5 +23,19 @@ workRouter.get("/workplace/:id", async (req, res) => {
   }
 });
 
+// Delete workplace by workplaceId
+workRouter.delete("/workplace/:id", async (req, res) => {
+  try {
+    const workplaceId = req.params.id;
+
+    // Delete the workplace data based on the provided workplaceId
+    await Workplace.deleteOne({ _id: workplaceId });
+
+    res.status(200).json({ message: "Workplace deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ errorMessage: "Failed to delete workplace data" });
+  }
+});
 
 module.exports = workRouter;
