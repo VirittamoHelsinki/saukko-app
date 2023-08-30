@@ -9,6 +9,8 @@ const app = express();
 
 // Import the user router
 const userRouter = require("./routers/userRouter");
+const workRouter = require("./routers/workRouter");
+
 
 // Import the edu router for fetching ePerusteet
 const eReqRouter = require("./routers/eReqRouter");
@@ -46,6 +48,9 @@ app.use('/auth', userRouter);
 
 // Set up routes for ePerusteet fetching
 app.use('/api', eReqRouter);
+
+// Set up routes for work information fetching & storing
+app.use('/api', workRouter)
 
 // Start the server
 const PORT = config.PORT || 5000;
