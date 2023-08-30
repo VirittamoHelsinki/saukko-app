@@ -36,6 +36,24 @@ const workplaceSchema = new mongoose.Schema({
     }]
 })
 
+workplaceSchema.statics.format = ({
+    _id,
+    businessId,
+    name,
+    customerId,
+    supervisors,
+    departments
+}) => {
+    return {
+        _id,
+        businessId,
+        name,
+        customerId,
+        supervisors,
+        departments
+    }
+}
+
 const Workplace = mongoose.model('Workplace', workplaceSchema)
 
 module.exports = Workplace
