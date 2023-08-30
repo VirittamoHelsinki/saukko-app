@@ -1,8 +1,6 @@
 const workRouter = require("express").Router();
 const Workplace = require("../models/workplaceModel");
 
-
-
 // Fetch workplace data by workplaceId
 workRouter.get("/workplace/:id", async (req, res) => {
   try {
@@ -29,9 +27,9 @@ workRouter.delete("/workplace/:id", async (req, res) => {
     const workplaceId = req.params.id;
 
     // Delete the workplace data based on the provided workplaceId
-    await Workplace.deleteOne({ _id: workplaceId });
+    await Workplace.findby(workplaceId);
 
-    res.status(200).json({ message: "Workplace deleted successfully" });
+    res.status(200).json({ message:"Workplace deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ errorMessage: "Failed to delete workplace data" });
