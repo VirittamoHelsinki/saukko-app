@@ -29,12 +29,38 @@ workRouter.delete("/workplace/:id", async (req, res) => {
     const workplaceId = req.params.id;
 
     // Delete the workplace data based on the provided workplaceId
-    await Workplace.findby(workplaceId);
+    await Workplace.findByIdAndRemove(workplaceId);
 
-    res.status(200).json({ message:"Workplace deleted successfully" });
-  } catch (error) {
+    res.status(200).json({ message: "Workplace deleted successfully" });
+  } catch (error) {f
     console.error(error);
     res.status(500).json({ errorMessage: "Failed to delete workplace data" });
+  }
+});
+
+
+// Create a new workplace
+workRouter.post("/workplace", async (req, res) => {
+  try {
+    // Extract workplace data from the request body
+    const { businessId, name, customerId, supervisors, departments } = req.body;
+
+    // Create a new instance of the Workplace model
+    const newWorkplace = new Workplace({
+      businessId,
+      name,
+      customerId,
+      supervisors,
+      departments,
+    });
+
+    // Save the new workplace to the database
+    const savedWorkplace = await newWorkplace.save();
+
+    res.status(201).json(savedWorkplace);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ errorMessage: "Failed to create a new workplace" });
   }
 });
 
