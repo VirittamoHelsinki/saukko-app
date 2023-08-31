@@ -1,6 +1,22 @@
 const workRouter = require("express").Router();
 const Workplace = require("../models/workplaceModel");
 
+// Fetch all workplaces
+workRouter.get("/workplace", async (req, res) => {
+  try {
+    const workplaces =
+      await Workplace.find({})
+                     .populate('supervisors', ['firstName', 'lastName', 'email'])
+                     .populate('departments.supervisors', ['firstName', 'lastName', 'email']);
+
+    res.json(workplaces.map(Workplace.format));
+  
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ errorMessage: "Failed to fetch workplace data" });
+  }
+});
+
 // Fetch workplace data by workplaceId
 workRouter.get("/workplace/:id", async (req, res) => {
   try {
@@ -41,21 +57,20 @@ workRouter.delete("/workplace/:id", async (req, res) => {
 workRouter.put("/workplace/:id", async (req, res) => {
   try {
     const workplaceId = req.params.id;
-    const { businessId, name, customerId, supervisors, departments } = req.body;
+    const { businessId, name, supervisors, departments } = req.body;
 
-    if (!businessId && !name && !customerId && !supervisors && !departments) {
+    if (!businessId && !name && !supervisors && !departments) {
       return res.status(400).json({
         errorMessage:
           "No fields provided. Please provide at least one field to update."
       });
     }
 
-    const fields = {}
+    const fields = { supervisors, departments }
+
+    // Dont replace fields with empty strings.
     if (businessId)  fields.businessId  = businessId
     if (name)        fields.name        = name
-    if (customerId)  fields.customerId  = customerId
-    if (supervisors) fields.supervisors = supervisors
-    if (departments) fields.departments = departments
 
     const updatedWorkplace = await Workplace.findByIdAndUpdate(
       workplaceId,
@@ -81,13 +96,12 @@ workRouter.put("/workplace/:id", async (req, res) => {
 workRouter.post("/workplace", async (req, res) => {
   try {
     // Extract workplace data from the request body
-    const { businessId, name, customerId, supervisors, departments } = req.body;
+    const { businessId, name, supervisors, departments } = req.body;
 
     // Create a new instance of the Workplace model
     const newWorkplace = new Workplace({
       businessId,
       name,
-      customerId,
       supervisors,
       departments,
     });
