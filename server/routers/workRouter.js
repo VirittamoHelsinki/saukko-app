@@ -9,7 +9,7 @@ workRouter.get("/workplace", async (req, res) => {
                      .populate('supervisors', ['firstName', 'lastName', 'email'])
                      .populate('departments.supervisors', ['firstName', 'lastName', 'email']);
 
-    res.json(workplaces.map(Workplace.format));
+    res.json(workplaces);
   
   } catch (error) {
     console.error(error);
@@ -23,7 +23,10 @@ workRouter.get("/workplace/:id", async (req, res) => {
     const workplaceId = req.params.id;
 
     // Fetch the workplace data based on the provided workplaceId
-    const workplace = await Workplace.findById(workplaceId);
+    const workplace =
+      await Workplace.findById(workplaceId)
+                      .populate('supervisors', ['firstName', 'lastName', 'email'])
+                      .populate('departments.supervisors', ['firstName', 'lastName', 'email']);
 
     if (!workplace) {
       console.log("Workplace not found");
@@ -43,9 +46,12 @@ workRouter.delete("/workplace/:id", async (req, res) => {
     const workplaceId = req.params.id;
 
     // Delete the workplace data based on the provided workplaceId
-    await Workplace.findByIdAndRemove(workplaceId);
+    const success = await Workplace.findByIdAndRemove(workplaceId);
+
+    if (!success) return res.status(404).json({ error: "Workplace not found" });
 
     res.status(200).json({ message: "Workplace deleted successfully" });
+  
   } catch (error) {f
     console.error(error);
     res.status(500).json({ errorMessage: "Failed to delete workplace data" });
@@ -72,7 +78,7 @@ workRouter.put("/workplace/:id", async (req, res) => {
     if (businessId)  fields.businessId  = businessId
     if (name)        fields.name        = name
 
-    const updatedWorkplace = await Workplace.findByIdAndUpdate(
+    let updatedWorkplace = await Workplace.findByIdAndUpdate(
       workplaceId,
       fields,
       { new: true }
@@ -84,7 +90,16 @@ workRouter.put("/workplace/:id", async (req, res) => {
       });
     }
 
-    res.json(Workplace.format(updatedWorkplace))
+    // Populate the supervisors and department supervisors fields with
+    // basic user information.
+    updatedWorkplace = await updatedWorkplace.populate(
+      'supervisors', ['firstName', 'lastName', 'email']
+    )
+    updatedWorkplace = await updatedWorkplace.populate(
+      'departments.supervisors', ['firstName', 'lastName', 'email']
+    )
+
+    res.json(updatedWorkplace)
 
   } catch (error) {
     console.error(error);
@@ -104,17 +119,26 @@ workRouter.post("/workplace", async (req, res) => {
       name,
       supervisors,
       departments,
-    });
+    })
 
     // Save the new workplace to the database
-    const savedWorkplace = await newWorkplace.save();
+    let savedWorkplace = await newWorkplace.save()
+    
+    // Populate the supervisors and department supervisors fields with
+    // basic user information.
+    savedWorkplace = await savedWorkplace.populate(
+      'supervisors', ['firstName', 'lastName', 'email']
+    )
+    savedWorkplace = await savedWorkplace.populate(
+      'departments.supervisors', ['firstName', 'lastName', 'email']
+    )
 
     res.status(201).json(savedWorkplace);
+  
   } catch (error) {
     console.error(error);
     res.status(500).json({ errorMessage: "Failed to create a new workplace" });
   }
 });
-
 
 module.exports = workRouter;

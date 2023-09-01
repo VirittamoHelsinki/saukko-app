@@ -19,8 +19,7 @@ const workplaceSchema = new mongoose.Schema({
     departments: [{
         name: {
             type: String,
-            required: true,
-            unique: true
+            required: true
         },
         supervisors: [{
             type: ObjectId,
@@ -28,20 +27,6 @@ const workplaceSchema = new mongoose.Schema({
         }]
     }]
 })
-
-workplaceSchema.statics.format = ({
-    _id,
-    businessId,
-    name,
-    supervisors,
-    departments
-}) => ({
-        _id,
-        businessId,
-        name,
-        supervisors,
-        departments
-    })
 
 const Workplace = mongoose.model('Workplace', workplaceSchema)
 
