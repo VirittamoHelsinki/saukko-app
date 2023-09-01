@@ -80,21 +80,6 @@
         text-align: left;
         gap: 10px;
         margin-bottom: 30px;
-
-        div {
-          padding: 10px;
-          border: 2px solid black;
-          display: flex;
-          align-items: center;
-
-          input {
-            border: none;
-          }
-
-          svg {
-            font-size: 25px;
-          }
-        }
       }
 
       .button__container {

@@ -8,6 +8,7 @@ import WavesHeader from '../../components/Header/WavesHeader';
 import Button from '../../components/Button/Button';
 import UserNav from '../../components/UserNav/UserNav';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
+import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import useStore from '../../store/useStore';
 import AuthContext from '../../utils/context/AuthContext';
 import { logoutUser } from '../../api/user';
@@ -86,21 +87,9 @@ function ProfilePage() {
                   <p>Syötä alle uusi salasanasi</p>
                 </div>
                 <div className='change-password__popup-form'>
-                    <label>Vanha salasana *</label>
-                  <div>
-                    <input type={showPassword ? 'text' : 'password'} name='old-password'/>
-                    <Icon icon="ph:eye" onClick={handleClickShowPassword} />
-                  </div>
-                  <label>Uusi salasana *</label>
-                  <div>
-                    <input type={showPassword ? 'text' : 'password'} name='new-password'/>
-                    <Icon icon="ph:eye" onClick={handleClickShowPassword} />
-                  </div>
-                  <label>Vahvista salasana *</label>
-                  <div>
-                    <input type={showPassword ? 'text' : 'password'} name='confirm-password'/>
-                    <Icon icon="ph:eye" onClick={handleClickShowPassword} />
-                  </div>
+                  <PasswordInput value='old-password' label='Vanha salasana *' />
+                  <PasswordInput value='new-password' label='Uusi salasana *' />
+                  <PasswordInput value='confirm-password' label='Vahvista salasana *' />
                 </div>
                 <Button
                   className='change-password__popup-submit'
