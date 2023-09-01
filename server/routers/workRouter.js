@@ -1,6 +1,11 @@
 const workRouter = require("express").Router();
 const Workplace = require("../models/workplaceModel");
 
+const requireAuth = require("../middleware/auth");
+
+// From here on require authorization on all routes below.
+workRouter.all("*", requireAuth);
+
 // Fetch all workplaces
 workRouter.get("/workplace", async (req, res) => {
   try {

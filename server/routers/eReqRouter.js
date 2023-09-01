@@ -2,6 +2,8 @@
 const router = require("express").Router();
 const jp = require('jsonpath')
 
+const requireAuth = require("../middleware/auth");
+
 //ePerusteet API URL
 const ePerusteAPI = 'https://eperusteet.opintopolku.fi/eperusteet-service/api/external';
 
@@ -19,6 +21,9 @@ async function fetchData(url) {
     throw new Error('Failed to fetch data');
   }
 }
+
+// From here on require authorization on all routes below.
+router.all("*", requireAuth);
 
 router.get(['/business/:id', '/external/business/:id'], async (req, res) => {
   try {  
