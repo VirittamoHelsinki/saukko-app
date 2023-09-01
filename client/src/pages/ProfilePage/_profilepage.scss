@@ -26,22 +26,87 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
+        
         .profile__container--row-value {
           color: var(--saukko-main-grey);
         }
-
+        
         .profile__container-row-arrow {
           font-size: 25px;
           flex-shrink: 0;
         }
       }
-    }
 
+      /* Pop up */
+      .change-password__popup {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1;
+      }
+
+      .change-password__popup-content {
+        margin: 20px;
+        padding: 20px;
+        background-color: white;
+        text-align: right;
+      }
+
+      .change-password__popup-title {
+        margin-bottom: 20px;
+        text-align: center;
+        display: flex;
+        gap: 20px;
+        flex-direction: column;
+
+        h2 {
+          font-size: 20px;
+        }
+
+        p {
+          color: grey;
+        }
+      }
+
+      .change-password__popup-form {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        gap: 10px;
+        margin-bottom: 30px;
+
+        div {
+          padding: 10px;
+          border: 2px solid black;
+          display: flex;
+          align-items: center;
+
+          input {
+            border: none;
+          }
+
+          svg {
+            font-size: 25px;
+          }
+        }
+      }
+
+      .button__container {
+        background-color: black;
+        color: white;
+      }
+    }
+    
     .profile__logout {
       padding: 0px 36px 0px 36px;
       width: 100%;
-
+      
       .button__container {
         flex-direction: row-reverse;
         justify-content: center;
@@ -50,7 +115,7 @@
         color: var(--link-blue);
         background: var(--saukko-main-white);
         border: 2px solid var(--link-blue);
-
+        
         .button__icon{
           width: 20px;
           margin: 0;
@@ -64,5 +129,3 @@
     }
   }
 }
-  
-  
