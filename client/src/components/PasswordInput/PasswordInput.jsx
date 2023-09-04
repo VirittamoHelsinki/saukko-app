@@ -40,6 +40,7 @@ const PasswordInput = (props) => {
                 setPassword(e.target.value);
               }
             }}
+            required
           />
 
           <span className='password-icon' onClick={togglePasswordVisibility}>

@@ -8,7 +8,7 @@ import WavesHeader from '../../components/Header/WavesHeader';
 import Button from '../../components/Button/Button';
 import UserNav from '../../components/UserNav/UserNav';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
-import PasswordInput from '../../components/PasswordInput/PasswordInput';
+import PopUpForm from '../../components/PopUpForm/PopUpForm';
 import useStore from '../../store/useStore';
 import AuthContext from '../../utils/context/AuthContext';
 import { logoutUser } from '../../api/user';
@@ -32,32 +32,23 @@ function ProfilePage() {
     }
   };
 
-  // NotificationModal logic
+  // Open NotificationModal
   const {
     openNotificationModal,
     setOpenNotificationModal,
   } = useStore();
 
   // Pop-up logic
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openPasswordPopUp, setOpenPasswordPopUp] = useState(false);
+  const handleOpenPasswordPopUp = () => setOpenPasswordPopUp(true);
+  const handleClosePasswordPopUp = () => setOpenPasswordPopUp(false);
 
-  const handleOverlayClick = (e) => {
-    if (e.target.classList.contains('change-password__popup')) {
-      handleClose();
-    }
-  };
-
-  const handlePasswordSubmit = () => {
-    handleClose();
+  const handleSubmitPasswordPopUp = () => {
+    handleClosePasswordPopUp();
     setOpenNotificationModal(true);
-  };
 
-  // Password field logic
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+    // Check for correct old password & change password here
+  }
   
   return (
     <main className='profile__wrapper'>
@@ -72,33 +63,20 @@ function ProfilePage() {
           <Icon icon='iconamoon:arrow-right-2' className='profile__container-row-arrow'/>
         </div>
         <div className='profile__container---change-password'>
-          <div className='profile__container--row' onClick={handleOpen}>
+          <div className='profile__container--row' onClick={handleOpenPasswordPopUp}>
             <p className='profile__container--row-value'>Vaihda salasana</p>
             <Icon icon='iconamoon:arrow-right-2' className='profile__container-row-arrow'/>
           </div>
 
           {/* Change password pop-up */}
-          {open && (
-            <div className='change-password__popup' onClick={handleOverlayClick}>
-              <div className='change-password__popup-content'>
-                <Icon icon='ph:x-bold' onClick={handleClose}/>
-                <div className='change-password__popup-title'>
-                  <h2>Vaihda salasana</h2>
-                  <p>Syötä alle uusi salasanasi</p>
-                </div>
-                <div className='change-password__popup-form'>
-                  <PasswordInput value='old-password' label='Vanha salasana *' />
-                  <PasswordInput value='new-password' label='Uusi salasana *' />
-                  <PasswordInput value='confirm-password' label='Vahvista salasana *' />
-                </div>
-                <Button
-                  className='change-password__popup-submit'
-                  text='Vaihda salasana'
-                  onClick={handlePasswordSubmit}
-                />
-              </div>
-            </div>
-          )}
+          <PopUpForm 
+            title='Vaihda salasana' 
+            description='Syötä alle uusi salasanasi'
+            buttonText='Vaihda salasana'
+            open={openPasswordPopUp}
+            handleClose={handleClosePasswordPopUp}
+            handleSubmit={handleSubmitPasswordPopUp}
+          />
 
           {/* NotificationModal for changed password */}
           <NotificationModal
