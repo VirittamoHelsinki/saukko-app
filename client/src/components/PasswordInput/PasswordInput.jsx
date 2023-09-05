@@ -8,9 +8,9 @@ import { Icon } from '@iconify/react';
  * and registered within the useStore.js file. The available state variable names are:
  * "password", "passwordVerify", and "passwordOld"
  * Example usage:
- * <PasswordInput value='passwordOld' label='Vanha salasana *' />
- * <PasswordInput value='password' label='Uusi salasana *' />
- * <PasswordInput value='passwordVerify' label='Vahvista salasana *' />
+ * <PasswordInput value='passwordOld' inputName='passwordOld' label='Vanha salasana *' />
+ * <PasswordInput value='password' inputName='passwordNew' label='Uusi salasana *' />
+ * <PasswordInput value='passwordVerify' inputName='passwordVerify' label='Vahvista salasana *' />
  */
 
 const PasswordInput = (props) => {
@@ -40,6 +40,8 @@ const PasswordInput = (props) => {
                 setPassword(e.target.value);
               }
             }}
+            name={props.inputName}
+            required
           />
 
           <span className='password-icon' onClick={togglePasswordVisibility}>

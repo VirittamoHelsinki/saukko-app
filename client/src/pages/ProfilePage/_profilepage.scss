@@ -26,22 +26,22 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
+        
         .profile__container--row-value {
           color: var(--saukko-main-grey);
         }
-
+        
         .profile__container-row-arrow {
           font-size: 25px;
           flex-shrink: 0;
         }
       }
     }
-
+    
     .profile__logout {
       padding: 0px 36px 0px 36px;
       width: 100%;
-
+      
       .button__container {
         flex-direction: row-reverse;
         justify-content: center;
@@ -50,7 +50,7 @@
         color: var(--link-blue);
         background: var(--saukko-main-white);
         border: 2px solid var(--link-blue);
-
+        
         .button__icon{
           width: 20px;
           margin: 0;
@@ -64,5 +64,3 @@
     }
   }
 }
-  
-  

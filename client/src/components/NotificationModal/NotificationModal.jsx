@@ -1,28 +1,32 @@
-/**
- * The NotificationModal component accepts the prop "type" to indicate what type of notification:
- * - alert
- * - info
- * - success
- * - warning
- * The props title and body are for text changes
- *
- * Example usage:
- *
- * <NotificationModal
- *   type='warning'
- *   title='Vahvistus ei onnistunut'
- *   body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
- * />
- *
- * // Set to true the setOpenNotificationModal from useStore.js
- *
- * const handleClickOpen = () => {
- *  setOpenNotificationModal(true);
- * };
- *
- * <Button onClick={handleClickOpen}>
- *  Open Notification Modal
- * </Button>
+/*
+   The NotificationModal component accepts the prop "type" to indicate what type of notification:
+   - alert
+   - info
+   - success
+   - warning
+   The props title and body are for text changes
+
+   Example usage:
+
+    import NotificationModal from '../../components/NotificationModal/NotificationModal';
+    import useStore from '../../store/useStore';
+
+    const {
+      openNotificationModal,
+      setOpenNotificationModal,
+    } = useStore();
+
+    const handleOpen = () => {
+      setOpenNotificationModal(true);
+    }
+
+    <NotificationModal
+      type='success'
+      title='Kutsut lähetetty!'
+      body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+      open={openNotificationModal}
+      redirectLink='/userdashboard'
+    />
  */
 
 import React from 'react';
@@ -97,7 +101,7 @@ export default function CustomizedDialogs(props) {
   }
 
   const handleClose = () => {
-    setOpenNotificationModal(false);
+    props.handleClose ? props.handleClose() : setOpenNotificationModal(false);
     props.redirectLink && navigate(props.redirectLink);
   };
 
