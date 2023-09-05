@@ -101,7 +101,7 @@ export default function CustomizedDialogs(props) {
   }
 
   const handleClose = () => {
-    setOpenNotificationModal(false);
+    props.handleClose ? props.handleClose() : setOpenNotificationModal(false);
     props.redirectLink && navigate(props.redirectLink);
   };
 

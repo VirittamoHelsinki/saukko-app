@@ -16,13 +16,12 @@
 
 import React from 'react';
 import { Icon } from '@iconify/react';
-import PasswordInput from '../PasswordInput/PasswordInput';
 import Button from '../Button/Button';
 
-function PopUpForm({ open, handleClose, handleSubmit, title, description, buttonText }) {
+function PopUpForm({ open, handleClose, handleSubmit, title, description, content, buttonText }) {
 
   const handleOverlayClick = (e) => {
-    if (e.target.classList.contains('change-password__popup')) {
+    if (e.target.classList.contains('popup')) {
       handleClose();
     }
   };
@@ -30,20 +29,16 @@ function PopUpForm({ open, handleClose, handleSubmit, title, description, button
   return(
     <form onSubmit={handleSubmit}>
       {open && (
-        <div className='change-password__popup' onClick={handleOverlayClick}>
-          <div className='change-password__popup-content'>
+        <div className='popup' onClick={handleOverlayClick}>
+          <div className='popup-content'>
             <Icon icon='ph:x-bold' onClick={handleClose}/>
-            <div className='change-password__popup-title'>
+            <div className='popup-title'>
               <h2>{title}</h2>
               <p>{description}</p>
             </div>
-            <div className='change-password__popup-form'>
-              <PasswordInput value='old-password' label='Vanha salasana *' />
-              <PasswordInput value='new-password' label='Uusi salasana *' />
-              <PasswordInput value='confirm-password' label='Vahvista salasana *' />
-            </div>
+            {content}
             <Button
-              className='change-password__popup-submit'
+              className='popup-submit'
               text={buttonText}
               type='submit'
             />
