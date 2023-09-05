@@ -48,7 +48,7 @@ function ProfilePage() {
     handleCloseEmailPopUp();
     handleOpenEmailNotification();
     
-    // Check for correct password & change email here
+    // Verify password & change email here
   }
 
   // State for opening & closing password pop up
@@ -64,10 +64,27 @@ function ProfilePage() {
   // Password form handler
   const handleSubmitPasswordPopUp = (e) => {
     e.preventDefault();
+
+    // Get input values
+    const form = e.target;
+    const oldPassword = form.querySelector("[name='passwordOld']").value;
+    console.log('old password:', oldPassword);
+    const newPassword = form.querySelector("[name='passwordNew']").value;
+    console.log('new password:', newPassword);
+    const verifyPassword = form.querySelector("[name='passwordVerify']").value;
+    console.log('verify password:', verifyPassword);
+    
+    // Verify old password (here or backend?)
+
+    // Check if new password and password confirmation match
+    if (newPassword !== verifyPassword) {
+      return alert('Salasanat eivät täsmää')
+    }
+
+    // Send a request to change password here
+
     handleClosePasswordPopUp();
     handleOpenPasswordNotification();
-
-    // Check for correct old password & change password here
   }
   
   return (
@@ -89,9 +106,9 @@ function ProfilePage() {
             title='Vaihda sähköpostiosoite' 
             content={    
               <div className='popup-form'>
-                <PasswordInput value='current-password' label='Vahvista nykyinen salasana *' />
+                <PasswordInput value='passwordOld' inputName='passwordOld' label='Vahvista nykyinen salasana *' />
                 <label htmlFor='new-email'>Anna uusi sähköposti *</label>
-                <input type='email' name='new-email'/>
+                <input type='email' name='new-email' required/>
               </div>
             }
             buttonText='Lähetä'
@@ -122,9 +139,9 @@ function ProfilePage() {
             description='Syötä alle uusi salasanasi'
             content={    
               <div className='popup-form'>
-                <PasswordInput value='old-password' label='Vanha salasana *' />
-                <PasswordInput value='new-password' label='Uusi salasana *' />
-                <PasswordInput value='confirm-password' label='Vahvista salasana *' />
+                <PasswordInput value='passwordOld' inputName='passwordOld' label='Vanha salasana *' />
+                <PasswordInput value='passwordNew' inputName='passwordNew' label='Uusi salasana *' />
+                <PasswordInput value='passwordVerify' inputName='passwordVerify' label='Vahvista salasana *' />
               </div>
             }
             buttonText='Vaihda salasana'

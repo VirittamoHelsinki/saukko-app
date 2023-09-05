@@ -40,6 +40,7 @@ const PasswordInput = (props) => {
                 setPassword(e.target.value);
               }
             }}
+            name={props.inputName}
             required
           />
 
