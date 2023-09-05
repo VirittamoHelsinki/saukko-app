@@ -1,10 +1,10 @@
-const eduRouter = require("express").Router();
+const degreeRouter = require("express").Router();
 const Degree = require("../models/degreeModel");
 
 // This file will be renamed.
 
 // GET all degrees
-eduRouter.get('/internal/degrees', async (req, res) => {
+degreeRouter.get('/internal/degrees', async (req, res) => {
     try {
       const degrees = await Degree.find({});
       res.status(200).json(degrees);
@@ -15,11 +15,11 @@ eduRouter.get('/internal/degrees', async (req, res) => {
   });
 
   // POST a new degree
-eduRouter.post('/internal/degrees', async (req, res) => {
+degreeRouter.post('/internal/degrees', async (req, res) => {
     try {
       const newDegreeData = req.body; // Assuming you're sending the degree data in the request body
 
-      if (!newDegreeData.eduCodeValue) {
+      if (!newDegreeData.eduCodeNumber) {
         console.log("Name field empty")
         return res.status(400).json({ errorMessage: "Empty Field" });
       }
@@ -34,4 +34,4 @@ eduRouter.post('/internal/degrees', async (req, res) => {
     }
   });
 
-module.exports = eduRouter
+module.exports = degreeRouter
