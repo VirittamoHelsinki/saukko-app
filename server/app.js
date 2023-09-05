@@ -7,8 +7,10 @@ const cors = require("cors");
 
 const app = express();
 
-// Import the user router
+// Import the routers
 const userRouter = require("./routers/userRouter");
+const degreeRouter = require("./routers/degreeRouter");
+const workplaceRouter = require("./routers/workplaceRouter");
 
 // Import the edu router for fetching ePerusteet
 const eReqRouter = require("./routers/eReqRouter");
@@ -43,6 +45,10 @@ mongoose.connect(config.MONGODB_URI, {
 
 // Set up routes for authentication
 app.use('/auth', userRouter);
+
+// Set up database model routers.
+app.use('/api', degreeRouter);
+app.use('/api', workplaceRouter);
 
 // Set up routes for ePerusteet fetching
 app.use('/api', eReqRouter);
