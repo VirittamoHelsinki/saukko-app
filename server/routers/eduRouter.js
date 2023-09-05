@@ -18,9 +18,9 @@ eduRouter.get('/internal/degrees', async (req, res) => {
 eduRouter.post('/internal/degrees', async (req, res) => {
     try {
       const newDegreeData = req.body; // Assuming you're sending the degree data in the request body
-
-      if (!newDegreeData.eduCodeValue) {
-        console.log("Name field empty")
+        
+      if (!newDegreeData.eduCodeNumber) {
+        console.log("eduCodeNumber field empty")
         return res.status(400).json({ errorMessage: "Empty Field" });
       }
 
