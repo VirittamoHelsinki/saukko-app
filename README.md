@@ -29,10 +29,10 @@ git clone https://github.com/VirittamoHelsinki/saukko-app.git
 
 cd saukko-app
 
-`npm run setup` Install all dependencies simultaneously for the front-end, back-end, and root. This will also create a .env file in both the client and server folders.
+npm run setup Install all dependencies simultaneously for the front-end, back-end, and root. This will also create a .env file in both the client and server folders.
 
-`npm run start:prod` To run the project's back-end and front-end simultaneously in a production state`
-`npm run start:dev`  To run the project's back-end and front-end simultaneously in a development state`
+npm run start:prod To run the project's back-end and front-end simultaneously in a production state`
+npm run start:dev  To run the project's back-end and front-end simultaneously in a development state`
 ```
 
 When running on a local machine, open **[http://localhost:3000](http://localhost:3000)** in your browser to view the app.
