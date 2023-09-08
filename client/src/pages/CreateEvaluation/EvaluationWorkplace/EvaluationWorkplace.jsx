@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
@@ -42,32 +42,62 @@ const mockData = [
         lastName: 'Virtanen'
       },
     ],
-    units: [
-      '56789',
-      '67890'
-    ]
   },
   {
     _id: '2',
     businessId: '070 - 5658 -9',
     name: 'Aimet OY',
-    customerId: '567',
-    supervisors: [
+    customerId: '537',
+    departments: [
       {
-        _id: '67895',
-        firstName: 'Kaisa',
-        lastName: 'Virtanen'
+        id: '1',
+        name: 'Department 1',
+        supervisors: [
+          {
+            _id: '22557',
+            firstName: 'Kaisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '09886',
+            firstName: 'Sami',
+            lastName: 'Virtanen'
+          },    
+        ],
       },
       {
-        _id: '68948',
-        firstName: 'Sami',
-        lastName: 'Virtanen'
+        id: '2',
+        name: 'Department 2',
+        supervisors: [
+          {
+            _id: '95842',
+            firstName: 'Kaisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '92834',
+            firstName: 'Sami',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '3',
+        name: 'Department 3',
+        supervisors: [
+          {
+            _id: '67899',
+            firstName: 'Kaisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '68943',
+            firstName: 'Sami',
+            lastName: 'Virtanen'
+          },    
+        ],
       },
     ],
-    units: [
-      '56780',
-      '67891'
-    ]
   },
 ]
 
@@ -80,13 +110,15 @@ function EvaluationWorkplace() {
 
   // Setter functions from evaluationStore
   const setWorkplace = useEvaluationStore((state) => state.setWorkplace);
+  const setDepartment = useEvaluationStore((state) => state.setDepartment);
   const setSupervisor = useEvaluationStore((state) => state.setSupervisor);
 
   // Getter function from evaluationStore
   const workplaceFromStore = useEvaluationStore((state) => state.workplace);
+  const departmentFromStore = useEvaluationStore((state) => state.department);
   const supervisorFromStore = useEvaluationStore((state) => state.supervisor);
 
-  // Workplace selection logic
+  // Workplace selection
   const handleSelectWorkplace = (event) => {
     // Find workplace by id
     const workplaceObj = workplaces.find(workplace => workplace._id === event.target.value)
@@ -95,15 +127,53 @@ function EvaluationWorkplace() {
   };
   console.log('Workplace form store:', workplaceFromStore)
 
+  // Workplaces have departments or not?
+  const hasDepartments = (workplaceId) => {
+    const foundWorkplace = workplaces.find(workplace => workplaceId === workplace._id);
+    return foundWorkplace ? foundWorkplace.departments !== undefined : false;
+  }
+  console.log('has departments', hasDepartments('1'));
+
   // Supervisor selection logic
   const toggleSupervisor = (supervisorId) => () => {
+
+    // Find all supervisors
+    const allSupervisors = workplaces.flatMap(workplace => {
+      if (workplace.departments && workplace.departments.length > 0) {
+        return workplace.departments.flatMap(department => department.supervisors);
+      } else {
+        return workplace.supervisors;
+      }
+    });
+    console.log('all supervisors:', allSupervisors);
+
     // Find supervisor object by id
-    const allSupervisors = workplaces.flatMap(workplace => workplace.supervisors);
     const foundSupervisorObj = allSupervisors.find(supervisor => supervisor._id === supervisorId);
+
     // Save to store
     setSupervisor(foundSupervisorObj) 
   };
-  console.log('Supervisor form store:', supervisorFromStore)
+  console.log('Supervisor from store:', supervisorFromStore)
+
+  // Department selection logic
+  const toggleDepartment = (departmentId) => () => {
+
+    // Find all departments
+    const allDepartments = workplaces
+      .map((workplace) => workplace.departments)
+      .filter((departments) => departments && departments.length > 0)
+      .flat();
+
+    console.log('all departments:', allDepartments);
+
+    // Find department by id
+    const foundDepartment = allDepartments.find(department => department.id === departmentId);
+    console.log('found department', foundDepartment)
+
+    // Save to store
+    setDepartment(foundDepartment) 
+  };
+  console.log('Department from store:', departmentFromStore)
   
   // Pagination logic
   const [page, setPage] = useState(1);
@@ -166,6 +236,7 @@ function EvaluationWorkplace() {
                 key={workplace._id} 
                 disableGutters 
                 square
+                onClick={() => handleSelectWorkplace({ target: { value: workplace._id } })}
               >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <FormControlLabel
@@ -173,8 +244,8 @@ function EvaluationWorkplace() {
                     control=
                       {<Radio 
                         checked={workplaceFromStore === workplace}
-                        onChange={handleSelectWorkplace}
-                        onClick={(event) => event.stopPropagation()} // Prevent expanding accordion when clicking radio button
+                        onChange={() => {}}
+                        /* onClick={(event) => event.stopPropagation()} */ // Prevent expanding accordion when clicking radio button
                         value={workplace._id}
                         theme={createTheme({palette: {primary: {main: '#0000BF'}}})}
                       />}
@@ -192,23 +263,73 @@ function EvaluationWorkplace() {
                 </AccordionSummary>
                 <AccordionDetails>
 
-                  {/* Supervisors dropdown menu */}
-                  <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
-                  <Accordion disableGutters square className='supervisors__wrapper'>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
-                    <AccordionDetails>
-                    {workplace.supervisors.map((supervisor) => (
-                      <div 
-                        className='supervisors__wrapper-details'
-                        key={supervisor._id} 
-                        onClick={toggleSupervisor(supervisor._id)}
-                      >
-                        <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
-                        {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
-                      </div>
-                    ))}
-                    </AccordionDetails>
-                  </Accordion>
+                  {/* Departments */}
+                  {workplace.departments && (
+                    <>
+                      <Typography className="accordion-title"> Valitse yksikkö * </Typography>
+                      <Accordion disableGutters square className='accordion__wrapper'>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionDetails>
+                          {workplace.departments.map((department) => (
+                            <div 
+                            className='accordion__wrapper-details'
+                            key={department.id} 
+                            onClick={toggleDepartment(department.id)}
+                            >
+                              <Typography>{department.name}</Typography>
+                              {department === departmentFromStore && <Icon icon="mdi:tick"/>}
+                            </div>
+                          ))}
+                        </AccordionDetails>
+                      </Accordion>
+                    </>
+                  )}
+
+                  {/* Supervisors */}
+                  
+                  {!workplace.departments && (
+                    <>
+                      <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
+                      <Accordion disableGutters square className='accordion__wrapper'>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionDetails>
+                        {workplace.supervisors.map((supervisor) => (
+                          <div 
+                            className='accordion__wrapper-details'
+                            key={supervisor._id} 
+                            onClick={toggleSupervisor(supervisor._id)}
+                          >
+                            <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
+                            {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
+                          </div>
+                        ))}
+                        </AccordionDetails>
+                      </Accordion> 
+                    </>
+                  )}
+
+                  {workplace.departments && departmentFromStore && (
+                    <>
+                      <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
+                      <Accordion disableGutters square className='accordion__wrapper'>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionDetails>
+                          {console.log('dep from store', departmentFromStore)}
+                          {/* {departmentFromStore.supervisors.map((supervisor) => (
+                            <div 
+                              className='accordion__wrapper-details'
+                              key={supervisor._id} 
+                              onClick={toggleSupervisor(supervisor._id)}
+                            >
+                              <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
+                              {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
+                            </div>
+                          ))} */}
+                        </AccordionDetails>
+                      </Accordion> 
+                    </>
+                  )}
+                 
                 </AccordionDetails>
               </Accordion>
             ))
