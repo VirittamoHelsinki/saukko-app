@@ -55,12 +55,12 @@ const mockData = [
         supervisors: [
           {
             _id: '22557',
-            firstName: 'Kaisa',
+            firstName: 'Maija',
             lastName: 'Virtanen'
           },
           {
             _id: '09886',
-            firstName: 'Sami',
+            firstName: 'Pekka',
             lastName: 'Virtanen'
           },    
         ],
@@ -71,12 +71,12 @@ const mockData = [
         supervisors: [
           {
             _id: '95842',
-            firstName: 'Kaisa',
+            firstName: 'Liisa',
             lastName: 'Virtanen'
           },
           {
             _id: '92834',
-            firstName: 'Sami',
+            firstName: 'Olli',
             lastName: 'Virtanen'
           },    
         ],
@@ -87,12 +87,12 @@ const mockData = [
         supervisors: [
           {
             _id: '67899',
-            firstName: 'Kaisa',
+            firstName: 'Tero',
             lastName: 'Virtanen'
           },
           {
-            _id: '68943',
-            firstName: 'Sami',
+            _id: '22447',
+            firstName: 'Jonna',
             lastName: 'Virtanen'
           },    
         ],
@@ -127,13 +127,6 @@ function EvaluationWorkplace() {
   };
   console.log('Workplace form store:', workplaceFromStore)
 
-  // Workplaces have departments or not?
-  const hasDepartments = (workplaceId) => {
-    const foundWorkplace = workplaces.find(workplace => workplaceId === workplace._id);
-    return foundWorkplace ? foundWorkplace.departments !== undefined : false;
-  }
-  console.log('has departments', hasDepartments('1'));
-
   // Supervisor selection logic
   const toggleSupervisor = (supervisorId) => () => {
 
@@ -164,11 +157,8 @@ function EvaluationWorkplace() {
       .filter((departments) => departments && departments.length > 0)
       .flat();
 
-    console.log('all departments:', allDepartments);
-
     // Find department by id
     const foundDepartment = allDepartments.find(department => department.id === departmentId);
-    console.log('found department', foundDepartment)
 
     // Save to store
     setDepartment(foundDepartment) 
@@ -286,7 +276,6 @@ function EvaluationWorkplace() {
                   )}
 
                   {/* Supervisors */}
-                  
                   {!workplace.departments && (
                     <>
                       <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
@@ -300,6 +289,7 @@ function EvaluationWorkplace() {
                             onClick={toggleSupervisor(supervisor._id)}
                           >
                             <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
+                            {console.log(supervisor)}
                             {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
                           </div>
                         ))}
@@ -314,17 +304,17 @@ function EvaluationWorkplace() {
                       <Accordion disableGutters square className='accordion__wrapper'>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
-                          {console.log('dep from store', departmentFromStore)}
-                          {/* {departmentFromStore.supervisors.map((supervisor) => (
+                          {departmentFromStore.supervisors.map((supervisor) => (
                             <div 
                               className='accordion__wrapper-details'
                               key={supervisor._id} 
                               onClick={toggleSupervisor(supervisor._id)}
                             >
                               <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
+                              {console.log(supervisor)}
                               {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
                             </div>
-                          ))} */}
+                          ))}
                         </AccordionDetails>
                       </Accordion> 
                     </>
@@ -344,6 +334,7 @@ function EvaluationWorkplace() {
             onChange={handlePageChange}
           />
         }
+
       {/* Back and forward buttons */}
       <PageNavigationButtons 
         handleBack={() => navigate(`/evaluation-form`)} 
