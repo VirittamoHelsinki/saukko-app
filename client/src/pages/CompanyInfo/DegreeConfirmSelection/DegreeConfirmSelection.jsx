@@ -8,6 +8,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+import InfoList from '../../../components/InfoList/InfoList';
 import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
 import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../store/unitsStore';
@@ -15,7 +16,12 @@ import useStore from '../../../store/useStore';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
-  const { työpaikkaohjaajat, businessID, companyName, departmentName } = useStore();
+  const { työpaikkaohjaajat, businessID, companyName, editedCompanyName, departmentName } = useStore();
+  console.log('Työpaikkaohjaajat from store:', työpaikkaohjaajat)
+  console.log('Y tunnus from store:', businessID)
+  console.log('Yrityksen nimi from store:', companyName)
+  console.log('Muokattu yrityksen nimi from store:', editedCompanyName)
+  console.log('Yksikön nimi from store:', departmentName)
 
   // Set path & get degree units from DegreeContext
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalDegreeContext);
@@ -57,27 +63,22 @@ function DegreeConfirmSelection() {
             label={labelStepper}
           />
         </div>
-        <div>
+        <div className='confirmSelection__infolist-wrapper'>
           <h2 className='Degree__confirmSelection__container--secondtitle'>Yhteenveto</h2>
-          <div style={{ backgroundColor: '#E6E6E6', margin: '14px', marginBottom: '0px', paddingBottom: '8px' }}>
+          <div className='confirmSelection__infolist-item'>
             <h2 className='second__title'>Työpaikka</h2>
             <p className='second__paragraph'> {businessID}</p>
-            <p className='second__paragraph'>{companyName?.name}</p>
+            <p className='second__paragraph'>{companyName ? companyName.name : editedCompanyName}</p>
             <p className='second__paragraph'>{departmentName ? departmentName : ''}</p>
           </div>
-          <div style={{ backgroundColor: '#F2F2F2', margin: '14px', marginTop: '0px', paddingBottom: '8px' }}>
-            <h2 className='second__title'>Työpaikkaohjaaja</h2>
-            <ul >
-              {työpaikkaohjaajat.map((ohjaaja, index) => (
-                <li key={index}>
-                  <p className='second__paragraph'>{ohjaaja.firstName} {ohjaaja.lastName}</p>
-                  <p className='second__paragraph' style={{ marginBottom: '10px' }}>{ohjaaja.email}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {työpaikkaohjaajat.map((ohjaaja, index) => (
+            <div key={index} className='confirmSelection__infolist-item'>
+              <h2 className='second__title'>Työpaikkaohjaaja</h2>
+              <p className='second__paragraph'>{ohjaaja.firstName} {ohjaaja.lastName}</p>
+              <p className='second__paragraph' style={{ marginBottom: '10px' }}>{ohjaaja.email}</p>
+            </div>
+          ))}
         </div>
-
         <h1 className='Degree__confirmSelection__container--secondtitle'>{degreeFound && internalDegree.name.fi}</h1>
         <div className='confirmSelection__container--units'>
           {console.log(console.log('checked units confirm selection page: ', checkedUnits))}

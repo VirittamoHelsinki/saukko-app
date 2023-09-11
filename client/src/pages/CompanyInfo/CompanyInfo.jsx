@@ -177,19 +177,17 @@ const CompanyInfo = () => {
             </div>
             <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} />
             <div>
-                <div>
-                  <label className="työpaikkä_tiedot" htmlFor="company-name-input">
-                    Työpaikka *
-                  </label>
-                  <TextInput
-                    id="company-name-input"
-                    className="text_input"
-                    name="Työpaikan Y-tunnus"
-                    required
-                    value={editedCompanyName || (companyName && companyName.name) || ''}
-                    onChange={handleCompanyName}
-                  />
-                </div>
+              <label className="työpaikkä_tiedot" htmlFor="company-name-input">
+                Työpaikka *
+              </label>
+              <TextInput
+                id="company-name-input"
+                className="text_input"
+                name="Työpaikan Y-tunnus"
+                required
+                value={editedCompanyName || (companyName && companyName.name) || ''}
+                onChange={handleCompanyName}
+              />
             </div>
             <div className='department-container'>
               <label htmlFor='department'> Yksikkö (ei pakollinen) </label>
