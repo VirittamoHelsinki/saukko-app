@@ -21,12 +21,14 @@ function EvaluationSummary() {
   const customer = useEvaluationStore((state) => state.customer);
   const evaluation = useEvaluationStore((state) => state.evaluation);
   const workplace = useEvaluationStore((state) => state.workplace);
+  const department = useEvaluationStore((state) => state.department);
   const supervisor = useEvaluationStore((state) => state.supervisor);
   const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
 
   console.log('Customer from store:', customer);
   console.log('Evaluation from store:', evaluation);
   console.log('Workplace from store:', workplace);
+  console.log('Department from store:', department);
   console.log('Supervisor from store:', supervisor);
 
   // Get data & functions from unitsStore
@@ -57,6 +59,10 @@ function EvaluationSummary() {
     {
       title: 'Y - tunnus',
       content:  workplace ? workplace.businessId : '',
+    },
+    {
+      title: 'Työpaikanyksikkö',
+      content:  department ? department.name : '',
     },
     {
       title: 'Työpaikkaohjaaja',
