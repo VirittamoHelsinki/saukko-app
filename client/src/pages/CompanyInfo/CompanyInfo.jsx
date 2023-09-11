@@ -156,28 +156,30 @@ const CompanyInfo = () => {
           </AccordionSummary>
           <form >
             <div>
-              <label className="työpaikkä_tiedot" htmlFor="business-id-input">
+              <label className="workplace-form-label" htmlFor="business-id-input">
                 Työpaikan Y-tunnus *
               </label>
-              <TextInput
-                id="business-id-input"
-                className="text_input"
-                name="Työpaikan Y-tunnus"
-                required
-                placeholder='1234567-6'
-                value={businessID}
-                onChange={handleBusinessId}
-              />
-              <IconCrossCircle
-                className="cross-icone-style"
-                aria-hidden="true"
-                onClick={handleClearBusinessId}
-              />
-              <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} />
+              <div className='text_input businessID__search-field'>
+                <TextInput
+                  id="business-id-input"
+                  className="text_input_businessID"
+                  name="Työpaikan Y-tunnus"
+                  required
+                  placeholder='1234567-6'
+                  value={businessID}
+                  onChange={handleBusinessId}
+                />
+                <IconCrossCircle
+                  className="cross-icone-style"
+                  aria-hidden="true"
+                  onClick={handleClearBusinessId}
+                />
+                <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} />
+              </div>
             </div>
-            <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} />
+            {/* <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} /> */}
             <div>
-              <label className="työpaikkä_tiedot" htmlFor="company-name-input">
+              <label className="workplace-form-label" htmlFor="company-name-input">
                 Työpaikka *
               </label>
               <TextInput
@@ -190,7 +192,7 @@ const CompanyInfo = () => {
               />
             </div>
             <div className='department-container'>
-              <label htmlFor='department'> Yksikkö (ei pakollinen) </label>
+              <label htmlFor='department' className="workplace-form-label"> Yksikkö (ei pakollinen) </label>
               <TextInput
                 id="department-name-input"
                 className="text_input"
@@ -221,7 +223,7 @@ const CompanyInfo = () => {
             <div className='ohjaajat-info' >
               {työpaikkaohjaajat.slice().reverse().map((ohjaaja, index) => (
                 <div key={index} style={{ borderBottom: '2px solid white', marginTop: '9px', marginBottom: '9px' }}>
-                  <label className="työpaikkä_tiedot" htmlFor={`first-name-input-${index}`}>
+                  <label className="workplace-form-label" htmlFor={`first-name-input-${index}`}>
                     Etunimi *
                   </label>
                   <TextInput
@@ -232,7 +234,7 @@ const CompanyInfo = () => {
                     value={ohjaaja.firstName}
                     readOnly
                   />
-                  <label className="työpaikkä_tiedot" htmlFor={`last-name-input-${index}`}>
+                  <label className="workplace-form-label" htmlFor={`last-name-input-${index}`}>
                     Sukunimi *
                   </label>
                   <TextInput
@@ -243,7 +245,7 @@ const CompanyInfo = () => {
                     value={ohjaaja.lastName}
                     readOnly
                   />
-                  <label className="työpaikkä_tiedot" htmlFor={`email-input-${index}`}>
+                  <label className="workplace-form-label" htmlFor={`email-input-${index}`}>
                     Sähköposti *
                   </label>
                   <TextInput
@@ -260,7 +262,7 @@ const CompanyInfo = () => {
               ))}
             </div>
             <div className='ohjaja' style={{}}>
-              <label className="työpaikkä_tiedot" htmlFor="first-name-input">
+              <label className="workplace-form-label" htmlFor="first-name-input">
                 Etunimi *
               </label>
               <TextInput
@@ -272,7 +274,7 @@ const CompanyInfo = () => {
                 onChange={(e) => setFirstName(e.target.value)}
               />
               <div>
-                <label className="työpaikkä_tiedot" htmlFor="last-name-input">
+                <label className="workplace-form-label" htmlFor="last-name-input">
                   Sukunimi *
                 </label>
                 <TextInput
@@ -285,7 +287,7 @@ const CompanyInfo = () => {
                 />
               </div>
               <div>
-                <label className="työpaikkä_tiedot" htmlFor="email-input">
+                <label className="workplace-form-label" htmlFor="email-input">
                   Sähkoposti *
                 </label>
                 <TextInput
