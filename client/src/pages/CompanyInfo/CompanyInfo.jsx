@@ -123,11 +123,29 @@ const CompanyInfo = () => {
     }
   };
 
-  const handleForward = () => {
+  const handleForward = (e) => {
+    e.preventDefault();
+
+    // Form validation: check for empty fields
+    if ((!businessID || (!companyName && !editedCompanyName)) || !firstName || !lastName || !työpaikkaohjaajaEmail) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    // Form validation: Regex for email format
+    const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+    if (!emailPattern.test(työpaikkaohjaajaEmail)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    // Create supervisor & save to temporary storage
     if (firstName && lastName && työpaikkaohjaajaEmail) {
       const newTyöpaikkaohjaaja = createTyöpaikkaohjaaja(firstName, lastName, työpaikkaohjaajaEmail);
       addTyöpaikkaohjaaja(newTyöpaikkaohjaaja);
     }
+
+    // Navigate to next page
     navigate(`../internal/degrees`);
   };
 
@@ -154,7 +172,7 @@ const CompanyInfo = () => {
           >
             <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>1. Työpaikka tiedot</Typography>
           </AccordionSummary>
-          <form >
+          <form onSubmit={handleForward}>
             <div>
               <label className="workplace-form-label" htmlFor="business-id-input">
                 Työpaikan Y-tunnus *
@@ -219,7 +237,7 @@ const CompanyInfo = () => {
           >
             <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>2. Työpaikkaohjaajan tiedot</Typography>
           </AccordionSummary>
-          <form >
+          <form onSubmit={handleForward}>
             <div className='ohjaajat-info' >
               {työpaikkaohjaajat.slice().reverse().map((ohjaaja, index) => (
                 <div key={index} style={{ borderBottom: '2px solid white', marginTop: '9px', marginBottom: '9px' }}>
