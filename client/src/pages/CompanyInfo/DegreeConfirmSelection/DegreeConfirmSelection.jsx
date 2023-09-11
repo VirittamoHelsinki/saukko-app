@@ -17,11 +17,6 @@ import useStore from '../../../store/useStore';
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
   const { työpaikkaohjaajat, businessID, companyName, editedCompanyName, departmentName } = useStore();
-  console.log('Työpaikkaohjaajat from store:', työpaikkaohjaajat)
-  console.log('Y tunnus from store:', businessID)
-  console.log('Yrityksen nimi from store:', companyName)
-  console.log('Muokattu yrityksen nimi from store:', editedCompanyName)
-  console.log('Yksikön nimi from store:', departmentName)
 
   // Set path & get degree units from DegreeContext
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalDegreeContext);
