@@ -4,7 +4,6 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
- 
 }
 
 .text_input {
@@ -18,8 +17,6 @@
   height: 50px;
   margin: 16px 16px 10px 16px;
   border: 2px solid black;
-
-
 }
 
 input::placeholder {
@@ -34,18 +31,13 @@ input::placeholder {
   margin-top: -125px;
   margin-left: 50%;
   padding: 75px;
-
-
 }
 
 .search-icone-style {
-  
   position: absolute;
   margin-top: -80px;
   margin-left: 75%;
   padding: 33px;
- 
-
 }
 
 .työpaikkä_tiedot {
@@ -53,6 +45,7 @@ input::placeholder {
   padding-top: 15px;
   padding-bottom: 10px;
 }
+
 .info__stepper__container{
   display: flex;
   flex-direction: column;
@@ -61,4 +54,10 @@ input::placeholder {
   flex-grow: 1;
   overflow-y: auto;
   width: 100%;
+}
+
+.department-container {
+  label {
+    margin-left: 15px;
+  }
 }

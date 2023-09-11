@@ -1,8 +1,4 @@
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+// Import components & libraries
 import { TextInput } from 'hds-react';
 import { IconCrossCircle, IconSearch } from 'hds-react';
 import Button from '../../components/Button/Button';
@@ -14,6 +10,11 @@ import { useNavigate } from 'react-router';
 import Stepper from '../../components/Stepper/Stepper';
 import useStore from '../../store/useStore';
 
+// Import MUI
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const CompanyInfo = () => {
     setBusinessIdError,
     companyName,
     setCompanyName,
+    setDepartmentName,
     editedCompanyName,
     setEditedCompanyName,
     työpaikkaohjaajat,
@@ -35,6 +37,7 @@ const CompanyInfo = () => {
     työpaikkaohjaajaEmail,
     setTyöpaikkaohjaajaEmail,
   } = useStore();
+
   // Text for stepper's labels
   const labelStepper = [
     'Lisää tiedot',
@@ -42,7 +45,6 @@ const CompanyInfo = () => {
     'Valitse tutkinnonosat',
     'Vahvista',
   ];
-
 
   const handleBusinessId = (event) => {
     const value = event.target.value;
@@ -64,6 +66,9 @@ const CompanyInfo = () => {
     setEditedCompanyName(value);
   };
 
+  const handleDepartment = (event) => {
+    setDepartmentName(event.target.value);
+  };
 
   const fetchCompanyName = async (businessID) => {
     try {
@@ -107,6 +112,7 @@ const CompanyInfo = () => {
       role: 'supervisor'
     };
   };
+
   const addTyöpaikkaohjaaja = (event) => {
     if (firstName && lastName && työpaikkaohjaajaEmail) {
       const newTyöpaikkaohjaaja = createTyöpaikkaohjaaja(firstName, lastName, työpaikkaohjaajaEmail);
@@ -125,10 +131,7 @@ const CompanyInfo = () => {
     navigate(`../internal/degrees`);
   };
 
-
-
   return (
-
     <div>
       <WavesHeader title='Saukko' fill='#9fc9eb' secondTitle='Lisää uusi työpaikka' />
       <div className='info__stepper__container'>
@@ -162,23 +165,18 @@ const CompanyInfo = () => {
                 name="Työpaikan Y-tunnus"
                 required
                 placeholder='1234567-6'
-
                 value={businessID}
                 onChange={handleBusinessId}
               />
-
               <IconCrossCircle
                 className="cross-icone-style"
                 aria-hidden="true"
                 onClick={handleClearBusinessId}
               />
               <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} />
-
-
             </div>
             <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} />
             <div>
-              {companyName !== null && (
                 <div>
                   <label className="työpaikkä_tiedot" htmlFor="company-name-input">
                     Työpaikka *
@@ -192,7 +190,15 @@ const CompanyInfo = () => {
                     onChange={handleCompanyName}
                   />
                 </div>
-              )}
+            </div>
+            <div className='department-container'>
+              <label htmlFor='department'> Yksikkö (ei pakollinen) </label>
+              <TextInput
+                id="department-name-input"
+                className="text_input"
+                name="Työpaikan yksikkö"
+                onChange={handleDepartment}
+              />
             </div>
           </form>
         </Accordion>
@@ -228,7 +234,6 @@ const CompanyInfo = () => {
                     value={ohjaaja.firstName}
                     readOnly
                   />
-
                   <label className="työpaikkä_tiedot" htmlFor={`last-name-input-${index}`}>
                     Sukunimi *
                   </label>
@@ -240,7 +245,6 @@ const CompanyInfo = () => {
                     value={ohjaaja.lastName}
                     readOnly
                   />
-
                   <label className="työpaikkä_tiedot" htmlFor={`email-input-${index}`}>
                     Sähköposti *
                   </label>
@@ -262,7 +266,6 @@ const CompanyInfo = () => {
                 Etunimi *
               </label>
               <TextInput
-
                 id="first-name-input"
                 className="text_input"
                 name="Etunimi"
@@ -270,7 +273,6 @@ const CompanyInfo = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
-
               <div>
                 <label className="työpaikkä_tiedot" htmlFor="last-name-input">
                   Sukunimi *
@@ -299,7 +301,6 @@ const CompanyInfo = () => {
                 />
               </div>
               <Button
-
                 text="Lisää toinen ohjaaja"
                 style={{
                   marginLeft: '17%',
@@ -317,91 +318,11 @@ const CompanyInfo = () => {
         </Accordion>
       </div>
       <PageNavigationButtons handleForward={handleForward} forwardButtonText={'Seuraava'} />
-
       <div style={{ marginBottom: '90px' }}>
         <UserNav></UserNav>
       </div>
     </div>
-
   );
 };
 
 export default CompanyInfo;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

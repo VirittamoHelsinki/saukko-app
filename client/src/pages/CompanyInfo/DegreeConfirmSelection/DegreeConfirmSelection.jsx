@@ -1,24 +1,22 @@
 // Import react packages & dependencies
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
-import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import Button from '../../../components/Button/Button';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
 import Stepper from '../../../components/Stepper/Stepper';
-import { padding } from '@mui/system';
 import useUnitsStore from '../../../store/unitsStore';
 import useStore from '../../../store/useStore';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
-  const { työpaikkaohjaajat, businessID, companyName } = useStore();
+  const { työpaikkaohjaajat, businessID, companyName, departmentName } = useStore();
+
   // Set path & get degree units from DegreeContext
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalDegreeContext);
   const params = useParams();
@@ -30,8 +28,6 @@ function DegreeConfirmSelection() {
   // Get checked units from unitsStore
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
-
-
   // NotificationModal logic
   const {
     openNotificationModal,
@@ -41,6 +37,7 @@ function DegreeConfirmSelection() {
   const handleNotificationModalOpen = () => {
     setOpenNotificationModal(true);
   };
+
   // Text for stepper's labels
   const labelStepper = [
     'Lisää tiedot',
@@ -58,7 +55,6 @@ function DegreeConfirmSelection() {
             activePage={4}
             totalPages={4}
             label={labelStepper}
-
           />
         </div>
         <div>
@@ -67,6 +63,7 @@ function DegreeConfirmSelection() {
             <h2 className='second__title'>Työpaikka</h2>
             <p className='second__paragraph'> {businessID}</p>
             <p className='second__paragraph'>{companyName?.name}</p>
+            <p className='second__paragraph'>{departmentName ? departmentName : ''}</p>
           </div>
           <div style={{ backgroundColor: '#F2F2F2', margin: '14px', marginTop: '0px', paddingBottom: '8px' }}>
             <h2 className='second__title'>Työpaikkaohjaaja</h2>
@@ -102,11 +99,8 @@ function DegreeConfirmSelection() {
         open={openNotificationModal}
         redirectLink='/evaluation-summary'
       />
-
     </main>
   );
 }
 
 export default DegreeConfirmSelection;
-
-
