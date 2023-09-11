@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
@@ -235,7 +235,6 @@ function EvaluationWorkplace() {
                       {<Radio 
                         checked={workplaceFromStore === workplace}
                         onChange={() => {}}
-                        /* onClick={(event) => event.stopPropagation()} */ // Prevent expanding accordion when clicking radio button
                         value={workplace._id}
                         theme={createTheme({palette: {primary: {main: '#0000BF'}}})}
                       />}
