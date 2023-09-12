@@ -24,6 +24,10 @@ const useStore = create((set) => ({
   education: '',
   openNotificationModal: false,
   
+  // Backend data.
+  degrees:[],
+  workplaces: [],
+
   // Workplace flow
   businessID: [],
   businessIDError: '',
