@@ -99,6 +99,228 @@ const mockData = [
       },
     ],
   },
+  {
+    _id: '1',
+    businessId: '070 - 5658 -9',
+    name: 'Company 3',
+    customerId: '123',
+    supervisors: [
+      {
+        _id: '67890',
+        firstName: 'Kaisa',
+        lastName: 'Virtanen'
+      },
+      {
+        _id: '68943',
+        firstName: 'Sami',
+        lastName: 'Virtanen'
+      },
+    ],
+  },
+  {
+    _id: '2',
+    businessId: '070 - 5658 -9',
+    name: 'Aimet OY',
+    customerId: '537',
+    departments: [
+      {
+        id: '1',
+        name: 'Department 1',
+        supervisors: [
+          {
+            _id: '22557',
+            firstName: 'Maija',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '09886',
+            firstName: 'Pekka',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '2',
+        name: 'Department 2',
+        supervisors: [
+          {
+            _id: '95842',
+            firstName: 'Liisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '92834',
+            firstName: 'Olli',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '3',
+        name: 'Department 3',
+        supervisors: [
+          {
+            _id: '67899',
+            firstName: 'Tero',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '22447',
+            firstName: 'Jonna',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+    ],
+  },
+  {
+    _id: '1',
+    businessId: '070 - 5658 -9',
+    name: 'Company 4',
+    customerId: '123',
+    supervisors: [
+      {
+        _id: '67890',
+        firstName: 'Kaisa',
+        lastName: 'Virtanen'
+      },
+      {
+        _id: '68943',
+        firstName: 'Sami',
+        lastName: 'Virtanen'
+      },
+    ],
+  },
+  {
+    _id: '2',
+    businessId: '070 - 5658 -9',
+    name: 'Company 5',
+    customerId: '537',
+    departments: [
+      {
+        id: '1',
+        name: 'Department 1',
+        supervisors: [
+          {
+            _id: '22557',
+            firstName: 'Maija',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '09886',
+            firstName: 'Pekka',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '2',
+        name: 'Department 2',
+        supervisors: [
+          {
+            _id: '95842',
+            firstName: 'Liisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '92834',
+            firstName: 'Olli',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '3',
+        name: 'Department 3',
+        supervisors: [
+          {
+            _id: '67899',
+            firstName: 'Tero',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '22447',
+            firstName: 'Jonna',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+    ],
+  },
+  {
+    _id: '1',
+    businessId: '070 - 5658 -9',
+    name: 'Company 7',
+    customerId: '123',
+    supervisors: [
+      {
+        _id: '67890',
+        firstName: 'Kaisa',
+        lastName: 'Virtanen'
+      },
+      {
+        _id: '68943',
+        firstName: 'Sami',
+        lastName: 'Virtanen'
+      },
+    ],
+  },
+  {
+    _id: '2',
+    businessId: '070 - 5658 -9',
+    name: 'Company 8',
+    customerId: '537',
+    departments: [
+      {
+        id: '1',
+        name: 'Department 1',
+        supervisors: [
+          {
+            _id: '22557',
+            firstName: 'Maija',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '09886',
+            firstName: 'Pekka',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '2',
+        name: 'Department 2',
+        supervisors: [
+          {
+            _id: '95842',
+            firstName: 'Liisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '92834',
+            firstName: 'Olli',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '3',
+        name: 'Department 3',
+        supervisors: [
+          {
+            _id: '67899',
+            firstName: 'Tero',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '22447',
+            firstName: 'Jonna',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+    ],
+  },
 ]
 
 function EvaluationWorkplace() {
@@ -125,7 +347,7 @@ function EvaluationWorkplace() {
     // Save to store
     setWorkplace(workplaceObj)
   };
-  console.log('Workplace form store:', workplaceFromStore)
+  /* console.log('Workplace form store:', workplaceFromStore) */
 
   // Supervisor selection logic
   const toggleSupervisor = (supervisorId) => () => {
@@ -138,7 +360,6 @@ function EvaluationWorkplace() {
         return workplace.supervisors;
       }
     });
-    console.log('all supervisors:', allSupervisors);
 
     // Find supervisor object by id
     const foundSupervisorObj = allSupervisors.find(supervisor => supervisor._id === supervisorId);
@@ -146,7 +367,7 @@ function EvaluationWorkplace() {
     // Save to store
     setSupervisor(foundSupervisorObj) 
   };
-  console.log('Supervisor from store:', supervisorFromStore)
+  /* console.log('Supervisor from store:', supervisorFromStore) */
 
   // Department selection logic
   const toggleDepartment = (departmentId) => () => {
@@ -163,11 +384,11 @@ function EvaluationWorkplace() {
     // Save to store
     setDepartment(foundDepartment) 
   };
-  console.log('Department from store:', departmentFromStore)
+  /* console.log('Department from store:', departmentFromStore) */
   
   // Pagination logic
   const [page, setPage] = useState(1);
-  const workplacesPerPage = 15;
+  const workplacesPerPage = 2;
   
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -219,8 +440,8 @@ function EvaluationWorkplace() {
 
         {/* Workplaces list */}
         <div>
-          { filteredWorkplaces ? 
-            filteredWorkplaces.map((workplace) => (
+          { currentWorkplaces ? 
+            currentWorkplaces.map((workplace) => (
               <Accordion 
                 className={`workplaces-accordion ${workplaceFromStore === workplace ? 'selected' : ''}`}
                 key={workplace._id} 
