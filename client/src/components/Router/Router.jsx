@@ -38,7 +38,7 @@ import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import CompanyInfo from '../../pages/CompanyInfo/CompanyInfo';
-
+import AdminMenu from '../../pages/AdminMenu/AdminMenu';
 import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/EvaluationForm';
 import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
 import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/EvaluationUnits';
@@ -49,7 +49,7 @@ import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelecti
 
 const Router = () => {
   let location = useLocation();
-  const { loggedIn } = useContext(AuthContext);
+  const { loggedIn, user } = useContext(AuthContext);
 
   const path = location.path;
   const navigate = useNavigate();
@@ -73,8 +73,8 @@ const Router = () => {
   return (
     <>
       <Routes key={location.pathname} location={location}>
-        {/* placeholder paths and pages */}
 
+        {/* placeholder paths and pages */}
         <Route path='/test-page' element={<TestPage />} />
         <Route path='/company-info' element={<CompanyInfo />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
@@ -100,7 +100,6 @@ const Router = () => {
           element={<SpecifyTasks />}
         />
         <Route path='/degrees/:degreeId/summary' element={<Summary />} />
-
         <Route path='/evaluation-form' element={<EvaluationForm />} />
         <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
         <Route path='/evaluation-units' element={<EvaluationUnits />} />
@@ -136,6 +135,7 @@ const Router = () => {
             />
           </>
         )}
+        
         {loggedIn && (
           <>
             <Route path='/home' element={<UserPage />} />
@@ -150,6 +150,10 @@ const Router = () => {
             <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
             <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
           </>
+        )}
+
+        {loggedIn && user.role === 'teacher' && (
+          <Route path='/admin-menu' element={<AdminMenu />} />
         )}
       </Routes>
     </>
