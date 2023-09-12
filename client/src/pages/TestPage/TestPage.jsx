@@ -7,6 +7,7 @@ import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 import InfoList from '../../components/InfoList/InfoList';
 import Button from '@mui/material/Button';
+import PerformancesFeedback from '../../components/PerformancesFeedback/PerformancesFeedback'
 
 const TestPage = () => {
   const {
@@ -69,6 +70,9 @@ const TestPage = () => {
         <Button variant='outlined' onClick={handleClickOpen}>
           Open dialog
         </Button>
+      </section>
+      <section >
+        {/* <PerformancesFeedback></PerformancesFeedback> */}
       </section>
     </main>
   );
