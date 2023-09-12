@@ -4,7 +4,7 @@ const degreeSchema = new mongoose.Schema({
   diaryNumber: { // registration number
     type: String,
   },
-  eduCodeNumber: { // education code number
+  eduCodeValue: { // education code number
     type: String,
   },
   name: { 
