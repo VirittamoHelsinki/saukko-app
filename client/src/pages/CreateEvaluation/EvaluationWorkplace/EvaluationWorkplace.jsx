@@ -324,20 +324,18 @@ function EvaluationWorkplace() {
         </div>
 
         {/* Pagination */}
-        {workplaces?.length > 15 && 
-          <Pagination
-            count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
-            page={page}
-            onChange={handlePageChange}
-          />
-        }
+        <Pagination
+          count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
+          page={page}
+          onChange={handlePageChange}
+        />
 
-      {/* Back and forward buttons */}
-      <PageNavigationButtons 
-        handleBack={() => navigate(`/evaluation-form`)} 
-        handleForward={validationHandler} 
-        forwardButtonText={'Seuraava'}
-      />
+        {/* Back and forward buttons */}
+        <PageNavigationButtons 
+          handleBack={() => navigate(`/evaluation-form`)} 
+          handleForward={validationHandler} 
+          forwardButtonText={'Seuraava'}
+        />
       </section>
       <UserNav />
     </main>
