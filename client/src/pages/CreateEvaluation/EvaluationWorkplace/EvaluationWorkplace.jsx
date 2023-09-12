@@ -288,7 +288,6 @@ function EvaluationWorkplace() {
                             onClick={toggleSupervisor(supervisor._id)}
                           >
                             <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
-                            {console.log(supervisor)}
                             {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
                           </div>
                         ))}
@@ -310,7 +309,6 @@ function EvaluationWorkplace() {
                               onClick={toggleSupervisor(supervisor._id)}
                             >
                               <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
-                              {console.log(supervisor)}
                               {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
                             </div>
                           ))}
