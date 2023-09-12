@@ -4,7 +4,15 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "setup":"npm install && npm run install:server && npm run install:client",
+        "install:server":"cd server & npm install & type nul > .env",
+        "install:client":"cd client & npm install & type nul > .env",
+        "server:dev":"cd server & npm run dev",
+        "server:prod":"cd server & npm start",
+        "client":"cd client & npm start",
+        "start:prod": "concurrently --kill-others-on-fail \" npm run server:prod\" \" npm run client\"",
+        "start:dev": "concurrently --kill-others-on-fail \" npm run server:dev\" \" npm run client\""
     },
     "author": "",
     "license": "ISC",
@@ -23,8 +31,7 @@
         "hds-react": "^2.16.0",
         "react-scroll": "^1.8.9",
         "react-swipeable-views": "^0.14.0",
-        "react-icons": "^4.10.1"
-
-
+        "react-icons": "^4.10.1",
+        "concurrently": "^7.6.0"
     }
 }

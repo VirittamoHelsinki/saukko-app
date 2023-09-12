@@ -17,6 +17,22 @@
       flex-grow: 1;
       overflow-y: auto;
 
+      .confirmSelection__infolist-wrapper {
+        padding: 20px;
+
+        .confirmSelection__infolist-item {
+          padding: 10px 5px;
+
+          .second__title {
+            margin-bottom: 5px;
+          }
+        }
+
+        .confirmSelection__infolist-item:nth-of-type(odd) {
+          background-color: #F2F2F2;
+        }
+      }
+
       .confirmSelection__container--title {
         text-decoration: underline;
         font-size: 16px;
@@ -32,7 +48,8 @@
         text-align: center;
         text-decoration: underline;
         font-size: 18px;
-        padding: 15px;
+        padding: 20px;
+        margin-bottom: 10px;
       }
 
       .confirmSelection__container--buttons {

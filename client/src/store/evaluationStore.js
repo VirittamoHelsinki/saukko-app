@@ -35,20 +35,23 @@ import { create } from 'zustand';
 const useEvaluationStore = create((set) => ({
   customer: null,
   evaluation: null,
-  supervisor: null,
   workplace: null,
+  department: null,
+  supervisor: null,
 
   setCustomer: (customer) => set({ customer }),
   setEvaluation: (evaluation) => set({ evaluation }),
   setWorkplace: (workplace) => set({ workplace }),
+  setDepartment: (department) => set({ department }),
   setSupervisor: (supervisor) => set({ supervisor }),
 
   clearEvaluation: () => {
     set({ 
       customer: null, 
       evaluation: null,
-      supervisor: null,
       workplace: null,
+      department: null,
+      supervisor: null,
     });
   },
 }));

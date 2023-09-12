@@ -22,15 +22,19 @@ const useStore = create((set) => ({
   goals: '',
   academy: '',
   education: '',
+  openNotificationModal: false,
+  
+  // Workplace flow
   businessID: [],
   businessIDError: '',
   editedCompanyName: '',
   companyName: null,
+  departmentName: null,
   työpaikkaohjaajat: [],
   firstName: '',
   lastName: '',
   työpaikkaohjaajaEmail: '',
-  openNotificationModal: false,
+
   // Admin
   degreeName: 'ei dataa APIsta',
   degreeDescription: 'ei dataa APIsta',
@@ -62,9 +66,12 @@ const useStore = create((set) => ({
   setEducation: (education) => set({ education }),
   setOpenNotificationModal: (openNotificationModal) =>
   set({ openNotificationModal }),
+
+  // Workplace flow
   setBusinessId: (value) => set(() => ({ businessID: value })),
   setBusinessIdError: (value) => set(() => ({ businessIDError: value })),
   setCompanyName: (value) => set(() => ({ companyName: value })),
+  setDepartmentName: (value) => set(() => ({ departmentName: value })),
   setEditedCompanyName: (value) => set(() => ({ editedCompanyName: value })),
   setTyöpaikkaohjaajat: (value) => set(() => ({ työpaikkaohjaajat: value })),
   setFirstName: (value) => set(() => ({ firstName: value })),
