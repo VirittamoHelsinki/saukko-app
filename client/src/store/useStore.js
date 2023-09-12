@@ -48,6 +48,10 @@ const useStore = create((set) => ({
   expiry: 'ei dataa APIsta',
   transitionEnds: 'ei dataa APIsta',
 
+  // Backend data setters
+  setDegrees: degrees => set({ degrees }),
+  setWorkplaces: workplaces => set({ workplaces }),
+
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
   setEmail: (email) => set({ email }),
