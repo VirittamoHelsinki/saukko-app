@@ -70,11 +70,11 @@ const Router = () => {
   useEffect(() => {
     if (loggedIn) {
       fetchAllDegrees()
-      .then(res => setDegrees(res.data))
+      .then(data => setDegrees(data))
       .catch(err => console.log(err));
 
       fetchAllWorkplaces()
-      .then(res => setWorkplaces(res.data))
+      .then(data => setWorkplaces(data))
       .catch(err => console.log(err));
     }
   }, [loggedIn]);

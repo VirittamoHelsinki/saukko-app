@@ -19,13 +19,13 @@ const fetchById = async id => {
 // Fetch all degrees from internal saukko database.
 const fetchAllDegrees = async () => {
   const response = await axios.get(`${baseURL}${middleURL}/internal/degrees`)
-  return response
+  return response.data
 }
 
 // Post a degree to internal saukko database.
 const postDegree = async degree => {
   const response = await axios.post(`${baseURL}${middleURL}/internal/degrees`, degree)
-  return response
+  return response.data
 }
 
 export { fetchAll, fetchById, fetchAllDegrees, postDegree }

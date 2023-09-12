@@ -10,6 +10,8 @@ import useUnitsStore from '../../../store/unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
 import { useCriteriaFieldsContext } from '../../../utils/context/CriteriaFieldsContext';
 
+import { postDegree } from '../../../api/degree';
+
 function Summary() {
   const navigate = useNavigate();
 
@@ -20,6 +22,7 @@ function Summary() {
     validFrom,
     expiry,
     transitionEnds,
+    addDegree
   } = useStore();
 
   // Set path & get degree units from DegreeContext
@@ -40,6 +43,32 @@ function Summary() {
     'Määritä tehtävät',
     'Yhteenveto',
   ];
+
+  const handleSubmit = async () => {
+
+    // TODO: Add correct fields from store to degreeData
+    const degreeData = {
+      diaryNumber: diaryNumber,
+      eduCodeValue: '?',
+      name: { 
+        fi: '', // degree finnish name
+        sv: '', // degree swedish name
+        en: '', // degree english name
+        enum: ["fi", "sv", "en"],
+      },
+      description: degreeDescription,
+      archived: '?',
+      infoURL: '?',
+      units: []
+    }
+
+    const newDegree = await postDegree(degreeData);
+
+    addDegree(newDegree);
+
+    navigate(`/userdashboard`);
+  };
+    
 
   return (
     <main className='summary__wrapper'>
@@ -87,10 +116,10 @@ function Summary() {
         </ul>
 
         <PageNavigationButtons
-          handleBack={() =>
+          handleBack={() => 
             navigate(`/degrees/${degree._id}/units/confirm-selection`)
           }
-          handleForward={() => navigate(`/userdashboard`)}
+          handleForward={handleSubmit}
           forwardButtonText={'Tallenna tiedot'}
         />
       </section>

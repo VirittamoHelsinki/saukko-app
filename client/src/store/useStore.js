@@ -51,6 +51,8 @@ const useStore = create((set) => ({
   // Backend data setters
   setDegrees: degrees => set({ degrees }),
   setWorkplaces: workplaces => set({ workplaces }),
+  addDegree: degree => set(state => ({ degrees: [...state.degrees, degree] })),
+  addWorkplace: workplace => set(state => ({ workplaces: [...state.workplaces, workplace] })),
 
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
