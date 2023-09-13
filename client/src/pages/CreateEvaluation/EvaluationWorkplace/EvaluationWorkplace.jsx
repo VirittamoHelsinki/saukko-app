@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
@@ -378,7 +378,13 @@ function EvaluationWorkplace() {
   // Pagination
   const [page, setPage] = useState(1);
   const [needsPagination, setNeedsPagination] = useState(false);
-  const workplacesPerPage = 2;
+  const workplacesPerPage = 5;
+
+  useEffect(() => {
+    const contentHeight = document.querySelector('.evaluationWorkplace__container').scrollHeight;
+    const viewportHeight = window.innerHeight;
+    setNeedsPagination(contentHeight > 1.3 * viewportHeight);
+  }, []);
   
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -387,7 +393,6 @@ function EvaluationWorkplace() {
   const indexOfLastWorkplace = page * workplacesPerPage;
   const indexOfFirstWorkplace = indexOfLastWorkplace - workplacesPerPage;
   const paginatedWorkplaces = filteredWorkplaces?.slice(indexOfFirstWorkplace, indexOfLastWorkplace);
-
   const workplacesToMap = needsPagination ? paginatedWorkplaces : filteredWorkplaces;
 
   // Searchbar

@@ -25,12 +25,6 @@ function EvaluationSummary() {
   const supervisor = useEvaluationStore((state) => state.supervisor);
   const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
 
-  console.log('Customer from store:', customer);
-  console.log('Evaluation from store:', evaluation);
-  console.log('Workplace from store:', workplace);
-  console.log('Department from store:', department);
-  console.log('Supervisor from store:', supervisor);
-
   // Get data & functions from unitsStore
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
@@ -70,6 +64,14 @@ function EvaluationSummary() {
     },
   ];
   console.log('summary data', summaryData);
+
+  // Remove department from array if there is no department
+  if (!department) {
+    const indexToRemove = summaryData.findIndex(item => item.title === 'Työpaikanyksikkö');
+    if (indexToRemove !== -1) {
+      summaryData.splice(indexToRemove, 1);
+    }
+  }
 
   // NotificationModal logic
   const {
