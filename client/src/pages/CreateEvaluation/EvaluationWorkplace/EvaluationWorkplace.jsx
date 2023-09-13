@@ -334,60 +334,50 @@ function EvaluationWorkplace() {
   const setWorkplace = useEvaluationStore((state) => state.setWorkplace);
   const setDepartment = useEvaluationStore((state) => state.setDepartment);
   const setSupervisor = useEvaluationStore((state) => state.setSupervisor);
+  const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
 
-  // Getter function from evaluationStore
+  // Getter functions from evaluationStore
   const workplaceFromStore = useEvaluationStore((state) => state.workplace);
   const departmentFromStore = useEvaluationStore((state) => state.department);
   const supervisorFromStore = useEvaluationStore((state) => state.supervisor);
 
   // Workplace selection
-  const handleSelectWorkplace = (event) => {
-    // Find workplace by id
-    const workplaceObj = workplaces.find(workplace => workplace._id === event.target.value)
-    // Save to store
-    setWorkplace(workplaceObj)
+  const toggleWorkplace = (event) => {
+    clearEvaluation();
+    const findWorkplaceById = workplaces.find(workplace => workplace._id === event.target.value)
+    setWorkplace(findWorkplaceById)
   };
-  /* console.log('Workplace form store:', workplaceFromStore) */
+  console.log('Workplace form store:', workplaceFromStore)
 
-  // Supervisor selection logic
-  const toggleSupervisor = (supervisorId) => () => {
-
-    // Find all supervisors
-    const allSupervisors = workplaces.flatMap(workplace => {
-      if (workplace.departments && workplace.departments.length > 0) {
-        return workplace.departments.flatMap(department => department.supervisors);
-      } else {
-        return workplace.supervisors;
-      }
-    });
-
-    // Find supervisor object by id
-    const foundSupervisorObj = allSupervisors.find(supervisor => supervisor._id === supervisorId);
-
-    // Save to store
-    setSupervisor(foundSupervisorObj) 
-  };
-  /* console.log('Supervisor from store:', supervisorFromStore) */
-
-  // Department selection logic
+  // Department selection
   const toggleDepartment = (departmentId) => () => {
-
-    // Find all departments
-    const allDepartments = workplaces
-      .map((workplace) => workplace.departments)
-      .filter((departments) => departments && departments.length > 0)
-      .flat();
-
-    // Find department by id
-    const foundDepartment = allDepartments.find(department => department.id === departmentId);
-
-    // Save to store
-    setDepartment(foundDepartment) 
+    setSupervisor(null);
+    if (workplaceFromStore && workplaceFromStore.departments) {
+      const findDepartmentById = workplaceFromStore.departments.find(department => department.id === departmentId);
+      setDepartment(findDepartmentById);
+    } else {
+      alert('Choose department belonging to chosen workplace');
+    };
   };
-  /* console.log('Department from store:', departmentFromStore) */
+  console.log('Department from store:', departmentFromStore)
+
+  // Supervisor selection
+  const toggleSupervisor = (supervisorId) => () => {
+    if (workplaceFromStore && workplaceFromStore.departments && departmentFromStore) {
+      const findSupervisorById = departmentFromStore.supervisors.find(supervisor => supervisor._id === supervisorId);
+      setSupervisor(findSupervisorById);
+    } else if (workplaceFromStore && !workplaceFromStore.departments) {
+      const findSupervisorById = workplaceFromStore.supervisors.find(supervisor => supervisor._id === supervisorId);
+      setSupervisor(findSupervisorById);
+    } else {
+      alert('Choose supervisor belonging to the chosen workplace')
+    }
+  };
+  console.log('Supervisor from store:', supervisorFromStore)
   
-  // Pagination logic
+  // Pagination
   const [page, setPage] = useState(1);
+  const [needsPagination, setNeedsPagination] = useState(false);
   const workplacesPerPage = 2;
   
   const handlePageChange = (event, value) => {
@@ -396,11 +386,13 @@ function EvaluationWorkplace() {
   
   const indexOfLastWorkplace = page * workplacesPerPage;
   const indexOfFirstWorkplace = indexOfLastWorkplace - workplacesPerPage;
-  const currentWorkplaces = filteredWorkplaces?.slice(indexOfFirstWorkplace, indexOfLastWorkplace);
+  const paginatedWorkplaces = filteredWorkplaces?.slice(indexOfFirstWorkplace, indexOfLastWorkplace);
 
-  // Searchbar logic
+  const workplacesToMap = needsPagination ? paginatedWorkplaces : filteredWorkplaces;
+
+  // Searchbar
   const handleSearch = (event) => {
-    setPage(1); // Reset to the first page
+    setPage(1);
     setFilteredWorkplaces(
       workplaces.filter((workplace) =>
       workplace.name.toLowerCase().includes(event.target.value.toLowerCase())
@@ -440,14 +432,13 @@ function EvaluationWorkplace() {
 
         {/* Workplaces list */}
         <div>
-          { currentWorkplaces ? 
-            currentWorkplaces.map((workplace) => (
+          { workplacesToMap ? 
+            workplacesToMap.map((workplace) => (
               <Accordion 
                 className={`workplaces-accordion ${workplaceFromStore === workplace ? 'selected' : ''}`}
                 key={workplace._id} 
                 disableGutters 
                 square
-                onClick={() => handleSelectWorkplace({ target: { value: workplace._id } })}
               >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <FormControlLabel
@@ -455,7 +446,7 @@ function EvaluationWorkplace() {
                     control=
                       {<Radio 
                         checked={workplaceFromStore === workplace}
-                        onChange={() => {}}
+                        onChange={toggleWorkplace}
                         value={workplace._id}
                         theme={createTheme({palette: {primary: {main: '#0000BF'}}})}
                       />}
@@ -487,7 +478,7 @@ function EvaluationWorkplace() {
                             onClick={toggleDepartment(department.id)}
                             >
                               <Typography>{department.name}</Typography>
-                              {department === departmentFromStore && <Icon icon="mdi:tick"/>}
+                              {departmentFromStore && (department.id === departmentFromStore.id) && <Icon icon="mdi:tick"/>}
                             </div>
                           ))}
                         </AccordionDetails>
@@ -509,7 +500,7 @@ function EvaluationWorkplace() {
                             onClick={toggleSupervisor(supervisor._id)}
                           >
                             <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
-                            {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
+                            {supervisorFromStore && (supervisor._id === supervisorFromStore._id) && <Icon icon="mdi:tick"/>}
                           </div>
                         ))}
                         </AccordionDetails>
@@ -530,7 +521,7 @@ function EvaluationWorkplace() {
                               onClick={toggleSupervisor(supervisor._id)}
                             >
                               <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
-                              {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
+                              {supervisorFromStore && (supervisor._id === supervisorFromStore._id) && <Icon icon="mdi:tick"/>}
                             </div>
                           ))}
                         </AccordionDetails>
@@ -545,11 +536,13 @@ function EvaluationWorkplace() {
         </div>
 
         {/* Pagination */}
-        <Pagination
-          count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
-          page={page}
-          onChange={handlePageChange}
-        />
+        {needsPagination && 
+          <Pagination
+            count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
+            page={page}
+            onChange={handlePageChange}
+          />
+        }
 
         {/* Back and forward buttons */}
         <PageNavigationButtons 
