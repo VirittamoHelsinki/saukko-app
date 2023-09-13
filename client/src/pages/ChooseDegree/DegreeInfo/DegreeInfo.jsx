@@ -1,10 +1,11 @@
+// Import react packages
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
+// Import Zustand store
 import useStore from '../../../store/useStore';
 
 // Import components
-import DegreeContext from '../../../utils/context/DegreeContext';
-import AuthContext from '../../../utils/context/AuthContext';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
@@ -12,6 +13,10 @@ import Hyperlink from '../../../components/Hyperlink/Hyperlink';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
+
+// Umport utils
+import DegreeContext from '../../../utils/context/DegreeContext';
+import AuthContext from '../../../utils/context/AuthContext';
 
 function DegreeInfo() {
   const auth = useContext(AuthContext);

@@ -1,13 +1,18 @@
+// Import react packages & dependencies
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Import Zustand store and custom context
+import useStore from '../../../store/useStore';
+import useUnitsStore from '../../../store/unitsStore';
+import DegreeContext from '../../../utils/context/DegreeContext';
+
+// Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import useStore from '../../../store/useStore';
-import useUnitsStore from '../../../store/unitsStore';
-import DegreeContext from '../../../utils/context/DegreeContext';
+
 import { useCriteriaFieldsContext } from '../../../utils/context/CriteriaFieldsContext';
 
 import { postDegree } from '../../../api/degree';
@@ -22,7 +27,7 @@ function Summary() {
     validFrom,
     expiry,
     transitionEnds,
-    addDegree
+    addDegree,
   } = useStore();
 
   // Set path & get degree units from DegreeContext
@@ -45,22 +50,16 @@ function Summary() {
   ];
 
   const handleSubmit = async () => {
-
     // TODO: Add correct fields from store to degreeData
     const degreeData = {
       diaryNumber: diaryNumber,
       eduCodeValue: '?',
-      name: { 
-        fi: '', // degree finnish name
-        sv: '', // degree swedish name
-        en: '', // degree english name
-        enum: ["fi", "sv", "en"],
-      },
+      name: degree.name,
       description: degreeDescription,
-      archived: '?',
-      infoURL: '?',
-      units: []
-    }
+      archived: false,
+      infoURL: null,
+      units: degree.units,
+    };
 
     const newDegree = await postDegree(degreeData);
 
@@ -68,7 +67,6 @@ function Summary() {
 
     navigate(`/userdashboard`);
   };
-    
 
   return (
     <main className='summary__wrapper'>
@@ -116,7 +114,7 @@ function Summary() {
         </ul>
 
         <PageNavigationButtons
-          handleBack={() => 
+          handleBack={() =>
             navigate(`/degrees/${degree._id}/units/confirm-selection`)
           }
           handleForward={handleSubmit}
