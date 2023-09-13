@@ -55,11 +55,13 @@ function Summary() {
       diaryNumber: diaryNumber,
       eduCodeValue: '?',
       name: degree.name,
-      description: degreeDescription,
+      description: degree.description,
       archived: false,
       infoURL: null,
       units: degree.units,
     };
+
+    console.log('degreeData: ', degreeData)
 
     const newDegree = await postDegree(degreeData);
 
