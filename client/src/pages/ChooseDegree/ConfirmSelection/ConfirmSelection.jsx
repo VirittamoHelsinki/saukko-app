@@ -2,13 +2,16 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+// Import Zustand store
+import useUnitsStore from '../../../store/unitsStore';
+
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
-import useUnitsStore from '../../../store/unitsStore';
+
 import DegreeContext from '../../../utils/context/DegreeContext';
 import ContentEditable from 'react-contenteditable';
 

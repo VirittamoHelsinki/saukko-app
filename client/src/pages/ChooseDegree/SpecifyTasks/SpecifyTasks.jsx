@@ -2,20 +2,25 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+// Import Zustand store and custom context
+import useUnitsStore from '../../../store/unitsStore';
+import DegreeContext from '../../../utils/context/DegreeContext';
+
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
-import { useTheme } from '@mui/material/styles';
 import Stepper from '../../../components/Stepper/Stepper';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+
+// Import MUI
 import Box from '@mui/material/Box';
-import MobileStepper from '@mui/material/MobileStepper';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import useUnitsStore from '../../../store/unitsStore';
-import DegreeContext from '../../../utils/context/DegreeContext';
+import MobileStepper from '@mui/material/MobileStepper';
+import { useTheme } from '@mui/material/styles';
+
 import {
   CriteriaFieldsContextProvider,
   useCriteriaFieldsContext,
