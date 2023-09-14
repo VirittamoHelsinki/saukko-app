@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import useStore from '../../../store/useStore';
 import useUnitsStore from '../../../store/unitsStore';
 import DegreeContext from '../../../utils/context/DegreeContext';
+import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -33,6 +34,10 @@ function Summary() {
 
   // Set path & get degree units from DegreeContext
   const { degree, degreeFound } = useContext(DegreeContext);
+  // Internal degree context
+  const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalDegreeContext);
+  
+  // Get criteria fields from context
   const { criteriaFields } = useCriteriaFieldsContext();
 
   // Get checked units from unitsStore
@@ -53,7 +58,7 @@ function Summary() {
   const handleSubmit = async () => {
     
     const degreeData = {
-      diaryNumber: diaryNumber,
+      diaryNumber: diaryNumber || degree.diaryNumber,
       eduCodeValue: degree.eduCodeValue,
       name: degree.name,
       description: degree.description,
@@ -61,12 +66,16 @@ function Summary() {
       infoURL: degree.examInfoURL || '',
       units: degree.units,
     };
-    console.log('degree(in state): ', degree)
-    console.log('sending degreeData: ', degreeData)
 
+    // Post the new degree to the internal database
+    // and save the response to a variable.
     const newDegree = await postDegree(degreeData);
 
+    // Save degree to zustand store
     addDegree(newDegree);
+
+    // Save degree to Context store.
+    setAllInternalDegrees([...allInternalDegrees, newDegree]);
 
     navigate(`/userdashboard`);
   };

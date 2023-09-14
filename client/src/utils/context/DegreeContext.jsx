@@ -16,6 +16,7 @@ const DegreeContextProvider = (props) => {
     const getDegrees = async () => {
       try {
         const response = await fetchAll();
+        console.log('ePerusteet degrees: ', response.data)
         setAllDegrees(response.data);
       } catch (err) {
         console.error(err);
@@ -29,6 +30,7 @@ const DegreeContextProvider = (props) => {
     const getDegree = async () => {
       try {
         const degreeResponse = await fetchById(degreeId);
+        console.log('ePerusteet degree: ', degreeResponse.data)
         setDegree(degreeResponse.data);
       } catch (err) {
         console.error(err);

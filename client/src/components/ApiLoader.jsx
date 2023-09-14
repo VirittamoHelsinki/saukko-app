@@ -6,10 +6,14 @@ import { fetchAllInternalDegrees } from '../api/degree';
 import { fetchAllInternalWorkplaces } from '../api/workplace';
 
 import useStore from '../store/useStore';
+import InternalDegreeContext from '../utils/context/InternalDegreeContext';
 
 // Non-visual component that loads data from the backend and adds it to the store.
 const ApiLoader = () => {
     const { loggedIn } = useContext(AuthContext);
+    const {
+        allInternalDegrees, setAllInternalDegrees
+    } = useContext(InternalDegreeContext);
 
     const {
         degrees,
@@ -33,9 +37,10 @@ const ApiLoader = () => {
 
     // Console logs that show what was actually saved into the store.
     useEffect(() => {
-      console.log('Internal database degrees: ', degrees);
-      console.log('Internal database workplaces: ', workplaces);
-    }, [degrees, workplaces]);
+      console.log('Internal database workplaces(zustand): ', workplaces);
+      console.log('Internal database degrees(zustand): ', degrees);
+      console.log('Internal database degrees(Context): ', allInternalDegrees);
+    }, [degrees, workplaces, allInternalDegrees]);
 
     // Component returns no visual components because its purpose
     // is to simply load data from the backend and add it to the

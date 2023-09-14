@@ -1,8 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState, useContext } from 'react';
 import useUnitsStore from '../../store/unitsStore';
 import {
   fetchAllInternalDegrees, fetchInternalDegreeById
 } from '../../api/degree.js';
+import AuthContext from '../../utils/context/AuthContext';
 
 const InternalDegreeContext = createContext();
 
@@ -10,6 +11,8 @@ export const InternalDegreeContextProvider = (props) => {
   const [allInternalDegrees, setAllInternalDegrees] = useState([]);
   const [internalDegree, setInternalDegree] = useState({});
   const [internalDegreeId, setinternalDegreeId] = useState('');
+
+  const { loggedIn } = useContext(AuthContext);
 
   //fetch all degrees from internal saukko database
   useEffect(() => {
@@ -22,7 +25,7 @@ export const InternalDegreeContextProvider = (props) => {
       }
     };
     getInternalDegrees();
-  }, []);
+  }, [loggedIn]);
 
   // Fetch degree by id
   useEffect(() => {
@@ -45,7 +48,10 @@ export const InternalDegreeContextProvider = (props) => {
 
   return (
     <div>
-      <InternalDegreeContext.Provider value={{ internalDegree, allInternalDegrees, setinternalDegreeId, degreeFound, internalDegreeId }}>
+      <InternalDegreeContext.Provider value={{
+        internalDegree, allInternalDegrees, setinternalDegreeId, degreeFound, internalDegreeId,
+        setAllInternalDegrees
+      }}>
         {props.children}
       </InternalDegreeContext.Provider>
     </div>
