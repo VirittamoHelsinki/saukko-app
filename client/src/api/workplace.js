@@ -11,13 +11,13 @@ const fetchCompanyData = async (businessID) => {
 };
 
 // Fetch all workplaces from internal saukko database.
-const fetchAllWorkplaces = async () => {
+const fetchAllInternalWorkplaces = async () => {
   const response = await axios.get(`${baseURL}${middleURL}/workplace`)
   return response.data
 }
 
 // Fetch a workplace by id from internal saukko database.
-const fetchWorkplaceById = async id => {
+const fetchInternalWorkplaceById = async id => {
   const response = await axios.get(`${baseURL}${middleURL}/workplace/${id}`)
   return response.data
 }
@@ -41,6 +41,9 @@ const removeWorkplace = async (id) => {
 }
 
 export {
-  fetchCompanyData, fetchAllWorkplaces, fetchWorkplaceById,
+  // external API routes:
+  fetchCompanyData,
+  // Internal saukko database routes:
+  fetchAllInternalWorkplaces, fetchInternalWorkplaceById,
   postWorkplace, updateWorkplace, removeWorkplace
 }

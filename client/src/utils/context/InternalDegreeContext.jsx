@@ -1,6 +1,8 @@
 import React, { createContext, useEffect, useState } from 'react';
 import useUnitsStore from '../../store/unitsStore';
-import { fetchAll, fetchById } from '../../api/degree.js';
+import {
+  fetchAllInternalDegrees, fetchInternalDegreeById
+} from '../../api/degree.js';
 
 const InternalDegreeContext = createContext();
 
@@ -13,8 +15,8 @@ export const InternalDegreeContextProvider = (props) => {
   useEffect(() => {
     const getInternalDegrees = async () => {
       try {
-        const internalDegreesRes = await fetchAll();
-        setAllInternalDegrees(internalDegreesRes.data)
+        const internalDegrees = await fetchAllInternalDegrees();
+        setAllInternalDegrees(internalDegrees)
       } catch (err) {
         console.log(err)
       }
@@ -26,9 +28,9 @@ export const InternalDegreeContextProvider = (props) => {
   useEffect(() => {
     const getInternalDegree = async () => {
       try {
-        const degreeResponse = await fetchById(internalDegreeId);
+        const degree = await fetchInternalDegreeById(internalDegreeId);
         // Set state
-        setInternalDegree(degreeResponse.data);
+        setInternalDegree(degree);
       } catch (err) {
         console.error(err);
       }

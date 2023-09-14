@@ -17,8 +17,14 @@ const fetchById = async id => {
 }
 
 // Fetch all degrees from internal saukko database.
-const fetchAllDegrees = async () => {
+const fetchAllInternalDegrees = async () => {
   const response = await axios.get(`${baseURL}${middleURL}/internal/degrees`)
+  return response.data
+}
+
+// Fetch a degree by id from internal saukko database.
+const fetchInternalDegreeById = async id => {
+  const response = await axios.get(`${baseURL}${middleURL}/internal/degree/${id}`)
   return response.data
 }
 
@@ -28,4 +34,10 @@ const postDegree = async degree => {
   return response.data
 }
 
-export { fetchAll, fetchById, fetchAllDegrees, postDegree }
+export {
+  // Eperusteet routes:
+  fetchAll, fetchById, 
+  // Internal saukko database routes:
+  fetchAllInternalDegrees, fetchInternalDegreeById,
+  postDegree
+}

@@ -2,8 +2,8 @@ import { useContext, useEffect } from 'react';
 
 // file imports
 import AuthContext from '../utils/context/AuthContext';
-import { fetchAllDegrees } from '../api/degree';
-import { fetchAllWorkplaces } from '../api/workplace';
+import { fetchAllInternalDegrees } from '../api/degree';
+import { fetchAllInternalWorkplaces } from '../api/workplace';
 
 import useStore from '../store/useStore';
 
@@ -21,11 +21,11 @@ const ApiLoader = () => {
     // Load data from the backend if the user has logged in.
     useEffect(() => {
       if (loggedIn) {
-        fetchAllDegrees()
+        fetchAllInternalDegrees()
         .then(data => setDegrees(data))
         .catch(err => console.log(err));
 
-        fetchAllWorkplaces()
+        fetchAllInternalWorkplaces()
         .then(data => setWorkplaces(data))
         .catch(err => console.log(err));
       }
