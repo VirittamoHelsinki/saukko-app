@@ -28,6 +28,7 @@ function Summary() {
     expiry,
     transitionEnds,
     addDegree,
+    degrees
   } = useStore();
 
   // Set path & get degree units from DegreeContext
@@ -50,18 +51,18 @@ function Summary() {
   ];
 
   const handleSubmit = async () => {
-    // TODO: Add correct fields from store to degreeData
+    
     const degreeData = {
       diaryNumber: diaryNumber,
-      eduCodeValue: '?',
+      eduCodeValue: degree.eduCodeValue,
       name: degree.name,
       description: degree.description,
       archived: false,
-      infoURL: null,
+      infoURL: degree.examInfoURL || '',
       units: degree.units,
     };
-
-    console.log('degreeData: ', degreeData)
+    console.log('degree(in state): ', degree)
+    console.log('sending degreeData: ', degreeData)
 
     const newDegree = await postDegree(degreeData);
 

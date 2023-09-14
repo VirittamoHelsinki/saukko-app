@@ -47,10 +47,6 @@ import CompanySearchPage from '../../pages/CompanyInfo/CompanySearchPage/Company
 import CompanyDegreeUnits from '../../pages/CompanyInfo/CompanyDegreeUnits/CompanyDegreeUnits';
 import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelection/DegreeConfirmSelection';
 
-import { fetchAllDegrees } from '../../api/degree';
-import { fetchAllWorkplaces } from '../../api/workplace';
-
-import useStore from '../../store/useStore';
 
 const Router = () => {
   let location = useLocation();
@@ -58,33 +54,6 @@ const Router = () => {
 
   const path = location.path;
   const navigate = useNavigate();
-
-  const {
-    degrees,
-    workplaces,
-    setDegrees,
-    setWorkplaces
-  } = useStore();
-
-  // Load data from the backend if the user has logged in.
-  useEffect(() => {
-    if (loggedIn) {
-      fetchAllDegrees()
-      .then(data => setDegrees(data))
-      .catch(err => console.log(err));
-
-      fetchAllWorkplaces()
-      .then(data => setWorkplaces(data))
-      .catch(err => console.log(err));
-    }
-  }, [loggedIn]);
-
-  // Update the component after the data in the store has been updated
-  // with data from the backend.
-  useEffect(() => {
-    console.log('Internal degrees: ', degrees);
-    console.log('Internal workplaces: ', workplaces);
-  }, [degrees, workplaces]);
 
   useEffect(() => {
     if (

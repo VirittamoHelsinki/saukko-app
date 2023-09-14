@@ -9,6 +9,9 @@ import { CriteriaFieldsContextProvider } from './utils/context/CriteriaFieldsCon
 import Router from "./components/Router/Router";
 import { InternalDegreeContextProvider } from "./utils/context/InternalDegreeContext";
 
+// importing ApiLoader
+import ApiLoader from "./components/ApiLoader";
+
 axios.defaults.withCredentials = true;
 
 // main app
@@ -17,9 +20,10 @@ const App = () => {
     <main className='app__wrapper'>
       <AuthContextProvider>
        <InternalDegreeContextProvider>
-       <DegreeContextProvider>
-       <CriteriaFieldsContextProvider>
-          <Router />
+        <DegreeContextProvider>
+          <CriteriaFieldsContextProvider>
+            <ApiLoader />
+            <Router />
           </CriteriaFieldsContextProvider>
         </DegreeContextProvider>
        </InternalDegreeContextProvider>
