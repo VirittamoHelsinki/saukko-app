@@ -4,7 +4,7 @@ const Degree = require("../models/degreeModel");
 const requireAuth = require("../middleware/auth");
 
 // From here on require authorization on all routes below.
-degreeRouter.all("*", requireAuth);
+//degreeRouter.all("*", requireAuth);
 
 // GET all degrees
 degreeRouter.get('/internal/degrees', async (req, res) => {
@@ -21,7 +21,7 @@ degreeRouter.get('/internal/degrees', async (req, res) => {
 degreeRouter.post('/internal/degrees', async (req, res) => {
     try {
       const newDegreeData = req.body; // Assuming you're sending the degree data in the request body
-      console.log('degree data:', newDegreeData)
+
       if (!newDegreeData.eduCodeValue) {
         console.log("Name field empty")
         return res.status(400).json({ errorMessage: "Empty Field" });
