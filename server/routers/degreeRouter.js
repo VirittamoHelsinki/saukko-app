@@ -4,7 +4,7 @@ const Degree = require("../models/degreeModel");
 const requireAuth = require("../middleware/auth");
 
 // From here on require authorization on all routes below.
-//degreeRouter.all("*", requireAuth);
+degreeRouter.all("*", requireAuth);
 
 // GET all degrees
 degreeRouter.get('/internal/degrees', async (req, res) => {
