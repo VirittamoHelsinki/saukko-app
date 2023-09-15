@@ -7,21 +7,8 @@ import React, { useContext } from 'react';
 // importing all pages which need routing
 import TestPage from '../../pages/TestPage/TestPage';
 import LandingPage from '../../pages/LandingPage/LandingPage';
-import ChooseRole from '../../pages/ChooseRole/ChooseRole';
 import LoginPage from '../../pages/LoginPage/LoginPage';
-import LoginInfo from '../../pages/CreateAccountCustomer/LoginInfo/LoginInfo';
-import GeneralInfo from '../../pages/CreateAccountCustomer/GeneralInfo/GeneralInfo';
-import WorkInfo from '../../pages/CreateAccountCustomer/WorkInfo/WorkInfo';
-import AccountCreated from '../../pages/CreateAccountCustomer/AccountCreated/AccountCreated';
-import AccountFailed from '../../pages/CreateAccountCustomer/AccountFailed/AccountFailed';
-import RegisterSupervisor from '../../pages/CreateAccountSupervisor/RegisterSupervisor';
-import RegisterTeacher from '../../pages/CreateAccountTeacher/RegisterTeacher';
-import NotificationSupervisor from '../../pages/CreateAccountSupervisor/NotificationSupervisor';
-import NotificationTeacher from '../../pages/CreateAccountTeacher/NotificationTeacher';
-import RegisterPage from '../../pages/RegisterPage/RegisterPage';
-import UserPage from '../../pages/UserPage/UserPage';
 import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
-import FirstLogin from '../../pages/FirstLogin/FirstLogin';
 import SearchPage from '../../pages/ChooseDegree/SearchPage/SearchPage';
 import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
 import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
@@ -78,7 +65,6 @@ const Router = () => {
         <Route path='/test-page' element={<TestPage />} />
         <Route path='/company-info' element={<CompanyInfo />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route
@@ -111,39 +97,16 @@ const Router = () => {
         {!loggedIn && (
           <>
             <Route exact='true' path='/' element={<LandingPage />} />
-            <Route path='/choose-role' element={<ChooseRole />} />
             <Route path='/login' element={<LoginPage />} />
-            <Route path='/register-customer' element={<RegisterPage />} />
-            <Route path='/login-info' element={<LoginInfo />} />
-            <Route path='/general-info' element={<GeneralInfo />} />
-            <Route path='/work-info' element={<WorkInfo />} />
-            <Route path='/account-failed' element={<AccountFailed />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
-
-            <Route
-              path='/register-supervisor'
-              element={<RegisterSupervisor />}
-            />
-            <Route path='/register-teacher' element={<RegisterTeacher />} />
-            <Route
-              path='/form-supervisor-sent'
-              element={<NotificationSupervisor />}
-            />
-            <Route
-              path='/form-teacher-sent'
-              element={<NotificationTeacher />}
-            />
           </>
         )}
         
         {loggedIn && (
           <>
-            <Route path='/home' element={<UserPage />} />
-            <Route path='/first-login' element={<FirstLogin />} />
             <Route path='/search' element={<SearchPage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-            <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/userdashboard' element={<UserDashboard />} />
             <Route path='/contract-info' element={<ContractInfo />} />
             <Route path='/internal/degrees' element={<CompanySearchPage />} />
