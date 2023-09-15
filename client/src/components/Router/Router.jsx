@@ -10,21 +10,8 @@ import InternalApiContext from '../../store/context/InternalApiContext';
 // importing all pages which need routing
 import TestPage from '../../pages/TestPage/TestPage';
 import LandingPage from '../../pages/LandingPage/LandingPage';
-import ChooseRole from '../../pages/ChooseRole/ChooseRole';
 import LoginPage from '../../pages/LoginPage/LoginPage';
-import LoginInfo from '../../pages/CreateAccountCustomer/LoginInfo/LoginInfo';
-import GeneralInfo from '../../pages/CreateAccountCustomer/GeneralInfo/GeneralInfo';
-import WorkInfo from '../../pages/CreateAccountCustomer/WorkInfo/WorkInfo';
-import AccountCreated from '../../pages/CreateAccountCustomer/AccountCreated/AccountCreated';
-import AccountFailed from '../../pages/CreateAccountCustomer/AccountFailed/AccountFailed';
-import RegisterSupervisor from '../../pages/CreateAccountSupervisor/RegisterSupervisor';
-import RegisterTeacher from '../../pages/CreateAccountTeacher/RegisterTeacher';
-import NotificationSupervisor from '../../pages/CreateAccountSupervisor/NotificationSupervisor';
-import NotificationTeacher from '../../pages/CreateAccountTeacher/NotificationTeacher';
-import RegisterPage from '../../pages/RegisterPage/RegisterPage';
-import UserPage from '../../pages/UserPage/UserPage';
 import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
-import FirstLogin from '../../pages/FirstLogin/FirstLogin';
 import SearchPage from '../../pages/ChooseDegree/SearchPage/SearchPage';
 import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
 import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
@@ -40,7 +27,7 @@ import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import CompanyInfo from '../../pages/CompanyInfo/CompanyInfo';
-
+import AdminMenu from '../../pages/AdminMenu/AdminMenu';
 import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/EvaluationForm';
 import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
 import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/EvaluationUnits';
@@ -52,7 +39,7 @@ import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelecti
 
 const Router = () => {
   let location = useLocation();
-  const { loggedIn } = useContext(AuthContext);
+  const { loggedIn, user } = useContext(AuthContext);
 
   // Used only for console.log at the moment.
   const { allInternalDegrees, workplaces } = useContext(InternalApiContext);
@@ -85,12 +72,11 @@ const Router = () => {
   return (
     <>
       <Routes key={location.pathname} location={location}>
-        {/* placeholder paths and pages */}
 
+        {/* placeholder paths and pages */}
         <Route path='/test-page' element={<TestPage />} />
         <Route path='/company-info' element={<CompanyInfo />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route path='/first-login' element={<FirstLogin />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
         <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
         <Route
@@ -112,7 +98,6 @@ const Router = () => {
           element={<SpecifyTasks />}
         />
         <Route path='/degrees/:degreeId/summary' element={<Summary />} />
-
         <Route path='/evaluation-form' element={<EvaluationForm />} />
         <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
         <Route path='/evaluation-units' element={<EvaluationUnits />} />
@@ -124,44 +109,26 @@ const Router = () => {
         {!loggedIn && (
           <>
             <Route exact='true' path='/' element={<LandingPage />} />
-            <Route path='/choose-role' element={<ChooseRole />} />
             <Route path='/login' element={<LoginPage />} />
-            <Route path='/register-customer' element={<RegisterPage />} />
-            <Route path='/login-info' element={<LoginInfo />} />
-            <Route path='/general-info' element={<GeneralInfo />} />
-            <Route path='/work-info' element={<WorkInfo />} />
-            <Route path='/account-failed' element={<AccountFailed />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
-
-            <Route
-              path='/register-supervisor'
-              element={<RegisterSupervisor />}
-            />
-            <Route path='/register-teacher' element={<RegisterTeacher />} />
-            <Route
-              path='/form-supervisor-sent'
-              element={<NotificationSupervisor />}
-            />
-            <Route
-              path='/form-teacher-sent'
-              element={<NotificationTeacher />}
-            />
           </>
         )}
+        
         {loggedIn && (
           <>
-            <Route path='/home' element={<UserPage />} />
-            <Route path='/first-login' element={<FirstLogin />} />
             <Route path='/search' element={<SearchPage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-            <Route path='/account-created' element={<AccountCreated />} />
             <Route path='/userdashboard' element={<UserDashboard />} />
             <Route path='/contract-info' element={<ContractInfo />} />
             <Route path='/internal/degrees' element={<CompanySearchPage />} />
             <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
             <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
           </>
+        )}
+
+        {loggedIn && user.role === 'teacher' && (
+          <Route path='/admin-menu' element={<AdminMenu />} />
         )}
       </Routes>
     </>
