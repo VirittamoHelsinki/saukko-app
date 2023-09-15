@@ -1,13 +1,13 @@
 // importing all sass styling
 import './scss/index.scss';
 import axios from 'axios';
-import { AuthContextProvider } from './utils/context/AuthContext';
-import { DegreeContextProvider } from './utils/context/DegreeContext';
-import { CriteriaFieldsContextProvider } from './utils/context/CriteriaFieldsContext';
+import { AuthContextProvider } from './store/context/AuthContext';
+import { ExternalApiContextProvider } from './store/context/ExternalApiContext';
+import { InternalApiContextProvider } from "./store/context/InternalApiContext";
+import { CriteriaFieldsContextProvider } from './store/context/CriteriaFieldsContext';
 
 // importing page routing
 import Router from "./components/Router/Router";
-import { InternalDegreeContextProvider } from "./utils/context/InternalDegreeContext";
 
 axios.defaults.withCredentials = true;
 
@@ -16,13 +16,13 @@ const App = () => {
   return (
     <main className='app__wrapper'>
       <AuthContextProvider>
-       <InternalDegreeContextProvider>
-       <DegreeContextProvider>
-       <CriteriaFieldsContextProvider>
-          <Router />
+       <InternalApiContextProvider>
+        <ExternalApiContextProvider>
+          <CriteriaFieldsContextProvider>
+            <Router />
           </CriteriaFieldsContextProvider>
-        </DegreeContextProvider>
-       </InternalDegreeContextProvider>
+        </ExternalApiContextProvider>
+       </InternalApiContextProvider>
       </AuthContextProvider>
     </main>
   );

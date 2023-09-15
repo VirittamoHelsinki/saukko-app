@@ -10,7 +10,7 @@ import UserNav from '../../components/UserNav/UserNav';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 import PopUpForm from '../../components/PopUpForm/PopUpForm';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
-import AuthContext from '../../utils/context/AuthContext';
+import AuthContext from '../../store/context/AuthContext';
 import { logoutUser } from '../../api/user';
 
 function ProfilePage() {

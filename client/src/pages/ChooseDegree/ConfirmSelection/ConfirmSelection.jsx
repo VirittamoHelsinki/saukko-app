@@ -2,21 +2,24 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+// Import Zustand store
+import useUnitsStore from '../../../store/zustand/unitsStore';
+
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
-import useUnitsStore from '../../../store/unitsStore';
-import DegreeContext from '../../../utils/context/DegreeContext';
+
+import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import ContentEditable from 'react-contenteditable';
 
 function ConfirmSelection() {
   const navigate = useNavigate();
 
-  // Set path & get degree units from DegreeContext
-  const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
+  // Set path & get degree units from ExternalApiContext
+  const { setDegreeId, degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
   const [isEditable, setIsEditable] = useState(false);
 

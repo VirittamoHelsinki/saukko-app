@@ -1,8 +1,13 @@
-const workRouter = require("express").Router();
+const workplaceRouter = require("express").Router();
 const Workplace = require("../models/workplaceModel");
 
+const requireAuth = require("../middleware/auth");
+
+// From here on require authorization on all routes below.
+workplaceRouter.all("*", requireAuth);
+
 // Fetch all workplaces
-workRouter.get("/workplace", async (req, res) => {
+workplaceRouter.get("/workplace", async (req, res) => {
   try {
     const workplaces =
       await Workplace.find({})
@@ -18,7 +23,7 @@ workRouter.get("/workplace", async (req, res) => {
 });
 
 // Fetch workplace data by workplaceId
-workRouter.get("/workplace/:id", async (req, res) => {
+workplaceRouter.get("/workplace/:id", async (req, res) => {
   try {
     const workplaceId = req.params.id;
 
@@ -41,7 +46,7 @@ workRouter.get("/workplace/:id", async (req, res) => {
 });
 
 // Delete workplace by workplaceId
-workRouter.delete("/workplace/:id", async (req, res) => {
+workplaceRouter.delete("/workplace/:id", async (req, res) => {
   try {
     const workplaceId = req.params.id;
 
@@ -60,7 +65,7 @@ workRouter.delete("/workplace/:id", async (req, res) => {
 
 // General update method that allows updating any field in the workplace document.
 // Might want to replace this with more specific update methods.
-workRouter.put("/workplace/:id", async (req, res) => {
+workplaceRouter.put("/workplace/:id", async (req, res) => {
   try {
     const workplaceId = req.params.id;
     const { businessId, name, supervisors, departments } = req.body;
@@ -108,7 +113,7 @@ workRouter.put("/workplace/:id", async (req, res) => {
 })
 
 // Create a new workplace
-workRouter.post("/workplace", async (req, res) => {
+workplaceRouter.post("/workplace", async (req, res) => {
   try {
     // Extract workplace data from the request body
     const { businessId, name, supervisors, departments } = req.body;
@@ -141,4 +146,4 @@ workRouter.post("/workplace", async (req, res) => {
   }
 });
 
-module.exports = workRouter;
+module.exports = workplaceRouter;

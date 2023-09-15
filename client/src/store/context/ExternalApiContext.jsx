@@ -1,10 +1,13 @@
 import React, { useEffect, useState, createContext } from 'react';
-import useUnitsStore from '../../store/unitsStore';
-import { fetchAll, fetchById } from '../../api/degree.js';
+import useUnitsStore from '../zustand/unitsStore';
+import { fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
 
-const DegreeContext = createContext();
+const ExternalApiContext = createContext();
 
-const DegreeContextProvider = (props) => {
+// Purpose of this Provider is to give manage data fetched from external APIs
+// Currently used for fetching degrees from ePerusteet.
+// Also could be used when fetching comopany data from avoin data.
+export const ExternalApiContextProvider = (props) => {
 
   // Initialize state
   const [allDegrees, setAllDegrees] = useState([]);
@@ -15,7 +18,8 @@ const DegreeContextProvider = (props) => {
   useEffect(() => {
     const getDegrees = async () => {
       try {
-        const response = await fetchAll();
+        const response = await fetchDegreesFromEperusteet();
+        console.log('ePerusteet degrees: ', response.data)
         setAllDegrees(response.data);
       } catch (err) {
         console.error(err);
@@ -28,7 +32,8 @@ const DegreeContextProvider = (props) => {
   useEffect(() => {
     const getDegree = async () => {
       try {
-        const degreeResponse = await fetchById(degreeId);
+        const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
+        console.log('ePerusteet degree: ', degreeResponse.data)
         setDegree(degreeResponse.data);
       } catch (err) {
         console.error(err);
@@ -49,11 +54,10 @@ const DegreeContextProvider = (props) => {
   }, [degreeId]);
 
   return (
-    <DegreeContext.Provider value={{ degree, allDegrees, setDegreeId, degreeFound }}>
+    <ExternalApiContext.Provider value={{ degree, allDegrees, setDegreeId, degreeFound }}>
       {props.children}
-    </DegreeContext.Provider>
+    </ExternalApiContext.Provider>
   );
 };
 
-export default DegreeContext;
-export { DegreeContextProvider };
+export default ExternalApiContext;

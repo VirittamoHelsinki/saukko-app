@@ -9,17 +9,17 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import InfoList from '../../../components/InfoList/InfoList';
-import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 import Stepper from '../../../components/Stepper/Stepper';
-import useUnitsStore from '../../../store/unitsStore';
-import useStore from '../../../store/useStore';
+import useUnitsStore from '../../../store/zustand/unitsStore';
+import useStore from '../../../store/zustand/formStore';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
   const { työpaikkaohjaajat, businessID, companyName, editedCompanyName, departmentName } = useStore();
 
-  // Set path & get degree units from DegreeContext
-  const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalDegreeContext);
+  // Set path & get degree units from ExternalApiContext
+  const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
   const params = useParams();
 
   useEffect(() => {

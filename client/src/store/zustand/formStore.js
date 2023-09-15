@@ -23,7 +23,7 @@ const useStore = create((set) => ({
   academy: '',
   education: '',
   openNotificationModal: false,
-  
+
   // Workplace flow
   businessID: [],
   businessIDError: '',

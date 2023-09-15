@@ -6,7 +6,7 @@ import { Icon } from '@iconify/react';
 // Import helsinki logo
 import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
 import HelsinkiWhiteLogo from '../../assets/Helsinki_white_logo.png';
-import AuthContext from '../../utils/context/AuthContext';
+import AuthContext from '../../store/context/AuthContext';
 
 const Waves = (props) => {
   return (

@@ -5,13 +5,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
-import DegreeContext from '../../../utils/context/DegreeContext';
+import ExternalApiContext from '../../../store/context/ExternalApiContext';
 
 function UnitInfo() {
   const navigate = useNavigate();
 
-  // Get degree from DegreeContext
-  const { degree, degreeFound } = useContext(DegreeContext);
+  // Get degree from ExternalApiContext
+  const { degree, degreeFound } = useContext(ExternalApiContext);
   console.log('degree', degree)
 
   // Find unit & save to state

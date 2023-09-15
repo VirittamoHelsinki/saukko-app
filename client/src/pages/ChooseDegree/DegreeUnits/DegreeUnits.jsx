@@ -10,15 +10,15 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
-import DegreeContext from '../../../utils/context/DegreeContext';
+import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 function DegreeUnits() {
   const navigate = useNavigate();
 
-  // Set path & get degree from DegreeContext
-  const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
+  // Set path & get degree from ExternalApiContext
+  const { setDegreeId, degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
 
   useEffect(() => {

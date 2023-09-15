@@ -1,10 +1,11 @@
+// Import react packages
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import useStore from '../../../store/useStore';
+
+// Import Zustand store
+import useStore from '../../../store/zustand/formStore';
 
 // Import components
-import DegreeContext from '../../../utils/context/DegreeContext';
-import AuthContext from '../../../utils/context/AuthContext';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
@@ -12,6 +13,10 @@ import Hyperlink from '../../../components/Hyperlink/Hyperlink';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
+
+// Umport utils
+import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import AuthContext from '../../../store/context/AuthContext';
 
 function DegreeInfo() {
   const auth = useContext(AuthContext);
@@ -60,8 +65,8 @@ function DegreeInfo() {
 
   const navigate = useNavigate();
 
-  // Set path & get degree from DegreeContext
-  const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
+  // Set path & get degree from ExternalApiContext
+  const { setDegreeId, degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
   // Text for stepper's labels
   const labelStepper = [

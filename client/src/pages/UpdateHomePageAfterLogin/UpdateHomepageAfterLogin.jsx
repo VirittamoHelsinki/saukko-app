@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import Button from '../../components/Button/Button';
-import AuthContext from '../../utils/context/AuthContext';
+import AuthContext from '../../store/context/AuthContext';
 
 const UpdateHomePageAfterLogin = () => {
   const { user } = useContext(AuthContext)

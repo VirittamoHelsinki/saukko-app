@@ -4,6 +4,9 @@ import { useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
 
+import AuthContext from '../../store/context/AuthContext';
+import InternalApiContext from '../../store/context/InternalApiContext';
+
 // importing all pages which need routing
 import TestPage from '../../pages/TestPage/TestPage';
 import LandingPage from '../../pages/LandingPage/LandingPage';
@@ -17,7 +20,6 @@ import ConfirmSelection from '../../pages/ChooseDegree/ConfirmSelection/ConfirmS
 import SpecifyTasks from '../../pages/ChooseDegree/SpecifyTasks/SpecifyTasks';
 import Summary from '../../pages/ChooseDegree/Summary/Summary';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
-import AuthContext from '../../utils/context/AuthContext';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
 import ResetPassword from '../../pages/ResetPassword/ResetPassword';
 import UserDashboard from '../../pages/UserDashboard/UserDashboard';
@@ -34,11 +36,15 @@ import CompanySearchPage from '../../pages/CompanyInfo/CompanySearchPage/Company
 import CompanyDegreeUnits from '../../pages/CompanyInfo/CompanyDegreeUnits/CompanyDegreeUnits';
 import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelection/DegreeConfirmSelection';
 
+
 const Router = () => {
   let location = useLocation();
   const { loggedIn, user } = useContext(AuthContext);
 
-  const path = location.path;
+  // Used only for console.log at the moment.
+  const { allInternalDegrees, workplaces } = useContext(InternalApiContext);
+
+  const path = location.pathname;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +62,12 @@ const Router = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [path]);
+
+  // Prints data in Context that came from internal saukko database.
+  useEffect(() => {
+    console.log('Internal database degrees: ', allInternalDegrees);
+    console.log('Internal database workplaces: ', workplaces);
+  }, [loggedIn, allInternalDegrees, workplaces]);
 
   return (
     <>

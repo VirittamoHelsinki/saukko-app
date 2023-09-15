@@ -1,7 +1,10 @@
 const degreeRouter = require("express").Router();
 const Degree = require("../models/degreeModel");
 
-// This file will be renamed.
+const requireAuth = require("../middleware/auth");
+
+// From here on require authorization on all routes below.
+degreeRouter.all("*", requireAuth);
 
 // GET all degrees
 degreeRouter.get('/internal/degrees', async (req, res) => {
@@ -14,12 +17,23 @@ degreeRouter.get('/internal/degrees', async (req, res) => {
     }
   });
 
+  // GET all degrees
+degreeRouter.get('/internal/degree/:id', async (req, res) => {
+  try {
+    const degree = await Degree.findById(req.params.id);
+    res.status(200).json(degree);
+  } catch (error) {
+    console.error('Error fetching degrees:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
   // POST a new degree
 degreeRouter.post('/internal/degrees', async (req, res) => {
     try {
       const newDegreeData = req.body; // Assuming you're sending the degree data in the request body
 
-      if (!newDegreeData.eduCodeNumber) {
+      if (!newDegreeData.eduCodeValue) {
         console.log("Name field empty")
         return res.status(400).json({ errorMessage: "Empty Field" });
       }

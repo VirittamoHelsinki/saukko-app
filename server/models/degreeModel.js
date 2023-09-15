@@ -4,7 +4,7 @@ const degreeSchema = new mongoose.Schema({
   diaryNumber: { // registration number
     type: String,
   },
-  eduCodeNumber: { // education code number
+  eduCodeValue: { // education code number
     type: String,
   },
   name: { 
@@ -48,7 +48,7 @@ const degreeSchema = new mongoose.Schema({
       _id: { // unit id
         type: Number,
         required: true,
-        unique: true,
+        //unique: true,
       },
       name: { // unit name
         fi: { // unit finnish name
@@ -70,7 +70,7 @@ const degreeSchema = new mongoose.Schema({
           _id: { // assessment id
             type: Number,
             required: true,
-            unique: true,
+            //unique: true,
           },
           name: { // assessment name
             fi: { // assessment finnish name
