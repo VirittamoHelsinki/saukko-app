@@ -1,7 +1,7 @@
 // importing react packages
 import React, { useContext } from 'react';
 import { useState, useEffect } from 'react';
-import AuthContext from '../../utils/context/AuthContext';
+import AuthContext from '../../store/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import alert from '../../assets/circle-red.svg'

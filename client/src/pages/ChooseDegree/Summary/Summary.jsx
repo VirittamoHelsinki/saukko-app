@@ -3,10 +3,10 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import Zustand store and custom context
-import useStore from '../../../store/useStore';
-import useUnitsStore from '../../../store/unitsStore';
-import DegreeContext from '../../../utils/context/DegreeContext';
-import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
+import useStore from '../../../store/zustand/formStore';
+import useUnitsStore from '../../../store/zustand/unitsStore';
+import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -14,7 +14,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
-import { useCriteriaFieldsContext } from '../../../utils/context/CriteriaFieldsContext';
+import { useCriteriaFieldsContext } from '../../../store/context/CriteriaFieldsContext';
 
 import { postDegree } from '../../../api/degree';
 
@@ -28,14 +28,12 @@ function Summary() {
     validFrom,
     expiry,
     transitionEnds,
-    addDegree,
-    degrees
   } = useStore();
 
-  // Set path & get degree units from DegreeContext
-  const { degree, degreeFound } = useContext(DegreeContext);
+  // Set path & get degree units from ExternalApiContext
+  const { degree, degreeFound } = useContext(ExternalApiContext);
   // Internal degree context
-  const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalDegreeContext);
+  const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
   
   // Get criteria fields from context
   const { criteriaFields } = useCriteriaFieldsContext();
@@ -58,7 +56,7 @@ function Summary() {
   const handleSubmit = async () => {
     
     const degreeData = {
-      diaryNumber: diaryNumber || degree.diaryNumber,
+      diaryNumber: degree.diaryNumber,
       eduCodeValue: degree.eduCodeValue,
       name: degree.name,
       description: degree.description,
@@ -70,9 +68,6 @@ function Summary() {
     // Post the new degree to the internal database
     // and save the response to a variable.
     const newDegree = await postDegree(degreeData);
-
-    // Save degree to zustand store
-    addDegree(newDegree);
 
     // Save degree to Context store.
     setAllInternalDegrees([...allInternalDegrees, newDegree]);

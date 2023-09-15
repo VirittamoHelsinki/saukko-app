@@ -3,12 +3,12 @@ import { TextInput } from 'hds-react';
 import { IconCrossCircle, IconSearch } from 'hds-react';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
-import { fetchCompanyData } from '../../api/workplace';
+import { fetchExternalCompanyData } from '../../api/workplace';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import { useNavigate } from 'react-router';
 import Stepper from '../../components/Stepper/Stepper';
-import useStore from '../../store/useStore';
+import useStore from '../../store/zustand/formStore';
 
 // Import MUI
 import Accordion from '@mui/material/Accordion';
@@ -72,7 +72,7 @@ const CompanyInfo = () => {
 
   const fetchCompanyName = async (businessID) => {
     try {
-      const response = await fetchCompanyData(businessID);
+      const response = await fetchExternalCompanyData(businessID);
       if (!response.ok) {
         setCompanyName('');
         throw new Error('Failed to fetch company name');

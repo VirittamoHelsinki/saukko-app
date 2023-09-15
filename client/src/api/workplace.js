@@ -4,8 +4,8 @@ const baseURL = process.env.REACT_APP_BACKEND_URL
 
 const middleURL = '/api'
 
-// Fetch company data from the an external API.
-const fetchCompanyData = async (businessID) => {
+// Fetch company data from avoindata API.
+const fetchExternalCompanyData = async (businessID) => {
   const response = await fetch(`${baseURL}${middleURL}/business/${businessID}`);
   return response
 };
@@ -42,7 +42,7 @@ const removeWorkplace = async (id) => {
 
 export {
   // external API routes:
-  fetchCompanyData,
+  fetchExternalCompanyData,
   // Internal saukko database routes:
   fetchAllInternalWorkplaces, fetchInternalWorkplaceById,
   postWorkplace, updateWorkplace, removeWorkplace

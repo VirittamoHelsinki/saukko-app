@@ -3,8 +3,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import Zustand store and custom context
-import useUnitsStore from '../../../store/unitsStore';
-import DegreeContext from '../../../utils/context/DegreeContext';
+import useUnitsStore from '../../../store/zustand/unitsStore';
+import ExternalApiContext from '../../../store/context/ExternalApiContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -24,13 +24,13 @@ import { useTheme } from '@mui/material/styles';
 import {
   CriteriaFieldsContextProvider,
   useCriteriaFieldsContext,
-} from '../../../utils/context/CriteriaFieldsContext';
+} from '../../../store/context/CriteriaFieldsContext';
 
 function SpecifyTasks() {
   const navigate = useNavigate();
 
-  // Set path & get degree units from DegreeContext
-  const { setDegreeId, degree, degreeFound } = useContext(DegreeContext);
+  // Set path & get degree units from ExternalApiContext
+  const { setDegreeId, degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
   const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
   const [isLoading, setIsLoading] = useState(true);

@@ -2,10 +2,10 @@ import { useContext, useEffect } from 'react';
 
 // file imports
 import AuthContext from '../utils/context/AuthContext';
-import { fetchAllInternalDegrees } from '../api/degree';
+import { fetchInternalDegrees } from '../api/degree';
 import { fetchAllInternalWorkplaces } from '../api/workplace';
 
-import useStore from '../store/useStore';
+import useStore from '../store/zustand/formStore';
 import InternalDegreeContext from '../utils/context/InternalDegreeContext';
 
 // Non-visual component that loads data from the backend and adds it to the store.
@@ -25,7 +25,7 @@ const ApiLoader = () => {
     // Load data from the backend if the user has logged in.
     useEffect(() => {
       if (loggedIn) {
-        fetchAllInternalDegrees()
+        fetchInternalDegrees()
         .then(data => setDegrees(data))
         .catch(err => console.log(err));
 

@@ -5,19 +5,19 @@ const baseURL = process.env.REACT_APP_BACKEND_URL
 const middleURL = '/api'
 
 // Fetch all degrees from ePerusteet.
-const fetchAll = async () => {
+const fetchDegreesFromEperusteet = async () => {
   const response = await axios.get(`${baseURL}${middleURL}/degrees`)
   return response
 }
 
 // Fetch a degree by id from ePerusteet.
-const fetchById = async id => {
+const fetchDegreeByIdFromEperusteet = async id => {
   const response = await axios.get(`${baseURL}${middleURL}/degree/${id}`)
   return response;
 }
 
 // Fetch all degrees from internal saukko database.
-const fetchAllInternalDegrees = async () => {
+const fetchInternalDegrees = async () => {
   const response = await axios.get(`${baseURL}${middleURL}/internal/degrees`)
   return response.data
 }
@@ -36,8 +36,8 @@ const postDegree = async degree => {
 
 export {
   // Eperusteet routes:
-  fetchAll, fetchById, 
+  fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet, 
   // Internal saukko database routes:
-  fetchAllInternalDegrees, fetchInternalDegreeById,
+  fetchInternalDegrees, fetchInternalDegreeById,
   postDegree
 }

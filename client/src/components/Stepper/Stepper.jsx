@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import checkboxMarkedCircleOutline from '@iconify/icons-mdi/checkbox-marked-circle-outline';
 import PropTypes from 'prop-types';
-import DegreeContext from '../../utils/context/DegreeContext';
+import ExternalApiContext from '../../store/context/ExternalApiContext';
 
 const Stepper = ({ activePage, totalPages, label, url }) => {
   const navigate = useNavigate();
 
-  // Get degree from DegreeContext
-  const { degree } = useContext(DegreeContext);
+  // Get degree from ExternalApiContext
+  const { degree } = useContext(ExternalApiContext);
 
   const createSteppers = () => {
     const steppers = [];

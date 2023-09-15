@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
-import DegreeContext from '../../utils/context/DegreeContext';
+import ExternalApiContext from '../../store/context/ExternalApiContext';
 
 const PageNumbers = ({ activePage }) => {
   const navigate = useNavigate();
 
-  // Get degree from DegreeContext
-  const { degree } = useContext(DegreeContext);
+  // Get degree from ExternalApiContext
+  const { degree } = useContext(ExternalApiContext);
 
   return (
     <div className="page-numbers__wrapper">
