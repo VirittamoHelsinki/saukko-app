@@ -1,0 +1,26 @@
+.feedback__wrapper{
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-bottom: 20px;
+// border: 1px solid red;
+}
+
+.title-style{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-right: 6px;
+ 
+}
+
+.first-div-style{
+  display: flex;
+  justify-content: space-around;
+
+  align-items: center;
+}
+
+
+

@@ -20,7 +20,7 @@ export default function SimpleAccordion() {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
-        
+
         >
 
           <Typography sx={{ fontWeight: '600' }}>Kesken</Typography>
@@ -28,7 +28,7 @@ export default function SimpleAccordion() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography sx={{ display: 'flex', flexDirection: 'column' }}>
-            <a href="">Alex Tenorio</a>
+            <a href="/userperformance">Alex Tenorio</a>
             <a href="">Oea Romana</a>
             <a href="">Emiliya Pere</a>
 

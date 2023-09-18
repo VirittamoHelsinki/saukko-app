@@ -14,6 +14,8 @@
 @import '../components/UnitStatus/unitstatus';
 @import '../components/Searchbar/searchbar';
 @import '../components/PageNavigationButtons/pagenavigationbuttons';
+@import '../components/PerformaceFeedback/PerformancesFeedback/performancesfeedback';
+@import '../components/PerformaceFeedback/TeacherPerformance/teacherPerformance';
 @import '../components/PopUpForm/popupform';
 @import '../pages/./TestPage/testpage';
 @import '../pages/./LoginPage/loginpage';
@@ -42,3 +44,5 @@
 @import '../pages/CreateEvaluation/EvaluationSummary/evaluationsummary';
 @import '../pages/CompanyInfo/CompanyDegreeUnits/companyDegreeUnits';
 @import '../pages/CompanyInfo/DegreeConfirmSelection/degreeConfirmSelection';
+@import '../pages/Performance/UserPerformance/userperformane'
+

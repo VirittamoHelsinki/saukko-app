@@ -7,6 +7,8 @@ import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 import InfoList from '../../components/InfoList/InfoList';
 import Button from '@mui/material/Button';
+import TeacherPerformanceFeedBack from '../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
+
 
 const TestPage = () => {
   const {
@@ -46,6 +48,9 @@ const TestPage = () => {
 
   return (
     <main className='testpage__wrapper'>
+
+
+
       <InfoList title='tiedot' data={data} />
 
       <section className='testpage__container'>
@@ -58,6 +63,7 @@ const TestPage = () => {
         <p>This is the verify password: {passwordVerify}</p>
       </section>
 
+
       <section>
         <NotificationModal
           type='warning'
@@ -66,10 +72,20 @@ const TestPage = () => {
           open={openNotificationModal}
         />
 
-        <Button variant='outlined' onClick={handleClickOpen}>
+        {/* <Button variant='outlined' onClick={handleClickOpen}>
           Open dialog
-        </Button>
+        </Button> */}
       </section>
+      {/* <section >
+        <PerformancesFeedback></PerformancesFeedback>
+      </section>
+      <section>
+        <UserPerformance></UserPerformance>
+      </section> */}
+      <section>
+        <TeacherPerformanceFeedBack></TeacherPerformanceFeedBack>
+      </section>
+
     </main>
   );
 };
