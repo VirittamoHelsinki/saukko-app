@@ -33,6 +33,8 @@ const UserDashboard = () => {
             <UnitStatus
               status={1}
               subheader="1. Tieto- ja viestintätekniikan perustehtävät"
+              link='/userperformance'
+
             />
             <UnitStatus
               status={3}
@@ -58,6 +60,7 @@ const UserDashboard = () => {
             <UnitStatus
               status={1}
               subheader="1. Tieto- ja viestintätekniikan perustehtävät"
+              link='/userperformance'
             />
             <UnitStatus
               status={2}
