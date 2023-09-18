@@ -16,6 +16,14 @@
       width: 100%;
       gap: 20px;
 
+      .button__container {
+        flex-direction: row-reverse;
+
+        .button__icon {
+          font-size: 1.5rem;
+        }
+      }
+
       h2 {
         font-size: 18px;
       }
@@ -30,10 +38,10 @@
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          padding: 12px;
+          padding: 20px;
 
-          h3 {
-            font-size: 16px;
+          p {
+            font-size: 1rem;
           }
 
           .addDegree__container--list-item-bottom {
@@ -41,18 +49,8 @@
             flex-direction: column;
             gap: 12px;
 
-            div {
-              display: flex;
-              justify-content: space-between;
-            }
-
-            p {
-              font-size: 12px;
-            }
-
             li {
               font-size: 18px;
-              font-weight: 600;
               text-align: end;
             }
           }

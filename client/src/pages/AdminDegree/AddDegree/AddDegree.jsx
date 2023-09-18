@@ -4,6 +4,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import Searchbar from '../../../components/Searchbar/Searchbar';
+import Button from '../../../components/Button/Button';
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
@@ -21,7 +22,7 @@ const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
           className='addDegree__container--list-item'
           onClick={() => navigate(`${degree._id}`)}
         >
-          <h3>{degree.name.fi}</h3>
+          <p>{degree.name.fi}</p>
         </div>
       ))}
     </>
@@ -117,11 +118,25 @@ const AddDegree = () => {
     <main className='addDegree__wrapper'>
       <WavesHeader
         title='Koulutukset'
-        secondTitle='Ammatilliset koulutukset'
+        secondTitle='Tutkintojen hallinta'
         disabled={false}
       />
       <UserNav />
       <section className='addDegree__container'>
+        <Button
+          text='Lisää tutkinto'
+          style={{
+            marginLeft: '25%',
+            marginBottom: '30px',
+            backgroundColor: '#0000BF',
+            color: 'white',
+            marginTop: '25px',
+            width: '50%',
+          }}
+          icon={'ic:baseline-plus'}
+          onClick={''}
+        />
+
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
 
         <div className='addDegree__container--list'>
