@@ -29,9 +29,6 @@ import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/Up
 import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import CompanyInfo from '../../pages/CompanyInfo/CompanyInfo';
 import AdminMenu from '../../pages/AdminMenu/AdminMenu';
-
-import AdminMenu from '../../pages/AdminMenu/AdminMenu';
-
 import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/EvaluationForm';
 import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
 import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/EvaluationUnits';
