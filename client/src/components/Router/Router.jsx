@@ -12,13 +12,13 @@ import TestPage from '../../pages/TestPage/TestPage';
 import LandingPage from '../../pages/LandingPage/LandingPage';
 import LoginPage from '../../pages/LoginPage/LoginPage';
 import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
-import SearchPage from '../../pages/ChooseDegree/SearchPage/SearchPage';
-import DegreeInfo from '../../pages/ChooseDegree/DegreeInfo/DegreeInfo';
-import DegreeUnits from '../../pages/ChooseDegree/DegreeUnits/DegreeUnits';
-import UnitInfo from '../../pages/ChooseDegree/UnitInfo/UnitInfo';
-import ConfirmSelection from '../../pages/ChooseDegree/ConfirmSelection/ConfirmSelection';
-import SpecifyTasks from '../../pages/ChooseDegree/SpecifyTasks/SpecifyTasks';
-import Summary from '../../pages/ChooseDegree/Summary/Summary';
+import SearchPage from '../../pages/AdminDegree/SearchPage/SearchPage';
+import DegreeInfo from '../../pages/AdminDegree/DegreeInfo/DegreeInfo';
+import DegreeUnits from '../../pages/AdminDegree/DegreeUnits/DegreeUnits';
+import UnitInfo from '../../pages/AdminDegree/UnitInfo/UnitInfo';
+import ConfirmSelection from '../../pages/AdminDegree/ConfirmSelection/ConfirmSelection';
+import SpecifyTasks from '../../pages/AdminDegree/SpecifyTasks/SpecifyTasks';
+import Summary from '../../pages/AdminDegree/Summary/Summary';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
 import ResetPassword from '../../pages/ResetPassword/ResetPassword';
@@ -35,7 +35,6 @@ import EvaluationSummary from '../../pages/CreateEvaluation/EvaluationSummary/Ev
 import CompanySearchPage from '../../pages/CompanyInfo/CompanySearchPage/CompanySearchPage';
 import CompanyDegreeUnits from '../../pages/CompanyInfo/CompanyDegreeUnits/CompanyDegreeUnits';
 import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelection/DegreeConfirmSelection';
-
 
 const Router = () => {
   let location = useLocation();
@@ -72,7 +71,6 @@ const Router = () => {
   return (
     <>
       <Routes key={location.pathname} location={location}>
-
         {/* placeholder paths and pages */}
         <Route path='/test-page' element={<TestPage />} />
         <Route path='/company-info' element={<CompanyInfo />} />
@@ -103,8 +101,14 @@ const Router = () => {
         <Route path='/evaluation-units' element={<EvaluationUnits />} />
         <Route path='/evaluation-summary' element={<EvaluationSummary />} />
         <Route path='/internal/degrees' element={<CompanySearchPage />} />
-        <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
-        <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
+        <Route
+          path='internal/degrees/:degreeId/units'
+          element={<CompanyDegreeUnits />}
+        />
+        <Route
+          path='internal/degrees/:degreeId/units/confirm-selection'
+          element={<DegreeConfirmSelection />}
+        />
 
         {!loggedIn && (
           <>
@@ -113,7 +117,7 @@ const Router = () => {
             <Route path='/reset-password/:token' element={<ResetPassword />} />
           </>
         )}
-        
+
         {loggedIn && (
           <>
             <Route path='/search' element={<SearchPage />} />
@@ -122,8 +126,14 @@ const Router = () => {
             <Route path='/userdashboard' element={<UserDashboard />} />
             <Route path='/contract-info' element={<ContractInfo />} />
             <Route path='/internal/degrees' element={<CompanySearchPage />} />
-            <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
-            <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
+            <Route
+              path='internal/degrees/:degreeId/units'
+              element={<CompanyDegreeUnits />}
+            />
+            <Route
+              path='internal/degrees/:degreeId/units/confirm-selection'
+              element={<DegreeConfirmSelection />}
+            />
           </>
         )}
 
