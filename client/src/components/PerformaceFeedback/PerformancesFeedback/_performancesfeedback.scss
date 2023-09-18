@@ -1,0 +1,23 @@
+.feedback{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  padding-top: 20px;
+  // border: solid 1px red;
+
+}
+.button-style{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 20px;
+
+ 
+}
+.feedback-para{
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 17px;
+
+}

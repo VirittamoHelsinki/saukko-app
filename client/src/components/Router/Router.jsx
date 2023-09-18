@@ -38,7 +38,6 @@ import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import CompanyInfo from '../../pages/CompanyInfo/CompanyInfo';
-
 import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/EvaluationForm';
 import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
 import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/EvaluationUnits';
@@ -46,6 +45,8 @@ import EvaluationSummary from '../../pages/CreateEvaluation/EvaluationSummary/Ev
 import CompanySearchPage from '../../pages/CompanyInfo/CompanySearchPage/CompanySearchPage';
 import CompanyDegreeUnits from '../../pages/CompanyInfo/CompanyDegreeUnits/CompanyDegreeUnits';
 import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelection/DegreeConfirmSelection';
+import UserPerformance from '../../pages/Performance/UserPerformance/UserPerformance';
+
 
 const Router = () => {
   let location = useLocation();
@@ -149,6 +150,7 @@ const Router = () => {
             <Route path='/internal/degrees' element={<CompanySearchPage />} />
             <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
             <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
+            <Route path='/userperformance' element={<UserPerformance></UserPerformance>} />
           </>
         )}
       </Routes>

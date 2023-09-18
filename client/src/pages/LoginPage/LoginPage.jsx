@@ -12,6 +12,7 @@ import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import { Icon } from '@iconify/react';
 import { loginUser } from '../../api/user';
 
+
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState(''),
@@ -131,6 +132,7 @@ const LoginPage = () => {
           text='Kirjaudu sisään'
         />
       </section>
+
     </main>
   );
 };
