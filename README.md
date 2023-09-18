@@ -29,21 +29,16 @@ git clone https://github.com/VirittamoHelsinki/saukko-app.git
 
 cd saukko-app
 
-cd server
-npm install
-type nul > .env (ask for contents)
-npm run dev
+npm run setup (Install all dependencies simultaneously for the front-end, back-end, and root).
 
-cd client
-npm install
-npm start
+npm run start:prod (To run the project's back-end and front-end simultaneously in a production state)
+npm run start:dev  (To run the project's back-end and front-end simultaneously in a development state)
 ```
 
-Runs the app in the development mode.\
-Open **[http://localhost:3000](http://localhost:3000)** to view it in your browser.
+When running on a local machine, open **[http://localhost:3000](http://localhost:3000)** in your browser to view the app.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 <br><br>
 
-Last updated: 12/05/2023 by Jesse Hamberg
+Last updated: 07/09/2023 by DJ-AG

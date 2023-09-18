@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
@@ -8,7 +8,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Stepper from '../../../components/Stepper/Stepper';
-import useEvaluationStore from '../../../store/evaluationStore';
+import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Import libraries
 import { Icon } from '@iconify/react';
@@ -42,32 +42,284 @@ const mockData = [
         lastName: 'Virtanen'
       },
     ],
-    units: [
-      '56789',
-      '67890'
-    ]
   },
   {
     _id: '2',
     businessId: '070 - 5658 -9',
     name: 'Aimet OY',
-    customerId: '567',
+    customerId: '537',
+    departments: [
+      {
+        id: '1',
+        name: 'Department 1',
+        supervisors: [
+          {
+            _id: '22557',
+            firstName: 'Maija',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '09886',
+            firstName: 'Pekka',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '2',
+        name: 'Department 2',
+        supervisors: [
+          {
+            _id: '95842',
+            firstName: 'Liisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '92834',
+            firstName: 'Olli',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '3',
+        name: 'Department 3',
+        supervisors: [
+          {
+            _id: '67899',
+            firstName: 'Tero',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '22447',
+            firstName: 'Jonna',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+    ],
+  },
+  {
+    _id: '3',
+    businessId: '070 - 5658 -9',
+    name: 'Company 3',
+    customerId: '123',
     supervisors: [
       {
-        _id: '67895',
+        _id: '67890',
         firstName: 'Kaisa',
         lastName: 'Virtanen'
       },
       {
-        _id: '68948',
+        _id: '68943',
         firstName: 'Sami',
         lastName: 'Virtanen'
       },
     ],
-    units: [
-      '56780',
-      '67891'
-    ]
+  },
+  {
+    _id: '4',
+    businessId: '070 - 5658 -9',
+    name: 'Aimet OY',
+    customerId: '537',
+    departments: [
+      {
+        id: '1',
+        name: 'Department 1',
+        supervisors: [
+          {
+            _id: '22557',
+            firstName: 'Maija',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '09886',
+            firstName: 'Pekka',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '2',
+        name: 'Department 2',
+        supervisors: [
+          {
+            _id: '95842',
+            firstName: 'Liisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '92834',
+            firstName: 'Olli',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '3',
+        name: 'Department 3',
+        supervisors: [
+          {
+            _id: '67899',
+            firstName: 'Tero',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '22447',
+            firstName: 'Jonna',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+    ],
+  },
+  {
+    _id: '5',
+    businessId: '070 - 5658 -9',
+    name: 'Company 4',
+    customerId: '123',
+    supervisors: [
+      {
+        _id: '67890',
+        firstName: 'Kaisa',
+        lastName: 'Virtanen'
+      },
+      {
+        _id: '68943',
+        firstName: 'Sami',
+        lastName: 'Virtanen'
+      },
+    ],
+  },
+  {
+    _id: '6',
+    businessId: '070 - 5658 -9',
+    name: 'Company 5',
+    customerId: '537',
+    departments: [
+      {
+        id: '1',
+        name: 'Department 1',
+        supervisors: [
+          {
+            _id: '22557',
+            firstName: 'Maija',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '09886',
+            firstName: 'Pekka',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '2',
+        name: 'Department 2',
+        supervisors: [
+          {
+            _id: '95842',
+            firstName: 'Liisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '92834',
+            firstName: 'Olli',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '3',
+        name: 'Department 3',
+        supervisors: [
+          {
+            _id: '67899',
+            firstName: 'Tero',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '22447',
+            firstName: 'Jonna',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+    ],
+  },
+  {
+    _id: '7',
+    businessId: '070 - 5658 -9',
+    name: 'Company 7',
+    customerId: '123',
+    supervisors: [
+      {
+        _id: '67890',
+        firstName: 'Kaisa',
+        lastName: 'Virtanen'
+      },
+      {
+        _id: '68943',
+        firstName: 'Sami',
+        lastName: 'Virtanen'
+      },
+    ],
+  },
+  {
+    _id: '8',
+    businessId: '070 - 5658 -9',
+    name: 'Company 8',
+    customerId: '537',
+    departments: [
+      {
+        id: '1',
+        name: 'Department 1',
+        supervisors: [
+          {
+            _id: '22557',
+            firstName: 'Maija',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '09886',
+            firstName: 'Pekka',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '2',
+        name: 'Department 2',
+        supervisors: [
+          {
+            _id: '95842',
+            firstName: 'Liisa',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '92834',
+            firstName: 'Olli',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+      {
+        id: '3',
+        name: 'Department 3',
+        supervisors: [
+          {
+            _id: '67899',
+            firstName: 'Tero',
+            lastName: 'Virtanen'
+          },
+          {
+            _id: '22447',
+            firstName: 'Jonna',
+            lastName: 'Virtanen'
+          },    
+        ],
+      },
+    ],
   },
 ]
 
@@ -80,34 +332,59 @@ function EvaluationWorkplace() {
 
   // Setter functions from evaluationStore
   const setWorkplace = useEvaluationStore((state) => state.setWorkplace);
+  const setDepartment = useEvaluationStore((state) => state.setDepartment);
   const setSupervisor = useEvaluationStore((state) => state.setSupervisor);
+  const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
 
-  // Getter function from evaluationStore
+  // Getter functions from evaluationStore
   const workplaceFromStore = useEvaluationStore((state) => state.workplace);
+  const departmentFromStore = useEvaluationStore((state) => state.department);
   const supervisorFromStore = useEvaluationStore((state) => state.supervisor);
 
-  // Workplace selection logic
-  const handleSelectWorkplace = (event) => {
-    // Find workplace by id
-    const workplaceObj = workplaces.find(workplace => workplace._id === event.target.value)
-    // Save to store
-    setWorkplace(workplaceObj)
+  // Workplace selection
+  const toggleWorkplace = (event) => {
+    clearEvaluation();
+    const findWorkplaceById = workplaces.find(workplace => workplace._id === event.target.value)
+    setWorkplace(findWorkplaceById)
   };
   console.log('Workplace form store:', workplaceFromStore)
 
-  // Supervisor selection logic
-  const toggleSupervisor = (supervisorId) => () => {
-    // Find supervisor object by id
-    const allSupervisors = workplaces.flatMap(workplace => workplace.supervisors);
-    const foundSupervisorObj = allSupervisors.find(supervisor => supervisor._id === supervisorId);
-    // Save to store
-    setSupervisor(foundSupervisorObj) 
+  // Department selection
+  const toggleDepartment = (departmentId) => () => {
+    setSupervisor(null);
+    if (workplaceFromStore && workplaceFromStore.departments) {
+      const findDepartmentById = workplaceFromStore.departments.find(department => department.id === departmentId);
+      setDepartment(findDepartmentById);
+    } else {
+      alert('Choose department belonging to chosen workplace');
+    };
   };
-  console.log('Supervisor form store:', supervisorFromStore)
+  console.log('Department from store:', departmentFromStore)
+
+  // Supervisor selection
+  const toggleSupervisor = (supervisorId) => () => {
+    if (workplaceFromStore && workplaceFromStore.departments && departmentFromStore) {
+      const findSupervisorById = departmentFromStore.supervisors.find(supervisor => supervisor._id === supervisorId);
+      setSupervisor(findSupervisorById);
+    } else if (workplaceFromStore && !workplaceFromStore.departments) {
+      const findSupervisorById = workplaceFromStore.supervisors.find(supervisor => supervisor._id === supervisorId);
+      setSupervisor(findSupervisorById);
+    } else {
+      alert('Choose supervisor belonging to the chosen workplace')
+    }
+  };
+  console.log('Supervisor from store:', supervisorFromStore)
   
-  // Pagination logic
+  // Pagination
   const [page, setPage] = useState(1);
-  const workplacesPerPage = 15;
+  const [needsPagination, setNeedsPagination] = useState(false);
+  const workplacesPerPage = 5;
+
+  useEffect(() => {
+    const contentHeight = document.querySelector('.evaluationWorkplace__container').scrollHeight;
+    const viewportHeight = window.innerHeight;
+    setNeedsPagination(contentHeight > 1.3 * viewportHeight);
+  }, []);
   
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -115,11 +392,12 @@ function EvaluationWorkplace() {
   
   const indexOfLastWorkplace = page * workplacesPerPage;
   const indexOfFirstWorkplace = indexOfLastWorkplace - workplacesPerPage;
-  const currentWorkplaces = filteredWorkplaces?.slice(indexOfFirstWorkplace, indexOfLastWorkplace);
+  const paginatedWorkplaces = filteredWorkplaces?.slice(indexOfFirstWorkplace, indexOfLastWorkplace);
+  const workplacesToMap = needsPagination ? paginatedWorkplaces : filteredWorkplaces;
 
-  // Searchbar logic
+  // Searchbar
   const handleSearch = (event) => {
-    setPage(1); // Reset to the first page
+    setPage(1);
     setFilteredWorkplaces(
       workplaces.filter((workplace) =>
       workplace.name.toLowerCase().includes(event.target.value.toLowerCase())
@@ -159,8 +437,8 @@ function EvaluationWorkplace() {
 
         {/* Workplaces list */}
         <div>
-          { filteredWorkplaces ? 
-            filteredWorkplaces.map((workplace) => (
+          { workplacesToMap ? 
+            workplacesToMap.map((workplace) => (
               <Accordion 
                 className={`workplaces-accordion ${workplaceFromStore === workplace ? 'selected' : ''}`}
                 key={workplace._id} 
@@ -173,8 +451,7 @@ function EvaluationWorkplace() {
                     control=
                       {<Radio 
                         checked={workplaceFromStore === workplace}
-                        onChange={handleSelectWorkplace}
-                        onClick={(event) => event.stopPropagation()} // Prevent expanding accordion when clicking radio button
+                        onChange={toggleWorkplace}
                         value={workplace._id}
                         theme={createTheme({palette: {primary: {main: '#0000BF'}}})}
                       />}
@@ -192,23 +469,71 @@ function EvaluationWorkplace() {
                 </AccordionSummary>
                 <AccordionDetails>
 
-                  {/* Supervisors dropdown menu */}
-                  <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
-                  <Accordion disableGutters square className='supervisors__wrapper'>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
-                    <AccordionDetails>
-                    {workplace.supervisors.map((supervisor) => (
-                      <div 
-                        className='supervisors__wrapper-details'
-                        key={supervisor._id} 
-                        onClick={toggleSupervisor(supervisor._id)}
-                      >
-                        <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
-                        {supervisor === supervisorFromStore && <Icon icon="mdi:tick"/>}
-                      </div>
-                    ))}
-                    </AccordionDetails>
-                  </Accordion>
+                  {/* Departments */}
+                  {workplace.departments && (
+                    <>
+                      <Typography className="accordion-title"> Valitse yksikkö * </Typography>
+                      <Accordion disableGutters square className='accordion__wrapper'>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionDetails>
+                          {workplace.departments.map((department) => (
+                            <div 
+                            className='accordion__wrapper-details'
+                            key={department.id} 
+                            onClick={toggleDepartment(department.id)}
+                            >
+                              <Typography>{department.name}</Typography>
+                              {departmentFromStore && (department.id === departmentFromStore.id) && <Icon icon="mdi:tick"/>}
+                            </div>
+                          ))}
+                        </AccordionDetails>
+                      </Accordion>
+                    </>
+                  )}
+
+                  {/* Supervisors */}
+                  {!workplace.departments && (
+                    <>
+                      <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
+                      <Accordion disableGutters square className='accordion__wrapper'>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionDetails>
+                        {workplace.supervisors.map((supervisor) => (
+                          <div 
+                            className='accordion__wrapper-details'
+                            key={supervisor._id} 
+                            onClick={toggleSupervisor(supervisor._id)}
+                          >
+                            <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
+                            {supervisorFromStore && (supervisor._id === supervisorFromStore._id) && <Icon icon="mdi:tick"/>}
+                          </div>
+                        ))}
+                        </AccordionDetails>
+                      </Accordion> 
+                    </>
+                  )}
+
+                  {workplace.departments && departmentFromStore && (
+                    <>
+                      <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
+                      <Accordion disableGutters square className='accordion__wrapper'>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionDetails>
+                          {departmentFromStore.supervisors.map((supervisor) => (
+                            <div 
+                              className='accordion__wrapper-details'
+                              key={supervisor._id} 
+                              onClick={toggleSupervisor(supervisor._id)}
+                            >
+                              <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
+                              {supervisorFromStore && (supervisor._id === supervisorFromStore._id) && <Icon icon="mdi:tick"/>}
+                            </div>
+                          ))}
+                        </AccordionDetails>
+                      </Accordion> 
+                    </>
+                  )}
+                 
                 </AccordionDetails>
               </Accordion>
             ))
@@ -216,19 +541,20 @@ function EvaluationWorkplace() {
         </div>
 
         {/* Pagination */}
-        {workplaces?.length > 15 && 
+        {needsPagination && 
           <Pagination
             count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
             page={page}
             onChange={handlePageChange}
           />
         }
-      {/* Back and forward buttons */}
-      <PageNavigationButtons 
-        handleBack={() => navigate(`/evaluation-form`)} 
-        handleForward={validationHandler} 
-        forwardButtonText={'Seuraava'}
-      />
+
+        {/* Back and forward buttons */}
+        <PageNavigationButtons 
+          handleBack={() => navigate(`/evaluation-form`)} 
+          handleForward={validationHandler} 
+          forwardButtonText={'Seuraava'}
+        />
       </section>
       <UserNav />
     </main>

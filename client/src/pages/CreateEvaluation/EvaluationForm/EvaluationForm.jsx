@@ -7,8 +7,8 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Stepper from '../../../components/Stepper/Stepper';
-import AuthContext from '../../../utils/context/AuthContext';
-import useEvaluationStore from '../../../store/evaluationStore';
+import AuthContext from '../../../store/context/AuthContext';
+import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Import MUI
 import dayjs from 'dayjs';

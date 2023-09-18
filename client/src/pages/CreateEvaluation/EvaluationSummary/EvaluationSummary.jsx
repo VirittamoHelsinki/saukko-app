@@ -8,11 +8,11 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InfoList from '../../../components/InfoList/InfoList';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
-import useEvaluationStore from '../../../store/evaluationStore';
+import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import Stepper from '../../../components/Stepper/Stepper';
-import useUnitsStore from '../../../store/unitsStore';
-import useStore from '../../../store/useStore';
+import useUnitsStore from '../../../store/zustand/unitsStore';
+import useStore from '../../../store/zustand/formStore';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -21,13 +21,9 @@ function EvaluationSummary() {
   const customer = useEvaluationStore((state) => state.customer);
   const evaluation = useEvaluationStore((state) => state.evaluation);
   const workplace = useEvaluationStore((state) => state.workplace);
+  const department = useEvaluationStore((state) => state.department);
   const supervisor = useEvaluationStore((state) => state.supervisor);
   const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
-
-  console.log('Customer from store:', customer);
-  console.log('Evaluation from store:', evaluation);
-  console.log('Workplace from store:', workplace);
-  console.log('Supervisor from store:', supervisor);
 
   // Get data & functions from unitsStore
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
@@ -59,11 +55,23 @@ function EvaluationSummary() {
       content:  workplace ? workplace.businessId : '',
     },
     {
+      title: 'Työpaikanyksikkö',
+      content:  department ? department.name : '',
+    },
+    {
       title: 'Työpaikkaohjaaja',
       content: supervisor ? `${supervisor.firstName} ${supervisor.lastName}` : '',
     },
   ];
   console.log('summary data', summaryData);
+
+  // Remove department from array if there is no department
+  if (!department) {
+    const indexToRemove = summaryData.findIndex(item => item.title === 'Työpaikanyksikkö');
+    if (indexToRemove !== -1) {
+      summaryData.splice(indexToRemove, 1);
+    }
+  }
 
   // NotificationModal logic
   const {

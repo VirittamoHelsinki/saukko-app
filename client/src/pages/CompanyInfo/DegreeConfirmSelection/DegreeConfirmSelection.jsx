@@ -1,26 +1,25 @@
 // Import react packages & dependencies
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
-import PageNumbers from '../../../components/PageNumbers/PageNumbers';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import Button from '../../../components/Button/Button';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
-import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
+import InfoList from '../../../components/InfoList/InfoList';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 import Stepper from '../../../components/Stepper/Stepper';
-import { padding } from '@mui/system';
-import useUnitsStore from '../../../store/unitsStore';
-import useStore from '../../../store/useStore';
+import useUnitsStore from '../../../store/zustand/unitsStore';
+import useStore from '../../../store/zustand/formStore';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
-  const { työpaikkaohjaajat, businessID, companyName } = useStore();
-  // Set path & get degree units from DegreeContext
-  const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalDegreeContext);
+  const { työpaikkaohjaajat, businessID, companyName, editedCompanyName, departmentName } = useStore();
+
+  // Set path & get degree units from ExternalApiContext
+  const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
   const params = useParams();
 
   useEffect(() => {
@@ -29,8 +28,6 @@ function DegreeConfirmSelection() {
 
   // Get checked units from unitsStore
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
-
-
 
   // NotificationModal logic
   const {
@@ -41,6 +38,7 @@ function DegreeConfirmSelection() {
   const handleNotificationModalOpen = () => {
     setOpenNotificationModal(true);
   };
+
   // Text for stepper's labels
   const labelStepper = [
     'Lisää tiedot',
@@ -58,29 +56,24 @@ function DegreeConfirmSelection() {
             activePage={4}
             totalPages={4}
             label={labelStepper}
-
           />
         </div>
-        <div>
+        <div className='confirmSelection__infolist-wrapper'>
           <h2 className='Degree__confirmSelection__container--secondtitle'>Yhteenveto</h2>
-          <div style={{ backgroundColor: '#E6E6E6', margin: '14px', marginBottom: '0px', paddingBottom: '8px' }}>
+          <div className='confirmSelection__infolist-item'>
             <h2 className='second__title'>Työpaikka</h2>
             <p className='second__paragraph'> {businessID}</p>
-            <p className='second__paragraph'>{companyName?.name}</p>
+            <p className='second__paragraph'>{companyName ? companyName.name : editedCompanyName}</p>
+            <p className='second__paragraph'>{departmentName ? departmentName : ''}</p>
           </div>
-          <div style={{ backgroundColor: '#F2F2F2', margin: '14px', marginTop: '0px', paddingBottom: '8px' }}>
-            <h2 className='second__title'>Työpaikkaohjaaja</h2>
-            <ul >
-              {työpaikkaohjaajat.map((ohjaaja, index) => (
-                <li key={index}>
-                  <p className='second__paragraph'>{ohjaaja.firstName} {ohjaaja.lastName}</p>
-                  <p className='second__paragraph' style={{ marginBottom: '10px' }}>{ohjaaja.email}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {työpaikkaohjaajat.map((ohjaaja, index) => (
+            <div key={index} className='confirmSelection__infolist-item'>
+              <h2 className='second__title'>Työpaikkaohjaaja</h2>
+              <p className='second__paragraph'>{ohjaaja.firstName} {ohjaaja.lastName}</p>
+              <p className='second__paragraph' style={{ marginBottom: '10px' }}>{ohjaaja.email}</p>
+            </div>
+          ))}
         </div>
-
         <h1 className='Degree__confirmSelection__container--secondtitle'>{degreeFound && internalDegree.name.fi}</h1>
         <div className='confirmSelection__container--units'>
           {console.log(console.log('checked units confirm selection page: ', checkedUnits))}
@@ -102,11 +95,8 @@ function DegreeConfirmSelection() {
         open={openNotificationModal}
         redirectLink='/evaluation-summary'
       />
-
     </main>
   );
 }
 
 export default DegreeConfirmSelection;
-
-

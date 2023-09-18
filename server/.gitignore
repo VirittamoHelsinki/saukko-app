@@ -9,6 +9,8 @@
 # production
 /build
 
+package-lock.json
+
 # api rest calls
 /requests
 
