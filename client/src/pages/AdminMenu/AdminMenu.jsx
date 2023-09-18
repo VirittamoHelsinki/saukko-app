@@ -11,7 +11,7 @@ function AdminMenu() {
     <main className='adminMenu__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Hallinnointi' />
       <section className='adminMenu__container'>
-        <div className='menuItem__container' /* onClick={() => navigate('')} */> {/* Navigate to list of saved degrees when it's ready */}
+        <div className='menuItem__container' onClick={() => navigate('/degrees/add')}>
           <div className='menuItem__topRow'>
             <h1>Tutkintojen hallinta</h1>
             <Icon icon="formkit:arrowright" />

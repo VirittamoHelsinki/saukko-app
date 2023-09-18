@@ -29,9 +29,6 @@ import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/Up
 import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import CompanyInfo from '../../pages/CompanyInfo/CompanyInfo';
 import AdminMenu from '../../pages/AdminMenu/AdminMenu';
-
-import AdminMenu from '../../pages/AdminMenu/AdminMenu';
-
 import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/EvaluationForm';
 import EvaluationWorkplace from '../../pages/CreateEvaluation/EvaluationWorkplace/EvaluationWorkplace';
 import EvaluationUnits from '../../pages/CreateEvaluation/EvaluationUnits/EvaluationUnits';
@@ -40,7 +37,6 @@ import CompanySearchPage from '../../pages/CompanyInfo/CompanySearchPage/Company
 import CompanyDegreeUnits from '../../pages/CompanyInfo/CompanyDegreeUnits/CompanyDegreeUnits';
 import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelection/DegreeConfirmSelection';
 import UserPerformance from '../../pages/Performance/UserPerformance/UserPerformance';
-
 
 const Router = () => {
   let location = useLocation();
@@ -135,12 +131,9 @@ const Router = () => {
             <Route path='/internal/degrees' element={<CompanySearchPage />} />
             <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
             <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
-            <Route path='/userperformance' element={<UserPerformance></UserPerformance>} />
-
             <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
             <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
             <Route path='/userperformance' element={<UserPerformance></UserPerformance>} />
-
             <Route
               path='internal/degrees/:degreeId/units'
               element={<CompanyDegreeUnits />}
@@ -150,7 +143,6 @@ const Router = () => {
               element={<DegreeConfirmSelection />}
             />
             <Route path='/degrees/add' element={<AddDegree />} />
-
           </>
         )}
 
