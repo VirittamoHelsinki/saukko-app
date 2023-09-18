@@ -84,7 +84,7 @@ const Router = () => {
         />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
-        <Route path='/degrees/add' element={<AddDegree />} />
+
         <Route path='/degrees' element={<SearchPage />} />
         <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
         <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
@@ -136,6 +136,7 @@ const Router = () => {
               path='internal/degrees/:degreeId/units/confirm-selection'
               element={<DegreeConfirmSelection />}
             />
+            <Route path='/degrees/add' element={<AddDegree />} />
           </>
         )}
 

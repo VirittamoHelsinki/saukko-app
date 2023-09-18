@@ -2,25 +2,29 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserNav from '../../../components/UserNav/UserNav';
 import WavesHeader from '../../../components/Header/WavesHeader';
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Button from '../../../components/Button/Button';
 
 // controls how many degrees are shown at once and renders them
-const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
+const CheckLength = ({
+  filteredList,
+  allInternalDegrees,
+  paginate,
+  currentPage,
+}) => {
   const startIndex = (currentPage - 1) * paginate;
   const endIndex = startIndex + paginate;
-  const list = filteredList.length > 0 ? filteredList : allDegrees;
+  const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
 
-  const navigate = useNavigate();
-
+  //   const navigate = useNavigate();
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
         <div
           key={index}
           className='addDegree__container--list-item'
-          onClick={() => navigate(`${degree._id}`)}
+          //   onClick={() => navigate(`${degree._id}`)}
         >
           <p>{degree.name.fi}</p>
         </div>
@@ -94,13 +98,18 @@ const AddDegree = () => {
   const navigate = useNavigate();
 
   // Get degrees from ExternalApiContext
-  const { allDegrees } = useContext(ExternalApiContext);
+  //   const { allDegrees } = useContext(ExternalApiContext);
+
+  // Get degrees from InternalApiContext
+  const { allInternalDegrees } = useContext(InternalApiContext);
+
+  console.log('allInternalDegrees123: ', allInternalDegrees);
 
   // Searchbar logic
   const handleSearch = (event) => {
     setCurrentPage(1); // Reset page when searching
     setFilteredList(
-      allDegrees.filter((degree) =>
+      allInternalDegrees.filter((degree) =>
         degree.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
       )
     );
@@ -110,7 +119,7 @@ const AddDegree = () => {
   const pageCount =
     filteredList.length > 0
       ? Math.ceil(filteredList.length / paginate)
-      : Math.ceil(allDegrees.length / paginate);
+      : Math.ceil(allInternalDegrees.length / paginate);
 
   const handlePageClick = (pageNum) => {
     setCurrentPage(pageNum);
@@ -144,7 +153,7 @@ const AddDegree = () => {
         <div className='addDegree__container--list'>
           <CheckLength
             filteredList={filteredList}
-            allDegrees={allDegrees}
+            allInternalDegrees={allInternalDegrees}
             paginate={paginate}
             currentPage={currentPage}
           />

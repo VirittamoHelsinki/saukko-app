@@ -1,7 +1,10 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
 
 // Internal API calls
-import { fetchInternalDegrees, fetchInternalDegreeById } from '../../api/degree.js';
+import {
+  fetchInternalDegrees,
+  fetchInternalDegreeById,
+} from '../../api/degree.js';
 import { fetchAllInternalWorkplaces } from '../../api/workplace.js';
 
 // Internal state variable access.
@@ -12,7 +15,6 @@ const InternalApiContext = createContext();
 
 // Meant to be used with data coming from internal saukko database.
 export const InternalApiContextProvider = (props) => {
-
   const [allInternalDegrees, setAllInternalDegrees] = useState([]);
   const [internalDegree, setInternalDegree] = useState({});
   const [internalDegreeId, setinternalDegreeId] = useState('');
@@ -28,9 +30,10 @@ export const InternalApiContextProvider = (props) => {
     const getInternalDegrees = async () => {
       try {
         const internalDegrees = await fetchInternalDegrees();
-        setAllInternalDegrees(internalDegrees)
-      
-      } catch (err) { console.log(err) }
+        setAllInternalDegrees(internalDegrees);
+      } catch (err) {
+        console.log(err);
+      }
     };
     getInternalDegrees();
 
@@ -39,11 +42,11 @@ export const InternalApiContextProvider = (props) => {
       try {
         const workplaces = await fetchAllInternalWorkplaces();
         setWorkplaces(workplaces);
-      
-      } catch (err) { console.log(err) }
-    }
+      } catch (err) {
+        console.log(err);
+      }
+    };
     getWorkplaces();
-
   }, [loggedIn]);
 
   // Fetch degree by id
@@ -63,15 +66,24 @@ export const InternalApiContextProvider = (props) => {
   }, [internalDegreeId]);
 
   const degreeFound = Object.keys(internalDegree).length > 0 ? true : false;
-  const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits)
+  const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
 
   return (
     <div>
-      <InternalApiContext.Provider value={{
-        internalDegree, allInternalDegrees, setinternalDegreeId, degreeFound,
-        internalDegreeId, setAllInternalDegrees, workplaces, setWorkplaces,
-        workplace, setWorkplace
-      }}>
+      <InternalApiContext.Provider
+        value={{
+          internalDegree,
+          allInternalDegrees,
+          setinternalDegreeId,
+          degreeFound,
+          internalDegreeId,
+          setAllInternalDegrees,
+          workplaces,
+          setWorkplaces,
+          workplace,
+          setWorkplace,
+        }}
+      >
         {props.children}
       </InternalApiContext.Provider>
     </div>
