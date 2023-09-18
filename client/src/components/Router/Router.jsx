@@ -12,6 +12,7 @@ import TestPage from '../../pages/TestPage/TestPage';
 import LandingPage from '../../pages/LandingPage/LandingPage';
 import LoginPage from '../../pages/LoginPage/LoginPage';
 import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
+import AddDegree from '../../pages/AdminDegree/AddDegree/AddDegree';
 import SearchPage from '../../pages/AdminDegree/SearchPage/SearchPage';
 import DegreeInfo from '../../pages/AdminDegree/DegreeInfo/DegreeInfo';
 import DegreeUnits from '../../pages/AdminDegree/DegreeUnits/DegreeUnits';
@@ -83,6 +84,7 @@ const Router = () => {
         />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
+        <Route path='/degrees/add' element={<AddDegree />} />
         <Route path='/degrees' element={<SearchPage />} />
         <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
         <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
