@@ -1,5 +1,5 @@
 .app__wrapper {
-  .searchPage__wrapper {
+  .addDegree__wrapper {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -7,7 +7,7 @@
     background: var(--saukko-main-white);
     text-align: left;
 
-    .searchPage__container {
+    .addDegree__container {
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -16,45 +16,42 @@
       width: 100%;
       gap: 20px;
 
+      .button__container {
+        flex-direction: row-reverse;
+
+        .button__icon {
+          font-size: 1.5rem;
+        }
+      }
+
       h2 {
         font-size: 18px;
       }
 
-      .searchPage__container--list {
+      .addDegree__container--list {
         display: flex;
         flex-direction: column;
         width: 100%;
         gap: 8px;
+        margin-top: 1rem;
 
-        .searchPage__container--list-item {
+        .addDegree__container--list-item {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          max-height: 125px;
-          height: 125px;
-          padding: 12px;
+          padding: 20px;
 
-          h3 {
-            font-size: 16px;
+          p {
+            font-size: 1rem;
           }
 
-          .searchPage__container--list-item-bottom {
+          .addDegree__container--list-item-bottom {
             display: flex;
             flex-direction: column;
             gap: 12px;
 
-            div {
-              display: flex;
-              justify-content: space-between;
-            }
-
-            p {
-              font-size: 12px;
-            }
-
             li {
               font-size: 18px;
-              font-weight: 600;
               text-align: end;
             }
           }
@@ -62,15 +59,13 @@
           &:nth-child(even) {
             background-color: var(--additional-light-yellow);
           }
-        
+
           &:nth-child(odd) {
             background-color: var(--additional-light-blue);
           }
         }
-
-
       }
-      .searchPage__container--list-pagination {
+      .addDegree__container--list-pagination {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -91,7 +86,7 @@
           background: var(--saukko-main-black);
         }
 
-        .searchPage__container--list-pagination-arrows {
+        .addDegree__container--list-pagination-arrows {
           display: flex;
           justify-content: space-between;
           align-items: center;
