@@ -91,6 +91,8 @@ const AddDegree = () => {
   const [paginate, setPaginate] = useState(5);
   const [filteredList, setFilteredList] = useState([]);
 
+  const navigate = useNavigate();
+
   // Get degrees from ExternalApiContext
   const { allDegrees } = useContext(ExternalApiContext);
 
@@ -127,14 +129,14 @@ const AddDegree = () => {
           text='Lisää tutkinto'
           style={{
             marginLeft: '25%',
-            marginBottom: '30px',
+            marginBottom: '10px',
+            marginTop: '10px',
+            width: '50%',
             backgroundColor: '#0000BF',
             color: 'white',
-            marginTop: '25px',
-            width: '50%',
           }}
           icon={'ic:baseline-plus'}
-          onClick={''}
+          onClick={() => navigate(`/degrees`)}
         />
 
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
