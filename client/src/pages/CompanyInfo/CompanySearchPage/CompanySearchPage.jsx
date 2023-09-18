@@ -4,7 +4,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import UserNav from '../../../components/UserNav/UserNav';
-import InternalDegreeContext from '../../../utils/context/InternalDegreeContext';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 import Stepper from '../../../components/Stepper/Stepper';
 
 // controls how many degrees are shown at once and renders them
@@ -95,8 +95,8 @@ const CompanySearchPage = () => {
   const [filteredList, setFilteredList] = useState([]);
   const navigate = useNavigate();
 
-  // Get degrees from DegreeContext
-  const { allInternalDegrees } = useContext(InternalDegreeContext);
+  // Get degrees from ExternalApiContext
+  const { allInternalDegrees } = useContext(InternalApiContext);
 
   // Searchbar logic
   const handleSearch = (event) => {

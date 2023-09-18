@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Icon } from '@iconify/react';
-import useUnitsStore from '../../store/unitsStore';
-import DegreeContext from '../../utils/context/DegreeContext';
+import useUnitsStore from '../../store/zustand/unitsStore';
+import ExternalApiContext from '../../store/context/ExternalApiContext';
 
 function SelectUnit({ unit, allUnits }) {
   // Get degree from degreeContext
-  const { degree } = useContext(DegreeContext);
+  const { degree } = useContext(ExternalApiContext);
 
   // Check / uncheck unit using toggleUnit function from UnitsStore
   const toggleUnit = useUnitsStore((state) => state.toggleUnit);

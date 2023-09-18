@@ -6,7 +6,8 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import img from "../../../assets/photo.png"
 import Button from '../../Button/Button';
-import AuthContext from '../../../utils/context/AuthContext';
+import AuthContext from '../../../store/context/AuthContext';
+
 
 
 const PerformancesFeedback = ({ header }) => {

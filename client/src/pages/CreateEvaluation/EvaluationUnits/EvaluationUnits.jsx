@@ -5,7 +5,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Stepper from '../../../components/Stepper/Stepper';
-import useUnitsStore from '../../../store/unitsStore';
+import useUnitsStore from '../../../store/zustand/unitsStore';
 
 const mockData = [
   {

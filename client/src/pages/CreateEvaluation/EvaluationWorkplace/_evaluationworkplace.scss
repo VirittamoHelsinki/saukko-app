@@ -54,35 +54,37 @@
         font-size: 16px;
       }
 
-      /* Supervisors dropdown selection */
+      /* Departments & supervisors accordion */
       .accordion-title {
         font-weight: bold;
         font-size: 14px;
-        margin-top: 0px;
         margin-bottom: 10px;
       }
       
-      .supervisors__wrapper {
+      .accordion__wrapper {
         border: 2px solid black;
         box-shadow: none;
-
-        .MuiAccordionSummary-root {
-          border-bottom: 1px solid #CCC;
-        }
+        margin-bottom: 20px;
 
         .MuiAccordionDetails-root {
-          padding: 16px;
+          padding: 0px;
+          margin: 0px;
           display: flex;
           flex-direction: column;
-          gap: 15px;
         }
       }
-
-      .supervisors__wrapper-details {
+      
+      .accordion__wrapper-details {
         display: flex;
         justify-content: space-between;
         margin: 0px;
+        padding: 20px;
       }
+
+      .accordion__wrapper-details:nth-of-type(odd) {
+        background-color: var(--accordion-background-grey);
+      }
+
     }
   }
 }

@@ -5,7 +5,7 @@ import WavesHeader from '../../components/Header/WavesHeader';
 import NotificationBadge from '../../components/NotificationBadge/NotificationBadge';
 import UnitStatus from '../../components/UnitStatus/UnitStatus';
 import UserNav from '../../components/UserNav/UserNav';
-import AuthContext from '../../utils/context/AuthContext';
+import AuthContext from '../../store/context/AuthContext';
 import SimpleAccordion from './SimpleAccordion/SimpleAccordion';
 
 const UserDashboard = () => {
