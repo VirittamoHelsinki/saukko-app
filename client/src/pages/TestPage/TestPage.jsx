@@ -83,7 +83,9 @@ const TestPage = () => {
         <UserPerformance></UserPerformance>
       </section> */}
       <section>
-        <TeacherPerformanceFeedBack></TeacherPerformanceFeedBack>
+        <TeacherPerformanceFeedBack
+          columnTitle={'osa'}></TeacherPerformanceFeedBack>
+
       </section>
 
     </main>
