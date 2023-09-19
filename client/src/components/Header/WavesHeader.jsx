@@ -1,6 +1,6 @@
 // Import necessary react components
-import { useNavigate, useLocation } from 'react-router-dom';
-import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
 import { Icon } from '@iconify/react';
 
 // Import helsinki logo
