@@ -1,0 +1,16 @@
+.customersAccordion__wrapper {
+
+  .MuiAccordionDetails-root {
+    padding: 0;
+  }
+
+  .customer-list {
+    display: flex;
+    flex-direction: column;
+    
+    a {
+      padding: 10px;
+      border-bottom: 1px solid #F2F2F2;
+    }
+  }
+}
