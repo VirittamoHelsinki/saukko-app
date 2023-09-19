@@ -57,14 +57,14 @@ const UserPerformance = () => {
   };
 
   return (
-    <main className='performanePage__wrapper'>
+    <main >
       <div>
         <WavesHeader
           title="Saukko"
           secondTitle={`Tervetuloa, ${user?.firstName}`}
           disabled={true} />
       </div>
-      <h2 style={{ textAlign: 'center', fontSize: '18px', textDecoration: 'underline', marginTop: '57%' }}>Ammattitaitovaatimukset</h2>
+      <h2 style={{ textAlign: 'center', fontSize: '18px', textDecoration: 'underline', marginTop: '58%' }}>Ammattitaitovaatimukset</h2>
 
       <div >
         <ul>
@@ -83,15 +83,15 @@ const UserPerformance = () => {
         <p className='para-title-style'>Otsikko *</p>
         <input
           type="text"
-          style={{ marginLeft: '14px', marginRight: '16px', width: '357px', height: '56px', paddingLeft: '2px' }}
+          style={{ marginLeft: '18px', marginRight: '16px', width: '87%', height: '56px', paddingLeft: '2px' }}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />
         <p className='para-title-style'> Kuvaus *</p>
         <textarea
           rows={8}
-          cols={42}
-          style={{ padding: '5px' }}
+          cols={38}
+          style={{ width: '87%', padding: '5px', padding: '5px' }}
           className='para-title-style'
           value={textareaValue}
           onChange={(e) => setTextareaValue(e.target.value)}
@@ -105,7 +105,7 @@ const UserPerformance = () => {
             ...(inputValue && textareaValue ? buttonStyleEnabled : buttonStyleDisabled),
 
             marginTop: '35px',
-            marginLeft: '23px',
+            marginLeft: '20px',
             width: '88%',
           }}
           type='submit'
@@ -134,6 +134,7 @@ const UserPerformance = () => {
 };
 
 export default UserPerformance;
+
 
 
 

@@ -109,14 +109,7 @@ const PerformancesFeedback = ({ header }) => {
             {selectedFiles.map((file, index) => (
               <li
                 key={index}
-                style={{
-                  width: '320px',
-                  height: '56px',
-                  display: 'flex',
-                  gap: '8px',
-                  alignItems: 'center',
-                  marginBottom: '8px',
-                }}
+                className='list-style'
               >
                 <img src={img} alt="" />
                 {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
@@ -131,6 +124,7 @@ const PerformancesFeedback = ({ header }) => {
 };
 
 export default PerformancesFeedback;
+
 
 
 

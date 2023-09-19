@@ -1,26 +1,18 @@
 .feedback__wrapper{
+  flex: 1;
   display: flex;
+  justify-content: center;
+  min-width:  '100%';
   flex-direction: column;
   padding-top: 20px;
   padding-bottom: 20px;
-// border: 1px solid red;
-}
+// // border: 1px solid red;
+ }
 
-.title-style{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-right: 6px;
- 
-}
+
 
 .first-div-style{
   display: flex;
   justify-content: space-around;
-
-  align-items: center;
+align-items: center;
 }
-
-
-
