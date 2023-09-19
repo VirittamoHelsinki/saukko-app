@@ -1,3 +1,5 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import greenicone from '../../assets/circle-green.svg';
 import redicone from '../../assets/circle-red.svg';
 import yellowicone from '../../assets/circle-yellow.svg';
@@ -5,10 +7,8 @@ import blueicone from '../../assets/circle-blue.svg';
 import blackicone from '../../assets/circle-black.svg';
 import rightAngle from '../../assets/angle-right.svg';
 
-import React from 'react';
-import { Link } from 'react-router-dom';
-
 const UnitStatus = ({ status, subheader, link }) => {
+  const navigate = useNavigate();
   let header, backgroundColor, img;
 
   if (status === 1) {
@@ -38,32 +38,16 @@ const UnitStatus = ({ status, subheader, link }) => {
     backgroundColor = '#efeff0';
   }
 
-
-
   return (
-    <main className='unitstatus-wrapper' style={{ backgroundColor }}>
+    <main className='unitstatus-wrapper' style={{ backgroundColor }} onClick={() => navigate(link)}>
       <div className='unitstatus'>
         <div className='icone-img-style'>{img}</div>
         <h1>{header}</h1>
-
-        <Link to={link}><img className="icone-img-style" src={rightAngle} alt="Angle Icone" /></Link>
-
+        <img className="icone-img-style" src={rightAngle} alt="Angle Icone" />
       </div>
-
       {subheader && <h2>{subheader}</h2>}
-
     </main>
   );
 };
 
-
-
 export default UnitStatus;
-
-
-
-
-
-
-
-
