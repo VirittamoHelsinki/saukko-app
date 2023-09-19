@@ -1,11 +1,13 @@
 import * as React from 'react';
+import formStore from '../../../store/zustand/formStore';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function CustomersAccordion({ setChosenCustomerId }) {
+export default function CustomerList() {
+  const { setChosenCustomerId } = formStore();
 
   // Mock data
   const customersInProgress = [
@@ -97,7 +99,7 @@ export default function CustomersAccordion({ setChosenCustomerId }) {
   };
 
   return (
-    <div className='customersAccordion__wrapper'>
+    <div className='customerList__wrapper'>
       <Accordion disableGutters>
         <AccordionSummary
           sx={{ backgroundColor: '#FFF4B4' }}

@@ -34,7 +34,7 @@ const useStore = create((set) => ({
   firstName: '',
   lastName: '',
   työpaikkaohjaajaEmail: '',
-
+  
   // Admin
   degreeName: 'ei dataa APIsta',
   degreeDescription: 'ei dataa APIsta',
@@ -43,6 +43,11 @@ const useStore = create((set) => ({
   validFrom: 'ei dataa APIsta',
   expiry: 'ei dataa APIsta',
   transitionEnds: 'ei dataa APIsta',
+  
+  // Track chosen customer for teacher or supervisor 
+  chosenCustomerId: null,
+  setChosenCustomerId: (chosenCustomerId) => set(() => ({ chosenCustomerId })),
+  clearChosenCustomerId: () => set({ chosenCustomerId: null }),
 
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
