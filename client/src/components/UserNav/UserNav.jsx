@@ -12,7 +12,7 @@ const UserNav = () => {
 
   // Clear chosen customer
   useEffect(() => {
-    const routesToExclude = ['/userdashboard', '/contract-info', '/userperformance'];
+    const routesToExclude = ['/customer-list', '/unit-list', '/contract-info', '/userperformance'];
     const isExcludedRoute = routesToExclude.some(route => location.pathname === route);
     if (!isExcludedRoute && chosenCustomerId !== null) {
       clearChosenCustomerId();
@@ -24,7 +24,7 @@ const UserNav = () => {
         {/* Customer */}
         {user && user.role === 'customer' &&
           <div className={`userNav__icons ${user.role}`}>
-            <Icon icon="ic:outline-home" onClick={() => navigate('/userdashboard')}/>
+            <Icon icon="ic:outline-home" onClick={() => navigate('/unit-list')}/>
             <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>
             <Icon icon="mdi:user-outline" onClick={() => navigate('/profile')}/>
           </div>
@@ -33,7 +33,7 @@ const UserNav = () => {
         {/* Supervisor */}
         {user && user.role === 'supervisor' &&
           <div className={`userNav__icons ${user.role}`}>
-            <Icon icon="ic:outline-home" onClick={() => navigate('/userdashboard')}/>
+            <Icon icon="ic:outline-home" onClick={() => navigate('/customer-list')}/>
             {chosenCustomerId && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
             <Icon icon="mdi:user-outline" onClick={() => navigate('/profile')}/>
           </div>
@@ -42,7 +42,7 @@ const UserNav = () => {
         {/* Teacher */}
         {user && user.role === 'teacher' &&
           <div className={`userNav__icons ${user.role}`}>
-            <Icon icon="ic:outline-home" onClick={() => navigate('/userdashboard')}/>
+            <Icon icon="ic:outline-home" onClick={() => navigate('/customer-list')}/>
             {chosenCustomerId && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
             <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>
             <Icon icon="mdi:user-outline" onClick={() => navigate('/profile')}/>

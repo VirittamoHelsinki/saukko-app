@@ -72,7 +72,7 @@ function Summary() {
     // Save degree to Context store.
     setAllInternalDegrees([...allInternalDegrees, newDegree]);
 
-    navigate(`/userdashboard`);
+    navigate(`/customer-list`);
   };
 
   return (

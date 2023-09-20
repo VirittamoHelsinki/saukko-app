@@ -25,7 +25,7 @@
       title='Kutsut lähetetty!'
       body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
       open={openNotificationModal}
-      redirectLink='/userdashboard'
+      redirectLink='/customer-list'
     />
  */
 

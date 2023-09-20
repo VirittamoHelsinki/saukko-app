@@ -23,7 +23,8 @@ import Summary from '../../pages/AdminDegree/Summary/Summary';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
 import ResetPassword from '../../pages/ResetPassword/ResetPassword';
-import UserDashboard from '../../pages/UserDashboard/UserDashboard';
+import UnitList from '../../pages/Home/UnitList/UnitList';
+import CustomerList from '../../pages/Home/CustomerList/CustomerList';
 import ContractInfo from '../../pages/ContractInfo/ContractInfo';
 import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
@@ -49,14 +50,12 @@ const Router = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (
-      loggedIn &&
-      (path === '/' ||
-        path === '/login' ||
-        path === '/register-customer' ||
-        path === '/forgot-password')
-    ) {
-      navigate('/userdashboard');
+    if (loggedIn && (path === '/' || path === '/login' || path === '/forgot-password')) {
+      if (user.role === 'teacher' || user.role === 'supervisor') {
+        navigate('/customer-list');
+      } else if (user.role === 'customer') {
+        navigate('/unit-list');
+      }
     }
   }, [loggedIn, path, navigate]);
 
@@ -126,7 +125,8 @@ const Router = () => {
             <Route path='/search' element={<SearchPage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-            <Route path='/userdashboard' element={<UserDashboard />} />
+            <Route path='/unit-list' element={<UnitList />} />
+            <Route path='/customer-list' element={<CustomerList />} />
             <Route path='/contract-info' element={<ContractInfo />} />
             <Route path='/internal/degrees' element={<CompanySearchPage />} />
             <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
