@@ -334,7 +334,7 @@ function EvaluationWorkplace() {
   const setWorkplace = useEvaluationStore((state) => state.setWorkplace);
   const setDepartment = useEvaluationStore((state) => state.setDepartment);
   const setSupervisor = useEvaluationStore((state) => state.setSupervisor);
-  const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
+  const clearWorkplace = useEvaluationStore((state) => state.clearWorkplace);
 
   // Getter functions from evaluationStore
   const workplaceFromStore = useEvaluationStore((state) => state.workplace);
@@ -343,7 +343,7 @@ function EvaluationWorkplace() {
 
   // Workplace selection
   const toggleWorkplace = (event) => {
-    clearEvaluation();
+    clearWorkplace();
     const findWorkplaceById = workplaces.find(workplace => workplace._id === event.target.value)
     setWorkplace(findWorkplaceById)
   };
