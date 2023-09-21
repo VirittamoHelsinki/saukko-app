@@ -7,6 +7,10 @@
     background: var(--saukko-main-white);
     text-align: left;
 
+    .searchField__container {
+      margin: 0px 20px;
+    }
+
     .evaluationWorkplace__container {
       display: flex;
       flex-direction: column;

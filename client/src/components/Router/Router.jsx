@@ -21,12 +21,10 @@ import ConfirmSelection from '../../pages/AdminDegree/ConfirmSelection/ConfirmSe
 import SpecifyTasks from '../../pages/AdminDegree/SpecifyTasks/SpecifyTasks';
 import Summary from '../../pages/AdminDegree/Summary/Summary';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
-import HomePageAfterLoggedIn from '../../pages/HomePageAfterLoggedIn/HomePageAfterLoggedIn';
 import ResetPassword from '../../pages/ResetPassword/ResetPassword';
-import UserDashboard from '../../pages/UserDashboard/UserDashboard';
+import UnitList from '../../pages/Home/UnitList/UnitList';
+import CustomerList from '../../pages/Home/CustomerList/CustomerList';
 import ContractInfo from '../../pages/ContractInfo/ContractInfo';
-import UpdateHomePageAfterLoggedIn from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
-import UpdateHomePageAfterLogin from '../../pages/UpdateHomePageAfterLogin/UpdateHomepageAfterLogin';
 import CompanyInfo from '../../pages/CompanyInfo/CompanyInfo';
 import AdminMenu from '../../pages/AdminMenu/AdminMenu';
 import EvaluationForm from '../../pages/CreateEvaluation/EvaluationForm/EvaluationForm';
@@ -49,14 +47,12 @@ const Router = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (
-      loggedIn &&
-      (path === '/' ||
-        path === '/login' ||
-        path === '/register-customer' ||
-        path === '/forgot-password')
-    ) {
-      navigate('/userdashboard');
+    if (loggedIn && (path === '/' || path === '/login' || path === '/forgot-password')) {
+      if (user.role === 'teacher' || user.role === 'supervisor') {
+        navigate('/customer-list');
+      } else if (user.role === 'customer') {
+        navigate('/unit-list');
+      }
     }
   }, [loggedIn, path, navigate]);
 
@@ -78,40 +74,22 @@ const Router = () => {
         <Route path='/company-info' element={<CompanyInfo />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/reset-password/:token' element={<ResetPassword />} />
-        <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-        <Route
-          path='/update-logged-user'
-          element={<UpdateHomePageAfterLogin />}
-        />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/contract-info' element={<ContractInfo />} />
-
         <Route path='/degrees' element={<SearchPage />} />
         <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
         <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
         <Route path='/degrees/:degreeId/units/:unitId' element={<UnitInfo />} />
-        <Route
-          path='/degrees/:degreeId/units/confirm-selection'
-          element={<ConfirmSelection />}
-        />
-        <Route
-          path='/degrees/:degreeId/units/tasks'
-          element={<SpecifyTasks />}
-        />
+        <Route path='/degrees/:degreeId/units/confirm-selection' element={<ConfirmSelection />} />
+        <Route path='/degrees/:degreeId/units/tasks' element={<SpecifyTasks />} />
         <Route path='/degrees/:degreeId/summary' element={<Summary />} />
         <Route path='/evaluation-form' element={<EvaluationForm />} />
         <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
         <Route path='/evaluation-units' element={<EvaluationUnits />} />
         <Route path='/evaluation-summary' element={<EvaluationSummary />} />
         <Route path='/internal/degrees' element={<CompanySearchPage />} />
-        <Route
-          path='internal/degrees/:degreeId/units'
-          element={<CompanyDegreeUnits />}
-        />
-        <Route
-          path='internal/degrees/:degreeId/units/confirm-selection'
-          element={<DegreeConfirmSelection />}
-        />
+        <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
+        <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
 
         {!loggedIn && (
           <>
@@ -125,8 +103,8 @@ const Router = () => {
           <>
             <Route path='/search' element={<SearchPage />} />
             <Route path='/profile' element={<ProfilePage />} />
-            <Route path='/logged-user' element={<HomePageAfterLoggedIn />} />
-            <Route path='/userdashboard' element={<UserDashboard />} />
+            <Route path='/unit-list' element={<UnitList />} />
+            <Route path='/customer-list' element={<CustomerList />} />
             <Route path='/contract-info' element={<ContractInfo />} />
             <Route path='/internal/degrees' element={<CompanySearchPage />} />
             <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />

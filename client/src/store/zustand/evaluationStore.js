@@ -54,6 +54,14 @@ const useEvaluationStore = create((set) => ({
       supervisor: null,
     });
   },
+
+  clearWorkplace: () => {
+    set({ 
+      workplace: null,
+      department: null,
+      supervisor: null,
+    });
+  },
 }));
 
 export default useEvaluationStore;

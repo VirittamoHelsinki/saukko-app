@@ -20,7 +20,7 @@ const LoginPage = () => {
     [buttonDisabled, setButtonDisabled] = useState();
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { getLoggedIn } = useContext(AuthContext);
+  const { getLoggedIn, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   // processes the login after fields have been filled and the "login" button has been pressed
@@ -34,7 +34,11 @@ const LoginPage = () => {
 
       await loginUser(loginData);
       await getLoggedIn();
-      navigate('/userdashboard');
+      if (user.role === 'teacher' || user.role === 'supervisor') {
+        navigate('/customer-list');
+      } else if (user.role === 'customer') {
+        navigate('/unit-list');
+      }
 
     } catch (err) {
       // Handle the error here

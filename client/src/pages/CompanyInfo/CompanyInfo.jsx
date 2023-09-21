@@ -1,4 +1,5 @@
 // Import components & libraries
+import React, { useContext } from 'react';
 import { TextInput } from 'hds-react';
 import { IconCrossCircle, IconSearch } from 'hds-react';
 import Button from '../../components/Button/Button';
@@ -9,6 +10,7 @@ import UserNav from '../../components/UserNav/UserNav';
 import { useNavigate } from 'react-router';
 import Stepper from '../../components/Stepper/Stepper';
 import useStore from '../../store/zustand/formStore';
+import InternalApiContext from '../../store/context/InternalApiContext';
 
 // Import MUI
 import Accordion from '@mui/material/Accordion';
@@ -38,12 +40,27 @@ const CompanyInfo = () => {
     setTyöpaikkaohjaajaEmail,
   } = useStore();
 
-  // Text for stepper's labels
-  const labelStepper = [
-    'Lisää tiedot',
-    'Valitse tutkinto',
-    'Valitse tutkinnonosat',
-    'Vahvista',
+  const { internalDegree } = useContext(InternalApiContext);
+
+
+  // Labels and urls for Stepper
+  const stepperData = [
+    {
+      label: 'Lisää tiedot',
+      url: '/company-info'
+    },
+    {
+      label: 'Valitse tutkinto',
+      url: '/internal/degrees'
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: `/internal/degrees/${internalDegree._id}/units`
+    },
+    {
+      label: 'Vahvista',
+      url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`
+    },
   ];
 
   const handleBusinessId = (event) => {
@@ -156,8 +173,7 @@ const CompanyInfo = () => {
         <Stepper
           activePage={1}
           totalPages={4}
-          label={labelStepper}
-          url={`../company-info`}
+          data={stepperData}
         />
       </div>
       <div style={{ margin: '16px', marginBottom: '28px', marginTop: '60px' }}>
@@ -335,7 +351,7 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
-      <PageNavigationButtons handleForward={handleForward} forwardButtonText={'Seuraava'} />
+      <PageNavigationButtons handleBack={() => navigate('/admin-menu')} handleForward={handleForward} forwardButtonText={'Seuraava'} />
       <div style={{ marginBottom: '90px' }}>
         <UserNav></UserNav>
       </div>

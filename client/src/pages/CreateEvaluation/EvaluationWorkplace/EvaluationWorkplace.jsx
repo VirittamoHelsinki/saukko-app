@@ -334,7 +334,7 @@ function EvaluationWorkplace() {
   const setWorkplace = useEvaluationStore((state) => state.setWorkplace);
   const setDepartment = useEvaluationStore((state) => state.setDepartment);
   const setSupervisor = useEvaluationStore((state) => state.setSupervisor);
-  const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
+  const clearWorkplace = useEvaluationStore((state) => state.clearWorkplace);
 
   // Getter functions from evaluationStore
   const workplaceFromStore = useEvaluationStore((state) => state.workplace);
@@ -343,7 +343,7 @@ function EvaluationWorkplace() {
 
   // Workplace selection
   const toggleWorkplace = (event) => {
-    clearEvaluation();
+    clearWorkplace();
     const findWorkplaceById = workplaces.find(workplace => workplace._id === event.target.value)
     setWorkplace(findWorkplaceById)
   };
@@ -414,14 +414,26 @@ function EvaluationWorkplace() {
     }
   };
 
-  // Stepper labels
-  const labelStepper = [
-    'Lisää tiedot',
-    'Valitse työpaikka',
-    'Valitse tutkinnonosat',
-    'Aktivoi suoritus',
+  // Stepper labels & urls
+  const stepperData = [
+    {
+      label: 'Lisää tiedot',
+      url: '/evaluation-form'
+    },
+    {
+      label: 'Valitse työpaikka',
+      url: '/evaluation-workplace'
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: '/evaluation-units'
+    },
+    {
+      label: 'Aktivoi suoritus',
+      url: '/evaluation-summary'
+    },
   ];
-  
+
   return (
     <main className='evaluationWorkplace__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
@@ -429,8 +441,7 @@ function EvaluationWorkplace() {
         <Stepper
             activePage={2}
             totalPages={4}
-            label={labelStepper}
-            url={'/evaluation-workplace'}
+            data={stepperData}
         />
         <h1>Valitse työpaikka ja ohjaaja</h1>
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'}/>

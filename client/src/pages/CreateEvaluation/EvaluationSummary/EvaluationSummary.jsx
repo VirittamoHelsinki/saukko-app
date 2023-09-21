@@ -91,12 +91,24 @@ function EvaluationSummary() {
     setOpenNotificationModal(true);
   }
 
-  // Stepper labels
-  const labelStepper = [
-    'Lisää tiedot',
-    'Valitse työpaikka',
-    'Valitse tutkinnonosat',
-    'Aktivoi suoritus',
+  // Stepper labels & urls
+  const stepperData = [
+    {
+      label: 'Lisää tiedot',
+      url: '/evaluation-form'
+    },
+    {
+      label: 'Valitse työpaikka',
+      url: '/evaluation-workplace'
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: '/evaluation-units'
+    },
+    {
+      label: 'Aktivoi suoritus',
+      url: '/evaluation-summary'
+    },
   ];
   
   return (
@@ -106,8 +118,7 @@ function EvaluationSummary() {
         <Stepper
             activePage={4}
             totalPages={4}
-            label={labelStepper}
-            url={'/evaluation-summary'}
+            data={stepperData}
         />
         <InfoList title={'Yhteenveto'} data={summaryData}/>
         <h1>Degree name (FIX THIS)</h1> {/* Degree name from workplace */}
@@ -127,7 +138,7 @@ function EvaluationSummary() {
         title='Kutsut lähetetty!'
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
-        redirectLink='/userdashboard'
+        redirectLink='/customer-list'
       />
     </main>
   );

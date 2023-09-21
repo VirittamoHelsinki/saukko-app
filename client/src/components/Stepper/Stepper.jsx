@@ -1,11 +1,33 @@
+/* 
+  EXAMPLE USAGE
+
+  // Define labels and urls
+  const stepperData = [
+    {
+      label: 'Lisää tiedot',
+      url: '/evaluation-form'
+    },
+    {
+      label: 'Valitse työpaikka',
+      url: '/evaluation-workplace'
+    },
+  ];
+
+  // Pass labels and urls array, number of total pages, and current page
+  <Stepper
+    activePage={1}
+    totalPages={4}
+    data={stepperData}
+  />
+*/
+
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
-import checkboxMarkedCircleOutline from '@iconify/icons-mdi/checkbox-marked-circle-outline';
 import PropTypes from 'prop-types';
 import ExternalApiContext from '../../store/context/ExternalApiContext';
 
-const Stepper = ({ activePage, totalPages, label, url }) => {
+const Stepper = ({ activePage, totalPages, data }) => {
   const navigate = useNavigate();
 
   // Get degree from ExternalApiContext
@@ -24,7 +46,7 @@ const Stepper = ({ activePage, totalPages, label, url }) => {
           className={`circle ${isActive ? 'active' : isDone ? 'done' : ''}`}
         >
           {isDone ? (
-            <Icon icon={checkboxMarkedCircleOutline} color='white' />
+            <Icon icon="zondicons:checkmark" color="white"/>
           ) : (
             <span className={`number ${isActive ? 'active' : ''}`}>{page}</span>
           )}
@@ -49,13 +71,13 @@ const Stepper = ({ activePage, totalPages, label, url }) => {
       <div className='stepper__wrapper--numbers'>{createSteppers()}</div>
       <div>
         <div className='stepper__wrapper--text'>
-          {label.map((text, index) => (
+          {data.map((step, index) => (
             <span
               key={index}
               className={`page-text ${activePage >= index + 1 ? 'active' : ''}`}
-              onClick={() => navigate(url)}
+              onClick={() => navigate(step.url)}
             >
-              {text}
+              {step.label}
             </span>
           ))}
         </div>
@@ -67,8 +89,7 @@ const Stepper = ({ activePage, totalPages, label, url }) => {
 Stepper.propTypes = {
   activePage: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
-  label: PropTypes.arrayOf(PropTypes.string).isRequired,
-  url: PropTypes.string.isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default Stepper;

@@ -53,14 +53,14 @@ const NotificationBadge = (props) => {
         <span className='numberstyle'>{number1}</span>
         <div className='bottom-container'>
           <span className='text'>Uutta ilmoitusta</span>
-          <span className='icone-style'><Link to='/ilmoitusta'> <img src={icone} alt="" /></Link></span>
+          <span className='icone-style'><img src={icone} alt="" /></span>
         </div>
       </div>
       <div className='badge' style={badgeStyle2}>
         <span className='numberstyle'>{number2}</span>
         <div className='bottom-container'>
           <span className='text'>Uutta viestiä</span>
-          <span className='icone-style'><Link to='/viestia'><img src={icone} alt="" /></Link> </span>
+          <span className='icone-style'><img src={icone} alt="" /></span>
         </div>
       </div>
     </div>

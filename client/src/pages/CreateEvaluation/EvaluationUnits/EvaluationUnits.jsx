@@ -89,13 +89,26 @@ function EvaluationUnits() {
     }
   };
 
-  // Stepper labels
-  const labelStepper = [
-    'Lisää tiedot',
-    'Valitse työpaikka',
-    'Valitse tutkinnonosat',
-    'Aktivoi suoritus',
+  // Stepper labels & urls
+  const stepperData = [
+    {
+      label: 'Lisää tiedot',
+      url: '/evaluation-form'
+    },
+    {
+      label: 'Valitse työpaikka',
+      url: '/evaluation-workplace'
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: '/evaluation-units'
+    },
+    {
+      label: 'Aktivoi suoritus',
+      url: '/evaluation-summary'
+    },
   ];
+
   
   return (
     <main className='evaluationUnits__wrapper'>
@@ -104,8 +117,7 @@ function EvaluationUnits() {
         <Stepper
             activePage={3}
             totalPages={4}
-            label={labelStepper}
-            url={'/evaluation-units'}
+            data={stepperData}
         />
         <h1>Degree name (FIX)</h1> {/* Degree name from workplace here */}
 

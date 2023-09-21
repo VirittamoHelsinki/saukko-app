@@ -80,12 +80,24 @@ function EvaluationForm() {
     navigate(`/evaluation-workplace`);
   };
 
-  // Stepper labels
-  const labelStepper = [
-    'Lisää tiedot',
-    'Valitse työpaikka',
-    'Valitse tutkinnonosat',
-    'Aktivoi suoritus',
+  // Stepper labels & urls
+  const stepperData = [
+    {
+      label: 'Lisää tiedot',
+      url: '/evaluation-form'
+    },
+    {
+      label: 'Valitse työpaikka',
+      url: '/evaluation-workplace'
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: '/evaluation-units'
+    },
+    {
+      label: 'Aktivoi suoritus',
+      url: '/evaluation-summary'
+    },
   ];
 
   // Calendar style
@@ -122,8 +134,7 @@ function EvaluationForm() {
       <Stepper
           activePage={1}
           totalPages={4}
-          label={labelStepper}
-          url={'/evaluation-form'}
+          data={stepperData}
       />
         <h1>Lisää asiakkaan tiedot</h1>
 
@@ -209,7 +220,7 @@ function EvaluationForm() {
           </div>
         </form>
 
-        <PageNavigationButtons /* handleBack={() => navigate(`/`)} */ handleForward={handleSubmit} forwardButtonText={'Seuraava'} />
+        <PageNavigationButtons handleBack={() => navigate(`/admin-menu`)} handleForward={handleSubmit} forwardButtonText={'Seuraava'} />
       </section>
       <UserNav />
     </main>

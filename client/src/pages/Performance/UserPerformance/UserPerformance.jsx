@@ -62,7 +62,7 @@ const UserPerformance = () => {
         <WavesHeader
           title="Saukko"
           secondTitle={`Tervetuloa, ${user?.firstName}`}
-          disabled={true} />
+        />
       </div>
       <h2 style={{ textAlign: 'center', fontSize: '18px', textDecoration: 'underline', marginTop: '58%' }}>Ammattitaitovaatimukset</h2>
 
@@ -78,7 +78,7 @@ const UserPerformance = () => {
           ))}
         </ul>
       </div>
-      <h2 style={{ textAlign: 'center', fontSize: '18px', textDecoration: 'underline', marginTop: '40px' }}>Kommenttoi</h2>
+      <h2 style={{ textAlign: 'center', fontSize: '18px', textDecoration: 'underline', marginTop: '40px' }}>Kommentoi</h2>
       <form action="">
         <p className='para-title-style'>Otsikko *</p>
         <input
