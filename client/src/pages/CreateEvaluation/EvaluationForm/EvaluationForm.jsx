@@ -220,7 +220,7 @@ function EvaluationForm() {
           </div>
         </form>
 
-        <PageNavigationButtons /* handleBack={() => navigate(`/`)} */ handleForward={handleSubmit} forwardButtonText={'Seuraava'} />
+        <PageNavigationButtons handleBack={() => navigate(`/admin-menu`)} handleForward={handleSubmit} forwardButtonText={'Seuraava'} />
       </section>
       <UserNav />
     </main>
