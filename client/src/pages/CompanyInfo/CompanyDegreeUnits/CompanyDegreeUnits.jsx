@@ -59,15 +59,25 @@ function CompanyDegreeUnits() {
   const indexOfFirstUnit = indexOfLastUnit - unitsPerPage;
   const currentUnits = filteredUnits?.slice(indexOfFirstUnit, indexOfLastUnit);
 
-  // Text for stepper's labels
-  const labelStepper = [
-    'Lisää tiedot',
-    'Valitse tutkinto',
-    'Valitse tutkinnonosat',
-    'Vahvista',
+  // Labels and urls for Stepper
+  const stepperData = [
+    {
+      label: 'Lisää tiedot',
+      url: '/company-info'
+    },
+    {
+      label: 'Valitse tutkinto',
+      url: '/internal/degrees'
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: `/internal/degrees/${internalDegree._id}/units`
+    },
+    {
+      label: 'Vahvista',
+      url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`
+    },
   ];
-
-
 
   return (
     <main className='degreeUnits__wrapper'>
@@ -76,9 +86,7 @@ function CompanyDegreeUnits() {
         <Stepper
           activePage={3}
           totalPages={4}
-          label={labelStepper}
-          url={`../internal/degrees/${internalDegree._id}/units/`}
-
+          data={stepperData}
         />
 
         <h2>{degreeFound && internalDegree.name.fi} </h2>

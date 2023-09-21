@@ -31,7 +31,7 @@ function Summary() {
   } = useStore();
 
   // Set path & get degree units from ExternalApiContext
-  const { degree, degreeFound } = useContext(ExternalApiContext);
+  const { degree, degreeId, degreeFound } = useContext(ExternalApiContext);
   // Internal degree context
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
   
@@ -45,12 +45,24 @@ function Summary() {
   const regex = /(<([^>]+)>)/gi;
   const degreeDescriptionCleaned = degreeDescription.replace(regex, '');
 
-  // Text for stepper's labels
-  const labelStepper = [
-    'Tutkintotiedot',
-    'Valitse tutkinnonosat',
-    'Määritä tehtävät',
-    'Yhteenveto',
+  // Labels and urls for stepper
+  const stepperData = [
+    {
+      label: 'Tutkinto-tiedot',
+      url: `/degrees/${degreeId}`
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: `/degrees/${degreeId}/units`
+    },
+    {
+      label: 'Määritä tehtävät',
+      url: `/degrees/${degreeId}/units/tasks`
+    },
+    {
+      label: 'Yhteenveto',
+      url: `/degrees/${degreeId}/summary`
+    },
   ];
 
   const handleSubmit = async () => {
@@ -82,8 +94,7 @@ function Summary() {
         <Stepper
           activePage={4}
           totalPages={4}
-          label={labelStepper}
-          url={`/degrees/${degree._id}/units/tasks`}
+          data={stepperData}
         />
         <div className='section-title'>Tutkinnonosat ja tehtävät </div>
         <div className='summary__container--box'>
@@ -122,7 +133,7 @@ function Summary() {
 
         <PageNavigationButtons
           handleBack={() =>
-            navigate(`/degrees/${degree._id}/units/confirm-selection`)
+            navigate(`/degrees/${degreeId}/units/tasks`)
           }
           handleForward={handleSubmit}
           forwardButtonText={'Tallenna tiedot'}

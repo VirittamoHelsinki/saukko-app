@@ -414,14 +414,26 @@ function EvaluationWorkplace() {
     }
   };
 
-  // Stepper labels
-  const labelStepper = [
-    'Lisää tiedot',
-    'Valitse työpaikka',
-    'Valitse tutkinnonosat',
-    'Aktivoi suoritus',
+  // Stepper labels & urls
+  const stepperData = [
+    {
+      label: 'Lisää tiedot',
+      url: '/evaluation-form'
+    },
+    {
+      label: 'Valitse työpaikka',
+      url: '/evaluation-workplace'
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: '/evaluation-units'
+    },
+    {
+      label: 'Aktivoi suoritus',
+      url: '/evaluation-summary'
+    },
   ];
-  
+
   return (
     <main className='evaluationWorkplace__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
@@ -429,8 +441,7 @@ function EvaluationWorkplace() {
         <Stepper
             activePage={2}
             totalPages={4}
-            label={labelStepper}
-            url={'/evaluation-workplace'}
+            data={stepperData}
         />
         <h1>Valitse työpaikka ja ohjaaja</h1>
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'}/>

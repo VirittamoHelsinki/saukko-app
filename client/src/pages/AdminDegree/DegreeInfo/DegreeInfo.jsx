@@ -66,14 +66,27 @@ function DegreeInfo() {
   const navigate = useNavigate();
 
   // Set path & get degree from ExternalApiContext
-  const { setDegreeId, degree, degreeFound } = useContext(ExternalApiContext);
+  const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
-  // Text for stepper's labels
-  const labelStepper = [
-    'Tutkintotiedot',
-    'Valitse tutkinnonosat',
-    'Määritä tehtävät',
-    'Yhteenveto',
+
+  // Labels and urls for stepper
+  const stepperData = [
+    {
+      label: 'Tutkinto-tiedot',
+      url: `/degrees/${degreeId}`
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: `/degrees/${degreeId}/units`
+    },
+    {
+      label: 'Määritä tehtävät',
+      url: `/degrees/${degreeId}/units/tasks`
+    },
+    {
+      label: 'Yhteenveto',
+      url: `/degrees/${degreeId}/units/confirm-selection`
+    },
   ];
 
   useEffect(() => {
@@ -227,10 +240,8 @@ function DegreeInfo() {
         <Stepper
           activePage={1}
           totalPages={4}
-          label={labelStepper}
-          url={`/degrees/${degree._id}`}
+          data={stepperData}
         />
-
         <div
           style={{
             display: 'flex',

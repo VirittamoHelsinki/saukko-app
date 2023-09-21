@@ -11,8 +11,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 0px 15px 86px 15px;
-      margin-top: 225px;
+      margin-top: 200px;
       width: 100%;
       gap: 20px;
 
@@ -23,6 +22,7 @@
       }
 
       .searchPage__container--list {
+        padding: 0px 15px 86px 15px;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -75,6 +75,7 @@
 
       }
       .searchPage__container--list-pagination {
+        padding: 0px 15px 86px 15px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -109,15 +110,20 @@
         }
       }
     }
+
+    .searchField__container {
+      margin: 15px;
+    }
+
+    .stepper__container{
+      display: flex;
+      flex-direction: column;
+      margin-top: 2px;
+      margin-bottom: 15px;
+      flex-grow: 1;
+      overflow-y: auto;
+      width: 100%;
+    }
   }
 }
 
-.stepper__container{
-  display: flex;
-  flex-direction: column;
-  margin-top: 2px;
-  margin-bottom: 15px;
-  flex-grow: 1;
-  overflow-y: auto;
-  width: 100%;
-}

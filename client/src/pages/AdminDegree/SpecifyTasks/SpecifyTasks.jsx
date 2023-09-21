@@ -30,7 +30,7 @@ function SpecifyTasks() {
   const navigate = useNavigate();
 
   // Set path & get degree units from ExternalApiContext
-  const { setDegreeId, degree, degreeFound } = useContext(ExternalApiContext);
+  const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
   const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
   const [isLoading, setIsLoading] = useState(true);
@@ -49,12 +49,24 @@ function SpecifyTasks() {
   // Get checked units from unitsStore
   const { checkedUnits } = useUnitsStore();
 
-  // Text for stepper's labels
-  const labelStepper = [
-    'Tutkintotiedot',
-    'Valitse tutkinnonosat',
-    'Määritä tehtävät',
-    'Yhteenveto',
+  // Labels and urls for stepper
+  const stepperData = [
+    {
+      label: 'Tutkinto-tiedot',
+      url: `/degrees/${degreeId}`
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: `/degrees/${degreeId}/units`
+    },
+    {
+      label: 'Määritä tehtävät',
+      url: `/degrees/${degreeId}/units/tasks`
+    },
+    {
+      label: 'Yhteenveto',
+      url: `/degrees/${degreeId}/summary`
+    },
   ];
 
   // Dots Stepper
@@ -115,8 +127,7 @@ function SpecifyTasks() {
           <Stepper
             activePage={3}
             totalPages={4}
-            label={labelStepper}
-            url={`/degrees/${degree._id}/units/tasks`}
+            data={stepperData}
           />
           <Box>
             <MobileStepper
@@ -188,7 +199,7 @@ function SpecifyTasks() {
 
           <PageNavigationButtons
             handleBack={() =>
-              navigate(`/degrees/${degree._id}/units/confirm-selection`)
+              navigate(`/degrees/${degreeId}/units`)
             }
             handleForward={() => navigate(`/degrees/${degree._id}/summary`)}
             forwardButtonText={'Tallenna ja jatka'}

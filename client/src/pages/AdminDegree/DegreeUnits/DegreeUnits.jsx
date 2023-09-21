@@ -18,7 +18,7 @@ function DegreeUnits() {
   const navigate = useNavigate();
 
   // Set path & get degree from ExternalApiContext
-  const { setDegreeId, degree, degreeFound } = useContext(ExternalApiContext);
+  const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
 
   useEffect(() => {
@@ -55,12 +55,24 @@ function DegreeUnits() {
   const indexOfFirstUnit = indexOfLastUnit - unitsPerPage;
   const currentUnits = filteredUnits?.slice(indexOfFirstUnit, indexOfLastUnit);
 
-  // Text for stepper's labels
-  const labelStepper = [
-    'Tutkintotiedot',
-    'Valitse tutkinnonosat',
-    'Määritä tehtävät',
-    'Yhteenveto',
+  // Labels and urls for stepper
+  const stepperData = [
+    {
+      label: 'Tutkinto-tiedot',
+      url: `/degrees/${degreeId}`
+    },
+    {
+      label: 'Valitse tutkinnonosat',
+      url: `/degrees/${degreeId}/units`
+    },
+    {
+      label: 'Määritä tehtävät',
+      url: `/degrees/${degreeId}/units/tasks`
+    },
+    {
+      label: 'Yhteenveto',
+      url: `/degrees/${degreeId}/units/confirm-selection`
+    },
   ];
 
   return (
@@ -70,8 +82,7 @@ function DegreeUnits() {
         <Stepper
           activePage={2}
           totalPages={4}
-          label={labelStepper}
-          url={`/degrees/${degree._id}`}
+          data={stepperData}
         />
         <h1>Valitse tutkinnon osat</h1>
         <Searchbar
@@ -102,7 +113,7 @@ function DegreeUnits() {
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${degree._id}`)}
           handleForward={() =>
-            navigate(`/degrees/${degree._id}/units/confirm-selection`)
+            navigate(`/degrees/${degreeId}/units/tasks`)
           }
           forwardButtonText={'Seuraava'}
         />
