@@ -1,0 +1,53 @@
+.app__wrapper {
+  .adminMenu__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+
+    .adminMenu__container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 220px;
+      margin-bottom: 50px;
+      flex-grow: 1;
+      overflow-y: auto;
+      width: 100%;
+      padding: 10px;
+
+      .menuItem__container {
+        padding: 15px;
+        height: 110px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        
+        .menuItem__topRow {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          svg {
+            width: 40px;
+            height: 40px;
+          }
+        }
+      }
+
+      .menuItem__container:nth-of-type(odd) {
+        background-color: #9FC9EB;
+      }
+
+      .menuItem__container:nth-of-type(even) {
+        background-color: #FFF4D4;
+      }
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+  }
+}

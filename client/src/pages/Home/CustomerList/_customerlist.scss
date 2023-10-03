@@ -1,0 +1,28 @@
+.customerList__wrapper {
+
+  h3 {
+    margin: 15px;
+  }
+
+  .customerList__notifications {
+    margin-top: 230px;
+  }
+
+  .MuiAccordionDetails-root {
+    padding: 0;
+  }
+
+  .customerList__container {
+    margin-bottom: 70px;
+
+    .customerList__accordion {
+      display: flex;
+      flex-direction: column;
+      
+      a {
+        padding: 10px;
+        border-bottom: 1px solid #F2F2F2;
+      }
+    }
+  }
+}

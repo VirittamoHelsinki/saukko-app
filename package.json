@@ -4,11 +4,20 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "setup": "npm install && npm run install:server && npm run install:client",
+        "install:server": "cd server && npm install",
+        "install:client": "cd client && npm install",
+        "server:dev": "cd server && npm run dev",
+        "server:prod": "cd server && npm start",
+        "client": "cd client && npm start",
+        "start:prod": "concurrently --kill-others-on-fail \" npm run server:prod\" \" npm run client\"",
+        "start:dev": "concurrently --kill-others-on-fail \" npm run server:dev\" \" npm run client\""
     },
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@iconify/react": "^4.1.1",
         "husky": "^8.0.3",
         "lint-staged": "^13.2.2",
         "prettier": "^2.8.8"
@@ -17,5 +26,12 @@
         "*.{js,jsx}": [
             "prettier --write"
         ]
+    },
+    "dependencies": {
+        "concurrently": "^7.6.0",
+        "hds-react": "^2.16.0",
+        "react-icons": "^4.10.1",
+        "react-scroll": "^1.8.9",
+        "react-swipeable-views": "^0.14.0"
     }
 }

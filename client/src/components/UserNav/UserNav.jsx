@@ -1,60 +1,53 @@
-// import necessary react components
-import { useNavigate } from "react-router-dom";
-import { Icon } from "@iconify/react";
-import axios from "axios";
-import React, { useContext } from "react";
-import AuthContext from "../../utils/context/AuthContext";
+import React, { useContext, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Icon } from '@iconify/react';
+import AuthContext from '../../store/context/AuthContext';
+import formStore from '../../store/zustand/formStore';
 
-// icon component
-const UserNavIcon = (props) => {
-  return (
-    <button onClick={props.onClick}>
-      <Icon icon={props.icon} rotate={props.rotate} />
-    </button>
-  );
-};
-
-// user navigation bar
 const UserNav = () => {
-  const { getLoggedIn } = useContext(AuthContext);
-
+  const { user } = useContext(AuthContext);
+  const { chosenCustomerId, clearChosenCustomerId } = formStore();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const LogOut = async () => {
-    await axios.get("http://localhost:5000/auth/logout");
-    localStorage.removeItem("token")
-    await getLoggedIn();
-    navigate("/");
-  };
+  // Clear chosen customer
+  useEffect(() => {
+    const routesToExclude = ['/customer-list', '/unit-list', '/contract-info', '/userperformance'];
+    const isExcludedRoute = routesToExclude.some(route => location.pathname === route);
+    if (!isExcludedRoute && chosenCustomerId !== null) {
+      clearChosenCustomerId();
+    }
+  }, [location.pathname, chosenCustomerId, clearChosenCustomerId]);
 
   return (
-    <main className="userNav__wrapper">
-      <section className="userNav__container">
-        {/* home icon */}
-        <UserNavIcon
-          icon="material-symbols:house-outline"
-          onClick={() => navigate("/home")}
-        />
-        {/* search icon */}
-        <UserNavIcon
-          icon="ic:baseline-search"
-          rotate={1}
-          onClick={() => navigate("/search")}
-        />
-        {/* book icon */}
-        <UserNavIcon
-          icon="material-symbols:menu-book-outline-sharp"
-          onClick={() => navigate("/home")}
-        />
-        {/* user icon */}
-        <UserNavIcon
-          icon="material-symbols:person-outline"
-          onClick={() => navigate("/home")}
-        />
-        {/* sign out icon */}
-        {/* <UserNavIcon icon="mdi:sign-out-variant" onClick={LogOut} /> */}
-        
-      </section>
+    <main className='userNav__wrapper'>
+        {/* Customer */}
+        {user && user.role === 'customer' &&
+          <div className={`userNav__icons ${user.role}`}>
+            <Icon icon="ic:outline-home" onClick={() => navigate('/unit-list')}/>
+            <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>
+            <Icon icon="mdi:user-outline" onClick={() => navigate('/profile')}/>
+          </div>
+        }
+
+        {/* Supervisor */}
+        {user && user.role === 'supervisor' &&
+          <div className={`userNav__icons ${user.role}`}>
+            <Icon icon="ic:outline-home" onClick={() => navigate('/customer-list')}/>
+            {chosenCustomerId && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
+            <Icon icon="mdi:user-outline" onClick={() => navigate('/profile')}/>
+          </div>
+        }
+
+        {/* Teacher */}
+        {user && user.role === 'teacher' &&
+          <div className={`userNav__icons ${user.role}`}>
+            <Icon icon="ic:outline-home" onClick={() => navigate('/customer-list')}/>
+            {chosenCustomerId && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
+            <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>
+            <Icon icon="mdi:user-outline" onClick={() => navigate('/profile')}/>
+          </div>
+        }
     </main>
   );
 };

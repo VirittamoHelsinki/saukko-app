@@ -1,0 +1,39 @@
+.buttons__container {
+  margin: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  .button__container {                  
+    .button__icon{
+      width: 25px;
+      flex-shrink: 0;
+    }
+
+    .button__text {
+      font-size: 15px;
+    }
+  }
+
+  .buttons__container-back {
+    width: 40%;
+
+    .button__container {
+      flex-direction: row-reverse;
+      color: var(--link-blue);
+      background: var(--saukko-main-white);
+      border: 2px solid var(--link-blue);
+    }
+  }
+
+  .buttons__container-forward {
+    width: 60%;
+
+    .button__container {
+      background: var(--link-blue);
+      color: var(--saukko-main-white);
+      border: 2px solid var(--link-blue);
+    }
+  }
+}

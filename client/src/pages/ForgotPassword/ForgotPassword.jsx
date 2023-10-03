@@ -1,99 +1,109 @@
-// importing react packages
-import React, { useRef, useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-
-// import axios to connect to the backend with
-import axios from "axios";
-
-// importing components
-import Button from "../../components/Button/Button";
-import WavesHeader from "../../components/Header/WavesHeader";
-
-// form email and password validators
-import * as EmailValidator from "email-validator";
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../components/Button/Button';
+import WavesHeader from '../../components/Header/WavesHeader';
+import Notification from '../../components/Notification/Notification';
+import * as EmailValidator from 'email-validator';
+import { forgotPassword } from '../../api/user';
 
 const ForgotPassword = () => {
-	const [email, setEmail] = useState(""),
-		[buttonDisabled, setButtonDisabled] = useState();
+  const color = '#00005E'
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [notificationVisible, setNotificationVisible] = useState(false);
 
-	// stores form input info
-	const formRef = useRef(),
-		emailRef = useRef();
+  const formRef = useRef();
+  const emailRef = useRef();
 
-	// processes the login after fields have been filled and the "login" button has been pressed
-	const processForgotPassword = (e) => {
-		const email = emailRef.current.value;
+  const processForgotPassword = async (e) => {
+    e.preventDefault();
 
-		// validate inputs
-		console.log(EmailValidator.validate(email));
+    const email = emailRef.current.value;
 
-		// sending data from form to the backend
-		axios
-			.post("/forgot-password", {
-				email: email,
-			})
-			.then(function (res) {
-				console.log(res);
-			})
-			.catch(function (err) {
-				console.log(err);
-			});
+    if (!EmailValidator.validate(email)) {
+      console.log('Invalid email');
+      return;
+    }
 
-		console.log(email);
-	};
+    try {
+      const res = await forgotPassword(email);
+      console.log(res);
+      setNotificationVisible(true);
+    } catch (error) {
+      console.log(error);
+    }
 
-	// enable login button style if fields are filled
-	useEffect(() => {
-		if (email.length > 0) {
-			return setButtonDisabled(false);
-		}
-		return setButtonDisabled(true);
-	}, [email]);
+    // setNotificationVisible(true);
+    console.log(email);
+  };
 
-	// button styling/CSS
-	const buttonStyleDisabled = {
-			color: "var(--saukko-main-white)",
-			border: "var(--link-disabled)",
-			background: "var(--link-disabled)",
-		},
-		buttonStyleEnabled = {
-			color: "var(--saukko-main-white)",
-			border: "var(--saukko-main-black)",
-			background: "var(--saukko-main-black)",
-		};
+  useEffect(() => {
+    setButtonDisabled(email.length === 0);
+  }, [email]);
 
-	return (
-		<main className="forgotPassword__wrapper">
-			<WavesHeader title="Saukko" fill="#9fc9eb" />
-			<section className="forgotPassword__container">
-				<h2>Unohtuiko salasana?</h2>
-				<p>Lähetämme sähköpostin, jossa on ohjeet salasanan vaihtamiseen</p>
-				<form ref={formRef} onSubmit={processForgotPassword}>
-					<section className="forgotPassword__container--form-text">
-						<label htmlFor="">Sähköposti *</label>
-						<input
-							ref={emailRef}
-							type="email"
-							onChange={(e) => {
-								setEmail(e.target.value);
-							}}
-							placeholder="Kirjoita sähköpostiosoitteesi."
-						/>
-					</section>
-				</form>
-			</section>
-			<section className="forgotPassword__form--bottom">
-				<Button
-					style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
-					onClick={() =>
-						buttonDisabled ? console.log("button disabled") : processForgotPassword()
-					}
-					type="submit"
-					text="Lähetä"
-				/>
-			</section>
-		</main>
-	);
+  const buttonStyleDisabled = {
+    color: 'var(--saukko-main-white)',
+    border: 'var(--link-disabled)',
+    background: 'var(--link-disabled)',
+  };
+
+  const buttonStyleEnabled = {
+    color: 'var(--saukko-main-white)',
+    border: 'var(--saukko-main-black)',
+    background: 'var(--saukko-main-black)',
+  };
+
+  return (
+    <main className='forgotPassword__wrapper'>
+      {!notificationVisible && <WavesHeader title='Saukko' fill='#9fc9eb' header={color} />}
+      {!notificationVisible && (
+        <section className='forgotPassword__container'>
+          <h2>Unohtuiko salasana?</h2>
+          <p>Täytä sähköpostiosoitteesi alle, jotta saat<br></br>ohjeet salasanasi vaihtamiseen. </p>
+          <form ref={formRef} onSubmit={processForgotPassword}>
+            <section className='forgotPassword__container--form-text'>
+              <label htmlFor='email'>Sähköposti *</label>
+              <input
+                ref={emailRef}
+                type='email'
+                id='email'
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+
+              />
+            </section>
+          </form>
+        </section>
+      )}
+      {!notificationVisible && (
+        <section className='forgotPassword__form--bottom'>
+          <Button
+            style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
+            onClick={processForgotPassword}
+            type='submit'
+            text='Lähetä'
+          />
+        </section>
+      )}
+
+      {notificationVisible && (
+        <Notification
+          navigatePage="/login"
+          headerColor={color}
+          bodyColor={color}
+          heading='Tarkista sähköpostisi'
+          headingColor={'white'}
+          icon='gg:check-o'
+          iconColor={'white'}
+        />
+      )}
+    </main>
+  );
 };
 
 export default ForgotPassword;
+
+
+

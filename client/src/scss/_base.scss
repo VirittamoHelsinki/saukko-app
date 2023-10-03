@@ -2,11 +2,11 @@
     // main colour scheme
     --saukko-main-white: #ffffff;
     --saukko-main-black: #000000;
+    --saukko-main-blue:  #00005E;
     --saukko-main: #9fc9eb;
     --saukko-main-soft: #b1e7ff;
     --saukkod-main-bright: #48c5f8;
     --saukkod-bright: #E5EFF8;
-    
     --saukko-main-light: #107eab;
     --saukko-main-active: #005379;
     --saukko-main-dark: #003146;
@@ -14,6 +14,8 @@
     --saukko-main-grey: #666666;
     --link-blue: #0000bf;
     --link-disabled: #cccccc;
+    --saukko-light-grey: #d1d1d1;
+    --accordion-background-grey: #F2F2F2;
     // grayscale
     --grayscale-white: #fff;
     --grayscale-slightly-gray: #fefefe;
@@ -37,7 +39,11 @@
     --additional-turquoise: #00d7a7;
     --additional-green-light: #96ba3c;
     --additional-green-dark: #006400;
+    --additional-light-yellow: #FFE49C;
+    --additional-light-blue: #D0E6F7;
     --hover-gray: #eaeaea;
+    --checkbox-green: #007A64;
+    --list-checked: #E2F5F3;
     // font family & sizes
     --base-font-size: 16px;
     --base-font-size-mobile: 14px;
@@ -98,20 +104,12 @@ html {
         button:focus {
             outline: none;
         }
+        input{
+            font-size: 1.2rem;
+        }
 
         button:hover {
             cursor: pointer;
-        }
-
-        .button__container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 56px;
-            background: none;
-            color: var(--saukko-main-black);
-            border: 2px solid var(--saukko-main-black);
         }
     }
 }
