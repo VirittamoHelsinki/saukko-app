@@ -65,14 +65,15 @@ const PerformancesFeedback = ({ header }) => {
             <FormControlLabel
               value="top"
               control={<Radio />}
-              label="Osaa itsenäisesti"
+
+              label="Osaa ohjatusti"
               labelPlacement="top"
               onChange={handleRadioChange}
             />
             <FormControlLabel
               value="end"
               control={<Radio />}
-              label="Osaa ohjatusti"
+              label="Osaa itsenäisesti"
               labelPlacement="top"
               onChange={handleRadioChange}
             />
