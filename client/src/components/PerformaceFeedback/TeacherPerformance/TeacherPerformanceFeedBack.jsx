@@ -46,8 +46,9 @@ const TeacherPerformanceFeedBack = ({ columnTitle }) => {
   return (
     <main className='feedback__wrapper' style={{ backgroundColor: getBackgroundColor() }}>
       <div className='first-div-style' style={{ width: '60%', marginLeft: '38%' }}>
-        <p style={{ padding: '4px' }}>Osaa itsenäisesti</p>
         <p style={{ padding: '2px' }}>Osaa ohjatusti</p>
+        <p style={{ padding: '4px' }}>Osaa itsenäisesti</p>
+
       </div>
       <div>
         {infodata.map((item, index) => (
