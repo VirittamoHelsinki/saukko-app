@@ -96,6 +96,7 @@ const CompanyInfo = () => {
       }
       const data = await response.json();
       setCompanyName(data);
+      console.log(data[0].name)
     } catch (error) {
       throw new Error('Failed to fetch company name');
     }

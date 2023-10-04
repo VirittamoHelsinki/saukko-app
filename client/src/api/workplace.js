@@ -1,4 +1,4 @@
-import axios from 'axios' 
+import axios from 'axios'
 
 const baseURL = process.env.REACT_APP_BACKEND_URL
 
@@ -6,9 +6,13 @@ const middleURL = '/api'
 
 // Fetch company data from avoindata API.
 const fetchExternalCompanyData = async (businessID) => {
+  console.log('businessID')
   const response = await fetch(`${baseURL}${middleURL}/business/${businessID}`);
+  // const response = await fetch(`http://avoindata.prh.fi/opendata/bis/v1/2070414-4`);
   return response
 };
+
+
 
 // Fetch all workplaces from internal saukko database.
 const fetchAllInternalWorkplaces = async () => {
