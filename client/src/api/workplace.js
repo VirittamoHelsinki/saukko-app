@@ -5,11 +5,18 @@ const baseURL = process.env.REACT_APP_BACKEND_URL
 const middleURL = '/api'
 
 // Fetch company data from avoindata API.
+
 const fetchExternalCompanyData = async (businessID) => {
-  console.log('businessID')
-  const response = await fetch(`${baseURL}${middleURL}/business/${businessID}`);
-  // const response = await fetch(`http://avoindata.prh.fi/opendata/bis/v1/2070414-4`);
-  return response
+  console.log(businessID);
+
+  try {
+    const response = await axios.get(`${baseURL}${middleURL}/business/${businessID}`);
+    console.log('data ----->', response.data);
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch  data');
+  }
 };
 
 

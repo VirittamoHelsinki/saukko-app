@@ -87,20 +87,20 @@ const CompanyInfo = () => {
     setDepartmentName(event.target.value);
   };
 
+
+
   const fetchCompanyName = async (businessID) => {
     try {
-      const response = await fetchExternalCompanyData(businessID);
-      if (!response.ok) {
-        setCompanyName('');
-        throw new Error('Failed to fetch company name');
-      }
-      const data = await response.json();
+      const data = await fetchExternalCompanyData(businessID);
+
       setCompanyName(data);
-      console.log(data[0].name)
+      console.log('Company Name:', data);
     } catch (error) {
       throw new Error('Failed to fetch company name');
     }
   };
+
+
 
   const handleClearBusinessId = () => {
     setBusinessId('');
@@ -361,3 +361,4 @@ const CompanyInfo = () => {
 };
 
 export default CompanyInfo;
+
