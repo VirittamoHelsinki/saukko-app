@@ -27,14 +27,14 @@ const useStore = create((set) => ({
   // Workplace flow
   businessID: [],
   businessIDError: '',
-  editedCompanyName: '',
+  editedCompanyName: null,
   companyName: null,
   departmentName: null,
   työpaikkaohjaajat: [],
   firstName: '',
   lastName: '',
   työpaikkaohjaajaEmail: '',
-  
+
   // Admin
   degreeName: 'ei dataa APIsta',
   degreeDescription: 'ei dataa APIsta',
@@ -43,7 +43,7 @@ const useStore = create((set) => ({
   validFrom: 'ei dataa APIsta',
   expiry: 'ei dataa APIsta',
   transitionEnds: 'ei dataa APIsta',
-  
+
   // Track chosen customer for teacher or supervisor 
   chosenCustomerId: null,
   setChosenCustomerId: (chosenCustomerId) => set(() => ({ chosenCustomerId })),
@@ -70,7 +70,7 @@ const useStore = create((set) => ({
   setAcademy: (academy) => set({ academy }),
   setEducation: (education) => set({ education }),
   setOpenNotificationModal: (openNotificationModal) =>
-  set({ openNotificationModal }),
+    set({ openNotificationModal }),
 
   // Workplace flow
   setBusinessId: (value) => set(() => ({ businessID: value })),

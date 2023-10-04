@@ -21,13 +21,13 @@ async function fetchData(url) {
 }
 
 router.get(['/business/:id', '/external/business/:id'], async (req, res) => {
-  try {  
-    //Helsingin kaupuki is hard-coded, because it's not found in the API 
-    if(req.params.id == "0201256-6"){
-      res.json({BusinessId: "0201256-6", name: "Helsingin kaupunki"});
-    }else{
-    const businessData = await fetchData(`http://avoindata.prh.fi/opendata/bis/v1/${req.params.id}`);
-    res.json({BusinessId: businessData.results[0].businessId, name: businessData.results[0].name});
+  try {
+    //Helsingin kaupuki is hard-coded, because it's not found in the API
+    if (req.params.id == "0201256-6") {
+      res.json({ BusinessId: "0201256-6", name: "Helsingin kaupunki" });
+    } else {
+      const businessData = await fetchData(`http://avoindata.prh.fi/opendata/bis/v1/${req.params.id}`);
+      res.json({ BusinessId: businessData.results[0].businessId, name: businessData.results[0].name });
     }
   } catch (error) {
     res.status(500).json({ error: "Business not found" });
@@ -43,8 +43,8 @@ router.get(['/degrees', '/external/degrees'], async (req, res) => {
     degrees.data.forEach(degree => {
       diaryNumber = String(degree.diaarinumero);
       diaryYear = parseInt(diaryNumber.substring(diaryNumber.length - 4));
-      if(diaryYear>2018 && degree.koulutukset[0]){
-        degreeList.push({_id: degree.id, diaryNumber: degree.diaarinumero, eduCodeValue: degree.koulutukset[0].koulutuskoodiArvo, name: {fi: degree.nimi.fi, sv: degree.nimi.sv, en: degree.nimi.en}});
+      if (diaryYear > 2018 && degree.koulutukset[0]) {
+        degreeList.push({ _id: degree.id, diaryNumber: degree.diaarinumero, eduCodeValue: degree.koulutukset[0].koulutuskoodiArvo, name: { fi: degree.nimi.fi, sv: degree.nimi.sv, en: degree.nimi.en } });
       }
     });
 
@@ -67,7 +67,7 @@ router.get(['/degree/:id', '/external/degree/:id'], async (req, res) => {
     degreeUnits.forEach(unit => {
       let modules = jp.query(unit, '$..arviointi.arvioinninKohdealueet[*]');
       modulex = modules;
-      
+
       let assessmentList = [];
 
       /*modules.forEach(module => {
@@ -82,13 +82,13 @@ router.get(['/degree/:id', '/external/degree/:id'], async (req, res) => {
       assessmentList.push({_id: module.koodi.id, name: {fi: module.otsikko.fi, sv: module.otsikko.sv, en: module.otsikko.en}, criteria: criteriaList});
       });*/
 
-      unitList.push({_id: unit.id, name: {fi: unit.nimi.fi, sv: unit.nimi.sv, en: unit.nimi.en}/*, assessments: assessmentList*/});
+      unitList.push({ _id: unit.id, name: { fi: unit.nimi.fi, sv: unit.nimi.sv, en: unit.nimi.en }/*, assessments: assessmentList*/ });
 
     });
 
     const degree = {
       _id: req.params.id,
-      name: {fi: degreeData.nimi.fi, sv: degreeData.nimi.sv, en: degreeData.nimi.en},
+      name: { fi: degreeData.nimi.fi, sv: degreeData.nimi.sv, en: degreeData.nimi.en },
       eduCodeValue: degreeData.koulutukset[0].koulutuskoodiArvo,
       diaryNumber: degreeData.diaarinumero,
       regulationDate: degreeData.paatospvm,
@@ -96,7 +96,7 @@ router.get(['/degree/:id', '/external/degree/:id'], async (req, res) => {
       validFrom: degreeData.voimassaoloAlkaa,
       expiry: degreeData.voimassaoloLoppuu,
       examInfoURL: `https://eperusteet.opintopolku.fi/#/fi/ammatillinen/${req.params.id}/tiedot`,
-      description: {fi: degreeData.kuvaus.fi, sv: degreeData.kuvaus.sv, en: degreeData.kuvaus.en},
+      description: { fi: degreeData.kuvaus.fi, sv: degreeData.kuvaus.sv, en: degreeData.kuvaus.en },
       units: unitList,
     };
 
