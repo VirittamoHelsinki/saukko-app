@@ -5,6 +5,9 @@ const config = require("./utils/config");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
+const { ENVIRONMENT } = require('./utils/config.js');
+const { requestLogger } = require('./middleware/middleware.js');
+
 const app = express();
 
 // Import the routers
@@ -29,6 +32,9 @@ app.use(
         credentials: true, // Enable sending cookies in CORS requests
     })
 );
+
+// Log incoming requests, when in development mode. (npm run dev)
+if (ENVIRONMENT === 'development') app.use(requestLogger);
 
 // Connect to the database
 mongoose.set("strictQuery", true);

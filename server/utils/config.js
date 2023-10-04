@@ -1,8 +1,10 @@
 // import dotenv from 'dotenv'
 require('dotenv').config()
 
+const ENVIRONMENT = process.env.NODE_ENV
+
 // import MONGODB_URI from .env
-const MONGODB_URI = process.env.NODE_ENV === 'test'
+const MONGODB_URI = ENVIRONMENT === 'test'
     ? process.env.TEST_MONGODB_URI
     : process.env.MONGODB_URI
 
@@ -34,6 +36,7 @@ const EMAIL_SERVICE_PASSWORD = process.env.EMAIL_SERVICE_PASSWORD
 const EMAIL_SERVICE_FROM = process.env.EMAIL_SERVICE_FROM
 
 module.exports = {
+  ENVIRONMENT,
   MONGODB_URI,
   PORT,
   JWT_SECRET,
