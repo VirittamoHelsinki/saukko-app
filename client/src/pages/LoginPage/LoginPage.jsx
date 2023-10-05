@@ -1,58 +1,43 @@
-// importing react packages
-import React, { useContext } from 'react';
-import { useState, useEffect } from 'react';
-import AuthContext from '../../store/context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useContext, useState, useEffect } from 'react';
 import alert from '../../assets/circle-red.svg'
-// importing components
 import Button from '../../components/Button/Button';
 import WavesHeader from '../../components/Header/WavesHeader';
-import PasswordInput from '../../components/PasswordInput/PasswordInput';
-import { Icon } from '@iconify/react';
+import AuthContext from '../../store/context/AuthContext';
 import { loginUser } from '../../api/user';
-
+import { Icon } from '@iconify/react';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState(''),
-    [password, setPassword] = useState(''),
-    [buttonDisabled, setButtonDisabled] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [buttonDisabled, setButtonDisabled] = useState();
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { getLoggedIn, user } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { getLoggedIn } = useContext(AuthContext);
 
-  // processes the login after fields have been filled and the "login" button has been pressed
   const processLogin = async (e) => {
     e.preventDefault();
+
     try {
       const loginData = {
         email,
         password,
       };
-
       await loginUser(loginData);
       await getLoggedIn();
-      if (user.role === 'teacher' || user.role === 'supervisor') {
-        navigate('/customer-list');
-      } else if (user.role === 'customer') {
-        navigate('/unit-list');
-      }
-
     } catch (err) {
-      // Handle the error here
       if (err.response && err.response.status === 401) {
-        // 401 status code means unauthorized (wrong password)
         setErrorMessage('Salasana väärin');
       } else {
         console.error(err);
       }
     }
   };
+  
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
+
   // enable login button style if fields are filled
   useEffect(() => {
     setButtonDisabled(![email, password].every((input) => input.length > 0));
@@ -64,11 +49,11 @@ const LoginPage = () => {
     border: 'var(--link-disabled)',
     background: 'var(--link-disabled)',
   },
-    buttonStyleEnabled = {
-      color: 'var(--saukko-main-white)',
-      border: 'var(--saukko-main-black)',
-      background: 'var(--saukko-main-black)',
-    };
+  buttonStyleEnabled = {
+    color: 'var(--saukko-main-white)',
+    border: 'var(--saukko-main-black)',
+    background: 'var(--saukko-main-black)',
+  };
 
   return (
     <main className='loginPage__wrapper'>
@@ -142,8 +127,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-
-
-
-
