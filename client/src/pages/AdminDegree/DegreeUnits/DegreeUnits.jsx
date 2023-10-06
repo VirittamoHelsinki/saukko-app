@@ -15,17 +15,17 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 
 // Import state management
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import useStore from '../../../store/zustand/formStore';
 
 function DegreeUnits() {
   const navigate = useNavigate();
 
   // Set path & get degree from ExternalApiContext
-  const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
+  const { degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
 
-  useEffect(() => {
-    setDegreeId(params.degreeId);
-  }, []);
+  // Get degree name from zustand store
+  const { degreeName } = useStore();
 
   // Save degree units to state once degree is fetched
   const degreeUnits = degree.units;
@@ -86,7 +86,7 @@ function DegreeUnits() {
           totalPages={4}
           data={stepperData}
         />
-        <h1>{degreeFound ? degree.name.fi : 'Ei dataa APIsta'}</h1>
+        <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
         <Searchbar
           handleSearch={handleSearch}
           placeholder={'Etsi tutkinnonosat'}

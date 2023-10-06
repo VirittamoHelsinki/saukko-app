@@ -35,6 +35,7 @@ function DegreeInfo() {
     setExpiry,
     transitionEnds,
     setTransitionEnds,
+    resetDegreeData
   } = useStore();
 
   const [isContentChanged, setIsContentChanged] = useState(false);
@@ -64,10 +65,8 @@ function DegreeInfo() {
   const navigate = useNavigate();
 
   // Set path & get degree from ExternalApiContext
-  const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
+  const { degree, degreeFound, allDegrees } = useContext(ExternalApiContext);
   const params = useParams();
-
-  console.log(params)
 
   // Labels and urls for stepper
   const stepperData = [
@@ -115,8 +114,17 @@ function DegreeInfo() {
       degree.expiry !== null && setOriginalExpiry(parseDate(degree.expiry));
       degree.transitionEnds !== null &&
         setOriginalTransitionEnds(parseDate(degree.transitionEnds));
+    } 
+    // If fetch by ID fails set data from all degrees 
+    else if (!degreeFound) { 
+      const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId))
+      if (matchingDegree) {
+        resetDegreeData()
+        setDegreeName(matchingDegree.name.fi)
+        setDiaryNumber(matchingDegree.diaryNumber)
+      }
     }
-  }, [degreeFound]);
+  }, [degree]);
 
   // Handle text changes and check if original text is modified
   // Degree name
@@ -238,7 +246,7 @@ function DegreeInfo() {
           totalPages={4}
           data={stepperData}
         />
-        <h1 className='degree-title'>{degreeFound ? degree.name.fi : 'Ei dataa APIsta'}</h1>
+        <h1 className='degree-title'>{degreeFound ? degree.name.fi : degreeName}</h1>
         <div
           style={{
             display: 'flex',
@@ -259,7 +267,7 @@ function DegreeInfo() {
         <div className='degreeInfo__container--info'>
           <div className='degreeInfo__container--info--block'>
             <h1>Tutkinnon suorittaneen osaaminen</h1>
-
+            <h2>Tutkinnon kuvaus</h2>
             <div
               style={{
                 display: 'flex',

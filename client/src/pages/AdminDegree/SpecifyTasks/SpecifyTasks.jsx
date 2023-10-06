@@ -9,6 +9,7 @@ import {
   CriteriaFieldsContextProvider,
   useCriteriaFieldsContext,
 } from '../../../store/context/CriteriaFieldsContext';
+import useStore from '../../../store/zustand/formStore';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -31,6 +32,7 @@ function SpecifyTasks() {
 
   // Set path & get degree units from ExternalApiContext
   const { degree, degreeFound } = useContext(ExternalApiContext);
+  const { degreeName } = useStore();
   const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -109,8 +111,6 @@ function SpecifyTasks() {
     }
   }, [activeStep]);
 
-  console.log('maxsteps: ', maxSteps);
-
   return (
     <CriteriaFieldsContextProvider maxSteps={maxSteps}>
       <main className='specify-tasks__wrapper'>
@@ -124,7 +124,7 @@ function SpecifyTasks() {
             totalPages={4}
             data={stepperData}
           />
-          <h1>{degreeFound ? degree.name.fi : 'Ei dataa APIsta'}</h1>
+          <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
           <Box>
             <MobileStepper
               steps={maxSteps}

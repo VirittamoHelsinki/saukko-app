@@ -21,7 +21,9 @@ function Summary() {
   const navigate = useNavigate();
   const params = useParams();
 
+  // Get values from store management
   const {
+    degreeName,
     degreeDescription,
     diaryNumber,
     regulationDate,
@@ -29,16 +31,9 @@ function Summary() {
     expiry,
     transitionEnds,
   } = useStore();
-
-  // Set path & get degree units from ExternalApiContext
   const { degree, degreeFound } = useContext(ExternalApiContext);
-  // Internal degree context
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
-  
-  // Get criteria fields from context
   const { criteriaFields } = useCriteriaFieldsContext();
-
-  // Get checked units from unitsStore
   const { checkedUnits } = useUnitsStore();
 
   // Remove HTML p tags from degree description
@@ -96,11 +91,11 @@ function Summary() {
           totalPages={4}
           data={stepperData}
         />
-        <h1 className='degree-title'>{degreeFound ? degree.name.fi : 'Ei dataa APIsta'}</h1>
+        <h1 className='degree-title'>{degreeFound ? degree.name.fi : degreeName}</h1>
         <div className='section-title'>Tutkinnonosat ja tehtävät </div>
         <div className='summary__container--box'>
           {criteriaFields.map((innerArray, index) => (
-            <>
+            <div key={index}>
               <strong className='mb'>{checkedUnits[index]?.name?.fi}</strong>
 
               {innerArray.map((element, index) => (
@@ -110,7 +105,7 @@ function Summary() {
                 </p>
               ))}
               {index < criteriaFields.length - 1 && <hr />}
-            </>
+            </div>
           ))}
         </div>
         <div className='section-title'> Tutkinnon suorittaneen osaaminen</div>

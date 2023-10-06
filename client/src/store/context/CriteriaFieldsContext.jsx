@@ -7,7 +7,6 @@ export function useCriteriaFieldsContext() {
 }
 
 export function CriteriaFieldsContextProvider({ children, maxSteps }) {
-  console.log('maxSteps in context: ', maxSteps);
   const [criteriaFields, setCriteriaFields] = useState(
     Array.from({ length: 3 }, () => [''])
   );
