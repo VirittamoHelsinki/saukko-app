@@ -105,7 +105,7 @@ function DegreeConfirmSelection() {
         title='Uusi työpaikka lisätty'
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
-        redirectLink='/customer-list'
+        redirectLink='/admin-menu'
       />
     </main>
   );
