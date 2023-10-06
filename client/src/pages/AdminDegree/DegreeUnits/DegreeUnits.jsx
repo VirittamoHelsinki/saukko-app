@@ -10,9 +10,11 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+
+// Import state management
+import ExternalApiContext from '../../../store/context/ExternalApiContext';
 
 function DegreeUnits() {
   const navigate = useNavigate();

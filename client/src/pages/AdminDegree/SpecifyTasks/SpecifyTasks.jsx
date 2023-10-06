@@ -2,9 +2,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// Import Zustand store and custom context
+// Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import {
+  CriteriaFieldsContextProvider,
+  useCriteriaFieldsContext,
+} from '../../../store/context/CriteriaFieldsContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -21,17 +25,11 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 import { useTheme } from '@mui/material/styles';
 
-import {
-  CriteriaFieldsContextProvider,
-  useCriteriaFieldsContext,
-} from '../../../store/context/CriteriaFieldsContext';
-
 function SpecifyTasks() {
   const navigate = useNavigate();
 
   // Set path & get degree units from ExternalApiContext
-  const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
-  const params = useParams();
+  const { degree, degreeFound } = useContext(ExternalApiContext);
   const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -42,30 +40,26 @@ function SpecifyTasks() {
     }
   }, [criteriaFields]);
 
-  useEffect(() => {
-    setDegreeId(params.degreeId);
-  }, []);
-
   // Get checked units from unitsStore
-  const { checkedUnits } = useUnitsStore();
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
   // Labels and urls for stepper
   const stepperData = [
     {
       label: 'Tutkinto-tiedot',
-      url: `/degrees/${degreeId}`
+      url: `/degrees/${degree._id}`
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: `/degrees/${degreeId}/units`
+      url: `/degrees/${degree._id}/units`
     },
     {
       label: 'Määritä tehtävät',
-      url: `/degrees/${degreeId}/units/tasks`
+      url: `/degrees/${degree._id}/units/tasks`
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${degreeId}/summary`
+      url: `/degrees/${degree._id}/summary`
     },
   ];
 
@@ -168,7 +162,7 @@ function SpecifyTasks() {
               {/* <div>Loading...</div> */}
               {/* ) : ( */}
               <form>
-                <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
+                <h3>{checkedUnits[activeStep]?.name?.fi}{console.log('Checked units tasks page:', checkedUnits)}</h3>
 
                 {criteriaFields[activeStep]?.map((textField, index) => (
                   <div key={index}>
@@ -199,7 +193,7 @@ function SpecifyTasks() {
 
           <PageNavigationButtons
             handleBack={() =>
-              navigate(`/degrees/${degreeId}/units`)
+              navigate(`/degrees/${degree._id}/units`)
             }
             handleForward={() => navigate(`/degrees/${degree._id}/summary`)}
             forwardButtonText={'Tallenna ja jatka'}

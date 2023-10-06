@@ -275,7 +275,7 @@ function DegreeInfo() {
                 innerRef={degreeDescriptionRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -293,7 +293,7 @@ function DegreeInfo() {
                 innerRef={degreeNameRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -311,7 +311,7 @@ function DegreeInfo() {
                 innerRef={diaryNumberRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -329,7 +329,7 @@ function DegreeInfo() {
                 innerRef={regulationDateRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -347,7 +347,7 @@ function DegreeInfo() {
                 innerRef={validFromRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -365,7 +365,7 @@ function DegreeInfo() {
                 innerRef={expiryRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -383,7 +383,7 @@ function DegreeInfo() {
                 innerRef={transitionEndsRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
