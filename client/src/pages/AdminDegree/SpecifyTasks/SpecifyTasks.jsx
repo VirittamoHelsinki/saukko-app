@@ -158,11 +158,8 @@ function SpecifyTasks() {
               }
             />
             <Paper square elevation={0}>
-              {/* {isLoading ? ( */}
-              {/* <div>Loading...</div> */}
-              {/* ) : ( */}
               <form>
-                <h3>{checkedUnits[activeStep]?.name?.fi}{console.log('Checked units tasks page:', checkedUnits)}</h3>
+                <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
 
                 {criteriaFields[activeStep]?.map((textField, index) => (
                   <div key={index}>
