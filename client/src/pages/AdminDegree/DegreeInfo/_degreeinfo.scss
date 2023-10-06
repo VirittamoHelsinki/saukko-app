@@ -15,6 +15,12 @@
       flex-grow: 1;
       overflow-y: auto;
 
+      .degree-title {
+        margin-top: 40px;
+        align-self: center;
+        font-size: 20px;
+      }
+
       .degreeInfo__container--info {
         display: flex;
         flex-direction: column;
@@ -31,6 +37,7 @@
             margin-bottom: 15px;
             text-align: center;
             text-decoration: underline;
+            font-weight: 400;
           }
 
           &.dark {

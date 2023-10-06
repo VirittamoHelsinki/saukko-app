@@ -61,32 +61,32 @@ function DegreeUnits() {
   const stepperData = [
     {
       label: 'Tutkinto-tiedot',
-      url: `/degrees/${degreeId}`
+      url: `/degrees/${params.degreeId}`
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: `/degrees/${degreeId}/units`
+      url: `/degrees/${params.degreeId}/units`
     },
     {
       label: 'Määritä tehtävät',
-      url: `/degrees/${degreeId}/units/tasks`
+      url: `/degrees/${params.degreeId}/units/tasks`
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${degreeId}/units/confirm-selection`
+      url: `/degrees/${params.degreeId}/units/confirm-selection`
     },
   ];
 
   return (
     <main className='degreeUnits__wrapper'>
-      <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
+      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
       <section className='degreeUnits__container'>
         <Stepper
           activePage={2}
           totalPages={4}
           data={stepperData}
         />
-        <h1>Valitse tutkinnon osat</h1>
+        <h1>{degreeFound ? degree.name.fi : 'Ei dataa APIsta'}</h1>
         <Searchbar
           handleSearch={handleSearch}
           placeholder={'Etsi tutkinnonosat'}
@@ -113,10 +113,8 @@ function DegreeUnits() {
         />
 
         <PageNavigationButtons
-          handleBack={() => navigate(`/degrees/${degree._id}`)}
-          handleForward={() =>
-            navigate(`/degrees/${degreeId}/units/tasks`)
-          }
+          handleBack={() => navigate(`/degrees/${params.degreeId}`)}
+          handleForward={() => navigate(`/degrees/${params.degreeId}/units/tasks`)}
           forwardButtonText={'Seuraava'}
         />
       </section>

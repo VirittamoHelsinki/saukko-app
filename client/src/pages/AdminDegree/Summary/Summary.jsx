@@ -1,12 +1,13 @@
 // Import react packages & dependencies
 import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Import Zustand store and custom context
 import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useCriteriaFieldsContext } from '../../../store/context/CriteriaFieldsContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -14,12 +15,11 @@ import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
-import { useCriteriaFieldsContext } from '../../../store/context/CriteriaFieldsContext';
-
 import { postDegree } from '../../../api/degree';
 
 function Summary() {
   const navigate = useNavigate();
+  const params = useParams();
 
   const {
     degreeDescription,
@@ -31,7 +31,7 @@ function Summary() {
   } = useStore();
 
   // Set path & get degree units from ExternalApiContext
-  const { degree, degreeId, degreeFound } = useContext(ExternalApiContext);
+  const { degree, degreeFound } = useContext(ExternalApiContext);
   // Internal degree context
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
   
@@ -49,19 +49,19 @@ function Summary() {
   const stepperData = [
     {
       label: 'Tutkinto-tiedot',
-      url: `/degrees/${degreeId}`
+      url: `/degrees/${params.degreeId}`
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: `/degrees/${degreeId}/units`
+      url: `/degrees/${params.degreeId}/units`
     },
     {
       label: 'Määritä tehtävät',
-      url: `/degrees/${degreeId}/units/tasks`
+      url: `/degrees/${params.degreeId}/units/tasks`
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${degreeId}/summary`
+      url: `/degrees/${params.degreeId}/summary`
     },
   ];
 
@@ -89,13 +89,14 @@ function Summary() {
 
   return (
     <main className='summary__wrapper'>
-      <WavesHeader title='Saukko' secondTitle={degreeFound && degree.name.fi} />
+      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
       <section className='summary__container'>
         <Stepper
           activePage={4}
           totalPages={4}
           data={stepperData}
         />
+        <h1 className='degree-title'>{degreeFound ? degree.name.fi : 'Ei dataa APIsta'}</h1>
         <div className='section-title'>Tutkinnonosat ja tehtävät </div>
         <div className='summary__container--box'>
           {criteriaFields.map((innerArray, index) => (
@@ -132,9 +133,7 @@ function Summary() {
         </ul>
 
         <PageNavigationButtons
-          handleBack={() =>
-            navigate(`/degrees/${degreeId}/units/tasks`)
-          }
+          handleBack={() =>navigate(`/degrees/${params.degreeId}/units/tasks`)}
           handleForward={handleSubmit}
           forwardButtonText={'Tallenna tiedot'}
         />

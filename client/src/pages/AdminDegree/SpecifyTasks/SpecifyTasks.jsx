@@ -27,6 +27,7 @@ import { useTheme } from '@mui/material/styles';
 
 function SpecifyTasks() {
   const navigate = useNavigate();
+  const params = useParams();
 
   // Set path & get degree units from ExternalApiContext
   const { degree, degreeFound } = useContext(ExternalApiContext);
@@ -47,19 +48,19 @@ function SpecifyTasks() {
   const stepperData = [
     {
       label: 'Tutkinto-tiedot',
-      url: `/degrees/${degree._id}`
+      url: `/degrees/${params.degreeId}`
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: `/degrees/${degree._id}/units`
+      url: `/degrees/${params.degreeId}/units`
     },
     {
       label: 'Määritä tehtävät',
-      url: `/degrees/${degree._id}/units/tasks`
+      url: `/degrees/${params.degreeId}/units/tasks`
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${degree._id}/summary`
+      url: `/degrees/${params.degreeId}/summary`
     },
   ];
 
@@ -115,7 +116,7 @@ function SpecifyTasks() {
       <main className='specify-tasks__wrapper'>
         <WavesHeader
           title='Saukko'
-          secondTitle={degreeFound && degree.name.fi}
+          secondTitle='Tutkintojen hallinta'
         />
         <section className='specify-tasks__container'>
           <Stepper
@@ -123,6 +124,7 @@ function SpecifyTasks() {
             totalPages={4}
             data={stepperData}
           />
+          <h1>{degreeFound ? degree.name.fi : 'Ei dataa APIsta'}</h1>
           <Box>
             <MobileStepper
               steps={maxSteps}
@@ -189,10 +191,8 @@ function SpecifyTasks() {
           </Box>
 
           <PageNavigationButtons
-            handleBack={() =>
-              navigate(`/degrees/${degree._id}/units`)
-            }
-            handleForward={() => navigate(`/degrees/${degree._id}/summary`)}
+            handleBack={() =>navigate(`/degrees/${params.degreeId}/units`)}
+            handleForward={() => navigate(`/degrees/${params.degreeId}/summary`)}
             forwardButtonText={'Tallenna ja jatka'}
           />
         </section>

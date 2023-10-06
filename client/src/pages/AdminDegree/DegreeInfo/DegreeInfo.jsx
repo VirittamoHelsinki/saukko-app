@@ -2,8 +2,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// Import Zustand store
+// Import state management
 import useStore from '../../../store/zustand/formStore';
+import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import AuthContext from '../../../store/context/AuthContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -13,10 +15,6 @@ import Hyperlink from '../../../components/Hyperlink/Hyperlink';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
-
-// Umport utils
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
-import AuthContext from '../../../store/context/AuthContext';
 
 function DegreeInfo() {
   const auth = useContext(AuthContext);
@@ -69,23 +67,25 @@ function DegreeInfo() {
   const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
 
+  console.log(params)
+
   // Labels and urls for stepper
   const stepperData = [
     {
       label: 'Tutkinto-tiedot',
-      url: `/degrees/${degreeId}`
+      url: `/degrees/${params.degreeId}`
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: `/degrees/${degreeId}/units`
+      url: `/degrees/${params.degreeId}/units`
     },
     {
       label: 'Määritä tehtävät',
-      url: `/degrees/${degreeId}/units/tasks`
+      url: `/degrees/${params.degreeId}/units/tasks`
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${degreeId}/units/confirm-selection`
+      url: `/degrees/${params.degreeId}/units/confirm-selection`
     },
   ];
 
@@ -117,10 +117,6 @@ function DegreeInfo() {
         setOriginalTransitionEnds(parseDate(degree.transitionEnds));
     }
   }, [degreeFound]);
-
-  useEffect(() => {
-    setDegreeId(params.degreeId);
-  }, []);
 
   // Handle text changes and check if original text is modified
   // Degree name
@@ -234,7 +230,7 @@ function DegreeInfo() {
     <main className='degreeInfo__wrapper'>
       <WavesHeader
         title='Saukko'
-        secondTitle={degreeFound ? degree.name.fi : 'ei dataa APIsta'}
+        secondTitle='Tutkintojen hallinta'
       />
       <section className='degreeInfo__container'>
         <Stepper
@@ -242,6 +238,7 @@ function DegreeInfo() {
           totalPages={4}
           data={stepperData}
         />
+        <h1 className='degree-title'>{degreeFound ? degree.name.fi : 'Ei dataa APIsta'}</h1>
         <div
           style={{
             display: 'flex',
@@ -396,7 +393,7 @@ function DegreeInfo() {
 
         <PageNavigationButtons
           handleBack={() => navigate('/degrees')}
-          handleForward={() => navigate(`/degrees/${degree._id}/units`)}
+          handleForward={() => navigate(`/degrees/${params.degreeId}/units`)}
           forwardButtonText={
             isContentChanged ? 'Tallenna ja jatka' : 'Seuraava'
           }
