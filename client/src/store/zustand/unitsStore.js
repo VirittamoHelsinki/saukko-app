@@ -1,19 +1,23 @@
 /* 
   USAGE
 
-  Import:
-
-    import useUnitsStore from '../../../store/unitsStore';
-
   Get checked units:
 
     const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+
+  Check / uncheck units:
+
+    const toggleUnit = useUnitsStore((state) => state.toggleUnit);
+
+    const handlerFunction = () => {
+      toggleUnit(unit);
+    };
 
   Clear store:
 
     const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
 
-    const yourSubmitHandler {
+    const handlerFunction {
       clearCheckedUnits();
     }
 */
@@ -25,6 +29,7 @@ const useUnitsStore = create((set) => ({
 
   setUnitAtIndex: (index, newValue) => {
     set((state) => {
+      console.log('Updating checkedUnits:', newValue);
       const newUnits = [...state.checkedUnits];
       newUnits[index] = newValue;
       return { checkedUnits: newUnits };

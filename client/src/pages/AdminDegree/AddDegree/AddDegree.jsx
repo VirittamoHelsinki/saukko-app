@@ -97,9 +97,6 @@ const AddDegree = () => {
 
   const navigate = useNavigate();
 
-  // Get degrees from ExternalApiContext
-  //   const { allDegrees } = useContext(ExternalApiContext);
-
   // Get degrees from InternalApiContext
   const { allInternalDegrees } = useContext(InternalApiContext);
 
@@ -128,7 +125,7 @@ const AddDegree = () => {
   return (
     <main className='addDegree__wrapper'>
       <WavesHeader
-        title='Koulutukset'
+        title='Saukko'
         secondTitle='Tutkintojen hallinta'
         disabled={false}
       />
@@ -143,6 +140,7 @@ const AddDegree = () => {
             width: '50%',
             backgroundColor: '#0000BF',
             color: 'white',
+            border: 'none',
           }}
           icon={'ic:baseline-plus'}
           onClick={() => navigate(`/degrees`)}
