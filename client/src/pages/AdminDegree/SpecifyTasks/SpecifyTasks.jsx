@@ -30,21 +30,24 @@ function SpecifyTasks() {
   const navigate = useNavigate();
   const params = useParams();
 
-  // Set path & get degree units from ExternalApiContext
+  // Initialize state
+  /* const [isLoading, setIsLoading] = useState(true); */
+  const [assessments, setAssessments] = useState([]);
+  const [activeStep, setActiveStep] = useState(0);
+
+  // Get values from state management
   const { degree, degreeFound } = useContext(ExternalApiContext);
   const { degreeName } = useStore();
   const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
-  const [isLoading, setIsLoading] = useState(true);
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+  const addAssessment = useUnitsStore((state) => state.addAssessment);
 
-  useEffect(() => {
+  /* useEffect(() => {
     // Check if the criteriaFields are populated (initialized)
     if (criteriaFields.length > 0) {
       setIsLoading(false); // Set loading to false when criteriaFields are populated
     }
-  }, [criteriaFields]);
-
-  // Get checked units from unitsStore
-  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+  }, [criteriaFields]); */
 
   // Labels and urls for stepper
   const stepperData = [
@@ -68,7 +71,6 @@ function SpecifyTasks() {
 
   // Dots Stepper
   const theme = useTheme();
-  const [activeStep, setActiveStep] = useState(0);
   const maxSteps = checkedUnits.length;
 
   const handleNext = () => {
@@ -90,13 +92,25 @@ function SpecifyTasks() {
   };
 
   // Handle changes in the text fields
-  const handleTextFieldChange = (stepIndex, fieldIndex, value) => {
+  const handleTextFieldChange = (stepIndex, fieldIndex, value, unitId) => {
     setCriteriaFields((prevFields) => {
       const newFields = [...prevFields];
       newFields[activeStep][fieldIndex] = value;
       return newFields;
     });
+
+    console.log(unitId)
+
+    setAssessments((prevAssessments) => {
+      const newAssessments = [...prevAssessments];
+      newAssessments[activeStep] = newAssessments[activeStep] || {}; // Ensure there's an object for this step
+      newAssessments[activeStep] = { unitId: unitId, name: value }; // Format assessment data
+      return newAssessments;
+    });
   };
+  console.log('units task page', checkedUnits)
+  console.log('assessments state', assessments)
+  console.log('criteria fields context', criteriaFields)
 
   // Preserve textFields state when navigating between steps
   useEffect(() => {
@@ -110,6 +124,14 @@ function SpecifyTasks() {
       });
     }
   }, [activeStep]);
+
+  // Form submission handler
+  const handleSubmit = () => {
+    assessments.map((assessment) => (
+      addAssessment(assessment.unitId, assessment.name)
+    ))
+    navigate(`/degrees/${params.degreeId}/summary`)
+  }
 
   return (
     <CriteriaFieldsContextProvider maxSteps={maxSteps}>
@@ -172,7 +194,8 @@ function SpecifyTasks() {
                         handleTextFieldChange(
                           activeStep,
                           index,
-                          event.target.value
+                          event.target.value,
+                          checkedUnits[activeStep]._id
                         )
                       }
                     />
@@ -186,13 +209,12 @@ function SpecifyTasks() {
                   + Lisää arviointikriteeri
                 </Button>
               </form>
-              {/* )} */}
             </Paper>
           </Box>
 
           <PageNavigationButtons
             handleBack={() =>navigate(`/degrees/${params.degreeId}/units`)}
-            handleForward={() => navigate(`/degrees/${params.degreeId}/summary`)}
+            handleForward={handleSubmit}
             forwardButtonText={'Tallenna ja jatka'}
           />
         </section>

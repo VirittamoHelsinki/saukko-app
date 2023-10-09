@@ -29,7 +29,6 @@ const useUnitsStore = create((set) => ({
 
   setUnitAtIndex: (index, newValue) => {
     set((state) => {
-      console.log('Updating checkedUnits:', newValue);
       const newUnits = [...state.checkedUnits];
       newUnits[index] = newValue;
       return { checkedUnits: newUnits };
@@ -49,6 +48,26 @@ const useUnitsStore = create((set) => ({
             [...state.checkedUnits, unit];
 
       // Update state with new array of checked units
+      return { checkedUnits: updatedUnits };
+    });
+  },
+
+  addAssessment: (unitId, assessment) => {
+    set((state) => {
+      const updatedUnits = state.checkedUnits.map((unit) => {
+        if (unit._id === unitId) {
+          // Ensure that assessments is always an array and add the assessment
+          const assessments = Array.isArray(unit.assessments) ? [...unit.assessments] : [];
+          assessments.push({ name: { fi: assessment } });
+
+          // Add the assessment to the unit
+          return {
+            ...unit,
+            assessments,
+          };
+        }
+        return unit;
+      });
       return { checkedUnits: updatedUnits };
     });
   },
