@@ -7,7 +7,11 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies for the server and client
-RUN npm run setup
+RUN npm install
+RUN cd client && npm install && npm run build && cd ..
+RUN cd server && npm install && cd ..
+
+
 
 # Expose the port the app runs on
 EXPOSE 3459
