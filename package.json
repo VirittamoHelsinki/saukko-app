@@ -5,9 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "setup": "npm install && npm run install:server && npm run install:client",
-        "install:server": "cd server && npm install",
-        "install:client": "cd client && npm install",
+        "setup": "npm install && cd client && npm install && npm run build && cd .. && cd server && npm install",
         "server:dev": "cd server && npm run dev",
         "server:prod": "cd server && npm start",
         "client": "cd client && npm start",
