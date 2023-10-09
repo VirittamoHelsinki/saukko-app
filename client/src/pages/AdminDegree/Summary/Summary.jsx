@@ -66,15 +66,23 @@ function Summary() {
   const handleSubmit = async () => {
     
     const degreeData = {
-      diaryNumber: degree.diaryNumber,
+      diaryNumber: diaryNumber ? diaryNumber : degree.diaryNumber,
       eduCodeValue: degree.eduCodeValue,
-      name: degree.name,
-      description: degree.description,
+      name: {
+        fi: degreeName ? degreeName : degree.name.fi,
+        sv: degreeFound ? degree.name.sv : '',
+        en: degreeFound ? degree.name.en : '',
+      },
+      description: {
+        fi: degreeDescription ? degreeDescription : degree.description.fi,
+        sv: degreeFound ? degree.description.sv : '',
+        en: degreeFound ? degree.description.en : '',
+      },
       archived: false,
-      infoURL: degree.examInfoURL || '',
-      units: degree.units,
+      infoURL: degree.examInfoURL,
+      units: checkedUnits,
     };
-    console.log('degree data', degreeData)
+    console.log('Data for post request:', degreeData)
 
     // Post the new degree to the internal database
     // and save the response to a variable.

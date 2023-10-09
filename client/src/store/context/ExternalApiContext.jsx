@@ -47,13 +47,14 @@ export const ExternalApiContextProvider = (props) => {
   // Check if degree object is empty  
   const degreeFound = Object.keys(degree).length > 0 ? true : false
 
-  // Clear checked units & assessments when degreeId changes
+  // Clear checked units, assessments, degree data when degreeId changes
   const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
   const { setCriteriaFields } = useCriteriaFieldsContext();
 
   useEffect(() => {
     clearCheckedUnits();
     setCriteriaFields(Array.from({ length: 3 }, () => ['']));
+    setDegree({});
   }, [degreeId]);
 
   return (
