@@ -21,6 +21,7 @@ const jwt = require("jsonwebtoken"); */
 
 // Middleware setup
 app.use(express.json()); // Parse JSON request bodies
+app.use(express.static('../client/build'));
 app.use(cookieParser()); // Parse cookies
 app.use(
     cors({
@@ -52,5 +53,9 @@ app.use('/api', workplaceRouter);
 
 // Set up routes for ePerusteet fetching
 app.use('/api', eReqRouter);
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  });
 
 module.exports = app;

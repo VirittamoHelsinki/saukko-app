@@ -1,3 +1,4 @@
+# Build Stage
 FROM node:14
 
 # Set the working directory to /app
@@ -6,15 +7,18 @@ WORKDIR /app
 # Copy both package.json and package-lock.json (if available)
 COPY . .
 
-# Install dependencies for the server and client
+# Install server dependencies
 RUN npm install
-RUN cd client && npm install && npm run build && cd ..
-RUN cd server && npm install && cd ..
 
+WORKDIR /app/client
+RUN npm install
+RUN npm run build
 
+WORKDIR /app/server
+RUN npm install
 
-# Expose the port the app runs on
-EXPOSE 3459
-
+WORKDIR /app
+# Install server dependencies
+EXPOSE 5000
 # Run the server
 CMD ["npm", "run", "start:prod" ]
