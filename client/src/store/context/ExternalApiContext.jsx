@@ -1,5 +1,6 @@
 import React, { useEffect, useState, createContext } from 'react';
 import useUnitsStore from '../zustand/unitsStore';
+import { useCriteriaFieldsContext } from './CriteriaFieldsContext';
 import { fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
 
 const ExternalApiContext = createContext();
@@ -46,11 +47,13 @@ export const ExternalApiContextProvider = (props) => {
   // Check if degree object is empty  
   const degreeFound = Object.keys(degree).length > 0 ? true : false
 
-  // Clear checked units when degreeId changes
+  // Clear checked units & assessments when degreeId changes
   const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
+  const { setCriteriaFields } = useCriteriaFieldsContext();
 
   useEffect(() => {
     clearCheckedUnits();
+    setCriteriaFields(Array.from({ length: 3 }, () => ['']));
   }, [degreeId]);
 
   return (

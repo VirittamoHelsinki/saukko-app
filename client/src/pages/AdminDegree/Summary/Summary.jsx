@@ -14,6 +14,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 
 import { postDegree } from '../../../api/degree';
 
@@ -30,10 +31,12 @@ function Summary() {
     validFrom,
     expiry,
     transitionEnds,
+    openNotificationModal,
+    setOpenNotificationModal,
   } = useStore();
   const { degree, degreeFound } = useContext(ExternalApiContext);
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
-  const { criteriaFields } = useCriteriaFieldsContext();
+  const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
   const { checkedUnits } = useUnitsStore();
 
   // Remove HTML p tags from degree description
@@ -71,6 +74,7 @@ function Summary() {
       infoURL: degree.examInfoURL || '',
       units: degree.units,
     };
+    console.log('degree data', degreeData)
 
     // Post the new degree to the internal database
     // and save the response to a variable.
@@ -79,7 +83,8 @@ function Summary() {
     // Save degree to Context store.
     setAllInternalDegrees([...allInternalDegrees, newDegree]);
 
-    navigate(`/admin-menu`);
+    // Trigger NotificationModal
+    setOpenNotificationModal(true);
   };
 
   return (
@@ -131,6 +136,13 @@ function Summary() {
           handleBack={() =>navigate(`/degrees/${params.degreeId}/units/tasks`)}
           handleForward={handleSubmit}
           forwardButtonText={'Tallenna tiedot'}
+        />
+        <NotificationModal
+          type='success'
+          title='Tiedot tallennettu'
+          body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+          open={openNotificationModal}
+          redirectLink='/admin-menu'
         />
       </section>
       <UserNav />

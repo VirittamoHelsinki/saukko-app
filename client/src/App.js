@@ -17,11 +17,11 @@ const App = () => {
     <main className='app__wrapper'>
       <AuthContextProvider>
        <InternalApiContextProvider>
-        <ExternalApiContextProvider>
-          <CriteriaFieldsContextProvider>
+        <CriteriaFieldsContextProvider>
+          <ExternalApiContextProvider>
             <Router />
-          </CriteriaFieldsContextProvider>
-        </ExternalApiContextProvider>
+          </ExternalApiContextProvider>
+        </CriteriaFieldsContextProvider>
        </InternalApiContextProvider>
       </AuthContextProvider>
     </main>
