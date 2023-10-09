@@ -2,9 +2,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// Import Zustand store and custom context
+// Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import {
+  CriteriaFieldsContextProvider,
+  useCriteriaFieldsContext,
+} from '../../../store/context/CriteriaFieldsContext';
+import useStore from '../../../store/zustand/formStore';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -21,17 +26,13 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 import { useTheme } from '@mui/material/styles';
 
-import {
-  CriteriaFieldsContextProvider,
-  useCriteriaFieldsContext,
-} from '../../../store/context/CriteriaFieldsContext';
-
 function SpecifyTasks() {
   const navigate = useNavigate();
+  const params = useParams();
 
   // Set path & get degree units from ExternalApiContext
-  const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
-  const params = useParams();
+  const { degree, degreeFound } = useContext(ExternalApiContext);
+  const { degreeName } = useStore();
   const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -42,30 +43,26 @@ function SpecifyTasks() {
     }
   }, [criteriaFields]);
 
-  useEffect(() => {
-    setDegreeId(params.degreeId);
-  }, []);
-
   // Get checked units from unitsStore
-  const { checkedUnits } = useUnitsStore();
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
   // Labels and urls for stepper
   const stepperData = [
     {
       label: 'Tutkinto-tiedot',
-      url: `/degrees/${degreeId}`
+      url: `/degrees/${params.degreeId}`
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: `/degrees/${degreeId}/units`
+      url: `/degrees/${params.degreeId}/units`
     },
     {
       label: 'Määritä tehtävät',
-      url: `/degrees/${degreeId}/units/tasks`
+      url: `/degrees/${params.degreeId}/units/tasks`
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${degreeId}/summary`
+      url: `/degrees/${params.degreeId}/summary`
     },
   ];
 
@@ -114,14 +111,12 @@ function SpecifyTasks() {
     }
   }, [activeStep]);
 
-  console.log('maxsteps: ', maxSteps);
-
   return (
     <CriteriaFieldsContextProvider maxSteps={maxSteps}>
       <main className='specify-tasks__wrapper'>
         <WavesHeader
           title='Saukko'
-          secondTitle={degreeFound && degree.name.fi}
+          secondTitle='Tutkintojen hallinta'
         />
         <section className='specify-tasks__container'>
           <Stepper
@@ -129,6 +124,7 @@ function SpecifyTasks() {
             totalPages={4}
             data={stepperData}
           />
+          <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
           <Box>
             <MobileStepper
               steps={maxSteps}
@@ -164,9 +160,6 @@ function SpecifyTasks() {
               }
             />
             <Paper square elevation={0}>
-              {/* {isLoading ? ( */}
-              {/* <div>Loading...</div> */}
-              {/* ) : ( */}
               <form>
                 <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
 
@@ -198,10 +191,8 @@ function SpecifyTasks() {
           </Box>
 
           <PageNavigationButtons
-            handleBack={() =>
-              navigate(`/degrees/${degreeId}/units`)
-            }
-            handleForward={() => navigate(`/degrees/${degree._id}/summary`)}
+            handleBack={() =>navigate(`/degrees/${params.degreeId}/units`)}
+            handleForward={() => navigate(`/degrees/${params.degreeId}/summary`)}
             forwardButtonText={'Tallenna ja jatka'}
           />
         </section>

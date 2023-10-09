@@ -12,11 +12,17 @@ const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
 	const list = filteredList.length > 0 ? filteredList : allDegrees;
 
 	const navigate = useNavigate();
+  const { setDegreeId } = useContext(ExternalApiContext);
 
+  const handleChooseDegree = async (degreeId) => {
+    await setDegreeId(degreeId)
+    navigate(`${degreeId}`)
+  }
+  
 	return (
-		<>
+    <>
 			{list.slice(startIndex, endIndex).map((degree, index) => (
-				<div key={index} className="searchPage__container--list-item" onClick={() => navigate(`${degree._id}`)}>
+        <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
 					<h3>{degree.name.fi}</h3>
 					<div className="searchPage__container--list-item-bottom">
 						<div>
@@ -118,11 +124,10 @@ const SearchPage = () => {
 
 	return (
 		<main className="searchPage__wrapper">
-			<WavesHeader title="Koulutukset" secondTitle="Ammatilliset koulutukset" disabled={false} />
+			<WavesHeader title="Saukko" secondTitle="Tutkintojen hallinta" disabled={false} />
 			<UserNav />
 			<section className="searchPage__container">
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'}/>
-				<h2>Ammatilliset koulutukset</h2>
 				<div className="searchPage__container--list">
 					<CheckLength
 						filteredList={filteredList}

@@ -2,8 +2,10 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// Import Zustand store
+// Import state management
 import useStore from '../../../store/zustand/formStore';
+import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import AuthContext from '../../../store/context/AuthContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -13,10 +15,6 @@ import Hyperlink from '../../../components/Hyperlink/Hyperlink';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
-
-// Umport utils
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
-import AuthContext from '../../../store/context/AuthContext';
 
 function DegreeInfo() {
   const auth = useContext(AuthContext);
@@ -37,6 +35,7 @@ function DegreeInfo() {
     setExpiry,
     transitionEnds,
     setTransitionEnds,
+    resetDegreeData
   } = useStore();
 
   const [isContentChanged, setIsContentChanged] = useState(false);
@@ -66,26 +65,26 @@ function DegreeInfo() {
   const navigate = useNavigate();
 
   // Set path & get degree from ExternalApiContext
-  const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
+  const { degree, degreeFound, allDegrees } = useContext(ExternalApiContext);
   const params = useParams();
 
   // Labels and urls for stepper
   const stepperData = [
     {
       label: 'Tutkinto-tiedot',
-      url: `/degrees/${degreeId}`
+      url: `/degrees/${params.degreeId}`
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: `/degrees/${degreeId}/units`
+      url: `/degrees/${params.degreeId}/units`
     },
     {
       label: 'Määritä tehtävät',
-      url: `/degrees/${degreeId}/units/tasks`
+      url: `/degrees/${params.degreeId}/units/tasks`
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${degreeId}/units/confirm-selection`
+      url: `/degrees/${params.degreeId}/units/confirm-selection`
     },
   ];
 
@@ -115,12 +114,17 @@ function DegreeInfo() {
       degree.expiry !== null && setOriginalExpiry(parseDate(degree.expiry));
       degree.transitionEnds !== null &&
         setOriginalTransitionEnds(parseDate(degree.transitionEnds));
+    } 
+    // If fetch by ID fails set data from all degrees 
+    else if (!degreeFound) { 
+      const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId))
+      if (matchingDegree) {
+        resetDegreeData()
+        setDegreeName(matchingDegree.name.fi)
+        setDiaryNumber(matchingDegree.diaryNumber)
+      }
     }
-  }, [degreeFound]);
-
-  useEffect(() => {
-    setDegreeId(params.degreeId);
-  }, []);
+  }, [degree]);
 
   // Handle text changes and check if original text is modified
   // Degree name
@@ -234,7 +238,7 @@ function DegreeInfo() {
     <main className='degreeInfo__wrapper'>
       <WavesHeader
         title='Saukko'
-        secondTitle={degreeFound ? degree.name.fi : 'ei dataa APIsta'}
+        secondTitle='Tutkintojen hallinta'
       />
       <section className='degreeInfo__container'>
         <Stepper
@@ -242,6 +246,7 @@ function DegreeInfo() {
           totalPages={4}
           data={stepperData}
         />
+        <h1 className='degree-title'>{degreeFound ? degree.name.fi : degreeName}</h1>
         <div
           style={{
             display: 'flex',
@@ -262,7 +267,7 @@ function DegreeInfo() {
         <div className='degreeInfo__container--info'>
           <div className='degreeInfo__container--info--block'>
             <h1>Tutkinnon suorittaneen osaaminen</h1>
-
+            <h2>Tutkinnon kuvaus</h2>
             <div
               style={{
                 display: 'flex',
@@ -275,7 +280,7 @@ function DegreeInfo() {
                 innerRef={degreeDescriptionRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -293,7 +298,7 @@ function DegreeInfo() {
                 innerRef={degreeNameRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -311,7 +316,7 @@ function DegreeInfo() {
                 innerRef={diaryNumberRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -329,7 +334,7 @@ function DegreeInfo() {
                 innerRef={regulationDateRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -347,7 +352,7 @@ function DegreeInfo() {
                 innerRef={validFromRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -365,7 +370,7 @@ function DegreeInfo() {
                 innerRef={expiryRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -383,7 +388,7 @@ function DegreeInfo() {
                 innerRef={transitionEndsRef}
                 tagName='p'
                 disabled={!isEditable}
-                className={isEditable && 'border-input'}
+                className={isEditable ? 'border-input' : ''}
               />
             </div>
           </div>
@@ -396,7 +401,7 @@ function DegreeInfo() {
 
         <PageNavigationButtons
           handleBack={() => navigate('/degrees')}
-          handleForward={() => navigate(`/degrees/${degree._id}/units`)}
+          handleForward={() => navigate(`/degrees/${params.degreeId}/units`)}
           forwardButtonText={
             isContentChanged ? 'Tallenna ja jatka' : 'Seuraava'
           }

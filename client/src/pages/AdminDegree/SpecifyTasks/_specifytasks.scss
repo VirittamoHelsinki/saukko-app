@@ -16,6 +16,12 @@
       flex-grow: 1;
       overflow-y: auto;
 
+      h1 {
+        margin-top: 20px;
+        font-size: 20px;
+        align-self: center;
+      }
+
       form {
         display: flex;
         flex-direction: column;
