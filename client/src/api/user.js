@@ -15,6 +15,7 @@ const logoutUser = async () => {
 
 const loginUser = async (loginData) => {
   const response = await axios.post(baseURL + middleURL + '/login', loginData)
+  console.log(response)
   return response
 }
 
