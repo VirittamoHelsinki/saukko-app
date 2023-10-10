@@ -1,14 +1,10 @@
 // Import react packages & dependencies
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
-import {
-  CriteriaFieldsContextProvider,
-  useCriteriaFieldsContext,
-} from '../../../store/context/CriteriaFieldsContext';
 import useStore from '../../../store/zustand/formStore';
 
 // Import components
@@ -31,23 +27,17 @@ function SpecifyTasks() {
   const params = useParams();
 
   // Initialize state
-  /* const [isLoading, setIsLoading] = useState(true); */
   const [assessments, setAssessments] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
+  const [inputFields, setInputFields] = useState(
+    Array.from({ length: 3 }, () => [''])
+  );
 
   // Get values from state management
   const { degree, degreeFound } = useContext(ExternalApiContext);
   const { degreeName } = useStore();
-  const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
-
-  /* useEffect(() => {
-    // Check if the criteriaFields are populated (initialized)
-    if (criteriaFields.length > 0) {
-      setIsLoading(false); // Set loading to false when criteriaFields are populated
-    }
-  }, [criteriaFields]); */
 
   // Labels and urls for stepper
   const stepperData = [
@@ -81,10 +71,9 @@ function SpecifyTasks() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  // Handle adding a new text field to the list of text
-  // fields for the current step
+  // Handle adding a new text field
   const handleAddTextField = () => {
-    setCriteriaFields((prevFields) => {
+    setInputFields((prevFields) => {
       const newFields = [...prevFields];
       newFields[activeStep] = [...(newFields[activeStep] || []), ''];
       return newFields;
@@ -93,48 +82,49 @@ function SpecifyTasks() {
 
   // Handle changes in the text fields
   const handleTextFieldChange = (stepIndex, fieldIndex, value, unitId) => {
-    setCriteriaFields((prevFields) => {
+    setInputFields((prevFields) => {
       const newFields = [...prevFields];
       newFields[activeStep][fieldIndex] = value;
       return newFields;
     });
 
-    console.log(unitId)
-
     setAssessments((prevAssessments) => {
+      // Create a copy of the previous assessments
       const newAssessments = [...prevAssessments];
-      newAssessments[activeStep] = newAssessments[activeStep] || {}; // Ensure there's an object for this step
-      newAssessments[activeStep] = { unitId: unitId, name: value }; // Format assessment data
+  
+      // Ensure there's an array for this step
+      newAssessments[stepIndex] = newAssessments[stepIndex] || [];
+  
+      // Get the existing assessment object for this field if it exists, or create a new one
+      const existingAssessment = newAssessments[stepIndex][fieldIndex] || {};
+  
+      // Update the assessment object with the new value
+      const updatedAssessment = {
+        ...existingAssessment,
+        unitId: unitId,
+        name: value,
+      };
+  
+      // Update the assessments array for this step with the updated assessment object
+      newAssessments[stepIndex][fieldIndex] = updatedAssessment;
+  
       return newAssessments;
     });
   };
-  console.log('units task page', checkedUnits)
-  console.log('assessments state', assessments)
-  console.log('criteria fields context', criteriaFields)
-
-  // Preserve textFields state when navigating between steps
-  useEffect(() => {
-    // Check if the active step index is within the bounds of the textFields array
-    if (activeStep >= 0 && activeStep < criteriaFields.length) {
-      // Set the text fields for the active step
-      setCriteriaFields((prevFields) => {
-        const newFields = [...prevFields];
-        newFields[activeStep] = newFields[activeStep] || [''];
-        return newFields;
-      });
-    }
-  }, [activeStep]);
 
   // Form submission handler
   const handleSubmit = () => {
-    assessments.map((assessment) => (
-      addAssessment(assessment.unitId, assessment.name)
-    ))
+    const flattenedAssessments = assessments.flat();
+
+    flattenedAssessments.forEach((assessment) => {
+      const { unitId, name } = assessment;
+      addAssessment(unitId, name);
+    });
+
     navigate(`/degrees/${params.degreeId}/summary`)
   }
 
   return (
-    <CriteriaFieldsContextProvider maxSteps={maxSteps}>
       <main className='specify-tasks__wrapper'>
         <WavesHeader
           title='Saukko'
@@ -185,7 +175,7 @@ function SpecifyTasks() {
               <form>
                 <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
 
-                {criteriaFields[activeStep]?.map((textField, index) => (
+                {inputFields[activeStep]?.map((textField, index) => (
                   <div key={index}>
                     <input
                       type='text'
@@ -220,7 +210,6 @@ function SpecifyTasks() {
         </section>
         <UserNav />
       </main>
-    </CriteriaFieldsContextProvider>
   );
 }
 
