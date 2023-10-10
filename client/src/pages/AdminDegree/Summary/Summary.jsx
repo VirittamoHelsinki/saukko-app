@@ -95,6 +95,8 @@ function Summary() {
     setOpenNotificationModal(true);
   };
 
+  console.log(checkedUnits)
+
   return (
     <main className='summary__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
@@ -107,17 +109,12 @@ function Summary() {
         <h1 className='degree-title'>{degreeFound ? degree.name.fi : degreeName}</h1>
         <div className='section-title'>Tutkinnonosat ja tehtävät </div>
         <div className='summary__container--box'>
-          {criteriaFields.map((innerArray, index) => (
-            <div key={index}>
-              <strong className='mb'>{checkedUnits[index]?.name?.fi}</strong>
-
-              {innerArray.map((element, index) => (
-                <p key={element}>
-                  {index + 1 + '. '}
-                  {element}
-                </p>
+          {checkedUnits.map((unit, index) => (
+            <div key={index} className='unit-container'>
+              <strong>{unit.name.fi}</strong>
+              {unit.assessments.map((assessment, index) => (
+                <p key={index}>{index+1}. {assessment.name.fi}</p>
               ))}
-              {index < criteriaFields.length - 1 && <hr />}
             </div>
           ))}
         </div>
