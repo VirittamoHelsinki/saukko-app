@@ -1,5 +1,5 @@
 // Importing React packages
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useStore from '../../store/zustand/formStore';
 
 // Importing components
@@ -9,8 +9,31 @@ import InfoList from '../../components/InfoList/InfoList';
 import Button from '@mui/material/Button';
 import TeacherPerformanceFeedBack from '../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
 
+// Importing saukko database
+import { fetchAllInternalWorkplaces } from '../../api/workplace';
+
+
+
+
+
+
 
 const TestPage = () => {
+  const [workplaces, setWorkplaces] = useState([])
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchAllInternalWorkplaces();
+        setWorkplaces(data);
+      } catch (error) {
+        console.error('Error fetching workplaces----------:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   const {
     password,
     passwordOld,
@@ -88,8 +111,18 @@ const TestPage = () => {
 
       </section>
 
+      <div>
+        <ul>
+          {workplaces.map((workplace) => (
+            <li key={workplace.id}>{workplace.name}</li>
+          ))}
+        </ul>
+      </div>
+
     </main>
   );
 };
 
 export default TestPage;
+
+

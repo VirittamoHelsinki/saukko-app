@@ -21,17 +21,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 const CompanyInfo = () => {
   const navigate = useNavigate();
   const {
-    businessID,
+    businessId,
     setBusinessId,
     businessIDError,
     setBusinessIdError,
-    companyName,
-    setCompanyName,
+    name,
+    setName,
+    departments,
     setDepartmentName,
     editedCompanyName,
     setEditedCompanyName,
-    työpaikkaohjaajat,
-    setTyöpaikkaohjaajat,
+    supervisors,
+    setSupervisors,
     firstName,
     setFirstName,
     lastName,
@@ -69,7 +70,7 @@ const CompanyInfo = () => {
     const regex = /^[0-9]{7}-[0-9]$/;
 
     setBusinessId(value);
-    setCompanyName('');
+    setName('');
 
     if (regex.test(value)) {
       setBusinessIdError('');
@@ -84,16 +85,19 @@ const CompanyInfo = () => {
   };
 
   const handleDepartment = (event) => {
-    setDepartmentName(event.target.value);
+    const value = event.target.value;
+    const departmentObject = {
+      name: value,
+      supervisors: [],
+    }
+    setDepartmentName([...departments, departmentObject])
   };
-
-
 
   const fetchCompanyName = async (businessID) => {
     try {
       const data = await fetchExternalCompanyData(businessID);
 
-      setCompanyName(data);
+      setName(data);
       console.log('Company Name:', data);
     } catch (error) {
       throw new Error('Failed to fetch company name');
@@ -104,17 +108,17 @@ const CompanyInfo = () => {
 
   const handleClearBusinessId = () => {
     setBusinessId('');
-    setCompanyName(null);
+    setName(null);
     setBusinessIdError('');
   };
 
   const handleSearchClick = async () => {
-    if (!businessIDError && businessID) {
+    if (!businessIDError && businessId) {
       try {
         if (editedCompanyName) {
-          setCompanyName(editedCompanyName);
+          setName(editedCompanyName);
         } else {
-          await fetchCompanyName(businessID);
+          await fetchCompanyName(businessId);
         }
       } catch (error) {
         console.error('Failed to fetch company name:', error);
@@ -122,19 +126,19 @@ const CompanyInfo = () => {
     }
   };
 
-  const createTyöpaikkaohjaaja = (firstName, lastName, työpaikkaohjaajaEmail) => {
+  // Function to create a new supervisor object
+  const createSupervisor = (firstName, lastName, työpaikkaohjaajaEmail) => {
     return {
       firstName,
       lastName,
       email: työpaikkaohjaajaEmail,
-      role: 'supervisor'
+      role: 'supervisor',
     };
   };
-
-  const addTyöpaikkaohjaaja = (event) => {
+  const addTyöpaikkaohjaaja = () => {
     if (firstName && lastName && työpaikkaohjaajaEmail) {
-      const newTyöpaikkaohjaaja = createTyöpaikkaohjaaja(firstName, lastName, työpaikkaohjaajaEmail);
-      setTyöpaikkaohjaajat([...työpaikkaohjaajat, newTyöpaikkaohjaaja]);
+      const newSupervisor = createSupervisor(firstName, lastName, työpaikkaohjaajaEmail);
+      setSupervisors([...supervisors, newSupervisor]);
       setFirstName('');
       setLastName('');
       setTyöpaikkaohjaajaEmail('');
@@ -145,7 +149,7 @@ const CompanyInfo = () => {
     e.preventDefault();
 
     // Form validation: check for empty fields
-    if ((!businessID || (!companyName && !editedCompanyName)) || !firstName || !lastName || !työpaikkaohjaajaEmail) {
+    if ((!businessId || (!name && !editedCompanyName)) || !firstName || !lastName || !työpaikkaohjaajaEmail) {
       alert('Please fill in all required fields.');
       return;
     }
@@ -159,8 +163,8 @@ const CompanyInfo = () => {
 
     // Create supervisor & save to temporary storage
     if (firstName && lastName && työpaikkaohjaajaEmail) {
-      const newTyöpaikkaohjaaja = createTyöpaikkaohjaaja(firstName, lastName, työpaikkaohjaajaEmail);
-      addTyöpaikkaohjaaja(newTyöpaikkaohjaaja);
+      const newSupervisor = createSupervisor(firstName, lastName, työpaikkaohjaajaEmail);
+      addTyöpaikkaohjaaja(newSupervisor);
     }
 
     // Navigate to next page
@@ -201,7 +205,7 @@ const CompanyInfo = () => {
                   name="Työpaikan Y-tunnus"
                   required
                   placeholder='1234567-6'
-                  value={businessID}
+                  value={businessId}
                   onChange={handleBusinessId}
                 />
                 <IconCrossCircle
@@ -222,10 +226,11 @@ const CompanyInfo = () => {
                 className="text_input"
                 name="Työpaikan Y-tunnus"
                 required
-                value={editedCompanyName || (companyName && companyName.name) || ''}
+                value={editedCompanyName || (name && name.name) || ''}
                 onChange={handleCompanyName}
               />
             </div>
+
             <div className='department-container'>
               <label htmlFor='department' className="workplace-form-label"> Yksikkö (ei pakollinen) </label>
               <TextInput
@@ -256,7 +261,7 @@ const CompanyInfo = () => {
           </AccordionSummary>
           <form onSubmit={handleForward}>
             <div className='ohjaajat-info' >
-              {työpaikkaohjaajat.slice().reverse().map((ohjaaja, index) => (
+              {supervisors.slice().reverse().map((ohjaaja, index) => (
                 <div key={index} style={{ borderBottom: '2px solid white', marginTop: '9px', marginBottom: '9px' }}>
                   <label className="workplace-form-label" htmlFor={`first-name-input-${index}`}>
                     Etunimi *
