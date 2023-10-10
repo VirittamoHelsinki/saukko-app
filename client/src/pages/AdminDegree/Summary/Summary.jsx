@@ -7,7 +7,6 @@ import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
-import { useCriteriaFieldsContext } from '../../../store/context/CriteriaFieldsContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -36,7 +35,6 @@ function Summary() {
   } = useStore();
   const { degree, degreeFound } = useContext(ExternalApiContext);
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
-  const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
   const { checkedUnits } = useUnitsStore();
 
   // Remove HTML p tags from degree description
@@ -94,8 +92,6 @@ function Summary() {
     // Trigger NotificationModal
     setOpenNotificationModal(true);
   };
-
-  console.log(checkedUnits)
 
   return (
     <main className='summary__wrapper'>
