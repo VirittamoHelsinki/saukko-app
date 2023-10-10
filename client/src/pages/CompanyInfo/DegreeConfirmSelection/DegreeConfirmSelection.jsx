@@ -8,7 +8,6 @@ import UserNav from '../../../components/UserNav/UserNav';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
-import InfoList from '../../../components/InfoList/InfoList';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../store/zustand/unitsStore';
@@ -105,7 +104,7 @@ function DegreeConfirmSelection() {
         title='Uusi työpaikka lisätty'
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
-        redirectLink='/customer-list'
+        redirectLink='/admin-menu'
       />
     </main>
   );

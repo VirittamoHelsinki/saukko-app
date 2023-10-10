@@ -1,8 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserNav from '../../../components/UserNav/UserNav';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import useStore from '../../../store/zustand/formStore';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 
 // controls how many degrees are shown at once and renders them
@@ -99,8 +100,15 @@ const SearchPage = () => {
 	const [paginate, setPaginate] = useState(5);
 	const [filteredList, setFilteredList] = useState([]);
   
-  // Get degrees from ExternalApiContext
-  const { allDegrees } = useContext(ExternalApiContext);
+  // Get values and functions from state management
+  const { allDegrees, setDegreeId } = useContext(ExternalApiContext);
+  const { resetDegreeData } = useStore();
+
+  // Clear degree on first render
+  useEffect(() => {
+    resetDegreeData()
+    setDegreeId('');
+  }, []);
   
   // Searchbar logic
 	const handleSearch = (event) => {

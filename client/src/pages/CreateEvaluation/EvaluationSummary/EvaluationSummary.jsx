@@ -138,7 +138,7 @@ function EvaluationSummary() {
         title='Kutsut lähetetty!'
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
-        redirectLink='/customer-list'
+        redirectLink='/admin-menu'
       />
     </main>
   );
