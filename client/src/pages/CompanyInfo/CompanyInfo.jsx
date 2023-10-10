@@ -240,8 +240,6 @@ const CompanyInfo = () => {
       </div>
       <div style={{ margin: '16px', marginBottom: '28px' }}>
         <Accordion
-          card
-          border
           className="heading_style"
           heading="2. Työpaikkaohjaajan tiedot"
           language="en"
