@@ -21,17 +21,13 @@
   />
 */
 
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
-import ExternalApiContext from '../../store/context/ExternalApiContext';
 
 const Stepper = ({ activePage, totalPages, data }) => {
   const navigate = useNavigate();
-
-  // Get degree from ExternalApiContext
-  const { degree } = useContext(ExternalApiContext);
 
   const createSteppers = () => {
     const steppers = [];
