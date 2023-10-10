@@ -23,13 +23,14 @@ const jwt = require("jsonwebtoken"); */
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.static('../client/build'));
 app.use(cookieParser()); // Parse cookies
-app.use(
-    cors({
-        // Set the allowed origin for CORS, import from config.js
-        origin: [config.ALLOWED_ORIGINS],
-        credentials: true, // Enable sending cookies in CORS requests
-    })
-);
+app.use(cors())
+// app.use(
+//     cors({
+//         // Set the allowed origin for CORS, import from config.js
+//         origin: [config.ALLOWED_ORIGINS],
+//         credentials: true, // Enable sending cookies in CORS requests
+//     })
+// );
 
 // Connect to the database
 mongoose.set("strictQuery", true);
