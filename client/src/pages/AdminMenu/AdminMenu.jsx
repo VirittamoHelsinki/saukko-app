@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import { Icon } from '@iconify/react';
+import useStore from '../../store/zustand/formStore';
+import ExternalApiContext from '../../store/context/ExternalApiContext';
 
 function AdminMenu() {
   const navigate = useNavigate();
+
+  // Clear saved degree and unit data on first render
+  const { setDegreeId } = useContext(ExternalApiContext);
+  const { resetDegreeData } = useStore();
+
+  useEffect(() => {
+    resetDegreeData()
+    setDegreeId('');
+  }, []);
 
   return (
     <main className='adminMenu__wrapper'>

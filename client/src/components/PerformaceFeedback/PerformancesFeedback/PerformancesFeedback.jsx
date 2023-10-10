@@ -1,17 +1,13 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import img from '../../../assets/photo.png';
-import Button from '../../Button/Button';
 import AuthContext from '../../../store/context/AuthContext';
 
-const PerformancesFeedback = ({ header }) => {
+const PerformancesFeedback = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState();
-  const fileInputRef = useRef(null);
 
   const auth = useContext(AuthContext);
   const user = auth.user;

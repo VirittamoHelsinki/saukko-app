@@ -13,12 +13,9 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InternalApiContext from '../../../store/context/InternalApiContext';
-import { useLocation } from 'react-router-dom';
 
 function CompanyDegreeUnits() {
   const navigate = useNavigate();
-  const location = useLocation();
-
 
   // Set path & get degree from ExternalApiContext
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);

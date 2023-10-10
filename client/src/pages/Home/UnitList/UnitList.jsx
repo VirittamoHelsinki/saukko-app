@@ -4,11 +4,9 @@ import NotificationBadge from '../../../components/NotificationBadge/Notificatio
 import UnitStatus from '../../../components/UnitStatus/UnitStatus';
 import UserNav from '../../../components/UserNav/UserNav';
 import AuthContext from '../../../store/context/AuthContext';
-import formStore from '../../../store/zustand/formStore';
 
 const UnitList = () => {
   const { user } = useContext(AuthContext);
-  const { chosenCustomerId } = formStore();
 
   return (
     <main className='unitList__wrapper'>

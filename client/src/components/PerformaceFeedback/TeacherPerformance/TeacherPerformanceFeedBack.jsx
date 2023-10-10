@@ -4,10 +4,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import AuthContext from '../../../store/context/AuthContext';
-import { Icon } from '@iconify/react';
 
-
-const TeacherPerformanceFeedBack = ({ columnTitle }) => {
+const TeacherPerformanceFeedBack = () => {
   const [selectedRadio, setSelectedRadio] = useState();
   const auth = useContext(AuthContext);
   const user = auth.user;
@@ -24,8 +22,6 @@ const TeacherPerformanceFeedBack = ({ columnTitle }) => {
     }
     return '#F2F2F2';
   };
-
-
 
   const infodata = [
     {
@@ -72,8 +68,6 @@ const TeacherPerformanceFeedBack = ({ columnTitle }) => {
                     onChange={handleRadioChange}
                     disabled={item.disabled}
                     checked={item.disabled || selectedRadio === 'top'}
-
-
                   />
                   <FormControlLabel
                     value='start'

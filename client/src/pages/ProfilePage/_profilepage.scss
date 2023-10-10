@@ -3,17 +3,9 @@
   .profile__wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    margin-top: 200px;
 
     .profile__container {
-      display: flex;
-      flex-direction: column;
-      margin-top: 50px;
-      margin-bottom: 100px;
-      width: 100%;
-
       .profile__container--title {
         text-decoration: underline;
         font-size: 16px;
@@ -39,8 +31,7 @@
     }
     
     .profile__logout {
-      padding: 0px 36px 0px 36px;
-      width: 100%;
+      margin: 50px 20px 100px 20px;
       
       .button__container {
         flex-direction: row-reverse;

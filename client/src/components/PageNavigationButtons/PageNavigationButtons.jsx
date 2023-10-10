@@ -11,11 +11,9 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 */
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 
 function PageNavigationButtons(props) {
-  const navigate = useNavigate();
 
   return (
     <section className='buttons__container' id="pageNavigationButtonsContainer">

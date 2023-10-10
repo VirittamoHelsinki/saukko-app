@@ -11,9 +11,7 @@ import InternalDegreeContext from '../utils/context/InternalDegreeContext';
 // Non-visual component that loads data from the backend and adds it to the store.
 const ApiLoader = () => {
     const { loggedIn } = useContext(AuthContext);
-    const {
-        allInternalDegrees, setAllInternalDegrees
-    } = useContext(InternalDegreeContext);
+    const { allInternalDegrees } = useContext(InternalDegreeContext);
 
     const {
         degrees,
