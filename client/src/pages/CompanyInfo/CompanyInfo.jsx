@@ -132,7 +132,8 @@ const CompanyInfo = () => {
       firstName,
       lastName,
       email: työpaikkaohjaajaEmail,
-      role: 'supervisor',
+
+      role: 'supervisors',
     };
   };
   const addTyöpaikkaohjaaja = () => {
@@ -366,4 +367,7 @@ const CompanyInfo = () => {
 };
 
 export default CompanyInfo;
+
+
+
 
