@@ -10,7 +10,6 @@ import Stepper from '../../../components/Stepper/Stepper';
 import AuthContext from '../../../store/context/AuthContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
-import useStore from '../../../store/zustand/formStore';
 
 // Import MUI
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -34,9 +33,17 @@ function EvaluationForm() {
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
 
+  // Opening / closing notificationModal
+  const [openNotificationModalAllFields, setOpenNotificationModalAllFields] = useState(false)
+  const [openNotificationModalEmail, setOpenNotificationModalEmail] = useState(false)
+  const [openNotificationModalDate, setOpenNotificationModalDate] = useState(false)
+
+  const handleCloseAllFields = () => setOpenNotificationModalAllFields(false)
+  const handleCloseEmail = () => setOpenNotificationModalEmail(false)
+  const handleCloseDate = () => setOpenNotificationModalDate(false)
+
   // Get functions from zustand store
   const { setCustomer, setEvaluation } = useEvaluationStore();
-  const { openNotificationModal, setOpenNotificationModal } = useStore();
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -44,24 +51,22 @@ function EvaluationForm() {
 
     // Form validation: check for empty fields
     if (!firstName || !lastName || !email || !startDate || !endDate || !workTasks || !workGoals) {
-      setOpenNotificationModal(true);
+      setOpenNotificationModalAllFields(true);
       return;
     }
 
     // Form validation: Regex for email format
     const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
     if (!emailPattern.test(email)) {
-      alert('Please enter a valid email address.');
+      setOpenNotificationModalEmail(true);
       return;
     }
 
-    // Form validation: Regex for date format
-    /* const datePattern = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
-    if (!datePattern.test(startDate) || !datePattern.test(endDate)) {
-      alert('Please enter start date and end date.');
-      console.log('start date', startDate)
+    // Form validation: startDate and endDate are Date objects
+    if (typeof startDate === 'string' || typeof endDate === 'string') {
+      setOpenNotificationModalDate(true);
       return;
-    } */
+    }
 
     // Create user object
     const customer = {
@@ -232,10 +237,25 @@ function EvaluationForm() {
         <PageNavigationButtons handleBack={() => navigate(`/admin-menu`)} handleForward={handleSubmit} forwardButtonText={'Seuraava'} />
       </section>
       <NotificationModal
-        type='success'
+        type='warning'
         title='Lomakkeen lähetys epäonnistui'
         body='Täytä kaikki lomakkeen kentät'
-        open={openNotificationModal}
+        open={openNotificationModalAllFields}
+        handleClose={handleCloseAllFields}
+      />
+      <NotificationModal
+        type='warning'
+        title='Lomakkeen lähetys epäonnistui'
+        body='Tarkista sähköposti kenttä'
+        open={openNotificationModalEmail}
+        handleClose={handleCloseEmail}
+      />
+      <NotificationModal
+        type='warning'
+        title='Lomakkeen lähetys epäonnistui'
+        body='Täytä asiakkuuden alkamis- ja päättymispäivämäärä'
+        open={openNotificationModalDate}
+        handleClose={handleCloseDate}
       />
       <UserNav />
     </main>
