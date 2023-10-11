@@ -250,7 +250,7 @@ function DegreeConfirmSelection() {
           password: '12341234',
           role: 'supervisor',
         };
-
+        console.log('UserDataf for registration---------------------------------', userData)
         // Register the supervisor and get the userId
         const userId = await registration(userData);
         return userId;
