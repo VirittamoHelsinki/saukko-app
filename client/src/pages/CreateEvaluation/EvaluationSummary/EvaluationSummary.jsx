@@ -17,17 +17,9 @@ import useStore from '../../../store/zustand/formStore';
 function EvaluationSummary() {
   const navigate = useNavigate();
 
-  // Get data & functions from evaluationStore
-  const customer = useEvaluationStore((state) => state.customer);
-  const evaluation = useEvaluationStore((state) => state.evaluation);
-  const workplace = useEvaluationStore((state) => state.workplace);
-  const department = useEvaluationStore((state) => state.department);
-  const supervisor = useEvaluationStore((state) => state.supervisor);
-  const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
-
-  // Get data & functions from unitsStore
-  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
-  const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
+  // Get data from store management
+  const { customer, evaluation, workplace, department, supervisor, clearEvaluation } = useEvaluationStore();
+  const { checkedUnits, clearCheckedUnits } = useUnitsStore();
 
   const summaryData = [
     {
@@ -44,7 +36,7 @@ function EvaluationSummary() {
     },
     {
       title: 'Asiakkuuden lopetuspäivä',
-      content: evaluation ? evaluation.endDate.format('DD.MM.YYYY'): '',
+      content: evaluation ? evaluation.endDate.format('DD.MM.YYYY') : '',
     },
     {
       title: 'Työpaikka',
@@ -80,8 +72,6 @@ function EvaluationSummary() {
   } = useStore();
 
   const handleSendToServer = () => {
-    // Create user in DB with temporary password and send invitation email
-    // Create evaluation in DB with user._id from DB
 
     // Clear data from storage
     clearEvaluation();

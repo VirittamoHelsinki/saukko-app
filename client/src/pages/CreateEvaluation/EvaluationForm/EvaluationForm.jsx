@@ -9,9 +9,9 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import Stepper from '../../../components/Stepper/Stepper';
 import AuthContext from '../../../store/context/AuthContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 
 // Import MUI
-import dayjs from 'dayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -27,15 +27,22 @@ function EvaluationForm() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [startDate, setStartDate] = useState(dayjs());
-  const [endDate, setEndDate] = useState(dayjs());
-  const [extensionEndDate, setExtensionEndDate] = useState(dayjs());
+  const [startDate, setStartDate] = useState('DD.MM.YYYY');
+  const [endDate, setEndDate] = useState('DD.MM.YYYY');
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
 
-  // Setter functions from evaluationStore
-  const setCustomer = useEvaluationStore((state) => state.setCustomer);
-  const setEvaluation = useEvaluationStore((state) => state.setEvaluation);
+  // Opening / closing notificationModal
+  const [openNotificationModalAllFields, setOpenNotificationModalAllFields] = useState(false)
+  const [openNotificationModalEmail, setOpenNotificationModalEmail] = useState(false)
+  const [openNotificationModalDate, setOpenNotificationModalDate] = useState(false)
+
+  const handleCloseAllFields = () => setOpenNotificationModalAllFields(false)
+  const handleCloseEmail = () => setOpenNotificationModalEmail(false)
+  const handleCloseDate = () => setOpenNotificationModalDate(false)
+
+  // Get functions and values from zustand store
+  const { setCustomer, setEvaluation } = useEvaluationStore();
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -43,14 +50,20 @@ function EvaluationForm() {
 
     // Form validation: check for empty fields
     if (!firstName || !lastName || !email || !startDate || !endDate || !workTasks || !workGoals) {
-      alert('Please fill in all required fields.');
+      setOpenNotificationModalAllFields(true);
       return;
     }
 
     // Form validation: Regex for email format
     const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
     if (!emailPattern.test(email)) {
-      alert('Please enter a valid email address.');
+      setOpenNotificationModalEmail(true);
+      return;
+    }
+
+    // Form validation: startDate and endDate are Date objects
+    if (typeof startDate === 'string' || typeof endDate === 'string') {
+      setOpenNotificationModalDate(true);
       return;
     }
 
@@ -64,7 +77,7 @@ function EvaluationForm() {
     
     // Create evaluation object
     const evaluation = {
-      customerId: '1', // After user created -> server generates id -> fetch that
+      customerId: '', // After user created -> server generates id -> fetch that
       teacherId: user ? user._id : '',
       startDate,
       endDate,
@@ -196,8 +209,7 @@ function EvaluationForm() {
                 <DesktopDatePicker 
                   disabled={true}
                   format='DD.MM.YYYY'
-                  value={extensionEndDate}
-                  onChange={(date) => setExtensionEndDate(date)}
+                  value={'DD.MM.YYYY'}
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -222,6 +234,27 @@ function EvaluationForm() {
 
         <PageNavigationButtons handleBack={() => navigate(`/admin-menu`)} handleForward={handleSubmit} forwardButtonText={'Seuraava'} />
       </section>
+      <NotificationModal
+        type='warning'
+        title='Lomakkeen lähetys epäonnistui'
+        body='Täytä kaikki lomakkeen kentät'
+        open={openNotificationModalAllFields}
+        handleClose={handleCloseAllFields}
+      />
+      <NotificationModal
+        type='warning'
+        title='Lomakkeen lähetys epäonnistui'
+        body='Tarkista sähköposti kenttä'
+        open={openNotificationModalEmail}
+        handleClose={handleCloseEmail}
+      />
+      <NotificationModal
+        type='warning'
+        title='Lomakkeen lähetys epäonnistui'
+        body='Täytä asiakkuuden alkamis- ja päättymispäivämäärä'
+        open={openNotificationModalDate}
+        handleClose={handleCloseDate}
+      />
       <UserNav />
     </main>
   );
