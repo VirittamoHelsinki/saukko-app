@@ -1,6 +1,6 @@
 // import React, { useContext, useEffect, useState } from 'react';
 // import { useNavigate, useParams } from 'react-router-dom';
-// import WavesHeader from '../../../components/Header/WavesHeader';
+
 // import WavesHeader from '../../../components/Header/WavesHeader';
 // import UserNav from '../../../components/UserNav/UserNav';
 // import SelectUnit from '../../../components/SelectUnit/SelectUnit';
@@ -175,6 +175,10 @@
 
 // export default DegreeConfirmSelection;
 
+
+
+
+
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -249,16 +253,11 @@ function DegreeConfirmSelection() {
 
         // Register the supervisor and get the userId
         const userId = await registration(userData);
-
-
-
         return userId;
       });
 
-      // Wait for all registration requests to complete
+
       const supervisorIds = await Promise.all(supervisorPromises);
-
-
 
       // const workplaceData = {
       //   supervisors: supervisorIds,
@@ -278,52 +277,6 @@ function DegreeConfirmSelection() {
       // setOpenNotificationModal({ type: 'warning', title: 'Uusi työpaikka ei onnistunut' });
     }
   };
-
-
-
-  // const handleVahvistaClick = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const selectedSupervisor = supervisors[0];
-
-  //     // Create user data with the selected supervisor
-  //     const userData = {
-  //       firstName: selectedSupervisor.firstName,
-  //       lastName: selectedSupervisor.lastName,
-  //       email: selectedSupervisor.email,
-  //       password: '12341234',
-  //       role: 'supervisor',
-  //     };
-  //     console.log('UserData---------------------------------', userData)
-
-  //     const userId = await registration(userData);
-
-
-  //     //   const workplaceData = {
-  //     //     supervisors: userId,
-  //     //     businessId,
-  //     //     name: name ? name.name : editedCompanyName,
-  //     //     departments: departments ? departments : '',
-
-  //     //   };
-
-  //     //   console.log('Sending workplaceData:', workplaceData);
-  //     //   const response = await postWorkplace(workplaceData);
-  //     //   console.log('API Response:', response);
-  //     //   setIsLoading(false);
-
-  //     //   if (response.status === 'success') {
-  //     //     setOpenNotificationModal({ type: 'success', title: 'Uusi työpaikka lisätty' });
-  //     //   } else {
-  //     //     setOpenNotificationModal({ type: 'alert', title: 'Uusi työpaikka ei onnistunut' });
-  //     //   }
-  //   } catch (error) {
-  //     console.log(error)
-  //     // setIsLoading(false);
-  //     // setOpenNotificationModal({ type: 'warning', title: 'Uusi työpaikka ei onnistunut' });
-  //   }
-  // };
-
   return (
     <main className='confirmSelection__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Lisää uusi työpaikka' />
@@ -389,5 +342,57 @@ function DegreeConfirmSelection() {
 }
 
 export default DegreeConfirmSelection;
+
+
+
+
+
+
+
+
+
+ // const handleVahvistaClick = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const selectedSupervisor = supervisors[0];
+
+  //     // Create user data with the selected supervisor
+  //     const userData = {
+  //       firstName: selectedSupervisor.firstName,
+  //       lastName: selectedSupervisor.lastName,
+  //       email: selectedSupervisor.email,
+  //       password: '12341234',
+  //       role: 'supervisor',
+  //     };
+  //     console.log('UserData---------------------------------', userData)
+
+  //     const userId = await registration(userData);
+
+
+  //     //   const workplaceData = {
+  //     //     supervisors: userId,
+  //     //     businessId,
+  //     //     name: name ? name.name : editedCompanyName,
+  //     //     departments: departments ? departments : '',
+
+  //     //   };
+
+  //     //   console.log('Sending workplaceData:', workplaceData);
+  //     //   const response = await postWorkplace(workplaceData);
+  //     //   console.log('API Response:', response);
+  //     //   setIsLoading(false);
+
+  //     //   if (response.status === 'success') {
+  //     //     setOpenNotificationModal({ type: 'success', title: 'Uusi työpaikka lisätty' });
+  //     //   } else {
+  //     //     setOpenNotificationModal({ type: 'alert', title: 'Uusi työpaikka ei onnistunut' });
+  //     //   }
+  //   } catch (error) {
+  //     console.log(error)
+  //     // setIsLoading(false);
+  //     // setOpenNotificationModal({ type: 'warning', title: 'Uusi työpaikka ei onnistunut' });
+  //   }
+  // };
+
 
 
