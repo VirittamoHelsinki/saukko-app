@@ -54,12 +54,12 @@ function EvaluationForm() {
     }
 
     // Form validation: Regex for date format
-    /* const datePattern = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+    const datePattern = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
     if (!datePattern.test(startDate) || !datePattern.test(endDate)) {
       alert('Please enter start date and end date.');
       console.log('start date', startDate)
       return;
-    } */
+    }
 
     // Create user object
     const customer = {
@@ -179,7 +179,7 @@ function EvaluationForm() {
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
                   value={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  onChange={(date) => setStartDate(date.format('DD.MM.YYYY'))}
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -191,7 +191,7 @@ function EvaluationForm() {
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
                   value={endDate}
-                  onChange={(date) => setEndDate(date)}
+                  onChange={(date) => setEndDate(date.format('DD.MM.YYYY'))}
                 />
               </ThemeProvider>
             </LocalizationProvider>
