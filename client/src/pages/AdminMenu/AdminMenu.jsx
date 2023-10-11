@@ -11,10 +11,11 @@ function AdminMenu() {
 
   // Clear saved degree and unit data on first render
   const { setDegreeId } = useContext(ExternalApiContext);
-  const { resetDegreeData } = useStore();
+  const { resetDegreeData, resetWorkplaceData } = useStore();
 
   useEffect(() => {
     resetDegreeData()
+    resetWorkplaceData()
     setDegreeId('');
   }, []);
 

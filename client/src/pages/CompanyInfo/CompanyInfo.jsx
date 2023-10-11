@@ -133,7 +133,7 @@ const CompanyInfo = () => {
       lastName,
       email: työpaikkaohjaajaEmail,
 
-      role: 'supervisors',
+      role: 'supervisor',
     };
   };
   const addTyöpaikkaohjaaja = () => {
