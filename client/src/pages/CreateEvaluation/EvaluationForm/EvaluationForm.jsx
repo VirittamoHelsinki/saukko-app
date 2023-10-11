@@ -16,7 +16,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import dayjs from 'dayjs';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -30,7 +29,6 @@ function EvaluationForm() {
   const [email, setEmail] = useState('');
   const [startDate, setStartDate] = useState('DD.MM.YYYY');
   const [endDate, setEndDate] = useState('DD.MM.YYYY');
-  const [extensionEndDate, setExtensionEndDate] = useState('DD.MM.YYYY');
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
 
@@ -44,10 +42,7 @@ function EvaluationForm() {
   const handleCloseDate = () => setOpenNotificationModalDate(false)
 
   // Get functions and values from zustand store
-  const { customer, setCustomer, evaluation, setEvaluation } = useEvaluationStore();
-  console.log('customer from store', customer)
-  console.log('evaluation from store', evaluation)
-  console.log('date format', typeof evaluation.startDate.$d.toJSON())
+  const { setCustomer, setEvaluation } = useEvaluationStore();
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -162,7 +157,7 @@ function EvaluationForm() {
             <label>Etunimi *</label>
             <input 
               className='form-input' 
-              value={firstName ? firstName : customer.firstName}
+              value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
@@ -170,7 +165,7 @@ function EvaluationForm() {
             <label>Sukunimi *</label>
             <input 
               className='form-input' 
-              value={lastName ? lastName : customer.lastName}
+              value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
@@ -179,7 +174,7 @@ function EvaluationForm() {
             <input 
               type='email' 
               className='form-input' 
-              value={email ? email : customer.email}
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -189,7 +184,7 @@ function EvaluationForm() {
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
-                  value={evaluation.startDate ? evaluation.startDate : startDate}
+                  value={startDate}
                   onChange={(date) => setStartDate(date)}
                 />
               </ThemeProvider>
@@ -201,7 +196,7 @@ function EvaluationForm() {
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
-                  value={evaluation.endDate ? evaluation.endDate : endDate}
+                  value={endDate}
                   onChange={(date) => setEndDate(date)}
                 />
               </ThemeProvider>
