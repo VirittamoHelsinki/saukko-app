@@ -6,7 +6,6 @@ import useStore from '../../store/zustand/formStore';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 import InfoList from '../../components/InfoList/InfoList';
-import Button from '@mui/material/Button';
 import TeacherPerformanceFeedBack from '../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
 
 // Importing saukko database

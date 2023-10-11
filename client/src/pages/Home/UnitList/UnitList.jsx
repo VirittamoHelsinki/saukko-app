@@ -4,16 +4,14 @@ import NotificationBadge from '../../../components/NotificationBadge/Notificatio
 import UnitStatus from '../../../components/UnitStatus/UnitStatus';
 import UserNav from '../../../components/UserNav/UserNav';
 import AuthContext from '../../../store/context/AuthContext';
-import formStore from '../../../store/zustand/formStore';
 
 const UnitList = () => {
   const { user } = useContext(AuthContext);
-  const { chosenCustomerId } = formStore();
 
   return (
     <main className='unitList__wrapper'>
       <WavesHeader
-        title="Saukko"
+        title='Saukko'
         secondTitle={`Tervetuloa, ${user?.firstName}`}
       />
       <div className='unitList__notifications'>
@@ -24,27 +22,29 @@ const UnitList = () => {
         <h3> Omat suoritukset </h3>
         <UnitStatus
           status={1}
-          subheader="1. Tieto- ja viestintätekniikan perustehtävät"
+          subheader='1. Tieto- ja viestintätekniikan perustehtävät'
           link='/userperformance'
         />
         <UnitStatus
           status={2}
-          subheader="7. Ohjelmointi"
+          subheader='7. Ohjelmointi'
           link='/userperformance'
         />
-        <UnitStatus
+        {/* Täydennettävä option disabled */}
+
+        {/* <UnitStatus
           status={4}
           subheader="9. Sulautetun järjestelmän toteuttaminen"
           link='/userperformance'
-        />
+        /> */}
         <UnitStatus
           status={5}
-          subheader="15. Kulunvalvonta- tai turvajärjestelmän asennus"
+          subheader='15. Kulunvalvonta- tai turvajärjestelmän asennus'
           link='/userperformance'
         />
         <UnitStatus
           status={6}
-          subheader="16. Kyberturvallisuuden ylläpitäminen"
+          subheader='16. Kyberturvallisuuden ylläpitäminen'
           link='/userperformance'
         />
       </div>
@@ -54,16 +54,3 @@ const UnitList = () => {
 };
 
 export default UnitList;
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,7 +1,6 @@
-import { useState, useContext, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
-import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import UserNav from '../../../components/UserNav/UserNav';
 import InternalApiContext from '../../../store/context/InternalApiContext';
@@ -13,7 +12,6 @@ const CheckLength = ({ filteredList, allInternalDegrees, paginate, currentPage }
   const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
   const navigate = useNavigate();
-
 
   return (
     <>

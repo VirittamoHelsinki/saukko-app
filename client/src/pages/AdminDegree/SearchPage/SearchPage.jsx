@@ -1,8 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserNav from '../../../components/UserNav/UserNav';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import useStore from '../../../store/zustand/formStore';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 
 // controls how many degrees are shown at once and renders them
@@ -12,11 +13,17 @@ const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
 	const list = filteredList.length > 0 ? filteredList : allDegrees;
 
 	const navigate = useNavigate();
+  const { setDegreeId } = useContext(ExternalApiContext);
 
+  const handleChooseDegree = async (degreeId) => {
+    await setDegreeId(degreeId)
+    navigate(`${degreeId}`)
+  }
+  
 	return (
-		<>
+    <>
 			{list.slice(startIndex, endIndex).map((degree, index) => (
-				<div key={index} className="searchPage__container--list-item" onClick={() => navigate(`${degree._id}`)}>
+        <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
 					<h3>{degree.name.fi}</h3>
 					<div className="searchPage__container--list-item-bottom">
 						<div>
@@ -93,8 +100,15 @@ const SearchPage = () => {
 	const [paginate, setPaginate] = useState(5);
 	const [filteredList, setFilteredList] = useState([]);
   
-  // Get degrees from ExternalApiContext
-  const { allDegrees } = useContext(ExternalApiContext);
+  // Get values and functions from state management
+  const { allDegrees, setDegreeId } = useContext(ExternalApiContext);
+  const { resetDegreeData } = useStore();
+
+  // Clear degree on first render
+  useEffect(() => {
+    resetDegreeData()
+    setDegreeId('');
+  }, []);
   
   // Searchbar logic
 	const handleSearch = (event) => {
@@ -118,11 +132,10 @@ const SearchPage = () => {
 
 	return (
 		<main className="searchPage__wrapper">
-			<WavesHeader title="Koulutukset" secondTitle="Ammatilliset koulutukset" disabled={false} />
+			<WavesHeader title="Saukko" secondTitle="Tutkintojen hallinta" disabled={false} />
 			<UserNav />
 			<section className="searchPage__container">
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'}/>
-				<h2>Ammatilliset koulutukset</h2>
 				<div className="searchPage__container--list">
 					<CheckLength
 						filteredList={filteredList}

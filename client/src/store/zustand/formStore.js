@@ -24,8 +24,9 @@ const useStore = create((set) => ({
   education: '',
   openNotificationModal: false,
 
-  // Workplace flow
-  businessId: [],
+
+  // Workplace
+  businessID: [],
   businessIDError: '',
   editedCompanyName: null,
   name: null,
@@ -35,7 +36,7 @@ const useStore = create((set) => ({
   lastName: '',
   työpaikkaohjaajaEmail: '',
 
-  // Admin
+  // Degree
   degreeName: 'ei dataa APIsta',
   degreeDescription: 'ei dataa APIsta',
   diaryNumber: 'ei dataa APIsta',
@@ -85,7 +86,7 @@ const useStore = create((set) => ({
   setLastName: (value) => set(() => ({ lastName: value })),
   setTyöpaikkaohjaajaEmail: (value) => set(() => ({ työpaikkaohjaajaEmail: value })),
 
-  // Admin setter functions
+  // Degree setters
   setDegreeName: (degreeName) => set({ degreeName }),
   setDegreeDescription: (degreeDescription) => set({ degreeDescription }),
   setDiaryNumber: (diaryNumber) => set({ diaryNumber }),

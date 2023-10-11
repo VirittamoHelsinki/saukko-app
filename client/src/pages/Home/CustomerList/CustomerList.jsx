@@ -136,8 +136,8 @@ export default function CustomerList() {
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {customersInProgress.map((customer) => (
-                <a onClick={() => handleChooseCustomer(customer._id)}>{customer.firstName} {customer.lastName}</a>
+              {customersInProgress.map((customer, index) => (
+                <a key={index} onClick={() => handleChooseCustomer(customer._id)}>{customer.firstName} {customer.lastName}</a>
               ))}
             </div>
           </AccordionDetails>
@@ -155,8 +155,8 @@ export default function CustomerList() {
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {customersNotStarted.map((customer) => (
-                <a onClick={() => handleChooseCustomer(customer._id)}>{customer.firstName} {customer.lastName}</a>
+              {customersNotStarted.map((customer, index) => (
+                <a key={index} onClick={() => handleChooseCustomer(customer._id)}>{customer.firstName} {customer.lastName}</a>
               ))}
             </div>
           </AccordionDetails>
@@ -174,8 +174,8 @@ export default function CustomerList() {
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {customersCompleted.map((customer) => (
-                <a onClick={() => handleChooseCustomer(customer._id)}>{customer.firstName} {customer.lastName}</a>
+              {customersCompleted.map((customer, index) => (
+                <a key={index} onClick={() => handleChooseCustomer(customer._id)}>{customer.firstName} {customer.lastName}</a>
               ))}
             </div>
           </AccordionDetails>
