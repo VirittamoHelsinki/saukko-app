@@ -11,7 +11,6 @@ import AuthContext from '../../../store/context/AuthContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Import MUI
-import dayjs from 'dayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -27,9 +26,9 @@ function EvaluationForm() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [startDate, setStartDate] = useState(dayjs());
-  const [endDate, setEndDate] = useState(dayjs());
-  const [extensionEndDate, setExtensionEndDate] = useState(dayjs());
+  const [startDate, setStartDate] = useState('DD.MM.YYYY');
+  const [endDate, setEndDate] = useState('DD.MM.YYYY');
+  const [extensionEndDate, setExtensionEndDate] = useState('DD.MM.YYYY');
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
 
@@ -54,6 +53,14 @@ function EvaluationForm() {
       return;
     }
 
+    // Form validation: Regex for date format
+    /* const datePattern = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+    if (!datePattern.test(startDate) || !datePattern.test(endDate)) {
+      alert('Please enter start date and end date.');
+      console.log('start date', startDate)
+      return;
+    } */
+
     // Create user object
     const customer = {
       firstName,
@@ -64,7 +71,7 @@ function EvaluationForm() {
     
     // Create evaluation object
     const evaluation = {
-      customerId: '1', // After user created -> server generates id -> fetch that
+      customerId: '', // After user created -> server generates id -> fetch that
       teacherId: user ? user._id : '',
       startDate,
       endDate,
