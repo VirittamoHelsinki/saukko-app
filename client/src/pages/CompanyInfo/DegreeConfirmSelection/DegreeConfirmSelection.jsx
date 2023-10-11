@@ -1,6 +1,7 @@
 // import React, { useContext, useEffect, useState } from 'react';
 // import { useNavigate, useParams } from 'react-router-dom';
 // import WavesHeader from '../../../components/Header/WavesHeader';
+// import WavesHeader from '../../../components/Header/WavesHeader';
 // import UserNav from '../../../components/UserNav/UserNav';
 // import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 // import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
@@ -10,20 +11,24 @@
 // import useUnitsStore from '../../../store/zustand/unitsStore';
 // import useStore from '../../../store/zustand/formStore';
 // import { postWorkplace } from '../../../api/workplace';
-// import { IconTwitter } from 'hds-react';
+// import axios from "axios";
+// import { registration } from '../../../api/user';
 
 // function DegreeConfirmSelection() {
 //   const navigate = useNavigate();
-//   const { supervisors, businessId, name, editedCompanyName, departments } = useStore();
-//   console.log(supervisors)
-//   console.log(departments)
+//   const { supervisors, businessId, name, editedCompanyName, departments, } = useStore();
+//   console.log(supervisors);
+//   console.log(departments);
+//   // console.log('first name------------', firstName)
+
+//   // console.log('email------------', työpaikkaohjaajaEmail);
+
 //   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
 //   const params = useParams();
 
 //   useEffect(() => {
 //     setinternalDegreeId(params.degreeId);
 //   }, [params.degreeId]);
-
 
 //   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 //   const [isLoading, setIsLoading] = useState(false);
@@ -40,65 +45,52 @@
 //   const stepperData = [
 //     {
 //       label: 'Lisää tiedot',
-//       url: '/company-info'
+//       url: '/company-info',
 //     },
 //     {
 //       label: 'Valitse tutkinto',
-//       url: '/internal/degrees'
+//       url: '/internal/degrees',
 //     },
 //     {
 //       label: 'Valitse tutkinnonosat',
-//       url: `/internal/degrees/${internalDegree._id}/units`
+//       url: `/internal/degrees/${internalDegree._id}/units`,
 //     },
 //     {
 //       label: 'Vahvista',
-//       url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`
+//       url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`,
 //     },
 //   ];
 
-//   const processRegistration = async (e) => {
-//     // e.preventDefault();
 
-//     try {
-//         const registerData = {
-//             email,
-//             password,
-//             passwordVerify,
-//         };
-
-//         await axios
-//             // REFACTOR this to extract url if this page is still used
-//             .post("http://localhost:5000/auth/", registerData)
-//             .then((res) => {
-//                 console.log(res);
-//             })
-//             .catch((err) => {
-//                 console.log(err);
-//             });
-//         navigate("/");
-
-//     } catch (err) {
-//         console.error(err);
-//     }
-// };
 
 //   const handleVahvistaClick = async () => {
 //     try {
 //       setIsLoading(true);
+//       const supervisorData = supervisors.map(supervisor => ({
+//         firstName: supervisor.firstName,
+//         lastName: supervisor.lastName,
+//         email: supervisor.email,
+//       }));
 
 //       const userData = {
-
-//         email: 'teacher@saukko.fi',
+//         firstName: supervisorData.map(supervisor => supervisor.firstName).join(', '),
+//         lastName: supervisorData.map(supervisor => supervisor.lastName).join(', '),
+//         email: supervisorData.map(supervisor => supervisor.email).join(', '),
 //         password: '12341234',
-//       };
 
-//       const userId = await registerUser(userData);
+//         role: 'supervisor'
+//       };
+//       console.log('UserData---------------------------------', userData)
+
+//       const userId = await registration(userData);
+
+
 //       const workplaceData = {
-//         supervisors,
+//         supervisors: userId,
 //         businessId,
 //         name: name ? name.name : editedCompanyName,
 //         departments: departments ? departments : '',
-//         userId: userId,
+
 //       };
 
 //       console.log('Sending workplaceData:', workplaceData);
@@ -183,9 +175,6 @@
 
 // export default DegreeConfirmSelection;
 
-
-
-
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -198,14 +187,15 @@ import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import useStore from '../../../store/zustand/formStore';
 import { postWorkplace } from '../../../api/workplace';
-import { IconTwitter } from 'hds-react';
 import axios from "axios";
+import { registration } from '../../../api/user';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
-  const { supervisors, businessId, name, editedCompanyName, departments } = useStore();
+  const { supervisors, businessId, name, editedCompanyName, departments, } = useStore();
   console.log(supervisors);
   console.log(departments);
+
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
   const params = useParams();
 
@@ -243,66 +233,96 @@ function DegreeConfirmSelection() {
       url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`,
     },
   ];
-
-  const registerUser = async (e) => {
-    // e.preventDefault();
-
-    try {
-      const registerData = {
-        email: 'teacher@saukko.fi',
-        password: '12341234',
-        passwordVerify: '12341234',
-      };
-
-      await axios
-        .post("http://localhost:5000/auth/", registerData)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const handleVahvistaClick = async () => {
     try {
       setIsLoading(true);
 
-      const userData = {
-        email: 'teacher@saukko.fi',
-        password: '12341234',
-        passwordVerify: '12341234'
-      };
+      const supervisorPromises = supervisors.map(async (supervisor) => {
+        // Create user data for the supervisor
+        const userData = {
+          firstName: supervisor.firstName,
+          lastName: supervisor.lastName,
+          email: supervisor.email,
+          password: '12341234',
+          role: 'supervisor',
+        };
 
-      const userId = await registerUser(userData);
-      const workplaceData = {
-        supervisors,
-        businessId,
-        name: name ? name.name : editedCompanyName,
-        departments: departments ? departments : '',
-        userId: userId,
-      };
+        // Register the supervisor and get the userId
+        const userId = await registration(userData);
 
-      console.log('Sending workplaceData:', workplaceData);
-      const response = await postWorkplace(workplaceData);
-      console.log('API Response:', response);
+
+
+        return userId;
+      });
+
+      // Wait for all registration requests to complete
+      const supervisorIds = await Promise.all(supervisorPromises);
+
+
+
+      // const workplaceData = {
+      //   supervisors: supervisorIds,
+      //   businessId,
+      //   name: name ? name.name : editedCompanyName,
+      //   departments: departments ? departments : '',
+      // };
+      // const response = await postWorkplace(workplaceData);
+
+      // Handle notifications based on the response.
+
       setIsLoading(false);
-
-      if (response.status === 'success') {
-        setOpenNotificationModal({ type: 'success', title: 'Uusi työpaikka lisätty' });
-      } else {
-        setOpenNotificationModal({ type: 'alert', title: 'Uusi työpaikka ei onnistunut' });
-      }
     } catch (error) {
-      setIsLoading(false);
-      setOpenNotificationModal({ type: 'warning', title: 'Uusi työpaikka ei onnistunut' });
+      console.log(error);
+      // Handle errors and notifications here
+      // setIsLoading(false);
+      // setOpenNotificationModal({ type: 'warning', title: 'Uusi työpaikka ei onnistunut' });
     }
   };
+
+
+
+  // const handleVahvistaClick = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const selectedSupervisor = supervisors[0];
+
+  //     // Create user data with the selected supervisor
+  //     const userData = {
+  //       firstName: selectedSupervisor.firstName,
+  //       lastName: selectedSupervisor.lastName,
+  //       email: selectedSupervisor.email,
+  //       password: '12341234',
+  //       role: 'supervisor',
+  //     };
+  //     console.log('UserData---------------------------------', userData)
+
+  //     const userId = await registration(userData);
+
+
+  //     //   const workplaceData = {
+  //     //     supervisors: userId,
+  //     //     businessId,
+  //     //     name: name ? name.name : editedCompanyName,
+  //     //     departments: departments ? departments : '',
+
+  //     //   };
+
+  //     //   console.log('Sending workplaceData:', workplaceData);
+  //     //   const response = await postWorkplace(workplaceData);
+  //     //   console.log('API Response:', response);
+  //     //   setIsLoading(false);
+
+  //     //   if (response.status === 'success') {
+  //     //     setOpenNotificationModal({ type: 'success', title: 'Uusi työpaikka lisätty' });
+  //     //   } else {
+  //     //     setOpenNotificationModal({ type: 'alert', title: 'Uusi työpaikka ei onnistunut' });
+  //     //   }
+  //   } catch (error) {
+  //     console.log(error)
+  //     // setIsLoading(false);
+  //     // setOpenNotificationModal({ type: 'warning', title: 'Uusi työpaikka ei onnistunut' });
+  //   }
+  // };
 
   return (
     <main className='confirmSelection__wrapper'>
@@ -369,10 +389,5 @@ function DegreeConfirmSelection() {
 }
 
 export default DegreeConfirmSelection;
-
-
-
-
-
 
 
