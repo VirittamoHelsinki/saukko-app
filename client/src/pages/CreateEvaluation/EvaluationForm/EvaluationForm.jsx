@@ -16,6 +16,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import dayjs from 'dayjs';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -42,8 +43,11 @@ function EvaluationForm() {
   const handleCloseEmail = () => setOpenNotificationModalEmail(false)
   const handleCloseDate = () => setOpenNotificationModalDate(false)
 
-  // Get functions from zustand store
-  const { setCustomer, setEvaluation } = useEvaluationStore();
+  // Get functions and values from zustand store
+  const { customer, setCustomer, evaluation, setEvaluation } = useEvaluationStore();
+  console.log('customer from store', customer)
+  console.log('evaluation from store', evaluation)
+  console.log('date format', typeof evaluation.startDate.$d.toJSON())
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -158,7 +162,7 @@ function EvaluationForm() {
             <label>Etunimi *</label>
             <input 
               className='form-input' 
-              value={firstName}
+              value={firstName ? firstName : customer.firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
@@ -166,7 +170,7 @@ function EvaluationForm() {
             <label>Sukunimi *</label>
             <input 
               className='form-input' 
-              value={lastName}
+              value={lastName ? lastName : customer.lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
@@ -175,7 +179,7 @@ function EvaluationForm() {
             <input 
               type='email' 
               className='form-input' 
-              value={email}
+              value={email ? email : customer.email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
@@ -185,7 +189,7 @@ function EvaluationForm() {
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
-                  value={startDate}
+                  value={evaluation.startDate ? evaluation.startDate : startDate}
                   onChange={(date) => setStartDate(date)}
                 />
               </ThemeProvider>
@@ -197,7 +201,7 @@ function EvaluationForm() {
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
-                  value={endDate}
+                  value={evaluation.endDate ? evaluation.endDate : endDate}
                   onChange={(date) => setEndDate(date)}
                 />
               </ThemeProvider>
@@ -210,8 +214,7 @@ function EvaluationForm() {
                 <DesktopDatePicker 
                   disabled={true}
                   format='DD.MM.YYYY'
-                  value={extensionEndDate}
-                  onChange={(date) => setExtensionEndDate(date)}
+                  value={'DD.MM.YYYY'}
                 />
               </ThemeProvider>
             </LocalizationProvider>
