@@ -9,6 +9,8 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import Stepper from '../../../components/Stepper/Stepper';
 import AuthContext from '../../../store/context/AuthContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+import useStore from '../../../store/zustand/formStore';
 
 // Import MUI
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -32,9 +34,9 @@ function EvaluationForm() {
   const [workTasks, setWorkTasks] = useState('');
   const [workGoals, setWorkGoals] = useState('');
 
-  // Setter functions from evaluationStore
-  const setCustomer = useEvaluationStore((state) => state.setCustomer);
-  const setEvaluation = useEvaluationStore((state) => state.setEvaluation);
+  // Get functions from zustand store
+  const { setCustomer, setEvaluation } = useEvaluationStore();
+  const { openNotificationModal, setOpenNotificationModal } = useStore();
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -42,7 +44,7 @@ function EvaluationForm() {
 
     // Form validation: check for empty fields
     if (!firstName || !lastName || !email || !startDate || !endDate || !workTasks || !workGoals) {
-      alert('Please fill in all required fields.');
+      setOpenNotificationModal(true);
       return;
     }
 
@@ -54,12 +56,12 @@ function EvaluationForm() {
     }
 
     // Form validation: Regex for date format
-    const datePattern = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
+    /* const datePattern = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/;
     if (!datePattern.test(startDate) || !datePattern.test(endDate)) {
       alert('Please enter start date and end date.');
       console.log('start date', startDate)
       return;
-    }
+    } */
 
     // Create user object
     const customer = {
@@ -179,7 +181,7 @@ function EvaluationForm() {
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
                   value={startDate}
-                  onChange={(date) => setStartDate(date.format('DD.MM.YYYY'))}
+                  onChange={(date) => setStartDate(date)}
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -191,7 +193,7 @@ function EvaluationForm() {
                 <DesktopDatePicker 
                   format='DD.MM.YYYY'
                   value={endDate}
-                  onChange={(date) => setEndDate(date.format('DD.MM.YYYY'))}
+                  onChange={(date) => setEndDate(date)}
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -229,6 +231,12 @@ function EvaluationForm() {
 
         <PageNavigationButtons handleBack={() => navigate(`/admin-menu`)} handleForward={handleSubmit} forwardButtonText={'Seuraava'} />
       </section>
+      <NotificationModal
+        type='success'
+        title='Lomakkeen lähetys epäonnistui'
+        body='Täytä kaikki lomakkeen kentät'
+        open={openNotificationModal}
+      />
       <UserNav />
     </main>
   );

@@ -9,12 +9,9 @@
    Example usage:
 
     import NotificationModal from '../../components/NotificationModal/NotificationModal';
-    import useStore from '../../store/useStore';
+    import useStore from '../../store/zustand/formStore';
 
-    const {
-      openNotificationModal,
-      setOpenNotificationModal,
-    } = useStore();
+    const { openNotificationModal, setOpenNotificationModal } = useStore();
 
     const handleOpen = () => {
       setOpenNotificationModal(true);

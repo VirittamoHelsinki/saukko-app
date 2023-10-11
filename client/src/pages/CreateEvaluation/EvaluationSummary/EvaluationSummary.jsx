@@ -32,11 +32,11 @@ function EvaluationSummary() {
     },
     {
       title: 'Asiakkuuden aloituspäivä',
-      content: evaluation ? evaluation.startDate : '',
+      content: evaluation ? evaluation.startDate.format('DD.MM.YYYY') : '',
     },
     {
       title: 'Asiakkuuden lopetuspäivä',
-      content: evaluation ? evaluation.endDate : '',
+      content: evaluation ? evaluation.endDate.format('DD.MM.YYYY') : '',
     },
     {
       title: 'Työpaikka',

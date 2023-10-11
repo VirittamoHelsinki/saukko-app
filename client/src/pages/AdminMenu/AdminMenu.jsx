@@ -4,6 +4,8 @@ import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import { Icon } from '@iconify/react';
 import useStore from '../../store/zustand/formStore';
+import useEvaluationStore from '../../store/zustand/evaluationStore';
+import useUnitsStore from '../../store/zustand/unitsStore';
 import ExternalApiContext from '../../store/context/ExternalApiContext';
 
 function AdminMenu() {
@@ -12,10 +14,15 @@ function AdminMenu() {
   // Clear saved degree and unit data on first render
   const { setDegreeId } = useContext(ExternalApiContext);
   const { resetDegreeData } = useStore();
+  const { clearEvaluation, clearWorkplace } = useEvaluationStore();
+  const { clearCheckedUnits } = useUnitsStore();
 
   useEffect(() => {
     resetDegreeData()
-    setDegreeId('');
+    setDegreeId('')
+    clearEvaluation()
+    clearWorkplace()
+    clearCheckedUnits()
   }, []);
 
   return (
