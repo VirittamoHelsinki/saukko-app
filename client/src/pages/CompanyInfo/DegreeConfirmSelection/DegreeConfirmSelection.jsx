@@ -16,8 +16,9 @@ import { registration } from '../../../api/user';
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
   const { supervisors, businessId, name, editedCompanyName, departments, } = useStore();
-  console.log(supervisors);
-  console.log(departments);
+  // console.log(supervisors);
+  // console.log(departments);
+
 
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
   const params = useParams();
@@ -27,12 +28,12 @@ function DegreeConfirmSelection() {
   }, [params.degreeId]);
 
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    openNotificationModal,
-    setOpenNotificationModal,
-  } = useStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [isFailure, setIsFailure] = useState(false)
+
+  const { openNotificationModal, setOpenNotificationModal } = useStore();
 
   const handleNotificationModalOpen = () => {
     setOpenNotificationModal(true);
@@ -56,12 +57,13 @@ function DegreeConfirmSelection() {
       url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`,
     },
   ];
+
   const handleVahvistaClick = async () => {
     try {
       setIsLoading(true);
 
       const supervisorPromises = supervisors.map(async (supervisor) => {
-        // Create user data for the supervisor
+        // Creating user data for the supervisor
         const userData = {
           firstName: supervisor.firstName,
           lastName: supervisor.lastName,
@@ -70,33 +72,51 @@ function DegreeConfirmSelection() {
           role: 'supervisor',
         };
         console.log('UserDataf for registration---------------------------------', userData)
+
         // Register the supervisor and get the userId
-        const userId = await registration(userData);
+        const userResponse = await registration(userData);
+        const userId = userResponse.data.userId
         return userId;
       });
 
-      //Tthis is the supervisor Ids
+      //This  gives  an array of supervisor userIds.
       const supervisorIds = await Promise.all(supervisorPromises);
       console.log('Supervisor IDs:', supervisorIds);
 
-      // const workplaceData = {
-      //   supervisors: supervisorIds,
-      //   businessId,
-      //   name: name ? name.name : editedCompanyName,
-      //   departments: departments ? departments : '',
-      // };
-      // const response = await postWorkplace(workplaceData);
+      const workplaceData = {
+        supervisors: supervisorIds,
+        businessId,
+        name: name ? name.name : editedCompanyName,
+        departments: departments ? departments : '',
 
-      // Handle notifications based on the response.
+      };
 
+      console.log('Sending workplaceData:', workplaceData);
+      //  The supervisors field contains an array of valid ObjectId values.
+      const response = await postWorkplace(workplaceData);
+      console.log('API Response------:', response);
       setIsLoading(false);
+
+      if (response.status === 201 || 200) {
+        setIsSuccess(true);
+      } else {
+        setIsFailure(true);
+      }
     } catch (error) {
-      console.log(error);
-      // Handle errors and notifications here
-      // setIsLoading(false);
-      // setOpenNotificationModal({ type: 'warning', title: 'Uusi työpaikka ei onnistunut' });
+      console.log(error)
+      setIsLoading(false);
+      setIsFailure(true);
+      setIsSuccess(false);
     }
   };
+  useEffect(() => {
+    if (isSuccess) {
+      setOpenNotificationModal(true);
+    } else if (isFailure) {
+      setOpenNotificationModal(true)
+    }
+  }, [isSuccess, isFailure]);
+
   return (
     <main className='confirmSelection__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Lisää uusi työpaikka' />
@@ -141,37 +161,32 @@ function DegreeConfirmSelection() {
         />
       </section>
       <UserNav />
-      <NotificationModal
-        type='success'
-        title='Uusi työpaikka lisätty'
-        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
-        open={openNotificationModal}
-        redirectLink='/customer-list'
-        onClose={() => setOpenNotificationModal(false)}
-      />
-      <NotificationModal
-        type='warning'
-        title='Uusi työpaikka ei onnistunut'
-        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
-        open={openNotificationModal}
-        redirectLink='/company-info'
-        onClose={() => setOpenNotificationModal(false)}
-      />
+      {isSuccess && (
+        <NotificationModal
+          type='success'
+          title='Uusi työpaikka lisätty'
+          body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+          open={openNotificationModal}
+          redirectLink='/customer-list'
+        />
+      )}
+
+      {isFailure && (
+        <NotificationModal
+          type='warning'
+          title='Uusi työpaikka ei onnistunut'
+          body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+          open={openNotificationModal}
+          redirectLink='/company-info'
+
+        />
+      )}
+
     </main>
   );
 }
 
 export default DegreeConfirmSelection;
-
-
-
-
-
-
-
-
-
-
 
 
 

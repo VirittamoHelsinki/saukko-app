@@ -107,6 +107,19 @@ const useStore = create((set) => ({
       transitionEnds: 'ei dataa APIsta',
     }),
 
+  resetWorkplaceData: () =>
+    set({
+      businessID: [],
+      businessIDError: '',
+      editedCompanyName: null,
+      name: null,
+      departments: [],
+      supervisors: [],
+      firstName: '',
+      lastName: '',
+      työpaikkaohjaajaEmail: '',
+    }),
+
   // Define a resetForm function to reset all state variables to their initial values
   resetForm: () =>
     set({

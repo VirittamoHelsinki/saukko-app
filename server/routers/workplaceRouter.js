@@ -114,30 +114,85 @@ workplaceRouter.put("/workplace/:id", async (req, res) => {
 })
 
 // Create a new workplace
+// workplaceRouter.post("/workplace", async (req, res) => {
+//   try {
+//     // Extract workplace data from the request body
+//     const { businessId, name, supervisors, departments } = req.body;
+
+//     // Create a new instance of the Workplace model
+//     const newWorkplace = new Workplace({
+//       businessId,
+//       name,
+//       supervisors,
+//       departments,
+//     })
+
+//     // Save the new workplace to the database
+//     let savedWorkplace = await newWorkplace.save()
+
+//     // Populate the supervisors and department supervisors fields with
+//     // basic user information.
+//     savedWorkplace = await savedWorkplace.populate(
+//       'supervisors', ['firstName', 'lastName', 'email']
+//     )
+//     savedWorkplace = await savedWorkplace.populate(
+//       'departments.supervisors', ['firstName', 'lastName', 'email']
+//     )
+
+//     res.status(201).json(savedWorkplace);
+
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ errorMessage: "Failed to create a new workplace" });
+//   }
+// });
+// with this code I am getting this error 
+// MongoServerError: E11000 duplicate key error collection: SaukkoApp.workplaces index: businessId_1 dup key: { businessId: "2070414-4" }
+
+
 workplaceRouter.post("/workplace", async (req, res) => {
   try {
     // Extract workplace data from the request body
     const { businessId, name, supervisors, departments } = req.body;
 
-    // Create a new instance of the Workplace model
+    // Check if a workplace with the same businessId already exists
+    const existingWorkplace = await Workplace.findOne({ businessId });
+
+    if (existingWorkplace) {
+      // A workplace with the same businessId already exists
+      //  choosing to update the existing document with the new data
+      existingWorkplace.name = name;
+      existingWorkplace.supervisors = supervisors;
+      existingWorkplace.departments = departments;
+      await existingWorkplace.save();
+      console.log(" workplace updated successfully");
+      //  returning the updated document as a response
+      return res.status(200).json(existingWorkplace);
+
+    }
+
+    // If no duplicate is found, create a new instance of the Workplace model
     const newWorkplace = new Workplace({
       businessId,
       name,
       supervisors,
       departments,
-    })
+    });
 
     // Save the new workplace to the database
-    let savedWorkplace = await newWorkplace.save()
+    let savedWorkplace = await newWorkplace.save();
 
     // Populate the supervisors and department supervisors fields with
     // basic user information.
     savedWorkplace = await savedWorkplace.populate(
       'supervisors', ['firstName', 'lastName', 'email']
-    )
+    );
     savedWorkplace = await savedWorkplace.populate(
       'departments.supervisors', ['firstName', 'lastName', 'email']
-    )
+    );
+    // Log a success message
+
+    console.log("New workplace created successfully");
 
     res.status(201).json(savedWorkplace);
 
@@ -146,6 +201,7 @@ workplaceRouter.post("/workplace", async (req, res) => {
     res.status(500).json({ errorMessage: "Failed to create a new workplace" });
   }
 });
+
 
 module.exports = workplaceRouter;
 
