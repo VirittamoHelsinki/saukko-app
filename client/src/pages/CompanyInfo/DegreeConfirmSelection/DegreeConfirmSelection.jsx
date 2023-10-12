@@ -75,7 +75,7 @@ function DegreeConfirmSelection() {
         return userId;
       });
 
-
+      //Tthis is the supervisor Ids
       const supervisorIds = await Promise.all(supervisorPromises);
       console.log('Supervisor IDs:', supervisorIds);
 
