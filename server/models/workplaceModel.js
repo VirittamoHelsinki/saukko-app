@@ -27,7 +27,6 @@ const workplaceSchema = new mongoose.Schema({
     {
       name: {
         type: String,
-        required: true,
       },
        // User IDs of supervisors for this department
       supervisors: [
@@ -45,22 +44,19 @@ const workplaceSchema = new mongoose.Schema({
   // The date when a particular regulation was established
   regulationDate: {
     type: Date,
-    required: true,
   },
 // The date when a transitional period ends
   transitionEnds: {
     type: Date,
-    required: true,
+
   },
   // The date from which a particular policy or entity is valid
   validFrom: {
     type: Date,
-    required: true,
   },
    // The expiration date of a particular policy or entity
   expiry: {
     type: Date,
-    required: true,
   },
     // Units related to the workplace
   units: [
@@ -68,7 +64,6 @@ const workplaceSchema = new mongoose.Schema({
     {
       _id: {
         type: Number,
-        required: true,
       },
       // Name of the unit in Finnish and Swedish
       name: {
@@ -87,7 +82,6 @@ const workplaceSchema = new mongoose.Schema({
           // Unique identifier for the assessment
           _id: {
             type: Number,
-            required: true,
           },
           // Name of the assessment in Finnish and Swedish
           name: {
