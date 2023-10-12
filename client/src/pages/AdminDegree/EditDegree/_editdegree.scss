@@ -17,9 +17,69 @@
       width: 100%;
 
       h1 {
-        margin: 40px;
+        margin-top: 40px;
+        margin-bottom: 20px;
         text-align: center;
         font-size: 20px;
+      }
+
+      .edit-button {
+        margin: 15px;
+        padding: 15px;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        svg {
+          font-size: 18px;
+        }
+      }
+
+      .button-not-editable {
+        background-color: white;
+        border: 2px solid #0000BF;
+        color: #0000BF;
+      }
+
+      .button-editable {
+        background-color: #0000BF;
+        border: 2px solid #0000BF;
+        color: white;
+      }
+
+      .units-not-editable {
+        margin: 15px;
+        display: flex;
+        flex-direction: column;
+
+        p {
+          border-bottom: 1px solid #808080;
+          padding: 15px;
+        }
+      }
+
+      .units-editable {
+        margin: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        input {
+          border: 2px solid black;
+          height: 50px;
+          padding: 15px;
+          font-size: 16px;
+        }
+        
+        .add-unit-button {
+          background-color: #0000BF;
+          border: none;
+          color: white;
+          width: 172px;
+          height: 50px;
+          font-weight: 600;
+        }
       }
 
     }

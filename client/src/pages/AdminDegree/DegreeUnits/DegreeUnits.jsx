@@ -115,7 +115,6 @@ function DegreeUnits() {
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${params.degreeId}`)}
           handleForward={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
-          forwardButtonText={'Seuraava'}
         />
       </section>
       <UserNav />

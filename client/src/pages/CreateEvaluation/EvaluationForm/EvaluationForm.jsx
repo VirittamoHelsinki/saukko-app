@@ -232,7 +232,7 @@ function EvaluationForm() {
           </div>
         </form>
 
-        <PageNavigationButtons handleBack={() => navigate(`/admin-menu`)} handleForward={handleSubmit} forwardButtonText={'Seuraava'} />
+        <PageNavigationButtons handleBack={() => navigate(`/admin-menu`)} handleForward={handleSubmit} />
       </section>
       <NotificationModal
         type='warning'

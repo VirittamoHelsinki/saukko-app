@@ -5,7 +5,7 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 <PageNavigationButtons 
   handleBack={() => navigate('/example')} 
   handleForward={handlePopupOpen} 
-  forwardButtonText={'Next page'}
+  forwardButtonText={'Next page'} // Default value is "Seuraava"
 />
 
 */
@@ -26,7 +26,7 @@ function PageNavigationButtons(props) {
       </div>
       <div className='buttons__container-forward'>
         <Button
-          text={props.forwardButtonText}
+          text={props.forwardButtonText || 'Seuraava'}
           onClick={props.handleForward}
           icon={'formkit:arrowright'}
         />

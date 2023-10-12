@@ -122,7 +122,6 @@ function CompanyDegreeUnits() {
             navigate(`../internal/degrees/${internalDegree._id}/units/confirm-selection`);
 
           }}
-          forwardButtonText={'Seuraava'}
         />
       </section>
       <UserNav />

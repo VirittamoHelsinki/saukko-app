@@ -119,7 +119,6 @@ function EvaluationSummary() {
         <PageNavigationButtons 
           handleBack={() => navigate(`/evaluation-units`)} 
           handleForward={handleSendToServer}
-          forwardButtonText={'Seuraava'}
         />
       </section>
       <UserNav />

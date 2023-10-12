@@ -1,7 +1,7 @@
 /* 
   USAGE
 
-  const { checkedUnits, toggleUnit, clearCheckedUnits } = useUnitsStore();
+  const { checkedUnits, toggleUnit, clearCheckedUnits, setCheckedUnits } = useUnitsStore();
 
   // Get checked units
 
@@ -12,6 +12,10 @@
     const handlerFunction = () => {
       toggleUnit(unit);
     };
+
+  // Replace the current array of units
+
+    setCheckedUnits(newUnitsArray);
 
   // Clear store
 
@@ -24,6 +28,10 @@ import { create } from 'zustand';
 
 const useUnitsStore = create((set) => ({
   checkedUnits: [],
+
+  setCheckedUnits: (newUnits) => {
+    set({ checkedUnits: newUnits });
+  },
 
   setUnitAtIndex: (index, newValue) => {
     set((state) => {
