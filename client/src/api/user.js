@@ -17,7 +17,7 @@ const registration = async (registrationData) => {
       email,
       password,
       role,
-      // passwordVerify,
+
     });
     console.log('Registration response:', response.data);
     return response;
