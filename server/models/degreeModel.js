@@ -86,7 +86,25 @@ const degreeSchema = new mongoose.Schema({
               default: ""
             },
             enum: ["fi", "sv", "en"],
-          },/*
+          },
+           // The date when a particular regulation was established
+          regulationDate: {
+            type: Date,
+          },
+          // The date when a transitional period ends
+          transitionEnds: {
+            type: Date,
+        
+          },
+          // The date from which a particular policy or entity is valid
+          validFrom: {
+            type: Date,
+          },
+           // The expiration date of a particular policy or entity
+          expiry: {
+            type: Date,
+          },
+          /*
           criteria: [ // list of criteria for this assessment
             {
               _id: { // criteria id
