@@ -17,6 +17,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DegreeConfirmSelection from './DegreeConfirmSelection/DegreeConfirmSelection';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -85,12 +86,7 @@ const CompanyInfo = () => {
   };
 
   const handleDepartment = (event) => {
-    const value = event.target.value;
-    const departmentObject = {
-      name: value,
-      supervisors: [],
-    }
-    setDepartmentName([...departments, departmentObject])
+    setDepartmentName({ name: event.target.value });
   };
 
   const fetchCompanyName = async (businessID) => {
@@ -132,7 +128,6 @@ const CompanyInfo = () => {
       firstName,
       lastName,
       email: työpaikkaohjaajaEmail,
-
       role: 'supervisor',
     };
   };
@@ -365,7 +360,5 @@ const CompanyInfo = () => {
 };
 
 export default CompanyInfo;
-
-
 
 

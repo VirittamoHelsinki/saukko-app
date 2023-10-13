@@ -26,6 +26,7 @@ const TestPage = () => {
       try {
         const data = await fetchAllInternalWorkplaces();
         setWorkplaces(data);
+        console.log('workplace data', data)
       } catch (error) {
         console.error('Error fetching workplaces----------:', error);
       }
@@ -111,9 +112,32 @@ const TestPage = () => {
       </section>
 
       <div>
+        <h1>Workplace data</h1>
         <ul>
           {workplaces.map((workplace) => (
-            <li key={workplace.id}>{workplace.name}</li>
+            <li key={workplace.id}>
+              Name: {workplace?.name}
+              Business ID: {workplace?.businessId}
+              <ul>
+                {workplace.departments.map((department) => (
+                  <li key={department._id}>
+                    Department Name: {department.name}
+                    <ul>
+                      {department.supervisors.map((supervisor, index) => (
+                        <li key={index}>
+                          Supervisor {index + 1}:
+                          <ul>
+                            <li>First Name: {supervisor.firstName}</li>
+                            <li>Last Name: {supervisor.lastName}</li>
+                            <li>Email: {supervisor.email}</li>
+                          </ul>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </li>
           ))}
         </ul>
       </div>

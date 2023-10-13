@@ -12,22 +12,27 @@ import useStore from '../../../store/zustand/formStore';
 import { postWorkplace } from '../../../api/workplace';
 import axios from "axios";
 import { registration } from '../../../api/user';
+import { IconTwitter } from 'hds-react';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
   const { supervisors, businessId, name, editedCompanyName, departments, } = useStore();
   // console.log(supervisors);
-  // console.log(departments);
+  // console.log('depatments----------', departments);
 
 
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
+
   const params = useParams();
 
   useEffect(() => {
     setinternalDegreeId(params.degreeId);
+    // console.log('internal degree-------------', internalDegree);
   }, [params.degreeId]);
 
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+
+  console.log(checkedUnits)
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false)
@@ -62,7 +67,7 @@ function DegreeConfirmSelection() {
     try {
       setIsLoading(true);
 
-      const supervisorPromises = supervisors.map(async (supervisor) => {
+      const supervisorData = supervisors.map(async (supervisor) => {
         // Creating user data for the supervisor
         const userData = {
           firstName: supervisor.firstName,
@@ -71,7 +76,7 @@ function DegreeConfirmSelection() {
           password: '12341234',
           role: 'supervisor',
         };
-        console.log('UserDataf for registration---------------------------------', userData)
+        // console.log('UserDataf for registration---------------------------------', userData)
 
         // Register the supervisor and get the userId
         const userResponse = await registration(userData);
@@ -80,21 +85,44 @@ function DegreeConfirmSelection() {
       });
 
       //This  gives  an array of supervisor userIds.
-      const supervisorIds = await Promise.all(supervisorPromises);
-      console.log('Supervisor IDs:', supervisorIds);
+      const supervisorIds = await Promise.all(supervisorData);
+      // console.log('Supervisor IDs:', supervisorIds);
+
+      //Setting the departments data
+
+
+      let departmentData = null;
+
+      if (departments) {
+        departmentData = Object.keys(departments).map((key) => {
+          const department = { name: departments[key] };
+          const departmentSupervisor = supervisorIds;
+          // console.log('------department_supervisor_id------', supervisorIds);
+          department.supervisor = departmentSupervisor;
+          return department;
+        });
+      }
 
       const workplaceData = {
         supervisors: supervisorIds,
         businessId,
         name: name ? name.name : editedCompanyName,
-        departments: departments ? departments : '',
+        departments: departmentData ? departmentData : '',
+        degreeId: params.degreeId,
+        units: checkedUnits.map((unit) => ({
+          _id: unit._id,
+          name: unit.name.fi
+        }))
 
       };
 
-      console.log('Sending workplaceData:', workplaceData);
+      console.log('Sending workplace Data:', workplaceData);
       //  The supervisors field contains an array of valid ObjectId values.
+
       const response = await postWorkplace(workplaceData);
-      console.log('API Response------:', response);
+
+      // console.log('API Response------:', response);
+
       setIsLoading(false);
 
       if (response.status === 201 || 200) {
@@ -134,11 +162,7 @@ function DegreeConfirmSelection() {
             <h2 className='second__title'>Työpaikka</h2>
             <p className='second__paragraph'> {businessId}</p>
             <p className='second__paragraph'>{name ? name.name : editedCompanyName}</p>
-            {departments.map((department, index) => (
-              <p className='second__paragraph' key={index}>
-                {department.name}
-              </p>
-            ))}
+            <p className='second__paragraph'>{departments ? departments.name : ''}</p>
           </div>
           {supervisors.map((ohjaaja, index) => (
             <div key={index} className='confirmSelection__infolist-item'>
@@ -167,7 +191,7 @@ function DegreeConfirmSelection() {
           title='Uusi työpaikka lisätty'
           body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
           open={openNotificationModal}
-          redirectLink='/customer-list'
+          redirectLink='/admin-menu'
         />
       )}
 
@@ -187,7 +211,5 @@ function DegreeConfirmSelection() {
 }
 
 export default DegreeConfirmSelection;
-
-
 
 

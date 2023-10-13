@@ -146,8 +146,8 @@ workplaceRouter.put("/workplace/:id", async (req, res) => {
 //     res.status(500).json({ errorMessage: "Failed to create a new workplace" });
 //   }
 // });
-// with this code I am getting this error 
-// MongoServerError: E11000 duplicate key error collection: SaukkoApp.workplaces index: businessId_1 dup key: { businessId: "2070414-4" }
+
+
 
 
 workplaceRouter.post("/workplace", async (req, res) => {
