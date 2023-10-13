@@ -46,8 +46,8 @@ function SpecifyTasks() {
       url: `/degrees/${params.degreeId}`
     },
     {
-      label: 'Valitse tutkinnonosat',
-      url: `/degrees/${params.degreeId}/units`
+      label: degree.units ? 'Valitse tutkinnonosat' : 'Lisää tutkinnonosat',
+      url: degree.units ? `/degrees/${params.degreeId}/units` : `/degrees/${params.degreeId}/edit-units`
     },
     {
       label: 'Määritä tehtävät',
@@ -203,7 +203,7 @@ function SpecifyTasks() {
           </Box>
 
           <PageNavigationButtons
-            handleBack={() =>navigate(`/degrees/${params.degreeId}/units`)}
+            handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
             handleForward={handleSubmit}
             forwardButtonText={'Tallenna ja jatka'}
           />

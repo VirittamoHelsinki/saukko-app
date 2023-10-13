@@ -9,7 +9,7 @@ import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import { Icon } from '@iconify/react';
 
-function EditDegree() {
+function EditUnits() {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -27,8 +27,8 @@ function EditDegree() {
       url: `/degrees/${params.degreeId}`
     },
     {
-      label: 'Muokkaa tutkinnonosia',
-      url: `/degrees/${params.degreeId}/units`
+      label: degree.units ? 'Valitse tutkinnonosat' : 'Lisää tutkinnonosat',
+      url: degree.units ? `/degrees/${params.degreeId}/units` : `/degrees/${params.degreeId}/edit-units`
     },
     {
       label: 'Määritä tehtävät',
@@ -36,11 +36,11 @@ function EditDegree() {
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${params.degreeId}/units/confirm-selection`
+      url: `/degrees/${params.degreeId}/summary`
     },
   ];
 
-  // If no checkedUnits - Go straight into edit mode - invoke handleAddUnit
+  // If no checkedUnits go straight into edit mode
   useEffect(() => {
     if (checkedUnits.length === 0) {
       setEditMode(true)
@@ -132,7 +132,10 @@ function EditDegree() {
         )}
 
         <PageNavigationButtons
-          handleBack={() => navigate(`/degrees/${params.degreeId}/units`)}
+          handleBack={degree.units ? 
+            () => navigate(`/degrees/${params.degreeId}/units`) : 
+            () => navigate(`/degrees/${params.degreeId}`)
+          }
           handleForward={handleSubmit}
         />
       </section>
@@ -141,4 +144,4 @@ function EditDegree() {
   );
 }
 
-export default EditDegree;
+export default EditUnits;

@@ -73,7 +73,7 @@ function DegreeUnits() {
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${params.degreeId}/units/confirm-selection`
+      url: `/degrees/${params.degreeId}/summary`
     },
   ];
 

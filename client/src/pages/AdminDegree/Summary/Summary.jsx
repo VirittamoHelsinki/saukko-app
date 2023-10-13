@@ -48,8 +48,8 @@ function Summary() {
       url: `/degrees/${params.degreeId}`
     },
     {
-      label: 'Valitse tutkinnonosat',
-      url: `/degrees/${params.degreeId}/units`
+      label: degree.units ? 'Valitse tutkinnonosat' : 'Lisää tutkinnonosat',
+      url: degree.units ? `/degrees/${params.degreeId}/units` : `/degrees/${params.degreeId}/edit-units`
     },
     {
       label: 'Määritä tehtävät',
@@ -102,7 +102,7 @@ function Summary() {
           totalPages={4}
           data={stepperData}
         />
-        <h1 className='degree-title'>{degreeFound ? degree.name.fi : degreeName}</h1>
+        <h1 className='degree-title'>{degreeName ? degreeName: degree.name?.fi}</h1>
         <div className='section-title'>Tutkinnonosat ja tehtävät </div>
         <div className='summary__container--box'>
           {checkedUnits.map((unit, index) => (

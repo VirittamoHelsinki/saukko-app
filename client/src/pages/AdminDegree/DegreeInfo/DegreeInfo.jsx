@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import state management
@@ -17,9 +17,13 @@ import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
 
 function DegreeInfo() {
+  const navigate = useNavigate();
+  const params = useParams();
+  
+  // Get values from state management
   const auth = useContext(AuthContext);
   const user = auth.user;
-
+  const { degree, degreeFound, allDegrees } = useContext(ExternalApiContext);
   const {
     degreeName,
     setDegreeName,
@@ -35,38 +39,11 @@ function DegreeInfo() {
     setExpiry,
     transitionEnds,
     setTransitionEnds,
-    resetDegreeData
   } = useStore();
 
+  // Set state
   const [isContentChanged, setIsContentChanged] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
-
-  // State variables to keep track of original text
-  const [originalDegreeName, setOriginalDegreeName] = useState(degreeName);
-  const [originalDegreeDescription, setOriginalDegreeDescription] =
-    useState(degreeDescription);
-  const [originalDiaryNumber, setOriginalDiaryNumber] = useState(diaryNumber);
-  const [originalRegulationDate, setOriginalRegulationDate] =
-    useState(regulationDate);
-  const [originalValidFrom, setOriginalValidFrom] = useState(validFrom);
-  const [originalExpiry, setOriginalExpiry] = useState(expiry);
-  const [originalTransitionEnds, setOriginalTransitionEnds] =
-    useState(transitionEnds);
-
-  // useRefs
-  const degreeNameRef = useRef(null);
-  const degreeDescriptionRef = useRef(null);
-  const diaryNumberRef = useRef(null);
-  const regulationDateRef = useRef(null);
-  const validFromRef = useRef(null);
-  const expiryRef = useRef(null);
-  const transitionEndsRef = useRef(null);
-
-  const navigate = useNavigate();
-
-  // Set path & get degree from ExternalApiContext
-  const { degree, degreeFound, allDegrees } = useContext(ExternalApiContext);
-  const params = useParams();
 
   // Labels and urls for stepper
   const stepperData = [
@@ -75,8 +52,8 @@ function DegreeInfo() {
       url: `/degrees/${params.degreeId}`
     },
     {
-      label: 'Valitse tutkinnonosat',
-      url: `/degrees/${params.degreeId}/units`
+      label: degree.units ? 'Valitse tutkinnonosat' : 'Lisää tutkinnonosat',
+      url: degree.units ? `/degrees/${params.degreeId}/units` : `/degrees/${params.degreeId}/edit-units`
     },
     {
       label: 'Määritä tehtävät',
@@ -84,119 +61,37 @@ function DegreeInfo() {
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${params.degreeId}/units/confirm-selection`
+      url: `/degrees/${params.degreeId}/summary`
     },
   ];
 
   useEffect(() => {
     if (degreeFound) {
-      degree.name !== null && setDegreeName(degree.name.fi);
-      degree.description !== null &&
-        setDegreeDescription(degree.description.fi);
-      degree.diaryNumber !== null && setDiaryNumber(degree.diaryNumber);
-      degree.regulationDate !== null &&
-        setRegulationDate(parseDate(degree.regulationDate));
-      degree.validFrom !== null && setValidFrom(parseDate(degree.validFrom));
-      degree.expiry !== null && setExpiry(parseDate(degree.expiry));
-      degree.transitionEnds !== null &&
-        setTransitionEnds(parseDate(degree.transitionEnds));
-
-      // Original degree content before any modifications
-      degree.name !== null && setOriginalDegreeName(degree.name.fi);
-      degree.description !== null &&
-        setOriginalDegreeDescription(degree.description.fi);
-      degree.diaryNumber !== null && setOriginalDiaryNumber(degree.diaryNumber);
-      degree.regulationDate !== null &&
-        setOriginalRegulationDate(parseDate(degree.regulationDate));
-
-      degree.validFrom !== null &&
-        setOriginalValidFrom(parseDate(degree.validFrom));
-      degree.expiry !== null && setOriginalExpiry(parseDate(degree.expiry));
-      degree.transitionEnds !== null &&
-        setOriginalTransitionEnds(parseDate(degree.transitionEnds));
-    } 
+        setDegreeDescription(degree.description.fi)
+        setDegreeName(degree.name.fi)
+        setDiaryNumber(degree.diaryNumber)
+        setRegulationDate(parseDate(degree.regulationDate))
+        setValidFrom(parseDate(degree.validFrom))
+        setExpiry(degree.expiry ? parseDate(degree.expiry) : 'ei dataa APIsta')
+        setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : 'ei dataa APIsta')
+    }
+    
     // If fetch by ID fails set data from all degrees 
-    else if (!degreeFound) { 
-      const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId))
-      if (matchingDegree) {
-        resetDegreeData()
-        setDegreeName(matchingDegree.name.fi)
-        setDiaryNumber(matchingDegree.diaryNumber)
+    else if (!degreeFound) {
+      if (!degreeDescription || !degreeName || !diaryNumber || !regulationDate || !validFrom || !expiry || !transitionEnds) {
+        const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId))
+        if (matchingDegree) {
+          setDegreeDescription('ei dataa APIsta')
+          setDegreeName(matchingDegree.name.fi)
+          setDiaryNumber(matchingDegree.diaryNumber)
+          setRegulationDate('ei dataa APIsta')
+          setValidFrom('ei dataa APIsta')
+          setExpiry('ei dataa APIsta')
+          setTransitionEnds('ei dataa APIsta')
+        }
       }
     }
   }, [degree]);
-
-  // Handle text changes and check if original text is modified
-  // Degree name
-  const handleNameChange = (event) => {
-    const updatedValue = event.target.value;
-    setDegreeName(updatedValue);
-    if (updatedValue !== originalDegreeName) {
-      setIsContentChanged(true);
-    } else {
-      setIsContentChanged(false);
-    }
-  };
-  // Degree description
-  const handleDescriptionChange = (event) => {
-    const updatedValue = event.target.value;
-    setDegreeDescription(updatedValue);
-    if (updatedValue !== originalDegreeDescription) {
-      setIsContentChanged(true);
-    } else {
-      setIsContentChanged(false);
-    }
-  };
-  // Degree diary number
-  const handleDiaryNumberChange = (event) => {
-    const updatedValue = event.target.value;
-    setDiaryNumber(updatedValue);
-    if (updatedValue !== originalDiaryNumber) {
-      setIsContentChanged(true);
-    } else {
-      setIsContentChanged(false);
-    }
-  };
-  // Degree Regulation date
-  const handleRegulationDateChange = (event) => {
-    const updatedValue = event.target.value;
-    setRegulationDate(updatedValue);
-    if (updatedValue !== originalRegulationDate) {
-      setIsContentChanged(true);
-    } else {
-      setIsContentChanged(false);
-    }
-  };
-  // Degree valid from
-  const handleValidFromChange = (event) => {
-    const updatedValue = event.target.value;
-    setValidFrom(updatedValue);
-    if (updatedValue !== originalValidFrom) {
-      setIsContentChanged(true);
-    } else {
-      setIsContentChanged(false);
-    }
-  };
-  // Degree expiry date
-  const handleExpiryChange = (event) => {
-    const updatedValue = event.target.value;
-    setExpiry(updatedValue);
-    if (updatedValue !== originalExpiry) {
-      setIsContentChanged(true);
-    } else {
-      setIsContentChanged(false);
-    }
-  };
-  // Degree Transition ending
-  const handleTransitionEndsChange = (event) => {
-    const updatedValue = event.target.value;
-    setTransitionEnds(updatedValue);
-    if (updatedValue !== originalTransitionEnds) {
-      setIsContentChanged(true);
-    } else {
-      setIsContentChanged(false);
-    }
-  };
 
   // Toggle text editable mode
   const handleEditToggle = () => {
@@ -276,8 +171,10 @@ function DegreeInfo() {
             >
               <ContentEditable
                 html={degreeDescription}
-                onChange={handleDescriptionChange}
-                innerRef={degreeDescriptionRef}
+                onChange={(e) => {
+                  setDegreeDescription(e.target.value)
+                  setIsContentChanged(true)
+                }}
                 tagName='p'
                 disabled={!isEditable}
                 className={isEditable ? 'border-input' : ''}
@@ -294,8 +191,10 @@ function DegreeInfo() {
             >
               <ContentEditable
                 html={degreeName}
-                onChange={handleNameChange}
-                innerRef={degreeNameRef}
+                onChange={(e) => {
+                  setDegreeName(e.target.value)
+                  setIsContentChanged(true)
+                }}
                 tagName='p'
                 disabled={!isEditable}
                 className={isEditable ? 'border-input' : ''}
@@ -312,8 +211,10 @@ function DegreeInfo() {
             >
               <ContentEditable
                 html={diaryNumber}
-                onChange={handleDiaryNumberChange}
-                innerRef={diaryNumberRef}
+                onChange={(e) => {
+                  setDiaryNumber(e.target.value)
+                  setIsContentChanged(true)
+                }}
                 tagName='p'
                 disabled={!isEditable}
                 className={isEditable ? 'border-input' : ''}
@@ -330,8 +231,10 @@ function DegreeInfo() {
             >
               <ContentEditable
                 html={regulationDate}
-                onChange={handleRegulationDateChange}
-                innerRef={regulationDateRef}
+                onChange={(e) => {
+                  setRegulationDate(e.target.value)
+                  setIsContentChanged(true)
+                }}
                 tagName='p'
                 disabled={!isEditable}
                 className={isEditable ? 'border-input' : ''}
@@ -348,8 +251,10 @@ function DegreeInfo() {
             >
               <ContentEditable
                 html={validFrom}
-                onChange={handleValidFromChange}
-                innerRef={validFromRef}
+                onChange={(e) => {
+                  setValidFrom(e.target.value)
+                  setIsContentChanged(true)
+                }}
                 tagName='p'
                 disabled={!isEditable}
                 className={isEditable ? 'border-input' : ''}
@@ -366,8 +271,10 @@ function DegreeInfo() {
             >
               <ContentEditable
                 html={expiry}
-                onChange={handleExpiryChange}
-                innerRef={expiryRef}
+                onChange={(e) => {
+                  setExpiry(e.target.value)
+                  setIsContentChanged(true)
+                }}
                 tagName='p'
                 disabled={!isEditable}
                 className={isEditable ? 'border-input' : ''}
@@ -384,8 +291,10 @@ function DegreeInfo() {
             >
               <ContentEditable
                 html={transitionEnds}
-                onChange={handleTransitionEndsChange}
-                innerRef={transitionEndsRef}
+                onChange={(e) => {
+                  setTransitionEnds(e.target.value)
+                  setIsContentChanged(true)
+                }}
                 tagName='p'
                 disabled={!isEditable}
                 className={isEditable ? 'border-input' : ''}
@@ -401,7 +310,10 @@ function DegreeInfo() {
 
         <PageNavigationButtons
           handleBack={() => navigate('/degrees')}
-          handleForward={() => navigate(`/degrees/${params.degreeId}/units`)}
+          handleForward={
+            degreeFound ? () => navigate(`/degrees/${params.degreeId}/units`) 
+            : () => navigate(`/degrees/${params.degreeId}/edit-units`)
+          }
           forwardButtonText={
             isContentChanged ? 'Tallenna ja jatka' : 'Seuraava'
           }
