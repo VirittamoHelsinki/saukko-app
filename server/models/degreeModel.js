@@ -43,20 +43,16 @@ const degreeSchema = new mongoose.Schema({
   infoURL: { // link to degree info page on ePerusteet
     type: String,
   },
-   // The date when a particular regulation was established
-   regulationDate: {
+  regulationDate: { // The date when a particular regulation was established
     type: Date,
   },
-  // The date when a transitional period ends
-  transitionEnds: {
+  transitionEnds: { // The date when a transitional period ends
     type: Date,
   },
-  // The date from which a particular policy or entity is valid
-  validFrom: {
+  validFrom: { // The date from which a particular policy or entity is valid
     type: Date,
   },
-   // The expiration date of a particular policy or entity
-  expiry: {
+  expiry: { // The expiration date of a particular policy or entity
     type: Date,
   },
   units: [

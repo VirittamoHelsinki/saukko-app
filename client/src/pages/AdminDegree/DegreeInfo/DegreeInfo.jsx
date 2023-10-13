@@ -15,6 +15,7 @@ import Hyperlink from '../../../components/Hyperlink/Hyperlink';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 
 function DegreeInfo() {
   const navigate = useNavigate();
@@ -45,6 +46,10 @@ function DegreeInfo() {
   const [isContentChanged, setIsContentChanged] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
 
+  // Opening / closing notificationModal
+  const [openNotificationModalDate, setOpenNotificationModalDate] = useState(false)
+  const handleCloseDate = () => setOpenNotificationModalDate(false)
+  
   // Labels and urls for stepper
   const stepperData = [
     {
@@ -104,10 +109,12 @@ function DegreeInfo() {
       return null;
     } else {
       const dateObj = new Date(milliseconds);
-      const options = { day: 'numeric', month: 'long', year: 'numeric' };
-      const finnishLocale = 'fi-FI';
-      const finnishDate = dateObj.toLocaleDateString(finnishLocale, options);
-      return finnishDate.replace(/(\d+)\s+(\w+)\s+(\d+)/, '$1. $2 $3.');
+      const day = dateObj.getDate().toString().padStart(2, '0'); // Add leading zero if necessary
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+      const year = dateObj.getFullYear();
+      const formattedDate = `${day}.${month}.${year}`;
+      
+      return formattedDate;
     }
   }
 
@@ -128,6 +135,30 @@ function DegreeInfo() {
       marginTop: '20px',
       width: '90%',
     };
+
+  // Form validation
+  const handleForward = () => {
+
+    // Check date format
+    const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
+
+    if (
+      (typeof regulationDate === 'string' && regulationDate !== 'ei dataa APIsta' && regulationDate !== '' && !datePattern.test(regulationDate)) ||
+      (typeof validFrom === 'string' && validFrom !== 'ei dataa APIsta' && validFrom !== '' && !datePattern.test(validFrom)) ||
+      (typeof expiry === 'string' && expiry !== 'ei dataa APIsta' && expiry !== '' && !datePattern.test(expiry)) ||
+      (typeof transitionEnds === 'string' && transitionEnds !== 'ei dataa APIsta' && transitionEnds !== '' && !datePattern.test(transitionEnds))
+    ) {
+      setOpenNotificationModalDate(true);
+      return;
+    }
+
+    // Navigate to the next page
+    if (degreeFound) {
+      navigate(`/degrees/${params.degreeId}/units`) 
+    } else {
+      navigate(`/degrees/${params.degreeId}/edit-units`)
+    }
+  }
 
   return (
     <main className='degreeInfo__wrapper'>
@@ -310,15 +341,19 @@ function DegreeInfo() {
 
         <PageNavigationButtons
           handleBack={() => navigate('/degrees')}
-          handleForward={
-            degreeFound ? () => navigate(`/degrees/${params.degreeId}/units`) 
-            : () => navigate(`/degrees/${params.degreeId}/edit-units`)
-          }
+          handleForward={handleForward}
           forwardButtonText={
             isContentChanged ? 'Tallenna ja jatka' : 'Seuraava'
           }
         />
       </section>
+      <NotificationModal
+        type='warning'
+        title='Tallennus epäonnistui'
+        body='Täytä päivämäärät muodossa DD.MM.YYYY'
+        open={openNotificationModalDate}
+        handleClose={handleCloseDate}
+      />
       <UserNav />
     </main>
   );

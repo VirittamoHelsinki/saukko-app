@@ -41,6 +41,18 @@ function Summary() {
   const regex = /(<([^>]+)>)/gi;
   const degreeDescriptionCleaned = degreeDescription.replace(regex, '');
 
+  function parseDate(dateString) {
+    const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
+  
+    if (datePattern.test(dateString)) {
+      const [day, month, year] = dateString.split('.');
+      const date = new Date(year, month - 1, day);
+      return date;
+    } else {
+      return null;
+    }
+  }
+  
   // Labels and urls for stepper
   const stepperData = [
     {
@@ -79,6 +91,11 @@ function Summary() {
       archived: false,
       infoURL: degree.examInfoURL,
       units: checkedUnits,
+      // Convert dates to JavaScript Date objects
+      regulationDate: parseDate(regulationDate),
+      transitionEnds: parseDate(transitionEnds),
+      validFrom: parseDate(validFrom),
+      expiry: parseDate(expiry),
     };
     console.log('Data for post request:', degreeData)
 
