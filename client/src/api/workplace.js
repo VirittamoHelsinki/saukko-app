@@ -6,12 +6,12 @@ const middleURL = '/api'
 
 // Fetch company data from avoindata API.
 
-const fetchExternalCompanyData = async (businessID) => {
-  console.log(businessID);
+const fetchExternalCompanyData = async (businessId) => {
+  console.log(businessId);
 
   try {
-    const response = await axios.get(`${baseURL}${middleURL}/business/${businessID}`);
-    console.log('data ----->', response.data);
+    const response = await axios.get(`${baseURL}${middleURL}/business/${businessId}`);
+    // console.log('data ----->', response.data);
 
     return response.data;
   } catch (error) {
@@ -58,3 +58,7 @@ export {
   fetchAllInternalWorkplaces, fetchInternalWorkplaceById,
   postWorkplace, updateWorkplace, removeWorkplace
 }
+
+
+
+

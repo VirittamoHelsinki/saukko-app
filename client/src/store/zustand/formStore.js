@@ -24,13 +24,14 @@ const useStore = create((set) => ({
   education: '',
   openNotificationModal: false,
 
+
   // Workplace
   businessID: [],
   businessIDError: '',
   editedCompanyName: null,
-  companyName: null,
-  departmentName: null,
-  työpaikkaohjaajat: [],
+  name: null,
+  departments: [],
+  supervisors: [],
   firstName: '',
   lastName: '',
   työpaikkaohjaajaEmail: '',
@@ -72,13 +73,15 @@ const useStore = create((set) => ({
   setOpenNotificationModal: (openNotificationModal) =>
     set({ openNotificationModal }),
 
-  // Workplace setters
-  setBusinessId: (value) => set(() => ({ businessID: value })),
+  // Workplace flow
+  setBusinessId: (value) => set(() => ({ businessId: value })),
   setBusinessIdError: (value) => set(() => ({ businessIDError: value })),
-  setCompanyName: (value) => set(() => ({ companyName: value })),
-  setDepartmentName: (value) => set(() => ({ departmentName: value })),
+  setName: (value) => set(() => ({ name: value })),
+  setDepartmentName: (value) => set(() => ({ departments: value })),
   setEditedCompanyName: (value) => set(() => ({ editedCompanyName: value })),
-  setTyöpaikkaohjaajat: (value) => set(() => ({ työpaikkaohjaajat: value })),
+  setSupervisors: (value) => set(() => ({ supervisors: value })),
+
+
   setFirstName: (value) => set(() => ({ firstName: value })),
   setLastName: (value) => set(() => ({ lastName: value })),
   setTyöpaikkaohjaajaEmail: (value) => set(() => ({ työpaikkaohjaajaEmail: value })),
@@ -104,6 +107,19 @@ const useStore = create((set) => ({
       transitionEnds: 'ei dataa APIsta',
     }),
 
+  resetWorkplaceData: () =>
+    set({
+      businessID: [],
+      businessIDError: '',
+      editedCompanyName: null,
+      name: null,
+      departments: [],
+      supervisors: [],
+      firstName: '',
+      lastName: '',
+      työpaikkaohjaajaEmail: '',
+    }),
+
   // Define a resetForm function to reset all state variables to their initial values
   resetForm: () =>
     set({
@@ -125,7 +141,7 @@ const useStore = create((set) => ({
       goals: '',
       academy: '',
       education: '',
-      businessID: '',
+      businessId: '',
       businessIDError: '',
       firstName: '',
       lastName: '',

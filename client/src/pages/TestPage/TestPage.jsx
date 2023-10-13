@@ -1,5 +1,5 @@
 // Importing React packages
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useStore from '../../store/zustand/formStore';
 
 // Importing components
@@ -8,7 +8,32 @@ import NotificationModal from '../../components/NotificationModal/NotificationMo
 import InfoList from '../../components/InfoList/InfoList';
 import TeacherPerformanceFeedBack from '../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
 
+// Importing saukko database
+import { fetchAllInternalWorkplaces } from '../../api/workplace';
+
+
+
+
+
+
+
 const TestPage = () => {
+  const [workplaces, setWorkplaces] = useState([])
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchAllInternalWorkplaces();
+        setWorkplaces(data);
+        console.log('workplace data', data)
+      } catch (error) {
+        console.error('Error fetching workplaces----------:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   const {
     password,
     passwordOld,
@@ -86,8 +111,41 @@ const TestPage = () => {
 
       </section>
 
+      <div>
+        <h1>Workplace data</h1>
+        <ul>
+          {workplaces.map((workplace) => (
+            <li key={workplace.id}>
+              Name: {workplace?.name}
+              Business ID: {workplace?.businessId}
+              <ul>
+                {workplace.departments.map((department) => (
+                  <li key={department._id}>
+                    Department Name: {department.name}
+                    <ul>
+                      {department.supervisors.map((supervisor, index) => (
+                        <li key={index}>
+                          Supervisor {index + 1}:
+                          <ul>
+                            <li>First Name: {supervisor.firstName}</li>
+                            <li>Last Name: {supervisor.lastName}</li>
+                            <li>Email: {supervisor.email}</li>
+                          </ul>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
+
     </main>
   );
 };
 
 export default TestPage;
+
+
