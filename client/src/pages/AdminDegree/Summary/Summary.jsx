@@ -108,7 +108,7 @@ function Summary() {
           {checkedUnits.map((unit, index) => (
             <div key={index} className='unit-container'>
               <strong>{unit.name.fi}</strong>
-              {unit.assessments.map((assessment, index) => (
+              {unit.assessments && unit.assessments.map((assessment, index) => (
                 <p key={index}>{index+1}. {assessment.name.fi}</p>
               ))}
             </div>
