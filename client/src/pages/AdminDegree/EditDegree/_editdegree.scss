@@ -64,13 +64,6 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-
-        input {
-          border: 2px solid black;
-          height: 50px;
-          padding: 15px;
-          font-size: 16px;
-        }
         
         .add-unit-button {
           background-color: #0000BF;
@@ -82,6 +75,12 @@
         }
       }
 
+      input {
+        border: 2px solid black;
+        height: 50px;
+        padding: 15px;
+        font-size: 16px;
+      }
     }
   }
 }

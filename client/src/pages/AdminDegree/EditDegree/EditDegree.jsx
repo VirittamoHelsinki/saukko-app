@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
@@ -40,30 +40,32 @@ function EditDegree() {
     },
   ];
 
+  // If no checkedUnits - Go straight into edit mode - invoke handleAddUnit
+  useEffect(() => {
+    if (checkedUnits.length === 0) {
+      setEditMode(true)
+      handleAddUnit()
+    }
+  }, []);
+
   const handleInputChange = (unitId, e) => {
     e.preventDefault();
     const inputValue = e.target.value;
   
-    // Check if the input value is empty
-    if (inputValue.trim() === "") {
-      // Filter the editedUnits array to remove the unit with the specified unitId
-      setEditedUnits((prevEditedUnits) => prevEditedUnits.filter((unit) => unit._id !== unitId));
-    } else {
-      const editedUnit = { name: { fi: inputValue }, _id: unitId };
-  
-      setEditedUnits((prevEditedUnits) => {
-        const index = prevEditedUnits.findIndex((unit) => unit._id === unitId);
-        const newEditedUnits = [...prevEditedUnits];
-  
-        if (index === -1) {
-          newEditedUnits.push(editedUnit);
-        } else {
-          newEditedUnits[index] = editedUnit;
-        }
-  
-        return newEditedUnits;
-      });
-    }
+    const editedUnit = { name: { fi: inputValue }, _id: unitId };
+
+    setEditedUnits((prevEditedUnits) => {
+      const index = prevEditedUnits.findIndex((unit) => unit._id === unitId);
+      const newEditedUnits = [...prevEditedUnits];
+
+      if (index === -1) {
+        newEditedUnits.push(editedUnit);
+      } else {
+        newEditedUnits[index] = editedUnit;
+      }
+
+      return newEditedUnits;
+    });
   };
 
   const handleAddUnit = () => {
@@ -78,7 +80,9 @@ function EditDegree() {
   };
   
   const handleSubmit = () => {
-    setCheckedUnits(editedUnits);
+    // Filter out units with an empty 'name.fi'
+    const filteredUnits = editedUnits.filter(unit => unit.name.fi !== "");
+    setCheckedUnits(filteredUnits);
     navigate(`/degrees/${params.degreeId}/units/tasks`)
   };
  
@@ -102,8 +106,8 @@ function EditDegree() {
           <Icon icon="lucide:pen" />
         </button>
 
-        {/* Not editable units */}
-        {!editMode && checkedUnits.length > 0 && (
+        {/* Non-edit mode */}
+        {!editMode && editedUnits.length > 0 && (
           <div className='units-not-editable'>
             {editedUnits.map((unit, index) => (
               <p key={index}>{index+1}. {unit.name.fi}</p>
@@ -111,10 +115,10 @@ function EditDegree() {
           </div>
         )}
 
-        {/* Editable units */}
+        {/* Edit mode */}
         {editMode && (
           <div className='units-editable'>
-            {checkedUnits.length > 0 ? 
+            {editedUnits.length > 0 &&
               editedUnits.map(unit => (
                 <input 
                   key={unit._id} 
@@ -122,7 +126,6 @@ function EditDegree() {
                   onChange={(e) => handleInputChange(unit._id, e)}
                 />
               ))
-              : <input />
             }
             <button className='add-unit-button' onClick={handleAddUnit}>+ Lisää tutkinnonosa</button>
           </div>
