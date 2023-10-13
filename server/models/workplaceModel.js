@@ -3,13 +3,31 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
 
 const workplaceSchema = new mongoose.Schema({
-     // A unique identifier for the business
+  // A unique identifier for the business
   businessId: {
     type: String,
     required: true,
     unique: true,
   },
-   // Name of the workplace
+  name: {
+    type: String,
+    required: true
+  },
+  supervisors: [{
+    type: ObjectId,
+    ref: 'User'
+  }],
+  departments: [{
+    name: {
+      type: String,
+      required: true
+    },
+    supervisors: [{
+      type: ObjectId,
+      ref: 'User'
+    }]
+  }],
+  // Name of the workplace
   name: {
     type: String,
     required: true,
@@ -28,7 +46,7 @@ const workplaceSchema = new mongoose.Schema({
       name: {
         type: String,
       },
-       // User IDs of supervisors for this department
+      // User IDs of supervisors for this department
       supervisors: [
         {
           type: ObjectId,
@@ -45,20 +63,19 @@ const workplaceSchema = new mongoose.Schema({
   regulationDate: {
     type: Date,
   },
-// The date when a transitional period ends
+  // The date when a transitional period ends
   transitionEnds: {
     type: Date,
-
   },
   // The date from which a particular policy or entity is valid
   validFrom: {
     type: Date,
   },
-   // The expiration date of a particular policy or entity
+  // The expiration date of a particular policy or entity
   expiry: {
     type: Date,
   },
-    // Units related to the workplace
+  // Units related to the workplace
   units: [
     // Unique identifier for the unit
     {
@@ -103,3 +120,4 @@ const workplaceSchema = new mongoose.Schema({
 const Workplace = mongoose.model('Workplace', workplaceSchema);
 
 module.exports = Workplace;
+

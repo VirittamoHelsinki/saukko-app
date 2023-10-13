@@ -12,7 +12,7 @@ const CheckLength = ({ filteredList, allInternalDegrees, paginate, currentPage }
   const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
   const navigate = useNavigate();
-
+  console.log(allInternalDegrees)
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
