@@ -84,13 +84,13 @@ function Summary() {
 
     // Post the new degree to the internal database
     // and save the response to a variable.
-    const newDegree = await postDegree(degreeData);
+    /* const newDegree = await postDegree(degreeData); */
 
     // Save degree to Context store.
-    setAllInternalDegrees([...allInternalDegrees, newDegree]);
+    /* setAllInternalDegrees([...allInternalDegrees, newDegree]); */
 
     // Trigger NotificationModal
-    setOpenNotificationModal(true);
+    /* setOpenNotificationModal(true); */
   };
 
   return (

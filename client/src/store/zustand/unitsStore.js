@@ -64,7 +64,8 @@ const useUnitsStore = create((set) => ({
         if (unit._id === unitId) {
           // Ensure that assessments is always an array and add the assessment
           const assessments = Array.isArray(unit.assessments) ? [...unit.assessments] : [];
-          assessments.push({ name: { fi: assessment } });
+          const randomId = Math.floor(1000000 + Math.random() * 9000000);
+          assessments.push({ name: { fi: assessment }, _id: randomId });
 
           // Add the assessment to the unit
           return {

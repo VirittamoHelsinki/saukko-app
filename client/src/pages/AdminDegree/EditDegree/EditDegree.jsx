@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
@@ -50,7 +50,6 @@ function EditDegree() {
       setEditedUnits((prevEditedUnits) => prevEditedUnits.filter((unit) => unit._id !== unitId));
     } else {
       const editedUnit = { name: { fi: inputValue }, _id: unitId };
-      console.log("Edited Unit:", editedUnit);
   
       setEditedUnits((prevEditedUnits) => {
         const index = prevEditedUnits.findIndex((unit) => unit._id === unitId);
@@ -69,7 +68,7 @@ function EditDegree() {
 
   const handleAddUnit = () => {
     // Generate a random _id for the new unit
-    const randomId = Math.floor(1000000 + Math.random() * 9000000).toString();
+    const randomId = Math.floor(1000000 + Math.random() * 9000000);
     
     // Create a new unit object with an empty name and the random _id
     const newUnit = { name: { fi: "" }, _id: randomId };
