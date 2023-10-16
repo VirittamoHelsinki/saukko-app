@@ -1,5 +1,5 @@
 // Import react packages & dependencies
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import Zustand store and custom context
@@ -30,12 +30,18 @@ function Summary() {
     validFrom,
     expiry,
     transitionEnds,
-    openNotificationModal,
-    setOpenNotificationModal,
   } = useStore();
   const { degree, degreeFound } = useContext(ExternalApiContext);
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
   const { checkedUnits } = useUnitsStore();
+
+  // NotificationModal
+  const [notificationSuccess, setNotificationSuccess] = useState(false)
+  const [notificationError, setNotificationError] = useState(false)
+  const [response, setResponse] = useState(null)
+
+  const closeSuccess = () => setNotificationSuccess(false)
+  const closeError = () => setNotificationError(false)
 
   // Remove HTML p tags from degree description
   const regex = /(<([^>]+)>)/gi;
@@ -77,21 +83,20 @@ function Summary() {
     
     const degreeData = {
       diaryNumber: diaryNumber ? diaryNumber : degree.diaryNumber,
-      eduCodeValue: degree.eduCodeValue,
+      eduCodeValue: degreeFound ? degree.eduCodeValue : '',
       name: {
         fi: degreeName ? degreeName : degree.name.fi,
         sv: degreeFound ? degree.name.sv : '',
         en: degreeFound ? degree.name.en : '',
       },
       description: {
-        fi: degreeDescription ? degreeDescription : degree.description.fi,
+        fi: degreeDescription ? degreeDescriptionCleaned : degree.description.fi,
         sv: degreeFound ? degree.description.sv : '',
         en: degreeFound ? degree.description.en : '',
       },
       archived: false,
       infoURL: degree.examInfoURL,
       units: checkedUnits,
-      // Convert dates to JavaScript Date objects
       regulationDate: parseDate(regulationDate),
       transitionEnds: parseDate(transitionEnds),
       validFrom: parseDate(validFrom),
@@ -99,16 +104,25 @@ function Summary() {
     };
     console.log('Data for post request:', degreeData)
 
-    // Post the new degree to the internal database
-    // and save the response to a variable.
-    /* const newDegree = await postDegree(degreeData); */
+    // Send post request
+    const response = await postDegree(degreeData);
+    console.log('response', response)
+    // Save response to state
+    setResponse(response);
 
-    // Save degree to Context store.
-    /* setAllInternalDegrees([...allInternalDegrees, newDegree]); */
+    // Save degree to context
+    setAllInternalDegrees([...allInternalDegrees, response])
 
-    // Trigger NotificationModal
-    /* setOpenNotificationModal(true); */
   };
+
+  // Trigger NotificationModal
+  useEffect(() => {
+    if (response && allInternalDegrees.some(degree => degree._id === response._id)) {
+      setNotificationSuccess(true);
+    } else if (response) {
+      setNotificationError(true);
+    }
+  }, [allInternalDegrees, response]);
 
   return (
     <main className='summary__wrapper'>
@@ -158,9 +172,16 @@ function Summary() {
         <NotificationModal
           type='success'
           title='Tiedot tallennettu'
-          body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
-          open={openNotificationModal}
+          body='Tutkinto on tallennettu tietokantaan'
+          open={notificationSuccess}
+          handleClose={closeSuccess}
           redirectLink='/admin-menu'
+        />
+        <NotificationModal
+          type='warning'
+          title='Lomakkeen lähetys epäonnistui'
+          open={notificationError}
+          handleClose={closeError}
         />
       </section>
       <UserNav />
