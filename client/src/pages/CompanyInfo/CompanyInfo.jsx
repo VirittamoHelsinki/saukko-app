@@ -17,7 +17,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import DegreeConfirmSelection from './DegreeConfirmSelection/DegreeConfirmSelection';
+
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -131,7 +131,8 @@ const CompanyInfo = () => {
       role: 'supervisor',
     };
   };
-  const addTyöpaikkaohjaaja = () => {
+  //Adding the supervisors
+  const addSupervisors = () => {
     if (firstName && lastName && työpaikkaohjaajaEmail) {
       const newSupervisor = createSupervisor(firstName, lastName, työpaikkaohjaajaEmail);
       setSupervisors([...supervisors, newSupervisor]);
@@ -160,7 +161,7 @@ const CompanyInfo = () => {
     // Create supervisor & save to temporary storage
     if (firstName && lastName && työpaikkaohjaajaEmail) {
       const newSupervisor = createSupervisor(firstName, lastName, työpaikkaohjaajaEmail);
-      addTyöpaikkaohjaaja(newSupervisor);
+      addSupervisors(newSupervisor);
     }
 
     // Navigate to next page
@@ -345,7 +346,7 @@ const CompanyInfo = () => {
                   width: '65%'
                 }}
                 icon={'ic:baseline-plus'}
-                onClick={addTyöpaikkaohjaaja}
+                onClick={addSupervisors}
               />
             </div>
           </form>
