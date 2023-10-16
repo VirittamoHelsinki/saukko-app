@@ -15,6 +15,7 @@ import AddDegree from '../../pages/AdminDegree/AddDegree/AddDegree';
 import SearchPage from '../../pages/AdminDegree/SearchPage/SearchPage';
 import DegreeInfo from '../../pages/AdminDegree/DegreeInfo/DegreeInfo';
 import DegreeUnits from '../../pages/AdminDegree/DegreeUnits/DegreeUnits';
+import EditUnits from '../../pages/AdminDegree/EditUnits/EditUnits';
 import SpecifyTasks from '../../pages/AdminDegree/SpecifyTasks/SpecifyTasks';
 import Summary from '../../pages/AdminDegree/Summary/Summary';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
@@ -105,6 +106,7 @@ const Router = () => {
             <Route path='/degrees' element={<SearchPage />} />
             <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
             <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
+            <Route path='/degrees/:degreeId/edit-units' element={<EditUnits />} />
             <Route path='/degrees/:degreeId/units/tasks' element={<SpecifyTasks />} />
             <Route path='/degrees/:degreeId/summary' element={<Summary />} />
 

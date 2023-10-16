@@ -37,13 +37,13 @@ const useStore = create((set) => ({
   työpaikkaohjaajaEmail: '',
 
   // Degree
-  degreeName: 'ei dataa APIsta',
-  degreeDescription: 'ei dataa APIsta',
-  diaryNumber: 'ei dataa APIsta',
-  regulationDate: 'ei dataa APIsta',
-  validFrom: 'ei dataa APIsta',
-  expiry: 'ei dataa APIsta',
-  transitionEnds: 'ei dataa APIsta',
+  degreeName: null,
+  degreeDescription: null,
+  diaryNumber: null,
+  regulationDate: null,
+  validFrom: null,
+  expiry: null,
+  transitionEnds: null,
 
   // Track chosen customer for teacher or supervisor 
   chosenCustomerId: null,
@@ -98,13 +98,13 @@ const useStore = create((set) => ({
   // Reset all state variables for degree's data
   resetDegreeData: () =>
     set({
-      degreeName: 'ei dataa APIsta',
-      degreeDescription: 'ei dataa APIsta',
-      diaryNumber: 'ei dataa APIsta',
-      regulationDate: 'ei dataa APIsta',
-      validFrom: 'ei dataa APIsta',
-      expiry: 'ei dataa APIsta',
-      transitionEnds: 'ei dataa APIsta',
+      degreeName: null,
+      degreeDescription: null,
+      diaryNumber: null,
+      regulationDate: null,
+      validFrom: null,
+      expiry: null,
+      transitionEnds: null,
     }),
 
   resetWorkplaceData: () =>

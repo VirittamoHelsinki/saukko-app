@@ -73,7 +73,7 @@ function DegreeUnits() {
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${params.degreeId}/units/confirm-selection`
+      url: `/degrees/${params.degreeId}/summary`
     },
   ];
 
@@ -114,8 +114,7 @@ function DegreeUnits() {
 
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${params.degreeId}`)}
-          handleForward={() => navigate(`/degrees/${params.degreeId}/units/tasks`)}
-          forwardButtonText={'Seuraava'}
+          handleForward={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
         />
       </section>
       <UserNav />

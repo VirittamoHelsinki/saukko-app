@@ -129,7 +129,7 @@ function EvaluationUnits() {
           : 'ei dataa APIsta'}
         </div>
 
-        <PageNavigationButtons handleBack={() => navigate(`/evaluation-workplace`)} handleForward={handleValidation} forwardButtonText={'Seuraava'}/>
+        <PageNavigationButtons handleBack={() => navigate(`/evaluation-workplace`)} handleForward={handleValidation}/>
       </section>      
       <UserNav />
     </main>

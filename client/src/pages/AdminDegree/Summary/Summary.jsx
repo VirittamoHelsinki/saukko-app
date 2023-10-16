@@ -1,5 +1,5 @@
 // Import react packages & dependencies
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import Zustand store and custom context
@@ -30,17 +30,35 @@ function Summary() {
     validFrom,
     expiry,
     transitionEnds,
-    openNotificationModal,
-    setOpenNotificationModal,
   } = useStore();
   const { degree, degreeFound } = useContext(ExternalApiContext);
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
   const { checkedUnits } = useUnitsStore();
 
+  // NotificationModal
+  const [notificationSuccess, setNotificationSuccess] = useState(false)
+  const [notificationError, setNotificationError] = useState(false)
+  const [response, setResponse] = useState(null)
+
+  const closeSuccess = () => setNotificationSuccess(false)
+  const closeError = () => setNotificationError(false)
+
   // Remove HTML p tags from degree description
   const regex = /(<([^>]+)>)/gi;
   const degreeDescriptionCleaned = degreeDescription.replace(regex, '');
 
+  function parseDate(dateString) {
+    const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
+  
+    if (datePattern.test(dateString)) {
+      const [day, month, year] = dateString.split('.');
+      const date = new Date(year, month - 1, day);
+      return date;
+    } else {
+      return null;
+    }
+  }
+  
   // Labels and urls for stepper
   const stepperData = [
     {
@@ -48,8 +66,8 @@ function Summary() {
       url: `/degrees/${params.degreeId}`
     },
     {
-      label: 'Valitse tutkinnonosat',
-      url: `/degrees/${params.degreeId}/units`
+      label: degree.units ? 'Valitse tutkinnonosat' : 'Lisää tutkinnonosat',
+      url: degree.units ? `/degrees/${params.degreeId}/units` : `/degrees/${params.degreeId}/edit-units`
     },
     {
       label: 'Määritä tehtävät',
@@ -65,33 +83,46 @@ function Summary() {
     
     const degreeData = {
       diaryNumber: diaryNumber ? diaryNumber : degree.diaryNumber,
-      eduCodeValue: degree.eduCodeValue,
+      eduCodeValue: degreeFound ? degree.eduCodeValue : '',
       name: {
         fi: degreeName ? degreeName : degree.name.fi,
         sv: degreeFound ? degree.name.sv : '',
         en: degreeFound ? degree.name.en : '',
       },
       description: {
-        fi: degreeDescription ? degreeDescription : degree.description.fi,
+        fi: degreeDescription ? degreeDescriptionCleaned : degree.description.fi,
         sv: degreeFound ? degree.description.sv : '',
         en: degreeFound ? degree.description.en : '',
       },
       archived: false,
       infoURL: degree.examInfoURL,
       units: checkedUnits,
+      regulationDate: parseDate(regulationDate),
+      transitionEnds: parseDate(transitionEnds),
+      validFrom: parseDate(validFrom),
+      expiry: parseDate(expiry),
     };
     console.log('Data for post request:', degreeData)
 
-    // Post the new degree to the internal database
-    // and save the response to a variable.
-    const newDegree = await postDegree(degreeData);
+    // Send post request
+    const response = await postDegree(degreeData);
+    console.log('response', response)
+    // Save response to state
+    setResponse(response);
 
-    // Save degree to Context store.
-    setAllInternalDegrees([...allInternalDegrees, newDegree]);
+    // Save degree to context
+    setAllInternalDegrees([...allInternalDegrees, response])
 
-    // Trigger NotificationModal
-    setOpenNotificationModal(true);
   };
+
+  // Trigger NotificationModal
+  useEffect(() => {
+    if (response && allInternalDegrees.some(degree => degree._id === response._id)) {
+      setNotificationSuccess(true);
+    } else if (response) {
+      setNotificationError(true);
+    }
+  }, [allInternalDegrees, response]);
 
   return (
     <main className='summary__wrapper'>
@@ -102,13 +133,13 @@ function Summary() {
           totalPages={4}
           data={stepperData}
         />
-        <h1 className='degree-title'>{degreeFound ? degree.name.fi : degreeName}</h1>
+        <h1 className='degree-title'>{degreeName ? degreeName: degree.name?.fi}</h1>
         <div className='section-title'>Tutkinnonosat ja tehtävät </div>
         <div className='summary__container--box'>
           {checkedUnits.map((unit, index) => (
             <div key={index} className='unit-container'>
               <strong>{unit.name.fi}</strong>
-              {unit.assessments.map((assessment, index) => (
+              {unit.assessments && unit.assessments.map((assessment, index) => (
                 <p key={index}>{index+1}. {assessment.name.fi}</p>
               ))}
             </div>
@@ -141,9 +172,16 @@ function Summary() {
         <NotificationModal
           type='success'
           title='Tiedot tallennettu'
-          body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
-          open={openNotificationModal}
+          body='Tutkinto on tallennettu tietokantaan'
+          open={notificationSuccess}
+          handleClose={closeSuccess}
           redirectLink='/admin-menu'
+        />
+        <NotificationModal
+          type='warning'
+          title='Lomakkeen lähetys epäonnistui'
+          open={notificationError}
+          handleClose={closeError}
         />
       </section>
       <UserNav />

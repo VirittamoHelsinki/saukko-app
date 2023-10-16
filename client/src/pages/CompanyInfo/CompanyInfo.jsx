@@ -352,7 +352,7 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
-      <PageNavigationButtons handleBack={() => navigate('/admin-menu')} handleForward={handleForward} forwardButtonText={'Seuraava'} />
+      <PageNavigationButtons handleBack={() => navigate('/admin-menu')} handleForward={handleForward} />
       <div style={{ marginBottom: '90px' }}>
         <UserNav></UserNav>
       </div>

@@ -33,11 +33,6 @@ degreeRouter.post('/internal/degrees', async (req, res) => {
     try {
       const newDegreeData = req.body; // Assuming you're sending the degree data in the request body
 
-      if (!newDegreeData.eduCodeValue) {
-        console.log("Name field empty")
-        return res.status(400).json({ errorMessage: "Empty Field" });
-      }
-
       const newDegree = new Degree(newDegreeData);
       await newDegree.save();
   
