@@ -8,33 +8,31 @@ const setup = () => {
     port: config.EMAIL_SERVICE_PORT,
     auth: {
       user: config.EMAIL_SERVICE_USER,
-      pass: config.EMAIL_SERVICE_PASSWORD
-    }
-  })
-}
+      pass: config.EMAIL_SERVICE_PASSWORD,
+    },
+  });
+};
 
 // send email to user with reset password link
 const sendResetPasswordEmail = (user) => {
-  
   // create transport object
   const transport = setup();
-  
+
   // create email object
   const emailObject = {
     from: config.EMAIL_SERVICE_FROM,
     to: user.email,
-    subject: 'Reset your password',
+    subject: 'Palauta salasanasi',
     text: `
-      Hi ${user.name},
+      Hei, ${user.firstName},
 
-      To reset your password, 
-      
-      click this link: ${user.generateResetPasswordLink()}
-    `
-  }
+      Voit palauttaa salasanasi klikkaamalla tätä linkkiä:
+      ${user.generateResetPasswordLink()}
+    `,
+  };
 
   // send email
-  transport.sendMail(emailObject)
-}
+  transport.sendMail(emailObject);
+};
 
-module.exports = { sendResetPasswordEmail }
+module.exports = { sendResetPasswordEmail };
