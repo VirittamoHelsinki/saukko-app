@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
@@ -9,6 +9,7 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Stepper from '../../../components/Stepper/Stepper';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 
 // Import libraries
 import { Icon } from '@iconify/react';
@@ -326,25 +327,27 @@ const mockData = [
 function EvaluationWorkplace() {
   const navigate = useNavigate();
 
-  // Fetch workplaces & save to state
-  const [workplaces, setWorkplaces] = useState(mockData);
+  // Get values and functions from zustand store
+  const { 
+    setWorkplace, 
+    setDepartment, 
+    setSupervisor, 
+    clearWorkplace, 
+    workplaceFromStore, 
+    departmentFromStore, 
+    supervisorFromStore 
+  } = useEvaluationStore();
+
+  // Get workplaces from context & save to state
+  const { workplaces } = useContext(InternalApiContext);
+  console.log('internal workplaces', workplaces)
   const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
-
-  // Setter functions from evaluationStore
-  const setWorkplace = useEvaluationStore((state) => state.setWorkplace);
-  const setDepartment = useEvaluationStore((state) => state.setDepartment);
-  const setSupervisor = useEvaluationStore((state) => state.setSupervisor);
-  const clearWorkplace = useEvaluationStore((state) => state.clearWorkplace);
-
-  // Getter functions from evaluationStore
-  const workplaceFromStore = useEvaluationStore((state) => state.workplace);
-  const departmentFromStore = useEvaluationStore((state) => state.department);
-  const supervisorFromStore = useEvaluationStore((state) => state.supervisor);
 
   // Workplace selection
   const toggleWorkplace = (event) => {
     clearWorkplace();
     const findWorkplaceById = workplaces.find(workplace => workplace._id === event.target.value)
+    console.log('matched workplace from context', workplaces.find(workplace => workplace._id === event.target.value)) // finds correct workplace
     setWorkplace(findWorkplaceById)
   };
   console.log('Workplace form store:', workplaceFromStore)
@@ -481,7 +484,7 @@ function EvaluationWorkplace() {
                 <AccordionDetails>
 
                   {/* Departments */}
-                  {workplace.departments && (
+                  {workplace.departments.length > 0 && (
                     <>
                       <Typography className="accordion-title"> Valitse yksikkö * </Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
