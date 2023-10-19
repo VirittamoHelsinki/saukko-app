@@ -30,6 +30,7 @@ function EvaluationWorkplace() {
 
   // Fetch workplaces & save to state
   const { workplaces } = useContext(InternalApiContext);
+  console.log(workplaces)
   const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
 
   // Setter functions from evaluationStore
@@ -62,10 +63,10 @@ function EvaluationWorkplace() {
 
   // Supervisor selection
   const toggleSupervisor = (supervisorId) => () => {
-    if (workplaceFromStore && workplaceFromStore.departments && departmentFromStore) {
+    if (workplaceFromStore && workplaceFromStore.departments.length > 0 && departmentFromStore) {
       const findSupervisorById = departmentFromStore.supervisors.find(supervisor => supervisor._id === supervisorId);
       setSupervisor(findSupervisorById);
-    } else if (workplaceFromStore && !workplaceFromStore.departments) {
+    } else if (workplaceFromStore && workplaceFromStore.departments.length === 0) {
       const findSupervisorById = workplaceFromStore.supervisors.find(supervisor => supervisor._id === supervisorId);
       setSupervisor(findSupervisorById);
     } else {
@@ -202,7 +203,7 @@ function EvaluationWorkplace() {
                   )}
 
                   {/* Supervisors */}
-                  {!workplace.departments && (
+                  {workplace.departments.length === 0 && (
                     <>
                       <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
@@ -223,7 +224,7 @@ function EvaluationWorkplace() {
                     </>
                   )}
 
-                  {workplace.departments && departmentFromStore && (
+                  {workplace.departments.length > 0 && departmentFromStore && (
                     <>
                       <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
