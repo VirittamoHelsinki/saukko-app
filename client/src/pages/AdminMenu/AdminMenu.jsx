@@ -48,7 +48,7 @@ function AdminMenu() {
             <h1>Suorituksen aktivoiminen</h1>
             <Icon icon="formkit:arrowright" />
           </div>
-          <p>Katso aktiiviset asiakkaat</p>
+          <p>Lisää uusi asiakkuus</p>
         </div>
       </section>
       <UserNav />
