@@ -8,6 +8,7 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Stepper from '../../../components/Stepper/Stepper';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
@@ -30,7 +31,6 @@ function EvaluationWorkplace() {
 
   // Fetch workplaces & save to state
   const { workplaces } = useContext(InternalApiContext);
-  console.log(workplaces)
   const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
 
   // Setter functions from evaluationStore
@@ -40,6 +40,15 @@ function EvaluationWorkplace() {
   const workplaceFromStore = useEvaluationStore((state) => state.workplace);
   const departmentFromStore = useEvaluationStore((state) => state.department);
   const supervisorFromStore = useEvaluationStore((state) => state.supervisor);
+
+  // NotificationModal
+  const [departmentNotification, setDepartmentNotification] = useState(false)
+  const [supervisorNotification, setSupervisorNotification] = useState(false)
+  const [redirectNotification, setRedirectNotification] = useState(false)
+
+  const closeDepartmentNotification = () => setDepartmentNotification(false)
+  const closeSupervisorNotification = () => setSupervisorNotification(false)
+  const closeRedirectNotification = () => setRedirectNotification(false)
 
   // Workplace selection
   const toggleWorkplace = (event) => {
@@ -52,11 +61,11 @@ function EvaluationWorkplace() {
   // Department selection
   const toggleDepartment = (departmentId) => () => {
     setSupervisor(null);
-    if (workplaceFromStore && workplaceFromStore.departments) {
+    if (workplaceFromStore && workplaceFromStore.departments.length > 0) {
       const findDepartmentById = workplaceFromStore.departments.find(department => department.id === departmentId);
       setDepartment(findDepartmentById);
     } else {
-      alert('Choose department belonging to chosen workplace');
+      setDepartmentNotification(true);
     };
   };
   console.log('Department from store:', departmentFromStore)
@@ -65,12 +74,12 @@ function EvaluationWorkplace() {
   const toggleSupervisor = (supervisorId) => () => {
     if (workplaceFromStore && workplaceFromStore.departments.length > 0 && departmentFromStore) {
       const findSupervisorById = departmentFromStore.supervisors.find(supervisor => supervisor._id === supervisorId);
-      setSupervisor(findSupervisorById);
+      findSupervisorById ? setSupervisor(findSupervisorById) : setSupervisorNotification(true);
     } else if (workplaceFromStore && workplaceFromStore.departments.length === 0) {
       const findSupervisorById = workplaceFromStore.supervisors.find(supervisor => supervisor._id === supervisorId);
       setSupervisor(findSupervisorById);
     } else {
-      alert('Choose supervisor belonging to the chosen workplace')
+      setSupervisorNotification(true);
     }
   };
   console.log('Supervisor from store:', supervisorFromStore)
@@ -110,7 +119,7 @@ function EvaluationWorkplace() {
     if (workplaceFromStore && supervisorFromStore) {
       navigate('/evaluation-units')
     } else {
-      alert('Choose workplace and supervisor')
+      setRedirectNotification(true);
     }
   };
 
@@ -267,6 +276,27 @@ function EvaluationWorkplace() {
         />
       </section>
       <UserNav />
+      <NotificationModal
+        type='warning'
+        title='Yksikön valinta epäonnistui'
+        body='Valitse ensin työpaikka ja sitten työpaikalle kuuluva yksikkö'
+        open={departmentNotification}
+        handleClose={closeDepartmentNotification}
+      />
+      <NotificationModal
+        type='warning'
+        title='Työpaikkaohjaajan valinta epäonnistui'
+        body='Valitse ensin työpaikka ja sitten työpaikalle kuuluva työpaikkaohjaaja'
+        open={supervisorNotification}
+        handleClose={closeSupervisorNotification}
+      />
+      <NotificationModal
+        type='warning'
+        title='Työpaikan valinta epäonnistui'
+        body='Valitse ensin työpaikka ja työpaikkaohjaaja'
+        open={redirectNotification}
+        handleClose={closeRedirectNotification}
+      />
     </main>
   );
 }

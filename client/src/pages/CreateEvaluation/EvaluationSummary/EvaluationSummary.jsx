@@ -1,5 +1,5 @@
 // Import react packages
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
@@ -13,6 +13,8 @@ import NotificationModal from '../../../components/NotificationModal/Notificatio
 import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import useStore from '../../../store/zustand/formStore';
+import AuthContext from '../../../store/context/AuthContext';
+import { registration } from '../../../api/user';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ function EvaluationSummary() {
   // Get data from store management
   const { customer, evaluation, workplace, department, supervisor, clearEvaluation } = useEvaluationStore();
   const { checkedUnits, clearCheckedUnits } = useUnitsStore();
+  const { user } = useContext(AuthContext);
 
   const summaryData = [
     {
@@ -55,7 +58,6 @@ function EvaluationSummary() {
       content: supervisor ? `${supervisor.firstName} ${supervisor.lastName}` : '',
     },
   ];
-  console.log('summary data', summaryData);
 
   // Remove department from array if there is no department
   if (!department) {
@@ -71,14 +73,66 @@ function EvaluationSummary() {
     setOpenNotificationModal,
   } = useStore();
 
-  const handleSendToServer = () => {
+  const handleUserPostReq = () => {
 
-    // Clear data from storage
-    clearEvaluation();
-    clearCheckedUnits();
+    // Format data
+    const userRequestData = {
+      firstName: customer && customer.firstName ? customer.firstName : null,
+      lastName: customer && customer.lastName ? customer.lastName : null,
+      email: customer && customer.email ? customer.email : null,
+      password: '123456',
+      role: 'customer',
+    }
+    console.log('Data for user POST req:', userRequestData)
 
-    // Trigger NotificationModal
-    setOpenNotificationModal(true);
+    // Send POST request if no values are null
+    /*  if (
+          userRequestData.firstName !== null &&
+          userRequestData.lastName !== null &&
+          userRequestData.email !== null
+    ) {
+      const response = await registration(userData);
+      const userId = response.data.userId
+      handleEvaluationPostReq(userId);
+    } else {
+      alert('Insufficient data for creating user')
+    }
+    */
+  }
+  
+  const handleEvaluationPostReq = (userId) => {
+    // Format evaluation data
+    const evaluationRequestData = {
+      degreeId: workplace && workplace.degreeId ? workplace.degreeId : null, // Not found
+      customerId: null, // Create user & get id from response
+      teacherId: user && user._id ? user._id : null,
+      supervisorId: supervisor && supervisor._id ? supervisor._id : null,
+      workplaceId: workplace && workplace._id ? workplace._id : null,
+      units: checkedUnits,
+      startDate:  evaluation && evaluation.startDate ? evaluation.startDate.$d : null, // Not in evaluationModel yet
+      endDate: evaluation && evaluation.endDate ? evaluation.endDate.$d : null, // Not in evaluationModel yet
+      workTasks: evaluation && evaluation.workTasks ? evaluation.workTasks : null, // Not in evaluationModel yet
+      workGoals: evaluation && evaluation.workGoals ? evaluation.workGoals : null, // Not in evaluationModel yet
+    }
+    console.log('Data for evaluation POST req:', evaluationRequestData)
+
+    // If all values 
+    if (
+      evaluationRequestData.degreeId !== null &&
+      evaluationRequestData.customerId !== null &&
+      evaluationRequestData.teacherId !== null &&
+      evaluationRequestData.supervisorId !== null &&
+      evaluationRequestData.workplaceId !== null &&
+      evaluationRequestData.startDate !== null &&
+      evaluationRequestData.endDate !== null &&
+      evaluationRequestData.workTasks !== null &&
+      evaluationRequestData.workGoals !== null
+    ) {
+      // Do something with evaluationRequestData here
+    } else {
+      // Handle the case where some values are null
+    }
+
   }
 
   // Stepper labels & urls
@@ -118,7 +172,7 @@ function EvaluationSummary() {
         ))}
         <PageNavigationButtons 
           handleBack={() => navigate(`/evaluation-units`)} 
-          handleForward={handleSendToServer}
+          handleForward={handleUserPostReq}
         />
       </section>
       <UserNav />
