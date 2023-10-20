@@ -36,7 +36,7 @@ function AdminMenu() {
           </div>
           <p>Tarkastele ja lisää tutkintoja</p>
         </div>
-        <div className='menuItem__container' onClick={() => navigate('/company-info')}>
+        <div className='menuItem__container' onClick={() => navigate('/add/companyname')}>
           <div className='menuItem__topRow'>
             <h1>Työpaikkojen hallinta</h1>
             <Icon icon="formkit:arrowright" />

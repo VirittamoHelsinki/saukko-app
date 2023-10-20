@@ -18,13 +18,13 @@ const CheckLength = ({ filteredList, allInternalDegrees, paginate, currentPage }
       {list.slice(startIndex, endIndex).map((degree, index) => (
         <div key={index} className="company__searchPage__container--list-item" onClick={() => navigate(`../internal/degrees/${degree._id}/units`)}>
           <h3>{degree.name.fi}</h3>
-          <div className="company__searchPage__container--list-item-bottom">
+          {/* <div className="company__searchPage__container--list-item-bottom">
             <div>
               <p>Diaari: {degree.diaryNumber}</p>
               <p>Koodi: {degree.eduCodeValue}</p>
             </div>
             <li>&#8250;</li>
-          </div>
+          </div> */}
         </div>
       ))}
     </>
