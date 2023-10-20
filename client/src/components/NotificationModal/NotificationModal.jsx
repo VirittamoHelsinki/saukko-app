@@ -27,16 +27,16 @@
   Using multiple NotificationModals in one component:
 
     // Set local state 
-      const [openNotificationModalFirst, setOpenNotificationModalFirst] = useState(false)
-      const [openNotificationModalSecond, setOpenNotificationModalSecond] = useState(false)
+      const [firstNotification, setFirstNotification] = useState(false)
+      const [secondNotification, setSecondNotification] = useState(false)
 
     // Custom handleClose functions
-      const handleCloseFirst = () => setOpenNotificationModalFirst(false)
-      const handleCloseSecond = () => setOpenNotificationModalSecond(false)
+      const closeFirstNotification = () => setFirstNotification(false)
+      const closeSecondNotification = () => setSecondNotification(false)
 
     // Trigger NotificationModals
       const handleOpen = () => {
-        openNotificationModalFirst(true);
+        setFirstNotification(true);
       }
 
     // Pass handleClose function as a prop
@@ -44,8 +44,8 @@
         type='warning'
         title='Lomakkeen lähetys epäonnistui'
         body='Tarkista sähköposti kenttä'
-        open={openNotificationModalFirst}
-        handleClose={handleCloseFirst}
+        open={firstNotification}
+        handleClose={closeFirstNotification}
       />
  */
 

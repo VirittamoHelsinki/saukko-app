@@ -1,5 +1,5 @@
 // Import react packages
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
@@ -9,18 +9,21 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import InfoList from '../../../components/InfoList/InfoList';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
-import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+/* import NotificationModal from '../../../components/NotificationModal/NotificationModal'; */
 import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../store/zustand/unitsStore';
-import useStore from '../../../store/zustand/formStore';
+import AuthContext from '../../../store/context/AuthContext';
+/* import { registration } from '../../../api/user'; */
 
 function EvaluationSummary() {
   const navigate = useNavigate();
 
   // Get data from store management
-  const { customer, evaluation, workplace, department, supervisor, clearEvaluation } = useEvaluationStore();
-  const { checkedUnits, clearCheckedUnits } = useUnitsStore();
+  const { customer, evaluation, workplace, department, supervisor } = useEvaluationStore();
+  const { checkedUnits } = useUnitsStore();
+  const { user } = useContext(AuthContext);
 
+  // Data array for InfoList component
   const summaryData = [
     {
       title: 'Nimi',
@@ -55,9 +58,8 @@ function EvaluationSummary() {
       content: supervisor ? `${supervisor.firstName} ${supervisor.lastName}` : '',
     },
   ];
-  console.log('summary data', summaryData);
 
-  // Remove department from array if there is no department
+  // Remove department from summaryData if there is no department
   if (!department) {
     const indexToRemove = summaryData.findIndex(item => item.title === 'Työpaikanyksikkö');
     if (indexToRemove !== -1) {
@@ -65,20 +67,68 @@ function EvaluationSummary() {
     }
   }
 
-  // NotificationModal logic
-  const {
-    openNotificationModal,
-    setOpenNotificationModal,
-  } = useStore();
+  const handleUserPostReq = () => {
 
-  const handleSendToServer = () => {
+    // Format data
+    const userRequestData = {
+      firstName: customer && customer.firstName ? customer.firstName : null,
+      lastName: customer && customer.lastName ? customer.lastName : null,
+      email: customer && customer.email ? customer.email : null,
+      password: '123456',
+      role: 'customer',
+    }
+    console.log('Data for user POST req:', userRequestData)
+    handleEvaluationPostReq() // Remove this line
 
-    // Clear data from storage
-    clearEvaluation();
-    clearCheckedUnits();
+    // If all values are found send POST request for creating user
+    /*  if (
+          userRequestData.firstName !== null &&
+          userRequestData.lastName !== null &&
+          userRequestData.email !== null
+    ) {
+      const response = await registration(userData);
+      const userId = response.data.userId
+      handleEvaluationPostReq(userId);
+    } else {
+      alert('Insufficient data for creating user')
+    }
+    */
+  }
+  
+  const handleEvaluationPostReq = (userId) => {
 
-    // Trigger NotificationModal
-    setOpenNotificationModal(true);
+    // Format evaluation data
+    const evaluationRequestData = {
+      degreeId: workplace && workplace.degreeId ? workplace.degreeId : null,
+      customerId: null, // Create user & get id from response
+      teacherId: user && user._id ? user._id : null, // Id not found in user data
+      supervisorId: supervisor && supervisor._id ? supervisor._id : null,
+      workplaceId: workplace && workplace._id ? workplace._id : null,
+      units: checkedUnits,
+      startDate:  evaluation && evaluation.startDate ? evaluation.startDate.$d : null, // Not in evaluationModel yet
+      endDate: evaluation && evaluation.endDate ? evaluation.endDate.$d : null, // Not in evaluationModel yet
+      workTasks: evaluation && evaluation.workTasks ? evaluation.workTasks : null, // Not in evaluationModel yet
+      workGoals: evaluation && evaluation.workGoals ? evaluation.workGoals : null, // Not in evaluationModel yet
+    }
+    console.log('Data for evaluation POST req:', evaluationRequestData)
+
+    // If all values are found send POST request for evaluation
+    /* if (
+      evaluationRequestData.degreeId !== null &&
+      evaluationRequestData.customerId !== null &&
+      evaluationRequestData.teacherId !== null &&
+      evaluationRequestData.supervisorId !== null &&
+      evaluationRequestData.workplaceId !== null &&
+      evaluationRequestData.startDate !== null &&
+      evaluationRequestData.endDate !== null &&
+      evaluationRequestData.workTasks !== null &&
+      evaluationRequestData.workGoals !== null
+    ) {
+      // Send post req
+    } else {
+      // Handle the case where some values are null
+    } */
+
   }
 
   // Stepper labels & urls
@@ -111,24 +161,17 @@ function EvaluationSummary() {
             data={stepperData}
         />
         <InfoList title={'Yhteenveto'} data={summaryData}/>
-        <h1>Degree name (FIX THIS)</h1> {/* Degree name from workplace */}
+        <h1>{workplace && workplace.name ? workplace.name : 'Ei dataa tietokannasta'}</h1>
         {console.log(console.log('checked units evaluation summary page: ', checkedUnits))}
         {checkedUnits?.map((unit) => (
           <SelectUnit key={unit._id} unit={unit} allUnits={checkedUnits && checkedUnits}/>
         ))}
         <PageNavigationButtons 
           handleBack={() => navigate(`/evaluation-units`)} 
-          handleForward={handleSendToServer}
+          handleForward={handleUserPostReq}
         />
       </section>
       <UserNav />
-      <NotificationModal
-        type='success'
-        title='Kutsut lähetetty!'
-        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
-        open={openNotificationModal}
-        redirectLink='/admin-menu'
-      />
     </main>
   );
 }
