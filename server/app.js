@@ -28,6 +28,7 @@ app.use(express.static('../client/build'));
 app.use(cookieParser()); // Parse cookies
 app.use(cors());
 
+
 // Connect to the database
 mongoose.set('strictQuery', true);
 mongoose
@@ -53,7 +54,8 @@ app.use('/api', workplaceRouter);
 app.use('/api', eReqRouter);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
+
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  });
 
 module.exports = app;
