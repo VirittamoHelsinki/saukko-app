@@ -196,10 +196,10 @@ function EvaluationWorkplace() {
                       <Accordion disableGutters square className='accordion__wrapper'>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
-                          {workplace.departments.map((department) => (
+                          {workplace.departments.map((department, index) => (
                             <div 
                             className='accordion__wrapper-details'
-                            key={department.id} 
+                            key={index} 
                             onClick={toggleDepartment(department.id)}
                             >
                               <Typography>{department.name}</Typography>
