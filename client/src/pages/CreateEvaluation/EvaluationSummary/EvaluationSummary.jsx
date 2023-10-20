@@ -9,21 +9,21 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import InfoList from '../../../components/InfoList/InfoList';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
-import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+/* import NotificationModal from '../../../components/NotificationModal/NotificationModal'; */
 import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../store/zustand/unitsStore';
-import useStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
-import { registration } from '../../../api/user';
+/* import { registration } from '../../../api/user'; */
 
 function EvaluationSummary() {
   const navigate = useNavigate();
 
   // Get data from store management
-  const { customer, evaluation, workplace, department, supervisor, clearEvaluation } = useEvaluationStore();
-  const { checkedUnits, clearCheckedUnits } = useUnitsStore();
+  const { customer, evaluation, workplace, department, supervisor } = useEvaluationStore();
+  const { checkedUnits } = useUnitsStore();
   const { user } = useContext(AuthContext);
 
+  // Data array for InfoList component
   const summaryData = [
     {
       title: 'Nimi',
@@ -59,19 +59,13 @@ function EvaluationSummary() {
     },
   ];
 
-  // Remove department from array if there is no department
+  // Remove department from summaryData if there is no department
   if (!department) {
     const indexToRemove = summaryData.findIndex(item => item.title === 'Työpaikanyksikkö');
     if (indexToRemove !== -1) {
       summaryData.splice(indexToRemove, 1);
     }
   }
-
-  // NotificationModal logic
-  const {
-    openNotificationModal,
-    setOpenNotificationModal,
-  } = useStore();
 
   const handleUserPostReq = () => {
 
@@ -84,8 +78,9 @@ function EvaluationSummary() {
       role: 'customer',
     }
     console.log('Data for user POST req:', userRequestData)
+    handleEvaluationPostReq() // Remove this line
 
-    // Send POST request if no values are null
+    // If all values are found send POST request for creating user
     /*  if (
           userRequestData.firstName !== null &&
           userRequestData.lastName !== null &&
@@ -101,11 +96,12 @@ function EvaluationSummary() {
   }
   
   const handleEvaluationPostReq = (userId) => {
+
     // Format evaluation data
     const evaluationRequestData = {
-      degreeId: workplace && workplace.degreeId ? workplace.degreeId : null, // Not found
+      degreeId: workplace && workplace.degreeId ? workplace.degreeId : null,
       customerId: null, // Create user & get id from response
-      teacherId: user && user._id ? user._id : null,
+      teacherId: user && user._id ? user._id : null, // Id not found in user data
       supervisorId: supervisor && supervisor._id ? supervisor._id : null,
       workplaceId: workplace && workplace._id ? workplace._id : null,
       units: checkedUnits,
@@ -116,8 +112,8 @@ function EvaluationSummary() {
     }
     console.log('Data for evaluation POST req:', evaluationRequestData)
 
-    // If all values 
-    if (
+    // If all values are found send POST request for evaluation
+    /* if (
       evaluationRequestData.degreeId !== null &&
       evaluationRequestData.customerId !== null &&
       evaluationRequestData.teacherId !== null &&
@@ -128,10 +124,10 @@ function EvaluationSummary() {
       evaluationRequestData.workTasks !== null &&
       evaluationRequestData.workGoals !== null
     ) {
-      // Do something with evaluationRequestData here
+      // Send post req
     } else {
       // Handle the case where some values are null
-    }
+    } */
 
   }
 
@@ -165,7 +161,7 @@ function EvaluationSummary() {
             data={stepperData}
         />
         <InfoList title={'Yhteenveto'} data={summaryData}/>
-        <h1>Degree name (FIX THIS)</h1> {/* Degree name from workplace */}
+        <h1>{workplace && workplace.name ? workplace.name : 'Ei dataa tietokannasta'}</h1>
         {console.log(console.log('checked units evaluation summary page: ', checkedUnits))}
         {checkedUnits?.map((unit) => (
           <SelectUnit key={unit._id} unit={unit} allUnits={checkedUnits && checkedUnits}/>
@@ -176,13 +172,6 @@ function EvaluationSummary() {
         />
       </section>
       <UserNav />
-      <NotificationModal
-        type='success'
-        title='Kutsut lähetetty!'
-        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
-        open={openNotificationModal}
-        redirectLink='/admin-menu'
-      />
     </main>
   );
 }
