@@ -14,6 +14,7 @@ const app = express();
 const userRouter = require("./routers/userRouter");
 const degreeRouter = require("./routers/degreeRouter");
 const workplaceRouter = require("./routers/workplaceRouter");
+const evaluationRouter = require("./routers/evaluationRouter");
 
 // Import the edu router for fetching ePerusteet
 const eReqRouter = require("./routers/eReqRouter");
@@ -55,6 +56,7 @@ app.use('/auth', userRouter);
 // Set up database model routers.
 app.use('/api', degreeRouter);
 app.use('/api', workplaceRouter);
+app.use('/api', evaluationRouter);
 
 // Set up routes for ePerusteet fetching
 app.use('/api', eReqRouter);
