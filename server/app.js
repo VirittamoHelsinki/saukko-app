@@ -1,4 +1,5 @@
 // Import required modules and libraries
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const config = require("./utils/config");
@@ -25,14 +26,16 @@ const jwt = require("jsonwebtoken"); */
 
 // Middleware setup
 app.use(express.json()); // Parse JSON request bodies
+app.use(express.static('../client/build'));
 app.use(cookieParser()); // Parse cookies
-app.use(
-  cors({
-    // Set the allowed origin for CORS, import from config.js
-    origin: [config.ALLOWED_ORIGINS],
-    credentials: true, // Enable sending cookies in CORS requests
-  })
-);
+
+const corsOptions = {
+  origin:"https://eperusteet.opintopolku.fi/eperusteet-service/api/external", // or wherever your server is hosted
+  credentials: true, // if your frontend needs to send cookies or authentication headers
+  // ... any other options you need
+};
+
+app.use(cors(corsOptions));
 
 // Log incoming requests, when in development mode. (npm run dev)
 if (ENVIRONMENT === 'development') app.use(requestLogger);
@@ -60,5 +63,11 @@ app.use('/api', evaluationRouter);
 
 // Set up routes for ePerusteet fetching
 app.use('/api', eReqRouter);
+
+
+// Serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 module.exports = app;

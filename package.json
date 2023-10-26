@@ -5,13 +5,14 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "build":"cd client && npm run build",
         "setup": "npm install && npm run install:server && npm run install:client",
         "install:server": "cd server && npm install",
         "install:client": "cd client && npm install",
         "server:dev": "cd server && npm run dev",
         "server:prod": "cd server && npm start",
         "client": "cd client && npm start",
-        "start:prod": "concurrently --kill-others-on-fail \" npm run server:prod\" \" npm run client\"",
+        "start:prod": "cd server && node index",
         "start:dev": "concurrently --kill-others-on-fail \" npm run server:dev\" \" npm run client\""
     },
     "author": "",
