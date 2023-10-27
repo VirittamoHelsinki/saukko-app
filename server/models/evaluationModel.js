@@ -67,6 +67,12 @@ const evaluationSchema = mongoose.Schema({
       _id: {
         type: Number,
       },
+      //Status for the evaluation
+      status: {
+        type: Number,
+        default: 0,
+        enum: [0, 1, 2, 3],
+      },
       // Name of the unit in Finnish and Swedish
       name: {
         fi: {
