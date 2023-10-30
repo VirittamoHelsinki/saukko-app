@@ -70,33 +70,44 @@ function DegreeInfo() {
     },
   ];
 
+
+
+
+
   useEffect(() => {
     if (degreeFound) {
-      setDegreeDescription(degree?.description?.fi)
-      setDegreeName(degree?.name?.fi)
-      setDiaryNumber(degree?.diaryNumber)
-      setRegulationDate(parseDate(degree?.regulationDate))
-      setValidFrom(parseDate(degree.validFrom))
-      setExpiry(degree.expiry ? parseDate(degree.expiry) : 'Taydennä puuttuvat tiedot')
-      setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : '  Taydennä puuttuvat tiedot')
-    }
-
-    // If fetch by ID fails set data from all degrees 
-    else if (!degreeFound) {
-      if (!degreeDescription || !degreeName || !diaryNumber || !regulationDate || !validFrom || !expiry || !transitionEnds) {
-        const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId))
+      setDegreeDescription(degree?.description?.fi);
+      setDegreeName(degree?.name?.fi);
+      setDiaryNumber(degree?.diaryNumber);
+      setRegulationDate(parseDate(degree?.regulationDate));
+      setValidFrom(parseDate(degree.validFrom));
+      setExpiry(degree.expiry ? parseDate(degree.expiry) : 'Taydennä puuttuvat tiedot');
+      setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : 'Taydennä puuttuvat tiedot');
+    } else {
+      // If fetch by ID fails set data from allDegrees
+      if (
+        !degreeDescription ||
+        !degreeName ||
+        !diaryNumber ||
+        !regulationDate ||
+        !validFrom ||
+        !expiry ||
+        !transitionEnds
+      ) {
+        const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId));
         if (matchingDegree) {
-          setDegreeDescription('  Taydennä puuttuvat tiedot')
-          setDegreeName(matchingDegree.name.fi)
-          setDiaryNumber(matchingDegree.diaryNumber)
-          setRegulationDate('  Taydennä puuttuvat tiedot')
-          setValidFrom('  Taydennä puuttuvat tiedot')
-          setExpiry('  Taydennä puuttuvat tiedot')
-          setTransitionEnds('  Taydennä puuttuvat tiedot')
+          setDegreeDescription('Taydennä puuttuvat tiedot');
+          setDegreeName(matchingDegree.name.fi);
+          setDiaryNumber(matchingDegree.diaryNumber);
+          setRegulationDate('Taydennä puuttuvat tiedot');
+          setValidFrom('Taydennä puuttuvat tiedot');
+          setExpiry('Taydennä puuttuvat tiedot');
+          setTransitionEnds('Taydennä puuttuvat tiedot');
         }
       }
     }
   }, [degree]);
+
 
   // Toggle text editable mode
   const handleEditToggle = () => {
@@ -104,16 +115,16 @@ function DegreeInfo() {
   };
 
   // Parse date
+  // Parse date
   function parseDate(milliseconds) {
     if (milliseconds === null) {
-      return null;
+      return 'Taydennä puuttuvat tiedot'; // Return the placeholder text for missing data
     } else {
       const dateObj = new Date(milliseconds);
-      const day = dateObj.getDate().toString().padStart(2, '0'); // Add leading zero if necessary
-      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
       const year = dateObj.getFullYear();
       const formattedDate = `${day}.${month}.${year}`;
-
       return formattedDate;
     }
   }
@@ -143,10 +154,10 @@ function DegreeInfo() {
     const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
 
     if (
-      (typeof regulationDate === 'string' && regulationDate !== '  Taydennä puuttuvat tiedot' && regulationDate !== '' && !datePattern.test(regulationDate)) ||
-      (typeof validFrom === 'string' && validFrom !== '  Taydennä puuttuvat tiedot' && validFrom !== '' && !datePattern.test(validFrom)) ||
-      (typeof expiry === 'string' && expiry !== '  Taydennä puuttuvat tiedot' && expiry !== '' && !datePattern.test(expiry)) ||
-      (typeof transitionEnds === 'string' && transitionEnds !== '  Taydennä puuttuvat tiedot' && transitionEnds !== '' && !datePattern.test(transitionEnds))
+      (typeof regulationDate === 'string' && regulationDate !== 'Taydennä puuttuvat tiedot' && regulationDate !== '' && !datePattern.test(regulationDate)) ||
+      (typeof validFrom === 'string' && validFrom !== 'Taydennä puuttuvat tiedot' && validFrom !== '' && !datePattern.test(validFrom)) ||
+      (typeof expiry === 'string' && expiry !== 'Taydennä puuttuvat tiedot' && expiry !== '' && !datePattern.test(expiry)) ||
+      (typeof transitionEnds === 'string' && transitionEnds !== 'Taydennä puuttuvat tiedot' && transitionEnds !== '' && !datePattern.test(transitionEnds))
     ) {
       setOpenNotificationModalDate(true);
       return;
@@ -360,3 +371,5 @@ function DegreeInfo() {
 }
 
 export default DegreeInfo;
+
+
