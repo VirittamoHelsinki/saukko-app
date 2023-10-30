@@ -47,54 +47,52 @@ function DegreeInfo() {
   const [isEditable, setIsEditable] = useState(false);
 
   // Opening / closing notificationModal
-  const [openNotificationModalDate, setOpenNotificationModalDate] = useState(false);
-  const handleCloseDate = () => setOpenNotificationModalDate(false);
+  const [openNotificationModalDate, setOpenNotificationModalDate] = useState(false)
+  const handleCloseDate = () => setOpenNotificationModalDate(false)
 
   // Labels and urls for stepper
   const stepperData = [
     {
       label: 'Tutkinto-tiedot',
-      url: `/degrees/${params.degreeId}`,
+      url: `/degrees/${params.degreeId}`
     },
     {
       label: degree.units ? 'Valitse tutkinnonosat' : 'Lisää tutkinnonosat',
-      url: degree.units
-        ? `/degrees/${params.degreeId}/units`
-        : `/degrees/${params.degreeId}/edit-units`,
+      url: degree.units ? `/degrees/${params.degreeId}/units` : `/degrees/${params.degreeId}/edit-units`
     },
     {
       label: 'Määritä tehtävät',
-      url: `/degrees/${params.degreeId}/units/tasks`,
+      url: `/degrees/${params.degreeId}/units/tasks`
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${params.degreeId}/summary`,
+      url: `/degrees/${params.degreeId}/summary`
     },
   ];
 
   useEffect(() => {
     if (degreeFound) {
-      setDegreeDescription(degree?.description?.fi || '');
-      setDegreeName(degree?.name?.fi || '');
-      setDiaryNumber(degree?.diaryNumber);
-      setRegulationDate(parseDate(degree?.regulationDate));
-      setValidFrom(parseDate(degree?.validFrom));
-      setExpiry(degree.expiry ? parseDate(degree.expiry) : 'Täydennä puuttuvat tiedot');
-      setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : 'Täydennä puuttuvat tiedot');
+      setDegreeDescription(degree?.description?.fi)
+      setDegreeName(degree?.name?.fi)
+      setDiaryNumber(degree?.diaryNumber)
+      setRegulationDate(parseDate(degree?.regulationDate))
+      setValidFrom(parseDate(degree.validFrom))
+      setExpiry(degree.expiry ? parseDate(degree.expiry) : 'Taydennä puuttuvat tiedot')
+      setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : '  Taydennä puuttuvat tiedot')
     }
 
-    // If fetch by ID fails set data from all degrees
+    // If fetch by ID fails set data from all degrees 
     else if (!degreeFound) {
       if (!degreeDescription || !degreeName || !diaryNumber || !regulationDate || !validFrom || !expiry || !transitionEnds) {
-        const matchingDegree = allDegrees.find((degree) => degree._id === parseInt(params.degreeId));
+        const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId))
         if (matchingDegree) {
-          setDegreeDescription('Täydennä puuttuvat tiedot');
-          setDegreeName(matchingDegree.name.fi);
-          setDiaryNumber(matchingDegree.diaryNumber);
-          setRegulationDate('Täydennä puuttuvat tiedot');
-          setValidFrom('Täydennä puuttuvat tiedot');
-          setExpiry('Täydennä puuttuvat tiedot');
-          setTransitionEnds('Täydennä puuttuvat tiedot');
+          setDegreeDescription('  Taydennä puuttuvat tiedot')
+          setDegreeName(matchingDegree.name.fi)
+          setDiaryNumber(matchingDegree.diaryNumber)
+          setRegulationDate('  Taydennä puuttuvat tiedot')
+          setValidFrom('  Taydennä puuttuvat tiedot')
+          setExpiry('  Taydennä puuttuvat tiedot')
+          setTransitionEnds('  Taydennä puuttuvat tiedot')
         }
       }
     }
@@ -111,7 +109,7 @@ function DegreeInfo() {
       return null;
     } else {
       const dateObj = new Date(milliseconds);
-      const day = dateObj.getDate().toString().padStart(2, '0'); // Add a leading zero if necessary
+      const day = dateObj.getDate().toString().padStart(2, '0'); // Add leading zero if necessary
       const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
       const year = dateObj.getFullYear();
       const formattedDate = `${day}.${month}.${year}`;
@@ -140,14 +138,15 @@ function DegreeInfo() {
 
   // Form validation
   const handleForward = () => {
+
     // Check date format
     const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
 
     if (
-      (typeof regulationDate === 'string' && regulationDate !== 'Täydennä puuttuvat tiedot' && regulationDate !== '' && !datePattern.test(regulationDate)) ||
-      (typeof validFrom === 'string' && validFrom !== 'Täydennä puuttuvat tiedot' && validFrom !== '' && !datePattern.test(validFrom)) ||
-      (typeof expiry === 'string' && expiry !== 'Täydennä puuttuvat tiedot' && expiry !== '' && !datePattern.test(expiry)) ||
-      (typeof transitionEnds === 'string' && transitionEnds !== 'Täydennä puuttuvat tiedot' && transitionEnds !== '' && !datePattern.test(transitionEnds))
+      (typeof regulationDate === 'string' && regulationDate !== '  Taydennä puuttuvat tiedot' && regulationDate !== '' && !datePattern.test(regulationDate)) ||
+      (typeof validFrom === 'string' && validFrom !== '  Taydennä puuttuvat tiedot' && validFrom !== '' && !datePattern.test(validFrom)) ||
+      (typeof expiry === 'string' && expiry !== '  Taydennä puuttuvat tiedot' && expiry !== '' && !datePattern.test(expiry)) ||
+      (typeof transitionEnds === 'string' && transitionEnds !== '  Taydennä puuttuvat tiedot' && transitionEnds !== '' && !datePattern.test(transitionEnds))
     ) {
       setOpenNotificationModalDate(true);
       return;
@@ -155,9 +154,9 @@ function DegreeInfo() {
 
     // Navigate to the next page
     if (degreeFound) {
-      navigate(`/degrees/${params.degreeId}/units`);
+      navigate(`/degrees/${params.degreeId}/units`)
     } else {
-      navigate(`/degrees/${params.degreeId}/edit-units`);
+      navigate(`/degrees/${params.degreeId}/edit-units`)
     }
   }
 
@@ -204,8 +203,8 @@ function DegreeInfo() {
               <ContentEditable
                 html={degreeDescription}
                 onChange={(e) => {
-                  setDegreeDescription(e.target.value);
-                  setIsContentChanged(true);
+                  setDegreeDescription(e.target.value)
+                  setIsContentChanged(true)
                 }}
                 tagName='p'
                 disabled={!isEditable}
@@ -224,8 +223,8 @@ function DegreeInfo() {
               <ContentEditable
                 html={degreeName}
                 onChange={(e) => {
-                  setDegreeName(e.target.value);
-                  setIsContentChanged(true);
+                  setDegreeName(e.target.value)
+                  setIsContentChanged(true)
                 }}
                 tagName='p'
                 disabled={!isEditable}
@@ -244,8 +243,8 @@ function DegreeInfo() {
               <ContentEditable
                 html={diaryNumber}
                 onChange={(e) => {
-                  setDiaryNumber(e.target.value);
-                  setIsContentChanged(true);
+                  setDiaryNumber(e.target.value)
+                  setIsContentChanged(true)
                 }}
                 tagName='p'
                 disabled={!isEditable}
@@ -264,8 +263,8 @@ function DegreeInfo() {
               <ContentEditable
                 html={regulationDate}
                 onChange={(e) => {
-                  setRegulationDate(e.target.value);
-                  setIsContentChanged(true);
+                  setRegulationDate(e.target.value)
+                  setIsContentChanged(true)
                 }}
                 tagName='p'
                 disabled={!isEditable}
@@ -284,8 +283,8 @@ function DegreeInfo() {
               <ContentEditable
                 html={validFrom}
                 onChange={(e) => {
-                  setValidFrom(e.target.value);
-                  setIsContentChanged(true);
+                  setValidFrom(e.target.value)
+                  setIsContentChanged(true)
                 }}
                 tagName='p'
                 disabled={!isEditable}
@@ -304,8 +303,8 @@ function DegreeInfo() {
               <ContentEditable
                 html={expiry}
                 onChange={(e) => {
-                  setExpiry(e.target.value);
-                  setIsContentChanged(true);
+                  setExpiry(e.target.value)
+                  setIsContentChanged(true)
                 }}
                 tagName='p'
                 disabled={!isEditable}
@@ -324,8 +323,8 @@ function DegreeInfo() {
               <ContentEditable
                 html={transitionEnds}
                 onChange={(e) => {
-                  setTransitionEnds(e.target.value);
-                  setIsContentChanged(true);
+                  setTransitionEnds(e.target.value)
+                  setIsContentChanged(true)
                 }}
                 tagName='p'
                 disabled={!isEditable}
@@ -361,4 +360,3 @@ function DegreeInfo() {
 }
 
 export default DegreeInfo;
-
