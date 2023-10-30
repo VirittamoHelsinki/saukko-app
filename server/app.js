@@ -30,15 +30,20 @@ app.use(express.static('../client/build'));
 app.use(cookieParser()); // Parse cookies
 
 const corsOptions = {
-  origin:"https://eperusteet.opintopolku.fi/eperusteet-service/api/external", // or wherever your server is hosted
+  origin:"http://localhost:3000", // or wherever your server is hosted "https://eperusteet.opintopolku.fi/eperusteet-service/api/external"
   credentials: true, // if your frontend needs to send cookies or authentication headers
   // ... any other options you need
 };
 
-app.use(cors(corsOptions));
-
 // Log incoming requests, when in development mode. (npm run dev)
-if (ENVIRONMENT === 'development') app.use(requestLogger);
+if (ENVIRONMENT === 'development'){ 
+app.use(requestLogger);
+app.use(cors(corsOptions));
+console.log("CORS options enabled")
+} else app.use(cors())
+
+
+
 
 // Connect to the database
 mongoose.set("strictQuery", true);

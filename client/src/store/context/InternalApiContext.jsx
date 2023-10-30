@@ -1,80 +1,96 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
-import { fetchInternalDegrees, fetchInternalDegreeById } from '../../api/degree.js';
+
+// Internal API calls
+import {
+  fetchInternalDegrees,
+  fetchInternalDegreeById,
+} from '../../api/degree.js';
 import { fetchAllInternalWorkplaces } from '../../api/workplace.js';
+
+// Internal state variable access.
 import useUnitsStore from '../zustand/unitsStore.js';
 import AuthContext from './AuthContext';
 
 const InternalApiContext = createContext();
 
-export const InternalApiContextProvider = ({ children }) => {
+// Meant to be used with data coming from internal saukko database.
+export const InternalApiContextProvider = (props) => {
   const [allInternalDegrees, setAllInternalDegrees] = useState([]);
   const [internalDegree, setInternalDegree] = useState({});
-  const [internalDegreeId, setInternalDegreeId] = useState('');
+  const [internalDegreeId, setinternalDegreeId] = useState('');
+
   const [workplaces, setWorkplaces] = useState([]);
   const [workplace, setWorkplace] = useState({});
-  const { loggedIn, role } = useContext(AuthContext);
-  const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
 
+  const { loggedIn, role } = useContext(AuthContext);
+
+  // Runs on each reload of the page and when the user logs in.
   useEffect(() => {
-    const fetchData = async () => {
-      if (!loggedIn || role !== "teacher") return;
-      
+    // Fetch degrees from saukko database
+    const getInternalDegrees = async () => {
+      if(!loggedIn || role !== "teacher") return;
       try {
         const internalDegrees = await fetchInternalDegrees();
         setAllInternalDegrees(internalDegrees);
       } catch (err) {
-        console.error('Failed to fetch internal degrees:', err);
-      }
-      
-      try {
-        const fetchedWorkplaces = await fetchAllInternalWorkplaces();
-        setWorkplaces(fetchedWorkplaces);
-      } catch (err) {
-        console.error('Failed to fetch workplaces:', err);
+        console.log(err);
       }
     };
+    getInternalDegrees();
 
-    fetchData();
-  }, [loggedIn]);
+    // Fetch all workplaces from saukko database
+    const getWorkplaces = async () => {
+      if(!loggedIn || role !== "teacher") return;
+      try {
+        const workplaces = await fetchAllInternalWorkplaces();
+        setWorkplaces(workplaces);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getWorkplaces();
+  }, [loggedIn, role]);
 
+  // Fetch degree by id
   useEffect(() => {
-    if (!loggedIn || !internalDegreeId || role !== "teacher") return;
+    const getInternalDegree = async () => {
+      if (!loggedIn || role !== "teacher") return;
 
-    const fetchDegree = async () => {
       try {
         const degree = await fetchInternalDegreeById(internalDegreeId);
+        // Set state
         setInternalDegree(degree);
       } catch (err) {
-        console.error('Failed to fetch internal degree:', err);
+        console.error(err);
       }
     };
 
     setInternalDegree({});
-    fetchDegree();
-  }, [internalDegreeId, loggedIn]);
+    getInternalDegree();
+  }, [internalDegreeId,loggedIn, role]);
 
-  const degreeFound = Object.keys(internalDegree).length > 0;
-
-  useEffect(() => {
-    if (internalDegreeId) {
-      clearCheckedUnits();
-      setInternalDegree({});
-    }
-  }, [internalDegreeId, clearCheckedUnits]);
+  const degreeFound = Object.keys(internalDegree).length > 0 ? true : false;
+  const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
 
   return (
-    <InternalApiContext.Provider
-      value={{
-        internalDegree,
-        allInternalDegrees,
-        setInternalDegreeId,
-        degreeFound,
-        workplaces,
-        workplace,
-      }}
-    >
-      {children}
-    </InternalApiContext.Provider>
+    <div>
+      <InternalApiContext.Provider
+        value={{
+          internalDegree,
+          allInternalDegrees,
+          setinternalDegreeId,
+          degreeFound,
+          internalDegreeId,
+          setAllInternalDegrees,
+          workplaces,
+          setWorkplaces,
+          workplace,
+          setWorkplace,
+        }}
+      >
+        {props.children}
+      </InternalApiContext.Provider>
+    </div>
   );
 };
 

@@ -1,19 +1,25 @@
-import React, { useEffect, useState, createContext, useContext } from 'react';
+import React, { useEffect, useState, createContext,useContext } from 'react';
 import useUnitsStore from '../zustand/unitsStore';
 import { fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
 import AuthContext from './AuthContext';
 
 const ExternalApiContext = createContext();
 
+// Purpose of this Provider is to give manage data fetched from external APIs
+// Currently used for fetching degrees from ePerusteet.
+// Also could be used when fetching comopany data from avoin data.
 export const ExternalApiContextProvider = (props) => {
+
+  // Initialize state
   const [allDegrees, setAllDegrees] = useState([]);
   const [degree, setDegree] = useState({});
   const [degreeId, setDegreeId] = useState('');
   const { loggedIn, role } = useContext(AuthContext);
 
+  // Fetch all degrees from ePerusteet
   useEffect(() => {
     const getDegrees = async () => {
-      if (!loggedIn || role !== "teacher") return;
+      if(!loggedIn || role !== "teacher") return;
       try {
         const response = await fetchDegreesFromEperusteet();
         console.log('ePerusteet degrees: ', response.data)
@@ -23,12 +29,12 @@ export const ExternalApiContextProvider = (props) => {
       }
     };
     getDegrees();
-  }, [loggedIn]); // Added loggedIn to the dependency array
+  }, [loggedIn, role]);
 
+  // Fetch degree by id
   useEffect(() => {
     const getDegree = async () => {
-      if (!loggedIn || role !== "teacher") return;
-
+      if(!loggedIn || role !== "teacher") return;
       try {
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
         console.log('ePerusteet degree: ', degreeResponse.data)
@@ -39,10 +45,12 @@ export const ExternalApiContextProvider = (props) => {
     };
     setDegree({});
     getDegree();
-  }, [degreeId, loggedIn]);
+  }, [degreeId]);
 
-  const degreeFound = Object.keys(degree).length > 0 ? true : false;
+  // Check if degree object is empty  
+  const degreeFound = Object.keys(degree).length > 0 ? true : false
 
+  // Clear checked units, assessments, degree data when degreeId changes
   const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
 
   useEffect(() => {
