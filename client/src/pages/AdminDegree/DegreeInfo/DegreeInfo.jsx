@@ -20,7 +20,7 @@ import NotificationModal from '../../../components/NotificationModal/Notificatio
 function DegreeInfo() {
   const navigate = useNavigate();
   const params = useParams();
-  
+
   // Get values from state management
   const auth = useContext(AuthContext);
   const user = auth.user;
@@ -49,7 +49,7 @@ function DegreeInfo() {
   // Opening / closing notificationModal
   const [openNotificationModalDate, setOpenNotificationModalDate] = useState(false)
   const handleCloseDate = () => setOpenNotificationModalDate(false)
-  
+
   // Labels and urls for stepper
   const stepperData = [
     {
@@ -72,15 +72,15 @@ function DegreeInfo() {
 
   useEffect(() => {
     if (degreeFound) {
-        setDegreeDescription(degree.description.fi)
-        setDegreeName(degree.name.fi)
-        setDiaryNumber(degree.diaryNumber)
-        setRegulationDate(parseDate(degree.regulationDate))
-        setValidFrom(parseDate(degree.validFrom))
-        setExpiry(degree.expiry ? parseDate(degree.expiry) : 'ei dataa APIsta')
-        setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : 'ei dataa APIsta')
+      setDegreeDescription(degree.description.fi)
+      setDegreeName(degree.name.fi)
+      setDiaryNumber(degree.diaryNumber)
+      setRegulationDate(parseDate(degree.regulationDate))
+      setValidFrom(parseDate(degree.validFrom))
+      setExpiry(degree.expiry ? parseDate(degree.expiry) : 'ei dataa APIsta')
+      setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : 'ei dataa APIsta')
     }
-    
+
     // If fetch by ID fails set data from all degrees 
     else if (!degreeFound) {
       if (!degreeDescription || !degreeName || !diaryNumber || !regulationDate || !validFrom || !expiry || !transitionEnds) {
@@ -113,20 +113,20 @@ function DegreeInfo() {
       const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
       const year = dateObj.getFullYear();
       const formattedDate = `${day}.${month}.${year}`;
-      
+
       return formattedDate;
     }
   }
 
   // Button styling/CSS
   const buttonStyleSave = {
-      background: '#0000bf',
-      color: '#fff',
-      border: 'red',
-      padding: '1rem',
-      marginTop: '20px',
-      width: '90%',
-    },
+    background: '#0000bf',
+    color: '#fff',
+    border: 'red',
+    padding: '1rem',
+    marginTop: '20px',
+    width: '90%',
+  },
     buttonStyleEdit = {
       background: '#fff',
       color: '#0000bf',
@@ -154,7 +154,7 @@ function DegreeInfo() {
 
     // Navigate to the next page
     if (degreeFound) {
-      navigate(`/degrees/${params.degreeId}/units`) 
+      navigate(`/degrees/${params.degreeId}/units`)
     } else {
       navigate(`/degrees/${params.degreeId}/edit-units`)
     }
@@ -360,3 +360,4 @@ function DegreeInfo() {
 }
 
 export default DegreeInfo;
+
