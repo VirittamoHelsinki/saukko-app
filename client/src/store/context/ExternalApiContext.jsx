@@ -15,11 +15,13 @@ export const ExternalApiContextProvider = (props) => {
   const [degree, setDegree] = useState({});
   const [degreeId, setDegreeId] = useState('');
   const [loading, setLoading] = useState(true)
+
   // Fetch all degrees from ePerusteet
   useEffect(() => {
-    setLoading(true);
     const getDegrees = async () => {
+
       try {
+        setLoading(true);
         const response = await fetchDegreesFromEperusteet();
         console.log('ePerusteet degrees: ', response.data)
         setAllDegrees(response.data);
@@ -37,9 +39,9 @@ export const ExternalApiContextProvider = (props) => {
 
   // Fetch degree by id
   useEffect(() => {
-    setLoading(true);
     const getDegree = async () => {
       try {
+        setLoading(true);
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
         console.log('ePerusteet degree: ', degreeResponse.data)
         setDegree(degreeResponse.data);
