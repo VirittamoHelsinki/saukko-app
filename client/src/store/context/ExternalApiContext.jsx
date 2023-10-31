@@ -1,7 +1,11 @@
 import React, { useEffect, useState, createContext,useContext } from 'react';
 import useUnitsStore from '../zustand/unitsStore';
 import { fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
+
+import { CircularProgress } from '@mui/material';
+
 import AuthContext from './AuthContext';
+
 
 const ExternalApiContext = createContext();
 
@@ -14,33 +18,52 @@ export const ExternalApiContextProvider = (props) => {
   const [allDegrees, setAllDegrees] = useState([]);
   const [degree, setDegree] = useState({});
   const [degreeId, setDegreeId] = useState('');
+
+  const [allloading, setallLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
+
+
   const { loggedIn, role } = useContext(AuthContext);
+
 
   // Fetch all degrees from ePerusteet
   useEffect(() => {
     const getDegrees = async () => {
+
+
+
       if(!loggedIn || role !== "teacher") return;
+
       try {
+        setallLoading(true);
         const response = await fetchDegreesFromEperusteet();
         console.log('ePerusteet degrees: ', response.data)
         setAllDegrees(response.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setallLoading(false)
       }
+
     };
     getDegrees();
   }, [loggedIn, role]);
+
+
 
   // Fetch degree by id
   useEffect(() => {
     const getDegree = async () => {
       if(!loggedIn || role !== "teacher") return;
       try {
+        setLoading(true);
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
         console.log('ePerusteet degree: ', degreeResponse.data)
         setDegree(degreeResponse.data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false)
       }
     };
     setDegree({});
@@ -58,6 +81,21 @@ export const ExternalApiContextProvider = (props) => {
     setDegree({});
   }, [degreeId]);
 
+  if (allloading || loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
+  }
+
   return (
     <ExternalApiContext.Provider value={{ degree, allDegrees, setDegreeId, degreeFound }}>
       {props.children}
@@ -66,3 +104,18 @@ export const ExternalApiContextProvider = (props) => {
 };
 
 export default ExternalApiContext;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

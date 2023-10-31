@@ -86,7 +86,7 @@ function DegreeUnits() {
           totalPages={4}
           data={stepperData}
         />
-        <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
+        <h1>{degreeFound ? degree?.name.fi : degreeName}</h1>
         <Searchbar
           handleSearch={handleSearch}
           placeholder={'Etsi tutkinnonosat'}
@@ -95,12 +95,12 @@ function DegreeUnits() {
         <div className='degreeUnits__container--units'>
           {currentUnits
             ? currentUnits.map((unit) => (
-                <SelectUnit
-                  key={unit._id}
-                  unit={unit}
-                  allUnits={degree.units}
-                />
-              ))
+              <SelectUnit
+                key={unit._id}
+                unit={unit}
+                allUnits={degree.units}
+              />
+            ))
             : 'ei dataa APIsta'}
         </div>
 

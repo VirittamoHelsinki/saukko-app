@@ -20,7 +20,7 @@ import NotificationModal from '../../../components/NotificationModal/Notificatio
 function DegreeInfo() {
   const navigate = useNavigate();
   const params = useParams();
-  
+
   // Get values from state management
   const auth = useContext(AuthContext);
   const user = auth.user;
@@ -49,7 +49,7 @@ function DegreeInfo() {
   // Opening / closing notificationModal
   const [openNotificationModalDate, setOpenNotificationModalDate] = useState(false)
   const handleCloseDate = () => setOpenNotificationModalDate(false)
-  
+
   // Labels and urls for stepper
   const stepperData = [
     {
@@ -70,33 +70,44 @@ function DegreeInfo() {
     },
   ];
 
+
+
+
+
   useEffect(() => {
     if (degreeFound) {
-        setDegreeDescription(degree.description.fi)
-        setDegreeName(degree.name.fi)
-        setDiaryNumber(degree.diaryNumber)
-        setRegulationDate(parseDate(degree.regulationDate))
-        setValidFrom(parseDate(degree.validFrom))
-        setExpiry(degree.expiry ? parseDate(degree.expiry) : 'ei dataa APIsta')
-        setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : 'ei dataa APIsta')
-    }
-    
-    // If fetch by ID fails set data from all degrees 
-    else if (!degreeFound) {
-      if (!degreeDescription || !degreeName || !diaryNumber || !regulationDate || !validFrom || !expiry || !transitionEnds) {
-        const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId))
+      setDegreeDescription(degree?.description?.fi);
+      setDegreeName(degree?.name?.fi);
+      setDiaryNumber(degree?.diaryNumber);
+      setRegulationDate(parseDate(degree?.regulationDate));
+      setValidFrom(parseDate(degree.validFrom));
+      setExpiry(degree.expiry ? parseDate(degree.expiry) : 'Taydennä puuttuvat tiedot');
+      setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : 'Taydennä puuttuvat tiedot');
+    } else {
+      // If fetch by ID fails set data from allDegrees
+      if (
+        !degreeDescription ||
+        !degreeName ||
+        !diaryNumber ||
+        !regulationDate ||
+        !validFrom ||
+        !expiry ||
+        !transitionEnds
+      ) {
+        const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId));
         if (matchingDegree) {
-          setDegreeDescription('ei dataa APIsta')
-          setDegreeName(matchingDegree.name.fi)
-          setDiaryNumber(matchingDegree.diaryNumber)
-          setRegulationDate('ei dataa APIsta')
-          setValidFrom('ei dataa APIsta')
-          setExpiry('ei dataa APIsta')
-          setTransitionEnds('ei dataa APIsta')
+          setDegreeDescription('Taydennä puuttuvat tiedot');
+          setDegreeName(matchingDegree.name.fi);
+          setDiaryNumber(matchingDegree.diaryNumber);
+          setRegulationDate('Taydennä puuttuvat tiedot');
+          setValidFrom('Taydennä puuttuvat tiedot');
+          setExpiry('Taydennä puuttuvat tiedot');
+          setTransitionEnds('Taydennä puuttuvat tiedot');
         }
       }
     }
   }, [degree]);
+
 
   // Toggle text editable mode
   const handleEditToggle = () => {
@@ -104,29 +115,29 @@ function DegreeInfo() {
   };
 
   // Parse date
+  // Parse date
   function parseDate(milliseconds) {
     if (milliseconds === null) {
-      return null;
+      return 'Taydennä puuttuvat tiedot'; // Return the placeholder text for missing data
     } else {
       const dateObj = new Date(milliseconds);
-      const day = dateObj.getDate().toString().padStart(2, '0'); // Add leading zero if necessary
-      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
       const year = dateObj.getFullYear();
       const formattedDate = `${day}.${month}.${year}`;
-      
       return formattedDate;
     }
   }
 
   // Button styling/CSS
   const buttonStyleSave = {
-      background: '#0000bf',
-      color: '#fff',
-      border: 'red',
-      padding: '1rem',
-      marginTop: '20px',
-      width: '90%',
-    },
+    background: '#0000bf',
+    color: '#fff',
+    border: 'red',
+    padding: '1rem',
+    marginTop: '20px',
+    width: '90%',
+  },
     buttonStyleEdit = {
       background: '#fff',
       color: '#0000bf',
@@ -143,10 +154,10 @@ function DegreeInfo() {
     const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
 
     if (
-      (typeof regulationDate === 'string' && regulationDate !== 'ei dataa APIsta' && regulationDate !== '' && !datePattern.test(regulationDate)) ||
-      (typeof validFrom === 'string' && validFrom !== 'ei dataa APIsta' && validFrom !== '' && !datePattern.test(validFrom)) ||
-      (typeof expiry === 'string' && expiry !== 'ei dataa APIsta' && expiry !== '' && !datePattern.test(expiry)) ||
-      (typeof transitionEnds === 'string' && transitionEnds !== 'ei dataa APIsta' && transitionEnds !== '' && !datePattern.test(transitionEnds))
+      (typeof regulationDate === 'string' && regulationDate !== 'Taydennä puuttuvat tiedot' && regulationDate !== '' && !datePattern.test(regulationDate)) ||
+      (typeof validFrom === 'string' && validFrom !== 'Taydennä puuttuvat tiedot' && validFrom !== '' && !datePattern.test(validFrom)) ||
+      (typeof expiry === 'string' && expiry !== 'Taydennä puuttuvat tiedot' && expiry !== '' && !datePattern.test(expiry)) ||
+      (typeof transitionEnds === 'string' && transitionEnds !== 'Taydennä puuttuvat tiedot' && transitionEnds !== '' && !datePattern.test(transitionEnds))
     ) {
       setOpenNotificationModalDate(true);
       return;
@@ -154,7 +165,7 @@ function DegreeInfo() {
 
     // Navigate to the next page
     if (degreeFound) {
-      navigate(`/degrees/${params.degreeId}/units`) 
+      navigate(`/degrees/${params.degreeId}/units`)
     } else {
       navigate(`/degrees/${params.degreeId}/edit-units`)
     }
@@ -172,7 +183,7 @@ function DegreeInfo() {
           totalPages={4}
           data={stepperData}
         />
-        <h1 className='degree-title'>{degreeFound ? degree.name.fi : degreeName}</h1>
+        <h1 className='degree-title'>{degreeFound ? degree?.name?.fi : degreeName}</h1>
         <div
           style={{
             display: 'flex',
@@ -360,3 +371,5 @@ function DegreeInfo() {
 }
 
 export default DegreeInfo;
+
+
