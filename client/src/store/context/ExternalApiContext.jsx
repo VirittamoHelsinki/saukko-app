@@ -1,6 +1,7 @@
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, useState, createContext,useContext } from 'react';
 import useUnitsStore from '../zustand/unitsStore';
 import { fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
+import AuthContext from './AuthContext';
 
 const ExternalApiContext = createContext();
 
@@ -13,10 +14,12 @@ export const ExternalApiContextProvider = (props) => {
   const [allDegrees, setAllDegrees] = useState([]);
   const [degree, setDegree] = useState({});
   const [degreeId, setDegreeId] = useState('');
-  
+  const { loggedIn, role } = useContext(AuthContext);
+
   // Fetch all degrees from ePerusteet
   useEffect(() => {
     const getDegrees = async () => {
+      if(!loggedIn || role !== "teacher") return;
       try {
         const response = await fetchDegreesFromEperusteet();
         console.log('ePerusteet degrees: ', response.data)
@@ -26,11 +29,12 @@ export const ExternalApiContextProvider = (props) => {
       }
     };
     getDegrees();
-  }, []);
+  }, [loggedIn, role]);
 
   // Fetch degree by id
   useEffect(() => {
     const getDegree = async () => {
+      if(!loggedIn || role !== "teacher") return;
       try {
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
         console.log('ePerusteet degree: ', degreeResponse.data)
