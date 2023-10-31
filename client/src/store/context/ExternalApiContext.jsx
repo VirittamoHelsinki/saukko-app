@@ -1,7 +1,11 @@
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, useState, createContext,useContext } from 'react';
 import useUnitsStore from '../zustand/unitsStore';
 import { fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
+
 import { CircularProgress } from '@mui/material';
+
+import AuthContext from './AuthContext';
+
 
 const ExternalApiContext = createContext();
 
@@ -14,13 +18,21 @@ export const ExternalApiContextProvider = (props) => {
   const [allDegrees, setAllDegrees] = useState([]);
   const [degree, setDegree] = useState({});
   const [degreeId, setDegreeId] = useState('');
+
   const [allloading, setallLoading] = useState(true)
   const [loading, setLoading] = useState(true)
+
+
+  const { loggedIn, role } = useContext(AuthContext);
 
 
   // Fetch all degrees from ePerusteet
   useEffect(() => {
     const getDegrees = async () => {
+
+
+
+      if(!loggedIn || role !== "teacher") return;
 
       try {
         setallLoading(true);
@@ -35,13 +47,14 @@ export const ExternalApiContextProvider = (props) => {
 
     };
     getDegrees();
-  }, []);
+  }, [loggedIn, role]);
 
 
 
   // Fetch degree by id
   useEffect(() => {
     const getDegree = async () => {
+      if(!loggedIn || role !== "teacher") return;
       try {
         setLoading(true);
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
