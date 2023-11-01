@@ -102,7 +102,23 @@ const evaluationSchema = mongoose.Schema({
               default: '',
             },
           },
+          answer: {
+            type: Number,
+            default: 0,
+            enum: [0, 1, 2, 3],
+          },
+          answerTeacher: {
+            type: Number,
+            default: 0,
+            enum: [0, 1, 2, 3],
+          },
+          answerSupervisor: {
+            type: Number,
+            default: 0,
+            enum: [0, 1, 2, 3],
+          }
         },
+        
       ],
     },
   ],
