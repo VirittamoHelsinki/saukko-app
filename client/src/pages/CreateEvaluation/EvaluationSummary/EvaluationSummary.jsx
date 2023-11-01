@@ -1,19 +1,24 @@
 // Import react packages
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Import local files & components
+// Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InfoList from '../../../components/InfoList/InfoList';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
-/* import NotificationModal from '../../../components/NotificationModal/NotificationModal'; */
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import Stepper from '../../../components/Stepper/Stepper';
+
+// Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import AuthContext from '../../../store/context/AuthContext';
-/* import { registration } from '../../../api/user'; */
+
+// Import API call functions
+import { registration } from '../../../api/user';
+import { createEvaluation } from '../../../api/evaluation';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -22,6 +27,13 @@ function EvaluationSummary() {
   const { customer, evaluation, workplace, department, supervisor } = useEvaluationStore();
   const { checkedUnits } = useUnitsStore();
   const { user } = useContext(AuthContext);
+
+  // NotificationModal
+  const [successNotification, setSuccessNotification] = useState(false)
+  const [errorNotification, setErrorNotification] = useState(false)
+
+  const closeSuccessNotification = () => setSuccessNotification(false)
+  const closeErrorNotification = () => setErrorNotification(false)
 
   // Data array for InfoList component
   const summaryData = [
@@ -67,7 +79,7 @@ function EvaluationSummary() {
     }
   }
 
-  const handleUserPostReq = () => {
+  const handleUserPostReq = async () => {
 
     // Format data
     const userRequestData = {
@@ -77,30 +89,28 @@ function EvaluationSummary() {
       password: '123456',
       role: 'customer',
     }
-    console.log('Data for user POST req:', userRequestData)
-    handleEvaluationPostReq() // Remove this line
+    console.log('User POST request:', userRequestData)
 
     // If all values are found send POST request for creating user
-    /*  if (
-          userRequestData.firstName !== null &&
-          userRequestData.lastName !== null &&
-          userRequestData.email !== null
+    if (
+      userRequestData.firstName !== null &&
+      userRequestData.lastName !== null &&
+      userRequestData.email !== null
     ) {
-      const response = await registration(userData);
+      const response = await registration(userRequestData)
       const userId = response.data.userId
       handleEvaluationPostReq(userId);
     } else {
-      alert('Insufficient data for creating user')
+      setErrorNotification(true)
     }
-    */
   }
   
-  const handleEvaluationPostReq = (userId) => {
+  const handleEvaluationPostReq = async (userId) => {
 
     // Format evaluation data
     const evaluationRequestData = {
       degreeId: workplace && workplace.degreeId ? workplace.degreeId : null,
-      customerId: null, // Create user & get id from response
+      customerId: userId,
       teacherId: user && user.id ? user.id : null,
       supervisorId: supervisor && supervisor._id ? supervisor._id : null,
       workplaceId: workplace && workplace._id ? workplace._id : null,
@@ -110,11 +120,10 @@ function EvaluationSummary() {
       workTasks: evaluation && evaluation.workTasks ? evaluation.workTasks : null,
       workGoals: evaluation && evaluation.workGoals ? evaluation.workGoals : null,
     }
-    console.log('Data for evaluation POST req:', evaluationRequestData)
-    console.log('Current user --', user)
+    console.log('Evaluation POST request:', evaluationRequestData)
 
     // If all values are found send POST request for evaluation
-    /* if (
+    if (
       evaluationRequestData.degreeId !== null &&
       evaluationRequestData.customerId !== null &&
       evaluationRequestData.teacherId !== null &&
@@ -125,11 +134,12 @@ function EvaluationSummary() {
       evaluationRequestData.workTasks !== null &&
       evaluationRequestData.workGoals !== null
     ) {
-      // Send post req
+      const response = await createEvaluation(evaluationRequestData)
+      console.log('Evaluation POST response:', response)
+      setSuccessNotification(true)
     } else {
-      // Handle the case where some values are null
-    } */
-
+      setErrorNotification(true)
+    }
   }
 
   // Stepper labels & urls
@@ -173,6 +183,21 @@ function EvaluationSummary() {
         />
       </section>
       <UserNav />
+      <NotificationModal
+        type='success'
+        title='Suorituksen aktivoiminen onnistui'
+        body='Asiakkaan tiedot tallennettu'
+        open={successNotification}
+        handleClose={closeSuccessNotification}
+        redirectLink='/admin-menu'
+      />
+      <NotificationModal
+        type='warning'
+        title='Suorituksen aktivoiminen epäonnistui'
+        body='Tarkista että kaikki kentät on täytetty'
+        open={errorNotification}
+        handleClose={closeErrorNotification}
+      />
     </main>
   );
 }
