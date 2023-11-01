@@ -7,6 +7,7 @@ import {
   fetchInternalDegreeById,
 } from '../../api/degree.js';
 import { fetchAllInternalWorkplaces } from '../../api/workplace.js';
+import { fetchAllEvaluations } from '../../api/evaluation.js';
 
 // Internal state variable access.
 import useUnitsStore from '../zustand/unitsStore.js';
@@ -22,8 +23,9 @@ export const InternalApiContextProvider = (props) => {
   const [loading, setLoading] = useState(false)
   const [workplaces, setWorkplaces] = useState([]);
   const [workplace, setWorkplace] = useState({});
+  const [evaluations, setEvaluations] = useState([]);
 
-  const { loggedIn, role } = useContext(AuthContext);
+  const { loggedIn, role, user } = useContext(AuthContext);
 
   // Runs on each reload of the page and when the user logs in.
   useEffect(() => {
@@ -57,6 +59,27 @@ export const InternalApiContextProvider = (props) => {
     };
     getWorkplaces();
   }, [loggedIn, role]);
+
+  // Fetch all evaluations
+  const setInternalEvaluations = async () => {
+    try {
+      const allEvaluations = await fetchAllEvaluations();
+
+      // Find evaluations belonging to current user & set to state
+      if (role === 'teacher') {
+        const matchingEvaluations = allEvaluations.filter(evaluation => evaluation.teacherId._id === user.id)
+        setEvaluations(matchingEvaluations)
+      } else if (role === 'supervisor') {
+        const matchingEvaluations = allEvaluations.filter(evaluation => evaluation.supervisorId._id === user.id)
+        setEvaluations(matchingEvaluations)
+      } else if (role === 'customer') {
+        const matchingEvaluation = allEvaluations.find(evaluation => evaluation.customerId._id === user.id)
+        setEvaluations(matchingEvaluation)
+      } 
+    } catch (err) {
+      console.log(err);
+    } 
+  };
 
   // Fetch degree by id
   useEffect(() => {
@@ -118,6 +141,8 @@ export const InternalApiContextProvider = (props) => {
           setWorkplaces,
           workplace,
           setWorkplace,
+          evaluations,
+          setInternalEvaluations,
         }}
       >
         {props.children}

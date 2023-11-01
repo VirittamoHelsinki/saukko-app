@@ -19,6 +19,7 @@ import AuthContext from '../../../store/context/AuthContext';
 // Import API call functions
 import { registration } from '../../../api/user';
 import { createEvaluation } from '../../../api/evaluation';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function EvaluationSummary() {
   const { customer, evaluation, workplace, department, supervisor } = useEvaluationStore();
   const { checkedUnits } = useUnitsStore();
   const { user } = useContext(AuthContext);
+  const { setInternalEvaluations } = useContext(InternalApiContext);
 
   // NotificationModal
   const [successNotification, setSuccessNotification] = useState(false)
@@ -137,6 +139,7 @@ function EvaluationSummary() {
       const response = await createEvaluation(evaluationRequestData)
       console.log('Evaluation POST response:', response)
       setSuccessNotification(true)
+      setInternalEvaluations() // Save evaluation to InternalApiContext
     } else {
       setErrorNotification(true)
     }
@@ -173,7 +176,6 @@ function EvaluationSummary() {
         />
         <InfoList title={'Yhteenveto'} data={summaryData}/>
         <h1>{workplace && workplace.name ? workplace.name : 'Ei dataa tietokannasta'}</h1>
-        {console.log(console.log('checked units evaluation summary page: ', checkedUnits))}
         {checkedUnits?.map((unit) => (
           <SelectUnit key={unit._id} unit={unit} allUnits={checkedUnits && checkedUnits}/>
         ))}
