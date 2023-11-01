@@ -19,7 +19,7 @@ export const InternalApiContextProvider = (props) => {
   const [allInternalDegrees, setAllInternalDegrees] = useState([]);
   const [internalDegree, setInternalDegree] = useState({});
   const [internalDegreeId, setinternalDegreeId] = useState('');
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [workplaces, setWorkplaces] = useState([]);
   const [workplace, setWorkplace] = useState({});
 
@@ -29,7 +29,7 @@ export const InternalApiContextProvider = (props) => {
   useEffect(() => {
     // Fetch degrees from saukko database
     const getInternalDegrees = async () => {
-      if(!loggedIn || role !== "teacher") return;
+      if (!loggedIn || role !== "teacher") return;
       try {
         setLoading(true);
         const internalDegrees = await fetchInternalDegrees();
@@ -44,7 +44,7 @@ export const InternalApiContextProvider = (props) => {
 
     // Fetch all workplaces from saukko database
     const getWorkplaces = async () => {
-      if(!loggedIn || role !== "teacher") return;
+      if (!loggedIn || role !== "teacher") return;
       try {
         setLoading(true)
         const workplaces = await fetchAllInternalWorkplaces();
@@ -77,7 +77,7 @@ export const InternalApiContextProvider = (props) => {
 
     setInternalDegree({});
     getInternalDegree();
-  }, [internalDegreeId,loggedIn, role]);
+  }, [internalDegreeId, loggedIn, role]);
 
   const degreeFound = Object.keys(internalDegree).length > 0 ? true : false;
   const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
