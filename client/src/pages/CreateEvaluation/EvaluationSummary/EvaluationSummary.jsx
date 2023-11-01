@@ -101,16 +101,17 @@ function EvaluationSummary() {
     const evaluationRequestData = {
       degreeId: workplace && workplace.degreeId ? workplace.degreeId : null,
       customerId: null, // Create user & get id from response
-      teacherId: user && user._id ? user._id : null, // Id not found in user data
+      teacherId: user && user.id ? user.id : null,
       supervisorId: supervisor && supervisor._id ? supervisor._id : null,
       workplaceId: workplace && workplace._id ? workplace._id : null,
       units: checkedUnits,
-      startDate:  evaluation && evaluation.startDate ? evaluation.startDate.$d : null, // Not in evaluationModel yet
-      endDate: evaluation && evaluation.endDate ? evaluation.endDate.$d : null, // Not in evaluationModel yet
-      workTasks: evaluation && evaluation.workTasks ? evaluation.workTasks : null, // Not in evaluationModel yet
-      workGoals: evaluation && evaluation.workGoals ? evaluation.workGoals : null, // Not in evaluationModel yet
+      startDate:  evaluation && evaluation.startDate ? evaluation.startDate.$d : null,
+      endDate: evaluation && evaluation.endDate ? evaluation.endDate.$d : null,
+      workTasks: evaluation && evaluation.workTasks ? evaluation.workTasks : null,
+      workGoals: evaluation && evaluation.workGoals ? evaluation.workGoals : null,
     }
     console.log('Data for evaluation POST req:', evaluationRequestData)
+    console.log('Current user --', user)
 
     // If all values are found send POST request for evaluation
     /* if (
