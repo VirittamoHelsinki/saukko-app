@@ -68,11 +68,21 @@ function DegreeInfo() {
       label: 'Yhteenveto',
       url: `/degrees/${params.degreeId}/summary`
     },
-  ];
+  ]
 
-
-
-
+  // Parse date or handle "N/A" or empty string
+  function parseDate(value) {
+    if (value === null || value === 'N/A' || value === '') {
+      return 'Täydennä puuttuvat tiedot'; // Return the placeholder text for missing data
+    } else {
+      const dateObj = new Date(value);
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+      const year = dateObj.getFullYear();
+      const formattedDate = `${day}.${month}.${year}`;
+      return formattedDate;
+    }
+  }
 
   useEffect(() => {
     if (degreeFound) {
@@ -81,8 +91,8 @@ function DegreeInfo() {
       setDiaryNumber(degree?.diaryNumber);
       setRegulationDate(parseDate(degree?.regulationDate));
       setValidFrom(parseDate(degree.validFrom));
-      setExpiry(degree.expiry ? parseDate(degree.expiry) : 'Taydennä puuttuvat tiedot');
-      setTransitionEnds(degree.transitionEnds ? parseDate(degree.transitionEnds) : 'Taydennä puuttuvat tiedot');
+      setExpiry(parseDate(degree.expiry));
+      setTransitionEnds(parseDate(degree.transitionEnds));
     } else {
       // If fetch by ID fails set data from allDegrees
       if (
@@ -96,38 +106,22 @@ function DegreeInfo() {
       ) {
         const matchingDegree = allDegrees.find(degree => degree._id === parseInt(params.degreeId));
         if (matchingDegree) {
-          setDegreeDescription('Taydennä puuttuvat tiedot');
+          setDegreeDescription('Täydennä puuttuvat tiedot');
           setDegreeName(matchingDegree.name.fi);
           setDiaryNumber(matchingDegree.diaryNumber);
-          setRegulationDate('Taydennä puuttuvat tiedot');
-          setValidFrom('Taydennä puuttuvat tiedot');
-          setExpiry('Taydennä puuttuvat tiedot');
-          setTransitionEnds('Taydennä puuttuvat tiedot');
+          setRegulationDate('Täydennä puuttuvat tiedot');
+          setValidFrom('Täydennä puuttuvat tiedot');
+          setExpiry('Täydennä puuttuvat tiedot');
+          setTransitionEnds('Täydennä puuttuvat tiedot');
         }
       }
     }
   }, [degree]);
 
-
   // Toggle text editable mode
   const handleEditToggle = () => {
     setIsEditable((prevState) => !prevState);
   };
-
-  // Parse date
-  // Parse date
-  function parseDate(milliseconds) {
-    if (milliseconds === null) {
-      return 'Taydennä puuttuvat tiedot'; // Return the placeholder text for missing data
-    } else {
-      const dateObj = new Date(milliseconds);
-      const day = dateObj.getDate().toString().padStart(2, '0');
-      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
-      const year = dateObj.getFullYear();
-      const formattedDate = `${day}.${month}.${year}`;
-      return formattedDate;
-    }
-  }
 
   // Button styling/CSS
   const buttonStyleSave = {
@@ -137,27 +131,26 @@ function DegreeInfo() {
     padding: '1rem',
     marginTop: '20px',
     width: '90%',
-  },
-    buttonStyleEdit = {
-      background: '#fff',
-      color: '#0000bf',
-      border: 'solid 2px #0000bf',
-      padding: '0 1rem',
-      marginTop: '20px',
-      width: '90%',
-    };
+  };
+  const buttonStyleEdit = {
+    background: '#fff',
+    color: '#0000bf',
+    border: 'solid 2px #0000bf',
+    padding: '0 1rem',
+    marginTop: '20px',
+    width: '90%',
+  };
 
   // Form validation
   const handleForward = () => {
-
     // Check date format
     const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
 
     if (
-      (typeof regulationDate === 'string' && regulationDate !== 'Taydennä puuttuvat tiedot' && regulationDate !== '' && !datePattern.test(regulationDate)) ||
-      (typeof validFrom === 'string' && validFrom !== 'Taydennä puuttuvat tiedot' && validFrom !== '' && !datePattern.test(validFrom)) ||
-      (typeof expiry === 'string' && expiry !== 'Taydennä puuttuvat tiedot' && expiry !== '' && !datePattern.test(expiry)) ||
-      (typeof transitionEnds === 'string' && transitionEnds !== 'Taydennä puuttuvat tiedot' && transitionEnds !== '' && !datePattern.test(transitionEnds))
+      (typeof regulationDate === 'string' && regulationDate !== 'Täydennä puuttuvat tiedot' && regulationDate !== '' && !datePattern.test(regulationDate)) ||
+      (typeof validFrom === 'string' && validFrom !== 'Täydennä puuttuvat tiedot' && validFrom !== '' && !datePattern.test(validFrom)) ||
+      (typeof expiry === 'string' && expiry !== 'Täydennä puuttuvat tiedot' && expiry !== '' && !datePattern.test(expiry)) ||
+      (typeof transitionEnds === 'string' && transitionEnds !== 'Täydennä puuttuvat tiedot' && transitionEnds !== '' && !datePattern.test(transitionEnds))
     ) {
       setOpenNotificationModalDate(true);
       return;
@@ -183,7 +176,9 @@ function DegreeInfo() {
           totalPages={4}
           data={stepperData}
         />
-        <h1 className='degree-title'>{degreeFound ? degree?.name?.fi : degreeName}</h1>
+        <h1 className='degree-title'>
+          {degreeFound ? degree?.name?.fi : degreeName}
+        </h1>
         <div
           style={{
             display: 'flex',
@@ -205,23 +200,32 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block'>
             <h1>Tutkinnon suorittaneen osaaminen</h1>
             <h2>Tutkinnon kuvaus</h2>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <ContentEditable
-                html={degreeDescription}
-                onChange={(e) => {
-                  setDegreeDescription(e.target.value)
-                  setIsContentChanged(true)
+
+
+            {degreeDescription ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
-                tagName='p'
-                disabled={!isEditable}
-                className={isEditable ? 'border-input' : ''}
-              />
-            </div>
+              >
+                <ContentEditable
+                  html={degreeDescription === 'N/A' ? 'Täydennä puuttuvat tiedot' : degreeDescription}
+                  onChange={(e) => {
+                    setDegreeDescription(e.target.value === 'Täydennä puuttuvat tiedot' ? 'N/A' : e.target.value);
+                    setIsContentChanged(true);
+                  }}
+                  tagName='p'
+                  disabled={!isEditable}
+                  className={isEditable ? 'border-input' : ''}
+                />
+              </div>
+            ) : (
+              <p>Täydennä puuttuvat tiedot</p>
+            )}
+
+
+
           </div>
           <div className='degreeInfo__container--info--block dark'>
             <h2>Perusteen nimi</h2>
@@ -371,5 +375,8 @@ function DegreeInfo() {
 }
 
 export default DegreeInfo;
+
+
+
 
 

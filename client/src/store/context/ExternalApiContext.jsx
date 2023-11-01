@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext,useContext } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import useUnitsStore from '../zustand/unitsStore';
 import { fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
 
@@ -19,8 +19,8 @@ export const ExternalApiContextProvider = (props) => {
   const [degree, setDegree] = useState({});
   const [degreeId, setDegreeId] = useState('');
 
-  const [allloading, setallLoading] = useState(true)
-  const [loading, setLoading] = useState(true)
+  const [allloading, setallLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
 
 
   const { loggedIn, role } = useContext(AuthContext);
@@ -32,7 +32,7 @@ export const ExternalApiContextProvider = (props) => {
 
 
 
-      if(!loggedIn || role !== "teacher") return;
+      if (!loggedIn || role !== "teacher") return;
 
       try {
         setallLoading(true);
@@ -54,7 +54,7 @@ export const ExternalApiContextProvider = (props) => {
   // Fetch degree by id
   useEffect(() => {
     const getDegree = async () => {
-      if(!loggedIn || role !== "teacher") return;
+      if (!loggedIn || role !== "teacher") return;
       try {
         setLoading(true);
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
@@ -104,9 +104,6 @@ export const ExternalApiContextProvider = (props) => {
 };
 
 export default ExternalApiContext;
-
-
-
 
 
 
