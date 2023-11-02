@@ -45,16 +45,6 @@ const useStore = create((set) => ({
   expiry: null,
   transitionEnds: null,
 
-  // Track chosen evaluation
-  chosenEvaluationId: null,
-  setChosenEvaluationId: (chosenEvaluationId) => set(() => ({ chosenEvaluationId })),
-  clearChosenEvaluationId: () => set({ chosenEvaluationId: null }),
-
-  // Track chosen unit
-  chosenUnitId: null,
-  setChosenUnitId: (chosenUnitId) => set(() => ({ chosenUnitId })),
-  clearChosenUnitId: () => set({ chosenUnitId: null }),
-
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
   setEmail: (email) => set({ email }),
@@ -85,7 +75,6 @@ const useStore = create((set) => ({
   setDepartmentName: (value) => set(() => ({ departments: value })),
   setEditedCompanyName: (value) => set(() => ({ editedCompanyName: value })),
   setSupervisors: (value) => set(() => ({ supervisors: value })),
-
 
   setFirstName: (value) => set(() => ({ firstName: value })),
   setLastName: (value) => set(() => ({ lastName: value })),

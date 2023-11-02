@@ -1,5 +1,5 @@
 // Import React
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import components
@@ -8,7 +8,6 @@ import NotificationBadge from '../../../components/NotificationBadge/Notificatio
 import UserNav from '../../../components/UserNav/UserNav';
 
 // Import state management
-import formStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
@@ -18,33 +17,38 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 export default function CustomerList() {
   const navigate = useNavigate();
 
   // Data from store management
   const { user } = useContext(AuthContext);
-  const { evaluations } = useContext(InternalApiContext);
-  const { setChosenEvaluationId } = formStore();
+  const { evaluations, evaluation, setInternalEvaluations, setInternalEvaluation } = useContext(InternalApiContext);
+
+  // Set evaluations
+  useEffect(() => {
+    setInternalEvaluations()
+  }, []);
 
   // Find evaluations in progress
-  const inProgress = evaluations.filter(evaluation => (
+  const inProgress = evaluations && evaluations.filter(evaluation => (
     evaluation.completed === false && evaluation.units.some(unit => unit.status > 0)
   ))
 
   // Find not started evaluations
-  const notStarted = evaluations.filter(evaluation => (
+  const notStarted = evaluations && evaluations.filter(evaluation => (
     evaluation.completed === false && evaluation.units.every(unit => unit.status === 0)
   ))
 
   // Find completed evaluations
-  const completed = evaluations.filter(evaluation => (
+  const completed = evaluations && evaluations.filter(evaluation => (
     evaluation.completed === true
   ))
 
   const handleChooseEvaluation = (evaluationId) => {
-    setChosenEvaluationId(evaluationId)
-    console.log('Chosen evaluation id:', evaluationId)
+    setInternalEvaluation(evaluationId)
+    console.log('internal evaluation', evaluation)
     navigate('/unit-list')
   };
 
@@ -77,7 +81,7 @@ export default function CustomerList() {
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {inProgress.map((evaluation) => (
+              {inProgress && inProgress.map((evaluation) => (
                 <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
               ))}
             </div>
@@ -96,7 +100,7 @@ export default function CustomerList() {
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {notStarted.map((evaluation) => (
+              {notStarted && notStarted.map((evaluation) => (
                 <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
               ))}
             </div>
@@ -115,7 +119,7 @@ export default function CustomerList() {
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {completed.map((evaluation) => (
+              {completed && completed.map((evaluation) => (
                 <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
               ))}
             </div>

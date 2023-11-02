@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import formStore from '../../store/zustand/formStore';
+import evaluationStore from '../../store/zustand/evaluationStore';
 import greenicone from '../../assets/circle-green.svg';
 import yellowicone from '../../assets/circle-yellow.svg';
 import blueicone from '../../assets/circle-blue.svg';
@@ -9,7 +9,7 @@ import rightAngle from '../../assets/angle-right.svg';
 
 const UnitStatus = ({ unitId, status, subheader, link }) => {
   const navigate = useNavigate();
-  const { setChosenUnitId } = formStore();
+  const { setChosenUnitId } = evaluationStore();
   let header, backgroundColor, img;
 
   if (status === 3) {

@@ -1,6 +1,5 @@
 // Import React
 import React, { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -9,25 +8,31 @@ import UnitStatus from '../../../components/UnitStatus/UnitStatus';
 import UserNav from '../../../components/UserNav/UserNav';
 
 // Import state management
-import formStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
 const UnitList = () => {
-  const navigate = useNavigate();
 
   // Data from store management
   const { user } = useContext(AuthContext);
-  const { evaluations } = useContext(InternalApiContext);
-  const { chosenEvaluationId } = formStore();
-  const evaluation = evaluations.find(evaluation => evaluation._id === chosenEvaluationId)
-  console.log('Chosen evaluation:', evaluation)
+  console.log('current user', user)
+  const { evaluation, evaluations, setInternalEvaluations, setInternalEvaluation } = useContext(InternalApiContext);
+  console.log('Chosen evaluation from context', evaluation)
+  console.log('All evaluations from context', evaluations)
 
-  // Redirect to CustomerList if evaluation is not chosen
+  // Set evaluation automatically when role is customer
   useEffect(() => {
-    !evaluation && navigate('/customer-list')
-  }, [evaluation]);
+    if (user.role === 'customer') {
+      setInternalEvaluations()
+    }
+  }, [])
 
+  useEffect(() => {
+    if (user.role === 'customer' && evaluations && evaluations.length > 0) {
+      setInternalEvaluation(evaluations[0]._id);
+    }
+  }, [evaluations])
+  
   return (
     <main className='unitList__wrapper'>
       <WavesHeader
