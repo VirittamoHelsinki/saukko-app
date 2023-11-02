@@ -1,12 +1,32 @@
-import React, { useContext } from 'react';
+// Import React
+import React, { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UnitStatus from '../../../components/UnitStatus/UnitStatus';
 import UserNav from '../../../components/UserNav/UserNav';
+
+// Import state management
+import formStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 
 const UnitList = () => {
+  const navigate = useNavigate();
+
+  // Data from store management
   const { user } = useContext(AuthContext);
+  const { evaluations } = useContext(InternalApiContext);
+  const { chosenEvaluationId } = formStore();
+  const evaluation = evaluations.find(evaluation => evaluation._id === chosenEvaluationId)
+  console.log('Chosen evaluation:', evaluation)
+
+  // Redirect to CustomerList if chosenEvaluation is undefined
+  useEffect(() => {
+    !evaluation && navigate('/customer-list')
+  }, [evaluation]);
 
   return (
     <main className='unitList__wrapper'>
@@ -20,33 +40,14 @@ const UnitList = () => {
       </div>
       <div className='unitList__units'>
         <h3> Omat suoritukset </h3>
-        <UnitStatus
-          status={1}
-          subheader='1. Tieto- ja viestintätekniikan perustehtävät'
-          link='/userperformance'
-        />
-        <UnitStatus
-          status={2}
-          subheader='7. Ohjelmointi'
-          link='/userperformance'
-        />
-        {/* Täydennettävä option disabled */}
-
-        {/* <UnitStatus
-          status={4}
-          subheader="9. Sulautetun järjestelmän toteuttaminen"
-          link='/userperformance'
-        /> */}
-        <UnitStatus
-          status={5}
-          subheader='15. Kulunvalvonta- tai turvajärjestelmän asennus'
-          link='/userperformance'
-        />
-        <UnitStatus
-          status={6}
-          subheader='16. Kyberturvallisuuden ylläpitäminen'
-          link='/userperformance'
-        />
+        {evaluation && evaluation.units.map(unit => (
+          <UnitStatus
+            key={unit._id}
+            status={unit.status}
+            subheader={unit.name.fi}
+            link='/userperformance'
+          />
+        ))}
       </div>
       <UserNav />
     </main>
