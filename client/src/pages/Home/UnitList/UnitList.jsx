@@ -23,7 +23,7 @@ const UnitList = () => {
   const evaluation = evaluations.find(evaluation => evaluation._id === chosenEvaluationId)
   console.log('Chosen evaluation:', evaluation)
 
-  // Redirect to CustomerList if chosenEvaluation is undefined
+  // Redirect to CustomerList if evaluation is not chosen
   useEffect(() => {
     !evaluation && navigate('/customer-list')
   }, [evaluation]);
@@ -43,6 +43,7 @@ const UnitList = () => {
         {evaluation && evaluation.units.map(unit => (
           <UnitStatus
             key={unit._id}
+            unitId={unit._id}
             status={unit.status}
             subheader={unit.name.fi}
             link='/userperformance'

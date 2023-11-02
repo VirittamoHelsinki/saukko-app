@@ -45,10 +45,15 @@ const useStore = create((set) => ({
   expiry: null,
   transitionEnds: null,
 
-  // Track chosen customer for teacher or supervisor 
+  // Track chosen evaluation
   chosenEvaluationId: null,
   setChosenEvaluationId: (chosenEvaluationId) => set(() => ({ chosenEvaluationId })),
   clearChosenEvaluationId: () => set({ chosenEvaluationId: null }),
+
+  // Track chosen unit
+  chosenUnitId: null,
+  setChosenUnitId: (chosenUnitId) => set(() => ({ chosenUnitId })),
+  clearChosenUnitId: () => set({ chosenUnitId: null }),
 
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),

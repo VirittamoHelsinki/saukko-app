@@ -1,13 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import formStore from '../../store/zustand/formStore';
 import greenicone from '../../assets/circle-green.svg';
 import yellowicone from '../../assets/circle-yellow.svg';
 import blueicone from '../../assets/circle-blue.svg';
 import blackicone from '../../assets/circle-black.svg';
 import rightAngle from '../../assets/angle-right.svg';
 
-const UnitStatus = ({ status, subheader, link }) => {
+const UnitStatus = ({ unitId, status, subheader, link }) => {
   const navigate = useNavigate();
+  const { setChosenUnitId } = formStore();
   let header, backgroundColor, img;
 
   if (status === 3) {
@@ -28,11 +30,16 @@ const UnitStatus = ({ status, subheader, link }) => {
     backgroundColor = '#efeff0';
   }
 
+  const handleClick = () => {
+    setChosenUnitId(unitId)
+    navigate(link)
+  }
+  
   return (
     <main
       className='unitstatus-wrapper'
       style={{ backgroundColor }}
-      onClick={() => navigate(link)}
+      onClick={handleClick}
     >
       <div className='unitstatus'>
         <div className='icone-img-style'>{img}</div>
