@@ -81,6 +81,11 @@ export const InternalApiContextProvider = (props) => {
     } 
   };
 
+  // Set evaluations at login
+  useEffect(() => {
+    setInternalEvaluations()
+  }, [loggedIn]);
+  
   // Fetch degree by id
   useEffect(() => {
     const getInternalDegree = async () => {
