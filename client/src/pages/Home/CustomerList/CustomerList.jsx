@@ -17,14 +17,13 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 export default function CustomerList() {
   const navigate = useNavigate();
 
   // Data from store management
   const { user } = useContext(AuthContext);
-  const { evaluations, evaluation, setInternalEvaluations, setInternalEvaluation } = useContext(InternalApiContext);
+  const { evaluations, setInternalEvaluations, setInternalEvaluation } = useContext(InternalApiContext);
 
   // Set evaluations
   useEffect(() => {
@@ -48,7 +47,6 @@ export default function CustomerList() {
 
   const handleChooseEvaluation = (evaluationId) => {
     setInternalEvaluation(evaluationId)
-    console.log('internal evaluation', evaluation)
     navigate('/unit-list')
   };
 

@@ -79,17 +79,20 @@ export const InternalApiContextProvider = (props) => {
       } 
     } catch (err) {
       console.log(err);
-    } 
+    }
   };
 
   // Fetch single evaluation by id
   const setInternalEvaluation = async (evaluationId) => {
     try {
+      /* setLoading(true) */ // When logging in as customer this gives an infinite loop??
       const evaluation = await fetchEvaluationById(evaluationId)
       setEvaluation(evaluation)
     } catch (err) {
-      console.log(err);
-    } 
+      console.log(err)
+    } /* finally {
+      setLoading(false)
+    } */
   };
   
   // Clear evaluation from state at logout

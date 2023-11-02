@@ -37,7 +37,6 @@ export const ExternalApiContextProvider = (props) => {
       try {
         setallLoading(true);
         const response = await fetchDegreesFromEperusteet();
-        console.log('ePerusteet degrees: ', response.data)
         setAllDegrees(response.data);
       } catch (err) {
         console.error(err);
@@ -58,7 +57,6 @@ export const ExternalApiContextProvider = (props) => {
       try {
         setLoading(true);
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
-        console.log('ePerusteet degree: ', degreeResponse.data)
         setDegree(degreeResponse.data);
       } catch (err) {
         console.error(err);

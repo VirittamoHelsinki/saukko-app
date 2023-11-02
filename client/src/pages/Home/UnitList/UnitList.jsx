@@ -15,10 +15,7 @@ const UnitList = () => {
 
   // Data from store management
   const { user } = useContext(AuthContext);
-  console.log('current user', user)
   const { evaluation, evaluations, setInternalEvaluations, setInternalEvaluation } = useContext(InternalApiContext);
-  console.log('Chosen evaluation from context', evaluation)
-  console.log('All evaluations from context', evaluations)
 
   // Set evaluation automatically when role is customer
   useEffect(() => {
