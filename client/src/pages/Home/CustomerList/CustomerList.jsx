@@ -25,97 +25,26 @@ export default function CustomerList() {
   // Data from store management
   const { user } = useContext(AuthContext);
   const { evaluations } = useContext(InternalApiContext);
-  console.log('Current users evaluations', evaluations)
-  const { setChosenCustomerId } = formStore();
+  const { setChosenEvaluationId } = formStore();
 
-  // Mock data
-  const customersInProgress = [
-    {
-      _id: 1,
-      firstName: "John",
-      lastName: "Doe",
-    },
-    {
-      _id: 2,
-      firstName: "Jane",
-      lastName: "Smith",
-    },
-    {
-      _id: 3,
-      firstName: "Alice",
-      lastName: "Johnson",
-    },
-    {
-      _id: 4,
-      firstName: "Bob",
-      lastName: "Williams",
-    },
-    {
-      _id: 5,
-      firstName: "Ella",
-      lastName: "Brown",
-    },
-  ]
+  // Find evaluations in progress
+  const inProgress = evaluations.filter(evaluation => (
+    evaluation.completed === false && evaluation.units.some(unit => unit.status > 0)
+  ))
 
-  const customersNotStarted = [
-    {
-      _id: 6,
-      firstName: "Emily",
-      lastName: "Johnson",
-    },
-    {
-      _id: 7,
-      firstName: "Liam",
-      lastName: "Smith",
-    },
-    {
-      _id: 8,
-      firstName: "Sophia",
-      lastName: "Martinez",
-    },
-    {
-      _id: 9,
-      firstName: "Noah",
-      lastName: "Davis",
-    },
-    {
-      _id: 10,
-      firstName: "Olivia",
-      lastName: "Brown",
-    },
-  ]
+  // Find not started evaluations
+  const notStarted = evaluations.filter(evaluation => (
+    evaluation.completed === false && evaluation.units.every(unit => unit.status === 0)
+  ))
 
-  const customersCompleted = [
-    {
-      _id: 11,
-      firstName: "Ava",
-      lastName: "Wilson",
-    },
-    {
-      _id: 12,
-      firstName: "Mason",
-      lastName: "Anderson",
-    },
-    {
-      _id: 13,
-      firstName: "Isabella",
-      lastName: "Thompson",
-    },
-    {
-      _id: 14,
-      firstName: "Ethan",
-      lastName: "Parker",
-    },
-    {
-      _id: 15,
-      firstName: "Mia",
-      lastName: "White",
-    }
-  ]
+  // Find completed evaluations
+  const completed = evaluations.filter(evaluation => (
+    evaluation.completed === true
+  ))
 
-  const handleChooseCustomer = (customerId) => {
-    setChosenCustomerId(customerId)
-    console.log('customer id', customerId)
+  const handleChooseEvaluation = (evaluationId) => {
+    setChosenEvaluationId(evaluationId)
+    console.log('Chosen evaluation id:', evaluationId)
     navigate('/unit-list')
   };
 
@@ -148,8 +77,8 @@ export default function CustomerList() {
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {customersInProgress.map((customer, index) => (
-                <a key={index} onClick={() => handleChooseCustomer(customer._id)}>{customer.firstName} {customer.lastName}</a>
+              {inProgress.map((evaluation) => (
+                <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
               ))}
             </div>
           </AccordionDetails>
@@ -167,8 +96,8 @@ export default function CustomerList() {
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {customersNotStarted.map((customer, index) => (
-                <a key={index} onClick={() => handleChooseCustomer(customer._id)}>{customer.firstName} {customer.lastName}</a>
+              {notStarted.map((evaluation) => (
+                <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
               ))}
             </div>
           </AccordionDetails>
@@ -186,8 +115,8 @@ export default function CustomerList() {
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {customersCompleted.map((customer, index) => (
-                <a key={index} onClick={() => handleChooseCustomer(customer._id)}>{customer.firstName} {customer.lastName}</a>
+              {completed.map((evaluation) => (
+                <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
               ))}
             </div>
           </AccordionDetails>
