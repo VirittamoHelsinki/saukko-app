@@ -1,10 +1,18 @@
+// Import React
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UserNav from '../../../components/UserNav/UserNav';
+
+// Import state management
 import formStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
+import InternalApiContext from '../../../store/context/InternalApiContext';
+
+// Import MUI
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -12,9 +20,13 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function CustomerList() {
-  const { user } = useContext(AuthContext);
-  const { setChosenCustomerId } = formStore();
   const navigate = useNavigate();
+
+  // Data from store management
+  const { user } = useContext(AuthContext);
+  const { evaluations } = useContext(InternalApiContext);
+  console.log('Current users evaluations', evaluations)
+  const { setChosenCustomerId } = formStore();
 
   // Mock data
   const customersInProgress = [

@@ -72,7 +72,7 @@ userRouter.post("/", async (req, res) => {
     console.log('user created')
 
     // send token via HTTP-only cookie
-    res.status(201).cookie("token", token, { httpOnly: true }).json({ userId: newUser._id });
+    res.status(201).json({ userId: newUser._id });
 
   } catch (err) {
     console.error(err);
