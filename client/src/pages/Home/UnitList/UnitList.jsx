@@ -1,13 +1,35 @@
-import React, { useContext } from 'react';
+// Import React
+import React, { useContext, useEffect } from 'react';
+
+// Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UnitStatus from '../../../components/UnitStatus/UnitStatus';
 import UserNav from '../../../components/UserNav/UserNav';
+
+// Import state management
 import AuthContext from '../../../store/context/AuthContext';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 
 const UnitList = () => {
-  const { user } = useContext(AuthContext);
 
+  // Data from store management
+  const { user } = useContext(AuthContext);
+  const { evaluation, evaluations, setInternalEvaluations, setInternalEvaluation } = useContext(InternalApiContext);
+
+  // Set evaluation automatically when role is customer
+  useEffect(() => {
+    if (user.role === 'customer') {
+      setInternalEvaluations()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (user.role === 'customer' && evaluations && evaluations.length > 0) {
+      setInternalEvaluation(evaluations[0]._id);
+    }
+  }, [evaluations])
+  
   return (
     <main className='unitList__wrapper'>
       <WavesHeader
@@ -20,33 +42,15 @@ const UnitList = () => {
       </div>
       <div className='unitList__units'>
         <h3> Omat suoritukset </h3>
-        <UnitStatus
-          status={1}
-          subheader='1. Tieto- ja viestintätekniikan perustehtävät'
-          link='/userperformance'
-        />
-        <UnitStatus
-          status={2}
-          subheader='7. Ohjelmointi'
-          link='/userperformance'
-        />
-        {/* Täydennettävä option disabled */}
-
-        {/* <UnitStatus
-          status={4}
-          subheader="9. Sulautetun järjestelmän toteuttaminen"
-          link='/userperformance'
-        /> */}
-        <UnitStatus
-          status={5}
-          subheader='15. Kulunvalvonta- tai turvajärjestelmän asennus'
-          link='/userperformance'
-        />
-        <UnitStatus
-          status={6}
-          subheader='16. Kyberturvallisuuden ylläpitäminen'
-          link='/userperformance'
-        />
+        {evaluation && evaluation.units.map(unit => (
+          <UnitStatus
+            key={unit._id}
+            unitId={unit._id}
+            status={unit.status}
+            subheader={unit.name.fi}
+            link='/userperformance'
+          />
+        ))}
       </div>
       <UserNav />
     </main>

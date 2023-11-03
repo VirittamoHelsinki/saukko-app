@@ -7,20 +7,23 @@ import useStore from '../../store/zustand/formStore';
 import useEvaluationStore from '../../store/zustand/evaluationStore';
 import useUnitsStore from '../../store/zustand/unitsStore';
 import ExternalApiContext from '../../store/context/ExternalApiContext';
+import InternalApiContext from '../../store/context/InternalApiContext';
 
 function AdminMenu() {
   const navigate = useNavigate();
 
   // Clear saved degree and unit data on first render
   const { setDegreeId } = useContext(ExternalApiContext);
+  const { setEvaluation } = useContext(InternalApiContext);
   const { resetDegreeData } = useStore();
-  const { clearEvaluation, clearWorkplace } = useEvaluationStore();
+  const { clearWorkplace, clearEvaluationFromStore } = useEvaluationStore();
   const { clearCheckedUnits } = useUnitsStore();
 
   useEffect(() => {
     resetDegreeData()
     setDegreeId('')
-    clearEvaluation()
+    setEvaluation(null)
+    clearEvaluationFromStore()
     clearWorkplace()
     clearCheckedUnits()
   }, []);

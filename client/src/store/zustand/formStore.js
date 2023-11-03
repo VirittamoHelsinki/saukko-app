@@ -45,11 +45,6 @@ const useStore = create((set) => ({
   expiry: null,
   transitionEnds: null,
 
-  // Track chosen customer for teacher or supervisor 
-  chosenCustomerId: null,
-  setChosenCustomerId: (chosenCustomerId) => set(() => ({ chosenCustomerId })),
-  clearChosenCustomerId: () => set({ chosenCustomerId: null }),
-
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
   setEmail: (email) => set({ email }),
@@ -80,7 +75,6 @@ const useStore = create((set) => ({
   setDepartmentName: (value) => set(() => ({ departments: value })),
   setEditedCompanyName: (value) => set(() => ({ editedCompanyName: value })),
   setSupervisors: (value) => set(() => ({ supervisors: value })),
-
 
   setFirstName: (value) => set(() => ({ firstName: value })),
   setLastName: (value) => set(() => ({ lastName: value })),

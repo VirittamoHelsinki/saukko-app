@@ -1,10 +1,6 @@
 /* 
   USAGE
 
-  Import:
-
-    import useEvaluationStore from '../../../store/evaluationStore';
-
   Set data:
 
     const { setCustomer, setEvaluation, setWorkplace, setSupervisor } = useEvaluationStore();
@@ -13,14 +9,6 @@
   Access data:
 
     const { customer, evaluation, workplace, supervisor } = useEvaluationStore();
-  
-  Clear store:
-
-    const { clearEvaluation, clearWorkplace } = useEvaluationStore();
-
-    const handlerFunction {
-      clearEvaluation();
-    }
 */
 
 import { create } from 'zustand';
@@ -38,7 +26,7 @@ const useEvaluationStore = create((set) => ({
   setDepartment: (department) => set({ department }),
   setSupervisor: (supervisor) => set({ supervisor }),
 
-  clearEvaluation: () => {
+  clearEvaluationFromStore: () => {
     set({ 
       customer: null, 
       evaluation: null,
@@ -55,6 +43,12 @@ const useEvaluationStore = create((set) => ({
       supervisor: null,
     });
   },
+
+  // Track chosen unit
+  chosenUnitId: null,
+  setChosenUnitId: (chosenUnitId) => set(() => ({ chosenUnitId })),
+  clearChosenUnitId: () => set({ chosenUnitId: null }),
+
 }));
 
 export default useEvaluationStore;
