@@ -1,18 +1,15 @@
 const router = require("express").Router();
 const jp = require('jsonpath');
+const axios = require('axios');
  
-//ePerusteet API URL
+// ePerusteet API URL
 const ePerusteAPI = 'https://eperusteet.opintopolku.fi/eperusteet-service/api/external';
- 
-//Function for fetching data from URL
+
+// Function for fetching data from URL using axios
 async function fetchData(url) {
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Failed to fetch data');
-    }
-    const data = await response.json();
-    return data;
+    const response = await axios.get(url);
+    return response.data; // axios automatically parses the JSON
   } catch (error) {
     console.error('Error fetching data:', error);
     throw new Error('Failed to fetch data');
