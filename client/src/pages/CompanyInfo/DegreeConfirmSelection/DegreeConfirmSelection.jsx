@@ -27,11 +27,11 @@ function DegreeConfirmSelection() {
   const params = useParams();
 
   useEffect(() => {
-    setinternalDegreeId(params.degreeId);
+    setinternalDegreeId(params?.degreeId);
     // console.log('internal degree-------------', params.degreeId);
   }, [params.degreeId]);
 
-  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+  const checkedUnits = useUnitsStore((state) => state?.checkedUnits);
 
   console.log('checkedunits.........', checkedUnits)
 
@@ -168,33 +168,33 @@ function DegreeConfirmSelection() {
           <h2 className='Degree__confirmSelection__container--secondtitle'>Yhteenveto</h2>
           <div className='confirmSelection__infolist-item'>
             <h2 className='second__title'>Työpaikka</h2>
-            <p className='second__paragraph'>{name ? name.name : editedCompanyName}</p>
+            <p className='second__paragraph'>{name ? name?.name : editedCompanyName}</p>
             <p className='second__paragraph'> {businessId}</p>
 
           </div>
-          {departments.name && (
+          {departments?.name && (
             <div className='confirmSelection__infolist-item'>
               <h2 className='second__title'>Yksikko</h2>
-              <p className='second__paragraph'>{departments.name}</p>
+              <p className='second__paragraph'>{departments?.name}</p>
             </div>
           )}
 
           {supervisors.map((ohjaaja, index) => (
             <div key={index} className='confirmSelection__infolist-item'>
               <h2 className='second__title'>Työpaikkaohjaaja</h2>
-              <p className='second__paragraph'>{ohjaaja.firstName} {ohjaaja.lastName}</p>
-              <p className='second__paragraph' style={{ marginBottom: '10px' }}>{ohjaaja.email}</p>
+              <p className='second__paragraph'>{ohjaaja?.firstName} {ohjaaja?.lastName}</p>
+              <p className='second__paragraph' style={{ marginBottom: '10px' }}>{ohjaaja?.email}</p>
             </div>
           ))}
         </div>
-        <h1 className='Degree__confirmSelection__container--secondtitle'>{degreeFound && internalDegree.name.fi}</h1>
+        <h1 className='Degree__confirmSelection__container--secondtitle'>{degreeFound && internalDegree?.name?.fi}</h1>
         <div className='confirmSelection__container--units'>
           {checkedUnits?.map((unit) => (
-            <SelectUnit key={unit._id} unit={unit} allUnits={degreeFound && internalDegree.units} />
+            <SelectUnit key={unit?._id} unit={unit} allUnits={degreeFound && internalDegree?.units} />
           ))}
         </div>
         <PageNavigationButtons
-          handleBack={() => navigate(`../internal/degrees/${internalDegree._id}/units`)}
+          handleBack={() => navigate(`../internal/degrees/${internalDegree?._id}/units`)}
           handleForward={handleVahvistaClick}
           forwardButtonText={'Vahvista'}
         />

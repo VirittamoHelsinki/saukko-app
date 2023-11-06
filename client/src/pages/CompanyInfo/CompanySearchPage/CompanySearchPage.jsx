@@ -16,8 +16,8 @@ const CheckLength = ({ filteredList, allInternalDegrees, paginate, currentPage }
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
-        <div key={index} className="company__searchPage__container--list-item" onClick={() => navigate(`../internal/degrees/${degree._id}/units`)}>
-          <h3>{degree.name.fi}</h3>
+        <div key={index} className="company__searchPage__container--list-item" onClick={() => navigate(`../internal/degrees/${degree?._id}/units`)}>
+          <h3>{degree?.name?.fi}</h3>
           {/* <div className="company__searchPage__container--list-item-bottom">
             <div>
               <p>Diaari: {degree.diaryNumber}</p>
@@ -109,8 +109,8 @@ const CompanySearchPage = () => {
   // Pagination logic
   const pageCount =
     filteredList.length > 0
-      ? Math.ceil(filteredList.length / paginate)
-      : Math.ceil(allInternalDegrees.length / paginate);
+      ? Math.ceil(filteredList?.length / paginate)
+      : Math.ceil(allInternalDegrees?.length / paginate);
 
   const handlePageClick = (pageNum) => {
     setCurrentPage(pageNum);
