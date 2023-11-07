@@ -1,11 +1,7 @@
-// Import react packages
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
-// Import libraries
 import Pagination from '@mui/material/Pagination';
-
-// Import components
+import CircularProgress from '@mui/material/CircularProgress'; // Import CircularProgress
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
@@ -13,20 +9,32 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import useStore from '../../../store/zustand/formStore';
+
 
 function CompanyDegreeUnits() {
+
   const navigate = useNavigate();
 
-  // Set path & get degree from ExternalApiContext
-  const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
-  const params = useParams();
+  const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    setinternalDegreeId(params?.degreeId);
-  }, []);
+  const { internalDegree, degreeFound } = useContext(InternalApiContext);
+
+  const params = useParams();
+  console.log(internalDegree)
+  console.log(degreeFound)
+
+  // useEffect(() => {
+  //   setinternalDegreeId(params?.degreeId);
+  // }, []);
+
+  // Get degree name from zustand store
+  const { degreeName } = useStore();
+
+  console.log('degree----name', degreeName)
 
   // Save degree units to state once degree is fetched
-  const degreeUnits = internalDegree.units;
+  const degreeUnits = internalDegree?.units;
 
   const [filteredUnits, setFilteredUnits] = useState(degreeUnits);
 
@@ -39,7 +47,7 @@ function CompanyDegreeUnits() {
     setPage(1); // Reset to the first page
     setFilteredUnits(
       internalDegree.units.filter((unit) =>
-        unit.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
+        unit?.name?.fi.toLowerCase().includes(event.target.value.toLowerCase())
       )
     );
   };
@@ -76,6 +84,8 @@ function CompanyDegreeUnits() {
     },
   ];
 
+
+
   return (
     <main className='degreeUnits__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Lisää uusi työpaikka' />
@@ -86,7 +96,8 @@ function CompanyDegreeUnits() {
           data={stepperData}
         />
 
-        <h2>{degreeFound && internalDegree?.name?.fi} </h2>
+
+        <h2>{degreeFound ? internalDegree?.name?.fi : degreeName}</h2>
 
         <Searchbar
           handleSearch={handleSearch}
@@ -100,8 +111,6 @@ function CompanyDegreeUnits() {
                 key={unit?._id}
                 unit={unit}
                 allUnits={internalDegree.units}
-
-
               />
             ))
             : 'ei dataa APIsta'}
@@ -118,9 +127,7 @@ function CompanyDegreeUnits() {
         <PageNavigationButtons
           handleBack={() => navigate(`../internal/degrees`)}
           handleForward={() => {
-
             navigate(`../internal/degrees/${internalDegree?._id}/units/confirm-selection`);
-
           }}
         />
       </section>
@@ -130,4 +137,5 @@ function CompanyDegreeUnits() {
 }
 
 export default CompanyDegreeUnits;
+
 
