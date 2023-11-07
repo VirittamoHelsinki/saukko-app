@@ -36,6 +36,7 @@ export const InternalApiContextProvider = (props) => {
       try {
         setLoading(true);
         const internalDegrees = await fetchInternalDegrees();
+        console.log(internalDegrees)
         setAllInternalDegrees(internalDegrees);
       } catch (err) {
         console.log(err);
@@ -44,8 +45,13 @@ export const InternalApiContextProvider = (props) => {
       }
     };
     getInternalDegrees();
+  }, [loggedIn, role])
 
-    // Fetch all workplaces from saukko database
+
+
+
+  // Fetch all workplaces from saukko database
+  useEffect(() => {
     const getWorkplaces = async () => {
       if (!loggedIn || role !== "teacher") return;
       try {
@@ -59,7 +65,9 @@ export const InternalApiContextProvider = (props) => {
       }
     };
     getWorkplaces();
-  }, [loggedIn, role]);
+  }
+
+    , [loggedIn, role]);
 
   // Fetch all evaluations
   const setInternalEvaluations = async () => {
@@ -76,7 +84,7 @@ export const InternalApiContextProvider = (props) => {
       } else if (role === 'customer') {
         const matchingEvaluation = allEvaluations.filter(evaluation => evaluation.customerId._id === user.id)
         setEvaluations(matchingEvaluation)
-      } 
+      }
     } catch (err) {
       console.log(err);
     }
@@ -94,7 +102,7 @@ export const InternalApiContextProvider = (props) => {
       setLoading(false)
     } */
   };
-  
+
   // Clear evaluation from state at logout
   useEffect(() => {
     if (!loggedIn) {
@@ -102,7 +110,7 @@ export const InternalApiContextProvider = (props) => {
       setEvaluation(null);
     }
   }, [loggedIn]);
-  
+
   // Fetch degree by id
   useEffect(() => {
     const getInternalDegree = async () => {
@@ -112,6 +120,7 @@ export const InternalApiContextProvider = (props) => {
         setLoading(true)
         const degree = await fetchInternalDegreeById(internalDegreeId);
         // Set state
+        console.log(degree)
         setInternalDegree(degree);
       } catch (err) {
         console.error(err);
@@ -122,7 +131,7 @@ export const InternalApiContextProvider = (props) => {
 
     setInternalDegree({});
     getInternalDegree();
-  }, [internalDegreeId, loggedIn, role]);
+  }, [internalDegreeId]);
 
   const degreeFound = Object.keys(internalDegree).length > 0 ? true : false;
   const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
