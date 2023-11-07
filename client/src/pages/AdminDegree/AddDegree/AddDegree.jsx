@@ -24,7 +24,7 @@ const CheckLength = ({
         <div
           key={index}
           className='addDegree__container--list-item'
-          //   onClick={() => navigate(`${degree._id}`)}
+        //   onClick={() => navigate(`${degree._id}`)}
         >
           <p>{degree.name.fi}</p>
         </div>
@@ -59,9 +59,8 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
           <button
             key={pageNum}
             onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${
-              pageNum === currentPage ? 'pagination__button--active' : ''
-            }`}
+            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
+              }`}
           >
             {pageNum}
           </button>
@@ -115,8 +114,8 @@ const AddDegree = () => {
   // Pagination logic
   const pageCount =
     filteredList.length > 0
-      ? Math.ceil(filteredList.length / paginate)
-      : Math.ceil(allInternalDegrees.length / paginate);
+      ? Math.ceil(filteredList?.length / paginate)
+      : Math.ceil(allInternalDegrees?.length / paginate);
 
   const handlePageClick = (pageNum) => {
     setCurrentPage(pageNum);
