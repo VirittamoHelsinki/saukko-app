@@ -13,6 +13,7 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { amber } from '@mui/material/colors';
 
 function CompanyDegreeUnits() {
   const navigate = useNavigate();
@@ -21,8 +22,10 @@ function CompanyDegreeUnits() {
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
   const params = useParams();
 
+  console.log(params)
+
   useEffect(() => {
-    setinternalDegreeId(params?.degreeId);
+    setinternalDegreeId(params.degreeId);
   }, []);
 
   // Save degree units to state once degree is fetched
@@ -86,7 +89,8 @@ function CompanyDegreeUnits() {
           data={stepperData}
         />
 
-        <h2>{degreeFound && internalDegree?.name?.fi} </h2>
+        <h2>{degreeFound && internalDegree && internalDegree.name && internalDegree.name.fi} </h2>
+
 
         <Searchbar
           handleSearch={handleSearch}
@@ -97,10 +101,9 @@ function CompanyDegreeUnits() {
           {currentUnits
             ? currentUnits.map((unit) => (
               <SelectUnit
-                key={unit?._id}
+                key={unit._id}
                 unit={unit}
                 allUnits={internalDegree.units}
-
 
               />
             ))
@@ -109,7 +112,7 @@ function CompanyDegreeUnits() {
 
         <Pagination
           count={
-            filteredUnits && Math.ceil(filteredUnits?.length / unitsPerPage)
+            filteredUnits && Math.ceil(filteredUnits.length / unitsPerPage)
           }
           page={page}
           onChange={handlePageChange}
@@ -119,7 +122,7 @@ function CompanyDegreeUnits() {
           handleBack={() => navigate(`../internal/degrees`)}
           handleForward={() => {
 
-            navigate(`../internal/degrees/${internalDegree?._id}/units/confirm-selection`);
+            navigate(`../internal/degrees/${internalDegree._id}/units/confirm-selection`);
 
           }}
         />
@@ -130,4 +133,8 @@ function CompanyDegreeUnits() {
 }
 
 export default CompanyDegreeUnits;
+
+
+
+
 
