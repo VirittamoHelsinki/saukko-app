@@ -1,8 +1,8 @@
 // Import react packages
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Import local files & components
+// Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
@@ -11,24 +11,33 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import Stepper from '../../../components/Stepper/Stepper';
+
+// Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
-import useStore from '../../../store/zustand/formStore';
+import AuthContext from '../../../store/context/AuthContext';
+
+// Import API call functions
+import { registration } from '../../../api/user';
+import { createEvaluation } from '../../../api/evaluation';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
 
-  // Get data & functions from evaluationStore
-  const customer = useEvaluationStore((state) => state.customer);
-  const evaluation = useEvaluationStore((state) => state.evaluation);
-  const workplace = useEvaluationStore((state) => state.workplace);
-  const department = useEvaluationStore((state) => state.department);
-  const supervisor = useEvaluationStore((state) => state.supervisor);
-  const clearEvaluation = useEvaluationStore((state) => state.clearEvaluation);
+  // Get data from store management
+  const { customer, evaluation, workplace, department, supervisor } = useEvaluationStore();
+  const { checkedUnits } = useUnitsStore();
+  const { user } = useContext(AuthContext);
+  const { setInternalEvaluations } = useContext(InternalApiContext);
 
-  // Get data & functions from unitsStore
-  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
-  const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);
+  // NotificationModal
+  const [successNotification, setSuccessNotification] = useState(false)
+  const [errorNotification, setErrorNotification] = useState(false)
 
+  const closeSuccessNotification = () => setSuccessNotification(false)
+  const closeErrorNotification = () => setErrorNotification(false)
+
+  // Data array for InfoList component
   const summaryData = [
     {
       title: 'Nimi',
@@ -44,7 +53,7 @@ function EvaluationSummary() {
     },
     {
       title: 'Asiakkuuden lopetuspäivä',
-      content: evaluation ? evaluation.endDate.format('DD.MM.YYYY'): '',
+      content: evaluation ? evaluation.endDate.format('DD.MM.YYYY') : '',
     },
     {
       title: 'Työpaikka',
@@ -63,9 +72,8 @@ function EvaluationSummary() {
       content: supervisor ? `${supervisor.firstName} ${supervisor.lastName}` : '',
     },
   ];
-  console.log('summary data', summaryData);
 
-  // Remove department from array if there is no department
+  // Remove department from summaryData if there is no department
   if (!department) {
     const indexToRemove = summaryData.findIndex(item => item.title === 'Työpaikanyksikkö');
     if (indexToRemove !== -1) {
@@ -73,22 +81,68 @@ function EvaluationSummary() {
     }
   }
 
-  // NotificationModal logic
-  const {
-    openNotificationModal,
-    setOpenNotificationModal,
-  } = useStore();
+  const handleUserPostReq = async () => {
 
-  const handleSendToServer = () => {
-    // Create user in DB with temporary password and send invitation email
-    // Create evaluation in DB with user._id from DB
+    // Format data
+    const userRequestData = {
+      firstName: customer && customer.firstName ? customer.firstName : null,
+      lastName: customer && customer.lastName ? customer.lastName : null,
+      email: customer && customer.email ? customer.email : null,
+      password: '123456',
+      role: 'customer',
+    }
+    console.log('User POST request:', userRequestData)
 
-    // Clear data from storage
-    clearEvaluation();
-    clearCheckedUnits();
+    // If all values are found send POST request for creating user
+    if (
+      userRequestData.firstName !== null &&
+      userRequestData.lastName !== null &&
+      userRequestData.email !== null
+    ) {
+      const response = await registration(userRequestData)
+      const userId = response.data.userId
+      handleEvaluationPostReq(userId);
+    } else {
+      setErrorNotification(true)
+    }
+  }
+  
+  const handleEvaluationPostReq = async (userId) => {
 
-    // Trigger NotificationModal
-    setOpenNotificationModal(true);
+    // Format evaluation data
+    const evaluationRequestData = {
+      degreeId: workplace && workplace.degreeId ? workplace.degreeId : null,
+      customerId: userId,
+      teacherId: user && user.id ? user.id : null,
+      supervisorId: supervisor && supervisor._id ? supervisor._id : null,
+      workplaceId: workplace && workplace._id ? workplace._id : null,
+      units: checkedUnits,
+      startDate:  evaluation && evaluation.startDate ? evaluation.startDate.$d : null,
+      endDate: evaluation && evaluation.endDate ? evaluation.endDate.$d : null,
+      workTasks: evaluation && evaluation.workTasks ? evaluation.workTasks : null,
+      workGoals: evaluation && evaluation.workGoals ? evaluation.workGoals : null,
+    }
+    console.log('Evaluation POST request:', evaluationRequestData)
+
+    // If all values are found send POST request for evaluation
+    if (
+      evaluationRequestData.degreeId !== null &&
+      evaluationRequestData.customerId !== null &&
+      evaluationRequestData.teacherId !== null &&
+      evaluationRequestData.supervisorId !== null &&
+      evaluationRequestData.workplaceId !== null &&
+      evaluationRequestData.startDate !== null &&
+      evaluationRequestData.endDate !== null &&
+      evaluationRequestData.workTasks !== null &&
+      evaluationRequestData.workGoals !== null
+    ) {
+      const response = await createEvaluation(evaluationRequestData)
+      console.log('Evaluation POST response:', response)
+      setSuccessNotification(true)
+      setInternalEvaluations() // Save evaluation to InternalApiContext
+    } else {
+      setErrorNotification(true)
+    }
   }
 
   // Stepper labels & urls
@@ -121,24 +175,30 @@ function EvaluationSummary() {
             data={stepperData}
         />
         <InfoList title={'Yhteenveto'} data={summaryData}/>
-        <h1>Degree name (FIX THIS)</h1> {/* Degree name from workplace */}
-        {console.log(console.log('checked units evaluation summary page: ', checkedUnits))}
+        <h1>{workplace && workplace.name ? workplace.name : 'Ei dataa tietokannasta'}</h1>
         {checkedUnits?.map((unit) => (
           <SelectUnit key={unit._id} unit={unit} allUnits={checkedUnits && checkedUnits}/>
         ))}
         <PageNavigationButtons 
           handleBack={() => navigate(`/evaluation-units`)} 
-          handleForward={handleSendToServer}
-          forwardButtonText={'Seuraava'}
+          handleForward={handleUserPostReq}
         />
       </section>
       <UserNav />
       <NotificationModal
         type='success'
-        title='Kutsut lähetetty!'
-        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
-        open={openNotificationModal}
-        redirectLink='/customer-list'
+        title='Suorituksen aktivoiminen onnistui'
+        body='Asiakkaan tiedot tallennettu'
+        open={successNotification}
+        handleClose={closeSuccessNotification}
+        redirectLink='/admin-menu'
+      />
+      <NotificationModal
+        type='warning'
+        title='Suorituksen aktivoiminen epäonnistui'
+        body='Tarkista että kaikki kentät on täytetty'
+        open={errorNotification}
+        handleClose={closeErrorNotification}
       />
     </main>
   );

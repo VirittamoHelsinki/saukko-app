@@ -64,6 +64,7 @@ userSchema.methods.generateResetPasswordLink =
 userSchema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
     {
+      id: this._id,
       email: this.email,
       firstName: this.firstName,
       lastName: this.lastName,

@@ -1,11 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Icon } from '@iconify/react';
 import useUnitsStore from '../../store/zustand/unitsStore';
-import ExternalApiContext from '../../store/context/ExternalApiContext';
 
 function SelectUnit({ unit, allUnits }) {
-  // Get degree from degreeContext
-  const { degree } = useContext(ExternalApiContext);
 
   // Check / uncheck unit using toggleUnit function from UnitsStore
   const toggleUnit = useUnitsStore((state) => state.toggleUnit);
@@ -15,7 +12,7 @@ function SelectUnit({ unit, allUnits }) {
 
   // Get all checked units from store
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
-  console.log('Checked units:', checkedUnits);
+  // console.log('Checked units from store:', checkedUnits);
 
   // Number units
   const getUnitNumber = (id) => {
@@ -28,14 +25,12 @@ function SelectUnit({ unit, allUnits }) {
   return (
     <div
       key={unit._id}
-      className={`selectUnit__container--units-unit ${
-        checkedUnits.includes(unit) && 'checked'
-      }`}
+      className={`selectUnit__container--units-unit ${checkedUnits.includes(unit) && 'checked'
+        }`}
     >
       <div
-        className={`selectUnit__container--units-unit-checkbox ${
-          checkedUnits.includes(unit) && 'checked'
-        }`}
+        className={`selectUnit__container--units-unit-checkbox ${checkedUnits.includes(unit) && 'checked'
+          }`}
         onClick={handleCheckboxChange}
       >
         {checkedUnits.includes(unit) && <Icon icon='mdi:tick' color='white' />}

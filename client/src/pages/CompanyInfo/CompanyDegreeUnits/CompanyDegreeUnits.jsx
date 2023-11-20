@@ -13,16 +13,16 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InternalApiContext from '../../../store/context/InternalApiContext';
-import { useLocation } from 'react-router-dom';
+import { amber } from '@mui/material/colors';
 
 function CompanyDegreeUnits() {
   const navigate = useNavigate();
-  const location = useLocation();
-
 
   // Set path & get degree from ExternalApiContext
   const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
   const params = useParams();
+
+  console.log(params)
 
   useEffect(() => {
     setinternalDegreeId(params.degreeId);
@@ -89,7 +89,8 @@ function CompanyDegreeUnits() {
           data={stepperData}
         />
 
-        <h2>{degreeFound && internalDegree.name.fi} </h2>
+        <h2>{degreeFound && internalDegree && internalDegree.name && internalDegree.name.fi} </h2>
+
 
         <Searchbar
           handleSearch={handleSearch}
@@ -103,7 +104,6 @@ function CompanyDegreeUnits() {
                 key={unit._id}
                 unit={unit}
                 allUnits={internalDegree.units}
-
 
               />
             ))
@@ -125,7 +125,6 @@ function CompanyDegreeUnits() {
             navigate(`../internal/degrees/${internalDegree._id}/units/confirm-selection`);
 
           }}
-          forwardButtonText={'Seuraava'}
         />
       </section>
       <UserNav />
@@ -134,4 +133,8 @@ function CompanyDegreeUnits() {
 }
 
 export default CompanyDegreeUnits;
+
+
+
+
 

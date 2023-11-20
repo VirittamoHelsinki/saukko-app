@@ -2,22 +2,22 @@ import React, { useContext, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import AuthContext from '../../store/context/AuthContext';
-import formStore from '../../store/zustand/formStore';
+import InternalApiContext from '../../store/context/InternalApiContext';
 
 const UserNav = () => {
   const { user } = useContext(AuthContext);
-  const { chosenCustomerId, clearChosenCustomerId } = formStore();
+  const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Clear chosen customer
+  // Clear chosen evaluation
   useEffect(() => {
     const routesToExclude = ['/customer-list', '/unit-list', '/contract-info', '/userperformance'];
     const isExcludedRoute = routesToExclude.some(route => location.pathname === route);
-    if (!isExcludedRoute && chosenCustomerId !== null) {
-      clearChosenCustomerId();
+    if (!isExcludedRoute && evaluation !== null && (user.role === 'teacher' || user.role === 'supervisor')) {
+      setEvaluation(null);
     }
-  }, [location.pathname, chosenCustomerId, clearChosenCustomerId]);
+  }, [location.pathname, evaluation]);
 
   return (
     <main className='userNav__wrapper'>
@@ -34,7 +34,7 @@ const UserNav = () => {
         {user && user.role === 'supervisor' &&
           <div className={`userNav__icons ${user.role}`}>
             <Icon icon="ic:outline-home" onClick={() => navigate('/customer-list')}/>
-            {chosenCustomerId && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
+            {evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
             <Icon icon="mdi:user-outline" onClick={() => navigate('/profile')}/>
           </div>
         }
@@ -43,7 +43,7 @@ const UserNav = () => {
         {user && user.role === 'teacher' &&
           <div className={`userNav__icons ${user.role}`}>
             <Icon icon="ic:outline-home" onClick={() => navigate('/customer-list')}/>
-            {chosenCustomerId && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
+            {evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
             <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>
             <Icon icon="mdi:user-outline" onClick={() => navigate('/profile')}/>
           </div>

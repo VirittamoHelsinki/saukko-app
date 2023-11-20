@@ -24,30 +24,26 @@ const useStore = create((set) => ({
   education: '',
   openNotificationModal: false,
 
-  // Workplace flow
+
+  // Workplace
   businessID: [],
   businessIDError: '',
-  editedCompanyName: '',
-  companyName: null,
-  departmentName: null,
-  työpaikkaohjaajat: [],
+  editedCompanyName: null,
+  name: null,
+  departments: [],
+  supervisors: [],
   firstName: '',
   lastName: '',
   työpaikkaohjaajaEmail: '',
-  
-  // Admin
-  degreeName: 'ei dataa APIsta',
-  degreeDescription: 'ei dataa APIsta',
-  diaryNumber: 'ei dataa APIsta',
-  regulationDate: 'ei dataa APIsta',
-  validFrom: 'ei dataa APIsta',
-  expiry: 'ei dataa APIsta',
-  transitionEnds: 'ei dataa APIsta',
-  
-  // Track chosen customer for teacher or supervisor 
-  chosenCustomerId: null,
-  setChosenCustomerId: (chosenCustomerId) => set(() => ({ chosenCustomerId })),
-  clearChosenCustomerId: () => set({ chosenCustomerId: null }),
+
+  // Degree
+  degreeName: null,
+  degreeDescription: null,
+  diaryNumber: null,
+  regulationDate: null,
+  validFrom: null,
+  expiry: null,
+  transitionEnds: null,
 
   // Define setter functions to update state variables
   setRole: (role) => set({ role }),
@@ -70,20 +66,21 @@ const useStore = create((set) => ({
   setAcademy: (academy) => set({ academy }),
   setEducation: (education) => set({ education }),
   setOpenNotificationModal: (openNotificationModal) =>
-  set({ openNotificationModal }),
+    set({ openNotificationModal }),
 
   // Workplace flow
-  setBusinessId: (value) => set(() => ({ businessID: value })),
+  setBusinessId: (value) => set(() => ({ businessId: value })),
   setBusinessIdError: (value) => set(() => ({ businessIDError: value })),
-  setCompanyName: (value) => set(() => ({ companyName: value })),
-  setDepartmentName: (value) => set(() => ({ departmentName: value })),
+  setName: (value) => set(() => ({ name: value })),
+  setDepartmentName: (value) => set(() => ({ departments: value })),
   setEditedCompanyName: (value) => set(() => ({ editedCompanyName: value })),
-  setTyöpaikkaohjaajat: (value) => set(() => ({ työpaikkaohjaajat: value })),
+  setSupervisors: (value) => set(() => ({ supervisors: value })),
+
   setFirstName: (value) => set(() => ({ firstName: value })),
   setLastName: (value) => set(() => ({ lastName: value })),
   setTyöpaikkaohjaajaEmail: (value) => set(() => ({ työpaikkaohjaajaEmail: value })),
 
-  // Admin setter functions
+  // Degree setters
   setDegreeName: (degreeName) => set({ degreeName }),
   setDegreeDescription: (degreeDescription) => set({ degreeDescription }),
   setDiaryNumber: (diaryNumber) => set({ diaryNumber }),
@@ -95,13 +92,26 @@ const useStore = create((set) => ({
   // Reset all state variables for degree's data
   resetDegreeData: () =>
     set({
-      degreeName: 'ei dataa APIsta',
-      degreeDescription: 'ei dataa APIsta',
-      diaryNumber: 'ei dataa APIsta',
-      regulationDate: 'ei dataa APIsta',
-      validFrom: 'ei dataa APIsta',
-      expiry: 'ei dataa APIsta',
-      transitionEnds: 'ei dataa APIsta',
+      degreeName: null,
+      degreeDescription: null,
+      diaryNumber: null,
+      regulationDate: null,
+      validFrom: null,
+      expiry: null,
+      transitionEnds: null,
+    }),
+
+  resetWorkplaceData: () =>
+    set({
+      businessID: [],
+      businessIDError: '',
+      editedCompanyName: null,
+      name: null,
+      departments: [],
+      supervisors: [],
+      firstName: '',
+      lastName: '',
+      työpaikkaohjaajaEmail: '',
     }),
 
   // Define a resetForm function to reset all state variables to their initial values
@@ -125,7 +135,7 @@ const useStore = create((set) => ({
       goals: '',
       academy: '',
       education: '',
-      businessID: '',
+      businessId: '',
       businessIDError: '',
       firstName: '',
       lastName: '',

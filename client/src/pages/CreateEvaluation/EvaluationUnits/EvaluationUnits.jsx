@@ -5,87 +5,26 @@ import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Stepper from '../../../components/Stepper/Stepper';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
-
-const mockData = [
-  {
-    _id: '1',
-    name: {
-      fi: 'Huolto- ja korjaustyöt',
-      sv: '',
-    },
-    assessments: [
-      {
-        _id: '11',
-        name: {
-          fi: '',
-          sv: '',
-        },    
-      }
-    ]    
-  },
-  {
-    _id: '2',
-    name: {
-      fi: 'Maalauksen esikäsittelytyöt',
-      sv: '',
-    },
-    assessments: [
-      {
-        _id: '22',
-        name: {
-          fi: '',
-          sv: '',
-        },    
-      }
-    ]    
-  },
-  {
-    _id: '3',
-    name: {
-      fi: 'Huolto- ja korjaustyöt',
-      sv: '',
-    },
-    assessments: [
-      {
-        _id: '33',
-        name: {
-          fi: '',
-          sv: '',
-        },    
-      }
-    ]    
-  },
-  {
-    _id: '4',
-    name: {
-      fi: 'Maalauksen esikäsittelytyöt',
-      sv: '',
-    },
-    assessments: [
-      {
-        _id: '44',
-        name: {
-          fi: '',
-          sv: '',
-        },    
-      }
-    ]    
-  },
-]
+import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 function EvaluationUnits() {
   const navigate = useNavigate();
 
-  // Get units from unitStore
+  // Get values & functions from zustand store
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+  console.log('Checked units:', checkedUnits);
+  const { workplace } = useEvaluationStore();
+  const { openNotificationModal, setOpenNotificationModal } = useStore();
 
   // Check if at least one unit is chosen and redirect
   const handleValidation = () => {
     if (checkedUnits.length > 0) {
       navigate('/evaluation-summary')
     } else {
-      alert('Choose units')
+      setOpenNotificationModal(true);
     }
   };
 
@@ -108,7 +47,6 @@ function EvaluationUnits() {
       url: '/evaluation-summary'
     },
   ];
-
   
   return (
     <main className='evaluationUnits__wrapper'>
@@ -119,19 +57,25 @@ function EvaluationUnits() {
             totalPages={4}
             data={stepperData}
         />
-        <h1>Degree name (FIX)</h1> {/* Degree name from workplace here */}
+        <h1>{workplace && workplace.name ? workplace.name : 'Ei dataa tietokannasta'}</h1>
 
         <div className='evaluationUnits__container--units'>
-          { mockData ? 
-            mockData.map((unit) => (
-              <SelectUnit key={unit._id} unit={unit} allUnits={mockData}/>
+          { workplace && workplace.units ? 
+            workplace.units.map((unit) => (
+              <SelectUnit key={unit._id} unit={unit} allUnits={workplace.units}/>
             ))
           : 'ei dataa APIsta'}
         </div>
 
-        <PageNavigationButtons handleBack={() => navigate(`/evaluation-workplace`)} handleForward={handleValidation} forwardButtonText={'Seuraava'}/>
+        <PageNavigationButtons handleBack={() => navigate(`/evaluation-workplace`)} handleForward={handleValidation}/>
       </section>      
       <UserNav />
+      <NotificationModal
+        type='warning'
+        title='Valitse tutkinnonosat'
+        body='Valitse ainakin yksi tutkinnonosa'
+        open={openNotificationModal}
+      />
     </main>
   );
 }

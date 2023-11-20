@@ -1,32 +1,34 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserNav from '../../../components/UserNav/UserNav';
-import WavesHeader from '../../../components/Header/WavesHeader';
-import InternalApiContext from '../../../store/context/InternalApiContext';
-import Searchbar from '../../../components/Searchbar/Searchbar';
-import Button from '../../../components/Button/Button';
+import Searchbar from '../../components/Searchbar/Searchbar';
+import Button from '../../components/Button/Button';
+import WavesHeader from '../../components/Header/WavesHeader';
+import UserNav from '../../components/UserNav/UserNav';
+import InternalApiContext from '../../store/context/InternalApiContext';
+import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
+import { buildDeprecatedPropsWarning } from '@mui/x-date-pickers/internals';
 
-// controls how many degrees are shown at once and renders them
+// controls how many company name are shown at once and renders them
 const CheckLength = ({
   filteredList,
-  allInternalDegrees,
+  workplaces,
   paginate,
   currentPage,
 }) => {
   const startIndex = (currentPage - 1) * paginate;
   const endIndex = startIndex + paginate;
-  const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
+  const list = filteredList.length > 0 ? filteredList : workplaces;
 
   //   const navigate = useNavigate();
   return (
     <>
-      {list.slice(startIndex, endIndex).map((degree, index) => (
+      {list.slice(startIndex, endIndex).map((company, index) => (
         <div
           key={index}
           className='addDegree__container--list-item'
         //   onClick={() => navigate(`${degree._id}`)}
         >
-          <p>{degree.name.fi}</p>
+          <p>{company.name}</p>
         </div>
       ))}
     </>
@@ -89,24 +91,26 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   );
 };
 
-const AddDegree = () => {
+const AddCompanyName = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginate, setPaginate] = useState(5);
   const [filteredList, setFilteredList] = useState([]);
 
   const navigate = useNavigate();
 
-  // Get degrees from InternalApiContext
-  const { allInternalDegrees } = useContext(InternalApiContext);
+  // Get company name from Internal saukko database
 
-  console.log('allInternalDegrees123: ', allInternalDegrees);
+  const { workplaces } = useContext(InternalApiContext);
+
+  console.log('Internal saukko database workplaces: ', workplaces);
+
 
   // Searchbar logic
   const handleSearch = (event) => {
     setCurrentPage(1); // Reset page when searching
     setFilteredList(
-      allInternalDegrees.filter((degree) =>
-        degree.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
+      workplaces.filter((company) =>
+        company.name.toLowerCase().includes(event.target.value.toLowerCase())
       )
     );
   };
@@ -114,8 +118,8 @@ const AddDegree = () => {
   // Pagination logic
   const pageCount =
     filteredList.length > 0
-      ? Math.ceil(filteredList?.length / paginate)
-      : Math.ceil(allInternalDegrees?.length / paginate);
+      ? Math.ceil(filteredList.length / paginate)
+      : Math.ceil(workplaces.length / paginate);
 
   const handlePageClick = (pageNum) => {
     setCurrentPage(pageNum);
@@ -131,26 +135,26 @@ const AddDegree = () => {
       <UserNav />
       <section className='addDegree__container'>
         <Button
-          text='Lisää tutkinto'
+          text='Lisää työpaikka'
           style={{
             marginLeft: '25%',
             marginBottom: '10px',
             marginTop: '10px',
-            width: '50%',
+            width: '60%',
             backgroundColor: '#0000BF',
             color: 'white',
             border: 'none',
           }}
           icon={'ic:baseline-plus'}
-          onClick={() => navigate(`/degrees`)}
+          onClick={() => navigate(`/company-info`)}
         />
 
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
+        <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'} />
 
         <div className='addDegree__container--list'>
           <CheckLength
             filteredList={filteredList}
-            allInternalDegrees={allInternalDegrees}
+            workplaces={workplaces}
             paginate={paginate}
             currentPage={currentPage}
           />
@@ -165,4 +169,6 @@ const AddDegree = () => {
   );
 };
 
-export default AddDegree;
+export default AddCompanyName;
+
+

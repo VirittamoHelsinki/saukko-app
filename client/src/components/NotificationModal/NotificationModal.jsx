@@ -1,20 +1,16 @@
 /*
-   The NotificationModal component accepts the prop "type" to indicate what type of notification:
+  The NotificationModal component accepts the prop "type" to indicate what type of notification:
    - alert
    - info
    - success
    - warning
-   The props title and body are for text changes
 
-   Example usage:
+  Example usage:
 
     import NotificationModal from '../../components/NotificationModal/NotificationModal';
-    import useStore from '../../store/useStore';
+    import useStore from '../../store/zustand/formStore';
 
-    const {
-      openNotificationModal,
-      setOpenNotificationModal,
-    } = useStore();
+    const { openNotificationModal, setOpenNotificationModal } = useStore();
 
     const handleOpen = () => {
       setOpenNotificationModal(true);
@@ -27,6 +23,30 @@
       open={openNotificationModal}
       redirectLink='/customer-list'
     />
+
+  Using multiple NotificationModals in one component:
+
+    // Set local state 
+      const [firstNotification, setFirstNotification] = useState(false)
+      const [secondNotification, setSecondNotification] = useState(false)
+
+    // Custom handleClose functions
+      const closeFirstNotification = () => setFirstNotification(false)
+      const closeSecondNotification = () => setSecondNotification(false)
+
+    // Trigger NotificationModals
+      const handleOpen = () => {
+        setFirstNotification(true);
+      }
+
+    // Pass handleClose function as a prop
+      <NotificationModal
+        type='warning'
+        title='Lomakkeen lähetys epäonnistui'
+        body='Tarkista sähköposti kenttä'
+        open={firstNotification}
+        handleClose={closeFirstNotification}
+      />
  */
 
 import React from 'react';

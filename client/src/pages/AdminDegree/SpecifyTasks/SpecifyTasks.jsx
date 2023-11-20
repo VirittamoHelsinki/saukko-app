@@ -1,10 +1,11 @@
 // Import react packages & dependencies
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// Import Zustand store and custom context
+// Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import useStore from '../../../store/zustand/formStore';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -21,57 +22,45 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 import { useTheme } from '@mui/material/styles';
 
-import {
-  CriteriaFieldsContextProvider,
-  useCriteriaFieldsContext,
-} from '../../../store/context/CriteriaFieldsContext';
-
 function SpecifyTasks() {
   const navigate = useNavigate();
-
-  // Set path & get degree units from ExternalApiContext
-  const { setDegreeId, degreeId, degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
-  const { criteriaFields, setCriteriaFields } = useCriteriaFieldsContext();
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Check if the criteriaFields are populated (initialized)
-    if (criteriaFields.length > 0) {
-      setIsLoading(false); // Set loading to false when criteriaFields are populated
-    }
-  }, [criteriaFields]);
+  // Initialize state
+  const [assessments, setAssessments] = useState([]);
+  const [activeStep, setActiveStep] = useState(0);
+  const [inputFields, setInputFields] = useState(
+    Array.from({ length: 3 }, () => [''])
+  );
 
-  useEffect(() => {
-    setDegreeId(params.degreeId);
-  }, []);
-
-  // Get checked units from unitsStore
-  const { checkedUnits } = useUnitsStore();
+  // Get values from state management
+  const { degree, degreeFound } = useContext(ExternalApiContext);
+  const { degreeName } = useStore();
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
+  const addAssessment = useUnitsStore((state) => state.addAssessment);
 
   // Labels and urls for stepper
   const stepperData = [
     {
       label: 'Tutkinto-tiedot',
-      url: `/degrees/${degreeId}`
+      url: `/degrees/${params.degreeId}`
     },
     {
-      label: 'Valitse tutkinnonosat',
-      url: `/degrees/${degreeId}/units`
+      label: degree.units ? 'Valitse tutkinnonosat' : 'Lisää tutkinnonosat',
+      url: degree.units ? `/degrees/${params.degreeId}/units` : `/degrees/${params.degreeId}/edit-units`
     },
     {
       label: 'Määritä tehtävät',
-      url: `/degrees/${degreeId}/units/tasks`
+      url: `/degrees/${params.degreeId}/units/tasks`
     },
     {
       label: 'Yhteenveto',
-      url: `/degrees/${degreeId}/summary`
+      url: `/degrees/${params.degreeId}/summary`
     },
   ];
 
   // Dots Stepper
   const theme = useTheme();
-  const [activeStep, setActiveStep] = useState(0);
   const maxSteps = checkedUnits.length;
 
   const handleNext = () => {
@@ -82,10 +71,9 @@ function SpecifyTasks() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  // Handle adding a new text field to the list of text
-  // fields for the current step
+  // Handle adding a new text field
   const handleAddTextField = () => {
-    setCriteriaFields((prevFields) => {
+    setInputFields((prevFields) => {
       const newFields = [...prevFields];
       newFields[activeStep] = [...(newFields[activeStep] || []), ''];
       return newFields;
@@ -93,35 +81,54 @@ function SpecifyTasks() {
   };
 
   // Handle changes in the text fields
-  const handleTextFieldChange = (stepIndex, fieldIndex, value) => {
-    setCriteriaFields((prevFields) => {
+  const handleTextFieldChange = (stepIndex, fieldIndex, value, unitId) => {
+    setInputFields((prevFields) => {
       const newFields = [...prevFields];
       newFields[activeStep][fieldIndex] = value;
       return newFields;
     });
+
+    setAssessments((prevAssessments) => {
+      // Create a copy of the previous assessments
+      const newAssessments = [...prevAssessments];
+  
+      // Ensure there's an array for this step
+      newAssessments[stepIndex] = newAssessments[stepIndex] || [];
+  
+      // Get the existing assessment object for this field if it exists, or create a new one
+      const existingAssessment = newAssessments[stepIndex][fieldIndex] || {};
+  
+      // Update the assessment object with the new value
+      const updatedAssessment = {
+        ...existingAssessment,
+        unitId: unitId,
+        name: value,
+      };
+  
+      // Update the assessments array for this step with the updated assessment object
+      newAssessments[stepIndex][fieldIndex] = updatedAssessment;
+  
+      return newAssessments;
+    });
   };
 
-  // Preserve textFields state when navigating between steps
-  useEffect(() => {
-    // Check if the active step index is within the bounds of the textFields array
-    if (activeStep >= 0 && activeStep < criteriaFields.length) {
-      // Set the text fields for the active step
-      setCriteriaFields((prevFields) => {
-        const newFields = [...prevFields];
-        newFields[activeStep] = newFields[activeStep] || [''];
-        return newFields;
-      });
-    }
-  }, [activeStep]);
+  // Form submission handler
+  const handleSubmit = () => {
+    const flattenedAssessments = assessments.flat();
 
-  console.log('maxsteps: ', maxSteps);
+    flattenedAssessments.forEach((assessment) => {
+      const { unitId, name } = assessment;
+      addAssessment(unitId, name);
+    });
+
+    navigate(`/degrees/${params.degreeId}/summary`)
+  }
 
   return (
-    <CriteriaFieldsContextProvider maxSteps={maxSteps}>
       <main className='specify-tasks__wrapper'>
         <WavesHeader
           title='Saukko'
-          secondTitle={degreeFound && degree.name.fi}
+          secondTitle='Tutkintojen hallinta'
         />
         <section className='specify-tasks__container'>
           <Stepper
@@ -129,6 +136,7 @@ function SpecifyTasks() {
             totalPages={4}
             data={stepperData}
           />
+          <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
           <Box>
             <MobileStepper
               steps={maxSteps}
@@ -164,13 +172,10 @@ function SpecifyTasks() {
               }
             />
             <Paper square elevation={0}>
-              {/* {isLoading ? ( */}
-              {/* <div>Loading...</div> */}
-              {/* ) : ( */}
               <form>
                 <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
 
-                {criteriaFields[activeStep]?.map((textField, index) => (
+                {inputFields[activeStep]?.map((textField, index) => (
                   <div key={index}>
                     <input
                       type='text'
@@ -179,7 +184,8 @@ function SpecifyTasks() {
                         handleTextFieldChange(
                           activeStep,
                           index,
-                          event.target.value
+                          event.target.value,
+                          checkedUnits[activeStep]._id
                         )
                       }
                     />
@@ -193,21 +199,17 @@ function SpecifyTasks() {
                   + Lisää arviointikriteeri
                 </Button>
               </form>
-              {/* )} */}
             </Paper>
           </Box>
 
           <PageNavigationButtons
-            handleBack={() =>
-              navigate(`/degrees/${degreeId}/units`)
-            }
-            handleForward={() => navigate(`/degrees/${degree._id}/summary`)}
+            handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
+            handleForward={handleSubmit}
             forwardButtonText={'Tallenna ja jatka'}
           />
         </section>
         <UserNav />
       </main>
-    </CriteriaFieldsContextProvider>
   );
 }
 

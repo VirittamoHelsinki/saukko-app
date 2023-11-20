@@ -43,6 +43,18 @@ const degreeSchema = new mongoose.Schema({
   infoURL: { // link to degree info page on ePerusteet
     type: String,
   },
+  regulationDate: { // The date when a particular regulation was established
+    type: Date,
+  },
+  transitionEnds: { // The date when a transitional period ends
+    type: Date,
+  },
+  validFrom: { // The date from which a particular policy or entity is valid
+    type: Date,
+  },
+  expiry: { // The expiration date of a particular policy or entity
+    type: Date,
+  },
   units: [
     {
       _id: { // unit id
@@ -86,7 +98,8 @@ const degreeSchema = new mongoose.Schema({
               default: ""
             },
             enum: ["fi", "sv", "en"],
-          },/*
+          },
+          /*
           criteria: [ // list of criteria for this assessment
             {
               _id: { // criteria id

@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import WavesHeader from '../../components/Header/WavesHeader';
 import Notification from '../../components/Notification/Notification';
@@ -8,7 +7,6 @@ import { forgotPassword } from '../../api/user';
 
 const ForgotPassword = () => {
   const color = '#00005E'
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [notificationVisible, setNotificationVisible] = useState(false);

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { Icon } from "@iconify/react";
 import Button from "../../components/Button/Button";
 import WavesHeader from "../../components/Header/WavesHeader";

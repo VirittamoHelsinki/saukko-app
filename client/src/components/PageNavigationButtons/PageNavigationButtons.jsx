@@ -5,17 +5,15 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 <PageNavigationButtons 
   handleBack={() => navigate('/example')} 
   handleForward={handlePopupOpen} 
-  forwardButtonText={'Next page'}
+  forwardButtonText={'Next page'} // Default value is "Seuraava"
 />
 
 */
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 
 function PageNavigationButtons(props) {
-  const navigate = useNavigate();
 
   return (
     <section className='buttons__container' id="pageNavigationButtonsContainer">
@@ -28,7 +26,7 @@ function PageNavigationButtons(props) {
       </div>
       <div className='buttons__container-forward'>
         <Button
-          text={props.forwardButtonText}
+          text={props.forwardButtonText || 'Seuraava'}
           onClick={props.handleForward}
           icon={'formkit:arrowright'}
         />

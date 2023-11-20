@@ -1,14 +1,25 @@
-import axios from 'axios' 
+import axios from 'axios'
 
 const baseURL = process.env.REACT_APP_BACKEND_URL
 
 const middleURL = '/api'
 
 // Fetch company data from avoindata API.
-const fetchExternalCompanyData = async (businessID) => {
-  const response = await fetch(`${baseURL}${middleURL}/business/${businessID}`);
-  return response
+
+const fetchExternalCompanyData = async (businessId) => {
+  console.log(businessId);
+
+  try {
+    const response = await axios.get(`${baseURL}${middleURL}/business/${businessId}`);
+    // console.log('data ----->', response.data);
+
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch  data');
+  }
 };
+
+
 
 // Fetch all workplaces from internal saukko database.
 const fetchAllInternalWorkplaces = async () => {
@@ -47,3 +58,7 @@ export {
   fetchAllInternalWorkplaces, fetchInternalWorkplaceById,
   postWorkplace, updateWorkplace, removeWorkplace
 }
+
+
+
+

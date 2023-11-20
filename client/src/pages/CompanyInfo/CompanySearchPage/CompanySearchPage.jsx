@@ -1,7 +1,6 @@
-import { useState, useContext, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
-import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import UserNav from '../../../components/UserNav/UserNav';
 import InternalApiContext from '../../../store/context/InternalApiContext';
@@ -13,20 +12,19 @@ const CheckLength = ({ filteredList, allInternalDegrees, paginate, currentPage }
   const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
   const navigate = useNavigate();
-
-
+  console.log(allInternalDegrees)
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
-        <div key={index} className="company__searchPage__container--list-item" onClick={() => navigate(`../internal/degrees/${degree._id}/units`)}>
-          <h3>{degree.name.fi}</h3>
-          <div className="company__searchPage__container--list-item-bottom">
+        <div key={index} className="company__searchPage__container--list-item" onClick={() => navigate(`../internal/degrees/${degree?._id}/units`)}>
+          <h3>{degree?.name?.fi}</h3>
+          {/* <div className="company__searchPage__container--list-item-bottom">
             <div>
               <p>Diaari: {degree.diaryNumber}</p>
               <p>Koodi: {degree.eduCodeValue}</p>
             </div>
             <li>&#8250;</li>
-          </div>
+          </div> */}
         </div>
       ))}
     </>
@@ -111,8 +109,8 @@ const CompanySearchPage = () => {
   // Pagination logic
   const pageCount =
     filteredList.length > 0
-      ? Math.ceil(filteredList.length / paginate)
-      : Math.ceil(allInternalDegrees.length / paginate);
+      ? Math.ceil(filteredList?.length / paginate)
+      : Math.ceil(allInternalDegrees?.length / paginate);
 
   const handlePageClick = (pageNum) => {
     setCurrentPage(pageNum);

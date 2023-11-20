@@ -5,7 +5,7 @@
     justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
-
+    
     .summary__container {
       display: flex;
       flex-direction: column;
@@ -16,8 +16,16 @@
       width: 100%;
       flex-grow: 1;
       overflow-y: auto;
+      
+      .degree-title {
+        text-decoration: none;
+        font-size: 20px;
+        margin-top: 40px;
+      }
 
       .section-title {
+        margin-top: 20px;
+        margin-bottom: 10px;
         text-decoration: underline;
         font-size: 1.1rem;
         text-align: center;
@@ -44,6 +52,22 @@
       .mb {
         margin-bottom: 20px;
         display: block;
+      }
+
+      .unit-container {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+
+        strong {
+          margin-bottom: 10px;
+        }
+      }
+      
+      .unit-container:not(:last-child) {
+        border-bottom: solid #808080 1px;
       }
     }
   }
