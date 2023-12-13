@@ -34,6 +34,7 @@ import CompanyDegreeUnits from '../../pages/CompanyInfo/CompanyDegreeUnits/Compa
 import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelection/DegreeConfirmSelection';
 import UserPerformance from '../../pages/Performance/UserPerformance/UserPerformance';
 import AddCompanyName from '../../pages/AddCompanyName/AddCompanyName';
+import EmailVerification from '../../pages/VerifyEmail/VerifyEmail';
 
 const Router = () => {
   let location = useLocation();
@@ -71,7 +72,7 @@ const Router = () => {
 
         {/* Placeholders for development */}
         <Route path='/test-page' element={<TestPage />} />
-
+        <Route path="/verify-email/:token" element={<EmailVerification />} />
         {/* Not logged in */}
         {!loggedIn && (
           <>

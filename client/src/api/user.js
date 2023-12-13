@@ -57,5 +57,10 @@ const resetPassword = async (token, newPassword) => {
   return response
 }
 
-export { forgotPassword, fetchLoggedIn, logoutUser, loginUser, tokenValidation, resetPassword, registration }
+const verifyEmail = async (token) => {
+  const response = await axios.get(`${baseURL}${middleURL}/verify-email/${token}`);
+  return response;
+};
+
+export { forgotPassword, fetchLoggedIn, logoutUser, loginUser, tokenValidation, resetPassword, registration, verifyEmail }
 

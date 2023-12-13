@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const config = require('../utils/config')
-const { sendResetPasswordEmail } = require('../mailer');
+const { sendResetPasswordEmail,sendVerificationEmail } = require('../mailer');
 
 // Register a new user
 userRouter.post("/", async (req, res) => {
@@ -66,13 +66,15 @@ userRouter.post("/", async (req, res) => {
     // save the user object to the database
     await newUser.save()
   
-    // Create a token for the user
-    const token = await newUser.generateJWT()
 
-    console.log('user created')
+    const verificationToken = newUser.generateEmailVerificationToken();
+    const verificationLink = `http://localhost:5000/verify-email/${verificationToken}`;
 
+    // Send verification email
+    sendVerificationEmail(newUser,verificationLink);
+    console.log('user created and verification email sent');
     // send token via HTTP-only cookie
-    res.status(201).json({ userId: newUser._id });
+    res.status(201).json({ userId: newUser._id, message: "User created. Verification email sent." });
 
   } catch (err) {
     console.error(err);
@@ -246,5 +248,30 @@ userRouter.get("/logout", (req, res) => {
     expires: new Date(0),
   }).send(console.log("Logged out"));
 });
+
+// verify-email
+userRouter.get('/verify-email/:token', async (req, res) => {
+  console.log('Verify email endpoint hit with token:', req.params.token);
+    try {
+    const { token } = req.params;
+    const decoded = jwt.verify(token, config.JWT_SECRET)
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      console.error("User not found with ID:", decoded.id);
+      return res.status(400).json({ errorMessage: 'User not found' });
+    }
+
+    user.emailVerified = true;
+    await user.save();
+
+    // Redirect user to the reset-password page
+    return res.redirect(`http://localhost:5000/reset-password/${token}`);
+  } catch (err) {
+    console.error("Error in email verification:", err);
+    return res.status(500).json({ errorMessage: 'Error verifying email' });
+  }
+});
+
 
 module.exports = userRouter
