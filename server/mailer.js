@@ -38,7 +38,8 @@ const sendResetPasswordEmail = (user) => {
     <p>Hi ${user.firstName},</p>
     <p>Please click the following link to reset your password:</p>
     <a href="${user.generateResetPasswordLink()}">Reset Password</a>
-  `;
+  `;// Place holder text need to be changed once its been agreed with the client what the email should say
+
 
   sendEmail({ to: user.email, subject, html });
 };
@@ -50,16 +51,17 @@ const sendVerificationEmail = (user, verificationLink) => {
     <p>Hello ${user.firstName},</p>
     <p>Please click the link below to verify your email address and change you password: </p>
     <a href="${verificationLink}">Verify Email</a>
-  `;
+  `;// Place holder text need to be changed once its been agreed with the client what the email should say
+
   sendEmail({ to: user.email, subject, html });
 };
 
 const sendNotificationMail = (user) => {
-  const subject = 'Reset Your Password';
+  const subject = 'Notification';
   const html = `
     <p>Hi ${user.firstName},</p>
-    <p>Please click the following link to reset your password:</p>
-  `;
+    <p>Please click the following link to reset your password:</p> 
+  `; // Place holder text need to be changed once its been agreed with the client what the email should say
 
   sendEmail({ to: user.email, subject, html });
 };
