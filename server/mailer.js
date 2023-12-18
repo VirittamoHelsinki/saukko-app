@@ -56,13 +56,13 @@ const sendVerificationEmail = (user, verificationLink) => {
   sendEmail({ to: user.email, subject, html });
 };
 
-const sendNotificationMail = (user) => {
-  const subject = 'Notification';
+const sendNotificationMail = (user, newSupervisors) => {
+  const subject = 'New Supervisor Added';
   const html = `
     <p>Hi ${user.firstName},</p>
-    <p>Please click the following link to reset your password:</p> 
-  `; // Place holder text need to be changed once its been agreed with the client what the email should say
-
+    <p>New supervisors have been added to your evaluation.</p>
+    <p>Supervisors: ${newSupervisors.join(', ')}</p>
+  `;
   sendEmail({ to: user.email, subject, html });
 };
 

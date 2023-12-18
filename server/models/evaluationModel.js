@@ -13,10 +13,10 @@ const evaluationSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // User._id
   },
-  supervisorId: {
+  supervisorIds: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // User._id
-  },
+    ref: 'User',
+  }],
   workplaceId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Workplace', // Workplace._id
