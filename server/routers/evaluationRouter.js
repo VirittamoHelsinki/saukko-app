@@ -1,14 +1,45 @@
 const evaluationRouter = require("express").Router();
 const Evaluation = require('../models/evaluationModel');
 const { sendNotificationMail} = require('../mailer');
+const { sendVerificationEmail } = require('../mailer'); 
 const User = require('../models/userModel');
+
+// Function to generate verification link for the supervisor
+function generateVerificationLink(user) {
+  const verificationToken = user.generateEmailVerificationToken();
+  return `http://localhost:5000/verify-email/${verificationToken}`;
+}
 
 // Create a new evaluation
 evaluationRouter.post('/evaluation/', async (req, res) => {
   try {
+    // Check if single supervisorId is provided and convert it to an array
+    if (req.body.supervisorId) {
+      req.body.supervisorIds = [req.body.supervisorId];
+      delete req.body.supervisorId; // Optional: Remove the original supervisorId field
+    }
+
     const evaluation = new Evaluation(req.body);
-    console.log("This is evaluation ----> : ",evaluation)
     await evaluation.save();
+
+    console.log(evaluation)
+
+    // Check if supervisorIds array has IDs and send email to each
+    if (evaluation.supervisorIds && evaluation.supervisorIds.length > 0) {
+      evaluation.supervisorIds.forEach(async (supervisorId) => {
+        try {
+          const supervisor = await User.findById(supervisorId);
+          if (supervisor) {
+            const verificationLink = generateVerificationLink(supervisor);
+            sendVerificationEmail(supervisor, verificationLink); // Assuming this function is implemented
+          }
+        } catch (userError) {
+          console.error("Error fetching supervisor for notification: ", userError);
+        }
+      });
+    }
+
+    console.log("Evaluation created and supervisors notified (if applicable)");
     res.status(201).send(evaluation);
   } catch (error) {
     res.status(400).send(error);
@@ -45,56 +76,55 @@ evaluationRouter.get('/evaluation/:id', async (req, res) => {
 });
 
 // Update a evaluation by id
-evaluationRouter.patch('/evaluation/:id', async (req, res) => {
+evaluationRouter.put('/evaluation/:id', async (req, res) => {
   try {
     const evaluation = await Evaluation.findById(req.params.id);
     if (!evaluation) {
       return res.status(404).send({ message: "Evaluation not found" });
     }
 
-    let newSupervisorsAdded = [];
+    const updatedSupervisorIds = new Set(req.body.supervisorIds || []);
+    const existingSupervisorIds = new Set(evaluation.supervisorIds.map(id => id.toString()));
 
-    if (Array.isArray(req.body.supervisorIds)) {
-      const existingSupervisors = new Set(evaluation.supervisorIds.map(id => id.toString()));
-      const newSupervisors = req.body.supervisorIds.filter(id => !existingSupervisors.has(id));
+    // Identify new supervisors
+    const newSupervisors = [...updatedSupervisorIds].filter(id => !existingSupervisorIds.has(id));
 
-      if (newSupervisors.length > 0) {
-        newSupervisorsAdded = newSupervisors;
-        evaluation.supervisorIds.push(...newSupervisors);
+    // Replace the entire supervisor list
+    evaluation.supervisorIds = Array.from(updatedSupervisorIds);
 
-        // Send email notifications for new supervisors
-        try {
-          const newSupervisorDetails = await User.find({
-            '_id': { $in: newSupervisors }
-          });
+    // Handle new supervisors
+    if (newSupervisors.length > 0) {
+      const newSupervisorDetails = await User.find({
+        '_id': { $in: newSupervisors }
+      });
 
-          const newSupervisorNames = newSupervisorDetails.map(sup => `${sup.firstName} ${sup.lastName}`);
+      for (const supervisor of newSupervisorDetails) {
+        const verificationLink = generateVerificationLink(supervisor);
+        sendVerificationEmail(supervisor, verificationLink);
+      }
 
-          // Notify existing supervisors, teachers, and the customer about the new supervisors
-          const usersToNotify = await User.find({
-            '_id': { $in: [evaluation.customerId, evaluation.teacherId, ...evaluation.supervisorIds] }
-          });
+      // Notify existing supervisors, the customer, and possibly the teacher about new additions
+      const usersToNotifyIds = [...existingSupervisorIds, evaluation.customerId];
+      if (evaluation.teacherId) {
+        usersToNotifyIds.push(evaluation.teacherId);
+      }
 
-          usersToNotify.forEach(user => {
-            sendNotificationMail(user, newSupervisorNames);
-          });
+      const usersToNotify = await User.find({
+        '_id': { $in: usersToNotifyIds }
+      });
 
-          // Send verification email to new supervisors
-          newSupervisorDetails.forEach(supervisor => {
-            const verificationLink = generateVerificationLink(supervisor); // Ensure this function exists
-            sendVerificationEmail(supervisor, verificationLink);
-          });
-
-        } catch (userError) {
-          console.error("Error fetching users for notification: ", userError);
-        }
+      for (const user of usersToNotify) {
+        sendNotificationMail(user, newSupervisors.map(id => id.toString()));
       }
     }
 
-    // Update other fields of the evaluation as needed
-    // ...
+    // Update other fields of the evaluation as needed or add new in future
+    evaluation.workTasks = req.body.workTasks || evaluation.workTasks;
+    evaluation.workGoals = req.body.workGoals || evaluation.workGoals;
+    evaluation.completed = req.body.completed !== undefined ? req.body.completed : evaluation.completed;
+    evaluation.startDate = req.body.startDate || evaluation.startDate;
+    evaluation.endDate = req.body.endDate || evaluation.endDate;
 
-    // Save the updated evaluation
     await evaluation.save();
     res.send(evaluation);
   } catch (error) {

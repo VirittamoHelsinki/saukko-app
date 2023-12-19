@@ -67,13 +67,16 @@ userRouter.post("/", async (req, res) => {
     await newUser.save()
   
 
-    const verificationToken = newUser.generateEmailVerificationToken();
-    const verificationLink = `http://localhost:5000/verify-email/${verificationToken}`;
+    if(newUser.role !== 'supervisor') {
+      const verificationToken = newUser.generateEmailVerificationToken();
+      const verificationLink = `http://localhost:5000/verify-email/${verificationToken}`;
 
-    // Send verification email
-    sendVerificationEmail(newUser,verificationLink);
-    console.log('user created and verification email sent');
-    // send token via HTTP-only cookie
+      // Send verification email
+      sendVerificationEmail(newUser, verificationLink);
+      console.log('user created and verification email sent');
+    } else {
+      console.log('user created without verification email (role: supervisor)');
+    }
     res.status(201).json({ userId: newUser._id, message: "User created. Verification email sent." });
 
   } catch (err) {
