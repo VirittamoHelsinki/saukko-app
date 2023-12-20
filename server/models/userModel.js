@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     enum: ['customer', 'admin', 'teacher', 'supervisor'],
   },
+  emailVerified: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 // next are the methods that we can use on the User model
@@ -33,6 +37,15 @@ const userSchema = new mongoose.Schema({
 // method to check if password is correct
 userSchema.methods.isValidPassword = function isValidPassword(password) {
   return bcrypt.compareSync(password, this.passwordHash);
+};
+
+// method to generate email verification token
+userSchema.methods.generateEmailVerificationToken = function() {
+  return jwt.sign(
+    { id: this._id, email: this.email },
+    config.JWT_SECRET,
+    { expiresIn: '1d' } 
+  );
 };
 
 // method to set passwordHash

@@ -5,6 +5,7 @@ const middleURL = '/api'
 
 // Create evaluation
 const createEvaluation = async evaluation => {
+  console.log(evaluation)
   try {
     const response = await axios.post(`${baseURL}${middleURL}/evaluation/`, evaluation)
     return response.data
