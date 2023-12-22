@@ -9,6 +9,7 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import InfoList from '../../../components/InfoList/InfoList';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
+import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import Stepper from '../../../components/Stepper/Stepper';
 
@@ -25,7 +26,8 @@ function EvaluationSummary() {
   const navigate = useNavigate();
 
   // Get data from store management
-  const { customer, evaluation, workplace, department, supervisor } = useEvaluationStore();
+  const { workplace, department, supervisor } = useEvaluationStore();
+  const { customer, evaluation, resetFormData } = useEvaluationFormStore(); // Include resetFormData
   const { checkedUnits } = useUnitsStore();
   const { user } = useContext(AuthContext);
   const { setInternalEvaluations } = useContext(InternalApiContext);
@@ -99,13 +101,17 @@ function EvaluationSummary() {
       userRequestData.lastName !== null &&
       userRequestData.email !== null
     ) {
-      const response = await registration(userRequestData)
-      const userId = response.data.userId
+      const response = await registration(userRequestData);
+      const userId = response.data.userId;
       handleEvaluationPostReq(userId);
+      
+      // Reset form data after successful submission
+      resetFormData();
     } else {
-      setErrorNotification(true)
+      setErrorNotification(true);
     }
-  }
+  };
+  
   
   const handleEvaluationPostReq = async (userId) => {
 
