@@ -1,5 +1,6 @@
-// import dotenv from 'dotenv'
+
 require('dotenv').config()
+
 
 const ENVIRONMENT = process.env.NODE_ENV
 

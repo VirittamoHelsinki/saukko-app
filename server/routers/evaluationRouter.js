@@ -50,7 +50,7 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
 evaluationRouter.get('/evaluation/', async (req, res) => {
   try {
     const evaluations = await Evaluation.find()
-    .populate('customerId teacherId supervisorId', 'firstName lastName');
+    .populate('customerId teacherId supervisorIds', 'firstName lastName');
     res.send(evaluations);
   } catch (error) {
     res.status(500).send(error);
