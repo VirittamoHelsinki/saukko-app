@@ -21,6 +21,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material';
 
 function SpecifyTasks() {
   const navigate = useNavigate();
@@ -137,8 +138,21 @@ function SpecifyTasks() {
             data={stepperData}
           />
           <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
-          <Box>
+          <Box sx={{ flexGrow: 1, fontWeight: 'bold' }}>
+            <Paper
+              square
+              elevation={0}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                height: 50,
+                pl: 2,
+                bgcolor: 'background.default',
+              }}
+            >
+            </Paper>
             <MobileStepper
+              variant='text'
               steps={maxSteps}
               position='static'
               activeStep={activeStep}
@@ -147,6 +161,7 @@ function SpecifyTasks() {
                   size='small'
                   onClick={handleNext}
                   disabled={activeStep === maxSteps - 1}
+                  sx={{fontWeight: 'bold'}}
                 >
                   Seuraava
                   {theme.direction === 'rtl' ? (
@@ -161,6 +176,7 @@ function SpecifyTasks() {
                   size='small'
                   onClick={handleBack}
                   disabled={activeStep === 0}
+                  sx={{fontWeight: 'bold'}}
                 >
                   {theme.direction === 'rtl' ? (
                     <KeyboardArrowRight />
