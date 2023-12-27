@@ -59,7 +59,7 @@ function SpecifyTasks() {
     },
   ];
 
-  // Dots Stepper
+  // Text Stepper
   const theme = useTheme();
   const maxSteps = checkedUnits.length;
 
@@ -137,13 +137,26 @@ function SpecifyTasks() {
             data={stepperData}
           />
           <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
-          <Box>
+          <Box sx={{ flexGrow: 1, fontWeight: 'bold' }}>
+            <Paper
+              square
+              elevation={0}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                height: 50,
+                pl: 2,
+                bgcolor: 'background.default',
+              }}
+             />
             <MobileStepper
+              variant='text'
               steps={maxSteps}
               position='static'
               activeStep={activeStep}
               nextButton={
                 <Button
+                  sx={{fontWeight: 'bold'}}
                   size='small'
                   onClick={handleNext}
                   disabled={activeStep === maxSteps - 1}
@@ -158,6 +171,7 @@ function SpecifyTasks() {
               }
               backButton={
                 <Button
+                  sx={{fontWeight: 'bold'}}
                   size='small'
                   onClick={handleBack}
                   disabled={activeStep === 0}
