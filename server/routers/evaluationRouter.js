@@ -124,6 +124,7 @@ evaluationRouter.put('/evaluation/:id', async (req, res) => {
     evaluation.completed = req.body.completed !== undefined ? req.body.completed : evaluation.completed;
     evaluation.startDate = req.body.startDate || evaluation.startDate;
     evaluation.endDate = req.body.endDate || evaluation.endDate;
+    evaluation.units = req.body.units || evaluation.units;
 
     await evaluation.save();
     res.send(evaluation);
