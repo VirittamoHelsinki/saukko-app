@@ -12,12 +12,25 @@ function generateVerificationLink(user) {
 
 // Create a new evaluation
 evaluationRouter.post('/evaluation/', async (req, res) => {
+  const evaluationData = req.body;
+
   try {
     // Check if single supervisorId is provided and convert it to an array
     if (req.body.supervisorId) {
       req.body.supervisorIds = [req.body.supervisorId];
       delete req.body.supervisorId; // Optional: Remove the original supervisorId field
     }
+
+
+    if (!evaluationData.units) {
+      evaluationData.units = []; // Default units array
+    }
+
+    evaluationData.units.forEach(unit => {
+      if (!unit.assessments || unit.assessments.length === 0) {
+        unit.assessments = [{ /* default assessment values */ }];
+      }
+    });
 
     const evaluation = new Evaluation(req.body);
     await evaluation.save();
@@ -31,7 +44,7 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
           const supervisor = await User.findById(supervisorId);
           if (supervisor) {
             const verificationLink = generateVerificationLink(supervisor);
-            sendVerificationEmail(supervisor, verificationLink); // Assuming this function is implemented
+            sendVerificationEmail(supervisor, verificationLink);
           }
         } catch (userError) {
           console.error("Error fetching supervisor for notification: ", userError);
@@ -45,7 +58,6 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
     res.status(400).send(error);
   }
 });
-
 // Get all evaluations
 evaluationRouter.get('/evaluation/', async (req, res) => {
   try {
