@@ -28,11 +28,11 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
 
     evaluationData.units.forEach(unit => {
       if (!unit.assessments || unit.assessments.length === 0) {
-        unit.assessments = [{ /* default assessment values */ }];
+        unit.assessments = [{ }];
       }
     });
 
-    const evaluation = new Evaluation(req.body);
+    const evaluation = new Evaluation(evaluationData);
     await evaluation.save();
 
     console.log(evaluation)
@@ -44,7 +44,7 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
           const supervisor = await User.findById(supervisorId);
           if (supervisor) {
             const verificationLink = generateVerificationLink(supervisor);
-            sendVerificationEmail(supervisor, verificationLink);
+            sendVerificationEmail(supervisor, verificationLink); // Assuming this function is implemented
           }
         } catch (userError) {
           console.error("Error fetching supervisor for notification: ", userError);
@@ -56,16 +56,6 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
     res.status(201).send(evaluation);
   } catch (error) {
     res.status(400).send(error);
-  }
-});
-// Get all evaluations
-evaluationRouter.get('/evaluation/', async (req, res) => {
-  try {
-    const evaluations = await Evaluation.find()
-    .populate('customerId teacherId supervisorIds', 'firstName lastName');
-    res.send(evaluations);
-  } catch (error) {
-    res.status(500).send(error);
   }
 });
 
