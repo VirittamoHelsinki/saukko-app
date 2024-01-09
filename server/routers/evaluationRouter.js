@@ -59,6 +59,26 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
   }
 });
 
+// Get all evaluations
+evaluationRouter.get('/evaluation/', async (req, res) => {
+  try {
+    const evaluations = await Evaluation.find()
+      .populate('customerId', 'firstName lastName')
+      .populate('teacherId', 'firstName lastName')
+      .populate('supervisorIds', 'firstName lastName')
+      .populate('workplaceId'); // Populate other necessary fields
+
+    res.send(evaluations);
+    console.log(evaluations)
+  } catch (error) {
+    console.error("Error occurred in GET /evaluation/: ", error);
+    res.status(500).send({
+      message: "Failed to fetch evaluations",
+      error: error.message
+    });
+  }
+});
+
 // Get a single evaluation by id
 evaluationRouter.get('/evaluation/:id', async (req, res) => {
   try {
@@ -67,6 +87,8 @@ evaluationRouter.get('/evaluation/:id', async (req, res) => {
     .populate('teacherId', 'firstName lastName')
     .populate('supervisorIds', 'firstName lastName') // Changed to support multiple supervisors
     .populate('workplaceId'); // Add any other fields you need to populate
+
+    console.log(evaluation)
 
     if (!evaluation) {
       return res.status(404).send();
