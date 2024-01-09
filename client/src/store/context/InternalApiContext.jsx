@@ -73,6 +73,7 @@ export const InternalApiContextProvider = (props) => {
   const setInternalEvaluations = async () => {
     try {
       const allEvaluations = await fetchAllEvaluations();
+      console.log("allEvaluations: ", allEvaluations)
 
       // Find evaluations belonging to current user & set to state
       if (role === 'teacher') {
