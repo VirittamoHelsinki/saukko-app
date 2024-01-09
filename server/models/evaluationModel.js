@@ -40,6 +40,11 @@ const evaluationSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  status :{
+    type: Number,
+    default: 0,
+    enum: [ 0, 1, 2 ],
+ },
   degreeId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Degree', // Degree._id
