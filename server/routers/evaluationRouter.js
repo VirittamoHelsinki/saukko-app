@@ -12,6 +12,8 @@ function generateVerificationLink(user) {
 
 // Create a new evaluation
 evaluationRouter.post('/evaluation/', async (req, res) => {
+  const evaluationData = req.body;
+
   try {
     // Check if single supervisorId is provided and convert it to an array
     if (req.body.supervisorId) {
@@ -19,7 +21,18 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
       delete req.body.supervisorId; // Optional: Remove the original supervisorId field
     }
 
-    const evaluation = new Evaluation(req.body);
+
+    if (!evaluationData.units) {
+      evaluationData.units = []; // Default units array
+    }
+
+    evaluationData.units.forEach(unit => {
+      if (!unit.assessments || unit.assessments.length === 0) {
+        unit.assessments = [{ }];
+      }
+    });
+
+    const evaluation = new Evaluation(evaluationData);
     await evaluation.save();
 
     console.log(evaluation)
@@ -43,17 +56,6 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
     res.status(201).send(evaluation);
   } catch (error) {
     res.status(400).send(error);
-  }
-});
-
-// Get all evaluations
-evaluationRouter.get('/evaluation/', async (req, res) => {
-  try {
-    const evaluations = await Evaluation.find()
-    .populate('customerId teacherId supervisorIds', 'firstName lastName');
-    res.send(evaluations);
-  } catch (error) {
-    res.status(500).send(error);
   }
 });
 
