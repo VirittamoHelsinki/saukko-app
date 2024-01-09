@@ -17,6 +17,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 function EvaluationForm() {
   const navigate = useNavigate();
 
@@ -51,6 +52,24 @@ function EvaluationForm() {
   const handleCloseAllFields = () => setOpenNotificationModalAllFields(false);
   const handleCloseEmail = () => setOpenNotificationModalEmail(false);
   const handleCloseDate = () => setOpenNotificationModalDate(false);
+
+  const [showWarningModal, setShowWarningModal] = useState(false);
+
+  const handleBack = () => {
+    // Display a warning modal before navigating to '/admin-menu'
+    setShowWarningModal(true);
+  };
+
+  const handleConfirmBack = () => {
+    // User confirmed, navigate to '/admin-menu'
+    setShowWarningModal(false);
+    
+  };
+
+  const handleCancelBack = () => {
+    // User canceled, close the warning modal
+    setShowWarningModal(false);
+  };
 
   // Handle form submission
   const handleSubmit = (e) => {
@@ -188,26 +207,26 @@ return (
         <div className='form__startDate'>
           <label>Asiakkuuden aloituspäivä *</label>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <ThemeProvider theme={theme}>
-              <DesktopDatePicker 
-                format='DD.MM.YYYY'
-                value={startDate}
-                onChange={(date) => setStartDate(date)}
-              />
-            </ThemeProvider>
-          </LocalizationProvider>
-        </div>
-        <div className='form__endDate'>
-          <label>Asiakkuuden lopetuspäivä *</label>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <ThemeProvider theme={theme}>
-              <DesktopDatePicker 
-                format='DD.MM.YYYY'
-                value={endDate}
-                onChange={(date) => setEndDate(date)}
-              />
-            </ThemeProvider>
-          </LocalizationProvider>
+  <ThemeProvider theme={theme}>
+    <DesktopDatePicker 
+      format='DD.MM.YYYY'
+      value={startDate}
+      onChange={(date) => setStartDate(date)}
+    />
+  </ThemeProvider>
+</LocalizationProvider>
+
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+  <ThemeProvider theme={theme}>
+    <DesktopDatePicker 
+      format='DD.MM.YYYY'
+      value={endDate}
+      onChange={(date) => setEndDate(date)}
+      minDate={startDate}  // Set minDate to startDate
+    />
+  </ThemeProvider>
+</LocalizationProvider>
+
         </div>
         <div className='form__extensionEndDate'>
           <label className='disabled'>Täydennysjakson päättymispäivä *</label>
@@ -239,7 +258,7 @@ return (
         </div>
       </form>
 
-      <PageNavigationButtons handleBack={() => navigate(`/admin-menu`)} handleForward={handleSubmit} />
+      <PageNavigationButtons handleBack={handleBack} handleForward={handleSubmit} />
     </section>
     <NotificationModal
       type='warning'
@@ -262,10 +281,27 @@ return (
       open={openNotificationModalDate}
       handleClose={handleCloseDate}
     />
+    <NotificationModal
+  type='alert'
+  title='Varoitus: Lomakkeen tiedot menetetään'
+  body='Oletko varma, että haluat poistua sivulta?'
+  open={showWarningModal}
+  handleClose={handleCancelBack}
+  handleConfirm={handleConfirmBack}
+/>
+
     <UserNav />
   </main>
 );
 }
 
 export default EvaluationForm;
+
+
+
+
+
+
+
+
 

@@ -25,7 +25,7 @@ const TeacherPerformanceFeedBack = () => {
 
   const infodata = [
     {
-      info: 'Osaamistaso',
+      info: 'Itsearviointi',
       disabled: true,
     },
     {
