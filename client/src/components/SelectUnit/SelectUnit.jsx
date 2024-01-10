@@ -38,10 +38,10 @@ function SelectUnit({ unit, allUnits }) {
       <p>
         <b>{getUnitNumber(unit._id)}.</b> {unit.name.fi}
       </p>
-      <Icon
+      {/*<Icon
         icon='iconamoon:arrow-right-2-light'
         className='selectUnit__container--units-unit-arrow'
-      />
+      />*/}
     </div>
   );
 }
