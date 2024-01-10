@@ -10,6 +10,7 @@ function generateVerificationLink(user) {
   return `http://localhost:5000/verify-email/${verificationToken}`;
 }
 
+
 // Create a new evaluation
 evaluationRouter.post('/evaluation/', async (req, res) => {
   const evaluationData = req.body;
@@ -59,6 +60,7 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
   }
 });
 
+
 // Get all evaluations
 evaluationRouter.get('/evaluation/', async (req, res) => {
   try {
@@ -78,6 +80,7 @@ evaluationRouter.get('/evaluation/', async (req, res) => {
     });
   }
 });
+
 
 // Get a single evaluation by id
 evaluationRouter.get('/evaluation/:id', async (req, res) => {
@@ -99,64 +102,98 @@ evaluationRouter.get('/evaluation/:id', async (req, res) => {
   }
 });
 
+
 // Update a evaluation by id
 evaluationRouter.put('/evaluation/:id', async (req, res) => {
   try {
-    const evaluation = await Evaluation.findById(req.params.id);
-    if (!evaluation) {
-      return res.status(404).send({ message: "Evaluation not found" });
+        const evaluation = await Evaluation.findById(req.params.id);
+
+        if (!evaluation) {
+        return res.status(404).send({ message: "Evaluation not found" });
+        }
+
+        const updatedSupervisorIds = new Set(req.body.supervisorIds || []);
+        const existingSupervisorIds = new Set(evaluation.supervisorIds.map(id => id.toString()));
+
+        // Identify new supervisors
+        const newSupervisors = [...updatedSupervisorIds].filter(id => !existingSupervisorIds.has(id));
+
+        // Replace the entire supervisor list
+        evaluation.supervisorIds = Array.from(updatedSupervisorIds);
+
+        // Handle new supervisors
+        if (newSupervisors.length > 0) {
+        const newSupervisorDetails = await User.find({
+          '_id': { $in: newSupervisors }
+        }
+      );
+
+        for (const supervisor of newSupervisorDetails) {
+          const verificationLink = generateVerificationLink(supervisor);
+          sendVerificationEmail(supervisor, verificationLink);
+        }
+
+        // Notify existing supervisors, the customer, and possibly the teacher about new additions
+        const usersToNotifyIds = [...existingSupervisorIds, evaluation.customerId];
+        if (evaluation.teacherId) {
+          usersToNotifyIds.push(evaluation.teacherId);
+        }
+
+        const usersToNotify = await User.find({
+          '_id': { $in: usersToNotifyIds }
+        }
+      );
+
+        for (const user of usersToNotify) {
+          sendNotificationMail(user, newSupervisors.map(id => id.toString()));
+        }
+      }
+
+        // Update units based on assessments and ready status
+        evaluation.units = req.body.units.map(unit => {
+
+        let allAssessmentsCompleted = true;
+        let anyAssessmentInProgress = false;
+
+        // Check if any assessment is in progress or all assessments are completed
+        unit.assessments.forEach(assessment => {
+          const { answer, answerTeacher, answerSupervisor } = assessment;
+          if ([answer, answerTeacher, answerSupervisor].some(ans => ans === 1 || ans === 2)) {
+            anyAssessmentInProgress = true;
+          }
+          if ([answer, answerTeacher, answerSupervisor].some(ans => ans === 0)) {
+            allAssessmentsCompleted = false;
+          }
+        }
+      );
+
+        // Check if all assessments are completed or the unit is marked as ready
+        if (allAssessmentsCompleted || unit.ready) {
+          unit.status = 2; // All assessments completed or unit is ready
+        } else if (anyAssessmentInProgress) {
+          unit.status = 1; // At least one assessment in progress
+        }
+
+        return unit;
+      }
+    );
+
+      // Update other fields of the evaluation as needed or add new in future
+      evaluation.workTasks = req.body.workTasks || evaluation.workTasks;
+      evaluation.workGoals = req.body.workGoals || evaluation.workGoals;
+      evaluation.completed = req.body.completed !== undefined ? req.body.completed : evaluation.completed;
+      evaluation.startDate = req.body.startDate || evaluation.startDate;
+      evaluation.endDate = req.body.endDate || evaluation.endDate;
+      evaluation.units = req.body.units || evaluation.units;
+
+      await evaluation.save();
+      res.send(evaluation);
+    } catch (error) {
+      console.error("Error updating evaluation: ", error);
+      res.status(400).send({ message: "Error updating evaluation", error: error.message });
     }
-
-    const updatedSupervisorIds = new Set(req.body.supervisorIds || []);
-    const existingSupervisorIds = new Set(evaluation.supervisorIds.map(id => id.toString()));
-
-    // Identify new supervisors
-    const newSupervisors = [...updatedSupervisorIds].filter(id => !existingSupervisorIds.has(id));
-
-    // Replace the entire supervisor list
-    evaluation.supervisorIds = Array.from(updatedSupervisorIds);
-
-    // Handle new supervisors
-    if (newSupervisors.length > 0) {
-      const newSupervisorDetails = await User.find({
-        '_id': { $in: newSupervisors }
-      });
-
-      for (const supervisor of newSupervisorDetails) {
-        const verificationLink = generateVerificationLink(supervisor);
-        sendVerificationEmail(supervisor, verificationLink);
-      }
-
-      // Notify existing supervisors, the customer, and possibly the teacher about new additions
-      const usersToNotifyIds = [...existingSupervisorIds, evaluation.customerId];
-      if (evaluation.teacherId) {
-        usersToNotifyIds.push(evaluation.teacherId);
-      }
-
-      const usersToNotify = await User.find({
-        '_id': { $in: usersToNotifyIds }
-      });
-
-      for (const user of usersToNotify) {
-        sendNotificationMail(user, newSupervisors.map(id => id.toString()));
-      }
-    }
-
-    // Update other fields of the evaluation as needed or add new in future
-    evaluation.workTasks = req.body.workTasks || evaluation.workTasks;
-    evaluation.workGoals = req.body.workGoals || evaluation.workGoals;
-    evaluation.completed = req.body.completed !== undefined ? req.body.completed : evaluation.completed;
-    evaluation.startDate = req.body.startDate || evaluation.startDate;
-    evaluation.endDate = req.body.endDate || evaluation.endDate;
-    evaluation.units = req.body.units || evaluation.units;
-
-    await evaluation.save();
-    res.send(evaluation);
-  } catch (error) {
-    console.error("Error updating evaluation: ", error);
-    res.status(400).send({ message: "Error updating evaluation", error: error.message });
   }
-});
+);
 
 // Delete a evaluation by id
 evaluationRouter.delete('/evaluation/:id', async (req, res) => {
