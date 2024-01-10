@@ -7,6 +7,7 @@ import Button from '../../../components/Button/Button';
 import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
 import useStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
+import { Icon } from '@iconify/react';
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
@@ -61,8 +62,7 @@ const UserPerformance = () => {
         <ul>
           {mockdata.map((data, index) => (
             <li key={index}>
-              <p className='para-title-style'>{data.title}</p>
-              {user?.role === 'teacher' ? <TeacherPerformanceFeedBack /> : <PerformancesFeedback />}
+              <p className='para-title-style'>{data.title} <span style={{marginTop: "5px"}}> <Icon icon="material-symbols:info" color="#1769aa" style={{ verticalAlign: 'middle' }}/></span></p>              {user?.role === 'teacher' ? <TeacherPerformanceFeedBack /> : <PerformancesFeedback />}
             </li>
           ))}
         </ul>
