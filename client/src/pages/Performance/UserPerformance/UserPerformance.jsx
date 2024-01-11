@@ -8,6 +8,7 @@ import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/T
 import useStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
 import { Icon } from '@iconify/react';
+import BasicModal from '../../../components/Modal/Modal';
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
@@ -16,12 +17,24 @@ const UserPerformance = () => {
   const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
 
+  // Modal for criteria info
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const mockdata = [
     {
       title: 'Opiskelija toimii tieto- ja viestintätekniikan työtehtävissä',
     },
     {
-      title: 'Opiskelija tekee tiedonhakua ja ratkaisee tieto- ja viestintätekniikan ongelmia',
+      title:
+        'Opiskelija tekee tiedonhakua ja ratkaisee tieto- ja viestintätekniikan ongelmia',
     },
     {
       title: 'Opiskelija käyttää tietoteknistä ympäristöä',
@@ -52,9 +65,19 @@ const UserPerformance = () => {
   return (
     <main>
       <div>
-        <WavesHeader title="Saukko" secondTitle={`Tervetuloa, ${user?.firstName}`} />
+        <WavesHeader
+          title='Saukko'
+          secondTitle={`Tervetuloa, ${user?.firstName}`}
+        />
       </div>
-      <h2 style={{ textAlign: 'center', fontSize: '18px', textDecoration: 'underline', marginTop: '58%' }}>
+      <h2
+        style={{
+          textAlign: 'center',
+          fontSize: '18px',
+          textDecoration: 'underline',
+          marginTop: '58%',
+        }}
+      >
         Ammattitaitovaatimukset
       </h2>
 
@@ -62,14 +85,48 @@ const UserPerformance = () => {
         <ul>
           {mockdata.map((data, index) => (
             <li key={index}>
-              <p className='para-title-style'>{data.title} <span style={{marginTop: "5px"}}> <Icon icon="material-symbols:info" color="#1769aa" style={{ verticalAlign: 'middle' }}/></span></p>              {user?.role === 'teacher' ? <TeacherPerformanceFeedBack /> : <PerformancesFeedback />}
+              <div  style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  margin: '0 15px 0 0'
+                }}>
+                <div>
+                  <p className='para-title-style'>{data.title} </p>
+                </div>
+                <div>
+                  <Icon
+                    icon='material-symbols:info'
+                    color='#1769aa'
+                    style={{ verticalAlign: 'middle', fontSize: '21px' }}
+                    cursor={'pointer'}
+                    onClick={handleOpenModal}
+                  />
+              </div>
+              </div>
+              {user?.role === 'teacher' ? (
+                <TeacherPerformanceFeedBack />
+              ) : (
+                <PerformancesFeedback />
+              )}
             </li>
           ))}
         </ul>
       </div>
-      <h2 style={{ textAlign: 'center', fontSize: '18px', textDecoration: 'underline', marginTop: '40px' }}> </h2>
-      <form action="">
-        <p className='para-title-style'>{user?.role === 'customer' ? "Lisätietoa" : "Palaute"}</p>
+      <h2
+        style={{
+          textAlign: 'center',
+          fontSize: '18px',
+          textDecoration: 'underline',
+          marginTop: '40px',
+        }}
+      >
+        {' '}
+      </h2>
+      <form action=''>
+        <p className='para-title-style'>
+          {user?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
+        </p>
         <textarea
           rows={8}
           cols={38}
@@ -91,6 +148,9 @@ const UserPerformance = () => {
       <div style={{ marginBottom: '90px' }}>
         <UserNav></UserNav>
       </div>
+
+      {/* Modal for showing criteria */}
+      <BasicModal open={isModalOpen} handleClose={handleCloseModal} />
       <NotificationModal
         type='success'
         title='Lähetetty'
@@ -102,16 +162,3 @@ const UserPerformance = () => {
 };
 
 export default UserPerformance;
-
-
-
-
-
-
-
-
-
-
-
-
-
