@@ -8,7 +8,7 @@ import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/T
 import useStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
 import { Icon } from '@iconify/react';
-import BasicModal from '../../../components/Modal/Modal';
+import CriteriaModal from '../../../components/CriteriaModal/CriteriaModal';
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
@@ -18,14 +18,14 @@ const UserPerformance = () => {
   const [textareaValue, setTextareaValue] = useState('');
 
   // Modal for criteria info
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
+  const handleOpenCriteriaModal = () => {
+    setIsCriteriaModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseCriteriaModal = () => {
+    setIsCriteriaModalOpen(false);
   };
 
   const mockdata = [
@@ -100,7 +100,7 @@ const UserPerformance = () => {
                     color='#1769aa'
                     style={{ verticalAlign: 'middle', fontSize: '21px' }}
                     cursor={'pointer'}
-                    onClick={handleOpenModal}
+                    onClick={handleOpenCriteriaModal}
                   />
               </div>
               </div>
@@ -150,7 +150,7 @@ const UserPerformance = () => {
       </div>
 
       {/* Modal for showing criteria */}
-      <BasicModal open={isModalOpen} handleClose={handleCloseModal} />
+      <CriteriaModal open={isCriteriaModalOpen} handleClose={handleCloseCriteriaModal} />
       <NotificationModal
         type='success'
         title='Lähetetty'

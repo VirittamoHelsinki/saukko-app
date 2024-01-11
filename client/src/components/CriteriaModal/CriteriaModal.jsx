@@ -41,7 +41,7 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-export default function BasicModal({ open, handleClose}) {
+export default function CriteriaModal({ open, handleClose}) {
   let bgColor = '#e5eff8';
   let color = '#0062b9';
 
