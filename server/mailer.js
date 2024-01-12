@@ -31,6 +31,9 @@ const sendEmail = async ({ to, subject, html }) => {
   }
 };
 
+// Make sure to get the data that mails will be using from Client and product owner and change the text to be more suitable for the project"
+// "Place holder text need to be changed once its been agreed with the client what the email should say"
+
 // Function for sending reset password email
 const sendResetPasswordEmail = (user) => {
   const subject = 'Reset Your Password';
@@ -38,8 +41,7 @@ const sendResetPasswordEmail = (user) => {
     <p>Hi ${user.firstName},</p>
     <p>Please click the following link to reset your password:</p>
     <a href="${user.generateResetPasswordLink()}">Reset Password</a>
-  `;// Place holder text need to be changed once its been agreed with the client what the email should say
-
+  `; // Place holder text need to be changed once its been agreed with the client what the email should say
 
   sendEmail({ to: user.email, subject, html });
 };
@@ -51,7 +53,7 @@ const sendVerificationEmail = (user, verificationLink) => {
     <p>Hello ${user.firstName},</p>
     <p>Please click the link below to verify your email address and change you password: </p>
     <a href="${verificationLink}">Verify Email</a>
-  `;// Place holder text need to be changed once its been agreed with the client what the email should say
+  `; // Place holder text need to be changed once its been agreed with the client what the email should say
 
   sendEmail({ to: user.email, subject, html });
 };
@@ -62,7 +64,16 @@ const sendNotificationMail = (user, newSupervisors) => {
     <p>Hi ${user.firstName},</p>
     <p>New supervisors have been added to your evaluation.</p>
     <p>Supervisors: ${newSupervisors.join(', ')}</p>
-  `;
+  `; // Place holder text need to be changed once its been agreed with the client what the email should say
+  sendEmail({ to: user.email, subject, html });
+};
+
+const sendUserMail = (user, message) => {
+  const subject = 'test bla bla bla';
+  const html = `
+  <p> moikka ${user.firstName},</p>
+  <p>${message}</p>
+  `; // Place holder text need to be changed once its been agreed with the client what the email should say
   sendEmail({ to: user.email, subject, html });
 };
 
@@ -70,5 +81,6 @@ const sendNotificationMail = (user, newSupervisors) => {
 module.exports = {
   sendResetPasswordEmail,
   sendVerificationEmail,
-  sendNotificationMail
+  sendNotificationMail,
+  sendUserMail,
 };
