@@ -137,6 +137,7 @@ function SpecifyTasks() {
             data={stepperData}
           />
           <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
+          <h3 className='degree-guidance'>Muokkaa tutkinnonosa</h3>
           <Box sx={{ flexGrow: 1, fontWeight: 'bold' }}>
             <Paper
               square
@@ -146,49 +147,50 @@ function SpecifyTasks() {
                 alignItems: 'center',
                 height: 50,
                 pl: 2,
-                bgcolor: 'background.default',
               }}
              />
-            <MobileStepper
-              variant='text'
-              steps={maxSteps}
-              position='static'
-              activeStep={activeStep}
-              nextButton={
-                <Button
-                  sx={{fontWeight: 'bold'}}
-                  size='small'
-                  onClick={handleNext}
-                  disabled={activeStep === maxSteps - 1}
-                >
-                  Seuraava
-                  {theme.direction === 'rtl' ? (
-                    <KeyboardArrowLeft />
-                  ) : (
-                    <KeyboardArrowRight />
-                  )}
-                </Button>
-              }
-              backButton={
-                <Button
-                  sx={{fontWeight: 'bold'}}
-                  size='small'
-                  onClick={handleBack}
-                  disabled={activeStep === 0}
-                >
-                  {theme.direction === 'rtl' ? (
-                    <KeyboardArrowRight />
-                  ) : (
-                    <KeyboardArrowLeft />
-                  )}
-                  Edellinen
-                </Button>
-              }
-            />
             <Paper square elevation={0}>
               <form>
-                <h3>{checkedUnits[activeStep]?.name?.fi}</h3>
-
+                <h3 className='degree-guidance'>Lisää ammattivaatimukset ja kriteerit</h3>
+                <MobileStepper
+                  sx={{bgcolor: '#f2f2f2', borderBottom:'3px solid #333'}} 
+                  variant='text'
+                  steps={maxSteps}
+                  position='static'
+                  activeStep={activeStep}
+                  nextButton={
+                  <Button
+                    sx={{fontWeight: 'bold', color:'#000000'}}
+                    size='small'
+                    onClick={handleNext}
+                    disabled={activeStep === maxSteps - 1}
+                  >
+                    Seuraava
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowLeft />
+                    ) : (
+                      <KeyboardArrowRight />
+                    )}
+                  </Button>
+                  }
+                  backButton={
+                  <Button
+                    sx={{fontWeight: 'bold', color:'#000000'}}
+                    size='small'
+                    onClick={handleBack}
+                    disabled={activeStep === 0}
+                  >
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowRight />
+                    ) : (
+                      <KeyboardArrowLeft />
+                    )}
+                    Edellinen
+                  </Button>
+                    }
+                  />
+                <h3 className='unit-guidance'>{checkedUnits[activeStep]?.name?.fi}</h3>
+                {/* those functionality will come modal 
                 {inputFields[activeStep]?.map((textField, index) => (
                   <div key={index}>
                     <input
@@ -204,13 +206,13 @@ function SpecifyTasks() {
                       }
                     />
                   </div>
-                ))}
+                ))} */}
                 <Button
                   onClick={handleAddTextField}
                   className='add-criteria-btn'
                   sx={{ paddingLeft: 0, textTransform: 'none' }}
                 >
-                  + Lisää arviointikriteeri
+                  + Lisää ammattitaitovaatimukset
                 </Button>
               </form>
             </Paper>

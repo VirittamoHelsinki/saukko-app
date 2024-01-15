@@ -87,10 +87,10 @@ function DegreeUnits() {
           data={stepperData}
         />
         <h1>{degreeFound ? degree?.name.fi : degreeName}</h1>
-        <Searchbar
+        {/* <Searchbar
           handleSearch={handleSearch}
           placeholder={'Etsi tutkinnonosat'}
-        />
+        /> */}
 
         <div className='degreeUnits__container--units'>
           {currentUnits
