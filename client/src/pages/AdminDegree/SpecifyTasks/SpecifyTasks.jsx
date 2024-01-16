@@ -21,23 +21,10 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 import { useTheme } from '@mui/material/styles';
+import DisplayDataFromInputModal from '../DisplayDataFromInputModal/DisplayDataFromInputModal';
 
 // Import criteria modal
-import CriteriaModal from '../../../components/CriteriaModal/CriteriaModal';
-
-// Component to display saved data
-const DisplayDataComponent = ({ savedData }) => {
-  return (
-    <div>
-      <h2>Saved Data</h2>
-      <ol>
-        {savedData.map((data, index) => (
-          <li key={index}>{data}</li>
-        ))}
-      </ol>
-    </div>
-  );
-};
+import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 
 function SpecifyTasks() {
   const navigate = useNavigate();
@@ -61,10 +48,11 @@ function SpecifyTasks() {
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   // Saved data from modal
-  const [savedData, setSavedData] = useState([]);
+  const [savedDataTitle, setSavedDataTitle] = useState([]);
 
-  const handleSave = (data) => {
-    setSavedData((prevData) => [...prevData, data]);
+  const handleSave = (title) => {
+    setSavedDataTitle((prevTitle) => [...prevTitle, title]);
+    handleCloseCriteriaModal();
   };
 
   // Labels and urls for stepper
@@ -226,6 +214,10 @@ function SpecifyTasks() {
               <h3 className='unit-guidance'>
                 {checkedUnits[activeStep]?.name?.fi}
               </h3>
+              <div>
+                <DisplayDataFromInputModal savedDataTitle={savedDataTitle} />
+              </div>
+
               {/* those functionality will come modal 
                 {inputFields[activeStep]?.map((textField, index) => (
                   <div key={index}>
@@ -243,7 +235,7 @@ function SpecifyTasks() {
                     />
                   </div>
                 ))} */}
-              <CriteriaModal
+              <RequirementsAndCriteriaModal
                 open={isCriteriaModalOpen}
                 handleClose={handleCloseCriteriaModal}
                 onSave={handleSave}
@@ -260,9 +252,6 @@ function SpecifyTasks() {
                 + Lisää ammattitaitovaatimukset
               </Button>
             </form>
-            <div>
-              <DisplayDataComponent savedData={savedData} />
-            </div>
           </Paper>
         </Box>
 

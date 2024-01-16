@@ -8,8 +8,7 @@ import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/T
 import useStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
 import { Icon } from '@iconify/react';
-import CriteriaModal from '../../../components/CriteriaModal/CriteriaModal';
-
+import CriteriaModal from '../../../components/RequirementsAndCriteriaModal/CriteriaModal';
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
   const user = auth.user;

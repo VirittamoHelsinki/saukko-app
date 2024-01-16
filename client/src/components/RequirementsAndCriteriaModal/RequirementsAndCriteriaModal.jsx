@@ -43,7 +43,7 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-export default function CriteriaModal({ open, handleClose, onSave }) {
+export default function RequirementsAndCriteriaModal({ open, handleClose, onSave }) {
   let bgColor = '#e5eff8';
   let color = '#0062b9';
   const [inputValueTitle, setInputValueTitle] = useState('');
