@@ -21,7 +21,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 import { useTheme } from '@mui/material/styles';
-import DisplayDataFromInputModal from '../DisplayDataFromInputModal/DisplayDataFromInputModal';
+import DisplayDataFromInputModal from '../../../components/DisplayDataFromInputModal/DisplayDataFromInputModal';
 
 // Import criteria modal
 import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';

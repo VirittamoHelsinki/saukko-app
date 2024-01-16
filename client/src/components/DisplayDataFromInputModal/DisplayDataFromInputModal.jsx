@@ -1,5 +1,4 @@
 import { Icon } from '@iconify/react';
-import './displayDataFromInputModal.scss';
 
 const DisplayDataFromInputModal = ({ savedDataTitle }) => {
     return (
@@ -10,7 +9,7 @@ const DisplayDataFromInputModal = ({ savedDataTitle }) => {
               key={index}
               className='list_group_skills_title'
             >
-              <span>
+              <span className='title' style={{ flex: '1' }} >
                 {index + 1}. {title}{' '}
               </span>
               <span>
