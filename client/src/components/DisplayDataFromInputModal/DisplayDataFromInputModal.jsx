@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import './displayDataFromInputModal.scss'
 
 const DisplayDataFromInputModal = ({ savedDataTitle }) => {
     return (
@@ -7,9 +8,9 @@ const DisplayDataFromInputModal = ({ savedDataTitle }) => {
           {savedDataTitle.map((title, index) => (
             <li
               key={index}
-              className='list_group_skills_title'
+              className='list_group_skills_titles'
             >
-              <span className='title' style={{ flex: '1' }} >
+              <span className='title'>
                 {index + 1}. {title}{' '}
               </span>
               <span>
