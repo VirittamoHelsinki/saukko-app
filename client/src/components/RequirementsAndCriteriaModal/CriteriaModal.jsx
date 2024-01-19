@@ -6,9 +6,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
@@ -17,7 +17,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-function BootstrapDialogTitle(props) {
+function CustomDialogTitle(props) {
   const { children, onClose, ...other } = props;
 
   return (
@@ -34,20 +34,20 @@ function BootstrapDialogTitle(props) {
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CloseIcon />
+          {/* <CancelOutlinedIcon /> */}
         </IconButton>
       ) : null}
     </DialogTitle>
   );
 }
 
-export default function CriteriaModal({ open, handleClose}) {
+export default function CriteriaModal({ open, handleClose }) {
   let bgColor = '#e5eff8';
   let color = '#0062b9';
 
   return (
     <div>
-      <BootstrapDialog
+      <CustomDialog
         open={open}
         onClose={handleClose}
         aria-labelledby='customized-dialog-title'
@@ -70,12 +70,12 @@ export default function CriteriaModal({ open, handleClose}) {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
+            color: 'black',
           }}
         >
-          <CloseIcon />
+          <CancelOutlinedIcon />
         </IconButton>
-        <BootstrapDialogTitle
+        <CustomDialogTitle
           id='customized-dialog-title'
           variant='h6'
           component='h2'
@@ -83,7 +83,7 @@ export default function CriteriaModal({ open, handleClose}) {
           fontWeight='bold'
         >
           Kritteerit
-        </BootstrapDialogTitle>
+        </CustomDialogTitle>
         <DialogContent id='modal-modal-description'>
           <Box
             backgroundColor='#FFFFFF'
@@ -91,19 +91,14 @@ export default function CriteriaModal({ open, handleClose}) {
             margin='0 1rem 3rem'
           >
             <Typography padding='1rem'>
-              <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-              <p>
-                Minima enim dignissimos aliquam et animi accusantium illo
-                laboriosam pariatur inventore!
-              </p>
-              <p>
-                Fugit ullam debitis hic doloremque aperiam eum temporibus
-                deserunt amet similique.
-              </p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis
+              culpa doloremque ea commodi magnam excepturi adipisci, at libero.
+              Quod dolorem pariatur voluptatem, animi quis mollitia consequatur
+              debitis dolorum praesentium corporis.{' '}
             </Typography>
           </Box>
         </DialogContent>
-      </BootstrapDialog>
+      </CustomDialog>
     </div>
   );
 }
