@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
@@ -17,7 +17,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-function BootstrapDialogTitle(props) {
+function CustomDialogTitle(props) {
   const { children, onClose, ...other } = props;
 
   return (
@@ -47,7 +47,7 @@ export default function CriteriaModal({ open, handleClose }) {
 
   return (
     <div>
-      <BootstrapDialog
+      <CustomDialog
         open={open}
         onClose={handleClose}
         aria-labelledby='customized-dialog-title'
@@ -75,7 +75,7 @@ export default function CriteriaModal({ open, handleClose }) {
         >
           <CancelOutlinedIcon />
         </IconButton>
-        <BootstrapDialogTitle
+        <CustomDialogTitle
           id='customized-dialog-title'
           variant='h6'
           component='h2'
@@ -83,7 +83,7 @@ export default function CriteriaModal({ open, handleClose }) {
           fontWeight='bold'
         >
           Kritteerit
-        </BootstrapDialogTitle>
+        </CustomDialogTitle>
         <DialogContent id='modal-modal-description'>
           <Box
             backgroundColor='#FFFFFF'
@@ -98,7 +98,7 @@ export default function CriteriaModal({ open, handleClose }) {
             </Typography>
           </Box>
         </DialogContent>
-      </BootstrapDialog>
+      </CustomDialog>
     </div>
   );
 }

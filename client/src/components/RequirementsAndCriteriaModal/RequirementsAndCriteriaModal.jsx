@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { Button } from '@mui/material';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
   },
@@ -19,7 +19,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-function BootstrapDialogTitle(props) {
+function CustomDialogTitle(props) {
   const { children, onClose, ...other } = props;
 
   return (
@@ -67,7 +67,7 @@ export default function RequirementsAndCriteriaModal({ open, handleClose, onSave
   };
 
   return (
-    <BootstrapDialog
+    <CustomDialog
       open={open}
       onClose={handleClose}
       aria-labelledby='customized-dialog-title'
@@ -98,14 +98,14 @@ export default function RequirementsAndCriteriaModal({ open, handleClose, onSave
       >
         <CancelOutlinedIcon />
       </IconButton>
-      <BootstrapDialogTitle
+      <CustomDialogTitle
         variant='h6'
         component='h6'
         fontWeight='bold'
         sx={{ fontSize: '17px' }}
       >
         Lisää ammattitaitovaatimusta
-      </BootstrapDialogTitle>
+      </CustomDialogTitle>
       <DialogContent
         sx={{
           marginLeft: '11px',
@@ -170,6 +170,8 @@ export default function RequirementsAndCriteriaModal({ open, handleClose, onSave
           value={inputValueCriteria}
           onChange={(e) => handleInputChange(e, 2)}
           id='outlined-multiline-static'
+          rows={8}
+          cols={25}
           multiline
           variant='outlined'
           sx={{
@@ -220,6 +222,6 @@ export default function RequirementsAndCriteriaModal({ open, handleClose, onSave
           Tallenna
         </Button>
       </Box>
-    </BootstrapDialog>
+    </CustomDialog>
   );
 }
