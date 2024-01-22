@@ -5,16 +5,24 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import AuthContext from '../../../store/context/AuthContext';
 
-const TeacherPerformanceFeedBack = ({ setSelectedValues, unit, setSelectedUnitId }) => {
+const TeacherPerformanceFeedBack = ({
+  setSelectedValues,
+  unit,
+  setSelectedUnitId,
+}) => {
   const [selectedRadio, setSelectedRadio] = useState({});
   const auth = useContext(AuthContext);
   const user = auth.user;
 
-  const handleRadioChange = (e, unit) => {
-    console.log("🚀 ~ handleRadioChange ~ unit:", unit)
+  const handleRadioChange = (e, unit, info, value) => {
+    console.log('🚀 ~ handleRadioChange ~ unit:', unit);
     // console.log("🚀 ~ handleRadioChange ~ e:", e)
     setSelectedUnitId(unit._id); // This is the unit id
-    console.log("🚀 ~ handleRadioChange ~ unit._id:", unit._id)
+    console.log('🚀 ~ handleRadioChange ~ unit._id:', unit._id);
+    setSelectedRadio((prevValues) => ({
+      ...prevValues,
+      [info]: prevValues[info] === value ? '' : value,
+    }));
     if (e.target) {
       if (selectedRadio === e.target.value) {
         e.target.checked = false;
@@ -60,14 +68,17 @@ const TeacherPerformanceFeedBack = ({ setSelectedValues, unit, setSelectedUnitId
     },
   ];
 
-  
-
   return (
-    <main className='feedback__wrapper' style={{ backgroundColor: getBackgroundColor() }}>
-      <div className='first-div-style' style={{ width: '60%', marginLeft: '38%' }}>
+    <main
+      className='feedback__wrapper'
+      style={{ backgroundColor: getBackgroundColor() }}
+    >
+      <div
+        className='first-div-style'
+        style={{ width: '60%', marginLeft: '38%' }}
+      >
         <p style={{ padding: '2px' }}>Osaa ohjatusti</p>
         <p style={{ padding: '4px' }}>Osaa itsenäisesti</p>
-
       </div>
       <div>
         {infodata.map((item, index) => (
@@ -78,41 +89,36 @@ const TeacherPerformanceFeedBack = ({ setSelectedValues, unit, setSelectedUnitId
                 <RadioGroup
                   row
                   aria-labelledby='demo-form-control-label-placement'
-                  name='position'
-                  value={selectedRadio}
-                  unit={unit}
+                  name={item.info}
+                  value={selectedRadio[item.info] || ''}
+                  onClick={(e) => handleRadioChange(e, unit, item.info)}
                 >
                   <FormControlLabel
                     value='Osaa ohjatusti'
-                    // control={<Radio />}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '70px',
                       },
                     }}
-                    onChange={handleRadioChange}
-                    // disabled={item.disabled}
                     control={
                       <Radio
                         disabled={item.info !== 'Opettajan merkintä'}
-                        onChange={(e) => handleRadioChange(e, unit)}                        />
+                        onChange={(e) => handleRadioChange(e, unit, item.info)}
+                      />
                     }
                     checked={index < 2 || selectedRadio === 'Osaa ohjatusti'}
                   />
                   <FormControlLabel
                     value='Osaa itsenäisesti'
-                    // control={<Radio />}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '8%',
                       },
                     }}
-                    onChange={handleRadioChange}
-                    // disabled={item.disabled}
                     control={
                       <Radio
                         disabled={item.info !== 'Opettajan merkintä'}
-                        onChange={(e) => handleRadioChange(e, unit)}
+                        onChange={(e) => handleRadioChange(e, unit, item.info)}
                         checked={
                           item.info === 'Opettajan merkintä' &&
                           selectedRadio === 'Osaa itsenäisesti'
@@ -131,7 +137,3 @@ const TeacherPerformanceFeedBack = ({ setSelectedValues, unit, setSelectedUnitId
 };
 
 export default TeacherPerformanceFeedBack;
-
-
-
-
