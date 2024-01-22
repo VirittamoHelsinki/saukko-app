@@ -5,17 +5,38 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import AuthContext from '../../../store/context/AuthContext';
 
-const TeacherPerformanceFeedBack = () => {
-  const [selectedRadio, setSelectedRadio] = useState();
+const TeacherPerformanceFeedBack = ({ setSelectedValues, unit, setSelectedUnitId }) => {
+  const [selectedRadio, setSelectedRadio] = useState({});
   const auth = useContext(AuthContext);
   const user = auth.user;
 
-  const handleRadioChange = (e) => {
-    setSelectedRadio(e.target.value);
+  const handleRadioChange = (e, unit) => {
+    console.log("🚀 ~ handleRadioChange ~ unit:", unit)
+    // console.log("🚀 ~ handleRadioChange ~ e:", e)
+    setSelectedUnitId(unit._id); // This is the unit id
+    console.log("🚀 ~ handleRadioChange ~ unit._id:", unit._id)
+    if (e.target) {
+      if (selectedRadio === e.target.value) {
+        e.target.checked = false;
+        setSelectedRadio('');
+        setSelectedValues(0);
+      } else {
+        setSelectedRadio(e.target.value);
+        if (e.target.value === 'Osaa ohjatusti') {
+          setSelectedValues(1);
+        } else if (e.target.value === 'Osaa itsenäisesti') {
+          setSelectedValues(2);
+        }
+      }
+      console.log(e.target.value);
+    }
   };
 
   const getBackgroundColor = () => {
-    if (selectedRadio === 'top' || selectedRadio === 'start') {
+    if (
+      selectedRadio === 'Osaa ohjatusti' ||
+      selectedRadio === 'Osaa itsenäisesti'
+    ) {
       if (user?.role === 'teacher') {
         return '#FFF4B4';
       }
@@ -23,6 +44,7 @@ const TeacherPerformanceFeedBack = () => {
     return '#F2F2F2';
   };
 
+  // Mock data
   const infodata = [
     {
       info: 'Itsearviointi',
@@ -38,6 +60,7 @@ const TeacherPerformanceFeedBack = () => {
     },
   ];
 
+  
 
   return (
     <main className='feedback__wrapper' style={{ backgroundColor: getBackgroundColor() }}>
@@ -56,28 +79,46 @@ const TeacherPerformanceFeedBack = () => {
                   row
                   aria-labelledby='demo-form-control-label-placement'
                   name='position'
+                  value={selectedRadio}
+                  unit={unit}
                 >
                   <FormControlLabel
-                    value='top'
-                    control={<Radio />}
+                    value='Osaa ohjatusti'
+                    // control={<Radio />}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '70px',
                       },
                     }}
                     onChange={handleRadioChange}
-                    disabled={item.disabled}
-                    checked={item.disabled || selectedRadio === 'top'}
+                    // disabled={item.disabled}
+                    control={
+                      <Radio
+                        disabled={item.info !== 'Opettajan merkintä'}
+                        onChange={(e) => handleRadioChange(e, unit)}                        />
+                    }
+                    checked={index < 2 || selectedRadio === 'Osaa ohjatusti'}
                   />
                   <FormControlLabel
-                    value='start'
-                    control={<Radio />}
+                    value='Osaa itsenäisesti'
+                    // control={<Radio />}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '8%',
                       },
                     }}
                     onChange={handleRadioChange}
+                    // disabled={item.disabled}
+                    control={
+                      <Radio
+                        disabled={item.info !== 'Opettajan merkintä'}
+                        onChange={(e) => handleRadioChange(e, unit)}
+                        checked={
+                          item.info === 'Opettajan merkintä' &&
+                          selectedRadio === 'Osaa itsenäisesti'
+                        }
+                      />
+                    }
                   />
                 </RadioGroup>
               </FormControl>
