@@ -79,7 +79,10 @@ export const InternalApiContextProvider = (props) => {
         const matchingEvaluations = allEvaluations.filter(evaluation => evaluation.teacherId._id === user.id)
         setEvaluations(matchingEvaluations)
       } else if (role === 'supervisor') {
-        const matchingEvaluations = allEvaluations.filter(evaluation => evaluation.supervisorId._id === user.id)
+        const matchingEvaluations = allEvaluations.filter(evaluation => 
+          evaluation.supervisorIds.some(supervisor => supervisor._id === user.id)
+        )
+        console.log("🚀 ~ setInternalEvaluations ~ matchingEvaluations:", matchingEvaluations)
         setEvaluations(matchingEvaluations)
       } else if (role === 'customer') {
         const matchingEvaluation = allEvaluations.filter(evaluation => evaluation.customerId._id === user.id)
