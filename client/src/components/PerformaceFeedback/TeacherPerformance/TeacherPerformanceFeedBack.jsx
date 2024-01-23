@@ -16,7 +16,6 @@ const TeacherPerformanceFeedBack = ({
 
   const handleRadioChange = (e, unit, info, value) => {
     console.log('🚀 ~ handleRadioChange ~ unit:', unit);
-    // console.log("🚀 ~ handleRadioChange ~ e:", e)
     setSelectedUnitId(unit._id); // This is the unit id
     console.log('🚀 ~ handleRadioChange ~ unit._id:', unit._id);
     setSelectedRadio((prevValues) => ({
@@ -90,16 +89,21 @@ const TeacherPerformanceFeedBack = ({
                   row
                   aria-labelledby='demo-form-control-label-placement'
                   name={item.info}
+                  // value={selectedRadio}
                   value={selectedRadio[item.info] || ''}
-                  onClick={(e) => handleRadioChange(e, unit, item.info)}
+                  unit={unit}
+                  onClick={(e) => handleRadioChange(item.info, e, unit)}
                 >
                   <FormControlLabel
                     value='Osaa ohjatusti'
+                    // control={<Radio />}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '70px',
                       },
                     }}
+                    onChange={handleRadioChange}
+                    // disabled={item.disabled}
                     control={
                       <Radio
                         disabled={item.info !== 'Opettajan merkintä'}
@@ -110,11 +114,14 @@ const TeacherPerformanceFeedBack = ({
                   />
                   <FormControlLabel
                     value='Osaa itsenäisesti'
+                    // control={<Radio />}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '8%',
                       },
                     }}
+                    // onChange={handleRadioChange}
+                    // disabled={item.disabled}
                     control={
                       <Radio
                         disabled={item.info !== 'Opettajan merkintä'}

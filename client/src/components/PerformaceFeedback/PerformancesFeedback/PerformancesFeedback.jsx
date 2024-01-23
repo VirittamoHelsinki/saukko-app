@@ -12,10 +12,19 @@ const PerformancesFeedback = ({
   setSelectedUnitId,
 }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [selectedRadio, setSelectedRadio] = useState({});
+  const [selectedRadio, setSelectedRadio] = useState('');
 
   const auth = useContext(AuthContext);
   const user = auth.user;
+
+    // Uncheck the radio button
+    const handleRadioUncheck = (event) => {
+      if (selectedRadio === event.target.value) {
+        setSelectedRadio('');
+        setSelectedValues(0);
+        setSelectedUnitId(null);
+      }
+    };
 
   const handleRadioChange = (event, unit) => {
     setSelectedRadio(event.target.value);
@@ -27,7 +36,7 @@ const PerformancesFeedback = ({
     }
     console.log(event.target.value);
   };
-
+ 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -71,12 +80,12 @@ const PerformancesFeedback = ({
             name='position'
             value={selectedRadio}
             unit={unit}
-            // onChange={handleRadioChange}
+            // onClick={(event) => handleRadioChange(event, unit)}
           >
             <FormControlLabel
               value='Osaa ohjatusti'
               control={
-                <Radio onChange={(event) => handleRadioChange(event, unit)} />
+                <Radio onClick={(event) => handleRadioUncheck(event)} onChange={(event) => handleRadioChange(event, unit)} />
               }
               label='Osaa ohjatusti'
               labelPlacement='top'
@@ -84,7 +93,7 @@ const PerformancesFeedback = ({
             <FormControlLabel
               value='Osaa itsenäisesti'
               control={
-                <Radio onChange={(event) => handleRadioChange(event, unit)} />
+                <Radio onClick={(event) => handleRadioUncheck(event)} onChange={(event) => handleRadioChange(event, unit)} />
               }
               label='Osaa itsenäisesti'
               labelPlacement='top'

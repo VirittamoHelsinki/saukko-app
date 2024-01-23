@@ -37,9 +37,9 @@ const UserPerformance = () => {
   const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
-  console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
+  // console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
   let evaluationId = evaluation._id;
-  console.log("🚀 ~ UserPerformance ~ evaluationId:", evaluationId)
+  // console.log("🚀 ~ UserPerformance ~ evaluationId:", evaluationId)
   evaluation = useFetchData(evaluationId);
 
   const [selectedValues, setSelectedValues] = useState({});
