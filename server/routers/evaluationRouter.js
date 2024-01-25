@@ -124,7 +124,11 @@ evaluationRouter.put('/evaluation/:id', async (req, res) => {
     );
 
     // Replace the entire supervisor list
-    evaluation.supervisorIds = Array.from(updatedSupervisorIds);
+    // evaluation.supervisorIds = Array.from(updatedSupervisorIds);
+    if (req.body.supervisorIds) {
+      const updatedSupervisorIds = new Set(req.body.supervisorIds);
+      evaluation.supervisorIds = Array.from(updatedSupervisorIds);
+    }
 
     // Handle new supervisors
     if (newSupervisors.length > 0) {

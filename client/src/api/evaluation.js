@@ -39,6 +39,16 @@ const fetchEvaluationById = async (evaluationId) => {
   }
 };
 
+// Update evaluation by id
+const updateEvaluationById = async (evaluationId, updatedData) => {
+  try {
+    const response = await axios.put(`${baseURL}${middleURL}/evaluation/${evaluationId}`, updatedData)
+    return response.data
+  } catch (error) {
+    console.log('Error fetching single evaluation:', error)
+  }
+}
+
 const sendEmail = async (message) => {
   try {
     const response = await axios.post(
@@ -55,5 +65,6 @@ export {
   createEvaluation,
   fetchAllEvaluations,
   fetchEvaluationById,
+  updateEvaluationById,
   sendEmail,
 };
