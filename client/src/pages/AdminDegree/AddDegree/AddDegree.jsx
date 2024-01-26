@@ -16,15 +16,19 @@ const CheckLength = ({
   const startIndex = (currentPage - 1) * paginate;
   const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
+  const navigate = useNavigate();
 
-  //   const navigate = useNavigate();
+  const handleDegreeClick = (degreeId) => {
+    navigate(`/degrees/add/${degreeId}`);
+  };
+
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
         <div
           key={index}
           className='addDegree__container--list-item'
-        //   onClick={() => navigate(`${degree._id}`)}
+          onClick={() => handleDegreeClick(degree._id)}
         >
           <p>{degree.name.fi}</p>
         </div>
@@ -59,8 +63,9 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
           <button
             key={pageNum}
             onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
-              }`}
+            className={`pagination__button ${
+              pageNum === currentPage ? 'pagination__button--active' : ''
+            }`}
           >
             {pageNum}
           </button>

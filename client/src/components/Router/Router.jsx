@@ -35,6 +35,7 @@ import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelecti
 import UserPerformance from '../../pages/Performance/UserPerformance/UserPerformance';
 import AddCompanyName from '../../pages/AddCompanyName/AddCompanyName';
 import EmailVerification from '../../pages/VerifyEmail/VerifyEmail';
+import DegreeSummary from '../DegreeSummary/DegreeSummary';
 
 const Router = () => {
   let location = useLocation();
@@ -105,6 +106,7 @@ const Router = () => {
 
             {/* Degree flow */}
             <Route path='/degrees/add' element={<AddDegree />} />
+            <Route path='/degrees/add/:degreeId' element={<DegreeSummary allInternalDegrees={allInternalDegrees} />} />
             <Route path='/degrees' element={<SearchPage />} />
             <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
             <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
