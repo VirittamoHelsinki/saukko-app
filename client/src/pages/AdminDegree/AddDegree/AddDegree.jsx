@@ -16,17 +16,21 @@ const CheckLength = ({
   const startIndex = (currentPage - 1) * paginate;
   const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
-
-  //   const navigate = useNavigate();
+  
+  const navigate = useNavigate();
+  
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
         <div
           key={index}
           className='addDegree__container--list-item'
-        //   onClick={() => navigate(`${degree._id}`)}
+          //handleBack={() =>navigate(`/degrees/${params.degreeId}/units/tasks`)}
+          onClick={() =>navigate(`${degree._id}`)}
         >
           <p>{degree.name.fi}</p>
+          <p>Diaari: {degree.diaryNumber}</p>
+          <p>_id: {degree._id}</p>
         </div>
       ))}
     </>
@@ -98,7 +102,6 @@ const AddDegree = () => {
 
   // Get degrees from InternalApiContext
   const { allInternalDegrees } = useContext(InternalApiContext);
-
   console.log('allInternalDegrees123: ', allInternalDegrees);
 
   // Searchbar logic
@@ -142,7 +145,6 @@ const AddDegree = () => {
             border: 'none',
           }}
           icon={'ic:baseline-plus'}
-          onClick={() => navigate(`/degrees`)}
         />
 
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
