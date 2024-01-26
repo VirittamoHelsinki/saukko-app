@@ -16,7 +16,10 @@ import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 
 // Fetch evaluation by id from api
-import { fetchEvaluationById, updateEvaluationById, } from '../../../api/evaluation';
+import {
+  fetchEvaluationById,
+  updateEvaluationById,
+} from '../../../api/evaluation';
 
 const useFetchData = (evaluationId) => {
   const [evaluation, setEvaluation] = useState([]);
@@ -136,6 +139,42 @@ const UserPerformance = () => {
     setIsButtonEnabled(true);
     handleNotificationModalOpen();
     // Perform other submission logic here
+  };
+
+  // Check if all assessments have been filled
+  const checkAssessments = () => {
+    if (!Array.isArray(evaluation)) {
+      return false;
+    }
+
+    if (user.role === 'customer') {
+      for (let unit of evaluation) {
+        for (let assess of unit.assessments) {
+          if (assess.answer === 0) {
+            return false;
+          }
+        }
+      }
+      return true;
+    } else if (user.role === 'supervisor') {
+      for (let unit of evaluation) {
+        for (let assess of unit.assessments) {
+          if (assess.answerSupervisor === 0) {
+            return false;
+          }
+        }
+      }
+      return true;
+    } else if (user.role === 'teacher') {
+      for (let unit of evaluation) {
+        for (let assess of unit.assessments) {
+          if (assess.answerTeacher === 0) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
   };
 
   return (
@@ -274,7 +313,7 @@ const UserPerformance = () => {
         <Button
           style={buttonStyle}
           type='submit'
-          text='Lähetä'
+          text={checkAssessments() ? 'Lähetä' : 'Talenna luonnos'}
           onClick={handleSubmit}
         />
       </section>
