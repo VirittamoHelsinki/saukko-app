@@ -33,11 +33,11 @@ function PageNavigationButtons(props) {
           icon={'formkit:arrowright'}
         />
       </div>
-      {/* <div className='buttons__container-forward'>
+      {/* <div className='buttons__container-forward-summary'>
         <Button
-          text={props.forwardButtonText || 'Vahvista valinnat'}
+          text={props.forwardButtonText || 'Muokkaa tietoja'}
           onClick={props.handleForward}
-          icon={'formkit:arrowright'}
+          icon={'mingcute:pencil-line'}
         />
       </div> */}
     </section>
