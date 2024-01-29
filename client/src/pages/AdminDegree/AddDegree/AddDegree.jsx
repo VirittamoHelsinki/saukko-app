@@ -29,8 +29,6 @@ const CheckLength = ({
           onClick={() =>navigate(`${degree._id}`)}
         >
           <p>{degree.name.fi}</p>
-          <p>Diaari: {degree.diaryNumber}</p>
-          <p>_id: {degree._id}</p>
         </div>
       ))}
     </>
@@ -145,6 +143,7 @@ const AddDegree = () => {
             border: 'none',
           }}
           icon={'ic:baseline-plus'}
+          onClick={() => navigate(`/degrees`)}
         />
 
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />

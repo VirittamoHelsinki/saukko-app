@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
+import useStore from '../../store/zustand/formStore';
+import { postDegree } from '../../api/degree';
  
 const CreateUnitesSummary = ({ allInternalDegrees }) => {
   console.log("🚀 ~ DegreeDetail ~ allInternalDegrees:", allInternalDegrees)
@@ -11,7 +13,20 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   console.log("🚀 ~ DegreeDetail ~ degreeId:", degreeId)
   const [degreeDetails, setDegreeDetails] = useState(null);
   console.log("🚀 ~ DegreeDetail ~ degreeDetails:", degreeDetails)
+
+  //get values from store management
+  const { diaryNumber, regulationDate, validFrom, expiry, transitionEnds } = useStore();
  
+  const handleSubmit = async()=>{
+    const degreeData ={
+      diaryNumber: parseDate(degreeDetails.diaryNumber),
+      regulationDate: parseDate(degreeDetails.regulationDate),
+      validFrom: parseDate(degreeDetails.validFrom),
+      expiry: parseDate(degreeDetails.expiry),
+      transitionEnds: parseDate(degreeDetails.transitionEnds),
+    }
+  }
+
   //const navigate = useNavigate();
   //const params = useParams();
   useEffect(() => {
@@ -19,8 +34,8 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     const fetchedDegreeDetails = allInternalDegrees.find((degree) => degree._id === degreeId);
     setDegreeDetails(fetchedDegreeDetails);
   }, [allInternalDegrees, degreeId]);
+  console.log('DegreeDatails:', degreeDetails)
 
- 
   if (!degreeDetails) {
     return <div>Loading...</div>;
   }
@@ -30,7 +45,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   //const regex = /(<([^>]+)>)/gi;
   //const degreeDescriptionCleaned = degreeDescription.replace(regex, '');
   
-  /* function parseDate(dateString) {
+   function parseDate(dateString) {
     const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
     
     if (datePattern.test(dateString)) {
@@ -41,7 +56,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
       return null;
     }
   }
- */
+ 
   
   // Example usage
   /* const regulationDate = "2021-12-16T22:00:00.000Z";
@@ -60,19 +75,26 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
       <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
       <section className='summary__container'>
       <h1 className='degree-title'>{degreeDetails.name?.fi}</h1>
-      <div className='section-title'>Tutkinnonosat ja tehtävät
+      <div className='section-title'>Tutkinnonosat ja tehtävät</div>
         <div className='summary__container--box'>
           {/* Display other degree details as needed */}
           {degreeDetails.units.map((unit, index) => (
-            <div key={unit.index} className='unit-container'>
-              <p>{unit.name.fi}</p>
-              <p key={unit.index}>{index +1}.{unit.name.fi}</p>
+            <div key={index} className='unit-container'>
+              <strong>{unit.name.fi}</strong>
+              {unit.assessments && unit.assessments.map((assessment, assessmentIndex)=>(
+                <p key={assessmentIndex}>
+                  {assessmentIndex+1}. {assessment.name?.fi}
+                </p>
+              ))}
+              {/* {unit.assessments && unit.assessments.map((assessment, assessmentIndex)=>(
+                <p key={assessmentIndex}>{assessmentIndex+1}. {assessment.name?.fi}</p>
+              ))} */}
             </div>
           ))}
-        </div>
       <div className='section-title'>Tutkinnon suorittaneen osaaminen</div>
         <div className='summary__container--box'>
-          <p>Tänne tulee opettajan kommentti. Opettaja kirjoittaa tähän tekstiä.</p>
+          {degreeDetails.description.fi ? (degreeDetails.description.fi)
+          : (<p>No description data.</p>)}
         </div>
       <div className='section-title'>Tutkintotiedot</div>
         <ul className='summary__container--box'>
