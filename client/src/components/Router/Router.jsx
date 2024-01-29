@@ -35,6 +35,7 @@ import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelecti
 import UserPerformance from '../../pages/Performance/UserPerformance/UserPerformance';
 import AddCompanyName from '../../pages/AddCompanyName/AddCompanyName';
 import EmailVerification from '../../pages/VerifyEmail/VerifyEmail';
+import CreateUnitsSummary from '../../pages/CreateSummary/CreateUnitsSummary';
 
 const Router = () => {
   let location = useLocation();
@@ -105,6 +106,7 @@ const Router = () => {
 
             {/* Degree flow */}
             <Route path='/degrees/add' element={<AddDegree />} />
+            <Route path='/degrees/add/:degreeId' element={<CreateUnitsSummary allInternalDegrees={allInternalDegrees} />} />
             <Route path='/degrees' element={<SearchPage />} />
             <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
             <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
@@ -124,6 +126,9 @@ const Router = () => {
             <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
             <Route path='/evaluation-units' element={<EvaluationUnits />} />
             <Route path='/evaluation-summary' element={<EvaluationSummary />} />
+
+            {/* Units flow */}
+            <Route path='/create-units-summary' element={<CreateUnitsSummary />} />
           </>
         )}
       </Routes>
