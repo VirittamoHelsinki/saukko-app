@@ -69,7 +69,7 @@ userRouter.post("/", async (req, res) => {
 
     if(newUser.role !== 'supervisor') {
       const verificationToken = newUser.generateEmailVerificationToken();
-      const verificationLink = `http://localhost:5000/verify-email/${verificationToken}`;
+      const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`;
 
       // Send verification email
       sendVerificationEmail(newUser, verificationLink);
@@ -269,7 +269,7 @@ userRouter.get('/verify-email/:token', async (req, res) => {
     await user.save();
 
     // Redirect user to the reset-password page
-    return res.redirect(`http://localhost:5000/reset-password/${token}`);
+    return res.redirect(`https://saukko.azurewebsites.net/reset-password/${token}`);
   } catch (err) {
     console.error("Error in email verification:", err);
     return res.status(500).json({ errorMessage: 'Error verifying email' });
