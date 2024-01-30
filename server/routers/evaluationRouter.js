@@ -10,7 +10,7 @@ const User = require('../models/userModel');
 // Function to generate verification link for the supervisor
 function generateVerificationLink(user) {
   const verificationToken = user.generateEmailVerificationToken();
-  return `http://localhost:5000/verify-email/${verificationToken}`;
+  return `https://saukko.azurewebsites.net/verify-email/${verificationToken}`;
 }
 
 // Create a new evaluation
