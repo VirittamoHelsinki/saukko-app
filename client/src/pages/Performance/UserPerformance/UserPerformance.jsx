@@ -215,14 +215,14 @@ const UserPerformance = () => {
                   />
                 </div>
               </div>
-              {unit.assessments.map((assess, index) => (
+              {/* {unit.assessments.map((assess, index) => (
                 <div key={index}>
                   <p>Assessment: {assess.name.fi}</p>
                   <p>Student: {assess.answer}</p>
                   <p>Supervisor: {assess.answerSupervisor}</p>
                   <p>Teacher: {assess.answerTeacher}</p>
                 </div>
-              ))}
+              ))} */}
 
               {user?.role === 'teacher' ? (
                 <TeacherPerformanceFeedBack
