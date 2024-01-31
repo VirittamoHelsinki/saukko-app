@@ -80,6 +80,7 @@ export default function CustomerList() {
           <AccordionDetails>
             <div className='customerList__accordion'>
               {inProgress && inProgress.map((evaluation) => (
+                evaluation.customerId && 
                 <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
               ))}
             </div>
