@@ -7,7 +7,10 @@ import {
   fetchInternalDegreeById,
 } from '../../api/degree.js';
 import { fetchAllInternalWorkplaces } from '../../api/workplace.js';
-import { fetchAllEvaluations, fetchEvaluationById } from '../../api/evaluation.js';
+import {
+  fetchAllEvaluations,
+  fetchEvaluationById,
+} from '../../api/evaluation.js';
 
 // Internal state variable access.
 import useUnitsStore from '../zustand/unitsStore.js';
@@ -20,7 +23,7 @@ export const InternalApiContextProvider = (props) => {
   const [allInternalDegrees, setAllInternalDegrees] = useState([]);
   const [internalDegree, setInternalDegree] = useState({});
   const [internalDegreeId, setinternalDegreeId] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [workplaces, setWorkplaces] = useState([]);
   const [workplace, setWorkplace] = useState({});
   const [evaluations, setEvaluations] = useState([]);
@@ -32,62 +35,72 @@ export const InternalApiContextProvider = (props) => {
   useEffect(() => {
     // Fetch degrees from saukko database
     const getInternalDegrees = async () => {
-      if (!loggedIn || role !== "teacher") return;
+      if (!loggedIn || role !== 'teacher') return;
       try {
         setLoading(true);
         const internalDegrees = await fetchInternalDegrees();
-        console.log(internalDegrees)
+        console.log(internalDegrees);
         setAllInternalDegrees(internalDegrees);
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
     getInternalDegrees();
-  }, [loggedIn, role])
-
-
-
+  }, [loggedIn, role]);
 
   // Fetch all workplaces from saukko database
   useEffect(() => {
     const getWorkplaces = async () => {
-      if (!loggedIn || role !== "teacher") return;
+      if (!loggedIn || role !== 'teacher') return;
       try {
-        setLoading(true)
+        setLoading(true);
         const workplaces = await fetchAllInternalWorkplaces();
         setWorkplaces(workplaces);
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
     getWorkplaces();
-  }
-
-    , [loggedIn, role]);
+  }, [loggedIn, role]);
 
   // Fetch all evaluations
   const setInternalEvaluations = async () => {
     try {
       const allEvaluations = await fetchAllEvaluations();
 
+      // Filter evaluations based on role and ensure _id is not null
+      let matchingEvaluations = [];
+
       // Find evaluations belonging to current user & set to state
       if (role === 'teacher') {
-        const matchingEvaluations = allEvaluations.filter(evaluation => evaluation.teacherId._id === user.id)
-        setEvaluations(matchingEvaluations)
+        matchingEvaluations = allEvaluations.filter(
+          (evaluation) =>
+            evaluation.teacherId && evaluation.teacherId._id === user.id
+        );
+        // setEvaluations(matchingEvaluations);
       } else if (role === 'supervisor') {
-        const matchingEvaluations = allEvaluations.filter(evaluation => 
-          evaluation.supervisorIds.some(supervisor => supervisor._id === user.id)
-        )
-        console.log("🚀 ~ setInternalEvaluations ~ matchingEvaluations:", matchingEvaluations)
-        setEvaluations(matchingEvaluations)
+        matchingEvaluations = allEvaluations.filter((evaluation) =>
+          evaluation.supervisorIds.some(
+            (supervisor) => supervisor && supervisor._id === user.id
+          )
+        );
+        // console.log(
+        //   '🚀 ~ setInternalEvaluations ~ matchingEvaluations:',
+        //   matchingEvaluations
+        // );
+        // setEvaluations(matchingEvaluations);
       } else if (role === 'customer') {
-        const matchingEvaluation = allEvaluations.filter(evaluation => evaluation.customerId && evaluation.customerId._id === user.id)
-        setEvaluations(matchingEvaluation)
+        matchingEvaluations = allEvaluations.filter(
+          (evaluation) =>
+            evaluation.customerId && evaluation.customerId._id === user.id
+        );
+        // setEvaluations(matchingEvaluations);
       }
+      setEvaluations(matchingEvaluations);
     } catch (err) {
       console.log(err);
     }
@@ -97,10 +110,10 @@ export const InternalApiContextProvider = (props) => {
   const setInternalEvaluation = async (evaluationId) => {
     try {
       /* setLoading(true) */ // When logging in as customer this gives an infinite loop??
-      const evaluation = await fetchEvaluationById(evaluationId)
-      setEvaluation(evaluation)
+      const evaluation = await fetchEvaluationById(evaluationId);
+      setEvaluation(evaluation);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     } /* finally {
       setLoading(false)
     } */
@@ -109,7 +122,7 @@ export const InternalApiContextProvider = (props) => {
   // Clear evaluation from state at logout
   useEffect(() => {
     if (!loggedIn) {
-      setEvaluations(null)
+      setEvaluations(null);
       setEvaluation(null);
     }
   }, [loggedIn]);
@@ -117,18 +130,18 @@ export const InternalApiContextProvider = (props) => {
   // Fetch degree by id
   useEffect(() => {
     const getInternalDegree = async () => {
-      if (!loggedIn || role !== "teacher") return;
+      if (!loggedIn || role !== 'teacher') return;
 
       try {
-        setLoading(true)
+        setLoading(true);
         const degree = await fetchInternalDegreeById(internalDegreeId);
         // Set state
-        console.log(degree)
+        console.log(degree);
         setInternalDegree(degree);
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
 
@@ -144,7 +157,6 @@ export const InternalApiContextProvider = (props) => {
     setInternalDegree({});
   }, [internalDegreeId]);
 
-
   if (loading) {
     return (
       <div
@@ -159,7 +171,6 @@ export const InternalApiContextProvider = (props) => {
       </div>
     );
   }
-
 
   return (
     <div>
