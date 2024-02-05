@@ -11,12 +11,6 @@ import TeacherPerformanceFeedBack from '../../components/PerformaceFeedback/Teac
 // Importing saukko database
 import { fetchAllInternalWorkplaces } from '../../api/workplace';
 
-
-
-
-
-
-
 const TestPage = () => {
   const [workplaces, setWorkplaces] = useState([])
 
@@ -95,16 +89,8 @@ const TestPage = () => {
           open={openNotificationModal}
         />
 
-        {/* <Button variant='outlined' onClick={handleClickOpen}>
-          Open dialog
-        </Button> */}
       </section>
-      {/* <section >
-        <PerformancesFeedback></PerformancesFeedback>
-      </section>
-      <section>
-        <UserPerformance></UserPerformance>
-      </section> */}
+      
       <section>
         <TeacherPerformanceFeedBack
           columnTitle={'osa'}></TeacherPerformanceFeedBack>

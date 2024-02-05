@@ -132,6 +132,7 @@ const AddDegree = () => {
       <UserNav />
       <section className='addDegree__container'>
         <Button
+          id='addDegreeButton'
           text='Lisää tutkinto'
           style={{
             marginLeft: '25%',
@@ -146,7 +147,7 @@ const AddDegree = () => {
           onClick={() => navigate(`/degrees`)}
         />
 
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
+        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
 
         <div className='addDegree__container--list'>
           <CheckLength

@@ -12,8 +12,8 @@ import CriteriaModal from '../../../components/RequirementsAndCriteriaModal/Crit
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
 // Fetch evaluation and units from store
-import useEvaluationStore from '../../../store/zustand/evaluationStore';
-import useUnitsStore from '../../../store/zustand/unitsStore';
+// import useEvaluationStore from '../../../store/zustand/evaluationStore';
+// import useUnitsStore from '../../../store/zustand/unitsStore';
 
 // Fetch evaluation by id from api
 import {
@@ -61,19 +61,6 @@ const UserPerformance = () => {
     setIsCriteriaModalOpen(false);
   };
 
-  // Mock data
-  // const mockdata = [
-  //   {
-  //     title: 'Opiskelija toimii tieto- ja viestintätekniikan työtehtävissä',
-  //   },
-  //   {
-  //     title:
-  //       'Opiskelija tekee tiedonhakua ja ratkaisee tieto- ja viestintätekniikan ongelmia',
-  //   },
-  //   {
-  //     title: 'Opiskelija käyttää tietoteknistä ympäristöä',
-  //   },
-  // ];
 
   // Evaluation data
 
@@ -198,38 +185,7 @@ const UserPerformance = () => {
 
       <div>
         <ul>
-          {/* Mock data */}
-          {/* {mockdata.map((data, index) => (
-            <li key={index}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  margin: '0 15px 0 0',
-                }}
-              >
-                <div>
-                  <p className='para-title-style'>{data.title} </p>
-                </div>
-                <div>
-                  <Icon
-                    icon='material-symbols:info'
-                    color='#1769aa'
-                    style={{ verticalAlign: 'middle', fontSize: '21px' }}
-                    cursor={'pointer'}
-                    onClick={handleOpenCriteriaModal}
-                  />
-                </div>
-              </div>
-              {user?.role === 'teacher' ? (
-                <TeacherPerformanceFeedBack />
-              ) : (
-                <PerformancesFeedback />
-              )}
-            </li>
-          ))} */}
-
+          
           {/* Evaluation */}
           {evaluation.map((unit, index) => (
             <li key={index}>
@@ -254,15 +210,7 @@ const UserPerformance = () => {
                   />
                 </div>
               </div>
-              {/* {unit.assessments.map((assess, index) => (
-                <div key={index}>
-                  <p>Assessment: {assess.name.fi}</p>
-                  <p>Student: {assess.answer}</p>
-                  <p>Supervisor: {assess.answerSupervisor}</p>
-                  <p>Teacher: {assess.answerTeacher}</p>
-                </div>
-              ))} */}
-
+              
               {user?.role === 'teacher' ? (
                 <TeacherPerformanceFeedBack
                   selectedValues={selectedValues}
