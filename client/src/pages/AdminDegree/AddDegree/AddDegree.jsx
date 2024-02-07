@@ -149,7 +149,7 @@ const AddDegree = () => {
 
         <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
 
-        <div className='addDegree__container--list'>
+        <div id='listContainer' className='addDegree__container--list'>
           <CheckLength
             filteredList={filteredList}
             allInternalDegrees={allInternalDegrees}
