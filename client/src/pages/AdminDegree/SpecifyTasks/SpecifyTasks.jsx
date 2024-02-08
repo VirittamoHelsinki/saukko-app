@@ -22,7 +22,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 import { useTheme } from '@mui/material/styles';
 import DisplayDataFromInputModal from '../../../components/DisplayDataFromInputModal/DisplayDataFromInputModal';
-
+import { Icon } from '@iconify/react';
 // Import criteria modal
 import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 
@@ -33,25 +33,24 @@ function SpecifyTasks() {
   // Initialize state
   const [assessments, setAssessments] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
-  const [inputFields, setInputFields] = useState(
-    Array.from({ length: 3 }, () => [''])
-  );
+  // const [inputFields, setInputFields] = useState([]);
+
+  // const [savedData, setSavedData] = useState([]);
 
   // Get values from state management
   const { degree, degreeFound } = useContext(ExternalApiContext);
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
-  const [modalData, setModalData] = useState(null);
 
   // Modal for criteria info
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
-
-  // Saved data from modal
   const [savedDataTitle, setSavedDataTitle] = useState([]);
+  const [savedDataCriteria, setSavedDataCriteria] = useState([]);
 
-  const handleSave = (title) => {
+  const handleSave = (title, criteria) => {
     setSavedDataTitle((prevTitle) => [...prevTitle, title]);
+    setSavedDataCriteria((prevCriteria) => [...prevCriteria, criteria]);
     handleCloseCriteriaModal();
   };
 
@@ -89,7 +88,6 @@ function SpecifyTasks() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  // Modal for criteria info
   const handleOpenCriteriaModal = () => {
     setIsCriteriaModalOpen(true);
   };
@@ -98,45 +96,8 @@ function SpecifyTasks() {
     setIsCriteriaModalOpen(false);
   };
 
-  // Handle adding a new text field
-  const handleAddTextField = () => {
-    setInputFields((prevFields) => {
-      const newFields = [...prevFields];
-      newFields[activeStep] = [...(newFields[activeStep] || []), ''];
-      return newFields;
-    });
-  };
-
-  // Handle changes in the text fields
-  const handleTextFieldChange = (stepIndex, fieldIndex, value, unitId) => {
-    setInputFields((prevFields) => {
-      const newFields = [...prevFields];
-      newFields[activeStep][fieldIndex] = value;
-      return newFields;
-    });
-
-    setAssessments((prevAssessments) => {
-      // Create a copy of the previous assessments
-      const newAssessments = [...prevAssessments];
-
-      // Ensure there's an array for this step
-      newAssessments[stepIndex] = newAssessments[stepIndex] || [];
-
-      // Get the existing assessment object for this field if it exists, or create a new one
-      const existingAssessment = newAssessments[stepIndex][fieldIndex] || {};
-
-      // Update the assessment object with the new value
-      const updatedAssessment = {
-        ...existingAssessment,
-        unitId: unitId,
-        name: value,
-      };
-
-      // Update the assessments array for this step with the updated assessment object
-      newAssessments[stepIndex][fieldIndex] = updatedAssessment;
-
-      return newAssessments;
-    });
+  const handlePenClick = () => {
+    setIsCriteriaModalOpen(true);
   };
 
   // Form submission handler
@@ -144,8 +105,8 @@ function SpecifyTasks() {
     const flattenedAssessments = assessments.flat();
 
     flattenedAssessments.forEach((assessment) => {
-      const { unitId, name } = assessment;
-      addAssessment(unitId, name);
+      const { unitId, name, criteria } = assessment;
+      addAssessment(unitId, name, criteria);
     });
 
     navigate(`/degrees/${params.degreeId}/summary`);
@@ -214,38 +175,47 @@ function SpecifyTasks() {
               <h3 className='unit-guidance'>
                 {checkedUnits[activeStep]?.name?.fi}
               </h3>
-              <div>
-                <DisplayDataFromInputModal savedDataTitle={savedDataTitle} />
-              </div>
-
-              {/* those functionality will come modal 
-                {inputFields[activeStep]?.map((textField, index) => (
-                  <div key={index}>
-                    <input
-                      type='text'
-                      value={textField}
-                      onChange={(event) =>
-                        handleTextFieldChange(
-                          activeStep,
-                          index,
-                          event.target.value,
-                          checkedUnits[activeStep]._id
-                        )
-                      }
-                    />
-                  </div>
-                ))} */}
               <RequirementsAndCriteriaModal
                 open={isCriteriaModalOpen}
-                handleClose={handleCloseCriteriaModal}
-                onSave={handleSave}
-              />
-
-              <Button
-                onClick={() => {
-                  handleAddTextField();
-                  handleOpenCriteriaModal();
+                onClose={handleCloseCriteriaModal}
+                title='Ammattitaitovaatimuksen tiedot'
+                modalUnitName={checkedUnits[activeStep]?.name.fi}
+                requirementsTitle='Ammattitaitovaatimuksen nimi'
+                criteria='Kriteerit'
+                onSave={(title, criteria) => {
+                  setAssessments((prevAssessments) => [
+                    ...prevAssessments,
+                    {
+                      unitId: checkedUnits[activeStep]._id,
+                      name: title,
+                      criteria: criteria,
+                    },
+                  ]);
+                  handleSave(title, criteria);
                 }}
+              />
+              <div>
+                {/* <DisplayDataFromInputModal saveDataTitle={savedDataTitle} /> */}
+                <ul>
+                  {savedDataTitle.map((title, index) => (
+                    <li key={index} className='list_group_skills_titles'>
+                      <span className='title'>
+                        {index + 1}. {title}{' '}
+                      </span>
+                      <span
+                        onClick={() =>
+                          handlePenClick(checkedUnits[activeStep]._id)
+                        }
+                      >
+                        {' '}
+                        <Icon icon='uil:pen' color='#0000bf' />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <Button
+                onClick={handleOpenCriteriaModal}
                 className='add-criteria-btn'
                 sx={{ paddingLeft: 0, textTransform: 'none' }}
               >

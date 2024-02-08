@@ -1,11 +1,11 @@
 import { Icon } from '@iconify/react';
 import './displayDataFromInputModal.scss'
 
-const DisplayDataFromInputModal = ({ savedDataTitle }) => {
+const DisplayDataFromInputModal = ({ saveDataTitle }) => {
     return (
       <div>
         <ul>
-          {savedDataTitle.map((title, index) => (
+          {saveDataTitle &&  saveDataTitle.map((title, index) => (
             <li
               key={index}
               className='list_group_skills_titles'
