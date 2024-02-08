@@ -10,7 +10,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
-import Searchbar from '../../../components/Searchbar/Searchbar';
+// import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 // Import state management
@@ -87,11 +87,7 @@ function DegreeUnits() {
           data={stepperData}
         />
         <h1>{degreeFound ? degree?.name.fi : degreeName}</h1>
-        {/* <Searchbar
-          handleSearch={handleSearch}
-          placeholder={'Etsi tutkinnonosat'}
-        /> */}
-
+        
         <div className='degreeUnits__container--units'>
           {currentUnits
             ? currentUnits.map((unit) => (

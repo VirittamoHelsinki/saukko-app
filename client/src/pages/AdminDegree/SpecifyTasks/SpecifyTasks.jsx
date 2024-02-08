@@ -182,6 +182,7 @@ function SpecifyTasks() {
                 activeStep={activeStep}
                 nextButton={
                   <Button
+                    id='nextButton'
                     sx={{ fontWeight: 'bold', color: '#000000' }}
                     size='small'
                     onClick={handleNext}
@@ -197,6 +198,7 @@ function SpecifyTasks() {
                 }
                 backButton={
                   <Button
+                    id='backButton'
                     sx={{ fontWeight: 'bold', color: '#000000' }}
                     size='small'
                     onClick={handleBack}
@@ -218,23 +220,6 @@ function SpecifyTasks() {
                 <DisplayDataFromInputModal savedDataTitle={savedDataTitle} />
               </div>
 
-              {/* those functionality will come modal 
-                {inputFields[activeStep]?.map((textField, index) => (
-                  <div key={index}>
-                    <input
-                      type='text'
-                      value={textField}
-                      onChange={(event) =>
-                        handleTextFieldChange(
-                          activeStep,
-                          index,
-                          event.target.value,
-                          checkedUnits[activeStep]._id
-                        )
-                      }
-                    />
-                  </div>
-                ))} */}
               <RequirementsAndCriteriaModal
                 open={isCriteriaModalOpen}
                 handleClose={handleCloseCriteriaModal}
@@ -242,6 +227,7 @@ function SpecifyTasks() {
               />
 
               <Button
+                id="addCriteriaButton"
                 onClick={() => {
                   handleAddTextField();
                   handleOpenCriteriaModal();
