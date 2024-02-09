@@ -1,5 +1,5 @@
 // Import react packages & dependencies
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import state management
@@ -21,7 +21,6 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import MobileStepper from '@mui/material/MobileStepper';
 import { useTheme } from '@mui/material/styles';
-import DisplayDataFromInputModal from '../../../components/DisplayDataFromInputModal/DisplayDataFromInputModal';
 import { Icon } from '@iconify/react';
 // Import criteria modal
 import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
@@ -33,9 +32,7 @@ function SpecifyTasks() {
   // Initialize state
   const [assessments, setAssessments] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
-  // const [inputFields, setInputFields] = useState([]);
-
-  // const [savedData, setSavedData] = useState([]);
+  const [savedDataCriteria, setSavedDataCriteria] = useState([]);
 
   // Get values from state management
   const { degree, degreeFound } = useContext(ExternalApiContext);
@@ -45,13 +42,20 @@ function SpecifyTasks() {
 
   // Modal for criteria info
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
-  const [savedDataTitle, setSavedDataTitle] = useState([]);
-  const [savedDataCriteria, setSavedDataCriteria] = useState([]);
+
+  useEffect(() => {
+    // Initialize saved data object
+    const initialData = {};
+    checkedUnits.forEach((unit) => {
+      initialData[unit._id] = [];
+    });
+    setSavedDataCriteria(initialData);
+  }, [checkedUnits]);
 
   const handleSave = (title, criteria) => {
-    setSavedDataTitle((prevTitle) => [...prevTitle, title]);
-    setSavedDataCriteria((prevCriteria) => [...prevCriteria, criteria]);
-    handleCloseCriteriaModal();
+    const newData = { ...savedDataCriteria };
+    newData[checkedUnits[activeStep]._id].push({ title, criteria });
+    setSavedDataCriteria(newData);
   };
 
   // Labels and urls for stepper
@@ -195,12 +199,11 @@ function SpecifyTasks() {
                 }}
               />
               <div>
-                {/* <DisplayDataFromInputModal saveDataTitle={savedDataTitle} /> */}
-                <ul>
-                  {savedDataTitle.map((title, index) => (
+                {savedDataCriteria[checkedUnits[activeStep]?._id]?.map(
+                  (field, index) => (
                     <li key={index} className='list_group_skills_titles'>
                       <span className='title'>
-                        {index + 1}. {title}{' '}
+                        {index + 1}. {field.title}{' '}
                       </span>
                       <span
                         onClick={() =>
@@ -211,8 +214,8 @@ function SpecifyTasks() {
                         <Icon icon='uil:pen' color='#0000bf' />
                       </span>
                     </li>
-                  ))}
-                </ul>
+                  )
+                )}
               </div>
               <Button
                 onClick={handleOpenCriteriaModal}
