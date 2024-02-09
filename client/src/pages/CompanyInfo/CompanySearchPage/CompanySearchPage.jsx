@@ -18,13 +18,7 @@ const CheckLength = ({ filteredList, allInternalDegrees, paginate, currentPage }
       {list.slice(startIndex, endIndex).map((degree, index) => (
         <div key={index} className="company__searchPage__container--list-item" onClick={() => navigate(`../internal/degrees/${degree?._id}/units`)}>
           <h3>{degree?.name?.fi}</h3>
-          {/* <div className="company__searchPage__container--list-item-bottom">
-            <div>
-              <p>Diaari: {degree.diaryNumber}</p>
-              <p>Koodi: {degree.eduCodeValue}</p>
-            </div>
-            <li>&#8250;</li>
-          </div> */}
+          
         </div>
       ))}
     </>
@@ -149,7 +143,7 @@ const CompanySearchPage = () => {
           />
         </div>
 
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
+        <Searchbar id="searchbarId" handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
         <h2>Ammatilliset tutkinnot</h2>
         <div className="searchPage__container--list">
           <CheckLength
@@ -164,8 +158,7 @@ const CompanySearchPage = () => {
           pageCount={pageCount}
           handlePageClick={handlePageClick}
         />
-        {/* <PageNavigationButtons
-          forwardButtonText={'Seurava'} /> */}
+
       </section>
       <UserNav />
     </main>

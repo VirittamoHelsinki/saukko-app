@@ -135,6 +135,7 @@ const AddCompanyName = () => {
       <UserNav />
       <section className='addDegree__container'>
         <Button
+          id='addWorkplaceButton'
           text='Lisää työpaikka'
           style={{
             marginLeft: '25%',
@@ -149,7 +150,7 @@ const AddCompanyName = () => {
           onClick={() => navigate(`/company-info`)}
         />
 
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'} />
+        <Searchbar id='workplaceSearchbar' handleSearch={handleSearch} placeholder={'Etsi työpaikka'} />
 
         <div className='addDegree__container--list'>
           <CheckLength

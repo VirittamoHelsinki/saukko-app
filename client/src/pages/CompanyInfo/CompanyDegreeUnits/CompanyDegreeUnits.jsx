@@ -13,7 +13,7 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InternalApiContext from '../../../store/context/InternalApiContext';
-import { amber } from '@mui/material/colors';
+// import { amber } from '@mui/material/colors';
 
 function CompanyDegreeUnits() {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ function CompanyDegreeUnits() {
   ];
 
   return (
-    <main className='degreeUnits__wrapper'>
+    <main id="degreeUnitsWrapper" className='degreeUnits__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Lisää uusi työpaikka' />
       <section className='degreeUnits__container'>
         <Stepper
@@ -93,6 +93,7 @@ function CompanyDegreeUnits() {
 
 
         <Searchbar
+          id="searchbarTutkinnonosat"
           handleSearch={handleSearch}
           placeholder={'Etsi tutkinnonosat'}
         />

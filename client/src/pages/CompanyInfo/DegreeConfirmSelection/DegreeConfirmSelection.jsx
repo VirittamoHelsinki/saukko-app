@@ -10,10 +10,10 @@ import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import useStore from '../../../store/zustand/formStore';
 import { postWorkplace } from '../../../api/workplace';
-import axios from "axios";
+// import axios from "axios";
 import { registration } from '../../../api/user';
-import { IconTwitter } from 'hds-react';
-import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
+// import { IconTwitter } from 'hds-react';
+// import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
 import { fetchAllInternalWorkplaces } from '../../../api/workplace';
 
 function DegreeConfirmSelection() {
