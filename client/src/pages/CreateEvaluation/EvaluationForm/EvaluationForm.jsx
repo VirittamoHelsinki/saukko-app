@@ -182,6 +182,7 @@ return (
         <div className='form__firstName'>
           <label>Etunimi *</label>
           <input 
+            id='firstName'
             className='form-input' 
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -190,6 +191,7 @@ return (
         <div className='form__lastName'>
           <label>Sukunimi *</label>
           <input 
+            id='lastName'
             className='form-input' 
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -198,6 +200,7 @@ return (
         <div className='form__email'>
           <label>Sähköposti *</label>
           <input 
+            id='email'
             type='email' 
             className='form-input' 
             value={email}
@@ -209,6 +212,7 @@ return (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
   <ThemeProvider theme={theme}>
     <DesktopDatePicker 
+      id='startDate'
       format='DD.MM.YYYY'
       value={startDate}
       onChange={(date) => setStartDate(date)}
@@ -219,6 +223,7 @@ return (
 <LocalizationProvider dateAdapter={AdapterDayjs}>
   <ThemeProvider theme={theme}>
     <DesktopDatePicker 
+      id='endDate'
       format='DD.MM.YYYY'
       value={endDate}
       onChange={(date) => setEndDate(date)}
@@ -243,6 +248,7 @@ return (
         <div className='form__tasks'>
           <label>Työtehtäväsi *</label>
           <textarea 
+            id='workTasks'
             className='form-input'
             value={workTasks}
             onChange={(e) => setWorkTasks(e.target.value)}
@@ -251,6 +257,7 @@ return (
         <div className='form__goals'>
           <label>Omat tavoitteesi *</label>
           <textarea 
+            id='workGoals'
             className='form-input'
             value={workGoals}
             onChange={(e) => setWorkGoals(e.target.value)}

@@ -202,6 +202,7 @@ const UserPerformance = () => {
                 </div>
                 <div>
                   <Icon
+                    id='infoIcon'
                     icon='material-symbols:info'
                     color='#1769aa'
                     style={{ verticalAlign: 'middle', fontSize: '21px' }}
@@ -259,9 +260,10 @@ const UserPerformance = () => {
 
       <section>
         <Button
+          id='submitButton'
           style={buttonStyle}
           type='submit'
-          text={checkAssessments() ? 'Lähetä' : 'Talenna luonnos'}
+          text={checkAssessments() ? 'Lähetä' : 'Tallenna luonnos'}
           onClick={handleSubmit}
         />
       </section>
