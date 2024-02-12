@@ -153,7 +153,7 @@ function EvaluationWorkplace() {
             data={stepperData}
         />
         <h1>Valitse työpaikka ja ohjaaja</h1>
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'}/>
+        <Searchbar id='search-bar' handleSearch={handleSearch} placeholder={'Etsi työpaikka'}/>
 
         {/* Workplaces list */}
         <div>
@@ -215,7 +215,7 @@ function EvaluationWorkplace() {
                   {workplace.departments.length === 0 && (
                     <>
                       <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
-                      <Accordion disableGutters square className='accordion__wrapper'>
+                      <Accordion id='menu-bar' disableGutters square className='accordion__wrapper'>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
                         {workplace.supervisors.map((supervisor) => (

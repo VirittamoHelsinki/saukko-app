@@ -1,25 +1,3 @@
-/* 
-  EXAMPLE USAGE
-
-  // Define labels and urls
-  const stepperData = [
-    {
-      label: 'Lisää tiedot',
-      url: '/evaluation-form'
-    },
-    {
-      label: 'Valitse työpaikka',
-      url: '/evaluation-workplace'
-    },
-  ];
-
-  // Pass labels and urls array, number of total pages, and current page
-  <Stepper
-    activePage={1}
-    totalPages={4}
-    data={stepperData}
-  />
-*/
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
