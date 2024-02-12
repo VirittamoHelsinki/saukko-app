@@ -1,14 +1,3 @@
-/* Usage:
-
-import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-
-<PageNavigationButtons 
-  handleBack={() => navigate('/example')} 
-  handleForward={handlePopupOpen} 
-  forwardButtonText={'Next page'} // Default value is "Seuraava"
-/>
-
-*/
 
 import React, { useState } from 'react';
 import Button from '../../components/Button/Button';
@@ -33,13 +22,7 @@ function PageNavigationButtons(props) {
           icon={'formkit:arrowright'}
         />
       </div>
-      {/* <div className='buttons__container-forward-summary'>
-        <Button
-          text={props.forwardButtonText || 'Muokkaa tietoja'}
-          onClick={props.handleForward}
-          icon={'mingcute:pencil-line'}
-        />
-      </div> */}
+      
     </section>
   );
 }

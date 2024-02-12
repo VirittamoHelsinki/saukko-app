@@ -1,18 +1,3 @@
-/* 
-  Example usage:
-
-  // Set state for opening pop-up
-  const [openPasswordPopUp, setOpenPasswordPopUp] = useState(false);
-  const handleOpenPasswordPopUp = () => setOpenPasswordPopUp(true);
-
-  <PopUpDialog 
-    title='Vaihda salasana' 
-    description='Syötä alle uusi salasanasi'
-    buttonText='Vahvista'
-    open={open}
-  />
-
-*/
 
 import React from 'react';
 import { Icon } from '@iconify/react';

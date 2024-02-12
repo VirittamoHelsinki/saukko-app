@@ -1,28 +1,3 @@
-/* 
-  USAGE
-
-  const { checkedUnits, toggleUnit, clearCheckedUnits, setCheckedUnits } = useUnitsStore();
-
-  // Get checked units
-
-    console.log(checkedUnits);
-
-  // Check / uncheck units
-
-    const handlerFunction = () => {
-      toggleUnit(unit);
-    };
-
-  // Replace the current array of units
-
-    setCheckedUnits(newUnitsArray);
-
-  // Clear store
-
-    const handlerFunction {
-      clearCheckedUnits()
-    };
-*/
 
 import { create } from 'zustand';
 

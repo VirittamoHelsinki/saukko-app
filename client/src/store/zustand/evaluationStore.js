@@ -1,15 +1,4 @@
-/* 
-  USAGE
 
-  Set data:
-
-    const { setCustomer, setEvaluation, setWorkplace, setSupervisor } = useEvaluationStore();
-    setEvaluation(someData);
-
-  Access data:
-
-    const { customer, evaluation, workplace, supervisor } = useEvaluationStore();
-*/
 
 import { create } from 'zustand';
 

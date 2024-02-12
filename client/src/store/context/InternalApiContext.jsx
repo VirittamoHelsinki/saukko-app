@@ -88,11 +88,7 @@ export const InternalApiContextProvider = (props) => {
             (supervisor) => supervisor && supervisor._id === user.id
           )
         );
-        // console.log(
-        //   '🚀 ~ setInternalEvaluations ~ matchingEvaluations:',
-        //   matchingEvaluations
-        // );
-        // setEvaluations(matchingEvaluations);
+        
       } else if (role === 'customer') {
         matchingEvaluations = allEvaluations.filter(
           (evaluation) =>
