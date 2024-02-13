@@ -11,10 +11,6 @@ import { Icon } from '@iconify/react';
 import CriteriaModal from '../../../components/RequirementsAndCriteriaModal/CriteriaModal';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
-// Fetch evaluation and units from store
-import useEvaluationStore from '../../../store/zustand/evaluationStore';
-import useUnitsStore from '../../../store/zustand/unitsStore';
-
 // Fetch evaluation by id from api
 import { fetchEvaluationById, updateEvaluationById, } from '../../../api/evaluation';
 
@@ -30,22 +26,27 @@ const useFetchData = (evaluationId) => {
   return evaluation;
 };
 
-const UserPerformance = () => {
+const UserPerformance = ({unit}) => {
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
-  // console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
   let evaluationId = evaluation._id;
-  // console.log("🚀 ~ UserPerformance ~ evaluationId:", evaluationId)
   evaluation = useFetchData(evaluationId);
 
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   // Add a state for error
   const [error, setError] = useState(null);
+
+  const [ answer, setAnswer ] = useState(0);
+  const [ answerSupervisor, setAnswerSupervisor ] = useState(0);
+  const [ answerTeacher, setAnswerTeacher]=useState(0)
+  const [ updatedAnswer, setUpdatedAnswer ] = useState(0);
+  const [ updatedAnswerTeacher, setUpdatedAnswerTeacher ] = useState(0);
+  const [ updatedAnswerSupervisor, setUpdatedAnswerSupervisor ] = useState(0); 
 
   // Modal for criteria info
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
@@ -95,6 +96,9 @@ const UserPerformance = () => {
               answer,
               answerSupervisor,
               answerTeacher,
+              setAnswer,
+              setAnswerSupervisor,
+              setAnswerTeacher
             };
           }),
         };
@@ -113,6 +117,8 @@ const UserPerformance = () => {
       );
 
       console.log('Evaluation updated:', response.units);
+      console.log('saved data', {answer, answerSupervisor, answerTeacher})
+      //console.log('saved data', {answerButton, answerSupervisorButton, answerTeacherButton})
       setSelectedValues([]);
     } catch (error) {
       console.error('Error updating evaluation:', error);
@@ -121,6 +127,44 @@ const UserPerformance = () => {
     handleNotificationModalOpen();
     // Perform other submission logic here
   };
+
+  let radioItems = [];
+
+  if (user&&user.role === "customer"){
+    radioItems = [
+      {
+        info: "Osaamistaito",
+        disable: false,
+        value: [0,1,2],
+      },
+    ];
+  } else if (user&&user.role === "supervisor"){
+    radioItems = [
+      {
+        info: "TPO:n havainto",
+        disable: "false",
+        value: [0,1,2],
+      },
+    ];
+  } else if (user&&user.role === "teacher"){
+    radioItems = [
+      {
+        info: "Osaamistaito",
+        disabled: false,
+        value:[0,1,2]
+      },
+      {
+        info: "TPO:n vahainto",
+        disabled: false,
+        value:[0,1,2]
+      },
+      {
+        info: "Opettajan merkinta",
+        disabled: false,
+        value:[0,1,2]
+      },
+    ];
+  }
 
   return (
     <main>
@@ -140,42 +184,8 @@ const UserPerformance = () => {
       >
         Ammattitaitovaatimukset
       </h2>
-
       <div>
         <ul>
-          {/* Mock data */}
-          {/* {mockdata.map((data, index) => (
-            <li key={index}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  margin: '0 15px 0 0',
-                }}
-              >
-                <div>
-                  <p className='para-title-style'>{data.title} </p>
-                </div>
-                <div>
-                  <Icon
-                    icon='material-symbols:info'
-                    color='#1769aa'
-                    style={{ verticalAlign: 'middle', fontSize: '21px' }}
-                    cursor={'pointer'}
-                    onClick={handleOpenCriteriaModal}
-                  />
-                </div>
-              </div>
-              {user?.role === 'teacher' ? (
-                <TeacherPerformanceFeedBack />
-              ) : (
-                <PerformancesFeedback />
-              )}
-            </li>
-          ))} */}
-
-          {/* Evaluation */}
           {evaluation.map((unit, index) => (
             <li key={index}>
               <div
@@ -199,32 +209,53 @@ const UserPerformance = () => {
                   />
                 </div>
               </div>
-              {/* {unit.assessments.map((assess, index) => (
+               {unit.assessments.map((assess, index) => (
                 <div key={index}>
                   <p>Assessment: {assess.name.fi}</p>
                   <p>Student: {assess.answer}</p>
                   <p>Supervisor: {assess.answerSupervisor}</p>
                   <p>Teacher: {assess.answerTeacher}</p>
+                  {user&&user?.role === 'teacher' ? (
+                  <TeacherPerformanceFeedBack
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unit}
+                    setSelectedUnitId={setSelectedUnitId}
+                    selectedUnitId={selectedUnitId}
+                    radioItems={radioItems}
+                    //answer={assess.answer}
+                    prevAnswerValue={assess.answer}
+                    prevAnswerSupervisorValue={assess.answerSupervisor}
+                    prevAnswerTeacher={assess.answerTeacher}
+                    updatedAnswer={updatedAnswer}
+                    updatedAnswerTeacher={updatedAnswerTeacher}
+                    updatedAnswerSupervisor={updatedAnswerSupervisor}
+                    //answerSupervisor={assess.answerSupervisor}
+                    //answerTeacher={assess.answerTeacher}
+                    /* answerButton={answerButton}
+                    answerSupervisorButton={answerSupervisorButton}
+                    answerTeacherButton={answerTeacherButton} */
+                  />
+                ) : (
+                  <PerformancesFeedback
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unit}
+                    setSelectedUnitId={setSelectedUnitId}
+                    selectedUnitId={selectedUnitId}
+                    radioItems={radioItems}
+                    //answer={assess.answer}
+                    //answerSupervisor={assess.answerSupervisor}
+                    prevAnswerValue={assess.answer}
+                    prevAnswerSupervisorValue={assess.answerSupervisor}
+                    updatedAnswer={updatedAnswer}
+                    updatedAnswerSupervisor={updatedAnswerSupervisor}
+                    /* answerButton={answerButton}
+                    answerSupervisorButton={answerSupervisorButton} */
+                  />
+                )}
                 </div>
-              ))}
- */}
-              {user?.role === 'teacher' ? (
-                <TeacherPerformanceFeedBack
-                  selectedValues={selectedValues}
-                  setSelectedValues={setSelectedValues}
-                  unit={unit}
-                  setSelectedUnitId={setSelectedUnitId}
-                  selectedUnitId={selectedUnitId}
-                />
-              ) : (
-                <PerformancesFeedback
-                  selectedValues={selectedValues}
-                  setSelectedValues={setSelectedValues}
-                  unit={unit}
-                  setSelectedUnitId={setSelectedUnitId}
-                  selectedUnitId={selectedUnitId}
-                />
-              )}
+                ))}
             </li>
           ))}
         </ul>

@@ -207,25 +207,25 @@ return (
         <div className='form__startDate'>
           <label>Asiakkuuden aloituspäivä *</label>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-  <ThemeProvider theme={theme}>
-    <DesktopDatePicker 
-      format='DD.MM.YYYY'
-      value={startDate}
-      onChange={(date) => setStartDate(date)}
-    />
-  </ThemeProvider>
-</LocalizationProvider>
-
-<LocalizationProvider dateAdapter={AdapterDayjs}>
-  <ThemeProvider theme={theme}>
-    <DesktopDatePicker 
-      format='DD.MM.YYYY'
-      value={endDate}
-      onChange={(date) => setEndDate(date)}
-      minDate={startDate}  // Set minDate to startDate
-    />
-  </ThemeProvider>
-</LocalizationProvider>
+          <ThemeProvider theme={theme}>
+          <DesktopDatePicker 
+            format='DD.MM.YYYY'
+            value={startDate}
+            onChange={(date) => setStartDate(date)}
+            />
+          </ThemeProvider>
+          </LocalizationProvider>
+          <label>Asiakkuuden lopetuspäivä *</label>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <ThemeProvider theme={theme}>
+          <DesktopDatePicker 
+            format='DD.MM.YYYY'
+            value={endDate}
+            onChange={(date) => setEndDate(date)}
+            minDate={startDate}  // Set minDate to startDate
+            />
+          </ThemeProvider>
+          </LocalizationProvider>
 
         </div>
         <div className='form__extensionEndDate'>
