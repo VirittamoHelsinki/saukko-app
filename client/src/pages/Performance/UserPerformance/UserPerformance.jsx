@@ -30,7 +30,6 @@ const UserPerformance = ({unit}) => {
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
   let evaluationId = evaluation._id;
@@ -44,9 +43,6 @@ const UserPerformance = ({unit}) => {
   const [ answer, setAnswer ] = useState(0);
   const [ answerSupervisor, setAnswerSupervisor ] = useState(0);
   const [ answerTeacher, setAnswerTeacher]=useState(0)
-  const [ updatedAnswer, setUpdatedAnswer ] = useState(0);
-  const [ updatedAnswerTeacher, setUpdatedAnswerTeacher ] = useState(0);
-  const [ updatedAnswerSupervisor, setUpdatedAnswerSupervisor ] = useState(0); 
 
   // Modal for criteria info
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
@@ -125,46 +121,8 @@ const UserPerformance = ({unit}) => {
     }
     setIsButtonEnabled(true);
     handleNotificationModalOpen();
-    // Perform other submission logic here
   };
 
-  let radioItems = [];
-
-  if (user&&user.role === "customer"){
-    radioItems = [
-      {
-        info: "Osaamistaito",
-        disable: false,
-        value: [0,1,2],
-      },
-    ];
-  } else if (user&&user.role === "supervisor"){
-    radioItems = [
-      {
-        info: "TPO:n havainto",
-        disable: "false",
-        value: [0,1,2],
-      },
-    ];
-  } else if (user&&user.role === "teacher"){
-    radioItems = [
-      {
-        info: "Osaamistaito",
-        disabled: false,
-        value:[0,1,2]
-      },
-      {
-        info: "TPO:n vahainto",
-        disabled: false,
-        value:[0,1,2]
-      },
-      {
-        info: "Opettajan merkinta",
-        disabled: false,
-        value:[0,1,2]
-      },
-    ];
-  }
 
   return (
     <main>
@@ -217,41 +175,15 @@ const UserPerformance = ({unit}) => {
                   <p>Teacher: {assess.answerTeacher}</p>
                   {user&&user?.role === 'teacher' ? (
                   <TeacherPerformanceFeedBack
-                    selectedValues={selectedValues}
                     setSelectedValues={setSelectedValues}
                     unit={unit}
                     setSelectedUnitId={setSelectedUnitId}
-                    selectedUnitId={selectedUnitId}
-                    radioItems={radioItems}
-                    //answer={assess.answer}
-                    prevAnswerValue={assess.answer}
-                    prevAnswerSupervisorValue={assess.answerSupervisor}
-                    prevAnswerTeacher={assess.answerTeacher}
-                    updatedAnswer={updatedAnswer}
-                    updatedAnswerTeacher={updatedAnswerTeacher}
-                    updatedAnswerSupervisor={updatedAnswerSupervisor}
-                    //answerSupervisor={assess.answerSupervisor}
-                    //answerTeacher={assess.answerTeacher}
-                    /* answerButton={answerButton}
-                    answerSupervisorButton={answerSupervisorButton}
-                    answerTeacherButton={answerTeacherButton} */
                   />
                 ) : (
                   <PerformancesFeedback
-                    selectedValues={selectedValues}
                     setSelectedValues={setSelectedValues}
                     unit={unit}
                     setSelectedUnitId={setSelectedUnitId}
-                    selectedUnitId={selectedUnitId}
-                    radioItems={radioItems}
-                    //answer={assess.answer}
-                    //answerSupervisor={assess.answerSupervisor}
-                    prevAnswerValue={assess.answer}
-                    prevAnswerSupervisorValue={assess.answerSupervisor}
-                    updatedAnswer={updatedAnswer}
-                    updatedAnswerSupervisor={updatedAnswerSupervisor}
-                    /* answerButton={answerButton}
-                    answerSupervisorButton={answerSupervisorButton} */
                   />
                 )}
                 </div>
