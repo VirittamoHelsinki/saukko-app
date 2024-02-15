@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -9,42 +9,54 @@ const TeacherPerformanceFeedBack = ({
   setSelectedValues,
   unit,
   setSelectedUnitId,
-  radioItems,
-  answer,
-  answerSupervisor,
-  answerTeacher
 }) => {
   const [selectedRadio, setSelectedRadio] = useState({
-    Itsearvionti: answer === 1 ? 'Osaa ohjatusti' : (answer === 2 ? 'Osaa itsenäisesti' : '')
+    //Itsearvionti: answer === 1 ? 'Osaa ohjatusti' : (answer === 2 ? 'Osaa itsenäisesti' : '')
   });
   const auth = useContext(AuthContext);
   const user = auth.user;
 
-  const handleRadioChange = (e, unit, info, value) => {
-    console.log('🚀 ~ handleRadioChange ~ unit:', unit);
-    console.log('Clicked unit1', unit, 'info', info,'value', value);
-    setSelectedUnitId(unit._id); // This is the unit id
-    console.log('🚀 ~ handleRadioChange ~ unit._id:', unit._id);
-    setSelectedRadio((prevValues) => ({
-      ...prevValues,
-      [info]: prevValues[info] === value ? '' : value,
-    }));
-    if (e.target) {
-      if (selectedRadio === e.target.value) {
-        e.target.checked = false;
-        setSelectedRadio('');
-        setSelectedValues(0);
-      } else {
-        setSelectedRadio(e.target.value);
-        if (e.target.value === 'Osaa ohjatusti') {
-          setSelectedValues(1);
-        } else if (e.target.value === 'Osaa itsenäisesti') {
-          setSelectedValues(2);
-        }
-      }
-      console.log(e.target.value);
-      console.log('selectedRadio',selectedRadio);
+  if(user.role !== 'teacher'){
+    return null;
+  }
+
+  const getAssessmentValue=(assessment)=>{
+    if(user.role === 'teacher'){
+      return (assessment.answer && assessment.answer && assessment.answerTeacher);
+    } else {
+      return null;
     }
+  };
+
+  /* const updateSelectedValues = useCallback(
+    (selectedValue)=>{
+    if(selectedRadio['Osaamistaito'] === selectedValue){
+      setSelectedValues(0);
+    } else {
+      setSelectedValues(selectedValue === 'Osaa ohjatusti' ? 1:2);
+    }
+  },[selectedRadio, setSelectedValues]);
+ */
+  const handleRadioChange = (e, unit, info, assessmentIndex) => {
+    console.log('Clicked unit1', unit, 'info', info, 'unit._id', unit._id, 'assessmentIndex', assessmentIndex);
+
+    if(!unit || !unit._id){
+      console.error('Unit or unit._id is undefined');
+      return;
+    }
+
+    const selectedValue = e.target.value;
+    setSelectedUnitId(unit._id);
+
+    setSelectedRadio((prevValues)=>({
+      ...prevValues,
+      [`${info}-${assessmentIndex}`]: prevValues[`${info}-${assessmentIndex}`] === selectedValue ? '':selectedValue,
+    }));
+
+    //updateSelectedValues(selectedValue);
+
+    console.log('Clicked unit', unit, 'info:', info, 'value', selectedValue, 'unit._id', unit._id);
+    console.log('Selected radio :', selectedRadio);
   };
 
   const getBackgroundColor = () => {
@@ -57,69 +69,25 @@ const TeacherPerformanceFeedBack = ({
       }
     }
     return '#F2F2F2';
-  };
+    };
 
-  /* const [ answer, setAnswer ] = useState('');
-  const [ answerSupervisor, setAnswerSupervisor ] = useState('');
-  const [ answerTeacher, setAnswerTeacher ] = useState(''); */
-
-  /* const userRole = auth.user;
-
-  let selectedState;
-  switch (userRole) {
-    case 'customer': 
-    selectedState = answer;
-    break;
-
-    case 'supervisor':
-      selectedState = answerSupervisor;
-      break;
-
-    case 'teacher':
-      selectedState = answerTeacher;
-      break;
-
-    default:
-      selectedState = "";
-  }
- */
-  // Mock data
-  /* const infodata = [
-    {
-      info: 'Itsearviointi',
+  const radioItem = unit.assessments.map((assessment, index)=>{
+    const roleSpecificInfo =
+      user.role === 'customer' ? 'Osaamistaito'
+        : user.role === 'supervisor'
+        ? 'TPO havainto'
+        : user.role === 'teacher'
+        ? 'Opettajan merkintä'
+        : ''
+    return {
+      info: roleSpecificInfo,
       disabled: true,
-      value: 0 || 1 || 2,
-    },
-    {
-      info: 'TPO:n havainto',
-      disabled: true,
-      value: 0 || 1 || 2,
-    },
-    {
-      info: 'Opettajan merkintä',
-      disabled: false,
-      value: 0 || 1 || 2,
-    },
-  ];
- */
-  /* const radioItems = [
-    {
-      info: 'Itsearviointi',
-      disabled: true,
-      value: [0, 1, 2]
-    },
-    {
-      info: 'TPO:n havainto',
-      disabled: true,
-      value: [0, 1, 2],
-    },
-    {
-      info: 'Opettajan merkintä',
-      disabled: false,
-      value: [0, 1, 2],
-    },
-  ]
- */
+      units_id :unit._id,
+      assessmentIndex: index,
+      answer: getAssessmentValue(assessment),
+    };
+  });
+
   return (
     <main
       className='feedback__wrapper'
@@ -133,66 +101,51 @@ const TeacherPerformanceFeedBack = ({
         <p style={{ padding: '4px' }}>Osaa itsenäisesti</p>
       </div>
       <div>
-        <p>answer: {answer}</p>
+        {/*<p>answer: {answer}</p>
         <p>supervisor: {answerSupervisor}</p>
-        <p>teacher: {answerTeacher}</p>
-        {radioItems.map((item, index) => (
-          <div key={index} className='first-div-style'>
+        <p>teacher: {answerTeacher}</p>*/}
+        {radioItem.map((item) => (
+          <div key={item.assessmentIndex} className='first-div-style'>
             <p style={{ width: '38%', marginTop: '10px' }}>{item.info}</p>
             <div style={{ marginTop: '10px' }}>
               <FormControl>
                 <RadioGroup
                   row
                   aria-labelledby='demo-form-control-label-placement'
-                  name={item.info}
-                  //name="answer"
-                  value={selectedRadio[item.info] || ''}
-                  //value={selectedRadio[item.info] || 0}
-                  //value={selectedState}
+                  name={`${item.info}-${item.assessmentIndex}`}
+                  value={selectedRadio[`${item.info}-${item.assessmentIndex}`] || ''}
                   unit={unit}
-                  id={item}
-                  onClick={(e) => handleRadioChange(item.info, e, unit)}
+                  id={`radioGroup-${item.info}-${item.assessmentIndex}`}
+                  onChange={(e) => handleRadioChange(e,unit,item.info, item.assessmentIndex)}
                 >
                   <FormControlLabel
                     type="radio"
-                    name="Osaa ohjatusti"
-                    id="Osaa ohjatusti"
+                    name={`${item.info}-${item.assessmentIndex}`}
+                    id={`radio-${item.info}-${item.assessmentIndex}-1`}
                     value={1}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '70px',
                       },
                     }}
-                    onChange={(e)=>handleRadioChange(e, unit, item.info)}
-                    // disabled={item.disabled}
-                    control={
-                      <Radio
-                        disabled={item.info !== 'Opettajan merkintä'}
-                        onChange={(e) => handleRadioChange(e, unit, item.info)}
-                      />
-                    }
-                    checked={index < 2 || selectedRadio === 'Osaa ohjatusti'}
-                  />
+                    control={<Radio />}
+                    checked={item.answer === 1 || item.answerSupervisor === 1 || item.answerTeacher ===1 }
+                    label="Osaa ohjatusti"
+                   />
                   <FormControlLabel
                     type="radio"
-                    name="Osaa itsenäisesti"
-                    id="Osaa itsenäisesti"
+                    name={`${item.info}-${item.assessmentIndex}`}
+                    id={`radio-${item.info}-${item.assessmentIndex}-2`}
                     value={2}
+                    //label={item.assessmentValue}
+                    label='Osaa itsenäisesti'
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '8%',
                       },
                     }}
-                    control={
-                      <Radio
-                        disabled={item.info !== 'Opettajan merkintä'}
-                        onChange={(e) => handleRadioChange(e, unit, item.info)}
-                        checked={
-                          item.info === 'Opettajan merkintä' &&
-                          selectedRadio === 'Osaa itsenäisesti'
-                        }
-                      />
-                    }
+                    control={<Radio />}
+                    checked={item.answer === 2 || item.answerSupervisor === 2 || item.answerTeacher === 2}
                   />
                 </RadioGroup>
               </FormControl>
