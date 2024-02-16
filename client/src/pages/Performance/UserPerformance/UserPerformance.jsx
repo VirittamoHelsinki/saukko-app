@@ -185,17 +185,18 @@ const UserPerformance = () => {
           secondTitle={`Tervetuloa, ${user?.firstName}`}
         />
       </div>
-      <h2
-        style={{
+      <div >
+        {/*units.name*/}
+        <h2
+          style={{
           textAlign: 'center',
           fontSize: '18px',
-          textDecoration: 'underline',
           marginTop: '58%',
-        }}
-      >
-        Ammattitaitovaatimukset
-      </h2>
-
+          }}
+        >
+          Ammattitaitovaatimuten arviointi
+        </h2>
+      </div>
       <div>
         <ul>
           {/* Mock data */}
