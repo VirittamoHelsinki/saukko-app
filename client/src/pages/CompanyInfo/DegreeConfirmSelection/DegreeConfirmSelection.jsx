@@ -14,15 +14,16 @@ import axios from "axios";
 import { registration } from '../../../api/user';
 import { IconTwitter } from 'hds-react';
 import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
+import { fetchAllInternalWorkplaces } from '../../../api/workplace';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
-  const { supervisors, businessId, name, editedCompanyName, departments, } = useStore();
+  const { supervisors, businessId, name, editedCompanyName, departments, resetWorkplaceData } = useStore();
   // console.log(supervisors);
   // console.log('depatments----------', departments);
 
 
-  const { setinternalDegreeId, internalDegree, degreeFound } = useContext(InternalApiContext);
+  const { setinternalDegreeId, internalDegree, degreeFound, setWorkplaces } = useContext(InternalApiContext);
 
   const params = useParams();
 
@@ -134,6 +135,11 @@ function DegreeConfirmSelection() {
       setIsLoading(false);
 
       if (response.status === 201 || 200) {
+        const updatedWorkplaces = await fetchAllInternalWorkplaces();
+        console.log("🚀 ~ handleVahvistaClick ~ updatedWorkplaces:", updatedWorkplaces)
+
+        setWorkplaces(updatedWorkplaces);
+        resetWorkplaceData();
         setIsSuccess(true);
       } else {
         setIsFailure(true);

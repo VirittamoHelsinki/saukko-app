@@ -99,7 +99,7 @@ const degreeSchema = new mongoose.Schema({
             },
             enum: ["fi", "sv", "en"],
           },
-          /*
+        
           criteria: [ // list of criteria for this assessment
             {
               _id: { // criteria id
@@ -120,7 +120,7 @@ const degreeSchema = new mongoose.Schema({
                 default: ""
               },
             }
-          ]*/
+          ]
         }
       ]
     }

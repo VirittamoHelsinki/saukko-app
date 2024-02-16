@@ -12,7 +12,10 @@ import CriteriaModal from '../../../components/RequirementsAndCriteriaModal/Crit
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
 // Fetch evaluation by id from api
-import { fetchEvaluationById, updateEvaluationById, } from '../../../api/evaluation';
+import {
+  fetchEvaluationById,
+  updateEvaluationById,
+} from '../../../api/evaluation';
 
 const useFetchData = (evaluationId) => {
   const [evaluation, setEvaluation] = useState([]);
@@ -123,6 +126,41 @@ const UserPerformance = ({unit}) => {
     handleNotificationModalOpen();
   };
 
+  // Check if all assessments have been filled
+  const checkAssessments = () => {
+    if (!Array.isArray(evaluation)) {
+      return false;
+    }
+
+    if (user.role === 'customer') {
+      for (let unit of evaluation) {
+        for (let assess of unit.assessments) {
+          if (assess.answer === 0) {
+            return false;
+          }
+        }
+      }
+      return true;
+    } else if (user.role === 'supervisor') {
+      for (let unit of evaluation) {
+        for (let assess of unit.assessments) {
+          if (assess.answerSupervisor === 0) {
+            return false;
+          }
+        }
+      }
+      return true;
+    } else if (user.role === 'teacher') {
+      for (let unit of evaluation) {
+        for (let assess of unit.assessments) {
+          if (assess.answerTeacher === 0) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+  };
 
   return (
     <main>
@@ -132,16 +170,23 @@ const UserPerformance = ({unit}) => {
           secondTitle={`Tervetuloa, ${user?.firstName}`}
         />
       </div>
-      <h2
-        style={{
-          textAlign: 'center',
-          fontSize: '18px',
-          textDecoration: 'underline',
-          marginTop: '58%',
-        }}
+      <div style={{
+            textAlign: 'center',
+            fontSize: '16px',
+            marginTop: '50%'}}
       >
-        Ammattitaitovaatimukset
-      </h2>
+        <h1>Huolto ja korjaustyöt</h1>
+        <h2
+          /* style={{
+            textAlign: 'center',
+            fontSize: '18px',
+            textDecoration: 'underline',
+            marginTop: '58%',
+          }} */
+        >
+          Ammattitaitovaatimusten arviointi
+        </h2>
+      </div>
       <div>
         <ul>
           {evaluation.map((unit, index) => (
@@ -221,7 +266,7 @@ const UserPerformance = ({unit}) => {
         <Button
           style={buttonStyle}
           type='submit'
-          text='Lähetä'
+          text={checkAssessments() ? 'Lähetä' : 'Talenna luonnos'}
           onClick={handleSubmit}
         />
       </section>

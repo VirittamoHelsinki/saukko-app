@@ -21,7 +21,7 @@ const TeacherPerformanceFeedBack = ({
   }
 
   const getAssessmentValue=(assessment)=>{
-    if(user.role === 'teacher'){
+    if(user&&user.role === 'teacher'){
       return (assessment.answer && assessment.answer && assessment.answerTeacher);
     } else {
       return null;
@@ -71,22 +71,25 @@ const TeacherPerformanceFeedBack = ({
     return '#F2F2F2';
     };
 
-  const radioItem = unit.assessments.map((assessment, index)=>{
-    const roleSpecificInfo =
-      user.role === 'customer' ? 'Osaamistaito'
-        : user.role === 'supervisor'
-        ? 'TPO havainto'
-        : user.role === 'teacher'
-        ? 'Opettajan merkintä'
-        : ''
-    return {
-      info: roleSpecificInfo,
-      disabled: true,
-      units_id :unit._id,
-      assessmentIndex: index,
-      answer: getAssessmentValue(assessment),
-    };
-  });
+    const assessmentTypes = ['Osaamistaito', 'TOP:n havainto', 'Opettajan merkintä']
+      /* const roleSpecificInfo =
+        user.role === 'customer' ? 'Osaamistaito'
+          : user.role === 'supervisor'
+          ? 'TPO havainto'
+          : user.role === 'teacher'
+          ? 'Opettajan merkintä'
+          : '' */
+          
+    const radioItem = unit.assessments.flatMap((assessment, index)=> {
+      return assessmentTypes.map((type)=>({
+        info: type,
+        disabled: true,
+        //units_id: unit._id,
+        unit:unit,
+        assessmentIndex: index,
+        answer: getAssessmentValue(assessment),
+      }));
+      });
 
   return (
     <main
@@ -100,12 +103,12 @@ const TeacherPerformanceFeedBack = ({
         <p style={{ padding: '2px' }}>Osaa ohjatusti</p>
         <p style={{ padding: '4px' }}>Osaa itsenäisesti</p>
       </div>
-      <div>
+      <div className='first-div-style' style={{ width: '60%', marginLeft: '38%' }}>
         {/*<p>answer: {answer}</p>
         <p>supervisor: {answerSupervisor}</p>
         <p>teacher: {answerTeacher}</p>*/}
         {radioItem.map((item) => (
-          <div key={item.assessmentIndex} className='first-div-style'>
+          <div key={`${item.info}-${item.assessmentIndex}`} className='first-div-style'>
             <p style={{ width: '38%', marginTop: '10px' }}>{item.info}</p>
             <div style={{ marginTop: '10px' }}>
               <FormControl>
@@ -129,7 +132,7 @@ const TeacherPerformanceFeedBack = ({
                       },
                     }}
                     control={<Radio />}
-                    checked={item.answer === 1 || item.answerSupervisor === 1 || item.answerTeacher ===1 }
+                    checked={item.answer === 1}
                     label="Osaa ohjatusti"
                    />
                   <FormControlLabel
@@ -145,7 +148,7 @@ const TeacherPerformanceFeedBack = ({
                       },
                     }}
                     control={<Radio />}
-                    checked={item.answer === 2 || item.answerSupervisor === 2 || item.answerTeacher === 2}
+                    checked={item.answer === 2}
                   />
                 </RadioGroup>
               </FormControl>

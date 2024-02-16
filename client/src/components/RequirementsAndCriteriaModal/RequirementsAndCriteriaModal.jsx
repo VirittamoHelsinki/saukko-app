@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { Button } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -36,14 +37,14 @@ function CustomDialogTitle(props) {
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CancelOutlinedIcon />
+          <CloseIcon />
         </IconButton>
       ) : null}
     </DialogTitle>
   );
 }
 
-export default function RequirementsAndCriteriaModal({ open, handleClose, onSave }) {
+export default function RequirementsAndCriteriaModal(props) {
   let bgColor = '#e5eff8';
   let color = '#0062b9';
   const [inputValueTitle, setInputValueTitle] = useState('');
@@ -51,7 +52,7 @@ export default function RequirementsAndCriteriaModal({ open, handleClose, onSave
 
   const handleInputChange = (event, inputField) => {
     const value = event.target.value;
-    
+
     if (inputField === 1) {
       setInputValueTitle(value);
     } else if (inputField === 2) {
@@ -59,16 +60,22 @@ export default function RequirementsAndCriteriaModal({ open, handleClose, onSave
     }
   };
 
+  const handleClose = () => {
+    props.onClose();
+  };
+
   const handleSubmit = () => {
-    console.log('Submitted value:', inputValueTitle, inputValueCriteria);
-    onSave(inputValueTitle, inputValueCriteria);
+    console.log('Submitted Title:', inputValueTitle);
+    console.log('Submitted criteria:', inputValueCriteria);
+    props.onSave(inputValueTitle, inputValueCriteria);
     setInputValueTitle('');
     setInputValueCriteria('');
+    handleClose();
   };
 
   return (
     <CustomDialog
-      open={open}
+      open={props.open}
       onClose={handleClose}
       aria-labelledby='customized-dialog-title'
       fullWidth
@@ -98,34 +105,12 @@ export default function RequirementsAndCriteriaModal({ open, handleClose, onSave
       >
         <CancelOutlinedIcon />
       </IconButton>
-      <CustomDialogTitle
-        variant='h6'
-        component='h6'
-        fontWeight='bold'
-        sx={{ fontSize: '17px' }}
-      >
-        Lisää ammattitaitovaatimusta
+      <CustomDialogTitle id='customized-dialog-title'>
+        {props.title}
       </CustomDialogTitle>
-      <DialogContent
-        sx={{
-          marginLeft: '11px',
-        }}
-      >
-        <Typography
-          variant='subtitle1'
-          fontWeight='bold'
-          marginBottom={1}
-          sx={{ fontSize: '12px' }}
-        >
-          Osan tutkinnon nimi
-        </Typography>
-        <Typography
-          variant='subtitle1'
-          fontWeight='bold'
-          sx={{ fontSize: '12px' }}
-        >
-          Ammattitaitovaatimuksen nimi
-        </Typography>
+      <DialogContent>
+        <Typography gutterBottom>{props.modalUnitName}</Typography>
+        <Typography gutterBottom>{props.requirementsTitle}</Typography>
         <TextField
           value={inputValueTitle}
           onChange={(e) => handleInputChange(e, 1)}
@@ -155,17 +140,9 @@ export default function RequirementsAndCriteriaModal({ open, handleClose, onSave
               },
             },
           }}
-        >
-          <Typography padding='1rem'></Typography>
-        </TextField>
-        <Typography
-          variant='subtitle1'
-          fontWeight='bold'
-          marginTop={1}
-          sx={{ fontSize: '12px' }}
-        >
-          Kriteerit
-        </Typography>
+        ></TextField>
+        <Typography gutterBottom>{props.criteria}</Typography>
+
         <TextField
           value={inputValueCriteria}
           onChange={(e) => handleInputChange(e, 2)}

@@ -1,4 +1,4 @@
-.feedback {
+.feedbackpage__wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,6 +27,8 @@
 
 .first-div-style{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  width: 40%;
+  margin-top: 10px;
 }

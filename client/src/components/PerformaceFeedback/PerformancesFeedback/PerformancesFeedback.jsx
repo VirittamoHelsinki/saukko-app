@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,10 +12,7 @@ const PerformancesFeedback = ({
   setSelectedUnitId,
   }) => {
   //const [selectedFiles, setSelectedFiles] = useState([]);
-  const [selectedRadio, setSelectedRadio] = useState({ 
-    //Osaamistaito: prevAnswerValue === 1 ? 'Osaa ohjatusti' : 'Osaa itsenäisesti'
-    //Itseaeviointi: prevAnswerValue === 1 ? 'Osaa ohajatusti' : (prevAnswerValue === 2 ? 'Osaa itsenäisesti' : '')
-  });
+  const [selectedRadio, setSelectedRadio] = useState('');
 
   const {evaluation} = useContext(InternalApiContext);
 
@@ -26,6 +23,11 @@ const PerformancesFeedback = ({
     user.role = null;
   }
 
+  useEffect(()=>{
+    console.log('Updated selectedRadio: ', selectedRadio)
+
+  },[selectedRadio])
+
   const getAssessmentValue = (assessment)=>{
     switch (user.role){
       case 'customer':
@@ -35,35 +37,47 @@ const PerformancesFeedback = ({
       default:
         return null;
     }
-  }
+  };
 
-  const updateSelectedValues = useCallback((selectedValue)=>{
-    if(selectedRadio['Osaamistaito'] === selectedValue){
-      setSelectedValues(0);
-    } else {
-      setSelectedValues(selectedValue === 'Osaa ohjatusti' ? 1: 2);
-    }
-  }, [selectedRadio, setSelectedValues]);
+  const updateSelectedValues = ((selectedValue, info, assessmentIndex)=>{
+      setSelectedValues(selectedValue === 'Osaa ohjatusti' ? 1:2, info);
+  });
+  //}, [selectedRadio, setSelectedValues]);
 
-
-  const handleRadioChange = (e, unit, info, assessmentIndex) => {
-    console.log('Clicked unit1', unit, 'info', info, 'unit._id', unit._id);
+  const handleRadioChange = (e, unit,info, assessmentIndex) => {
+    console.log('Clicked unit1', unit, 'unit._id', unit._id);
 
     if (!unit || !unit._id) {
       console.error('Unit or unit._id is undefined');
       return;
     }
 
+    if(!evaluation){
+      console.error('evaluation is undefined');
+      return;
+    }
+
+    const evaluationId = evaluation._id || '';
+    if(!evaluationId){
+      console.error('Evaluation ID is undefined');
+      return;
+    }
+
     const selectedValue = e.target.value;
     setSelectedUnitId(unit._id);
+
+    //const info = user.role === 'customer' ? 'Osaamistaito' : 'Tpo:n havainto';
   
     setSelectedRadio((prevValues)=>({
       ...prevValues,
       [`${info}-${assessmentIndex}`]: prevValues[`${info}-${assessmentIndex}`] === selectedValue ? '': selectedValue,
+     //[`Osaamistaito-${unit._id}`]:prevValues[`Osaamistaito-${unit._id}`] === selectedValue ? '': selectedValue,
     }));
-    updateSelectedValues(selectedValue);
+    updateSelectedValues(selectedValue, info, assessmentIndex);
 
-    console.log('Clicked unit:', unit, 'Info:', info, 'Value:',selectedValue, 'unit._id', unit._id);
+    //console.log('Selected radio:', updatedValues);
+    
+    console.log('Clicked unit:', unit, 'Info:', info, 'selectedValue:',selectedValue, 'unit._id', unit._id);
     console.log('Selected radio :',selectedRadio);
     };
 
@@ -80,11 +94,9 @@ const PerformancesFeedback = ({
       }
     }
   }; */
-
-  const getBackgroundColor = () => {
-    if (
-      selectedRadio['Osaamistaito'] === 'Osaa ohjatusti' ||
-      selectedRadio['Osaamistaito'] === 'Osaa itsenäisesti'
+   const getBackgroundColor = () => {
+    if (selectedRadio === 'Osaa ohjatusti' ||
+      selectedRadio === 'Osaa itsenäisesti'
     ) {
       if (user&&user?.role === 'supervisor') {
         return '#F6E2E6';
@@ -93,16 +105,31 @@ const PerformancesFeedback = ({
       }
     }
     return '#F2F2F2';
-    };
+    };  
+     /* const getBackgroundColor=(assessment)=>{
+      const answer = assessment.answer || 0;
+      const answerSupervisor = assessment.answerSupervisor ||0;
 
+      if(answer === 1 || answer === 2 || answerSupervisor === 1 ||answerSupervisor === 2){
+        if(user&& user.role === 'customer'){
+          return '#E2F5F3';
+        }else if (user&&user.role === 'supervisor'){
+          return '#F6E2E6'
+        }
+      }
+      return '#F2F2F2';
+    };  */
 
-  const radioItem = unit.assessments.map((assessment, index)=>{
+    const radioItem = unit.assessments.map((assessment, index)=>{
+    const assessmentInfo = user.role === 'customer' ? 'Osaamistaito': 'TPO:n havainto'
     return {
-        info: user.role === 'customer' ? 'Osaamistaito': 'TPO:n havainto',
-        disabled: true,
-        units_id: unit._id,
-        assessmentIndex: index,
-        answer: getAssessmentValue(assessment),
+      info: assessmentInfo,
+      disabled: true,
+      units_id: unit._id,
+      assessmentIndex: index,
+      answer: getAssessmentValue(assessment),
+      assessmentValue: 
+        user.role === 'customer' ? assessment.answer : assessment.answerSupervisor,
       };
       /* {
         info: 'TOPO:n havainto',
@@ -128,13 +155,13 @@ const PerformancesFeedback = ({
       className='feedbackpage__wrapper'
       style={{ backgroundColor: getBackgroundColor() }}
     >
-      {radioItem.map((item)=>(
-        <div key={item.assessmentIndex} className='first-div-style'>
-          <p  style={{ width: '38%', marginTop: '10px' }}>{item.info}</p>
+      <div className='first-div-style'>
+        {radioItem.map((item)=>(
+          <div key={item.assessmentIndex}>
             <FormControl>
               <RadioGroup
                 row
-                aria-labelledby='demo-form-control-label-placement'
+                aria-labelledby='demo-raw-controlled-form-label-placement'
                 name={`${item.info}-${item.assessmentIndex}`}
                 value={selectedRadio[`${item.info}-${item.assessmentIndex}`] || ''}
                 unit={unit}
@@ -146,33 +173,40 @@ const PerformancesFeedback = ({
                   name={`${item.info}-${item.assessmentIndex}`}
                   id={`radio-${item.info}-${item.assessmentIndex}-1`}
                   value={1}
-                  label={item.assessmentValue}
+                  //label={item.assessmentValue}
+                  label='Osaa ohjatusti'
+                  labelPlacement="top"
                   sx={{
                     '& .MuiSvgIcon-root': {
-                      marginRight: '70px',
+                    marginRight: '70px',
                     },
                   }}
                   control={<Radio />}
-                  checked={item.answer === 1 || item.answerSupervisor === 1}
-                 />
+                  checked={selectedRadio === '1' || item.answer === 1 || item.answerSupervisor === 1}
+                  onClick={()=>handleRadioChange({target: {value: '1'}}, unit, item.info, item.assessmentIndex)}
+                  />
                 <FormControlLabel
                   type="radio"
                   name={`${item.info}-${item.assessmentIndex}`}
                   id={`radio-${item.info}-${item.assessmentIndex}-2`}
                   value={2}
-                  label={item.assessmentValue}
+                  //label={item.assessmentValue}
+                  label='Osaa itsenäisesti'
+                  labelPlacement="top"
                   sx={{
                     '& .MuiSvgIcon-root': {
-                      marginRight: '8%',
+                    marginRight: '8%',
                     },
                   }}
                   control={<Radio />}
-                  checked={item.answer === 2 || item.answerSupervisor === 2}
-                 />
+                  checked={ selectedRadio === '2' || item.answer === 2 || item.answerSupervisor === 2}
+                  onClick={()=>handleRadioChange({target: {value: '2'}}, unit, item.info, item.assessmentIndex)}
+                />
               </RadioGroup>
             </FormControl>
-        </div>
-      ))}
+          </div>
+        ))}
+      </div>
     </main>
    );
 };
