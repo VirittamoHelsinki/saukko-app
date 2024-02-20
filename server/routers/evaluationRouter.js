@@ -6,6 +6,7 @@ const {
   sendUserMail,
 } = require('../mailer');
 const User = require('../models/userModel');
+const Degree = require('../models/degreeModel');
 
 // Function to generate verification link for the supervisor
 function generateVerificationLink(user) {
@@ -18,48 +19,66 @@ evaluationRouter.post('/evaluation/', async (req, res) => {
   const evaluationData = req.body;
 
   try {
-    // Check if single supervisorId is provided and convert it to an array
+    // Convert single supervisorId to an array of supervisorIds
     if (req.body.supervisorId) {
       req.body.supervisorIds = [req.body.supervisorId];
-      delete req.body.supervisorId; // Optional: Remove the original supervisorId field
+      delete req.body.supervisorId;
     }
 
     if (!evaluationData.units) {
-      evaluationData.units = []; // Default units array
+      evaluationData.units = []; 
     }
 
-    evaluationData.units.forEach((unit) => {
-      if (!unit.assessments || unit.assessments.length === 0) {
-        unit.assessments = [{}];
+    // Fetch the degree based on degreeId to include criteria details from the degree
+    const degree = await Degree.findById(evaluationData.degreeId);
+    if (!degree) {
+      return res.status(404).send({ error: "Degree not found" });
+    }
+
+    
+    evaluationData.units = evaluationData.units.map(unit => {
+      const degreeUnit = degree.units.find(du => du._id.toString() === unit._id.toString());
+      if (degreeUnit) {
+        unit.assessments = unit.assessments.map(assessment => {
+          const degreeAssessment = degreeUnit.assessments.find(da => da._id === assessment._id);
+          if (degreeAssessment) {
+            // Here we map criteria from the degree and add them to the evaluation's assessment
+            assessment.criteria = degreeAssessment.criteria.map(criteria => {
+              return {
+                criterionId: criteria._id, 
+                fi: criteria.fi, 
+                sv: criteria.sv, 
+                en: criteria.en  
+              };
+            });
+          }
+          return assessment;
+        });
       }
+      return unit;
     });
 
     const evaluation = new Evaluation(evaluationData);
     await evaluation.save();
 
-    console.log(evaluation);
-
-    // Check if supervisorIds array has IDs and send email to each
+    // Notify supervisors if any
     if (evaluation.supervisorIds && evaluation.supervisorIds.length > 0) {
       evaluation.supervisorIds.forEach(async (supervisorId) => {
         try {
           const supervisor = await User.findById(supervisorId);
           if (supervisor) {
             const verificationLink = generateVerificationLink(supervisor);
-            sendVerificationEmail(supervisor, verificationLink); // Assuming this function is implemented
+            sendVerificationEmail(supervisor, verificationLink);
           }
         } catch (userError) {
-          console.error(
-            'Error fetching supervisor for notification: ',
-            userError
-          );
+          console.error('Error fetching supervisor for notification: ', userError);
         }
       });
     }
 
-    console.log('Evaluation created and supervisors notified (if applicable)');
     res.status(201).send(evaluation);
   } catch (error) {
+    console.error('Error creating evaluation: ', error);
     res.status(400).send(error);
   }
 });
@@ -71,10 +90,9 @@ evaluationRouter.get('/evaluation/', async (req, res) => {
       .populate('customerId', 'firstName lastName')
       .populate('teacherId', 'firstName lastName')
       .populate('supervisorIds', 'firstName lastName')
-      .populate('workplaceId'); // Populate other necessary fields
+      .populate('workplaceId'); 
 
     res.send(evaluations);
-    console.log(evaluations);
   } catch (error) {
     console.error('Error occurred in GET /evaluation/: ', error);
     res.status(500).send({
@@ -87,20 +105,49 @@ evaluationRouter.get('/evaluation/', async (req, res) => {
 // Get a single evaluation by id
 evaluationRouter.get('/evaluation/:id', async (req, res) => {
   try {
-    const evaluation = await Evaluation.findById(req.params.id)
+    let evaluation = await Evaluation.findById(req.params.id)
       .populate('customerId', 'firstName lastName')
       .populate('teacherId', 'firstName lastName')
-      .populate('supervisorIds', 'firstName lastName') // Changed to support multiple supervisors
-      .populate('workplaceId'); // Add any other fields you need to populate
-
-    console.log(evaluation);
+      .populate('supervisorIds', 'firstName lastName')
+      .populate('workplaceId');
 
     if (!evaluation) {
-      return res.status(404).send();
+      return res.status(404).send({ message: 'Evaluation not found.' });
     }
+
+    const degree = await Degree.findById(evaluation.degreeId);
+    if (!degree) {
+      return res.status(404).send({ message: "Degree not found" });
+    }
+
+    // Convert evaluation document to a JavaScript object for modification
+    evaluation = evaluation.toObject(); 
+
+    for (let unit of evaluation.units) {
+      const degreeUnit = degree.units.find(du => du._id.toString() === unit._id.toString());
+      if (degreeUnit) {
+        for (let assessment of unit.assessments) {
+          const degreeAssessment = degreeUnit.assessments.find(da => da._id.toString() === assessment._id.toString());
+          if (degreeAssessment) {
+            for (let criterion of assessment.criteria) {
+              const degreeCriterion = degreeAssessment.criteria.find(dc => dc._id.toString() === criterion.criterionId.toString());
+              if (degreeCriterion) {
+                criterion.details = {
+                  fi: degreeCriterion.fi,
+                  sv: degreeCriterion.sv,
+                  en: degreeCriterion.en,
+                };
+              }
+            }
+          }
+        }
+      }
+    }
+
     res.send(evaluation);
   } catch (error) {
-    res.status(500).send(error);
+    console.error('Error fetching evaluation: ', error);
+    res.status(500).send({ message: 'Failed to fetch evaluation', error: error.message });
   }
 });
 
@@ -162,12 +209,12 @@ evaluationRouter.put('/evaluation/:id', async (req, res) => {
       }
     }
 
-    // Update units based on assessments and ready status
+
     evaluation.units = req.body.units.map((unit) => {
       let allAssessmentsCompleted = true;
       let anyAssessmentInProgress = false;
 
-      // Check if any assessment is in progress or all assessments are completed
+      // Check if any assessment is in progress or all assessments are completed and ready is true
       unit.assessments.forEach((assessment) => {
         const { answer, answerTeacher, answerSupervisor } = assessment;
         if (
@@ -184,11 +231,10 @@ evaluationRouter.put('/evaluation/:id', async (req, res) => {
         }
       });
 
-      // Check if all assessments are completed or the unit is marked as ready
       if ((allAssessmentsCompleted && unit.ready) || unit.ready) {
-        unit.status = 2; // All assessments completed or unit is ready
+        unit.status = 2; 
       } else if (anyAssessmentInProgress) {
-        unit.status = 1; // At least one assessment in progress
+        unit.status = 1; 
       }
 
       return unit;
@@ -231,25 +277,21 @@ evaluationRouter.delete('/evaluation/:id', async (req, res) => {
 // Send email to teacher
 evaluationRouter.post('/evaluation/sendEmail', async (req, res) => {
   try {
-    // Validate request body
     if (!req.body.teacherId || !req.body.message) {
       return res
         .status(400)
         .send('Missing teacherId or message in the request body.');
     }
 
-    // Fetch the teacher
     const teacher = await User.findById(req.body.teacherId);
 
-    // Check if the teacher exists
     if (!teacher) {
       return res.status(404).send('Teacher not found.');
     }
 
-    // Send the email
     sendUserMail(teacher, req.body.message);
 
-    // Respond to the client after email is sent
+
     res.status(200).send('Email sent successfully.');
   } catch (error) {
     console.error('Error in sending email: ', error);
