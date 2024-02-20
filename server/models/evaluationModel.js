@@ -47,10 +47,6 @@ const evaluationSchema = mongoose.Schema({
     default: 0,
     enum: [0, 1, 2],
   },
-  degreeId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Degree', // Degree._id
-  },
   // The date when a particular regulation was established
   regulationDate: {
     type: Date,
@@ -128,8 +124,17 @@ const evaluationSchema = mongoose.Schema({
             default: 0,
             enum: [0, 1, 2, 3],
           },
+          criteria: [
+            {
+              criterionId: {
+                type: Number,
+                ref: 'Degree', // Degree.unit.assessment.criterion._id
+              }
+            }
+          ]
         },
       ],
+      
     },
   ],
 });
