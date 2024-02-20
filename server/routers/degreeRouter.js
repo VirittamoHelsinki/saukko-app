@@ -31,7 +31,7 @@ degreeRouter.get('/internal/degree/:id', async (req, res) => {
   // POST a new degree
 degreeRouter.post('/internal/degrees', async (req, res) => {
     try {
-      const newDegreeData = req.body; // Assuming you're sending the degree data in the request body
+      const newDegreeData = req.body;
 
       const newDegree = new Degree(newDegreeData);
       await newDegree.save();
