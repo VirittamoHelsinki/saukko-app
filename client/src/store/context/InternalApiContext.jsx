@@ -136,7 +136,7 @@ export const InternalApiContextProvider = (props) => {
         setLoading(true);
         const degree = await fetchInternalDegreeById(internalDegreeId);
         // Set state
-        console.log(degree);
+        // console.log(degree);
         setInternalDegree(degree);
       } catch (err) {
         console.error(err);

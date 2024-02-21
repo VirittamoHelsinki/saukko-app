@@ -10,7 +10,7 @@ import Stepper from '../../../components/Stepper/Stepper';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import useStore from '../../../store/zustand/formStore';
 import { postWorkplace } from '../../../api/workplace';
-import axios from "axios";
+import axios from 'axios';
 import { registration } from '../../../api/user';
 import { IconTwitter } from 'hds-react';
 import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
@@ -18,12 +18,19 @@ import { fetchAllInternalWorkplaces } from '../../../api/workplace';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
-  const { supervisors, businessId, name, editedCompanyName, departments, resetWorkplaceData } = useStore();
+  const {
+    supervisors,
+    businessId,
+    name,
+    editedCompanyName,
+    departments,
+    resetWorkplaceData,
+  } = useStore();
   // console.log(supervisors);
   // console.log('depatments----------', departments);
 
-
-  const { setinternalDegreeId, internalDegree, degreeFound, setWorkplaces } = useContext(InternalApiContext);
+  const { setinternalDegreeId, internalDegree, degreeFound, setWorkplaces } =
+    useContext(InternalApiContext);
 
   const params = useParams();
 
@@ -34,11 +41,11 @@ function DegreeConfirmSelection() {
 
   const checkedUnits = useUnitsStore((state) => state?.checkedUnits);
 
-  console.log('checkedunits.........', checkedUnits)
+  console.log('checkedunits.........', checkedUnits);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [isFailure, setIsFailure] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isFailure, setIsFailure] = useState(false);
 
   const { openNotificationModal, setOpenNotificationModal } = useStore();
 
@@ -82,7 +89,7 @@ function DegreeConfirmSelection() {
 
         // Register the supervisor and get the userId
         const userResponse = await registration(userData);
-        const userId = userResponse.data.userId
+        const userId = userResponse.data.userId;
         return userId;
       });
 
@@ -91,7 +98,6 @@ function DegreeConfirmSelection() {
       // console.log('Supervisor IDs:', supervisorIds);
 
       let departmentData = [];
-
 
       departmentData = Object.keys(departments).map((key) => {
         const department = { name: departments[key] };
@@ -108,7 +114,6 @@ function DegreeConfirmSelection() {
         return department;
       });
 
-
       const workplaceData = {
         supervisors: supervisorIds,
         businessId,
@@ -120,10 +125,19 @@ function DegreeConfirmSelection() {
           name: {
             fi: unit.name.fi,
           },
-          // assessments: [],
-        }))
-
+          assessments: unit.assessments.map((assessment) => ({
+            _id: assessment._id,
+            name: {
+              fi: assessment.name.fi,
+            },
+            criteria: assessment.criteria.map((criterion) => ({
+              _id: criterion._id,
+              fi: criterion.fi,
+            })),
+          })),
+        })),
       };
+      console.log('🚀 ~ handleVahvistaClick ~ workplaceData:', workplaceData);
 
       console.log('Sending workplace Data:', workplaceData);
       //  The supervisors field contains an array of valid ObjectId values.
@@ -136,7 +150,10 @@ function DegreeConfirmSelection() {
 
       if (response.status === 201 || 200) {
         const updatedWorkplaces = await fetchAllInternalWorkplaces();
-        console.log("🚀 ~ handleVahvistaClick ~ updatedWorkplaces:", updatedWorkplaces)
+        console.log(
+          '🚀 ~ handleVahvistaClick ~ updatedWorkplaces:',
+          updatedWorkplaces
+        );
 
         setWorkplaces(updatedWorkplaces);
         resetWorkplaceData();
@@ -145,7 +162,7 @@ function DegreeConfirmSelection() {
         setIsFailure(true);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setIsLoading(false);
       setIsFailure(true);
       setIsSuccess(false);
@@ -155,7 +172,7 @@ function DegreeConfirmSelection() {
     if (isSuccess) {
       setOpenNotificationModal(true);
     } else if (isFailure) {
-      setOpenNotificationModal(true)
+      setOpenNotificationModal(true);
     }
   }, [isSuccess, isFailure]);
 
@@ -164,19 +181,18 @@ function DegreeConfirmSelection() {
       <WavesHeader title='Saukko' secondTitle='Lisää uusi työpaikka' />
       <section className='confirmSelection__container'>
         <div>
-          <Stepper
-            activePage={4}
-            totalPages={4}
-            data={stepperData}
-          />
+          <Stepper activePage={4} totalPages={4} data={stepperData} />
         </div>
         <div className='confirmSelection__infolist-wrapper'>
-          <h2 className='Degree__confirmSelection__container--secondtitle'>Yhteenveto</h2>
+          <h2 className='Degree__confirmSelection__container--secondtitle'>
+            Yhteenveto
+          </h2>
           <div className='confirmSelection__infolist-item'>
             <h2 className='second__title'>Työpaikka</h2>
-            <p className='second__paragraph'>{name ? name?.name : editedCompanyName}</p>
+            <p className='second__paragraph'>
+              {name ? name?.name : editedCompanyName}
+            </p>
             <p className='second__paragraph'> {businessId}</p>
-
           </div>
           {departments?.name && (
             <div className='confirmSelection__infolist-item'>
@@ -188,19 +204,31 @@ function DegreeConfirmSelection() {
           {supervisors.map((ohjaaja, index) => (
             <div key={index} className='confirmSelection__infolist-item'>
               <h2 className='second__title'>Työpaikkaohjaaja</h2>
-              <p className='second__paragraph'>{ohjaaja?.firstName} {ohjaaja?.lastName}</p>
-              <p className='second__paragraph' style={{ marginBottom: '10px' }}>{ohjaaja?.email}</p>
+              <p className='second__paragraph'>
+                {ohjaaja?.firstName} {ohjaaja?.lastName}
+              </p>
+              <p className='second__paragraph' style={{ marginBottom: '10px' }}>
+                {ohjaaja?.email}
+              </p>
             </div>
           ))}
         </div>
-        <h1 className='Degree__confirmSelection__container--secondtitle'>{degreeFound && internalDegree?.name?.fi}</h1>
+        <h1 className='Degree__confirmSelection__container--secondtitle'>
+          {degreeFound && internalDegree?.name?.fi}
+        </h1>
         <div className='confirmSelection__container--units'>
           {checkedUnits?.map((unit) => (
-            <SelectUnit key={unit?._id} unit={unit} allUnits={degreeFound && internalDegree?.units} />
+            <SelectUnit
+              key={unit?._id}
+              unit={unit}
+              allUnits={degreeFound && internalDegree?.units}
+            />
           ))}
         </div>
         <PageNavigationButtons
-          handleBack={() => navigate(`../internal/degrees/${internalDegree?._id}/units`)}
+          handleBack={() =>
+            navigate(`../internal/degrees/${internalDegree?._id}/units`)
+          }
           handleForward={handleVahvistaClick}
           forwardButtonText={'Vahvista'}
         />
@@ -223,24 +251,10 @@ function DegreeConfirmSelection() {
           body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
           open={openNotificationModal}
           redirectLink='/company-info'
-
         />
       )}
-
     </main>
   );
 }
 
 export default DegreeConfirmSelection;
-
-
-
-
-
-
-
-
-
-
-
-

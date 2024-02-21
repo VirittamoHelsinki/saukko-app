@@ -99,6 +99,7 @@ const workplaceSchema = new mongoose.Schema({
           // Unique identifier for the assessment
           _id: {
             type: Number,
+            ref: 'Degree',// Reference to the Degree model
           },
           // Name of the assessment in Finnish and Swedish
           name: {
@@ -111,6 +112,26 @@ const workplaceSchema = new mongoose.Schema({
               default: '',
             },
           },
+          //Criteria related to the assessment
+          criteria: [ 
+          {
+            _id: { // criteria id
+              type: Number,
+              ref: 'Degree',            },
+            fi: { // criteria finnish name
+              type: String,
+              default: ""
+            },
+            sv: { // criteria swedish name
+              type: String,
+              default: ""
+            },
+            en: { // criteria english name
+              type: String,
+              default: ""
+            },
+          }
+        ]
         },
       ],
     },
