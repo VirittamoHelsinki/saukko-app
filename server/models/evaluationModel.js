@@ -97,6 +97,7 @@ const evaluationSchema = mongoose.Schema({
           // Unique identifier for the assessment
           _id: {
             type: Number,
+            ref: 'Degree', // Reference to the Degree mode
           },
           // Name of the assessment in Finnish and Swedish
           name: {
@@ -125,16 +126,31 @@ const evaluationSchema = mongoose.Schema({
             enum: [0, 1, 2, 3],
           },
           criteria: [
+            // list of criteria for this assessment
             {
               criterionId: {
                 type: Number,
                 ref: 'Degree', // Degree.unit.assessment.criterion._id
-              }
-            }
-          ]
+              },
+              fi: {
+                // criteria finnish name
+                type: String,
+                default: '',
+              },
+              sv: {
+                // criteria swedish name
+                type: String,
+                default: '',
+              },
+              en: {
+                // criteria english name
+                type: String,
+                default: '',
+              },
+            },
+          ],
         },
       ],
-      
     },
   ],
 });
