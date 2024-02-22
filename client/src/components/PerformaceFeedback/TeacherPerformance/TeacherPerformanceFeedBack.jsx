@@ -9,10 +9,12 @@ const TeacherPerformanceFeedBack = ({
   setSelectedValues,
   unit,
   setSelectedUnitId,
+  setHasUnsavedChanges,
 }) => {
   const [selectedRadio, setSelectedRadio] = useState({});
   const auth = useContext(AuthContext);
   const user = auth.user;
+  const [hasChanged, setHasChanged] = useState(false);
 
   const handleRadioChange = (e, unit, info, value) => {
     console.log('🚀 ~ handleRadioChange ~ unit:', unit);
@@ -22,6 +24,8 @@ const TeacherPerformanceFeedBack = ({
       ...prevValues,
       [info]: prevValues[info] === value ? '' : value,
     }));
+    setHasChanged(true);
+    setHasUnsavedChanges(true);
     if (e.target) {
       if (selectedRadio === e.target.value) {
         e.target.checked = false;
