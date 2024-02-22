@@ -1,4 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
@@ -47,6 +48,55 @@ const UserPerformance = () => {
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
+
+  //j
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [lastLocation, setLastLocation] = useState(null);
+  const [confirmedNavigation, setConfirmedNavigation] = useState(false);
+  const [destination, setDestination] = useState(null);
+
+    // Warning modal if user exit without saving
+    const [showWarningModal, setShowWarningModal] = useState(false);
+
+    const cancelNavigation = useCallback(() => {
+      setShowWarningModal(false);
+      setLastLocation(null);
+    }, []);
+  
+    const confirmNavigation = useCallback(() => {
+      setShowWarningModal(false);
+      setConfirmedNavigation(true);
+    }, []);
+  
+    useEffect(() => {
+      if (confirmedNavigation && lastLocation) {
+        navigate(lastLocation.location?.pathname);
+  
+        // Clean-up state on confirmed navigation
+        setConfirmedNavigation(false);
+      }
+    }, [confirmedNavigation, lastLocation]);
+  
+    const handleNavigation = (destination) => {
+      if (hasUnsavedChanges) {
+        setShowWarningModal(true);
+        setDestination(destination);
+      } else {
+        console.log('Destination before navigation:', destination);
+        navigate(destination);
+      }
+      console.log('Destination before navigation222:', destination);
+      setLastLocation(destination);
+  
+      console.log('Destination after navigation:', destination);
+    };
+
+ 
+
+  //j
   
   
 
@@ -84,6 +134,18 @@ const UserPerformance = () => {
   const handleNotificationModalOpen = () => {
     setOpenNotificationModal(true);
   };
+
+  const handleNotificationModalClose = useCallback(() => {
+    // Navigate to 'unit-list' route
+    if (user?.role === 'customer') {
+      navigate('/unit-list');
+    } else {
+      navigate('/customer-list');
+    }
+
+    // Reload the page
+    window.location.reload();
+  }, [navigate]);
 
   const handleSubmit = async () => {
     const updatedUnits = evaluation.map((unit) => {
@@ -193,9 +255,9 @@ const UserPerformance = () => {
       >
         Ammattitaitovaatimukset
       </h2>
-
       <div>
         <ul>
+          {/* Evaluation */}
           {evaluation.map((unit, index) => (
             <li key={index}>
               <div
@@ -219,6 +281,15 @@ const UserPerformance = () => {
                   />
                 </div>
               </div>
+              {unit.assessments.map((assess, index) => (
+                <div key={index}>
+                  <p>Assessment: {assess.name.fi}</p>
+                  <p>Student: {assess.answer}</p>
+                  <p>Supervisor: {assess.answerSupervisor}</p>
+                  <p>Teacher: {assess.answerTeacher}</p>
+                </div>
+              ))}
+
               {user?.role === 'teacher' ? (
                 <TeacherPerformanceFeedBack
                   selectedValues={selectedValues}
@@ -226,7 +297,9 @@ const UserPerformance = () => {
                   unit={unit}
                   setSelectedUnitId={setSelectedUnitId}
                   selectedUnitId={selectedUnitId}
-                /> 
+                  hasUnsavedChanges={hasUnsavedChanges}
+                  setHasUnsavedChanges={setHasUnsavedChanges}
+                />
               ) : (
                 <PerformancesFeedback
                   selectedValues={selectedValues}
@@ -234,6 +307,8 @@ const UserPerformance = () => {
                   unit={unit}
                   setSelectedUnitId={setSelectedUnitId}
                   selectedUnitId={selectedUnitId}
+                  hasUnsavedChanges={hasUnsavedChanges}
+                  setHasUnsavedChanges={setHasUnsavedChanges}
                 />
               )}
             </li>
@@ -308,9 +383,26 @@ const UserPerformance = () => {
         />
       </section>
       <div style={{ marginBottom: '90px' }}>
-        <UserNav></UserNav>
+      <UserNav
+          checkUnsavedChanges={
+            hasUnsavedChanges ? () => setHasUnsavedChanges(true) : null
+          }
+          handleNavigation={handleNavigation}
+          destination={destination}
+        ></UserNav>
       </div>
 
+      {/* Warning notification modal */}
+      <NotificationModal
+        type='alert'
+        title='Varoitus: Lomakkeen tiedot menetetään'
+        body='Oletko varma, että haluat poistua sivulta?'
+        open={showWarningModal}
+        handleClose={cancelNavigation}
+        handleConfirm={confirmNavigation}
+      />
+
+      {/* Modal for showing criteria */}
       <CriteriaModal
         open={isCriteriaModalOpen}
         handleClose={handleCloseCriteriaModal}
@@ -320,6 +412,7 @@ const UserPerformance = () => {
         title='Lähetetty'
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
+        handleClose={handleNotificationModalClose}
       />
     </main>
   );
