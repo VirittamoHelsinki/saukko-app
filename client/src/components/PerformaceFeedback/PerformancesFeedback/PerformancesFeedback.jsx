@@ -6,14 +6,14 @@ import FormControl from '@mui/material/FormControl';
 import AuthContext from '../../../store/context/AuthContext';
 
 const PerformancesFeedback = ({
-  selectedValues,
   setSelectedValues,
   unit,
   setSelectedUnitId,
+  setHasUnsavedChanges
 }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState('');
-
+  const [hasChanged, setHasChanged] = useState(false);
   const auth = useContext(AuthContext);
   const user = auth.user;
 
@@ -23,12 +23,16 @@ const PerformancesFeedback = ({
         setSelectedRadio('');
         setSelectedValues(0);
         setSelectedUnitId(null);
+        setHasChanged(false);
+        setHasUnsavedChanges(false);
       }
     };
 
   const handleRadioChange = (event, unit) => {
     setSelectedRadio(event.target.value);
     setSelectedUnitId(unit._id); // This is the unit id
+    setHasChanged(true);
+    setHasUnsavedChanges(true);
     if (event.target.value === 'Osaa ohjatusti') {
       setSelectedValues(1);
     } else if (event.target.value === 'Osaa itsenäisesti') {
