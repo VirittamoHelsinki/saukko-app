@@ -5,8 +5,8 @@ import Button from '../../components/Button/Button';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import InternalApiContext from '../../store/context/InternalApiContext';
-import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
-import { buildDeprecatedPropsWarning } from '@mui/x-date-pickers/internals';
+// import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
+// import { buildDeprecatedPropsWarning } from '@mui/x-date-pickers/internals';
 
 // controls how many company name are shown at once and renders them
 const CheckLength = ({
@@ -135,6 +135,7 @@ const AddCompanyName = () => {
       <UserNav />
       <section className='addDegree__container'>
         <Button
+          id='addWorkplaceButton'
           text='Lisää työpaikka'
           style={{
             marginLeft: '25%',
@@ -149,7 +150,7 @@ const AddCompanyName = () => {
           onClick={() => navigate(`/company-info`)}
         />
 
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'} />
+        <Searchbar id='workplaceSearchbar' handleSearch={handleSearch} placeholder={'Etsi työpaikka'} />
 
         <div className='addDegree__container--list'>
           <CheckLength

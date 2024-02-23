@@ -99,6 +99,7 @@ function EditUnits() {
         <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
 
         <button 
+          id='finishEditButton'
           className={`edit-button ${editMode ? 'button-editable' : 'button-not-editable'}`} 
           onClick={() => setEditMode(!editMode)}
         >
@@ -108,7 +109,7 @@ function EditUnits() {
 
         {/* Non-edit mode */}
         {!editMode && editedUnits.length > 0 && (
-          <div className='units-not-editable'>
+          <div id='unitsNotEditable' className='units-not-editable'>
             {editedUnits.map((unit, index) => (
               <p key={index}>{index+1}. {unit.name.fi}</p>
             ))}
@@ -117,7 +118,7 @@ function EditUnits() {
 
         {/* Edit mode */}
         {editMode && (
-          <div className='units-editable'>
+          <div id='unitsEditable' className='units-editable'>
             {editedUnits.length > 0 &&
               editedUnits.map(unit => (
                 <input 
@@ -127,7 +128,7 @@ function EditUnits() {
                 />
               ))
             }
-            <button className='add-unit-button' onClick={handleAddUnit}>+ Lisää tutkinnonosa</button>
+            <button id='addUnitButton' className='add-unit-button' onClick={handleAddUnit}>+ Lisää tutkinnonosa</button>
           </div>
         )}
 
