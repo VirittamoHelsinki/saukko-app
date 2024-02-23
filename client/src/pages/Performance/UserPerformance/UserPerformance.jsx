@@ -12,8 +12,8 @@ import CriteriaModal from '../../../components/RequirementsAndCriteriaModal/Crit
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
 // Fetch evaluation and units from store
-import useEvaluationStore from '../../../store/zustand/evaluationStore';
-import useUnitsStore from '../../../store/zustand/unitsStore';
+// import useEvaluationStore from '../../../store/zustand/evaluationStore';
+// import useUnitsStore from '../../../store/zustand/unitsStore';
 
 // Fetch evaluation by id from api
 import {
@@ -211,6 +211,7 @@ const UserPerformance = () => {
                 </div>
                 <div>
                   <Icon
+                    id='infoIcon'
                     icon='material-symbols:info'
                     color='#1769aa'
                     style={{ verticalAlign: 'middle', fontSize: '21px' }}
@@ -300,6 +301,7 @@ const UserPerformance = () => {
 
       <section>
         <Button
+          id='submitButton'
           style={buttonStyle}
           type='submit'
           text={getButtonText()}

@@ -66,6 +66,7 @@ const LoginPage = () => {
             <label htmlFor=''>Sähköposti *</label>
             <input
               type='email'
+              id='email'
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
@@ -75,6 +76,7 @@ const LoginPage = () => {
             <div className="password__container">
               <input
                 type={showPassword ? "text" : "password"}
+                id='password'
                 className="password-input"
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -82,6 +84,7 @@ const LoginPage = () => {
               />
               {password.length > 0 && (
                 <span
+                  id='password-toggle'
                   className="password-icon"
                   onClick={togglePasswordVisibility}
                 >
@@ -100,7 +103,7 @@ const LoginPage = () => {
                   <p className="error-message">{errorMessage}</p>
                 </div>
                 <div className='forgot-password-link'>
-                  <a href='/forgot-password'>Unohtuiko salasana?</a>
+                  <a href='/forgot-password' id='forgot-password-link'>Unohtuiko salasana?</a>
                 </div>
               </div>
             )}
