@@ -560,6 +560,9 @@ const UserPerformance = () => {
                   // cols={25}
                   multiline
                   fullWidth
+                  InputProps={{
+                    readOnly: true, // Make the TextField read-only
+                  }}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
