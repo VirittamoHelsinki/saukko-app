@@ -60,9 +60,8 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Icon } from '@iconify/react';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button'; // Add this import for the "OK" button
-
+import { Box } from '@mui/material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -172,7 +171,7 @@ export default function CustomizedDialogs(props) {
           {props.title}
         </BootstrapDialogTitle>
         <DialogContent>
-          <Typography gutterBottom>{props.body}</Typography>
+          <Box sx={{ color: 'black', marginBottom: '1rem'}}>{props.body}</Box>
           {props.type === 'alert' && (
             <Button onClick={handleConfirm} color='primary' variant='contained'>
               Kyllä

@@ -9,8 +9,11 @@ import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/T
 import useStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
 import { Icon } from '@iconify/react';
-import CriteriaModal from '../../../components/RequirementsAndCriteriaModal/CriteriaModal';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import TextField from '@mui/material/TextField';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 // Fetch evaluation and units from store
 // import useEvaluationStore from '../../../store/zustand/evaluationStore';
@@ -56,6 +59,18 @@ const UserPerformance = () => {
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
   const [destination, setDestination] = useState(null);
 
+  // Modal for showing criteria
+  const [criteriaModalContent, setCriteriaModalContent] = useState([]);
+
+  const handleOpenCriteriaModal = (criteria) => {
+    setCriteriaModalContent(criteria);
+    setIsCriteriaModalOpen(criteria.length >= 0 || isCriteriaModalOpen);
+  };
+
+  const handleCloseCriteriaModal = () => {
+    setIsCriteriaModalOpen(false);
+  };
+
   // Warning modal if user exit without saving
   const [showWarningModal, setShowWarningModal] = useState(false);
 
@@ -90,14 +105,6 @@ const UserPerformance = () => {
     setLastLocation(destination);
 
     console.log('Destination after navigation:', destination);
-  };
-
-  const handleOpenCriteriaModal = () => {
-    setIsCriteriaModalOpen(true);
-  };
-
-  const handleCloseCriteriaModal = () => {
-    setIsCriteriaModalOpen(false);
   };
 
   useEffect(() => {
@@ -255,7 +262,91 @@ const UserPerformance = () => {
       <div>
         <ul>
           {/* Evaluation */}
+          {/* New code */}
           {evaluation.map((unit, index) => (
+            <li key={index}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  margin: '0 15px 0 0',
+                }}
+              >
+                <div>
+                  <p className='para-title-style'>{unit.name.fi} </p>
+                </div>
+                {/* <div>
+                  <Icon
+                    icon='material-symbols:info'
+                    color='#1769aa'
+                    style={{ verticalAlign: 'middle', fontSize: '21px' }}
+                    cursor={'pointer'}
+                    onClick={handleOpenCriteriaModal}
+                  />
+                </div> */}
+              </div>
+              {unit.assessments.map((assess, index) => (
+                <div key={index}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      margin: '0 15px 0 0',
+                    }}
+                  >
+                    <div>
+                      <p className='para-title-style'>
+                        <b>Assessment:</b> {assess.name.fi}
+                      </p>
+                    </div>
+                    <div>
+                      <Icon
+                        icon='material-symbols:info'
+                        color='#1769aa'
+                        style={{ verticalAlign: 'middle', fontSize: '21px' }}
+                        cursor={'pointer'}
+                        onClick={() => handleOpenCriteriaModal(assess.criteria)}
+                      />
+                    </div>
+                  </div>
+                  {/* {assess.criteria.map((crit, index) => (
+                    <p key={index}>
+                      <b>Criteria</b>: {crit.fi}
+                    </p>
+                  ))} */}
+                  <p>Student: {assess.answer}</p>
+                  <p>Supervisor: {assess.answerSupervisor}</p>
+                  <p>Teacher: {assess.answerTeacher}</p>
+                  {user?.role === 'teacher' ? (
+                    <TeacherPerformanceFeedBack
+                      selectedValues={selectedValues}
+                      setSelectedValues={setSelectedValues}
+                      unit={unit}
+                      setSelectedUnitId={setSelectedUnitId}
+                      selectedUnitId={selectedUnitId}
+                      hasUnsavedChanges={hasUnsavedChanges}
+                      setHasUnsavedChanges={setHasUnsavedChanges}
+                    />
+                  ) : (
+                    <PerformancesFeedback
+                      selectedValues={selectedValues}
+                      setSelectedValues={setSelectedValues}
+                      unit={unit}
+                      setSelectedUnitId={setSelectedUnitId}
+                      selectedUnitId={selectedUnitId}
+                      hasUnsavedChanges={hasUnsavedChanges}
+                      setHasUnsavedChanges={setHasUnsavedChanges}
+                    />
+                  )}
+                </div>
+              ))}
+            </li>
+          ))}
+
+          {/* Old code */}
+          {/* {evaluation.map((unit, index) => (
             <li key={index}>
               <div
                 style={{
@@ -279,14 +370,6 @@ const UserPerformance = () => {
                   />
                 </div>
               </div>
-              {/* {unit.assessments.map((assess, index) => (
-                <div key={index}>
-                  <p>Assessment: {assess.name.fi}</p>
-                  <p>Student: {assess.answer}</p>
-                  <p>Supervisor: {assess.answerSupervisor}</p>
-                  <p>Teacher: {assess.answerTeacher}</p>
-                </div>
-              ))} */}
 
               {user?.role === 'teacher' ? (
                 <TeacherPerformanceFeedBack
@@ -310,7 +393,7 @@ const UserPerformance = () => {
                 />
               )}
             </li>
-          ))}
+          ))} */}
         </ul>
       </div>
 
@@ -448,10 +531,51 @@ const UserPerformance = () => {
       />
 
       {/* Modal for showing criteria */}
-      <CriteriaModal
+      <NotificationModal
+        type='info'
+        title='Osaamisen kriteerit'
+        style={{ width: '130%' }}
+        body={
+          <>
+            <IconButton
+              aria-label='close'
+              onClick={handleCloseCriteriaModal}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: 'black',
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ minWidth: '75vw' }}>
+              {criteriaModalContent.map((crit, index) => (
+                <TextField
+                  key={index}
+                  value={crit && crit.fi ? crit.fi : 'No criteria found'}
+                  id='outlined-multiline-static'
+                  fontSize='12px'
+                  rows={8}
+                  // cols={25}
+                  multiline
+                  fullWidth
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderStyle: 'none',
+                      },
+                    },
+                  }}
+                ></TextField>
+              ))}
+            </DialogContent>
+          </>
+        }
         open={isCriteriaModalOpen}
         handleClose={handleCloseCriteriaModal}
       />
+
       <NotificationModal
         type='success'
         title='Lähetetty'
