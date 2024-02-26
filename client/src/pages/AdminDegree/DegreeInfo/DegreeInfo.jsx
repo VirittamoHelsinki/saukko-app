@@ -187,6 +187,7 @@ function DegreeInfo() {
         >
           {user?.role === 'teacher' && (
             <Button
+              id='editButton'
               onClick={handleEditToggle}
               type='submit'
               style={isEditable ? buttonStyleSave : buttonStyleEdit}
@@ -204,6 +205,7 @@ function DegreeInfo() {
 
             {degreeDescription ? (
               <div
+                id='degreeDescriptionTextBox'
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -230,6 +232,7 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block dark'>
             <h2>Perusteen nimi</h2>
             <div
+              id='degreeNameTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -250,6 +253,7 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block'>
             <h2>Määräyksen diaarinumero</h2>
             <div
+              id='diaryNumberTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -270,6 +274,7 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block dark'>
             <h2>Määräyksen päätöspäivämäärä</h2>
             <div
+              id='regulationDateTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -290,6 +295,7 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block'>
             <h2>Voimaantulo</h2>
             <div
+              id='validFromTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -310,6 +316,7 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block dark'>
             <h2>Voimassaolon päättyminen</h2>
             <div
+              id='expiryTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -330,6 +337,7 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block'>
             <h2>Siirtymäajan päättymisaika</h2>
             <div
+              id='transitionEndsTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',

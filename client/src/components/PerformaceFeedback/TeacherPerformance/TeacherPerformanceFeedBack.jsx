@@ -10,8 +10,10 @@ const TeacherPerformanceFeedBack = ({
   setSelectedValues,
   unit,
   setSelectedUnitId,
+  setHasUnsavedChanges,
 }) => {
   const [selectedRadio, setSelectedRadio] = useState({});
+  const [hasChanged, setHasChanged] = useState(false);
  
   const auth = useContext(AuthContext);
   const user = auth.user;
@@ -19,19 +21,26 @@ const TeacherPerformanceFeedBack = ({
   //Fetch evaluation and units from store
   const { evaluation } = useContext(InternalApiContext);
  
+
   const handleRadioChange = (e, unit, info, value) => {
-    console.log('🚀 ~ handleRadioChange ~ unit:', unit);
-    setSelectedUnitId(unit._id); // This is the unit id
-    console.log('🚀 ~ handleRadioChange ~ unit._id:', unit._id);
     setSelectedRadio((prevValues) => ({
       ...prevValues,
       [info]: prevValues[info] === value ? '' : value,
     }));
+    setHasChanged(true);
+    if (unit._id) {
+      setSelectedUnitId(unit._id); // This is the unit id
+      setHasUnsavedChanges(true);
+    } else {
+      setHasUnsavedChanges(false);
+    }
     if (e.target) {
       if (selectedRadio === e.target.value) {
         e.target.checked = false;
         setSelectedRadio('');
         setSelectedValues(0);
+        setHasChanged(false);
+        setHasUnsavedChanges(false);
       } else {
         setSelectedRadio(e.target.value);
         if (e.target.value === 'Osaa ohjatusti') {

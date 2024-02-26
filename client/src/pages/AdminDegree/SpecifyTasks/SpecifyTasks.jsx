@@ -147,6 +147,7 @@ function SpecifyTasks() {
                 activeStep={activeStep}
                 nextButton={
                   <Button
+                    id='nextButton'
                     sx={{ fontWeight: 'bold', color: '#000000' }}
                     size='small'
                     onClick={handleNext}
@@ -162,6 +163,7 @@ function SpecifyTasks() {
                 }
                 backButton={
                   <Button
+                    id='backButton'
                     sx={{ fontWeight: 'bold', color: '#000000' }}
                     size='small'
                     onClick={handleBack}
@@ -218,6 +220,7 @@ function SpecifyTasks() {
                 )}
               </div>
               <Button
+                id='addCriteriaButton'
                 onClick={handleOpenCriteriaModal}
                 className='add-criteria-btn'
                 sx={{ paddingLeft: 0, textTransform: 'none' }}

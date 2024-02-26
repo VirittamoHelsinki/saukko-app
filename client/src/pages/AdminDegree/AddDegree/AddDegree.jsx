@@ -55,7 +55,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
 
   return (
     <div className='addDegree__container--list-pagination'>
-      <section className='addDegree__container--list-pagination-nums'>
+      <section id='numberedButtons' className='addDegree__container--list-pagination-nums'>
         {/* Render numbered buttons */}
         {pages.map((pageNum) => (
           <button
@@ -69,7 +69,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         ))}
       </section>
       {/* Render previous and next buttons */}
-      <section className='addDegree__container--list-pagination-arrows'>
+      <section id='prevNextButtons' className='addDegree__container--list-pagination-arrows'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
@@ -132,6 +132,7 @@ const AddDegree = () => {
       <UserNav />
       <section className='addDegree__container'>
         <Button
+          id='addDegreeButton'
           text='Lisää tutkinto'
           style={{
             marginLeft: '25%',
@@ -146,9 +147,9 @@ const AddDegree = () => {
           onClick={() => navigate(`/degrees`)}
         />
 
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
+        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
 
-        <div className='addDegree__container--list'>
+        <div id='listContainer' className='addDegree__container--list'>
           <CheckLength
             filteredList={filteredList}
             allInternalDegrees={allInternalDegrees}

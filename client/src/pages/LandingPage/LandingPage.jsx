@@ -28,6 +28,7 @@ const LandingPage = () => {
       </section>
       <section className='landingPage__buttons'>
         <Button
+          id="login-button"
           text='Kirjaudu sisään'
           style={buttonStyle}
           onClick={() => {
