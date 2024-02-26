@@ -45,14 +45,18 @@ const PerformancesFeedback = ({
   };
  
   const handleRadioChange = (event, unit) => {
-    setSelectedRadio(event.target.value);
-    setSelectedUnitId(unit._id); // This is the unit id
-    
-    if (event.target.value === 'Osaa ohjatusti') {
-      setSelectedValues(1);
-    } else if (event.target.value === 'Osaa itsenäisesti') {
-      setSelectedValues(2);
-    }
+    //setSelectedRadio(event.target.value);
+    const selectedValue = event.target.value;
+    setSelectedRadio(selectedValue, ()=>{
+
+      setSelectedUnitId(unit._id); // This is the unit id
+      
+      if (event.target.value === 'Osaa ohjatusti') {
+        setSelectedValues(1);
+      } else if (event.target.value === 'Osaa itsenäisesti') {
+        setSelectedValues(2);
+      }
+    })
   };
  
   // const handleFileChange = (event) => {
