@@ -1,4 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
@@ -37,7 +38,6 @@ const UserPerformance = () => {
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
   let evaluationId = evaluation._id;
@@ -47,8 +47,50 @@ const UserPerformance = () => {
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
-  
-  
+
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [lastLocation, setLastLocation] = useState(null);
+  const [confirmedNavigation, setConfirmedNavigation] = useState(false);
+  const [destination, setDestination] = useState(null);
+
+  // Warning modal if user exit without saving
+  const [showWarningModal, setShowWarningModal] = useState(false);
+
+  const cancelNavigation = useCallback(() => {
+    setShowWarningModal(false);
+    setLastLocation(null);
+  }, []);
+
+  const confirmNavigation = useCallback(() => {
+    setShowWarningModal(false);
+    setConfirmedNavigation(true);
+  }, []);
+
+  useEffect(() => {
+    if (confirmedNavigation && lastLocation) {
+      navigate(lastLocation.location?.pathname);
+
+      // Clean-up state on confirmed navigation
+      setConfirmedNavigation(false);
+    }
+  }, [confirmedNavigation, lastLocation]);
+
+  const handleNavigation = (destination) => {
+    if (hasUnsavedChanges) {
+      setShowWarningModal(true);
+      setDestination(destination);
+    } else {
+      console.log('Destination before navigation:', destination);
+      navigate(destination);
+    }
+    console.log('Destination before navigation222:', destination);
+    setLastLocation(destination);
+
+    console.log('Destination after navigation:', destination);
+  };
 
   const handleOpenCriteriaModal = () => {
     setIsCriteriaModalOpen(true);
@@ -63,9 +105,15 @@ const UserPerformance = () => {
       marginTop: '35px',
       marginLeft: '20px',
       width: '88%',
-      color: Object.values(selectedValues).some(value => value) ? 'var(--saukko-main-white)' : '#0000BF',
-      border: Object.values(selectedValues).some(value => value) ? '#0000BF' : '#0000BF solid',
-      background: Object.values(selectedValues).some(value => value) ? '#0000BF' : 'var(--saukko-main-white)',
+      color: Object.values(selectedValues).some((value) => value)
+        ? 'var(--saukko-main-white)'
+        : '#0000BF',
+      border: Object.values(selectedValues).some((value) => value)
+        ? '#0000BF'
+        : '#0000BF solid',
+      background: Object.values(selectedValues).some((value) => value)
+        ? '#0000BF'
+        : 'var(--saukko-main-white)',
     };
     setButtonStyle(buttonStyle);
   }, [selectedValues]);
@@ -84,6 +132,18 @@ const UserPerformance = () => {
   const handleNotificationModalOpen = () => {
     setOpenNotificationModal(true);
   };
+
+  const handleNotificationModalClose = useCallback(() => {
+    // Navigate to 'unit-list' route
+    if (user?.role === 'customer') {
+      navigate('/unit-list');
+    } else {
+      navigate('/customer-list');
+    }
+
+    // Reload the page
+    window.location.reload();
+  }, [navigate]);
 
   const handleSubmit = async () => {
     const updatedUnits = evaluation.map((unit) => {
@@ -154,8 +214,7 @@ const UserPerformance = () => {
         selectedValues['pyydetaanYhteydenottoaOhjaajalta']
       ) {
         return 'Tallenna ja Lähettä pyynto';
-      } 
-      else if (selectedValues['suoritusValmis']) {
+      } else if (selectedValues['suoritusValmis']) {
         return 'Tallenna ja Lähettä';
       } else {
         return 'Tallenna luonnos';
@@ -193,9 +252,9 @@ const UserPerformance = () => {
       >
         Ammattitaitovaatimukset
       </h2>
-
       <div>
         <ul>
+          {/* Evaluation */}
           {evaluation.map((unit, index) => (
             <li key={index}>
               <div
@@ -220,6 +279,15 @@ const UserPerformance = () => {
                   />
                 </div>
               </div>
+              {/* {unit.assessments.map((assess, index) => (
+                <div key={index}>
+                  <p>Assessment: {assess.name.fi}</p>
+                  <p>Student: {assess.answer}</p>
+                  <p>Supervisor: {assess.answerSupervisor}</p>
+                  <p>Teacher: {assess.answerTeacher}</p>
+                </div>
+              ))} */}
+
               {user?.role === 'teacher' ? (
                 <TeacherPerformanceFeedBack
                   selectedValues={selectedValues}
@@ -227,7 +295,9 @@ const UserPerformance = () => {
                   unit={unit}
                   setSelectedUnitId={setSelectedUnitId}
                   selectedUnitId={selectedUnitId}
-                /> 
+                  hasUnsavedChanges={hasUnsavedChanges}
+                  setHasUnsavedChanges={setHasUnsavedChanges}
+                />
               ) : (
                 <PerformancesFeedback
                   selectedValues={selectedValues}
@@ -235,68 +305,116 @@ const UserPerformance = () => {
                   unit={unit}
                   setSelectedUnitId={setSelectedUnitId}
                   selectedUnitId={selectedUnitId}
+                  hasUnsavedChanges={hasUnsavedChanges}
+                  setHasUnsavedChanges={setHasUnsavedChanges}
                 />
               )}
             </li>
           ))}
         </ul>
       </div>
-      
+
       {error && <p>{error}</p>}
 
-      <div style={{fontSize: '20px', marginTop: '40px', marginLeft: '18px'}}>
+      <div style={{ fontSize: '20px', marginTop: '40px', marginLeft: '18px' }}>
         {user?.role === 'teacher' ? (
           <>
-            <input type="checkbox" name="suoritusValmis" onChange={() => setSelectedValues({ ...selectedValues, 'suoritusValmis': !selectedValues['suoritusValmis'] })} />
-            <label > Suoritus Valmis </label>
+            <input
+              type='checkbox'
+              name='suoritusValmis'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  suoritusValmis: !selectedValues['suoritusValmis'],
+                })
+              }
+            />
+            <label> Suoritus Valmis </label>
             <br />
-            <input type="checkbox" name="yhteydenottoAsiakkaalta" onChange={() => setSelectedValues({ ...selectedValues, 'pyydetaanYhteydenottoaAsiakkaalta': !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'] })} />
+            <input
+              type='checkbox'
+              name='yhteydenottoAsiakkaalta'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  pyydetaanYhteydenottoaAsiakkaalta:
+                    !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
+                })
+              }
+            />
             <label> Pyydään yhteydenottoa asiakkaalta</label>
             <br />
-            <input type="checkbox" name="yhteydenottoOhjaajalta" onChange={() => setSelectedValues({ ...selectedValues, 'pyydetaanYhteydenottoaOhjaajalta': !selectedValues['pyydetaanYhteydenottoaOhjaajalta'] })} />
+            <input
+              type='checkbox'
+              name='yhteydenottoOhjaajalta'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  pyydetaanYhteydenottoaOhjaajalta:
+                    !selectedValues['pyydetaanYhteydenottoaOhjaajalta'],
+                })
+              }
+            />
             <label> Pyydään yhteydenottoa ohjaajalta </label>
           </>
         ) : (
           <>
-            <input type="checkbox" name="valmisLahetettavaksi" onChange={() => setSelectedValues({ ...selectedValues, 'valmisLahetettavaksi': !selectedValues['valmisLahetettavaksi'] })} />
-            <label > Valmis lähetettäväksi </label>
+            <input
+              type='checkbox'
+              name='valmisLahetettavaksi'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  valmisLahetettavaksi: !selectedValues['valmisLahetettavaksi'],
+                })
+              }
+            />
+            <label> Valmis lähetettäväksi </label>
             <br />
-            <input type="checkbox" name="pyydetaanYhteydenottoaOpettajalta" onChange={() => setSelectedValues({ ...selectedValues, 'pyydetaanYhteydenottoaOpettajalta': !selectedValues['pyydetaanYhteydenottoaOpettajalta'] })} />
+            <input
+              type='checkbox'
+              name='pyydetaanYhteydenottoaOpettajalta'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  pyydetaanYhteydenottoaOpettajalta:
+                    !selectedValues['pyydetaanYhteydenottoaOpettajalta'],
+                })
+              }
+            />
             <label> Pyydään yhteydenottoa opettajalta</label>
           </>
         )}
       </div>
 
       <h2
-      style={{
-        textAlign: 'center',
-        fontSize: '18px',
-        textDecoration: 'underline',
-        marginTop: '40px',
-        color: h2Color, // Set the color dynamically
-      }}
-    >
-      {user?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
-    </h2>
+        style={{
+          textAlign: 'center',
+          fontSize: '18px',
+          textDecoration: 'underline',
+          marginTop: '40px',
+          color: h2Color, // Set the color dynamically
+        }}
+      >
+        {user?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
+      </h2>
       <form action=''>
-       
-      <textarea 
-  placeholder={
-    user?.role === 'teacher'
-      ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
-      : user?.role === 'supervisor'
-      ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
-      : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
-  }
-  rows={8}
-  cols={38}
-  style={{ width: '87%', padding: '5px' }}
-  className='para-title-style'
-  value={textareaValue}
-  onChange={(e) => setTextareaValue(e.target.value)}
-  disabled={isPalauteSectionDisabled()}
-/>
-
+        <textarea
+          placeholder={
+            user?.role === 'teacher'
+              ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
+              : user?.role === 'supervisor'
+              ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
+              : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
+          }
+          rows={8}
+          cols={38}
+          style={{ width: '87%', padding: '5px' }}
+          className='para-title-style'
+          value={textareaValue}
+          onChange={(e) => setTextareaValue(e.target.value)}
+          disabled={isPalauteSectionDisabled()}
+        />
       </form>
 
       <section>
@@ -310,9 +428,26 @@ const UserPerformance = () => {
         />
       </section>
       <div style={{ marginBottom: '90px' }}>
-        <UserNav></UserNav>
+        <UserNav
+          checkUnsavedChanges={
+            hasUnsavedChanges ? () => setHasUnsavedChanges(true) : null
+          }
+          handleNavigation={handleNavigation}
+          destination={destination}
+        ></UserNav>
       </div>
 
+      {/* Warning notification modal */}
+      <NotificationModal
+        type='alert'
+        title='Varoitus: Lomakkeen tiedot menetetään'
+        body='Oletko varma, että haluat poistua sivulta?'
+        open={showWarningModal}
+        handleClose={cancelNavigation}
+        handleConfirm={confirmNavigation}
+      />
+
+      {/* Modal for showing criteria */}
       <CriteriaModal
         open={isCriteriaModalOpen}
         handleClose={handleCloseCriteriaModal}
@@ -322,6 +457,7 @@ const UserPerformance = () => {
         title='Lähetetty'
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
+        handleClose={handleNotificationModalClose}
       />
     </main>
   );
