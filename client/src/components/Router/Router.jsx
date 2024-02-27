@@ -92,7 +92,7 @@ const Router = () => {
             <Route path='/contract-info' element={<ContractInfo />} />
             {/* <Route path='/userperformance' element={<UserPerformance />} /> */}
             {/* <Route path='/userperformance/:unitId' element={<UserPerformance />} /> */}
-            <Route path='/userperformance/unit/:unitId' element={<UserPerformance />} />
+            <Route path='/userperformance/:unitId' element={<UserPerformance />} />
           </>
         )}
 

@@ -42,6 +42,17 @@ const UserPerformance = () => {
   const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
+  console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
+  const { unitId } = useParams();
+
+  const unitName = evaluation && evaluation.units.map((unit) => {
+    // return unit.name.fi;
+    if(unit._id === unitId){
+      return <p key={unit._id}>{unit.name.fi}</p>;
+    }
+    return unit.name.fi;
+  })
+  console.log("🚀 ~ unitName ~ unitName:", unitName)
 
   // const evaluationId = toString(evaluation._id);
   // evaluation = useFetchData(evaluationId);
@@ -51,14 +62,21 @@ const UserPerformance = () => {
   }
   console.log(Array.isArray(evaluation));
   //  get the evaluation.units
-  {
-    evaluation &&
-      console.log('🚀 ~ UserPerformance ~ evaluation.units:', evaluation.units);
-  }
 
   // Identify the unitId from the URL
-  const { unitId } = useParams();
   console.log('🚀 ~ UserPerformance ~ unitId:', unitId);
+  // compare the unitId with the unit._id
+  const unit = evaluation.units.find((unit) => unit._id === unitId);
+  console.log('🚀 ~ UserPerformance ~ unit:', unit);
+
+  {
+    evaluation &&
+      console.log(
+        '🚀 ~ UserPerformance ~ evaluation.units:',
+        evaluation.units.find((unit) => unit._id === unitId)
+      );
+  }
+
 
   // const [unitData, setUnitData] = useState(null);
 
@@ -74,10 +92,9 @@ const UserPerformance = () => {
   //     console.error('Evaluation or evaluation.units is null or undefined.');
   //   }
   // }, [unitId, evaluation]);
- 
 
-    // const unit = evaluation && evaluation?.units.map((unit) => unit._id === unitId);
-    // console.log('🚀 ~ UserPerformance ~ unit:', unit);
+  // const unit = evaluation && evaluation?.units.map((unit) => unit._id === unitId);
+  // console.log('🚀 ~ UserPerformance ~ unit:', unit);
   //Get the unit name that have the same id as the unit._id
   // const unitName = evaluation?.units
   //   .filter((unit) => unit._id === id)
@@ -297,9 +314,10 @@ const UserPerformance = () => {
       >
         Ammattitaitovaatimukset
       </h2>
-
+        
       <div>
         <ul>
+        <li>{unitName}</li>
           {/* Evaluation */}
           {/* <div>
             <h1>Unit Data</h1>
@@ -313,9 +331,7 @@ const UserPerformance = () => {
             )}
           </div> */}
 
-  
-
-          {evaluation?.map((unit, index) => (
+          {/* {evaluation?.map((unit, index) => (
             <li key={index}>
               <div
                 style={{
@@ -369,7 +385,7 @@ const UserPerformance = () => {
                 />
               )}
             </li>
-          ))}
+          ))} */}
         </ul>
       </div>
 

@@ -20,6 +20,7 @@ const UnitList = () => {
     setInternalEvaluations,
     setInternalEvaluation,
   } = useContext(InternalApiContext);
+    console.log("🚀 ~ UnitList ~ evaluation:", evaluation)
 
   // Set evaluation automatically when role is customer
   useEffect(() => {
@@ -47,14 +48,20 @@ const UnitList = () => {
       <div className='unitList__units'>
         <h3> Omat suoritukset </h3>
         {evaluation &&
-          evaluation.units.map((unit) => (
-            <UnitStatus
-              key={unit._id}
-              unitId={unit._id}
-              status={unit.status}
-              subheader={unit.name.fi}
-              link={`/userperformance/unit/${unit._id}`}
-            />
+          evaluation.units.map((unit, index) => (
+            <div key={index}>
+              <p>{unit._id}</p>
+              {unit.assessments.map((assess, index) => (
+                <p key={index}>{assess.name.fi}</p>
+              ))}
+              <UnitStatus
+                key={unit._id}
+                unitId={unit._id}
+                status={unit.status}
+                subheader={unit.name.fi}
+                link={`/userperformance/${unit._id}`}
+              />
+            </div>
           ))}
       </div>
       <UserNav />
