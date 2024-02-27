@@ -214,13 +214,14 @@ function EvaluationWorkplace() {
                   {/* Supervisors */}
                   {workplace.departments.length === 0 && (
                     <>
-                      <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
+                      <Typography id='workplace-select-title' className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
                         {workplace.supervisors.map((supervisor) => (
                           <div 
                             className='accordion__wrapper-details'
+                            id={`supervisor-${supervisor._id}`}  // Unique id for each supervisor
                             key={supervisor._id} 
                             onClick={toggleSupervisor(supervisor._id)}
                           >
