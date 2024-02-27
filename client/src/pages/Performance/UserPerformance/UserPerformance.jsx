@@ -11,6 +11,7 @@ import AuthContext from '../../../store/context/AuthContext';
 import { Icon } from '@iconify/react';
 import CriteriaModal from '../../../components/RequirementsAndCriteriaModal/CriteriaModal';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useParams } from 'react-router-dom';
 
 // Fetch evaluation and units from store
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
@@ -22,17 +23,17 @@ import {
   updateEvaluationById,
 } from '../../../api/evaluation';
 
-const useFetchData = (evaluationId) => {
-  const [evaluation, setEvaluation] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetchEvaluationById(`${evaluationId}`);
-      setEvaluation(response.units);
-    };
-    fetchData();
-  }, [evaluationId]);
-  return evaluation;
-};
+// const useFetchData = (evaluationId) => {
+//   const [evaluation, setEvaluation] = useState([]);
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const response = await fetchEvaluationById(`${evaluationId}`);
+//       setEvaluation(response);
+//     };
+//     fetchData();
+//   }, [evaluationId]);
+//   return evaluation;
+// };
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
@@ -41,8 +42,48 @@ const UserPerformance = () => {
   const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
-  let evaluationId = evaluation._id;
-  evaluation = useFetchData(evaluationId);
+
+  // const evaluationId = toString(evaluation._id);
+  // evaluation = useFetchData(evaluationId);
+
+  {
+    evaluation && console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
+  }
+  console.log(Array.isArray(evaluation));
+  //  get the evaluation.units
+  {
+    evaluation &&
+      console.log('🚀 ~ UserPerformance ~ evaluation.units:', evaluation.units);
+  }
+
+  // Identify the unitId from the URL
+  const { unitId } = useParams();
+  console.log('🚀 ~ UserPerformance ~ unitId:', unitId);
+
+  // const [unitData, setUnitData] = useState(null);
+
+  // useEffect(() => {
+  //   if (evaluation && evaluation?.units) {
+  //     const unit = evaluation.units.find((unit) => unit._id === unitId);
+  //     if (unit) {
+  //       setUnitData(unit);
+  //     } else {
+  //       console.error(`Unit with ID ${unitId} not found.`);
+  //     }
+  //   } else {
+  //     console.error('Evaluation or evaluation.units is null or undefined.');
+  //   }
+  // }, [unitId, evaluation]);
+ 
+
+    // const unit = evaluation && evaluation?.units.map((unit) => unit._id === unitId);
+    // console.log('🚀 ~ UserPerformance ~ unit:', unit);
+  //Get the unit name that have the same id as the unit._id
+  // const unitName = evaluation?.units
+  //   .filter((unit) => unit._id === id)
+  //   .map((unit) => unit.name.fi);
+  //   console.log("🚀 ~ UserPerformance ~ unit.name.fi:", unit.name.fi)
+  // console.log('🚀 ~ UserPerformance ~ unitName:', unitName);
 
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
@@ -51,54 +92,50 @@ const UserPerformance = () => {
 
   //j
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
+  // console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
   const navigate = useNavigate();
   const location = useLocation();
   const [lastLocation, setLastLocation] = useState(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
   const [destination, setDestination] = useState(null);
 
-    // Warning modal if user exit without saving
-    const [showWarningModal, setShowWarningModal] = useState(false);
+  // Warning modal if user exit without saving
+  const [showWarningModal, setShowWarningModal] = useState(false);
 
-    const cancelNavigation = useCallback(() => {
-      setShowWarningModal(false);
-      setLastLocation(null);
-    }, []);
-  
-    const confirmNavigation = useCallback(() => {
-      setShowWarningModal(false);
-      setConfirmedNavigation(true);
-    }, []);
-  
-    useEffect(() => {
-      if (confirmedNavigation && lastLocation) {
-        navigate(lastLocation.location?.pathname);
-  
-        // Clean-up state on confirmed navigation
-        setConfirmedNavigation(false);
-      }
-    }, [confirmedNavigation, lastLocation]);
-  
-    const handleNavigation = (destination) => {
-      if (hasUnsavedChanges) {
-        setShowWarningModal(true);
-        setDestination(destination);
-      } else {
-        console.log('Destination before navigation:', destination);
-        navigate(destination);
-      }
-      console.log('Destination before navigation222:', destination);
-      setLastLocation(destination);
-  
-      console.log('Destination after navigation:', destination);
-    };
+  const cancelNavigation = useCallback(() => {
+    setShowWarningModal(false);
+    setLastLocation(null);
+  }, []);
 
- 
+  const confirmNavigation = useCallback(() => {
+    setShowWarningModal(false);
+    setConfirmedNavigation(true);
+  }, []);
+
+  useEffect(() => {
+    if (confirmedNavigation && lastLocation) {
+      navigate(lastLocation.location?.pathname);
+
+      // Clean-up state on confirmed navigation
+      setConfirmedNavigation(false);
+    }
+  }, [confirmedNavigation, lastLocation]);
+
+  const handleNavigation = (destination) => {
+    if (hasUnsavedChanges) {
+      setShowWarningModal(true);
+      setDestination(destination);
+    } else {
+      console.log('Destination before navigation:', destination);
+      navigate(destination);
+    }
+    console.log('Destination before navigation222:', destination);
+    setLastLocation(destination);
+
+    console.log('Destination after navigation:', destination);
+  };
 
   //j
-  
-  
 
   const handleOpenCriteriaModal = () => {
     setIsCriteriaModalOpen(true);
@@ -113,9 +150,15 @@ const UserPerformance = () => {
       marginTop: '35px',
       marginLeft: '20px',
       width: '88%',
-      color: Object.values(selectedValues).some(value => value) ? 'var(--saukko-main-white)' : '#0000BF',
-      border: Object.values(selectedValues).some(value => value) ? '#0000BF' : '#0000BF solid',
-      background: Object.values(selectedValues).some(value => value) ? '#0000BF' : 'var(--saukko-main-white)',
+      color: Object.values(selectedValues).some((value) => value)
+        ? 'var(--saukko-main-white)'
+        : '#0000BF',
+      border: Object.values(selectedValues).some((value) => value)
+        ? '#0000BF'
+        : '#0000BF solid',
+      background: Object.values(selectedValues).some((value) => value)
+        ? '#0000BF'
+        : 'var(--saukko-main-white)',
     };
     setButtonStyle(buttonStyle);
   }, [selectedValues]);
@@ -180,7 +223,7 @@ const UserPerformance = () => {
     };
     try {
       const response = await updateEvaluationById(
-        `${evaluationId}`,
+        // `${evaluationId}`,
         updatedData
       );
 
@@ -216,8 +259,7 @@ const UserPerformance = () => {
         selectedValues['pyydetaanYhteydenottoaOhjaajalta']
       ) {
         return 'Tallenna ja Lähettä pyynto';
-      } 
-      else if (selectedValues['suoritusValmis']) {
+      } else if (selectedValues['suoritusValmis']) {
         return 'Tallenna ja Lähettä';
       } else {
         return 'Tallenna luonnos';
@@ -255,10 +297,25 @@ const UserPerformance = () => {
       >
         Ammattitaitovaatimukset
       </h2>
+
       <div>
         <ul>
           {/* Evaluation */}
-          {evaluation.map((unit, index) => (
+          {/* <div>
+            <h1>Unit Data</h1>
+            {unitData ? (
+              <div>
+                <p>Unit ID: {unitData._id}</p>
+                <p>{unitData.name.fi}</p>
+              </div>
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div> */}
+
+  
+
+          {evaluation?.map((unit, index) => (
             <li key={index}>
               <div
                 style={{
@@ -315,62 +372,108 @@ const UserPerformance = () => {
           ))}
         </ul>
       </div>
-      
+
       {error && <p>{error}</p>}
 
-      <div style={{fontSize: '20px', marginTop: '40px', marginLeft: '18px'}}>
+      <div style={{ fontSize: '20px', marginTop: '40px', marginLeft: '18px' }}>
         {user?.role === 'teacher' ? (
           <>
-            <input type="checkbox" name="suoritusValmis" onChange={() => setSelectedValues({ ...selectedValues, 'suoritusValmis': !selectedValues['suoritusValmis'] })} />
-            <label > Suoritus Valmis </label>
+            <input
+              type='checkbox'
+              name='suoritusValmis'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  suoritusValmis: !selectedValues['suoritusValmis'],
+                })
+              }
+            />
+            <label> Suoritus Valmis </label>
             <br />
-            <input type="checkbox" name="yhteydenottoAsiakkaalta" onChange={() => setSelectedValues({ ...selectedValues, 'pyydetaanYhteydenottoaAsiakkaalta': !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'] })} />
+            <input
+              type='checkbox'
+              name='yhteydenottoAsiakkaalta'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  pyydetaanYhteydenottoaAsiakkaalta:
+                    !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
+                })
+              }
+            />
             <label> Pyydään yhteydenottoa asiakkaalta</label>
             <br />
-            <input type="checkbox" name="yhteydenottoOhjaajalta" onChange={() => setSelectedValues({ ...selectedValues, 'pyydetaanYhteydenottoaOhjaajalta': !selectedValues['pyydetaanYhteydenottoaOhjaajalta'] })} />
+            <input
+              type='checkbox'
+              name='yhteydenottoOhjaajalta'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  pyydetaanYhteydenottoaOhjaajalta:
+                    !selectedValues['pyydetaanYhteydenottoaOhjaajalta'],
+                })
+              }
+            />
             <label> Pyydään yhteydenottoa ohjaajalta </label>
           </>
         ) : (
           <>
-            <input type="checkbox" name="valmisLahetettavaksi" onChange={() => setSelectedValues({ ...selectedValues, 'valmisLahetettavaksi': !selectedValues['valmisLahetettavaksi'] })} />
-            <label > Valmis lähetettäväksi </label>
+            <input
+              type='checkbox'
+              name='valmisLahetettavaksi'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  valmisLahetettavaksi: !selectedValues['valmisLahetettavaksi'],
+                })
+              }
+            />
+            <label> Valmis lähetettäväksi </label>
             <br />
-            <input type="checkbox" name="pyydetaanYhteydenottoaOpettajalta" onChange={() => setSelectedValues({ ...selectedValues, 'pyydetaanYhteydenottoaOpettajalta': !selectedValues['pyydetaanYhteydenottoaOpettajalta'] })} />
+            <input
+              type='checkbox'
+              name='pyydetaanYhteydenottoaOpettajalta'
+              onChange={() =>
+                setSelectedValues({
+                  ...selectedValues,
+                  pyydetaanYhteydenottoaOpettajalta:
+                    !selectedValues['pyydetaanYhteydenottoaOpettajalta'],
+                })
+              }
+            />
             <label> Pyydään yhteydenottoa opettajalta</label>
           </>
         )}
       </div>
 
       <h2
-      style={{
-        textAlign: 'center',
-        fontSize: '18px',
-        textDecoration: 'underline',
-        marginTop: '40px',
-        color: h2Color, // Set the color dynamically
-      }}
-    >
-      {user?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
-    </h2>
+        style={{
+          textAlign: 'center',
+          fontSize: '18px',
+          textDecoration: 'underline',
+          marginTop: '40px',
+          color: h2Color, // Set the color dynamically
+        }}
+      >
+        {user?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
+      </h2>
       <form action=''>
-       
-      <textarea 
-  placeholder={
-    user?.role === 'teacher'
-      ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
-      : user?.role === 'supervisor'
-      ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
-      : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
-  }
-  rows={8}
-  cols={38}
-  style={{ width: '87%', padding: '5px' }}
-  className='para-title-style'
-  value={textareaValue}
-  onChange={(e) => setTextareaValue(e.target.value)}
-  disabled={isPalauteSectionDisabled()}
-/>
-
+        <textarea
+          placeholder={
+            user?.role === 'teacher'
+              ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
+              : user?.role === 'supervisor'
+              ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
+              : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
+          }
+          rows={8}
+          cols={38}
+          style={{ width: '87%', padding: '5px' }}
+          className='para-title-style'
+          value={textareaValue}
+          onChange={(e) => setTextareaValue(e.target.value)}
+          disabled={isPalauteSectionDisabled()}
+        />
       </form>
 
       <section>
@@ -383,7 +486,7 @@ const UserPerformance = () => {
         />
       </section>
       <div style={{ marginBottom: '90px' }}>
-      <UserNav
+        <UserNav
           checkUnsavedChanges={
             hasUnsavedChanges ? () => setHasUnsavedChanges(true) : null
           }
