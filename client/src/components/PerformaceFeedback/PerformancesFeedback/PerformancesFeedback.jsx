@@ -10,7 +10,7 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 const PerformancesFeedback = ({
   setSelectedValues,
   unit,
-  //unitId,
+  unitId,
   setSelectedUnitId,
   setHasUnsavedChanges
 }) => {
@@ -136,9 +136,11 @@ const PerformancesFeedback = ({
               aria-labelledby='demo-form-control-label-placement'
               name='position'
               value={selectedRadio}
-              unit={unit}
+              //unit={unit}
+              unitId={unit._id}
               // onClick={(event)=>handleRadioChange(event, unit)}
             >
+              <p>unit id : {unit._id}</p>
               <FormControlLabel
                 value='Osaa ohjatusti'
                 control={
@@ -182,7 +184,8 @@ const PerformancesFeedback = ({
               aria-labelledby='demo-form-control-label-placement'
               name='position'
               value={selectedRadio}
-              unit={unit}
+              //unit={unit}
+              unitId={unit._id}
             >
               <FormControlLabel
                 value='Osaa ohjatusti'
