@@ -43,6 +43,41 @@ const UserPerformance = () => {
   let evaluationId = evaluation._id;
   evaluation = useFetchData(evaluationId);
 
+  const unitArray = evaluation?.units?.map((unit) => {
+    // Access unit properties
+    const unitName = unit.name.fi; // Finnish name
+    const unitId = unit._id;
+    const unitStatus = unit.status;
+    const unitReady = unit.ready;
+
+
+    console.log('unit ',unit);
+  
+    // Map through assessments within the unit
+    unit.assessments.map((assessment) => {
+      // Access assessment properties
+      const assessmentName = assessment.name.fi; // Finnish name
+      const assessmentId = assessment._id;
+      const answer = assessment.answer;
+
+      // Map through criteria within the assessment
+      assessment.criteria.map((criterion) => {
+        // Access criterion properties
+        const criterionId = criterion.criterionId;
+        const criterionFi = criterion.fi; // Finnish description
+  
+        // Access details within criterion
+        const criterionDetailsFi = criterion.details.fi; // Finnish details
+      });
+
+      console.log('Unit name', unitName);
+    });
+    console.log('Unit name', unitName);
+ 
+  });
+  //console.log('unit ',unit);
+  console.log('Tämä! ',unitArray);
+
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   const [error, setError] = useState(null);
@@ -145,7 +180,7 @@ const UserPerformance = () => {
     window.location.reload();
   }, [navigate]);
 
-  const handleSubmit = async () => {
+  /* const handleSubmit = async () => {
     const updatedUnits = evaluation.map((unit) => {
       if (unit._id === selectedUnitId) {
         return {
@@ -190,7 +225,7 @@ const UserPerformance = () => {
     setIsButtonEnabled(true);
     handleNotificationModalOpen();
   };
-
+ */
   const getButtonText = () => {
     if (user?.role === 'customer') {
       if (selectedValues['valmisLahetettavaksi']) {
@@ -232,6 +267,7 @@ const UserPerformance = () => {
     }
   };
 
+
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
 
   return (
@@ -257,8 +293,8 @@ const UserPerformance = () => {
       <div>
         <ul>
           {/* Evaluation */}
-          {evaluation.map((unit, index) => (
-            <li key={index}>
+          {/* {evaluation.map((unit, index) => (
+            <li key={index}> */}
               <div
                 style={{
                   display: 'flex',
@@ -267,9 +303,9 @@ const UserPerformance = () => {
                   margin: '0 15px 0 0',
                 }}
               >
-                <div>
+                {/* <div>
                   <p className='para-title-style'>{unit.name.fi} </p>
-                </div>
+                </div> */}
                 <div>
                   <Icon
                     id='infoIcon'
@@ -281,20 +317,20 @@ const UserPerformance = () => {
                   />
                 </div>
               </div>
-              {unit.assessments.map((assess, index) => (
+             {/*  {unit.assessments.map((assess, index) => (
                 <div key={index}>
                   <p>Assessment: {assess.name.fi}</p>
                   <p>Student: {assess.answer}</p>
                   <p>Supervisor: {assess.answerSupervisor}</p>
                   <p>Teacher: {assess.answerTeacher}</p>
                 </div>
-              ))}
+              ))} */}
 
               {user?.role === 'teacher' ? (
                 <TeacherPerformanceFeedBack
                   selectedValues={selectedValues}
                   setSelectedValues={setSelectedValues}
-                  unit={unit}
+                  //unit={unit}
                   //unitId={unit._id}
                   setSelectedUnitId={setSelectedUnitId}
                   selectedUnitId={selectedUnitId}
@@ -305,7 +341,7 @@ const UserPerformance = () => {
                 <PerformancesFeedback
                   selectedValues={selectedValues}
                   setSelectedValues={setSelectedValues}
-                  unit={unit}
+                  //unit={unit}
                   //unitId={unit._id}
                   setSelectedUnitId={setSelectedUnitId}
                   selectedUnitId={selectedUnitId}
@@ -313,9 +349,9 @@ const UserPerformance = () => {
                   setHasUnsavedChanges={setHasUnsavedChanges}
                 />
               )}
-            </li>
+            {/* </li>
           ))}
-        </ul>
+ */}        </ul>
       </div>
 
       {error && <p>{error}</p>}
@@ -427,7 +463,7 @@ const UserPerformance = () => {
           style={buttonStyle}
           type='submit'
           text={getButtonText()}
-          onClick={handleSubmit}
+          /* onClick={handleSubmit} */
           disabled={isPalauteSectionDisabled()}
         />
       </section>

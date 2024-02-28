@@ -10,7 +10,7 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 const PerformancesFeedback = ({
   setSelectedValues,
   unit,
-  unitId,
+  //unitId,
   setSelectedUnitId,
   setHasUnsavedChanges
 }) => {
@@ -20,6 +20,8 @@ const PerformancesFeedback = ({
   const auth = useContext(AuthContext);
   const user = auth.user;
   const { evaluation } = useContext(InternalApiContext);
+
+  
 
 
   const data = evaluation.units.flatMap((unit)=>{
@@ -137,7 +139,7 @@ const PerformancesFeedback = ({
               name='position'
               value={selectedRadio}
               //unit={unit}
-              unitId={unit._id}
+              //unitId={unit._id}
               // onClick={(event)=>handleRadioChange(event, unit)}
             >
               <p>unit id : {unit._id}</p>
@@ -185,7 +187,7 @@ const PerformancesFeedback = ({
               name='position'
               value={selectedRadio}
               //unit={unit}
-              unitId={unit._id}
+              //unitId={unit._id}
             >
               <FormControlLabel
                 value='Osaa ohjatusti'
