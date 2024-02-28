@@ -24,6 +24,7 @@ export default function CustomerList() {
   // Data from store management
   const { user } = useContext(AuthContext);
   const { evaluations, setInternalEvaluations, setInternalEvaluation } = useContext(InternalApiContext);
+  console.log("🚀 ~ CustomerList ~ evaluations:", evaluations)
 
   // Set evaluations
   useEffect(() => {

@@ -11,10 +11,7 @@ import AuthContext from '../../../store/context/AuthContext';
 import { Icon } from '@iconify/react';
 import CriteriaModal from '../../../components/RequirementsAndCriteriaModal/CriteriaModal';
 import InternalApiContext from '../../../store/context/InternalApiContext';
-
-// Fetch evaluation and units from store
-// import useEvaluationStore from '../../../store/zustand/evaluationStore';
-// import useUnitsStore from '../../../store/zustand/unitsStore';
+import { useParams } from 'react-router-dom';
 
 // Fetch evaluation by id from api
 import {
@@ -22,34 +19,49 @@ import {
   updateEvaluationById,
 } from '../../../api/evaluation';
 
-const useFetchData = (evaluationId) => {
-  const [evaluation, setEvaluation] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetchEvaluationById(`${evaluationId}`);
-      setEvaluation(response.units);
-    };
-    fetchData();
-  }, [evaluationId]);
-  return evaluation;
-};
+// const useFetchData = (evaluationId) => {
+//   const [evaluation, setEvaluation] = useState([]);
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const response = await fetchEvaluationById(`${evaluationId}`);
+//       setEvaluation(response.units);
+//     };
+//     fetchData();
+//   }, [evaluationId]);
+//   return evaluation;
+// };
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
-  let { evaluation } = useContext(InternalApiContext);
-  let evaluationId = evaluation._id;
-  evaluation = useFetchData(evaluationId);
+  const { evaluation } = useContext(InternalApiContext);
+  console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
+  const evaluationId = evaluation?._id;
+  // evaluation = useFetchData(evaluationId);
+
+  // Get unit id from url
+  const { unitId } = useParams();
+  console.log('🚀 ~ UserPerformance ~ unitId:', unitId);
+
+  const unitName =
+    evaluation &&
+    evaluation.units.find((unit) => {
+      console.log('Unit unit._id: ', unit._id, 'unitId: ', unitId);
+      return String(unit._id) === unitId;
+    });
+
+  console.log('🚀 ~ UserPerformance ~ unitName:', unitName);
 
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
+  const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
+  // console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
   const navigate = useNavigate();
   const location = useLocation();
   const [lastLocation, setLastLocation] = useState(null);
@@ -83,13 +95,13 @@ const UserPerformance = () => {
       setShowWarningModal(true);
       setDestination(destination);
     } else {
-      console.log('Destination before navigation:', destination);
+      // console.log('Destination before navigation:', destination);
       navigate(destination);
     }
-    console.log('Destination before navigation222:', destination);
+    // console.log('Destination before navigation222:', destination);
     setLastLocation(destination);
 
-    console.log('Destination after navigation:', destination);
+    // console.log('Destination after navigation:', destination);
   };
 
   const handleOpenCriteriaModal = () => {
@@ -146,11 +158,10 @@ const UserPerformance = () => {
   }, [navigate]);
 
   const handleSubmit = async () => {
-    const updatedUnits = evaluation.map((unit) => {
+    const updatedUnits = evaluation.units.map((unit) => {
       if (unit._id === selectedUnitId) {
-        return {
-          ...unit,
-          assessments: unit.assessments.map((assessment) => {
+        const updatedAssessments = unit.assessments.map((assessment) => {
+          if (assessment._id === selectedAssessmentId) {
             let answer = assessment.answer;
             let answerSupervisor = assessment.answerSupervisor;
             let answerTeacher = assessment.answerTeacher;
@@ -167,7 +178,13 @@ const UserPerformance = () => {
               answerSupervisor,
               answerTeacher,
             };
-          }),
+          }else {
+            return assessment;
+          }
+        });
+        return {
+          ...unit,
+          assessments: updatedAssessments,
         };
       } else {
         return unit;
@@ -181,7 +198,6 @@ const UserPerformance = () => {
         `${evaluationId}`,
         updatedData
       );
-
       console.log('Evaluation updated:', response.units);
       setSelectedValues([]);
     } catch (error) {
@@ -190,6 +206,53 @@ const UserPerformance = () => {
     setIsButtonEnabled(true);
     handleNotificationModalOpen();
   };
+
+  // const handleSubmit = async () => {
+  //   const updatedUnits = evaluation.units.map((unit) => {
+  //     if (unit._id === selectedUnitId) {
+  //       return {
+  //         ...unit,
+  //         assessments: unit.assessments.map((assessment) => {
+  //           let answer = assessment.answer;
+  //           let answerSupervisor = assessment.answerSupervisor;
+  //           let answerTeacher = assessment.answerTeacher;
+  //           if (user?.role === 'customer') {
+  //             answer = selectedValues === 1 ? 1 : 2;
+  //           } else if (user?.role === 'supervisor') {
+  //             answerSupervisor = selectedValues === 1 ? 1 : 2;
+  //           } else if (user?.role === 'teacher') {
+  //             answerTeacher = selectedValues === 1 ? 1 : 2;
+  //           }
+  //           return {
+  //             ...assessment,
+  //             answer,
+  //             answerSupervisor,
+  //             answerTeacher,
+  //           };
+  //         }),
+  //       };
+  //     } else {
+  //       return unit;
+  //     }
+  //   }
+  //   );
+  //   const updatedData = {
+  //     units: updatedUnits,
+  //   };
+  //   try {
+  //     const response = await updateEvaluationById(
+  //       `${evaluationId}`,
+  //       updatedData
+  //     );
+
+  //     console.log('Evaluation updated:', response.units);
+  //     setSelectedValues([]);
+  //   } catch (error) {
+  //     console.error('Error updating evaluation:', error);
+  //   }
+  //   setIsButtonEnabled(true);
+  //   handleNotificationModalOpen();
+  // };
 
   const getButtonText = () => {
     if (user?.role === 'customer') {
@@ -252,10 +315,56 @@ const UserPerformance = () => {
       >
         Ammattitaitovaatimukset
       </h2>
+      {/* <p className='para-title-style'>{unitName._id} </p> */}
+
       <div>
         <ul>
           {/* Evaluation */}
-          {evaluation.map((unit, index) => (
+          {unitName &&
+            unitName.assessments.map((assess, index) => (
+              <li key={index}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    margin: '0 15px 0 0',
+                  }}
+                ></div>
+                <div key={index}>
+                  <p>Assessment: {assess.name.fi}</p>
+                  <p>Student: {assess.answer}</p>
+                  <p>Supervisor: {assess.answerSupervisor}</p>
+                  <p>Teacher: {assess.answerTeacher}</p>
+                </div>
+
+                {user?.role === 'teacher' ? (
+                  <TeacherPerformanceFeedBack
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unitName}
+                    setSelectedUnitId={setSelectedUnitId}
+                    selectedUnitId={selectedUnitId}
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    setHasUnsavedChanges={setHasUnsavedChanges}
+                  />
+                ) : (
+                  <PerformancesFeedback
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unitName}
+                    assessment={assess}
+                    setSelectedUnitId={setSelectedUnitId}
+                    selectedUnitId={selectedUnitId}
+                    selectedAssessmentId={selectedAssessmentId}
+                    setSelectedAssessmentId={setSelectedAssessmentId}
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    setHasUnsavedChanges={setHasUnsavedChanges}
+                  />
+                )}
+              </li>
+            ))}
+          {/* {evaluation.map((unit, index) => (
             <li key={index}>
               <div
                 style={{
@@ -279,14 +388,14 @@ const UserPerformance = () => {
                   />
                 </div>
               </div>
-              {/* {unit.assessments.map((assess, index) => (
+              {unit.assessments.map((assess, index) => (
                 <div key={index}>
                   <p>Assessment: {assess.name.fi}</p>
                   <p>Student: {assess.answer}</p>
                   <p>Supervisor: {assess.answerSupervisor}</p>
                   <p>Teacher: {assess.answerTeacher}</p>
                 </div>
-              ))} */}
+              ))}
 
               {user?.role === 'teacher' ? (
                 <TeacherPerformanceFeedBack
@@ -310,7 +419,7 @@ const UserPerformance = () => {
                 />
               )}
             </li>
-          ))}
+          ))} */}
         </ul>
       </div>
 

@@ -9,6 +9,8 @@ const PerformancesFeedback = ({
   setSelectedValues,
   unit,
   setSelectedUnitId,
+  setSelectedAssessmentId,
+  assessment,
   setHasUnsavedChanges
 }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -17,12 +19,14 @@ const PerformancesFeedback = ({
   const auth = useContext(AuthContext);
   const user = auth.user;
 
+  console.log(assessment._id)
     // Uncheck the radio button
     const handleRadioUncheck = (event) => {
       if (selectedRadio === event.target.value) {
         setSelectedRadio('');
         setSelectedValues(0);
         setSelectedUnitId(null);
+        setSelectedAssessmentId(null);
         setHasChanged(false);
         setHasUnsavedChanges(false);
       }
@@ -31,6 +35,7 @@ const PerformancesFeedback = ({
   const handleRadioChange = (event, unit) => {
     setSelectedRadio(event.target.value);
     setSelectedUnitId(unit._id); // This is the unit id
+    setSelectedAssessmentId(assessment._id); // This is the assessment id
     setHasChanged(true);
     setHasUnsavedChanges(true);
     if (event.target.value === 'Osaa ohjatusti') {

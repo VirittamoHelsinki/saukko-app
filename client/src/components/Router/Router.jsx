@@ -90,7 +90,7 @@ const Router = () => {
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/unit-list' element={<UnitList />} />
             <Route path='/contract-info' element={<ContractInfo />} />
-            <Route path='/userperformance' element={<UserPerformance />} />
+            <Route path='/userperformance/:unitId' element={<UserPerformance />} />
           </>
         )}
 
