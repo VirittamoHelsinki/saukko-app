@@ -42,41 +42,29 @@ const UserPerformance = () => {
   const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
+
+  const evaluationId = evaluation?._id;
   console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
   const { unitId } = useParams();
-
-  const unitName = evaluation && evaluation.units.map((unit) => {
-    // return unit.name.fi;
-    if(unit._id === unitId){
-      return <p key={unit._id}>{unit.name.fi}</p>;
-    }
-    return unit.name.fi;
-  })
-  console.log("🚀 ~ unitName ~ unitName:", unitName)
 
   // const evaluationId = toString(evaluation._id);
   // evaluation = useFetchData(evaluationId);
 
-  {
-    evaluation && console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
-  }
-  console.log(Array.isArray(evaluation));
+  const unitName =
+  evaluation &&
+  evaluation.units.find((unit) => {
+    console.log('unit._id:', unit._id, 'unitId:', unitId);
+    return String(unit._id) ===unitId;
+  });
+  console.log('🚀 ~ unitName ~ unitName:', unitName);
+  console.log('🚀 ~ unitId:', unitId);
+
+  //console.log(Array.isArray('evaluation', evaluation));
   //  get the evaluation.units
 
   // Identify the unitId from the URL
   console.log('🚀 ~ UserPerformance ~ unitId:', unitId);
   // compare the unitId with the unit._id
-  const unit = evaluation.units.find((unit) => unit._id === unitId);
-  console.log('🚀 ~ UserPerformance ~ unit:', unit);
-
-  {
-    evaluation &&
-      console.log(
-        '🚀 ~ UserPerformance ~ evaluation.units:',
-        evaluation.units.find((unit) => unit._id === unitId)
-      );
-  }
-
 
   // const [unitData, setUnitData] = useState(null);
 
@@ -208,7 +196,7 @@ const UserPerformance = () => {
   }, [navigate]);
 
   const handleSubmit = async () => {
-    const updatedUnits = evaluation.map((unit) => {
+    const updatedUnits = evaluation.units.map((unit) => {
       if (unit._id === selectedUnitId) {
         return {
           ...unit,
@@ -240,7 +228,7 @@ const UserPerformance = () => {
     };
     try {
       const response = await updateEvaluationById(
-        // `${evaluationId}`,
+        `${evaluationId}`,
         updatedData
       );
 
@@ -317,7 +305,43 @@ const UserPerformance = () => {
         
       <div>
         <ul>
-        <li>{unitName}</li>
+        {unitName && (
+            <div>
+              <li>
+                <b>{unitName._id}</b>
+              </li>
+              <li>
+                <b>{unitName.name.fi}</b>
+              </li>
+              {unitName.assessments.map((assess, index) => (
+                <div key={index}>
+                  <p>{assess.name.fi}</p>
+                  <p>{assess.answer}</p>
+                  {user?.role === 'teacher' ? (
+                    <TeacherPerformanceFeedBack
+                     selectedValues={selectedValues}
+                     setSelectedValues={setSelectedValues}
+                     unit={unitName}
+                     setSelectedUnitId={setSelectedUnitId}
+                     selectedUnitId={selectedUnitId}
+                     hasUnsavedChanges={hasUnsavedChanges}
+                     setHasUnsavedChanges={setHasUnsavedChanges}
+                    />
+                  ) : (
+                    <PerformancesFeedback
+                     selectedValues={selectedValues}
+                     setSelectedValues={setSelectedValues}
+                     unit={unitName}
+                     setSelectedUnitId={setSelectedUnitId}
+                     selectedUnitId={selectedUnitId}
+                     hasUnsavedChanges={hasUnsavedChanges}
+                     setHasUnsavedChanges={setHasUnsavedChanges}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
           {/* Evaluation */}
           {/* <div>
             <h1>Unit Data</h1>
