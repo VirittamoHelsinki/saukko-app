@@ -9,6 +9,7 @@ const PerformancesFeedback = ({
   setSelectedValues,
   unit,
   setSelectedUnitId,
+  selectedAssessmentId,
   setSelectedAssessmentId,
   assessment,
   setHasUnsavedChanges
@@ -19,23 +20,29 @@ const PerformancesFeedback = ({
   const auth = useContext(AuthContext);
   const user = auth.user;
 
-  console.log(assessment._id)
+  const assessmentId = assessment._id;
+  // console.log("🚀 ~ assessmentId:", assessmentId)
+  // console.log(assessment._id)
     // Uncheck the radio button
     const handleRadioUncheck = (event) => {
       if (selectedRadio === event.target.value) {
         setSelectedRadio('');
         setSelectedValues(0);
         setSelectedUnitId(null);
-        setSelectedAssessmentId(null);
+        setSelectedAssessmentId([]);
         setHasChanged(false);
         setHasUnsavedChanges(false);
       }
     };
 
   const handleRadioChange = (event, unit) => {
+    const updatedAssessmentIds = selectedAssessmentId.includes(assessmentId)
+    ? selectedAssessmentId.filter(id => id !== assessmentId) // If assessmentId is already selected, remove it
+    : [...selectedAssessmentId, assessmentId];
     setSelectedRadio(event.target.value);
     setSelectedUnitId(unit._id); // This is the unit id
-    setSelectedAssessmentId(assessment._id); // This is the assessment id
+    // setSelectedAssessmentId(assessment._id); // This is the assessment id
+    setSelectedAssessmentId(updatedAssessmentIds);
     setHasChanged(true);
     setHasUnsavedChanges(true);
     if (event.target.value === 'Osaa ohjatusti') {
@@ -43,6 +50,8 @@ const PerformancesFeedback = ({
     } else if (event.target.value === 'Osaa itsenäisesti') {
       setSelectedValues(2);
     }
+    console.log("🚀 ~ handleRadioChange ~ updatedAssessmentIds:", updatedAssessmentIds)
+
     console.log(event.target.value);
   };
  

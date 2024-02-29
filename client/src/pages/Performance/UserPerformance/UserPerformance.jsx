@@ -37,26 +37,30 @@ const UserPerformance = () => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
   const { evaluation } = useContext(InternalApiContext);
-  console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
+  // console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const evaluationId = evaluation?._id;
   // evaluation = useFetchData(evaluationId);
 
   // Get unit id from url
   const { unitId } = useParams();
-  console.log('🚀 ~ UserPerformance ~ unitId:', unitId);
+  // console.log('🚀 ~ UserPerformance ~ unitId:', unitId);
 
   const unitName =
     evaluation &&
     evaluation.units.find((unit) => {
-      console.log('Unit unit._id: ', unit._id, 'unitId: ', unitId);
+      // console.log('Unit unit._id: ', unit._id, 'unitId: ', unitId);
       return String(unit._id) === unitId;
     });
 
-  console.log('🚀 ~ UserPerformance ~ unitName:', unitName);
+  // console.log('🚀 ~ UserPerformance ~ unitName:', unitName);
 
-  const [selectedValues, setSelectedValues] = useState({});
+  const [selectedValues, setSelectedValues] = useState([]);
   const [selectedUnitId, setSelectedUnitId] = useState(null);
-  const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
+  const [selectedAssessmentId, setSelectedAssessmentId] = useState([]);
+  console.log(
+    '🚀 ~ UserPerformance ~ selectedAssessmentId:',
+    selectedAssessmentId
+  );
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
@@ -161,10 +165,19 @@ const UserPerformance = () => {
     const updatedUnits = evaluation.units.map((unit) => {
       if (unit._id === selectedUnitId) {
         const updatedAssessments = unit.assessments.map((assessment) => {
-          if (assessment._id === selectedAssessmentId) {
+          if (
+            selectedAssessmentId &&
+            selectedAssessmentId.includes(assessment._id)
+          ) {
             let answer = assessment.answer;
             let answerSupervisor = assessment.answerSupervisor;
             let answerTeacher = assessment.answerTeacher;
+
+             // Track selected assessment and its answer
+          const selectedAssessmentIndex = selectedAssessmentId.indexOf(assessment._id);
+          const selectedAnswer = selectedValues[selectedAssessmentIndex] === 1 ? 1 : 2;
+          console.log("🚀 ~ updatedAssessments ~ selectedAnswer:", selectedAnswer)
+
             if (user?.role === 'customer') {
               answer = selectedValues === 1 ? 1 : 2;
             } else if (user?.role === 'supervisor') {
@@ -178,7 +191,7 @@ const UserPerformance = () => {
               answerSupervisor,
               answerTeacher,
             };
-          }else {
+          } else {
             return assessment;
           }
         });
