@@ -24,21 +24,22 @@ Saukko revolutionizes the traditional approach to earning degrees by offering wo
 
 ## **Initital Setup**
 
-```ts
+```sh
 git clone https://github.com/VirittamoHelsinki/saukko-app.git
 
 cd saukko-app
 
-npm run setup (Install all dependencies simultaneously for the front-end, back-end, and root).
+# Install all dependencies simultaneously for the front-end, back-end, and root
+npm run setup 
 
-npm run start:prod (To run the project's back-end and front-end simultaneously in a production state)
-npm run start:dev  (To run the project's back-end and front-end simultaneously in a development state)
+# run the project's back-end and front-end simultaneously in production mode
+npm run start:prod
+
+# run the project's back-end and front-end simultaneously in development mode
+npm run start:dev
 ```
 
 When running on a local machine, open **[http://localhost:3000](http://localhost:3000)** in your browser to view the app.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
-<br><br>
-
-Last updated: 07/09/2023 by DJ-AG
