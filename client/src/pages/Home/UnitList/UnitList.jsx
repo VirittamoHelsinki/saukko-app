@@ -20,11 +20,11 @@ const UnitList = () => {
     setInternalEvaluations,
     setInternalEvaluation,
   } = useContext(InternalApiContext);
-    console.log("🚀 ~ UnitList ~ evaluation:", evaluation)
+    console.log("🚀 ~ UnitList ~ evaluation1:", evaluation)
 
   // Set evaluation automatically when role is customer
   useEffect(() => {
-    if (user.role === 'customer') {
+    if (user.role === 'customer' ) {
       setInternalEvaluations();
     }
   }, []);

@@ -140,8 +140,6 @@ const UserPerformance = () => {
     console.log('Destination after navigation:', destination);
   };
 
-  //j
-
   const handleOpenCriteriaModal = () => {
     setIsCriteriaModalOpen(true);
   };
@@ -195,6 +193,7 @@ const UserPerformance = () => {
     window.location.reload();
   }, [navigate]);
 
+  //assessment.answer should be updated by assessment._id
   const handleSubmit = async () => {
     const updatedUnits = evaluation.units.map((unit) => {
       if (unit._id === selectedUnitId) {
