@@ -43,6 +43,7 @@ const UserPerformance = () => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
+  console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
   let evaluationId = evaluation._id;
   evaluation = useFetchData(evaluationId);
 
@@ -52,7 +53,7 @@ const UserPerformance = () => {
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
+  // console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
   const navigate = useNavigate();
   const location = useLocation();
   const [lastLocation, setLastLocation] = useState(null);
@@ -262,7 +263,6 @@ const UserPerformance = () => {
       <div>
         <ul>
           {/* Evaluation */}
-          {/* New code */}
           {evaluation.map((unit, index) => (
             <li key={index}>
               <div
@@ -274,17 +274,8 @@ const UserPerformance = () => {
                 }}
               >
                 <div>
-                  <p className='para-title-style'>{unit.name.fi} </p>
+                  <p className='para-title-style'><b>{unit.name.fi}</b> </p>
                 </div>
-                {/* <div>
-                  <Icon
-                    icon='material-symbols:info'
-                    color='#1769aa'
-                    style={{ verticalAlign: 'middle', fontSize: '21px' }}
-                    cursor={'pointer'}
-                    onClick={handleOpenCriteriaModal}
-                  />
-                </div> */}
               </div>
               {unit.assessments.map((assess, index) => (
                 <div key={index}>
@@ -298,7 +289,7 @@ const UserPerformance = () => {
                   >
                     <div>
                       <p className='para-title-style'>
-                        <b>Assessment:</b> {assess.name.fi}
+                        {assess.name.fi}
                       </p>
                     </div>
                     <div>
@@ -316,9 +307,9 @@ const UserPerformance = () => {
                       <b>Criteria</b>: {crit.fi}
                     </p>
                   ))} */}
-                  <p>Student: {assess.answer}</p>
+                  {/* <p>Student: {assess.answer}</p>
                   <p>Supervisor: {assess.answerSupervisor}</p>
-                  <p>Teacher: {assess.answerTeacher}</p>
+                  <p>Teacher: {assess.answerTeacher}</p> */}
                   {user?.role === 'teacher' ? (
                     <TeacherPerformanceFeedBack
                       selectedValues={selectedValues}
@@ -344,56 +335,6 @@ const UserPerformance = () => {
               ))}
             </li>
           ))}
-
-          {/* Old code */}
-          {/* {evaluation.map((unit, index) => (
-            <li key={index}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  margin: '0 15px 0 0',
-                }}
-              >
-                <div>
-                  <p className='para-title-style'>{unit.name.fi} </p>
-                </div>
-                <div>
-                  <Icon
-                    id='infoIcon'
-                    icon='material-symbols:info'
-                    color='#1769aa'
-                    style={{ verticalAlign: 'middle', fontSize: '21px' }}
-                    cursor={'pointer'}
-                    onClick={handleOpenCriteriaModal}
-                  />
-                </div>
-              </div>
-
-              {user?.role === 'teacher' ? (
-                <TeacherPerformanceFeedBack
-                  selectedValues={selectedValues}
-                  setSelectedValues={setSelectedValues}
-                  unit={unit}
-                  setSelectedUnitId={setSelectedUnitId}
-                  selectedUnitId={selectedUnitId}
-                  hasUnsavedChanges={hasUnsavedChanges}
-                  setHasUnsavedChanges={setHasUnsavedChanges}
-                />
-              ) : (
-                <PerformancesFeedback
-                  selectedValues={selectedValues}
-                  setSelectedValues={setSelectedValues}
-                  unit={unit}
-                  setSelectedUnitId={setSelectedUnitId}
-                  selectedUnitId={selectedUnitId}
-                  hasUnsavedChanges={hasUnsavedChanges}
-                  setHasUnsavedChanges={setHasUnsavedChanges}
-                />
-              )}
-            </li>
-          ))} */}
         </ul>
       </div>
 
