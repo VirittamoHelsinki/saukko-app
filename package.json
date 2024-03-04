@@ -29,6 +29,8 @@
         ]
     },
     "dependencies": {
+        "@mui/icons-material": "^5.15.11",
+        "@mui/styles": "^5.15.11",
         "concurrently": "^7.6.0",
         "hds-react": "^2.16.0",
         "react-icons": "^4.10.1",
