@@ -5,6 +5,7 @@ import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import { Icon } from '@iconify/react';
+import RequirementsAndCriteriaModal from '../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 
 const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const navigate = useNavigate();
@@ -14,6 +15,16 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   console.log('🚀 ~ DegreeDetail ~ degreeId:', degreeId);
   const [degreeDetails, setDegreeDetails] = useState(null);
   console.log('🚀 ~ DegreeDetail ~ degreeDetails:', degreeDetails);
+
+  // Modal
+  const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
+
+  const handleCloseCriteriaModal = () => {
+    setIsCriteriaModalOpen(false);
+  };
+  const handlePenClick = () => {
+    setIsCriteriaModalOpen(true);
+  };
 
   useEffect(() => {
     // Fetch degreeDetails based on degreeId and set the state
@@ -47,7 +58,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
             <span className='icon-wrapper'>
               {' '}
               <div>
-                <Icon icon='uil:pen' color='#0000bf' />
+                <Icon icon='uil:pen' color='#0000bf' onClick={handlePenClick} />
               </div>
             </span>
           </h1>
@@ -70,6 +81,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                 <div className='circle-wrap-icon'>
                   <span>
                     <Icon
+                      onClick={handlePenClick}
                       icon='uil:pen'
                       color='#0000bf'
                       height='18'
@@ -99,6 +111,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
           <div>
             <div className='circle-wrap-icon'>
               <Icon
+                onClick={handlePenClick}
                 icon='uil:pen'
                 color='#0000bf'
                 height='18'
@@ -114,6 +127,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
             <div>
               <div className='circle-wrap-icon'>
                 <Icon
+                  onClick={handlePenClick}
                   icon='uil:pen'
                   color='#0000bf'
                   height='18'
@@ -132,15 +146,26 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
           <strong>Siirtymäajan päättymisaika</strong>
           <li>{formatDate(degreeDetails.transitionEnds)}</li>
         </ul>
-          <div className="page-navigation-container">
-            <PageNavigationButtons
-              handleBackText={'Takaisin'}
-              handleBack={() => navigate(`/degrees/add`)}
-              showForwardButton={false}
-              icon={'mingcute:pencil-line'}
-              style={{ justifyContent: 'flex-start'}}
-            />
-          </div>
+        <RequirementsAndCriteriaModal
+          open={isCriteriaModalOpen}
+          onClose={handleCloseCriteriaModal}
+          title='Tutkinnon nimen muokkaus'
+          requirementsTitle='Tutkinnon nimi'
+          hideCriteriaField={true}
+          onSave={(title) => {
+            console.log('Title:', title);
+          }
+          }
+        />
+        <div className='page-navigation-container'>
+          <PageNavigationButtons
+            handleBackText={'Takaisin'}
+            handleBack={() => navigate(`/degrees/add`)}
+            showForwardButton={false}
+            icon={'mingcute:pencil-line'}
+            style={{ justifyContent: 'flex-start' }}
+          />
+        </div>
       </section>
       <UserNav />
     </main>
