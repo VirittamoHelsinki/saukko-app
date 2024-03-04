@@ -365,6 +365,7 @@ function DegreeInfo() {
         <PageNavigationButtons
           handleBack={() => navigate('/degrees')}
           handleForward={handleForward}
+          showForwardButton={true}
           forwardButtonText={
             isContentChanged ? 'Tallenna ja jatka' : 'Seuraava'
           }

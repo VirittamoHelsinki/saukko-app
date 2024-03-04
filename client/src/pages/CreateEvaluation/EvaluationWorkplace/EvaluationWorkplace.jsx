@@ -273,6 +273,8 @@ function EvaluationWorkplace() {
         <PageNavigationButtons 
           handleBack={() => navigate(`/evaluation-form`)} 
           handleForward={validationHandler}
+          showForwardButton={true}
+
         />
       </section>
       <UserNav />

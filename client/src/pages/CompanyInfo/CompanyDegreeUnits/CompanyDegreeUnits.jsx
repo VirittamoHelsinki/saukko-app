@@ -126,6 +126,8 @@ function CompanyDegreeUnits() {
             navigate(`../internal/degrees/${internalDegree._id}/units/confirm-selection`);
 
           }}
+          showForwardButton={true}
+
         />
       </section>
       <UserNav />
