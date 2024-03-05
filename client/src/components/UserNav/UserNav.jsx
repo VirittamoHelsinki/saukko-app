@@ -5,8 +5,8 @@ import AuthContext from '../../store/context/AuthContext';
 import InternalApiContext from '../../store/context/InternalApiContext';
 
 import { Icon } from '@iconify/react';
-import { IconButton } from '@mui/material';
-import{ MenuIcon } from '@mui/icons-material/Menu';
+import { Divider, IconButton } from '@mui/material';
+import{ MenuIcon, CloseIcon, ChevronRightIcon, MeetingRoomIcon } from '@mui/icons-material/Menu';
 import { Drawer } from '@mui/material/Drawer';
 
 const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
@@ -39,6 +39,9 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
  */
 
   //hamburger
+
+  const [hamburgerMenuOpen, setHamburgerMenuOpen] = useState(false);
+
   useEffect(() => {
     const routesToExclude = ['/customer-list', '/unit-list', '/contract-info', '/userperformance'];
     const isExcludedRoute = routesToExclude.some(route => location.pathname === route);
@@ -163,28 +166,35 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
       <div className="mobile-menu-button" onClick={toggleMenu}>
         {/* Hamburger icon */}
         <IconButton>
-          <MenuIcon />
+          <MenuIcon onClick={()=>setHamburgerMenuOpen(true)} />
         </IconButton>
       </div>
       <div className={`userNav__menu ${isMenuOpen ? 'userNav__menu--open' : ''}`}>
-        <div className="userNav__menu__closeBtn" onClick={toggleMenu}>
+        {/* <div className="userNav__menu__closeBtn" onClick={toggleMenu}>
           x
-        </div>
+        </div> */}
         {/* Menu Items */}
-        <div className={`userNav__icons ${user.role}`}>
-          {user.role !== 'customer' && evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
-          {user.role === 'teacher' && <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>} 
-          <div className='nav_menu_list'>
-            <div className='nav_menu_title'>
-              <h4>Profiili</h4>
-              <h4>Kirjaudu ulos</h4>
-              <Icon
-                icon="material-symbols:logout-rounded"
-                onClick={() => navigate('/profile')} 
-              />
-            </div>
+        <Drawer anchor='right' open={hamburgerMenuOpen} onOpen={()=>setHamburgerMenuOpen(true)} onClose={()=>setHamburgerMenuOpen(false)}>
+          <div>
+            <IconButton>
+              <ChevronRightIcon onClick={()=>setHamburgerMenuOpen(false)} />
+            </IconButton>
           </div>
-        </div>
+          <div className={`userNav__icons ${user.role}`}>
+            {user.role !== 'customer' && evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
+            {user.role === 'teacher' && <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>} 
+            <Divider />
+            <h4>Profiili</h4>
+            <h4>Kirjaudu ulos</h4>
+            <Icon
+              icon="material-symbols:logout-rounded"
+              onClick={() => navigate('/profile')} 
+            />
+            <IconButton>
+              <MeetingRoomIcon />
+            </IconButton>
+          </div>
+        </Drawer>
       </div>
     </main>
   );
