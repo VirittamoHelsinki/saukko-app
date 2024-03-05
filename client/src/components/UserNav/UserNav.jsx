@@ -48,14 +48,14 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                 : () => navigate('/unit-list')
             }
           />
-          <Icon
+          {/* <Icon
             icon='bx:file'
             onClick={
               checkUnsavedChanges
                 ? () => handleIconClick('/contract-info')
                 : () => navigate('/contract-info')
             }
-          />
+          /> */}
           <Icon
             icon='mdi:user-outline'
             onClick={
@@ -78,7 +78,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                 : () => navigate('/customer-list')
             }
           />
-          {evaluation && (
+          {/* {evaluation && (
             <Icon
               icon='bx:file'
               onClick={
@@ -87,7 +87,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                   : () => navigate('/contract-info')
               }
             />
-          )}
+          )} */}
           <Icon
             icon='mdi:user-outline'
             onClick={
@@ -110,7 +110,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                 : () => navigate('/customer-list')
             }
           />
-          {evaluation && (
+          {/* {evaluation && (
             <Icon
               icon='bx:file'
               onClick={
@@ -119,7 +119,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                   : () => navigate('/contract-info')
               }
             />
-          )}
+          )} */}
           <Icon
             icon='mingcute:group-line'
             onClick={

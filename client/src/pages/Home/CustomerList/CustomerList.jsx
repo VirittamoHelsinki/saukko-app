@@ -158,7 +158,7 @@ export default function CustomerList() {
           </AccordionDetails>
         </Accordion>
       </div>
-      <div className='customerList__button'>
+      {/* <div className='customerList__button'>
         <Button
           style={{
             color: '#0000BF',
@@ -169,10 +169,10 @@ export default function CustomerList() {
           }}
           text='Tarkastele sopimusta'
           color='info'
-          icon='la:file-alt'
+          icon='bx:file'
           onClick={() => navigate('/contract-info')}
         />
-      </div>
+      </div> */}
       <UserNav />
     </main>
   );
