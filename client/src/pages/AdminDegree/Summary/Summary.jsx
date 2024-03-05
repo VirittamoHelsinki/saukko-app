@@ -168,6 +168,8 @@ function Summary() {
           handleBack={() =>navigate(`/degrees/${params.degreeId}/units/tasks`)}
           handleForward={handleSubmit}
           forwardButtonText={'Tallenna tiedot'}
+          showForwardButton={true}
+
         />
         <NotificationModal
           type='success'

@@ -141,6 +141,8 @@ export default function RequirementsAndCriteriaModal(props) {
             },
           }}
         ></TextField>
+         {!props.hideCriteriaField && (
+           <>
         <Typography gutterBottom>{props.criteria}</Typography>
 
         <TextField
@@ -173,6 +175,8 @@ export default function RequirementsAndCriteriaModal(props) {
         >
           <Typography padding='1rem'></Typography>
         </TextField>
+           </>
+        )}
       </DialogContent>
       <Box
         sx={{

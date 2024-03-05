@@ -138,6 +138,8 @@ function EditUnits() {
             () => navigate(`/degrees/${params.degreeId}`)
           }
           handleForward={handleSubmit}
+          showForwardButton={true}
+
         />
       </section>
       <UserNav />

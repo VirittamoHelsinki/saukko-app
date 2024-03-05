@@ -272,6 +272,8 @@ function EvaluationForm() {
         <PageNavigationButtons
           handleBack={handleBack}
           handleForward={handleSubmit}
+          showForwardButton={true}
+
         />
       </section>
       <NotificationModal
