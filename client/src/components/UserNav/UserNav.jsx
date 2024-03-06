@@ -5,9 +5,7 @@ import AuthContext from '../../store/context/AuthContext';
 import InternalApiContext from '../../store/context/InternalApiContext';
 
 import { Icon } from '@iconify/react';
-import { Divider, IconButton } from '@mui/material';
-import{ MenuIcon, CloseIcon, ChevronRightIcon, MeetingRoomIcon } from '@mui/icons-material/Menu';
-import { Drawer } from '@mui/material/Drawer';
+import { Button, Grid, Typography } from '@mui/material';
 
 const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
   const { user } = useContext(AuthContext);
@@ -15,6 +13,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //hampurilainen
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Clear chosen evaluation : old version Navbar
@@ -38,9 +37,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
   }, [location.pathname, evaluation]);
  */
 
-  //hamburger
-
-  const [hamburgerMenuOpen, setHamburgerMenuOpen] = useState(false);
 
   useEffect(() => {
     const routesToExclude = ['/customer-list', '/unit-list', '/contract-info', '/userperformance'];
@@ -61,7 +57,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
   return (
     <main className='userNav__wrapper'>
       {/* Customer : old version Nav */}
-      {/* {user && user.role === 'customer' && (
+       {user && user.role === 'customer' && (
         <div className={`userNav__icons ${user.role}`}>
           <Icon
             icon='ic:outline-home'
@@ -88,10 +84,10 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             }
           />{' '}
         </div>
-      )} */}
+      )} 
 
       {/* Supervisor : old Nav version */}
-      {/* {user && user.role === 'supervisor' && (
+       {user && user.role === 'supervisor' && (
         <div className={`userNav__icons ${user.role}`}>
           <Icon
             icon='ic:outline-home'
@@ -120,10 +116,10 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             }
           />
         </div>
-      )} */}
+      )} 
 
       {/* Teacher : old Nav version */}
-      {/* {user && user.role === 'teacher' && (
+       {user && user.role === 'teacher' && (
         <div className={`userNav__icons ${user.role}`}>
           <Icon
             icon='ic:outline-home'
@@ -160,41 +156,37 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             }
           />
         </div>
-      )} */}
+      )} 
 
       {/* hamburger menu*/}
       <div className="mobile-menu-button" onClick={toggleMenu}>
         {/* Hamburger icon */}
-        <IconButton>
-          <MenuIcon onClick={()=>setHamburgerMenuOpen(true)} />
-        </IconButton>
+        <Icon icon="ci:menu-alt-05" />
       </div>
       <div className={`userNav__menu ${isMenuOpen ? 'userNav__menu--open' : ''}`}>
-        {/* <div className="userNav__menu__closeBtn" onClick={toggleMenu}>
+        <div className="userNav__menu__closeBtn" onClick={toggleMenu}>
           x
-        </div> */}
+        </div>
         {/* Menu Items */}
-        <Drawer anchor='right' open={hamburgerMenuOpen} onOpen={()=>setHamburgerMenuOpen(true)} onClose={()=>setHamburgerMenuOpen(false)}>
-          <div>
-            <IconButton>
-              <ChevronRightIcon onClick={()=>setHamburgerMenuOpen(false)} />
-            </IconButton>
-          </div>
           <div className={`userNav__icons ${user.role}`}>
+            <Icon icon="ic:outline-home" color="black" onClick={() => navigate('/unit-list')}/>
+            <Icon icon="bx:file" color='black' onClick={() => navigate('/contract-info')}/>
+            <Icon icon="mdi:user-outline" color='black' onClick={() => navigate('/profile')}/>
             {user.role !== 'customer' && evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
             {user.role === 'teacher' && <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>} 
-            <Divider />
             <h4>Profiili</h4>
-            <h4>Kirjaudu ulos</h4>
-            <Icon
-              icon="material-symbols:logout-rounded"
-              onClick={() => navigate('/profile')} 
-            />
-            <IconButton>
-              <MeetingRoomIcon />
-            </IconButton>
+            <Grid container alignItems='right'>
+              <Grid item>
+                <Button>
+                  <Typography style={{marginTop:'2px'}} onClick={() => navigate('/profile')} >Kirjaudu ulos</Typography>
+                </Button>
+              </Grid>
+                <Icon
+                  icon="websymbol:logout" color='black' style={{ marginLeft:'10px' }} name='Kirjaudu ulos' onClick={() => navigate('/profile')} />
+              <Grid item>
+              </Grid>
+            </Grid>
           </div>
-        </Drawer>
       </div>
     </main>
   );
