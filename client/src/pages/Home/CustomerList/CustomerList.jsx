@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UserNav from '../../../components/UserNav/UserNav';
+
 import { Icon } from '@iconify/react';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import DialogContent from '@mui/material/DialogContent';
@@ -13,6 +14,9 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/material';
+
+import Button from '../../../components/Button/Button';
+
 
 // Import state management
 import AuthContext from '../../../store/context/AuthContext';
@@ -32,6 +36,7 @@ export default function CustomerList() {
   const { user } = useContext(AuthContext);
   const { evaluations, setInternalEvaluations, setInternalEvaluation } =
     useContext(InternalApiContext);
+
 
   const [isInfoButtonOpen, setIsInfoButtonOpen] = useState(false);
 
@@ -61,6 +66,8 @@ export default function CustomerList() {
     }
   };
 
+
+
   // Set evaluations
   useEffect(() => {
     setInternalEvaluations();
@@ -72,6 +79,7 @@ export default function CustomerList() {
     evaluations.filter(
       (evaluation) =>
         evaluation.completed === false &&
+
         evaluation.units.every((unit) => unit.status !== 2) &&
         evaluation.units.some((unit) => unit.status > 0)
     );
@@ -82,6 +90,10 @@ export default function CustomerList() {
       (evaluation) =>
         evaluation && evaluation.units.some((unit) => unit.status === 2)
     );
+
+        evaluation.units.some((unit) => unit.status > 0)
+    );
+
 
   // Find not started evaluations
   const notStarted =
@@ -136,10 +148,11 @@ export default function CustomerList() {
         {/* <AccordionSummary
             sx={{ backgroundColor: '#FFF4B4' }}
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls='panel1a-content'
+            id='panel1a-header'
           >
             <Typography sx={{ fontWeight: '600' }}>Kesken</Typography>
+
           </AccordionSummary> */}
         {/* <AccordionDetails> */}
         <div className='customerList__accordion'>
@@ -179,16 +192,19 @@ export default function CustomerList() {
         {/* </AccordionDetails> */}
         {/* </Accordion> */}
 
+         
+
         {/* Not started */}
         {/* <Accordion disableGutters>
           <AccordionSummary
             sx={{ backgroundColor: '#efeff0' }}
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
+            aria-controls='panel2a-content'
+            id='panel2a-header'
           >
-            <Typography sx={{ fontWeight: '600' }} >Aloittamatta</Typography>
+            <Typography sx={{ fontWeight: '600' }}>Aloittamatta</Typography>
           </AccordionSummary>
+
           <AccordionDetails> */}
         <div className='customerList__accordion'>
           {notStarted &&
@@ -212,11 +228,12 @@ export default function CustomerList() {
         {/* <AccordionSummary
             sx={{ backgroundColor: '#E2F5F3' }}
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3a-content"
-            id="panel3a-header"
+            aria-controls='panel3a-content'
+            id='panel3a-header'
           >
             <Typography sx={{ fontWeight: '600' }}>Suorittanut</Typography>
           </AccordionSummary>
+
           <AccordionDetails> */}
         <div className='customerList__accordion'>
           {completed &&
@@ -281,6 +298,7 @@ export default function CustomerList() {
         open={isInfoButtonOpen}
         handleClose={handleCloseInfoButton}
       />
+
 
       <UserNav />
     </main>

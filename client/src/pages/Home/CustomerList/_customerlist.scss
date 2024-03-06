@@ -22,6 +22,7 @@
     height: 93px;
 
     .customerList__accordion {
+
       width: 100%;
 
       .customerList__accordion__inProgress {
@@ -56,4 +57,20 @@
       }
     }
   }
+
+  // .customerList__button {
+  //   display: flex;
+  //   justify-content: flex-end;
+  //   padding: 0 16px;
+    
+  //   .button__icon {
+  //     font-size: 28px;
+  //   }
+
+    
+  //   .button__text {
+  //     font-size: 14px;
+  //     font-weight: bolder;
+  //   }
+  // }
 }

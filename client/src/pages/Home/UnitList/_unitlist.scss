@@ -14,5 +14,20 @@
     margin-bottom: 20px;
     font-size: 20px;
   }
+
+  .unitList__button {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 16px;
+    
+    .button__icon {
+      font-size: 28px;
+    }
+    
+    .button__text {
+      font-size: 14px;
+      font-weight: bolder;
+    }
+  }
 }
 
