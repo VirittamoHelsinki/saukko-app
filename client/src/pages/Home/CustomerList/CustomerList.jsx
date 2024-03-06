@@ -91,8 +91,6 @@ export default function CustomerList() {
         evaluation && evaluation.units.some((unit) => unit.status === 2)
     );
 
-        evaluation.units.some((unit) => unit.status > 0)
-    );
 
 
   // Find not started evaluations
