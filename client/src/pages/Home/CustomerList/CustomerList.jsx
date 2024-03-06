@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import WavesHeader from '../../../components/Header/WavesHeader';
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UserNav from '../../../components/UserNav/UserNav';
+import Button from '../../../components/Button/Button';
 
 // Import state management
 import AuthContext from '../../../store/context/AuthContext';
@@ -23,37 +24,46 @@ export default function CustomerList() {
 
   // Data from store management
   const { user } = useContext(AuthContext);
-  const { evaluations, setInternalEvaluations, setInternalEvaluation } = useContext(InternalApiContext);
+  const { evaluations, setInternalEvaluations, setInternalEvaluation } =
+    useContext(InternalApiContext);
 
   // Set evaluations
   useEffect(() => {
-    setInternalEvaluations()
+    setInternalEvaluations();
   }, []);
 
   // Find evaluations in progress
-  const inProgress = evaluations && evaluations.filter(evaluation => (
-    evaluation.completed === false && evaluation.units.some(unit => unit.status > 0)
-  ))
+  const inProgress =
+    evaluations &&
+    evaluations.filter(
+      (evaluation) =>
+        evaluation.completed === false &&
+        evaluation.units.some((unit) => unit.status > 0)
+    );
 
   // Find not started evaluations
-  const notStarted = evaluations && evaluations.filter(evaluation => (
-    evaluation.completed === false && evaluation.units.every(unit => unit.status === 0)
-  ))
+  const notStarted =
+    evaluations &&
+    evaluations.filter(
+      (evaluation) =>
+        evaluation.completed === false &&
+        evaluation.units.every((unit) => unit.status === 0)
+    );
 
   // Find completed evaluations
-  const completed = evaluations && evaluations.filter(evaluation => (
-    evaluation.completed === true
-  ))
+  const completed =
+    evaluations &&
+    evaluations.filter((evaluation) => evaluation.completed === true);
 
   const handleChooseEvaluation = (evaluationId) => {
-    setInternalEvaluation(evaluationId)
-    navigate('/unit-list')
+    setInternalEvaluation(evaluationId);
+    navigate('/unit-list');
   };
 
   return (
     <main className='customerList__wrapper'>
       <WavesHeader
-        title="Saukko"
+        title='Saukko'
         secondTitle={`Tervetuloa, ${user?.firstName}`}
         disabled={true}
       />
@@ -72,17 +82,26 @@ export default function CustomerList() {
           <AccordionSummary
             sx={{ backgroundColor: '#FFF4B4' }}
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls='panel1a-content'
+            id='panel1a-header'
           >
             <Typography sx={{ fontWeight: '600' }}>Kesken</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {inProgress && inProgress.map((evaluation) => (
-                evaluation.customerId && 
-                <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
-              ))}
+              {inProgress &&
+                inProgress.map(
+                  (evaluation) =>
+                    evaluation.customerId && (
+                      <a
+                        key={evaluation._id}
+                        onClick={() => handleChooseEvaluation(evaluation._id)}
+                      >
+                        {evaluation.customerId.firstName}{' '}
+                        {evaluation.customerId.lastName}
+                      </a>
+                    )
+                )}
             </div>
           </AccordionDetails>
         </Accordion>
@@ -92,16 +111,23 @@ export default function CustomerList() {
           <AccordionSummary
             sx={{ backgroundColor: '#efeff0' }}
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
+            aria-controls='panel2a-content'
+            id='panel2a-header'
           >
-            <Typography sx={{ fontWeight: '600' }} >Aloittamatta</Typography>
+            <Typography sx={{ fontWeight: '600' }}>Aloittamatta</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {notStarted && notStarted.map((evaluation) => (
-                <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
-              ))}
+              {notStarted &&
+                notStarted.map((evaluation) => (
+                  <a
+                    key={evaluation._id}
+                    onClick={() => handleChooseEvaluation(evaluation._id)}
+                  >
+                    {evaluation.customerId.firstName}{' '}
+                    {evaluation.customerId.lastName}
+                  </a>
+                ))}
             </div>
           </AccordionDetails>
         </Accordion>
@@ -111,20 +137,42 @@ export default function CustomerList() {
           <AccordionSummary
             sx={{ backgroundColor: '#E2F5F3' }}
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3a-content"
-            id="panel3a-header"
+            aria-controls='panel3a-content'
+            id='panel3a-header'
           >
             <Typography sx={{ fontWeight: '600' }}>Suorittanut</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <div className='customerList__accordion'>
-              {completed && completed.map((evaluation) => (
-                <a key={evaluation._id} onClick={() => handleChooseEvaluation(evaluation._id)}>{evaluation.customerId.firstName} {evaluation.customerId.lastName}</a>
-              ))}
+              {completed &&
+                completed.map((evaluation) => (
+                  <a
+                    key={evaluation._id}
+                    onClick={() => handleChooseEvaluation(evaluation._id)}
+                  >
+                    {evaluation.customerId.firstName}{' '}
+                    {evaluation.customerId.lastName}
+                  </a>
+                ))}
             </div>
           </AccordionDetails>
         </Accordion>
       </div>
+      {/* <div className='customerList__button'>
+        <Button
+          style={{
+            color: '#0000BF',
+            fontSize: '15px',
+            border: '2px solid #0000BF',
+            width: '60%',
+            height: '50px',
+          }}
+          text='Tarkastele sopimusta'
+          color='info'
+          icon='bx:file'
+          onClick={() => navigate('/contract-info')}
+        />
+      </div> */}
       <UserNav />
     </main>
   );

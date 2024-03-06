@@ -1,5 +1,4 @@
 .customerList__wrapper {
-
   h3 {
     margin: 15px;
   }
@@ -18,12 +17,28 @@
     .customerList__accordion {
       display: flex;
       flex-direction: column;
-      
+
       a {
         padding: 10px;
-        border-bottom: 1px solid #F2F2F2;
+        border-bottom: 1px solid #f2f2f2;
         cursor: pointer;
       }
     }
   }
+
+  // .customerList__button {
+  //   display: flex;
+  //   justify-content: flex-end;
+  //   padding: 0 16px;
+    
+  //   .button__icon {
+  //     font-size: 28px;
+  //   }
+
+    
+  //   .button__text {
+  //     font-size: 14px;
+  //     font-weight: bolder;
+  //   }
+  // }
 }
