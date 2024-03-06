@@ -17,7 +17,6 @@ import { Box } from '@mui/material';
 
 import Button from '../../../components/Button/Button';
 
-
 // Import state management
 import AuthContext from '../../../store/context/AuthContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
@@ -36,7 +35,6 @@ export default function CustomerList() {
   const { user } = useContext(AuthContext);
   const { evaluations, setInternalEvaluations, setInternalEvaluation } =
     useContext(InternalApiContext);
-
 
   const [isInfoButtonOpen, setIsInfoButtonOpen] = useState(false);
 
@@ -66,8 +64,6 @@ export default function CustomerList() {
     }
   };
 
-
-
   // Set evaluations
   useEffect(() => {
     setInternalEvaluations();
@@ -79,7 +75,6 @@ export default function CustomerList() {
     evaluations.filter(
       (evaluation) =>
         evaluation.completed === false &&
-
         evaluation.units.every((unit) => unit.status !== 2) &&
         evaluation.units.some((unit) => unit.status > 0)
     );
@@ -90,8 +85,6 @@ export default function CustomerList() {
       (evaluation) =>
         evaluation && evaluation.units.some((unit) => unit.status === 2)
     );
-
-
 
   // Find not started evaluations
   const notStarted =
@@ -190,8 +183,6 @@ export default function CustomerList() {
         {/* </AccordionDetails> */}
         {/* </Accordion> */}
 
-         
-
         {/* Not started */}
         {/* <Accordion disableGutters>
           <AccordionSummary
@@ -274,7 +265,7 @@ export default function CustomerList() {
             >
               <CloseIcon />
             </IconButton>
-            <DialogContent sx={{ width: '14rem'}}>
+            <DialogContent sx={{ width: '14rem' }}>
               {titles.map((title, index) => (
                 <div key={index}>
                   <Box
@@ -296,7 +287,6 @@ export default function CustomerList() {
         open={isInfoButtonOpen}
         handleClose={handleCloseInfoButton}
       />
-
 
       <UserNav />
     </main>
