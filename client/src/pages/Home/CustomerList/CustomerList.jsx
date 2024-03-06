@@ -1,23 +1,33 @@
 // Import React
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UserNav from '../../../components/UserNav/UserNav';
+
+import { Icon } from '@iconify/react';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { Typography } from '@mui/material';
+import { Box } from '@mui/material';
+
 import Button from '../../../components/Button/Button';
+
 
 // Import state management
 import AuthContext from '../../../store/context/AuthContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
 // Import MUI
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+// import Accordion from '@mui/material/Accordion';
+// import AccordionSummary from '@mui/material/AccordionSummary';
+// import AccordionDetails from '@mui/material/AccordionDetails';
+// import Typography from '@mui/material/Typography';
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function CustomerList() {
   const navigate = useNavigate();
@@ -26,6 +36,37 @@ export default function CustomerList() {
   const { user } = useContext(AuthContext);
   const { evaluations, setInternalEvaluations, setInternalEvaluation } =
     useContext(InternalApiContext);
+
+
+  const [isInfoButtonOpen, setIsInfoButtonOpen] = useState(false);
+
+  const handleOpenInfoButton = () => {
+    setIsInfoButtonOpen(true);
+  };
+
+  const handleCloseInfoButton = () => {
+    setIsInfoButtonOpen(false);
+  };
+
+  // Titles color for info button
+  const titles = ['Valmis', 'Käsittelyssä', 'Aloitettu', 'Aloittamatta'];
+
+  const getTitleColor = (title) => {
+    switch (title) {
+      case 'Valmis':
+        return '#B0EDD4';
+      case 'Käsittelyssä':
+        return '#FFE28C';
+      case 'Aloitettu':
+        return '#B7D9F7';
+      case 'Aloittamatta':
+        return '#E2E2E2';
+      default:
+        return '#FFFFFF'; // Default color if title is not recognized
+    }
+  };
+
+
 
   // Set evaluations
   useEffect(() => {
@@ -38,8 +79,21 @@ export default function CustomerList() {
     evaluations.filter(
       (evaluation) =>
         evaluation.completed === false &&
+
+        evaluation.units.every((unit) => unit.status !== 2) &&
         evaluation.units.some((unit) => unit.status > 0)
     );
+  // Find evaluations waitin for processing
+  const waitForProcessing =
+    evaluations &&
+    evaluations.filter(
+      (evaluation) =>
+        evaluation && evaluation.units.some((unit) => unit.status === 2)
+    );
+
+        evaluation.units.some((unit) => unit.status > 0)
+    );
+
 
   // Find not started evaluations
   const notStarted =
@@ -75,39 +129,73 @@ export default function CustomerList() {
       </div>
 
       <div className='customerList__container'>
-        <h3> Omat suoritukset </h3>
+        <h3>
+          {' '}
+          Asiakkaiden suoritukset{' '}
+          <span>
+            <Icon
+              icon='material-symbols:info'
+              color='#0288D1'
+              style={{ verticalAlign: 'text-bottom', fontSize: '21px' }}
+              cursor={'pointer'}
+              onClick={() => handleOpenInfoButton()}
+            />
+          </span>{' '}
+        </h3>
 
         {/* In progress */}
-        <Accordion disableGutters>
-          <AccordionSummary
+        {/* <Accordion disableGutters> */}
+        {/* <AccordionSummary
             sx={{ backgroundColor: '#FFF4B4' }}
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
           >
             <Typography sx={{ fontWeight: '600' }}>Kesken</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <div className='customerList__accordion'>
-              {inProgress &&
-                inProgress.map(
-                  (evaluation) =>
-                    evaluation.customerId && (
-                      <a
-                        key={evaluation._id}
-                        onClick={() => handleChooseEvaluation(evaluation._id)}
-                      >
-                        {evaluation.customerId.firstName}{' '}
-                        {evaluation.customerId.lastName}
-                      </a>
-                    )
-                )}
-            </div>
-          </AccordionDetails>
-        </Accordion>
+
+          </AccordionSummary> */}
+        {/* <AccordionDetails> */}
+        <div className='customerList__accordion'>
+          {inProgress &&
+            inProgress.map(
+              (evaluation, index) =>
+                evaluation.customerId && (
+                  <div
+                    key={index}
+                    className='customerList__accordion__inProgress'
+                  >
+                    <p onClick={() => handleChooseEvaluation(evaluation._id)}>
+                      {evaluation.customerId.firstName}{' '}
+                      {evaluation.customerId.lastName}
+                    </p>
+                  </div>
+                )
+            )}
+        </div>
+        <div className='customerList__accordion'>
+          {waitForProcessing &&
+            waitForProcessing.map(
+              (evaluation, index) =>
+                evaluation.customerId && (
+                  <div
+                    key={index}
+                    className='customerList__accordion__waitForProcessing'
+                  >
+                    <p onClick={() => handleChooseEvaluation(evaluation._id)}>
+                      {evaluation.customerId.firstName}{' '}
+                      {evaluation.customerId.lastName}
+                    </p>
+                  </div>
+                )
+            )}
+        </div>
+        {/* </AccordionDetails> */}
+        {/* </Accordion> */}
+
+         
 
         {/* Not started */}
-        <Accordion disableGutters>
+        {/* <Accordion disableGutters>
           <AccordionSummary
             sx={{ backgroundColor: '#efeff0' }}
             expandIcon={<ExpandMoreIcon />}
@@ -116,25 +204,28 @@ export default function CustomerList() {
           >
             <Typography sx={{ fontWeight: '600' }}>Aloittamatta</Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <div className='customerList__accordion'>
-              {notStarted &&
-                notStarted.map((evaluation) => (
-                  <a
-                    key={evaluation._id}
-                    onClick={() => handleChooseEvaluation(evaluation._id)}
-                  >
-                    {evaluation.customerId.firstName}{' '}
-                    {evaluation.customerId.lastName}
-                  </a>
-                ))}
-            </div>
-          </AccordionDetails>
-        </Accordion>
+
+          <AccordionDetails> */}
+        <div className='customerList__accordion'>
+          {notStarted &&
+            notStarted.map((evaluation, index) => (
+              <div key={index} className='customerList__accordion__notStarted'>
+                <p
+                  key={evaluation._id}
+                  onClick={() => handleChooseEvaluation(evaluation._id)}
+                >
+                  {evaluation.customerId.firstName}{' '}
+                  {evaluation.customerId.lastName}
+                </p>
+              </div>
+            ))}
+        </div>
+        {/* </AccordionDetails>
+        </Accordion> */}
 
         {/* Completed */}
-        <Accordion disableGutters>
-          <AccordionSummary
+        {/* <Accordion disableGutters> */}
+        {/* <AccordionSummary
             sx={{ backgroundColor: '#E2F5F3' }}
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel3a-content'
@@ -142,37 +233,73 @@ export default function CustomerList() {
           >
             <Typography sx={{ fontWeight: '600' }}>Suorittanut</Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <div className='customerList__accordion'>
-              {completed &&
-                completed.map((evaluation) => (
-                  <a
-                    key={evaluation._id}
-                    onClick={() => handleChooseEvaluation(evaluation._id)}
+
+          <AccordionDetails> */}
+        <div className='customerList__accordion'>
+          {completed &&
+            completed.map(
+              (evaluation, index) =>
+                evaluation.customerId && (
+                  <div
+                    key={index}
+                    className='customerList__accordion__completed'
                   >
-                    {evaluation.customerId.firstName}{' '}
-                    {evaluation.customerId.lastName}
-                  </a>
-                ))}
-            </div>
-          </AccordionDetails>
-        </Accordion>
+                    <p
+                      key={evaluation._id}
+                      onClick={() => handleChooseEvaluation(evaluation._id)}
+                    >
+                      {evaluation.customerId.firstName}{' '}
+                      {evaluation.customerId.lastName}
+                    </p>
+                  </div>
+                )
+            )}
+        </div>
+        {/* </AccordionDetails> */}
+        {/* </Accordion> */}
       </div>
-      {/* <div className='customerList__button'>
-        <Button
-          style={{
-            color: '#0000BF',
-            fontSize: '15px',
-            border: '2px solid #0000BF',
-            width: '60%',
-            height: '50px',
-          }}
-          text='Tarkastele sopimusta'
-          color='info'
-          icon='bx:file'
-          onClick={() => navigate('/contract-info')}
-        />
-      </div> */}
+
+      <NotificationModal
+        type='iconInfo'
+        hideIcon={true}
+        body={
+          <div>
+            <IconButton
+              aria-label='close'
+              onClick={handleCloseInfoButton}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: 'black',
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ width: '14rem'}}>
+              {titles.map((title, index) => (
+                <div key={index}>
+                  <Box
+                    style={{
+                      backgroundColor: getTitleColor(title),
+                      marginBottom: '10px',
+                      padding: '1rem',
+                    }}
+                  >
+                    <Typography style={{ marginLeft: '1rem' }} gutterBottom>
+                      <b>{title}</b>
+                    </Typography>
+                  </Box>
+                </div>
+              ))}
+            </DialogContent>
+          </div>
+        }
+        open={isInfoButtonOpen}
+        handleClose={handleCloseInfoButton}
+      />
+
+
       <UserNav />
     </main>
   );

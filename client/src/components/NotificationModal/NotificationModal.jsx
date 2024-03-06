@@ -121,6 +121,9 @@ export default function CustomizedDialogs(props) {
     icon = 'material-symbols:warning';
     bgColor = '#f6e2e6';
     color = '#b01038';
+  } else if (props.type === 'iconInfo') {
+    bgColor = '#FFFFFF';
+    color = '#0288D1';
   }
 
   const handleClose = () => {
@@ -143,7 +146,7 @@ export default function CustomizedDialogs(props) {
         sx={{
           '& .MuiDialog-paper': {
             background: bgColor,
-            borderLeft: 'solid 8px',
+            borderLeft: 'solid 10px',
             color,
           },
           '& .MuiDialogTitle-root': {
@@ -153,6 +156,7 @@ export default function CustomizedDialogs(props) {
           },
         }}
       >
+         {!props.hideIcon && (
         <Icon
           icon={icon}
           style={{
@@ -163,6 +167,7 @@ export default function CustomizedDialogs(props) {
             color: color,
           }}
         />
+        )}
 
         <BootstrapDialogTitle
           id='customized-dialog-title'
