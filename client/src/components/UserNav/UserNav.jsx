@@ -5,7 +5,10 @@ import AuthContext from '../../store/context/AuthContext';
 import InternalApiContext from '../../store/context/InternalApiContext';
 
 import { Icon } from '@iconify/react';
-import { Button, Grid, Typography } from '@mui/material';
+import { Box,Button, Grid, Typography } from '@mui/material';
+
+import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
+
 
 const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
   const { user } = useContext(AuthContext);
@@ -56,7 +59,8 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
 
   return (
     <main className='userNav__wrapper'>
-      {/* Customer : old version Nav */}
+      {/* Customer : old version Nav : (sprint11) we can save old ver.nav for a while
+       change main className='userNav__wrapper' when we need to change old version
        {user && user.role === 'customer' && (
         <div className={`userNav__icons ${user.role}`}>
           <Icon
@@ -84,10 +88,10 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             }
           />{' '}
         </div>
-      )} 
+      )}  */}
 
       {/* Supervisor : old Nav version */}
-       {user && user.role === 'supervisor' && (
+       {/* {user && user.role === 'supervisor' && (
         <div className={`userNav__icons ${user.role}`}>
           <Icon
             icon='ic:outline-home'
@@ -117,9 +121,9 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
           />
         </div>
       )} 
-
+ */}
       {/* Teacher : old Nav version */}
-       {user && user.role === 'teacher' && (
+       {/* {user && user.role === 'teacher' && (
         <div className={`userNav__icons ${user.role}`}>
           <Icon
             icon='ic:outline-home'
@@ -156,34 +160,81 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             }
           />
         </div>
-      )} 
+      )}  */}
 
-      {/* hamburger menu*/}
+      {/* for hamburger menu*/}
       <div className="mobile-menu-button" onClick={toggleMenu}>
         {/* Hamburger icon */}
         <Icon icon="ci:menu-alt-05" />
       </div>
-      <div className={`userNav__menu ${isMenuOpen ? 'userNav__menu--open' : ''}`}>
+      <div 
+        className={`userNav__menu ${isMenuOpen ? 'userNav__menu--open' : ''}`}
+        >
         <div className="userNav__menu__closeBtn" onClick={toggleMenu}>
           x
         </div>
-        {/* Menu Items */}
+        {/* Hamburger  Menu Items */}
+          {/* set background color user's role */}
           <div className={`userNav__icons ${user.role}`}>
-            <Icon icon="ic:outline-home" color="black" onClick={() => navigate('/unit-list')}/>
-            <Icon icon="bx:file" color='black' onClick={() => navigate('/contract-info')}/>
-            <Icon icon="mdi:user-outline" color='black' onClick={() => navigate('/profile')}/>
-            {user.role !== 'customer' && evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>}
-            {user.role === 'teacher' && <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>} 
-            <h4>Profiili</h4>
-            <Grid container alignItems='right'>
+            {/* <Icon icon="ic:outline-home" color="black" onClick={() => navigate('/unit-list')}/>
+                <Icon icon="bx:file" color='black' onClick={() => navigate('/contract-info')}/>
+                <Icon icon="mdi:user-outline" color='black' onClick={() => navigate('/profile')}/>
+            */}
+            <Box  sx={{ height: '20vh', marginTop: '50px' }}>
+            <img src={HelsinkiLogo} alt="" />
+            <h1>OsTu</h1>
+            </Box>
+            { user&&user.role === 'teacher' && (
+              <>
+                <Typography 
+                  sx={{ fontWeight: '600' }}
+                  >Tutkinnot
+                </Typography>
+                <Typography
+                  sx={{ fontWeight: '600' }}
+                  >
+                  Työpaikat
+                </Typography>
+                <Typography
+                  sx={{ fontWeight: '600' }}
+                  >
+                  + Luo uusi sopimus
+                </Typography>
+                <Typography
+                  sx={{ fontWeight: '600' }}
+                  >
+                  Asiakkuudet
+                </Typography>
+                <Typography
+                  sx={{ fontWeight: '600' }}
+                  >
+                  Opettajat
+                </Typography>
+                </>
+              )}
+            <Typography 
+            sx={{ fontWeight: '600' }}
+            onClick={()=>navigate('/profile')}
+            >Profiili
+            </Typography>
+           {/*  {user.role !== 'customer' && evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>} */}
+           {/*  {user.role === 'teacher' && <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>}  */}
+            <Grid container alignItems='flex-start' justifyContent='flex-end'>
               <Grid item>
-                <Button>
-                  <Typography style={{marginTop:'2px'}} onClick={() => navigate('/profile')} >Kirjaudu ulos</Typography>
+                <Button 
+                  onClick={() => navigate('/profile')}
+                  sx={{ marginRight: '20px', marginBottom:'20px' }}>
+                  <Typography 
+                    sx={{ fontWeight: '600', fontSize:'14px' }} 
+                    >
+                      Kirjaudu ulos
+                  </Typography>
+                  <Icon
+                    icon="websymbol:logout" 
+                    color='black' 
+                    style={{ marginLeft:'10px' }} 
+                    />
                 </Button>
-              </Grid>
-                <Icon
-                  icon="websymbol:logout" color='black' style={{ marginLeft:'10px' }} name='Kirjaudu ulos' onClick={() => navigate('/profile')} />
-              <Grid item>
               </Grid>
             </Grid>
           </div>

@@ -27,15 +27,15 @@
     h1 {
       font-size: 18px;
       font-weight: 400;
-      z-index: 1;
+      //z-index: 1;
     }
     h2 {
-      z-index: 1;
+      //z-index: 1; fixed for hamburger menu
       margin-top: 30px;
     }
 
     img {
-      z-index: 1;
+      //z-index: 1; fixed for hamburger menu
       padding-top: 15px;
     }
 
