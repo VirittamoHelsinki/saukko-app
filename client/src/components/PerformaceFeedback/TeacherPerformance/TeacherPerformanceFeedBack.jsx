@@ -4,6 +4,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import AuthContext from '../../../store/context/AuthContext';
+import { Icon } from '@iconify/react';
 
 const TeacherPerformanceFeedBack = ({
   setSelectedValues,
@@ -146,6 +147,12 @@ const TeacherPerformanceFeedBack = ({
             </div>
           </div>
         ))}
+        <div className='teacher-comment-button-wrapper'>
+          <button className='teacher-comment-button'>
+            Lisää opettajan kommentti{' '}
+          </button>
+          <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem' />
+        </div>
       </div>
     </main>
   );

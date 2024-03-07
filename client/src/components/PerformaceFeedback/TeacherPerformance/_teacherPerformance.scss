@@ -1,18 +1,33 @@
-.feedback__wrapper{
+.feedback__wrapper {
   flex: 1;
   display: flex;
   justify-content: center;
-  min-width:  '100%';
+  min-width: '100%';
   flex-direction: column;
   padding-top: 20px;
   padding-bottom: 20px;
-// // border: 1px solid red;
- }
+  // // border: 1px solid red;
+}
 
-
-
-.first-div-style{
+.first-div-style {
   display: flex;
   justify-content: space-around;
-align-items: center;
+  align-items: center;
+}
+
+.teacher-comment-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 3px;
+  align-items: center;
+  margin-top: 20px;
+  margin-right: 14px;
+}
+
+.teacher-comment-button {
+  padding: 10px;
+  border: none;
+  color: grey;
+  font-size: 14px;
+  background-color: #f2f2f2;
 }
