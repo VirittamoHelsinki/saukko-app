@@ -78,7 +78,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                 ? () => handleIconClick('/contract-info')
                 : () => navigate('/contract-info')
             }
-          /> */}
+          /> 
           <Icon
             icon='mdi:user-outline'
             onClick={
@@ -110,7 +110,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                   : () => navigate('/contract-info')
               }
             />
-          )} */}
+          )} 
           <Icon
             icon='mdi:user-outline'
             onClick={
@@ -142,7 +142,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                   : () => navigate('/contract-info')
               }
             />
-          )} */}
+          )} 
           <Icon
             icon='mingcute:group-line'
             onClick={
