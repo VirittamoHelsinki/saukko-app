@@ -33,11 +33,11 @@ function EvaluationSummary() {
   const { setInternalEvaluations } = useContext(InternalApiContext);
 
   // NotificationModal
-  const [successNotification, setSuccessNotification] = useState(false)
-  const [errorNotification, setErrorNotification] = useState(false)
+  const [successNotification, setSuccessNotification] = useState(false);
+  const [errorNotification, setErrorNotification] = useState(false);
 
-  const closeSuccessNotification = () => setSuccessNotification(false)
-  const closeErrorNotification = () => setErrorNotification(false)
+  const closeSuccessNotification = () => setSuccessNotification(false);
+  const closeErrorNotification = () => setErrorNotification(false);
 
   // Data array for InfoList component
   const summaryData = [
@@ -59,32 +59,35 @@ function EvaluationSummary() {
     },
     {
       title: 'Työpaikka',
-      content: workplace ? workplace.name : '', 
+      content: workplace ? workplace.name : '',
     },
     {
       title: 'Y - tunnus',
-      content:  workplace ? workplace.businessId : '',
+      content: workplace ? workplace.businessId : '',
     },
     {
       title: 'Työpaikanyksikkö',
-      content:  department ? department.name : '',
+      content: department ? department.name : '',
     },
     {
       title: 'Työpaikkaohjaaja',
-      content: supervisor ? `${supervisor.firstName} ${supervisor.lastName}` : '',
+      content: supervisor
+        ? `${supervisor.firstName} ${supervisor.lastName}`
+        : '',
     },
   ];
 
   // Remove department from summaryData if there is no department
   if (!department) {
-    const indexToRemove = summaryData.findIndex(item => item.title === 'Työpaikanyksikkö');
+    const indexToRemove = summaryData.findIndex(
+      (item) => item.title === 'Työpaikanyksikkö'
+    );
     if (indexToRemove !== -1) {
       summaryData.splice(indexToRemove, 1);
     }
   }
 
   const handleUserPostReq = async () => {
-
     // Format data
     const userRequestData = {
       firstName: customer && customer.firstName ? customer.firstName : null,
@@ -92,8 +95,8 @@ function EvaluationSummary() {
       email: customer && customer.email ? customer.email : null,
       password: '123456',
       role: 'customer',
-    }
-    console.log('User POST request:', userRequestData)
+    };
+    console.log('User POST request:', userRequestData);
 
     // If all values are found send POST request for creating user
     if (
@@ -104,17 +107,15 @@ function EvaluationSummary() {
       const response = await registration(userRequestData);
       const userId = response.data.userId;
       handleEvaluationPostReq(userId);
-      
+
       // Reset form data after successful submission
       resetFormData();
     } else {
       setErrorNotification(true);
     }
   };
-  
-  
-  const handleEvaluationPostReq = async (userId) => {
 
+  const handleEvaluationPostReq = async (userId) => {
     // Format evaluation data
     const evaluationRequestData = {
       degreeId: workplace && workplace.degreeId ? workplace.degreeId : null,
@@ -123,12 +124,15 @@ function EvaluationSummary() {
       supervisorId: supervisor && supervisor._id ? supervisor._id : null,
       workplaceId: workplace && workplace._id ? workplace._id : null,
       units: checkedUnits,
-      startDate:  evaluation && evaluation.startDate ? evaluation.startDate.$d : null,
+      startDate:
+        evaluation && evaluation.startDate ? evaluation.startDate.$d : null,
       endDate: evaluation && evaluation.endDate ? evaluation.endDate.$d : null,
-      workTasks: evaluation && evaluation.workTasks ? evaluation.workTasks : null,
-      workGoals: evaluation && evaluation.workGoals ? evaluation.workGoals : null,
-    }
-    console.log('Evaluation POST request:', evaluationRequestData)
+      workTasks:
+        evaluation && evaluation.workTasks ? evaluation.workTasks : null,
+      workGoals:
+        evaluation && evaluation.workGoals ? evaluation.workGoals : null,
+    };
+    console.log('Evaluation POST request:', evaluationRequestData);
 
     // If all values are found send POST request for evaluation
     if (
@@ -142,52 +146,58 @@ function EvaluationSummary() {
       evaluationRequestData.workTasks !== null &&
       evaluationRequestData.workGoals !== null
     ) {
-      const response = await createEvaluation(evaluationRequestData)
-      console.log('Evaluation POST response:', response)
-      setSuccessNotification(true)
-      setInternalEvaluations() // Save evaluation to InternalApiContext
+      const response = await createEvaluation(evaluationRequestData);
+      console.log('Evaluation POST response:', response);
+      setSuccessNotification(true);
+      setInternalEvaluations(); // Save evaluation to InternalApiContext
     } else {
-      setErrorNotification(true)
+      setErrorNotification(true);
     }
-  }
+  };
 
   // Stepper labels & urls
   const stepperData = [
     {
       label: 'Lisää tiedot',
-      url: '/evaluation-form'
+      url: '/evaluation-form',
     },
     {
       label: 'Valitse työpaikka',
-      url: '/evaluation-workplace'
+      url: '/evaluation-workplace',
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: '/evaluation-units'
+      url: '/evaluation-units',
     },
     {
       label: 'Aktivoi suoritus',
-      url: '/evaluation-summary'
+      url: '/evaluation-summary',
     },
   ];
-  
+
   return (
     <main className='summary__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='summary__container'>
-        <Stepper
-            activePage={4}
-            totalPages={4}
-            data={stepperData}
-        />
-        <InfoList title={'Yhteenveto'} data={summaryData}/>
-        <h1>{workplace && workplace.name ? workplace.name : 'Ei dataa tietokannasta'}</h1>
+        <Stepper activePage={4} totalPages={4} data={stepperData} />
+        <InfoList title={'Yhteenveto'} data={summaryData} />
+        <h1>
+          {workplace && workplace.name
+            ? workplace.name
+            : 'Ei dataa tietokannasta'}
+        </h1>
         {checkedUnits?.map((unit) => (
-          <SelectUnit key={unit._id} unit={unit} allUnits={checkedUnits && checkedUnits}/>
+          <SelectUnit
+            key={unit._id}
+            unit={unit}
+            allUnits={checkedUnits && checkedUnits}
+          />
         ))}
-        <PageNavigationButtons 
-          handleBack={() => navigate(`/evaluation-units`)} 
+        <PageNavigationButtons
+          handleBack={() => navigate(`/evaluation-units`)}
           handleForward={handleUserPostReq}
+          forwardButtonText={'Vahvista'}
+          showForwardButton={true}
         />
       </section>
       <UserNav />

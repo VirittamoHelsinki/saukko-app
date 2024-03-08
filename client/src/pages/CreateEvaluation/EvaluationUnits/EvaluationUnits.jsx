@@ -22,7 +22,7 @@ function EvaluationUnits() {
   // Check if at least one unit is chosen and redirect
   const handleValidation = () => {
     if (checkedUnits.length > 0) {
-      navigate('/evaluation-summary')
+      navigate('/evaluation-summary');
     } else {
       setOpenNotificationModal(true);
     }
@@ -32,43 +32,51 @@ function EvaluationUnits() {
   const stepperData = [
     {
       label: 'Lisää tiedot',
-      url: '/evaluation-form'
+      url: '/evaluation-form',
     },
     {
       label: 'Valitse työpaikka',
-      url: '/evaluation-workplace'
+      url: '/evaluation-workplace',
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: '/evaluation-units'
+      url: '/evaluation-units',
     },
     {
       label: 'Aktivoi suoritus',
-      url: '/evaluation-summary'
+      url: '/evaluation-summary',
     },
   ];
-  
+
   return (
     <main className='evaluationUnits__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='evaluationUnits__container'>
-        <Stepper
-            activePage={3}
-            totalPages={4}
-            data={stepperData}
-        />
-        <h1>{workplace && workplace.name ? workplace.name : 'Ei dataa tietokannasta'}</h1>
+        <Stepper activePage={3} totalPages={4} data={stepperData} />
+        <h1>
+          {workplace && workplace.name
+            ? workplace.name
+            : 'Ei dataa tietokannasta'}
+        </h1>
 
         <div className='evaluationUnits__container--units'>
-          { workplace && workplace.units ? 
-            workplace.units.map((unit) => (
-              <SelectUnit key={unit._id} unit={unit} allUnits={workplace.units}/>
-            ))
-          : 'ei dataa APIsta'}
+          {workplace && workplace.units
+            ? workplace.units.map((unit) => (
+                <SelectUnit
+                  key={unit._id}
+                  unit={unit}
+                  allUnits={workplace.units}
+                />
+              ))
+            : 'ei dataa APIsta'}
         </div>
 
-        <PageNavigationButtons handleBack={() => navigate(`/evaluation-workplace`)} handleForward={handleValidation}/>
-      </section>      
+        <PageNavigationButtons
+          handleBack={() => navigate(`/evaluation-workplace`)}
+          handleForward={handleValidation}
+          showForwardButton={true}
+        />
+      </section>
       <UserNav />
       <NotificationModal
         type='warning'

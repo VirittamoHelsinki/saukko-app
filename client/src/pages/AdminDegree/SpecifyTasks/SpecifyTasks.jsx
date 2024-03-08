@@ -235,6 +235,8 @@ function SpecifyTasks() {
           handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
           handleForward={handleSubmit}
           forwardButtonText={'Tallenna ja jatka'}
+          showForwardButton={true}
+
         />
       </section>
       <UserNav />

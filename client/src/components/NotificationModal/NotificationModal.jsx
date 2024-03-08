@@ -60,9 +60,8 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Icon } from '@iconify/react';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button'; // Add this import for the "OK" button
-
+import { Box } from '@mui/material';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -122,6 +121,9 @@ export default function CustomizedDialogs(props) {
     icon = 'material-symbols:warning';
     bgColor = '#f6e2e6';
     color = '#b01038';
+  } else if (props.type === 'iconInfo') {
+    bgColor = '#FFFFFF';
+    color = '#0288D1';
   }
 
   const handleClose = () => {
@@ -144,7 +146,7 @@ export default function CustomizedDialogs(props) {
         sx={{
           '& .MuiDialog-paper': {
             background: bgColor,
-            borderLeft: 'solid 8px',
+            borderLeft: 'solid 10px',
             color,
           },
           '& .MuiDialogTitle-root': {
@@ -154,6 +156,7 @@ export default function CustomizedDialogs(props) {
           },
         }}
       >
+         {!props.hideIcon && (
         <Icon
           icon={icon}
           style={{
@@ -164,6 +167,7 @@ export default function CustomizedDialogs(props) {
             color: color,
           }}
         />
+        )}
 
         <BootstrapDialogTitle
           id='customized-dialog-title'
@@ -172,7 +176,7 @@ export default function CustomizedDialogs(props) {
           {props.title}
         </BootstrapDialogTitle>
         <DialogContent>
-          <Typography gutterBottom>{props.body}</Typography>
+          <Box sx={{ color: 'black', marginBottom: '1rem'}}>{props.body}</Box>
           {props.type === 'alert' && (
             <Button onClick={handleConfirm} color='primary' variant='contained'>
               Kyllä

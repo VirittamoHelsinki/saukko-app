@@ -26,6 +26,7 @@ function PageNavigationButtons(props) {
           icon={'formkit:arrowleft'}
         />
       </div>
+      {props.showForwardButton && ( 
       <div className='buttons__container-forward'>
         <Button
           text={props.forwardButtonText || 'Seuraava'}
@@ -33,6 +34,7 @@ function PageNavigationButtons(props) {
           icon={'formkit:arrowright'}
         />
       </div>
+       )}
       {/* <div className='buttons__container-forward-summary'>
         <Button
           text={props.forwardButtonText || 'Muokkaa tietoja'}

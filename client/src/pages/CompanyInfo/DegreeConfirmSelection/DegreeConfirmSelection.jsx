@@ -231,6 +231,8 @@ function DegreeConfirmSelection() {
           }
           handleForward={handleVahvistaClick}
           forwardButtonText={'Vahvista'}
+          showForwardButton={true}
+
         />
       </section>
       <UserNav />

@@ -119,6 +119,11 @@ export const InternalApiContextProvider = (props) => {
     } */
   };
 
+   // Debug log when evaluation state is updated
+   useEffect(() => {
+    console.log('InternalApiContext: Evaluation:', evaluation);
+  }, [evaluation]);
+  
   // Clear evaluation from state at logout
   useEffect(() => {
     if (!loggedIn) {
