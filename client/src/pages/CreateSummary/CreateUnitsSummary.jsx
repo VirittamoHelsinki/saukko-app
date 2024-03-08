@@ -152,6 +152,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
           title='Tutkinnon nimen muokkaus'
           requirementsTitle='Tutkinnon nimi'
           hideCriteriaField={true}
+          hideCancelButton={true}
           onSave={(title) => {
             console.log('Title:', title);
           }

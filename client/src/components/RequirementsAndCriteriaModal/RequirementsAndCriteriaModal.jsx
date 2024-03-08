@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
   },
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
@@ -46,7 +46,7 @@ function CustomDialogTitle(props) {
 
 export default function RequirementsAndCriteriaModal(props) {
   let bgColor = '#e5eff8';
-  let color = '#0062b9';
+  let color = '#0288D1';
   const [inputValueTitle, setInputValueTitle] = useState('');
   const [inputValueCriteria, setInputValueCriteria] = useState('');
 
@@ -64,6 +64,12 @@ export default function RequirementsAndCriteriaModal(props) {
     props.onClose();
   };
 
+  const handleSubmitCancelButton = () => {
+    props.onSave(inputValueTitle, inputValueCriteria);
+    setInputValueTitle('');
+    setInputValueCriteria('');
+    // handleClose();
+  };
   const handleSubmit = () => {
     console.log('Submitted Title:', inputValueTitle);
     console.log('Submitted criteria:', inputValueCriteria);
@@ -83,12 +89,12 @@ export default function RequirementsAndCriteriaModal(props) {
       sx={{
         '& .MuiDialog-paper': {
           background: bgColor,
-          borderLeft: 'solid 5px',
+          borderLeft: 'solid 6px',
           color,
           width: '100%',
-          maxWidth: '500px',
+          maxWidth: '350px',
           '@media (min-width:600px)': {
-            maxWidth: '800px', // adjust this value as needed
+            maxWidth: '400px', // adjust this value as needed
           },
         },
       }}
@@ -110,99 +116,131 @@ export default function RequirementsAndCriteriaModal(props) {
       </CustomDialogTitle>
       <DialogContent>
         <Typography gutterBottom>{props.modalUnitName}</Typography>
-        <Typography gutterBottom>{props.requirementsTitle}</Typography>
-        <TextField
-          value={inputValueTitle}
-          onChange={(e) => handleInputChange(e, 1)}
-          id='outlined-multiline-static'
-          backgroundColor='#FFFFFF'
-          border='black 2px solid'
-          fontSize='10px'
-          multiline
-          variant='outlined'
-          sx={{
-            width: '95%',
 
-            borderColor: 'black',
-            borderRadius: '0',
-            backgroundColor: 'white',
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: 'black',
-                borderWidth: '2px',
-                borderRadius: '0',
-              },
-              '&:hover fieldset': {
-                borderColor: 'black',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: 'black',
-              },
-            },
-          }}
-        ></TextField>
-         {!props.hideCriteriaField && (
-           <>
-        <Typography gutterBottom>{props.criteria}</Typography>
+        {!props.hideRequirementsField && (
+          <>
+            <Typography gutterBottom>{props.requirementsTitle}</Typography>
+            <TextField
+              value={inputValueTitle}
+              onChange={(e) => handleInputChange(e, 1)}
+              id='outlined-multiline-static'
+              backgroundColor='#FFFFFF'
+              border='black 2px solid'
+              fontSize='10px'
+              multiline
+              variant='outlined'
+              sx={{
+                width: '95%',
 
-        <TextField
-          value={inputValueCriteria}
-          onChange={(e) => handleInputChange(e, 2)}
-          id='outlined-multiline-static'
-          rows={8}
-          cols={25}
-          multiline
-          variant='outlined'
-          sx={{
-            width: '95%',
-            borderColor: 'black',
-            borderRadius: '0',
-            backgroundColor: 'white',
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
                 borderColor: 'black',
-                borderWidth: '2px',
                 borderRadius: '0',
-              },
-              '&:hover fieldset': {
-                borderColor: 'black',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: 'black',
-              },
-            },
-          }}
-        >
-          <Typography padding='1rem'></Typography>
-        </TextField>
-           </>
+                backgroundColor: 'white',
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'black',
+                    borderWidth: '2px',
+                    borderRadius: '0',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'black',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'black',
+                  },
+                },
+              }}
+            ></TextField>
+          </>
         )}
-      </DialogContent>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          width: '100%',
-          marginBottom: '20px',
-        }}
-      >
-        <Button
-          onClick={handleSubmit}
+        {!props.hideCriteriaField && (
+          <>
+            <Typography gutterBottom>{props.criteria}</Typography>
+
+            <TextField
+              value={inputValueCriteria}
+              onChange={(e) => handleInputChange(e, 2)}
+              id='outlined-multiline-static'
+              rows={8}
+              cols={25}
+              multiline
+              variant='outlined'
+              sx={{
+                width: '95%',
+                borderColor: 'black',
+                borderRadius: '0',
+                backgroundColor: 'white',
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'black',
+                    borderWidth: '2px',
+                    borderRadius: '0',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'black',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'black',
+                  },
+                },
+              }}
+            >
+              <Typography padding='1rem'></Typography>
+            </TextField>
+          </>
+        )}
+
+        <Box
           sx={{
-            textTransform: 'none',
-            backgroundColor: '#0000BF',
-            width: '99px',
-            height: '56px',
-            color: '#FFFFFF',
-            borderRadius: '0',
-            '&:hover': {
-              backgroundColor: '#0000BF',
-            },
+            display: 'flex',
+            justifyContent: 'space-between',
+            // width: '100%',
+            padding: '16px 16px 16px 0',
+            marginTop: '20px',
+            marginBottom: '20px',
           }}
         >
-          Tallenna
-        </Button>
-      </Box>
+          {!props.hideCancelButton && (
+            <Button
+            onClick={handleSubmitCancelButton}
+              sx={{
+                textTransform: 'none',
+                backgroundColor: '#FFFFFF',
+                border: '2px solid #0000BF',
+                width: '125px',
+                height: '56px',
+                color: '#0000BF',
+                borderRadius: '0',
+                fontWeight: 'bold',
+                '&:hover': {
+                  backgroundColor: '#0000BF',
+                  color: '#FFFFFF',
+                },
+              }}
+            >
+              Peruuta
+            </Button>
+          )}
+          <Button
+            onClick={handleSubmit}
+            sx={{
+              textTransform: 'none',
+              backgroundColor: '#0000BF',
+              width: '99px',
+              height: '56px',
+              color: '#FFFFFF',
+              borderRadius: '0',
+              fontWeight: 'bold',
+              '&:hover': {
+                backgroundColor: '#FFFFFF',
+                color: '#0000BF',
+                border: '2px solid #0000BF',
+              },
+            }}
+          >
+            Tallenna
+          </Button>
+        </Box>
+      </DialogContent>
     </CustomDialog>
   );
 }

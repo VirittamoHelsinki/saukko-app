@@ -5,6 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import AuthContext from '../../../store/context/AuthContext';
 import { Icon } from '@iconify/react';
+import RequirementsAndCriteriaModal from '../../RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 
 const TeacherPerformanceFeedBack = ({
   setSelectedValues,
@@ -16,6 +17,18 @@ const TeacherPerformanceFeedBack = ({
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [hasChanged, setHasChanged] = useState(false);
+
+  
+  // Modal for teacher comment
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+
+  const handleCloseCommentModal = () => {
+    setIsCommentModalOpen(false);
+  };
+  const handlePenClick = () => {
+    setIsCommentModalOpen(true);
+  };
+
 
   const handleRadioChange = (e, unit, info, value) => {
     setSelectedRadio((prevValues) => ({
@@ -147,12 +160,25 @@ const TeacherPerformanceFeedBack = ({
             </div>
           </div>
         ))}
-        <div className='teacher-comment-button-wrapper'>
+        <div className='teacher-comment-button-wrapper'  onClick={handlePenClick}>
           <button className='teacher-comment-button'>
             Lisää opettajan kommentti{' '}
           </button>
-          <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem' />
+          <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem'/>
         </div>
+        
+        <RequirementsAndCriteriaModal
+          open={isCommentModalOpen}
+          onClose={handleCloseCommentModal}
+          title='Lisää opetaajan kommentti'
+          hideRequirementsField={true}
+          hideCriteriaField={false}
+          hideCancelButton={false}
+          onSave={(comment) => {
+            console.log('Comment:', comment);
+          }
+          }
+        />
       </div>
     </main>
   );

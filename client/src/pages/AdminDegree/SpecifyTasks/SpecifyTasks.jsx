@@ -188,6 +188,7 @@ function SpecifyTasks() {
                 modalUnitName={checkedUnits[activeStep]?.name.fi}
                 requirementsTitle='Ammattitaitovaatimuksen nimi'
                 criteria='Kriteerit'
+                hideCancelButton={true}
                 onSave={(title, criteria) => {
                   setAssessments((prevAssessments) => [
                     ...prevAssessments,
