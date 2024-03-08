@@ -65,7 +65,7 @@ const UnitList = () => {
               color: '#0000BF',
               fontSize: '15px',
               border: '2px solid #0000BF',
-              width: '60%',
+              width: '14rem',
               height: '50px',
             }}
             text='Tarkastele sopimusta'
