@@ -1,15 +1,19 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
+
 import { useLocation, useNavigate } from 'react-router';
+
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';
 import Button from '../../../components/Button/Button';
 import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
+
 import useStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
-import { Icon } from '@iconify/react';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+
+import { Icon } from '@iconify/react';
 import TextField from '@mui/material/TextField';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
@@ -46,6 +50,7 @@ const UserPerformance = () => {
   console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
   let evaluationId = evaluation._id;
   evaluation = useFetchData(evaluationId);
+
 
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
@@ -242,6 +247,8 @@ const UserPerformance = () => {
 
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
 
+  console.log('eeeeevaluation', evaluation);
+
   return (
     <main>
       <div>
@@ -250,6 +257,7 @@ const UserPerformance = () => {
           secondTitle={`Tervetuloa, ${user?.firstName}`}
         />
       </div>
+
       <h2
         style={{
           textAlign: 'center',
@@ -258,7 +266,7 @@ const UserPerformance = () => {
           marginTop: '58%',
         }}
       >
-        Ammattitaitovaatimukset
+        Ammattitaitovaatimusten arviointi
       </h2>
       <div>
         <ul>
@@ -274,7 +282,7 @@ const UserPerformance = () => {
                 }}
               >
                 <div>
-                  <p className='para-title-style'><b>{unit.name.fi}</b> </p>
+                  <p className='para-title-style'><b>{unit.name.fi}</b>hoi </p>
                 </div>
               </div>
               {unit.assessments.map((assess, index) => (
@@ -290,6 +298,7 @@ const UserPerformance = () => {
                     <div>
                       <p className='para-title-style'>
                         {assess.name.fi}
+                        {assess.index}
                       </p>
                     </div>
                     <div>

@@ -102,7 +102,7 @@ const TeacherPerformanceFeedBack = ({
         <p style={{ padding: '4px' }}>Osaa itsenäisesti</p>
       </div>
       <div>
-        {infodata.map((item, index) => (
+        {infodata?.map((item, index) => (
           <div key={index} className='first-div-style'>
             <p style={{ width: '38%', marginTop: '10px' }}>{item.info}</p>
             <div style={{ marginTop: '10px' }}>
