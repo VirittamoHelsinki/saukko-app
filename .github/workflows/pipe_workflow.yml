@@ -1,5 +1,6 @@
-name: Build and push to Azure Container Registry
+name: Build and push to Docker Hub
 
+# only dev branch will trigger workflow now 
 on:
   push:
     branches:
@@ -10,30 +11,24 @@ jobs:
     name: Build Docker container
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Chekckout code
         uses: actions/checkout@v2
-
-      - name: Login to Azure Container Registry
-        uses: azure/docker-login@v1
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
         with:
-          login-server: ${{ secrets.ACR_SERVER }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
-
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Create .env file in client folder
         run: |
           echo "${{ secrets.ENV_FILE_CLIENT }}" > ./client/.env
-
       - name: Create .env file in server folder
         run: |
           echo "${{ secrets.ENV_FILE_SERVER }}" > ./server/.env
-
       - name: List Contents of Working Directory
         run: ls -al
-
-      - name: Build and push to Azure Container Registry
+      - name: Build and push to Docker Hub
         uses: docker/build-push-action@v2
         with: 
           context: .
           push: true
-          tags: virittamo.azurecr.io/saukko-app:latest
+          tags: virittamosofta/saukko-app:latest
