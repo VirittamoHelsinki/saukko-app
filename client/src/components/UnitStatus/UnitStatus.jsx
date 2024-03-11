@@ -34,7 +34,7 @@ const UnitStatus = ({ unitId, status, subheader, link }) => {
     setChosenUnitId(unitId)
     navigate(link)
   }
-  
+
   return (
     <main
       className='unitstatus-wrapper'

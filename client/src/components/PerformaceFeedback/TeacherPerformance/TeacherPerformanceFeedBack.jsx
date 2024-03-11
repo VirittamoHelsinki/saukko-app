@@ -10,6 +10,7 @@ import RequirementsAndCriteriaModal from '../../RequirementsAndCriteriaModal/Req
 const TeacherPerformanceFeedBack = ({
   setSelectedValues,
   unit,
+  unitId,
   setSelectedUnitId,
   setHasUnsavedChanges,
 }) => {

@@ -257,95 +257,86 @@ const UserPerformance = () => {
           secondTitle={`Tervetuloa, ${user?.firstName}`}
         />
       </div>
-
-      <h2
-        style={{
+      {/* Evaluation */}
+      {evaluation.map((unit, index) => (
+      <div key={unit._id}>
+        <h2 
+          style={{
           textAlign: 'center',
           fontSize: '18px',
-          textDecoration: 'underline',
           marginTop: '58%',
-        }}
-      >
-        Ammattitaitovaatimusten arviointi
-      </h2>
-      <div>
-        <ul>
-          {/* Evaluation */}
-          {evaluation.map((unit, index) => (
-            <li key={index}>
-              <div
-                style={{
+        }}>
+          {unit.name.fi}
+          <br />
+          Ammattitaitovaatimusten arviointi
+        </h2>
+        {/* <ul>
+          <li key={index}> */}
+            {/* <div
+              style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              margin: '0 15px 0 0',
+              }}
+            >
+            <p>Hei</p>
+            </div> */}
+            {unit.assessments.map((assess, index) => (
+              <div key={assess._id}>
+                <div
+                  style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   margin: '0 15px 0 0',
-                }}
-              >
-                <div>
-                  <p className='para-title-style'><b>{unit.name.fi}</b>hoi </p>
-                </div>
-              </div>
-              {unit.assessments.map((assess, index) => (
-                <div key={index}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      margin: '0 15px 0 0',
-                    }}
-                  >
-                    <div>
-                      <p className='para-title-style'>
-                        {assess.name.fi}
-                        {assess.index}
-                      </p>
-                    </div>
-                    <div>
-                      <Icon
-                        icon='material-symbols:info'
-                        color='#1769aa'
-                        style={{ verticalAlign: 'middle', fontSize: '21px' }}
-                        cursor={'pointer'}
-                        onClick={() => handleOpenCriteriaModal(assess.criteria)}
-                      />
-                    </div>
-                  </div>
-                  {/* {assess.criteria.map((crit, index) => (
-                    <p key={index}>
-                      <b>Criteria</b>: {crit.fi}
+                  }}
+                >
+                  <div>
+                    <p className='para-title-style'>
+                      {assess.name.fi}
+                       answer : {assess.answer}
                     </p>
-                  ))} */}
-                  {/* <p>Student: {assess.answer}</p>
-                  <p>Supervisor: {assess.answerSupervisor}</p>
-                  <p>Teacher: {assess.answerTeacher}</p> */}
-                  {user?.role === 'teacher' ? (
-                    <TeacherPerformanceFeedBack
-                      selectedValues={selectedValues}
-                      setSelectedValues={setSelectedValues}
-                      unit={unit}
-                      setSelectedUnitId={setSelectedUnitId}
-                      selectedUnitId={selectedUnitId}
-                      hasUnsavedChanges={hasUnsavedChanges}
-                      setHasUnsavedChanges={setHasUnsavedChanges}
-                    />
-                  ) : (
-                    <PerformancesFeedback
-                      selectedValues={selectedValues}
-                      setSelectedValues={setSelectedValues}
-                      unit={unit}
-                      setSelectedUnitId={setSelectedUnitId}
-                      selectedUnitId={selectedUnitId}
-                      hasUnsavedChanges={hasUnsavedChanges}
-                      setHasUnsavedChanges={setHasUnsavedChanges}
-                    />
-                  )}
+                  </div>
+                  <div>
+                  <Icon
+                    icon='material-symbols:info'
+                    color='#1769aa'
+                    style={{ verticalAlign: 'middle', fontSize: '21px' }}
+                    cursor={'pointer'}
+                    onClick={() => handleOpenCriteriaModal(assess.criteria)}
+                   />
+                  </div>
                 </div>
+                  {user?.role === 'teacher' ? (
+                  <TeacherPerformanceFeedBack
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unit}
+                    unitId={unit._id}
+                    setSelectedUnitId={setSelectedUnitId}
+                    selectedUnitId={selectedUnitId}
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    setHasUnsavedChanges={setHasUnsavedChanges}
+                  />
+                ) : (
+                  <PerformancesFeedback
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unit}
+                    unitId={unit._id}
+                    setSelectedUnitId={setSelectedUnitId}
+                    selectedUnitId={selectedUnitId}
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    setHasUnsavedChanges={setHasUnsavedChanges}
+                  />
+                )}
+              </div>
               ))}
-            </li>
-          ))}
-        </ul>
+            {/* </li>
+        </ul> */}
       </div>
+      ))}
 
       {error && <p>{error}</p>}
 

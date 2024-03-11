@@ -121,8 +121,7 @@ export default function CustomerList() {
 
       <div className='customerList__container'>
         <h3>
-          {' '}
-          Asiakkaiden suoritukset{' '}
+          Asiakkaiden suoritukset
           <span>
             <Icon
               icon='material-symbols:info'
@@ -173,7 +172,7 @@ export default function CustomerList() {
                     className='customerList__accordion__waitForProcessing'
                   >
                     <p onClick={() => handleChooseEvaluation(evaluation._id)}>
-                      {evaluation.customerId.firstName}{' '}
+                      {evaluation.customerId.firstName}
                       {evaluation.customerId.lastName}
                     </p>
                   </div>
@@ -203,7 +202,7 @@ export default function CustomerList() {
                   key={evaluation._id}
                   onClick={() => handleChooseEvaluation(evaluation._id)}
                 >
-                  {evaluation.customerId.firstName}{' '}
+                  {evaluation.customerId.firstName}
                   {evaluation.customerId.lastName}
                 </p>
               </div>
@@ -237,7 +236,7 @@ export default function CustomerList() {
                       key={evaluation._id}
                       onClick={() => handleChooseEvaluation(evaluation._id)}
                     >
-                      {evaluation.customerId.firstName}{' '}
+                      {evaluation.customerId.firstName}
                       {evaluation.customerId.lastName}
                     </p>
                   </div>
