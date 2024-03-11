@@ -41,7 +41,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
       {user && user.role === 'customer' && (
         <div className={`userNav__icons ${user.role}`}>
           <Icon
-            id='customer-home-icon'
             icon='ic:outline-home'
             onClick={
               checkUnsavedChanges
@@ -49,7 +48,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                 : () => navigate('/unit-list')
             }
           />
-          <Icon
+          {/* <Icon
             icon='bx:file'
             onClick={
               checkUnsavedChanges
@@ -58,7 +57,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             }
           /> */}
           <Icon
-            id='customer-profile-icon'
             icon='mdi:user-outline'
             onClick={
               checkUnsavedChanges
@@ -73,7 +71,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
       {user && user.role === 'supervisor' && (
         <div className={`userNav__icons ${user.role}`}>
           <Icon
-            id='supervisor-home-icon'
             icon='ic:outline-home'
             onClick={
               checkUnsavedChanges
@@ -83,7 +80,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
           />
           {/* {evaluation && (
             <Icon
-            id='supervisor-file-icon'
               icon='bx:file'
               onClick={
                 checkUnsavedChanges
@@ -93,7 +89,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             />
           )} */}
           <Icon
-            id='supervisor-profile-icon'
             icon='mdi:user-outline'
             onClick={
               checkUnsavedChanges
@@ -108,7 +103,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
       {user && user.role === 'teacher' && (
         <div className={`userNav__icons ${user.role}`}>
           <Icon
-            id='teacher-home-icon'
             icon='ic:outline-home'
             onClick={
               checkUnsavedChanges
@@ -118,7 +112,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
           />
           {/* {evaluation && (
             <Icon
-              id='teacher-file-icon'
               icon='bx:file'
               onClick={
                 checkUnsavedChanges
@@ -128,7 +121,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             />
           )} */}
           <Icon
-            id='teacher-admin-icon'
             icon='mingcute:group-line'
             onClick={
               checkUnsavedChanges
@@ -137,7 +129,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             }
           />
           <Icon
-            id='teacher-profile-icon'
             icon='mdi:user-outline'
             onClick={
               checkUnsavedChanges
