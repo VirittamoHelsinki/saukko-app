@@ -160,7 +160,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                 <div className='circle-wrap-icon'>
                   <span>
                     <Icon
-                      onClick={handlePenClick}
+                      // onClick={handlePenClick}
                       icon='uil:pen'
                       color='#0000bf'
                       height='18'
@@ -190,7 +190,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
           <div>
             <div className='circle-wrap-icon'>
               <Icon
-                onClick={handlePenClick}
+                // onClick={handlePenClick}
                 icon='uil:pen'
                 color='#0000bf'
                 height='18'
@@ -206,7 +206,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
             <div>
               <div className='circle-wrap-icon'>
                 <Icon
-                  onClick={handlePenClick}
+                  // onClick={handlePenClick}
                   icon='uil:pen'
                   color='#0000bf'
                   height='18'
