@@ -287,7 +287,6 @@ export default function CustomerList() {
         open={isInfoButtonOpen}
         handleClose={handleCloseInfoButton}
       />
-
       <UserNav />
     </main>
   );

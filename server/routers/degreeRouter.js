@@ -43,4 +43,25 @@ degreeRouter.post('/internal/degrees', async (req, res) => {
     }
   });
 
+  // PUT update a degree
+degreeRouter.put('/internal/degree/:id', async (req, res) => {
+    try {
+      const updatedDegreeData = await Degree.findById(req.params.id);
+      console.log("🚀 ~ degreeRouter.put ~ updatedDegreeData:", updatedDegreeData)
+
+      if(!updatedDegreeData) {
+        return res.status(400).send({ message: 'Degree not found' });
+      }
+      const updatedDegree = Object.assign(updatedDegreeData, req.body);
+      console.log("🚀 ~ degreeRouter.put ~ updatedDegree:", updatedDegree)
+      await updatedDegree.save();
+
+  
+      res.status(200).json(updatedDegree);
+    } catch (error) {
+      console.error('Error updating degree:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
 module.exports = degreeRouter
