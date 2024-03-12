@@ -10,7 +10,10 @@ const PerformancesFeedback = ({
   unit,
   unitId,
   setSelectedUnitId,
-  setHasUnsavedChanges
+  setHasUnsavedChanges,
+  // assessment
+  setAssessmentId,
+  assessmentId
 }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState('');
@@ -24,6 +27,7 @@ const PerformancesFeedback = ({
         setSelectedRadio('');
         setSelectedValues(0);
         setSelectedUnitId(null);
+        // assessment
         setHasChanged(false);
         setHasUnsavedChanges(false);
       }
@@ -32,6 +36,7 @@ const PerformancesFeedback = ({
   const handleRadioChange = (event, unit) => {
     setSelectedRadio(event.target.value);
     setSelectedUnitId(unit._id); // This is the unit id
+    // assessment
     setHasChanged(true);
     setHasUnsavedChanges(true);
     if (event.target.value === 'Osaa ohjatusti') {

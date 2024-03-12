@@ -13,6 +13,9 @@ const TeacherPerformanceFeedBack = ({
   unitId,
   setSelectedUnitId,
   setHasUnsavedChanges,
+  //assessment
+  setSelectedAssessmentId,
+  selectedAssessmentId,
 }) => {
   const [selectedRadio, setSelectedRadio] = useState({});
   const auth = useContext(AuthContext);

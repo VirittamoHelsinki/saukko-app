@@ -20,7 +20,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 // Fetch evaluation and units from store
-// import useEvaluationStore from '../../../store/zustand/evaluationStore';
+ import useEvaluationStore from '../../../store/zustand/evaluationStore';
 // import useUnitsStore from '../../../store/zustand/unitsStore';
 
 // Fetch evaluation by id from api
@@ -54,8 +54,11 @@ const UserPerformance = () => {
 
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
+  // assessment
+  const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
+  const { chosenUnitId } = useEvaluationStore();
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   // console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
@@ -157,35 +160,43 @@ const UserPerformance = () => {
     // Reload the page
     window.location.reload();
   }, [navigate]);
+  
 
   const handleSubmit = async () => {
     const updatedUnits = evaluation.map((unit) => {
-      if (unit._id === selectedUnitId) {
+      //if (unit._id === selectedUnitId) {
+      if (unit._id === chosenUnitId) {
         return {
           ...unit,
           assessments: unit.assessments.map((assessment) => {
-            let answer = assessment.answer;
-            let answerSupervisor = assessment.answerSupervisor;
-            let answerTeacher = assessment.answerTeacher;
-            if (user?.role === 'customer') {
-              answer = selectedValues === 1 ? 1 : 2;
-            } else if (user?.role === 'supervisor') {
-              answerSupervisor = selectedValues === 1 ? 1 : 2;
-            } else if (user?.role === 'teacher') {
-              answerTeacher = selectedValues === 1 ? 1 : 2;
+            if (assessment._id === selectedAssessmentId){
+              let answer = assessment.answer;
+              let answerSupervisor = assessment.answerSupervisor;
+              let answerTeacher = assessment.answerTeacher;
+              if (user?.role === 'customer') {
+                answer = selectedValues === 1 ? 1 : 2;
+              } else if (user?.role === 'supervisor') {
+                answerSupervisor = selectedValues === 1 ? 1 : 2;
+              } else if (user?.role === 'teacher') {
+                answerTeacher = selectedValues === 1 ? 1 : 2;
+              }
+              return {
+                ...assessment,
+                answer,
+                answerSupervisor,
+                answerTeacher,
+              };
+            } else {
+              return assessment;
             }
-            return {
-              ...assessment,
-              answer,
-              answerSupervisor,
-              answerTeacher,
-            };
           }),
         };
       } else {
         return unit;
       }
+
     });
+
     const updatedData = {
       units: updatedUnits,
     };
@@ -194,7 +205,6 @@ const UserPerformance = () => {
         `${evaluationId}`,
         updatedData
       );
-
       console.log('Evaluation updated:', response.units);
       setSelectedValues([]);
     } catch (error) {
@@ -247,7 +257,7 @@ const UserPerformance = () => {
 
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
 
-  console.log('eeeeevaluation', evaluation);
+  console.log('chosen uniId from userPerformance',chosenUnitId);
 
   return (
     <main>
@@ -316,6 +326,8 @@ const UserPerformance = () => {
                     unitId={unit._id}
                     setSelectedUnitId={setSelectedUnitId}
                     selectedUnitId={selectedUnitId}
+                    selectedAssessmentId={selectedAssessmentId}
+                    setsetSelectedAssessmentId={setSelectedAssessmentId}
                     hasUnsavedChanges={hasUnsavedChanges}
                     setHasUnsavedChanges={setHasUnsavedChanges}
                   />
@@ -327,6 +339,8 @@ const UserPerformance = () => {
                     unitId={unit._id}
                     setSelectedUnitId={setSelectedUnitId}
                     selectedUnitId={selectedUnitId}
+                    setSelectedAssessmentId={setSelectedAssessmentId}
+                    selectedAssessmentId={selectedAssessmentId}
                     hasUnsavedChanges={hasUnsavedChanges}
                     setHasUnsavedChanges={setHasUnsavedChanges}
                   />
