@@ -29,7 +29,8 @@ import {
   updateEvaluationById,
 } from '../../../api/evaluation';
 
-const useFetchData = (evaluationId) => {
+
+/* const useFetchData = (evaluationId) => {
   const [evaluation, setEvaluation] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -40,17 +41,40 @@ const useFetchData = (evaluationId) => {
   }, [evaluationId]);
   return evaluation;
 };
-
+ */
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
-  let { evaluation } = useContext(InternalApiContext);
+  const { evaluation } = useContext(InternalApiContext);
   console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
-  let evaluationId = evaluation._id;
-  evaluation = useFetchData(evaluationId);
-
+  /* let evaluationId = evaluation._id;
+  evaluation = useFetchData(evaluationId); */
+  const {chosenUnitId} = useEvaluationStore(); 
+  
+  let unitObject;
+  if (evaluation && evaluation.units) {
+    // Use find() to search for the unit with matching _id
+   unitObject = evaluation.units.find(
+      (unit) => unit._id === chosenUnitId
+    );
+ 
+    if (unitObject) {
+      // Unit with matching _id found
+      console.log('Unit object found:', unitObject);
+    } else {
+      // Unit with matching _id not found
+      console.log(
+        'Unit with ID',
+        chosenUnitId,
+        'not found in evaluation.units.'
+      );
+    }
+  } else {
+    // Handle cases where evaluation or evaluation.units is undefined
+    console.log('Evaluation object or units array is undefined.');
+  }
 
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
@@ -58,7 +82,6 @@ const UserPerformance = () => {
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
-  const { chosenUnitId } = useEvaluationStore();
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   // console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
@@ -202,7 +225,7 @@ const UserPerformance = () => {
     };
     try {
       const response = await updateEvaluationById(
-        `${evaluationId}`,
+        /* `${evaluationId}`, */
         updatedData
       );
       console.log('Evaluation updated:', response.units);
@@ -268,7 +291,20 @@ const UserPerformance = () => {
         />
       </div>
       {/* Evaluation */}
-      {evaluation.map((unit, index) => (
+      <div key={unitObject._id}>
+        <h2 
+          style={{
+          textAlign: 'center',
+          fontSize: '18px',
+          marginTop: '58%',
+        }}>
+          {unitObject.name.fi}
+          <br />
+          Ammattitaitovaatimusten arviointi
+        </h2>
+      <p>unit name {unitObject.name.fi}</p>
+      </div>
+      {/* {evaluation.map((unit, index) => (
       <div key={unit._id}>
         <h2 
           style={{
@@ -279,7 +315,7 @@ const UserPerformance = () => {
           {unit.name.fi}
           <br />
           Ammattitaitovaatimusten arviointi
-        </h2>
+        </h2> */}
         {/* <ul>
           <li key={index}> */}
             {/* <div
@@ -292,7 +328,7 @@ const UserPerformance = () => {
             >
             <p>Hei</p>
             </div> */}
-            {unit.assessments.map((assess, index) => (
+            {/* {unit.assessments.map((assess, index) => (
               <div key={assess._id}>
                 <div
                   style={{
@@ -346,11 +382,11 @@ const UserPerformance = () => {
                   />
                 )}
               </div>
-              ))}
+              ))} */}
             {/* </li>
         </ul> */}
-      </div>
-      ))}
+      {/* </div>
+      ))} */}
 
       {error && <p>{error}</p>}
 

@@ -7,9 +7,6 @@ import blueicone from '../../assets/circle-blue.svg';
 import blackicone from '../../assets/circle-black.svg';
 import rightAngle from '../../assets/angle-right.svg';
 
-// for assessment
-import useEvaluationStore from '../../store/zustand/evaluationStore';
-
 const UnitStatus = ({ unitId, status, subheader, link }) => {
   const navigate = useNavigate();
   const { setChosenUnitId } = evaluationStore();

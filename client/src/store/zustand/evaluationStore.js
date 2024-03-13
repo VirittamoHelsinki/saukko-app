@@ -20,17 +20,12 @@ const useEvaluationStore = create((set) => ({
   department: null,
   supervisor: null,
 
-  // for assessment
-  chosenUniId:null,
 
   setCustomer: (customer) => set({ customer }),
   setEvaluation: (evaluation) => set({ evaluation }),
   setWorkplace: (workplace) => set({ workplace }),
   setDepartment: (department) => set({ department }),
   setSupervisor: (supervisor) => set({ supervisor }),
-
-  // assessment
-  setChosenUnitId:(unitId)=> set({ chosenUniId:unitId}),
 
   clearEvaluationFromStore: () => {
     set({ 
