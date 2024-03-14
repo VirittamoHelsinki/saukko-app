@@ -17,7 +17,7 @@ degreeRouter.get('/internal/degrees', async (req, res) => {
   }
 });
 
-// GET all degrees
+// GET degree by Id
 degreeRouter.get('/internal/degree/:id', async (req, res) => {
   try {
     const degree = await Degree.findById(req.params.id);
