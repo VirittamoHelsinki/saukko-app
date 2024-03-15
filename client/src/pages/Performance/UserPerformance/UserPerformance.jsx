@@ -12,6 +12,8 @@ import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/T
 import useStore from '../../../store/zustand/formStore';
 import AuthContext from '../../../store/context/AuthContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+// for answers by assessment._id for radio button
+import { useAssessmentParameters } from '../../../store/zustand/assessmentStore';
 
 import { Icon } from '@iconify/react';
 import TextField from '@mui/material/TextField';
@@ -55,31 +57,40 @@ const UserPerformance = () => {
   
   let unitObject;
   if (evaluation && evaluation.units) {
+    
     // Use find() to search for the unit with matching _id
-   unitObject = evaluation.units.find(
+    unitObject = evaluation.units.find(
       (unit) => unit._id === chosenUnitId
     );
- 
+
     if (unitObject) {
       // Unit with matching _id found
       console.log('Unit object found:', unitObject);
     } else {
       // Unit with matching _id not found
       console.log(
-        'Unit with ID',
-        chosenUnitId,
-        'not found in evaluation.units.'
+        'Unit with ID', chosenUnitId, 'not found in the evaluation.units'
       );
     }
-  } else {
+    
+  } else { 
     // Handle cases where evaluation or evaluation.units is undefined
     console.log('Evaluation object or units array is undefined.');
   }
 
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
-  // assessment
+  // get assessment._id and update answers
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
+  // assessment for radio button
+  const { getAssessmentParametersByID } = useAssessmentParameters({});
+
+  useEffect(()=>{
+    const assessmentId = 7892676;
+    const assessmentParameters = getAssessmentParametersByID(assessmentId);
+    console.log('Assessment parameters:', assessmentParameters);
+  }, [getAssessmentParametersByID]);
+
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
@@ -188,7 +199,7 @@ const UserPerformance = () => {
   const handleSubmit = async () => {
     const updatedUnits = evaluation.map((unit) => {
       //if (unit._id === selectedUnitId) {
-      if (unit._id === chosenUnitId) {
+      if (unit._id === chosenUnitId) { //unit._id -> assessment._id?
         return {
           ...unit,
           assessments: unit.assessments.map((assessment) => {
@@ -225,7 +236,6 @@ const UserPerformance = () => {
     };
     try {
       const response = await updateEvaluationById(
-        /* `${evaluationId}`, */
         updatedData
       );
       console.log('Evaluation updated:', response.units);
@@ -235,7 +245,34 @@ const UserPerformance = () => {
     }
     setIsButtonEnabled(true);
     handleNotificationModalOpen();
-  };
+  }; 
+
+
+  /* 
+  // handleSubmit using by assessment._id
+const handleSubmit = () => {
+  // Example values for parameters
+  const unitId = 'unit123'; unitObjectUnit._id
+  const assessmentId = 'assessment456'; existingAssessmentId // If updating existing assessment
+  const assessment = 'Example Assessment'; object :{}
+  const criteria = 'Example Criteria'; assessment.criteria
+  const answer = 1; assessment.answer
+  const answerTeacher = 2; assessment.answerTeacher
+  const answerSupervisor = 1; assessment.answerSupervisor
+
+  // Call addOrUpdateAssessment function
+  const newAssessmentId = addOrUpdateAssessment(unitId, assessmentId, assessment, criteria, answer, answerTeacher, answerSupervisor);
+  
+  // Handle any further logic here
+} */
+
+
+console.log('se ._id',unitObject._id);
+console.log('chosenUnitID: ',chosenUnitId);
+console.log('unitObject',unitObject);
+console.log('selectedAssessmentId2',selectedAssessmentId);
+//console.log('choosenAssessmentId2',choosenAssessmentId);
+//console.log('Assessment parameters:', assessmentParameters);
 
   const getButtonText = () => {
     if (user?.role === 'customer') {
@@ -281,6 +318,7 @@ const UserPerformance = () => {
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
 
   console.log('chosen uniId from userPerformance',chosenUnitId);
+  console.log('selectedAssessmentId',selectedAssessmentId);
 
   return (
     <main>

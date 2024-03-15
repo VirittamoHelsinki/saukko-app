@@ -50,6 +50,11 @@ const useEvaluationStore = create((set) => ({
   setChosenUnitId: (chosenUnitId) => set(() => ({ chosenUnitId })),
   clearChosenUnitId: () => set({ chosenUnitId: null }),
 
+  // Track chosen assessment
+  chosenAssessmentId: null,
+  setChosenAssessmentId: (chosenAssessmentId) => set(() => ({ chosenAssessmentId })),
+  clearChosenAssessmentId: () => set({ chosenAssessmentId: null }),
+
 }));
 
 export default useEvaluationStore;
