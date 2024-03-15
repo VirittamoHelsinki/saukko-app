@@ -270,9 +270,7 @@ const handleSubmit = () => {
 console.log('se ._id',unitObject._id);
 console.log('chosenUnitID: ',chosenUnitId);
 console.log('unitObject',unitObject);
-console.log('selectedAssessmentId2',selectedAssessmentId);
-//console.log('choosenAssessmentId2',choosenAssessmentId);
-//console.log('Assessment parameters:', assessmentParameters);
+//console.log('selectedAssessmentId2',selectedAssessmentId);
 
   const getButtonText = () => {
     if (user?.role === 'customer') {

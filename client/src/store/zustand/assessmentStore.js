@@ -40,5 +40,4 @@ export const useAssessmentParameters = () => {
     }));
   };
 
-
 export default useAssessmentStore;
