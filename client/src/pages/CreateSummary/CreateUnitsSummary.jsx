@@ -19,25 +19,64 @@ import InternalApiContext from '../../store/context/InternalApiContext';
 const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const navigate = useNavigate();
   const params = useParams();
-  // console.log('🚀 ~ DegreeDetail ~ allInternalDegrees:', allInternalDegrees);
   const { degreeId } = useParams();
-  // console.log('🚀 ~ DegreeDetail ~ degreeId:', degreeId);
   const [degreeDetails, setDegreeDetails] = useState(null);
-  // console.log('🚀 ~ DegreeDetail ~ degreeDetails:', degreeDetails);
+  // console.log('🚀 ~ CreateUnitesSummary ~ degreeDetails:', degreeDetails);
+  const [unitId, setUnitId] = useState(null);
+  const [assessmentId, setAssessmentUnitId] = useState(null);
+
+
   const [notificationSuccess, setNotificationSuccess] = useState(false);
+  const [notificationError, setNotificationError] = useState(false)
   const [response, setResponse] = useState(null);
+  const [responseUnit, setResponseUnit] = useState(null);
+  const [responseATVAndCriteria, setResponseATVAndCriteria] = useState(null);
   const { setAllInternalDegrees } = useContext(InternalApiContext);
   const closeSuccess = () => setNotificationSuccess(false);
+  const closeError = () => setNotificationError(false)
 
   // Modal
   const [isDegreeNameModalOpen, setIsDegreeNameModalOpen] = useState(false);
+  const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
+  const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
+
+  const handleUnitClick = (unitId) => {
+    console.log('Clicked unit ID:', unitId);
+    setUnitId(unitId);
+  };
+
+  const handleATVClick = (assessmentId) => {
+    console.log('Clicked ATV ID:', assessmentId);
+    setAssessmentUnitId(assessmentId);
+  };
 
   const handleCloseDegreeNameModal = () => {
     setIsDegreeNameModalOpen(false);
   };
 
-  const handlePenClick = () => {
-    setIsDegreeNameModalOpen(true);
+  const handleCloseUnitModal = () => {
+    setIsUnitModalOpen(false);
+  };
+
+  const handleCloseAssessmentModal = () => {
+    setIsAssessmentModalOpen(false);
+  };
+
+  const handlePenClick = (area) => {
+    switch (area) {
+      case 'degreeDetails':
+        setIsDegreeNameModalOpen(true);
+        break;
+      case 'unitName':
+        setIsUnitModalOpen(true);
+        break;
+      case 'atv':
+        setIsAssessmentModalOpen(true);
+        break;
+      // Add more cases for different areas as needed
+      default:
+      // Handle default case if necessary
+    }
   };
 
   useEffect(() => {
@@ -48,6 +87,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     setDegreeDetails(fetchedDegreeDetails);
   }, [allInternalDegrees, degreeId]);
 
+  // Save the updated degree name to the database
   const saveDegreeName = async () => {
     // Extract only the necessary fields to update
     const degreeData = {
@@ -58,9 +98,9 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
       },
     };
 
-    console.log('Data for post request:', degreeData);
+    console.log('Data for put request:', degreeData);
 
-    // Send post request
+    // Send put request
     const response = await updateDegree(`${degreeId}`, degreeData);
     console.log('response', response);
 
@@ -89,7 +129,123 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     // setAllInternalDegrees([...allInternalDegrees, response])
   };
 
-  // Trigger NotificationModal
+  // Save the updated unit name to the database
+  const saveUnitName = async () => {
+    // Extract only the necessary fields to update
+    const updatedUnits = degreeDetails.units.map((unit) => {
+      if (unit._id === unitId) {
+        return {
+          ...unit,
+          name: {
+            ...unit.name,
+            fi: unit.name.fi,
+          },
+        };
+      }
+      return unit;
+    });
+
+    const unitData = {
+      ...degreeDetails,
+      units: updatedUnits,
+    };
+
+    // console.log('Unit data for put request:', unitData);
+    const responseUnit = await updateDegree(`${degreeId}`, unitData);
+
+    console.log('🚀 ~ saveUnitName ~ responseUnit:', responseUnit);
+
+    // Save response to state
+    setResponseUnit(responseUnit);
+    setIsUnitModalOpen(false);
+
+    // Update the units name.fi field in the local state
+    const updatedDegree = {
+      ...degreeDetails,
+      units: updatedUnits,
+    };
+    console.log('🚀 ~ saveUnitName ~ degreeDetails:', degreeDetails);
+
+    // Save the updated degree to context
+    setAllInternalDegrees([
+      ...allInternalDegrees.filter(
+        (d) => d._id.toString() !== degreeDetails._id.toString()
+      ),
+      updatedDegree,
+    ]);
+  };
+
+  // Save the updated ATV and criteria to the database
+  const saveATVAndCriteria = async () => {
+    // Extract only the necessary fields to update
+    const updatedUnits = degreeDetails.units.map((unit) => {
+      if (unit._id === unitId) {
+        return {
+          ...unit,
+          assessments: unit.assessments.map((assessment) => {
+            if (assessment._id === assessmentId) {
+              return {
+                ...assessment,
+                name: {
+                  ...assessment.name,
+                  fi: assessment.name.fi,
+                },
+                criteria: assessment.criteria.map((c) => {
+                  return {
+                    ...c,
+                    fi: c.fi,
+                  };
+                })
+                // criteria: [
+                //   {
+                //     ...assessment.criteria[0],
+                //     fi: assessment.criteria[0].fi,
+                //   },
+                // ],
+              };
+            }
+            return assessment;
+          }),
+        };
+      }
+      return unit;
+    });
+
+    const unitData = {
+      ...degreeDetails,
+      units: updatedUnits,
+    };
+
+    console.log('Unit data for put request:', unitData);
+    const responseATVAndCriteria = await updateDegree(`${degreeId}`, unitData);
+
+    console.log(
+      '🚀 ~ saveUnitName ~ responseUnit: ATV and criteria',
+      responseATVAndCriteria
+    );
+
+    // Save response to state
+    setResponseATVAndCriteria(responseATVAndCriteria);
+    setIsAssessmentModalOpen(false);
+
+    // Update the units name.fi field in the local state
+    const updatedDegree = {
+      ...degreeDetails,
+      units: updatedUnits,
+    };
+    console.log('🚀 ~ saveUnitName ~ degreeDetails:', degreeDetails);
+
+    // Save the updated degree to context
+    setAllInternalDegrees([
+      ...allInternalDegrees.filter(
+        (d) => d._id.toString() !== degreeDetails._id.toString()
+      ),
+      updatedDegree,
+    ]);
+  };
+
+
+  // Trigger NotificationModal for successful update the degree name
   useEffect(() => {
     if (
       response &&
@@ -97,22 +253,38 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     ) {
       setNotificationSuccess(true);
     } else if (response) {
-      // setNotificationError(true);
+      setNotificationError(true);
       console.log('Error updating degree name:', response);
     }
   }, [allInternalDegrees, response]);
 
-  // trigger to fetch updated data in `/degrees/add` 
-
+  // Trigger NotificationModal for successful update the unit name
   useEffect(() => {
-    const fetchUpdatedDegree = async () => {
-      const updatedDegree = await updateDegree(degreeId);
-      setDegreeDetails(updatedDegree);
-      console.log("🚀 ~ fetchUpdatedDegree ~ updatedDegree:", updatedDegree)
+    if (
+      responseUnit &&
+      allInternalDegrees.some((degree) => degree._id === responseUnit._id)
+    ) {
+      setNotificationSuccess(true);
+    } else if (responseUnit) {
+      setNotificationError(true);
+      console.log('Error updating unit name:', responseUnit);
+    }
+  }, [allInternalDegrees, responseUnit]);
 
-    };
-    fetchUpdatedDegree();
-  }, [response]);
+  // Trigger NotificationModal for successful update the ATV and Criteria
+  useEffect(() => {
+    if (
+      responseATVAndCriteria &&
+      allInternalDegrees.some(
+        (degree) => degree._id === responseATVAndCriteria._id
+      )
+    ) {
+      setNotificationSuccess(true);
+    } else if (responseATVAndCriteria) {
+      setNotificationError(true);
+      console.log('Error updating unit name:', responseATVAndCriteria);
+    }
+  }, [allInternalDegrees, responseATVAndCriteria]);
 
   if (!degreeDetails) {
     return <div>Loading...</div>;
@@ -137,7 +309,11 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
             <span className='icon-wrapper'>
               {' '}
               <div>
-                <Icon icon='uil:pen' color='#0000bf' onClick={handlePenClick} />
+                <Icon
+                  icon='uil:pen'
+                  color='#0000bf'
+                  onClick={() => handlePenClick('degreeDetails')}
+                />
               </div>
             </span>
           </h1>
@@ -160,12 +336,502 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                 <div className='circle-wrap-icon'>
                   <span>
                     <Icon
-                      // onClick={handlePenClick}
+                      onClick={() => {
+                        handlePenClick('unitName');
+                        handleUnitClick(unit._id);
+                      }}
                       icon='uil:pen'
                       color='#0000bf'
                       height='18'
                       preserveAspectRatio='xMinYMid meet'
                     />
+                    {/* Here starts the nested modal where unit's name, ATV and criteria can be saved to the database */}
+                    {unit._id && unit._id === unitId && isUnitModalOpen && (
+                      // Modal for editing unit's name and ATV
+                      <NotificationModal
+                        type='info'
+                        open={isUnitModalOpen}
+                        onClose={handleCloseUnitModal}
+                        hideIcon={true}
+                        dialogStyles={{
+                          dialogTitle: {
+                            marginLeft: '5px',
+                          },
+                        }}
+                        title={
+                          <Typography
+                            sx={{
+                              fontSize: '16px',
+                              fontWeight: 'bold',
+                              marginRight: '25px',
+                              marginLeft: '15px',
+                            }}
+                          >
+                            Tutkinnonosan muokkaus
+                          </Typography>
+                        }
+                        // sx={{ width: '100%' }}
+                        body={
+                          <>
+                            <IconButton
+                              aria-label='close'
+                              onClick={handleCloseUnitModal}
+                              sx={{
+                                position: 'absolute',
+                                right: 8,
+                                top: 8,
+                                color: 'black',
+                                marginLeft: '2rem',
+                              }}
+                            >
+                              <CancelOutlinedIcon />
+                            </IconButton>
+                            <DialogContent>
+                              <Box>
+                                {/* Degree unit's name */}
+                                <Typography
+                                  sx={{ fontSize: '15px', fontWeight: 'bold' }}
+                                >
+                                  Tutkinnonosan nimi
+                                </Typography>
+                                <TextField
+                                  key={index}
+                                  value={
+                                    unit._id === unitId ? unit.name.fi : ''
+                                  }
+                                  id='outlined-multiline-static'
+                                  multiline={unit.name.fi.length > 5}
+                                  onChange={(event) => {
+                                    // Modify unit name TextField value changes
+                                    setDegreeDetails((prevState) => ({
+                                      ...prevState,
+                                      units: prevState.units?.map((u) => {
+                                        if (u._id === unitId) {
+                                          return {
+                                            ...u,
+                                            name: {
+                                              ...u.name,
+                                              fi: event.target.value,
+                                            },
+                                          };
+                                        }
+                                        return u;
+                                      }),
+                                    }));
+                                  }}
+                                  sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                      '& fieldset': {
+                                        borderRadius: '0',
+                                        // border: 'black 2px solid',
+                                        borderColor: 'black',
+                                        borderWidth: '1px',
+                                      },
+                                    },
+                                    width: '100%',
+                                    backgroundColor: 'white',
+                                    marginTop: '8px',
+                                    overflow: 'auto',
+                                  }}
+                                ></TextField>
+                                <Button
+                                  text='Tallenna'
+                                  variant='contained'
+                                  style={{
+                                    marginLeft: '25%',
+                                    marginTop: '30px',
+                                    marginBottom: '30px',
+                                    width: '50%',
+                                    backgroundColor: '#0000BF',
+                                    color: 'white',
+                                    border: 'none',
+                                  }}
+                                  onClick={saveUnitName}
+                                ></Button>
+
+                                {/* Degree unit's ATV */}
+                                <Typography
+                                  sx={{
+                                    fontSize: '15px',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  Ammattitatitovaatimukset ja kriteerit
+                                </Typography>
+                              </Box>
+                              <Box>
+                                <Box
+                                  style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    minHeight: '100px',
+                                  }}
+                                >
+                                  {unit.assessments &&
+                                    unit.assessments.map(
+                                      (assessment, index) => (
+                                        <div
+                                          key={index}
+                                          style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                          }}
+                                        >
+                                          <Box
+                                            sx={{
+                                              backgroundColor: 'white',
+                                              padding: '16px',
+                                              marginTop: '8px',
+                                              flexGrow: 1, // To make the text take up remaining space
+                                              display: 'flex',
+                                              justifyContent: 'space-between', 
+                                            }}
+                                          >
+                                            <span>
+                                              {index + 1}. {assessment.name.fi}
+                                            </span>
+                                            <span
+                                              style={{
+                                                display: 'flex',
+                                                gap: '10px',
+                                              }}
+                                            >
+                                              <Icon
+                                                // onClick={handleDeleteClick}
+                                                icon='material-symbols:delete-outline'
+                                                color='A0A0A0'
+                                                height='20'
+                                                gap='16px'
+                                                preserveAspectRatio='xMinYMid meet'
+                                              />
+                                              <Icon
+                                                onClick={() => {
+                                                  handlePenClick('atv');
+                                                  handleATVClick(
+                                                    assessment._id
+                                                  );
+                                                }}
+                                                icon='uil:pen'
+                                                color='#0000bf'
+                                                height='18'
+                                                preserveAspectRatio='xMinYMid meet'
+                                              />
+
+                                              {assessment._id &&
+                                                assessment._id ===
+                                                  assessmentId &&
+                                                isAssessmentModalOpen && (
+                                                  // Modal for ATV and criteria
+                                                  <NotificationModal
+                                                    type='info'
+                                                    open={isAssessmentModalOpen}
+                                                    onClose={
+                                                      handleCloseAssessmentModal
+                                                    }
+                                                    hideIcon={true}
+                                                    dialogStyles={{
+                                                      dialogTitle: {
+                                                        marginLeft: '5px',
+                                                      },
+                                                    }}
+                                                    title={
+                                                      <Typography
+                                                        sx={{
+                                                          fontSize: '16px',
+                                                          fontWeight: 'bold',
+                                                          marginRight: '25px',
+                                                          marginLeft: '15px',
+                                                        }}
+                                                      >
+                                                        Ammattitaitovaatimuksen
+                                                        muokkaus
+                                                      </Typography>
+                                                    }
+                                                    sx={{ minWidth: '100%' }}
+                                                    body={
+                                                      <>
+                                                        <IconButton
+                                                          aria-label='close'
+                                                          onClick={
+                                                            handleCloseAssessmentModal
+                                                          }
+                                                          sx={{
+                                                            position:
+                                                              'absolute',
+                                                            right: 8,
+                                                            top: 8,
+                                                            color: 'black',
+                                                            marginLeft: '2rem',
+                                                          }}
+                                                        >
+                                                          <CancelOutlinedIcon />
+                                                        </IconButton>
+                                                        <DialogContent>
+                                                          <Box>
+                                                            <Typography
+                                                              sx={{
+                                                                fontSize:
+                                                                  '17px',
+                                                                fontWeight:
+                                                                  'bold',
+                                                                marginBottom:
+                                                                  '10px',
+                                                              }}
+                                                            >
+                                                              {unit.name.fi}
+                                                            </Typography>
+                                                            <Typography
+                                                              sx={{
+                                                                fontSize:
+                                                                  '15px',
+                                                                fontWeight:
+                                                                  'bold',
+                                                              }}
+                                                            >
+                                                              Ammattitaitovaatimuksen
+                                                              nimi
+                                                            </Typography>
+                                                            <TextField
+                                                              key={
+                                                                assessment._id
+                                                              }
+                                                              value={
+                                                                assessment._id ===
+                                                                assessmentId
+                                                                  ? assessment
+                                                                      .name.fi
+                                                                  : ''
+                                                              }
+                                                              id='outlined-multiline-static'
+                                                              multiline={
+                                                                assessment.name
+                                                                  .fi.length >
+                                                                10
+                                                              }
+                                                              onChange={(
+                                                                event
+                                                              ) => {
+                                                                setDegreeDetails(
+                                                                  (
+                                                                    prevState
+                                                                  ) => ({
+                                                                    ...prevState,
+                                                                    units:
+                                                                      prevState.units?.map(
+                                                                        (u) => {
+                                                                          if (
+                                                                            u._id ===
+                                                                            unitId
+                                                                          ) {
+                                                                            return {
+                                                                              ...u,
+                                                                              assessments:
+                                                                                u.assessments?.map(
+                                                                                  (
+                                                                                    a
+                                                                                  ) => {
+                                                                                    if (
+                                                                                      a._id ===
+                                                                                      assessmentId
+                                                                                    ) {
+                                                                                      return {
+                                                                                        ...a,
+                                                                                        name: {
+                                                                                          ...a.name,
+                                                                                          fi: event
+                                                                                            .target
+                                                                                            .value,
+                                                                                        },
+                                                                                      };
+                                                                                    }
+                                                                                    return a;
+                                                                                  }
+                                                                                ),
+                                                                            };
+                                                                          }
+                                                                          return u;
+                                                                        }
+                                                                      ),
+                                                                  })
+                                                                );
+                                                              }}
+                                                              sx={{
+                                                                '& .MuiOutlinedInput-root':
+                                                                  {
+                                                                    '& fieldset':
+                                                                      {
+                                                                        borderRadius:
+                                                                          '0',
+                                                                        // border: 'black 2px solid',
+                                                                        borderColor:
+                                                                          'black',
+                                                                        borderWidth:
+                                                                          '1px',
+                                                                      },
+                                                                  },
+                                                                width: '100%',
+                                                                backgroundColor:
+                                                                  'white',
+                                                                marginTop:
+                                                                  '8px',
+                                                                overflow:
+                                                                  'auto',
+                                                              }}
+                                                            ></TextField>
+                                                            <Typography
+                                                              sx={{
+                                                                fontSize:
+                                                                  '15px',
+                                                                fontWeight:
+                                                                  'bold',
+                                                                marginTop:
+                                                                  '20px',
+                                                              }}
+                                                            >
+                                                              Kriteerit
+                                                            </Typography>
+                                                            <TextField
+                                                              value={
+                                                                assessment._id ===
+                                                                  assessmentId &&
+                                                                assessment.criteria &&
+                                                                assessment
+                                                                  .criteria[0]
+                                                                  ? assessment
+                                                                      .criteria[0]
+                                                                      .fi
+                                                                  : ''
+                                                              }
+                                                              id='outlined-multiline-static'
+                                                              multiline
+                                                              onChange={(
+                                                                event
+                                                              ) => {
+                                                                setDegreeDetails(
+                                                                  (
+                                                                    prevState
+                                                                  ) => ({
+                                                                    ...prevState,
+                                                                    units:
+                                                                      prevState.units?.map(
+                                                                        (u) => {
+                                                                          if (
+                                                                            u._id ===
+                                                                            unitId
+                                                                          ) {
+                                                                            return {
+                                                                              ...u,
+                                                                              assessments:
+                                                                                u.assessments?.map(
+                                                                                  (
+                                                                                    a
+                                                                                  ) => {
+                                                                                    if (
+                                                                                      a._id ===
+                                                                                      assessmentId
+                                                                                    ) {
+                                                                                      return {
+                                                                                        ...a,
+                                                                                        criteria:
+                                                                                          [
+                                                                                            {
+                                                                                              ...a
+                                                                                                .criteria[0],
+                                                                                              fi: event
+                                                                                                .target
+                                                                                                .value,
+                                                                                            },
+                                                                                          ],
+                                                                                      };
+                                                                                    }
+                                                                                    return a;
+                                                                                  }
+                                                                                ),
+                                                                            };
+                                                                          }
+                                                                          return u;
+                                                                        }
+                                                                      ),
+                                                                  })
+                                                                );
+                                                              }}
+                                                              sx={{
+                                                                '& .MuiOutlinedInput-root':
+                                                                  {
+                                                                    '& fieldset':
+                                                                      {
+                                                                        borderRadius:
+                                                                          '0',
+                                                                        // border: 'black 2px solid',
+                                                                        borderColor:
+                                                                          'black',
+                                                                        borderWidth:
+                                                                          '1px',
+                                                                      },
+                                                                  },
+                                                                width: '100%',
+                                                                backgroundColor:
+                                                                  'white',
+                                                                marginTop:
+                                                                  '8px',
+                                                                overflow:
+                                                                  'auto',
+                                                              }}
+                                                            ></TextField>
+                                                            <Button
+                                                              text='Tallenna'
+                                                              variant='contained'
+                                                              style={{
+                                                                marginLeft:
+                                                                  '25%',
+                                                                marginTop:
+                                                                  '30px',
+                                                                marginBottom:
+                                                                  '30px',
+                                                                width: '50%',
+                                                                backgroundColor:
+                                                                  '#0000BF',
+                                                                color: 'white',
+                                                                border: 'none',
+                                                              }}
+                                                              onClick={
+                                                                saveATVAndCriteria
+                                                              }
+                                                            ></Button>
+                                                          </Box>
+                                                        </DialogContent>
+                                                      </>
+                                                    }
+                                                  />
+                                                )}
+                                            </span>
+                                          </Box>
+                                        </div>
+                                      )
+                                    )}
+
+                                  <Box
+                                    style={{
+                                      marginTop: '-18px',
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                    }}
+                                  >
+                                    <Icon
+                                      icon='bxs:plus-circle'
+                                      width='2.2rem'
+                                      height='2.2rem'
+                                      color='#0000BF'
+                                    />
+                                  </Box>
+                                </Box>
+                              </Box>
+                            </DialogContent>
+                          </>
+                        }
+                      />
+                    )}
+                    {/* Here finish the neste modal */}
                   </span>
                 </div>
               </div>
@@ -190,7 +856,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
           <div>
             <div className='circle-wrap-icon'>
               <Icon
-                // onClick={handlePenClick}
+                onClick={handlePenClick}
                 icon='uil:pen'
                 color='#0000bf'
                 height='18'
@@ -206,7 +872,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
             <div>
               <div className='circle-wrap-icon'>
                 <Icon
-                  // onClick={handlePenClick}
+                  onClick={handlePenClick}
                   icon='uil:pen'
                   color='#0000bf'
                   height='18'
@@ -229,6 +895,12 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         {/* Modal to save the degree name */}
         <NotificationModal
           type='info'
+          dialogStyles={{
+            dialogTitle: {
+              marginLeft: '4px',
+              marginRight: '5px',
+            },
+          }}
           title={
             <Typography
               sx={{
@@ -253,6 +925,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                   right: 8,
                   top: 8,
                   color: 'black',
+                  marginLeft: '2rem',
                 }}
               >
                 <CancelOutlinedIcon />
@@ -320,7 +993,14 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
           body='Tutkinto on tallennettu tietokantaan'
           open={notificationSuccess}
           handleClose={closeSuccess}
-          // redirectLink='/degrees/add'
+        />
+
+        {/* Notification error */}
+        <NotificationModal
+          type='warning'
+          title='Lomakkeen lähetys epäonnistui'
+          open={notificationError}
+          handleClose={closeError}
         />
 
         <div className='page-navigation-container'>

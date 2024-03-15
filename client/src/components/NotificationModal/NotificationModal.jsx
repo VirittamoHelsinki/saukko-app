@@ -100,6 +100,7 @@ function BootstrapDialogTitle(props) {
 export default function CustomizedDialogs(props) {
   const navigate = useNavigate();
   const { setOpenNotificationModal } = useStore();
+  const { dialogStyles } = props;
 
   let icon = 'material-symbols:info';
   let bgColor = '#fff';
@@ -153,6 +154,7 @@ export default function CustomizedDialogs(props) {
             marginLeft: '35px',
             fontSize: '0.875 rem',
             fontWeight: '700',
+            ...(dialogStyles && dialogStyles.dialogTitle),
           },
         }}
       >
