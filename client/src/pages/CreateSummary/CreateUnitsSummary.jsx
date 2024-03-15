@@ -50,7 +50,6 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     setAssessmentUnitId(assessmentId);
   };
 
-
   const handleCloseDegreeNameModal = () => {
     setIsDegreeNameModalOpen(false);
   };
@@ -371,7 +370,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                             Tutkinnonosan muokkaus
                           </Typography>
                         }
-                        sx={{ width: '100%' }}
+                        // sx={{ width: '100%' }}
                         body={
                           <>
                             <IconButton
@@ -478,7 +477,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                                             alignItems: 'center',
                                           }}
                                         >
-                                          <Typography
+                                          <Box
                                             sx={{
                                               backgroundColor: 'white',
                                               padding: '16px',
@@ -806,7 +805,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                                                   />
                                                 )}
                                             </span>
-                                          </Typography>
+                                          </Box>
                                         </div>
                                       )
                                     )}
