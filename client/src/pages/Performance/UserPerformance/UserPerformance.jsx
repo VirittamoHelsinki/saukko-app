@@ -14,6 +14,7 @@ import AuthContext from '../../../store/context/AuthContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 // for answers by assessment._id for radio button
 import { useAssessmentParameters } from '../../../store/zustand/assessmentStore';
+import useUnitsStore from '../../../store/zustand/unitsStore';
 
 import { Icon } from '@iconify/react';
 import TextField from '@mui/material/TextField';
@@ -53,6 +54,7 @@ const UserPerformance = () => {
   console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
   /* let evaluationId = evaluation._id;
   evaluation = useFetchData(evaluationId); */
+  const { units } = useContext(InternalApiContext);
   const {chosenUnitId} = useEvaluationStore(); 
   
   let unitObject;
@@ -266,7 +268,7 @@ const handleSubmit = () => {
   // Handle any further logic here
 } */
 
-
+console.log('units', units);
 console.log('se ._id',unitObject._id);
 console.log('chosenUnitID: ',chosenUnitId);
 console.log('unitObject',unitObject);

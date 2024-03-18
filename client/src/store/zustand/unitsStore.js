@@ -27,6 +27,9 @@
 import { create } from 'zustand';
 
 const useUnitsStore = create((set) => ({
+  units: [],
+  assessments: [],
+  criteria: [],
   checkedUnits: [],
 
   setCheckedUnits: (newUnits) => {
@@ -88,7 +91,7 @@ const useUnitsStore = create((set) => ({
 
 
   // assessmet
-  addOrUpdateAssessment : (
+  /* addOrUpdateAssessment : (
     unitId,
     assessmentId,
     assessment,
@@ -153,7 +156,7 @@ const useUnitsStore = create((set) => ({
     // Return the generated _id for the new assessment if applicable
     return newAssessmentId;
   },
-  
+   */
   clearCheckedUnits: () => {
     set({ checkedUnits: [] });
   },
