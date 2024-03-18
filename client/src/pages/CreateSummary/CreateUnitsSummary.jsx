@@ -25,20 +25,20 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const [unitId, setUnitId] = useState(null);
   const [assessmentId, setAssessmentUnitId] = useState(null);
 
-
   const [notificationSuccess, setNotificationSuccess] = useState(false);
-  const [notificationError, setNotificationError] = useState(false)
+  const [notificationError, setNotificationError] = useState(false);
   const [response, setResponse] = useState(null);
   const [responseUnit, setResponseUnit] = useState(null);
   const [responseATVAndCriteria, setResponseATVAndCriteria] = useState(null);
   const { setAllInternalDegrees } = useContext(InternalApiContext);
   const closeSuccess = () => setNotificationSuccess(false);
-  const closeError = () => setNotificationError(false)
+  const closeError = () => setNotificationError(false);
 
   // Modal
   const [isDegreeNameModalOpen, setIsDegreeNameModalOpen] = useState(false);
   const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
+  const [isDeleteDataModalOpen, setIsDeleteDataModalOpen] = useState(false);
 
   const handleUnitClick = (unitId) => {
     console.log('Clicked unit ID:', unitId);
@@ -62,6 +62,10 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     setIsAssessmentModalOpen(false);
   };
 
+  const handleCloseDeleteDataModal = () => {
+    setIsDeleteDataModalOpen(false);
+  };
+
   const handlePenClick = (area) => {
     switch (area) {
       case 'degreeDetails':
@@ -77,6 +81,11 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
       default:
       // Handle default case if necessary
     }
+  };
+
+  const handleDeleteClick = () => {
+    setIsDeleteDataModalOpen(true);
+    console.log('Delete button clicked');
   };
 
   useEffect(() => {
@@ -116,7 +125,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         fi: degreeDetails.name.fi,
       },
     };
-    console.log('🚀 ~ saveDegreeName ~ degreeDetails:', degreeDetails);
+    // console.log('🚀 ~ saveDegreeName ~ degreeDetails:', degreeDetails);
 
     // Save the updated degree to context
     setAllInternalDegrees([
@@ -195,7 +204,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                     ...c,
                     fi: c.fi,
                   };
-                })
+                }),
                 // criteria: [
                 //   {
                 //     ...assessment.criteria[0],
@@ -243,7 +252,6 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
       updatedDegree,
     ]);
   };
-
 
   // Trigger NotificationModal for successful update the degree name
   useEffect(() => {
@@ -327,6 +335,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                 <strong className='unit-title'>{unit.name.fi}</strong>
                 <div className='circle-wrap-icon'>
                   <Icon
+                    onClick={handleDeleteClick}
                     icon='material-symbols:delete-outline'
                     color='A0A0A0'
                     height='18'
@@ -484,7 +493,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                                               marginTop: '8px',
                                               flexGrow: 1, // To make the text take up remaining space
                                               display: 'flex',
-                                              justifyContent: 'space-between', 
+                                              justifyContent: 'space-between',
                                             }}
                                           >
                                             <span>
@@ -497,7 +506,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                                               }}
                                             >
                                               <Icon
-                                                // onClick={handleDeleteClick}
+                                                onClick={handleDeleteClick}
                                                 icon='material-symbols:delete-outline'
                                                 color='A0A0A0'
                                                 height='20'
@@ -984,6 +993,81 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
           }
           open={isDegreeNameModalOpen}
           handleClose={handleCloseDegreeNameModal}
+        />
+
+        {/* Modal to delete the data */}
+        <NotificationModal
+          type='iconInfo'
+          hideIcon={true}
+          hideCloseButton={true}
+          title={
+            <Box>
+              <Typography
+                sx={{
+                  marginTop: '10px',
+                  marginBottom: '10px',
+                  marginRight: '10px',
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                }}
+              >
+                Olet arkistoinnissa tietoa joka liittyy 2 työnantajaan.
+              </Typography>
+              <Typography
+                sx={{
+                  paddingTop: '10px',
+                  marginBottom: '10px',
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                }}
+              >
+                Oletko varma?
+              </Typography>
+            </Box>
+          }
+          open={isDeleteDataModalOpen}
+          dialogStyles={{
+            dialogPaper: {
+              borderLeft: 'none',
+              padding: '0 1.6rem',
+            },
+            dialogTitle: {
+              testAlign: 'center',
+            },
+          }}
+          body={
+            <Box>
+              <Box
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: '20px',
+                }}
+              >
+                <Button
+                  text='Peruuta'
+                  variant='contained'
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    border: '2px solid #1A1A1A',
+                    marginRight: '20px',
+                  }}
+                  onClick={handleCloseDeleteDataModal}
+                ></Button>
+                <Button
+                  text='Arkistoi'
+                  variant='contained'
+                  style={{
+                    backgroundColor: '#B01038',
+                    color: 'white',
+                    border: 'none',
+                  }}
+                  onClick={handleCloseDeleteDataModal}
+                ></Button>
+              </Box>
+            </Box>
+          }
+          handleClose={handleCloseDeleteDataModal}
         />
 
         {/* Notification for successfully update the data */}
