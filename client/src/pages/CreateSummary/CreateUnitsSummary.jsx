@@ -306,6 +306,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('fi-FI'); // Adjust the locale as needed
   }
+  console.log('degreeDetails.description.fi:', degreeDetails.description.fi);
 
   return (
     <main className='summary__wrapper'>

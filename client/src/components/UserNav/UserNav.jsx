@@ -176,9 +176,9 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
         {/* Hamburger  Menu Items */}
           {/* set background color user's role */}
           <div className={`userNav__icons ${user.role}`}>
-            {/* <Icon icon="ic:outline-home" color="black" onClick={() => navigate('/unit-list')}/>
-                <Icon icon="bx:file" color='black' onClick={() => navigate('/contract-info')}/>
-                <Icon icon="mdi:user-outline" color='black' onClick={() => navigate('/profile')}/>
+            {/* <Icon icon="ic:outline-home" color="black" onClick={() => navigate('/unit-list')}/> ex.home:unit-list or customer-list 
+                <Icon icon="bx:file" color='black' onClick={() => navigate('/contract-info')}/> ex.contract-info
+                <Icon icon="mdi:user-outline" color='black' onClick={() => navigate('/profile')}/> ex.profile
             */}
             <Box  sx={{ height: '20vh', marginTop: '50px' }}>
             <img src={HelsinkiLogo} alt="" />
@@ -197,21 +197,25 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                 </Typography>
                 <Typography
                   sx={{ fontWeight: '600' }}
+                  onClick={()=>navigate('#')}
                   >
                   Työpaikat
                 </Typography>
                 <Typography
                   sx={{ fontWeight: '600' }}
+                  onClick={()=>navigate('/contract-info')}
                   >
                   + Luo uusi sopimus
                 </Typography>
                 <Typography
                   sx={{ fontWeight: '600' }}
+                  onClick={()=>navigate('#')}
                   >
                   Asiakkuudet
                 </Typography>
                 <Typography
                   sx={{ fontWeight: '600' }}
+                  onClick={()=>navigate('#')}
                   >
                   Opettajat
                 </Typography>
@@ -219,7 +223,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
               )}
             <Typography 
             sx={{ fontWeight: '600' }}
-            onClick={()=>navigate('/profile')}
+            onClick={()=>navigate('/')}
             >Profiili
             </Typography>
            {/*  {user.role !== 'customer' && evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>} */}
