@@ -85,13 +85,13 @@ const UserPerformance = () => {
   // get assessment._id and update answers
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
   // assessment for radio button
-  const { getAssessmentParametersByID } = useAssessmentParameters({});
+  const { getAssessmentParametersById } = useAssessmentParameters({});
 
   useEffect(()=>{
     const assessmentId = 7892676;
-    const assessmentParameters = getAssessmentParametersByID(assessmentId);
+    const assessmentParameters = getAssessmentParametersById(assessmentId);
     console.log('Assessment parameters:', assessmentParameters);
-  }, [getAssessmentParametersByID]);
+  }, [getAssessmentParametersById]);
 
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
@@ -272,7 +272,7 @@ console.log('units', units);
 console.log('se ._id',unitObject._id);
 console.log('chosenUnitID: ',chosenUnitId);
 console.log('unitObject',unitObject);
-//console.log('selectedAssessmentId2',selectedAssessmentId);
+console.log('selectedAssessmentId2',selectedAssessmentId);
 
   const getButtonText = () => {
     if (user?.role === 'customer') {
