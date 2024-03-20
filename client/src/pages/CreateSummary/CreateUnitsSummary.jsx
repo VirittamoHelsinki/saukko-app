@@ -21,7 +21,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const params = useParams();
   const { degreeId } = useParams();
   const [degreeDetails, setDegreeDetails] = useState(null);
-  // console.log('🚀 ~ CreateUnitesSummary ~ degreeDetails:', degreeDetails);
+  console.log('🚀 ~ CreateUnitesSummary ~ degreeDetails:', degreeDetails);
   const [unitId, setUnitId] = useState(null);
   const [assessmentId, setAssessmentUnitId] = useState(null);
 
@@ -30,6 +30,8 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const [response, setResponse] = useState(null);
   const [responseUnit, setResponseUnit] = useState(null);
   const [responseATVAndCriteria, setResponseATVAndCriteria] = useState(null);
+  const [responseDegreeInformation, setResponseDegreeInformation] =
+    useState(null);
   const { setAllInternalDegrees } = useContext(InternalApiContext);
   const closeSuccess = () => setNotificationSuccess(false);
   const closeError = () => setNotificationError(false);
@@ -39,6 +41,8 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
   const [isDeleteDataModalOpen, setIsDeleteDataModalOpen] = useState(false);
+  const [isDegreeInformationModalOpen, setIsDegreeInformationModalOpen] =
+    useState(false);
 
   const handleUnitClick = (unitId) => {
     console.log('Clicked unit ID:', unitId);
@@ -66,6 +70,10 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     setIsDeleteDataModalOpen(false);
   };
 
+  const handleCloseDegreeInformationModal = () => {
+    setIsDegreeInformationModalOpen(false);
+  };
+
   const handlePenClick = (area) => {
     switch (area) {
       case 'degreeDetails':
@@ -76,6 +84,9 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         break;
       case 'atv':
         setIsAssessmentModalOpen(true);
+        break;
+      case 'degreeInformation':
+        setIsDegreeInformationModalOpen(true);
         break;
       // Add more cases for different areas as needed
       default:
@@ -252,6 +263,52 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
       updatedDegree,
     ]);
   };
+  
+
+  // Save degree's general information to the database
+  const saveDegreeInformation = async () => {
+    // Extract only the necessary fields to update
+    const degreeData = {
+      ...degreeDetails,
+      diaryNumber: degreeDetails.diaryNumber,
+      regulationDate: degreeDetails.regulationDate,
+      validFrom: degreeDetails.validFrom,
+      expiry: degreeDetails.expiry,
+      transitionEnds: degreeDetails.transitionEnds,
+    };
+
+    console.log('Data for put request:', degreeData);
+
+    // Send put request
+    const responseDegreeInformation = await updateDegree(
+      `${degreeId}`,
+      degreeData
+    );
+    console.log('response Information degree', responseDegreeInformation);
+
+    // Save response to state
+    setResponseDegreeInformation(responseDegreeInformation);
+    setIsDegreeInformationModalOpen(false);
+
+    // Update the degree's name.fi field in the local state
+    const updatedDegree = {
+      ...degreeDetails,
+
+      diaryNumber: degreeDetails.diaryNumber,
+      regulationDate: degreeDetails.regulationDate,
+      validFrom: degreeDetails.validFrom,
+      expiry: degreeDetails.expiry,
+      transitionEnds: degreeDetails.transitionEnds,
+    };
+
+    // Save the updated degree to context
+    setAllInternalDegrees([
+      ...allInternalDegrees.filter(
+        (d) => d._id.toString() !== degreeDetails._id.toString()
+      ),
+      updatedDegree,
+    ]);
+  };
 
   // Trigger NotificationModal for successful update the degree name
   useEffect(() => {
@@ -298,13 +355,28 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     return <div>Loading...</div>;
   }
 
-  function formatDate(dateString) {
+  // function formatDate(dateString) {
+  //   if (!dateString) {
+  //     return 'No date available';
+  //   }
+
+  //   const date = new Date(dateString);
+  //   console.log("🚀 ~ formatDate ~ date:", date)
+  //   return date.toLocaleDateString('fi-FI'); // Adjust the locale as needed
+  // }
+
+  function formattedDate(dateString) {
     if (!dateString) {
       return 'No date available';
     }
-
     const date = new Date(dateString);
-    return date.toLocaleDateString('fi-FI'); // Adjust the locale as needed
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = date.getUTCFullYear();
+
+    const formattedDate = `${day}.${month}.${year}`;
+    console.log('🚀 ~ formattedDate ~ formattedDate:', formattedDate);
+    return formattedDate;
   }
 
   return (
@@ -329,8 +401,8 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         <div className='section-title'>Tutkinnonosat ja tehtävät</div>
         <div className='summary__container--box'>
           {/* Display other degree details as needed */}
-          {degreeDetails.units.map((unit, index) => (
-            <div key={index} className='unit-container'>
+          {degreeDetails.units.map((unit) => (
+            <div key={unit._id} className='unit-container'>
               <div className='unit-name-icons-container'>
                 <strong className='unit-title'>{unit.name.fi}</strong>
                 <div className='circle-wrap-icon'>
@@ -404,7 +476,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                                   Tutkinnonosan nimi
                                 </Typography>
                                 <TextField
-                                  key={index}
+                                  key={unit._id}
                                   value={
                                     unit._id === unitId ? unit.name.fi : ''
                                   }
@@ -877,28 +949,30 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         <div className='section-title'>Tutkintotiedot</div>
         <ul className='summary__container--box'>
           <div className='unit-name-icons-container'>
-            <strong className='unit-title'>Määräyksen diaarinumero</strong>{' '}
-            <div>
-              <div className='circle-wrap-icon'>
-                <Icon
-                  onClick={handlePenClick}
-                  icon='uil:pen'
-                  color='#0000bf'
-                  height='18'
-                  preserveAspectRatio='xMinYMid meet'
-                />
-              </div>
+            <div className='degree-diary-number'>
+              <strong className='unit-title'>Määräyksen diaarinumero</strong>{' '}
+              <li>{degreeDetails.diaryNumber}</li>
             </div>
+            {/* <div> */}
+            <div className='circle-wrap-icon'>
+              <Icon
+                onClick={() => handlePenClick('degreeInformation')}
+                icon='uil:pen'
+                color='#0000bf'
+                height='18'
+                preserveAspectRatio='xMinYMid meet'
+              />
+            </div>
+            {/* </div> */}
           </div>
-          <li>{formatDate(degreeDetails.diaryNumber)}</li>
           <strong> Määräyksen päätöspäivämäärä</strong>
-          <li>{formatDate(degreeDetails.regulationDate)}</li>
+          <li>{formattedDate(degreeDetails.regulationDate)}</li>
           <strong>Voimaantulo</strong>
-          <li>{formatDate(degreeDetails.validFrom)}</li>
+          <li>{formattedDate(degreeDetails.validFrom)}</li>
           <strong>Voimassaolon päättyminen</strong>
-          <li>{formatDate(degreeDetails.expiry)}</li>
+          <li>{formattedDate(degreeDetails.expiry)}</li>
           <strong>Siirtymäajan päättymisaika</strong>
-          <li>{formatDate(degreeDetails.transitionEnds)}</li>
+          <li>{formattedDate(degreeDetails.transitionEnds)}</li>
         </ul>
 
         {/* Modal to save the degree name */}
@@ -922,7 +996,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
               Tutkinnon nimen muokkaus
             </Typography>
           }
-          sx={{ width: '100%' }}
+          // sx={{ width: '100%' }}
           hideIcon={true}
           body={
             <>
@@ -939,8 +1013,10 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
               >
                 <CancelOutlinedIcon />
               </IconButton>
-              <DialogContent sx={{ minWidth: '25vw' }}>
-                <Box sx={{}}>
+              <DialogContent
+              // sx={{ minWidth: '25vw' }}
+              >
+                <Box>
                   <Typography sx={{ fontWeight: 'bold', fontSize: '14px' }}>
                     Tutkinnon nimi
                   </Typography>
@@ -949,7 +1025,6 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                     id='outlined-multiline-static'
                     multiline={degreeDetails.name.fi.length > 5}
                     onChange={(event) => {
-                      // Modify degreeDetails.name.fi when TextField value changes
                       setDegreeDetails((prevState) => ({
                         ...prevState,
                         name: {
@@ -1068,6 +1143,210 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
             </Box>
           }
           handleClose={handleCloseDeleteDataModal}
+        />
+
+        {/* Modal for updating general degree's information */}
+        <NotificationModal
+          type='info'
+          hideIcon={true}
+          dialogStyles={{
+            dialogTitle: {
+              marginLeft: '4px',
+              marginRight: '5px',
+            },
+          }}
+          title={
+            <Typography
+              sx={{
+                fontSize: '18px',
+                fontWeight: 'bold',
+                marginRight: '25px',
+                marginLeft: '15px',
+              }}
+            >
+              Tutkinnon tietojen muokkaus
+            </Typography>
+          }
+          body={
+            <>
+              <IconButton
+                aria-label='close'
+                onClick={handleCloseDegreeInformationModal}
+                sx={{
+                  position: 'absolute',
+                  right: 8,
+                  top: 8,
+                  color: 'black',
+                  marginLeft: '2rem',
+                }}
+              >
+                <CancelOutlinedIcon />
+              </IconButton>
+              <DialogContent>
+                <Box>
+                  <Typography
+                    sx={{
+                      fontWeight: 'bold',
+                      fontSize: '16px',
+                      marginBottom: '15px',
+                    }}
+                  >
+                    {degreeDetails.name.fi}
+                  </Typography>
+                  <Typography sx={{ fontWeight: 'bold', fontSize: '14px' }}>
+                    Määräyksen diaarinumero
+                  </Typography>
+                  <TextField
+                    value={degreeDetails.diaryNumber || ''}
+                    id='outlined-multiline-static'
+                    onChange={(event) => {
+                      setDegreeDetails((prevState) => ({
+                        ...prevState,
+                        diaryNumber: event.target.value,
+                      }));
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderRadius: '0',
+                          // border: 'black 2px solid',
+                          borderColor: 'black',
+                          borderWidth: '1px',
+                        },
+                      },
+                      width: '100%',
+                      backgroundColor: 'white',
+                      marginTop: '8px',
+                      overflow: 'auto',
+                    }}
+                  ></TextField>
+                  <Typography sx={{ fontWeight: 'bold', fontSize: '14px' }}>
+                    Määräyksen päätöspäivämäärä
+                  </Typography>
+                  <TextField
+                    value={formattedDate(degreeDetails.regulationDate) || ''}
+                    id='outlined-multiline-static'
+                    onChange={(event) => {
+                      setDegreeDetails((prevState) => ({
+                        ...prevState,
+                        regulationDate: event.target.value,
+                      }));
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderRadius: '0',
+                          // border: 'black 2px solid',
+                          borderColor: 'black',
+                          borderWidth: '1px',
+                        },
+                      },
+                      width: '100%',
+                      backgroundColor: 'white',
+                      marginTop: '8px',
+                      overflow: 'auto',
+                    }}
+                  ></TextField>
+                  <Typography sx={{ fontWeight: 'bold', fontSize: '14px' }}>
+                    Voimaantulo
+                  </Typography>
+                  <TextField
+                    value={degreeDetails.validFrom || ''}
+                    id='outlined-multiline-static'
+                    onChange={(event) => {
+                      setDegreeDetails((prevState) => ({
+                        ...prevState,
+                        validFrom: event.target.value,
+                      }));
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderRadius: '0',
+                          // border: 'black 2px solid',
+                          borderColor: 'black',
+                          borderWidth: '1px',
+                        },
+                      },
+                      width: '100%',
+                      backgroundColor: 'white',
+                      marginTop: '8px',
+                      overflow: 'auto',
+                    }}
+                  ></TextField>
+                  <Typography sx={{ fontWeight: 'bold', fontSize: '14px' }}>
+                    Voimassaolon päättyminen
+                  </Typography>
+                  <TextField
+                    value={degreeDetails.expiry || ''}
+                    id='outlined-multiline-static'
+                    onChange={(event) => {
+                      setDegreeDetails((prevState) => ({
+                        ...prevState,
+                        expiry: event.target.value,
+                      }));
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderRadius: '0',
+                          // border: 'black 2px solid',
+                          borderColor: 'black',
+                          borderWidth: '1px',
+                        },
+                      },
+                      width: '100%',
+                      backgroundColor: 'white',
+                      marginTop: '8px',
+                      overflow: 'auto',
+                    }}
+                  ></TextField>
+                  <Typography sx={{ fontWeight: 'bold', fontSize: '14px' }}>
+                    Siirtymäajan päättymisaika
+                  </Typography>
+                  <TextField
+                    value={degreeDetails.transitionEnds || ''}
+                    id='outlined-multiline-static'
+                    onChange={(event) => {
+                      setDegreeDetails((prevState) => ({
+                        ...prevState,
+                        transitionEnds: event.target.value,
+                      }));
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderRadius: '0',
+                          // border: 'black 2px solid',
+                          borderColor: 'black',
+                          borderWidth: '1px',
+                        },
+                      },
+                      width: '100%',
+                      backgroundColor: 'white',
+                      marginTop: '8px',
+                      overflow: 'auto',
+                    }}
+                  ></TextField>
+                  <Button
+                    text='Tallenna'
+                    variant='contained'
+                    style={{
+                      marginLeft: '25%',
+                      marginTop: '30px',
+                      width: '50%',
+                      backgroundColor: '#0000BF',
+                      color: 'white',
+                      border: 'none',
+                    }}
+                    onClick={saveDegreeInformation}
+                    handleClose={handleCloseDegreeInformationModal}
+                  ></Button>
+                </Box>
+              </DialogContent>
+            </>
+          }
+          open={isDegreeInformationModalOpen}
         />
 
         {/* Notification for successfully update the data */}
