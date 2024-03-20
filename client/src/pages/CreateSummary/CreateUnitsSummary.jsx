@@ -4,15 +4,18 @@ import { useState, useEffect, useContext } from 'react';
 import WavesHeader from '../../components/Header/WavesHeader';
 import UserNav from '../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
+import AddDescriptionWithPopUp from './AddDescriptionWithPopUp';
+import NotificationModal from '../../components/NotificationModal/NotificationModal';
+import Button from '../../components/Button/Button';
+
 import { Icon } from '@iconify/react';
 import TextField from '@mui/material/TextField';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
-import NotificationModal from '../../components/NotificationModal/NotificationModal';
 import { Typography } from '@mui/material';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import Box from '@mui/material/Box';
-import Button from '../../components/Button/Button';
+
 import { updateDegree } from '../../api/degree';
 import InternalApiContext from '../../store/context/InternalApiContext';
 
@@ -34,11 +37,16 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const closeSuccess = () => setNotificationSuccess(false);
   const closeError = () => setNotificationError(false);
 
+  //edit description
+  const [degreeIdForModal, setDegreeIdForModal] = useState(null);
+
   // Modal
   const [isDegreeNameModalOpen, setIsDegreeNameModalOpen] = useState(false);
   const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
   const [isDeleteDataModalOpen, setIsDeleteDataModalOpen] = useState(false);
+    // Modal for editing degree description
+  const [isDegreeDescriptionModalOpen,setIsDegreeDescriptionModalOpen] = useState(false);
 
   const handleUnitClick = (unitId) => {
     console.log('Clicked unit ID:', unitId);
@@ -66,6 +74,16 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     setIsDeleteDataModalOpen(false);
   };
 
+  // Modal for editing degree description
+const handleDegreeDescriptionClick = (degreeId)=>{
+  console.log('Clicked degree ID:', degreeId);
+  setDegreeIdForModal(degreeId);
+}
+
+  const handleCloseDegreeDetailModal = () => {
+    setIsDegreeDescriptionModalOpen(false);
+  };
+
   const handlePenClick = (area) => {
     switch (area) {
       case 'degreeDetails':
@@ -78,6 +96,8 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         setIsAssessmentModalOpen(true);
         break;
       // Add more cases for different areas as needed
+      case 'degreeDescription':
+        setIsDegreeDescriptionModalOpen(true);
       default:
       // Handle default case if necessary
     }
@@ -859,22 +879,76 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
           <div className='description-content'>
             {degreeDetails.description.fi ? (
               degreeDetails.description.fi
-            ) : (
-              <p>No description data.</p>
-            )}
+              ) : (
+                <p>No description data.</p>
+                )}
+            <p>{degreeId}</p>
           </div>
           <div>
             <div className='circle-wrap-icon'>
               <Icon
-                onClick={handlePenClick}
+                onClick={()=>{
+                  handlePenClick('degreeDescription.fi');
+                  handleDegreeDescriptionClick()
+                }}
                 icon='uil:pen'
                 color='#0000bf'
                 height='18'
                 preserveAspectRatio='xMinYMid meet'
-              />
+                />
+            {/* Modal for editing degreeDetails.description.fi */}
+            <NotificationModal
+              type='info'
+              open={isDegreeDescriptionModalOpen}
+              onClose={handleCloseDegreeDetailModal}
+              hideIcon={true}
+              dialogStyles={{
+                dialogTitle: {
+                  marginLeft: '5px',
+                },
+              }}
+              title={
+                <Typography
+                  sx={{
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    marginRight: '25px',
+                    marginLeft:'15px',
+                  }}
+                  >
+                    Tutkinnon suorittaneen osaamisen muokkaus
+                  </Typography>
+              }
+              body={
+                <>
+                  <IconButton
+                  aria-label='close'
+                  onClick={handleCloseDegreeDetailModal}
+                  sx={{
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: 'black',
+                    marginLeft: '2rem',
+                  }}
+                  >
+                    <CancelOutlinedIcon />
+                  </IconButton>
+                  <DialogContent>
+                    <Box>
+                      <Typography>
+                        sx={{ fontSize: '16px', fontWeight: 'bold'}}
+                      Mikä tuohon tulee?
+                      </Typography>
+                    </Box>
+                  </DialogContent>
+                </>
+                }
+             />
             </div>
           </div>
         </div>
+        {/* <AddDescriptionWithPopUp /> */}
         <div className='section-title'>Tutkintotiedot</div>
         <ul className='summary__container--box'>
           <div className='unit-name-icons-container'>
