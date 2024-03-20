@@ -1,23 +1,26 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
+
 import { useLocation, useNavigate } from 'react-router';
+
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';
 import Button from '../../../components/Button/Button';
 import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
-import useStore from '../../../store/zustand/formStore';
-import AuthContext from '../../../store/context/AuthContext';
+
 import { Icon } from '@iconify/react';
-import InternalApiContext from '../../../store/context/InternalApiContext';
-import TextField from '@mui/material/TextField';
 import DialogContent from '@mui/material/DialogContent';
+import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
+import useStore from '../../../store/zustand/formStore';
+import AuthContext from '../../../store/context/AuthContext';
 // Fetch evaluation and units from store
-// import useEvaluationStore from '../../../store/zustand/evaluationStore';
-// import useUnitsStore from '../../../store/zustand/unitsStore';
+import InternalApiContext from '../../../store/context/InternalApiContext';
+import useEvaluationStore from '../../../store/zustand/evaluationStore';
+import useUnitsStore from '../../../store/zustand/unitsStore';
 
 // Fetch evaluation by id from api
 import {
@@ -25,7 +28,7 @@ import {
   updateEvaluationById,
 } from '../../../api/evaluation';
 
-const useFetchData = (evaluationId) => {
+/* const useFetchData = (evaluationId) => {
   const [evaluation, setEvaluation] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +38,7 @@ const useFetchData = (evaluationId) => {
     fetchData();
   }, [evaluationId]);
   return evaluation;
-};
+}; */
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
@@ -44,8 +47,33 @@ const UserPerformance = () => {
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
   console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
-  let evaluationId = evaluation._id;
-  evaluation = useFetchData(evaluationId);
+  /* let evaluationId = evaluation._id;
+  evaluation = useFetchData(evaluationId); */
+  const { units } = useContext(InternalApiContext);
+  const { chosenUnitId } = useEvaluationStore();
+
+  let unitObject;
+  if (evaluation && evaluation.units) {
+    
+    // Use find() to search for the unit with matching _id
+    unitObject = evaluation.units.find(
+      (unit) => unit._id === chosenUnitId
+    );
+
+    if (unitObject) {
+      // Unit with matching _id found
+      console.log('Unit object found:', unitObject);
+    } else {
+      // Unit with matching _id not found
+      console.log(
+        'Unit with ID', chosenUnitId, 'not found in the evaluation.units'
+      );
+    }
+    
+  } else { 
+    // Handle cases where evaluation or evaluation.units is undefined
+    console.log('Evaluation object or units array is undefined.');
+  }
 
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
@@ -186,7 +214,7 @@ const UserPerformance = () => {
     };
     try {
       const response = await updateEvaluationById(
-        `${evaluationId}`,
+        /* `${evaluationId}`, */
         updatedData
       );
 
@@ -241,6 +269,7 @@ const UserPerformance = () => {
   };
 
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
+  console.log('unitObject', unitObject);
 
   return (
     <main>
@@ -258,13 +287,16 @@ const UserPerformance = () => {
           marginTop: '58%',
         }}
       >
-        Ammattitaitovaatimukset
+        {unitObject.name.fi}
+        <br />
+        Ammattitaitovaatimusten arviointi
       </h2>
       <div>
         <ul>
           {/* Evaluation */}
-          {evaluation.map((unit, index) => (
-            <li key={index}>
+          {unitObject && 
+          unitObject.assessments.map((assess) => (
+            <li key={assess._id}>
               <div
                 style={{
                   display: 'flex',
@@ -273,12 +305,12 @@ const UserPerformance = () => {
                   margin: '0 15px 0 0',
                 }}
               >
-                <div>
+                {/* <div>
                   <p className='para-title-style'><b>{unit.name.fi}</b> </p>
-                </div>
-              </div>
-              {unit.assessments.map((assess, index) => (
-                <div key={index}>
+                </div> */}
+              {/* </div> */}
+              {/* {unitObject.assessments.map((assess) => (
+                <div key={assess._id}>
                   <div
                     style={{
                       display: 'flex',
@@ -286,7 +318,7 @@ const UserPerformance = () => {
                       alignItems: 'center',
                       margin: '0 15px 0 0',
                     }}
-                  >
+                  > */}
                     <div>
                       <p className='para-title-style'>
                         {assess.name.fi}
@@ -299,22 +331,14 @@ const UserPerformance = () => {
                         style={{ verticalAlign: 'middle', fontSize: '21px' }}
                         cursor={'pointer'}
                         onClick={() => handleOpenCriteriaModal(assess.criteria)}
-                      />
+                       />
                     </div>
                   </div>
-                  {/* {assess.criteria.map((crit, index) => (
-                    <p key={index}>
-                      <b>Criteria</b>: {crit.fi}
-                    </p>
-                  ))} */}
-                  {/* <p>Student: {assess.answer}</p>
-                  <p>Supervisor: {assess.answerSupervisor}</p>
-                  <p>Teacher: {assess.answerTeacher}</p> */}
                   {user?.role === 'teacher' ? (
                     <TeacherPerformanceFeedBack
                       selectedValues={selectedValues}
                       setSelectedValues={setSelectedValues}
-                      unit={unit}
+                      //unit={unit}
                       setSelectedUnitId={setSelectedUnitId}
                       selectedUnitId={selectedUnitId}
                       hasUnsavedChanges={hasUnsavedChanges}
@@ -324,15 +348,15 @@ const UserPerformance = () => {
                     <PerformancesFeedback
                       selectedValues={selectedValues}
                       setSelectedValues={setSelectedValues}
-                      unit={unit}
+                      //unit={unit}
                       setSelectedUnitId={setSelectedUnitId}
                       selectedUnitId={selectedUnitId}
                       hasUnsavedChanges={hasUnsavedChanges}
                       setHasUnsavedChanges={setHasUnsavedChanges}
                     />
                   )}
-                </div>
-              ))}
+                {/*  </div> 
+               ))} */}
             </li>
           ))}
         </ul>
