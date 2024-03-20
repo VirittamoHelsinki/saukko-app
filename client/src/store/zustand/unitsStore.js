@@ -27,6 +27,9 @@
 import { create } from 'zustand';
 
 const useUnitsStore = create((set) => ({
+  units:[],
+  assessments: [],
+  criteria: [],
   checkedUnits: [],
 
   setCheckedUnits: (newUnits) => {
