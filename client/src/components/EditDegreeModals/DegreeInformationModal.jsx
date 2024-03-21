@@ -17,9 +17,7 @@ const DegreeInformationModal = ({
   setDegreeDetails,
   saveDegreeInformation,
 }) => {
-  //   console.log('degreeDetails', degreeDetails);
-  //   console.log('isDegreeInformationModalOpen', isDegreeInformationModalOpen);
-
+  
   return (
     <NotificationModal
       type='info'

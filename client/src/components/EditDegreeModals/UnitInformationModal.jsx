@@ -28,7 +28,6 @@ const UnitInformationModal = ({
   handleCloseAssessmentModal,
   degreeDetails,
 }) => {
-
   return (
     <NotificationModal
       type='info'

@@ -462,7 +462,6 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
                         handleDeleteClick={handleDeleteClick}
                       />
                     )}
-                    {/* Here finish the neste modal */}
                   </span>
                 </div>
               </div>

@@ -384,8 +384,3 @@ function DegreeInfo() {
 }
 
 export default DegreeInfo;
-
-
-
-
-
