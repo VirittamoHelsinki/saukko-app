@@ -212,7 +212,7 @@ const DegreeInformationModal = ({
                   color: 'white',
                   border: 'none',
                 }}
-                onClick={saveDegreeInformation}
+                // onClick={saveDegreeInformation}
                 handleClose={handleCloseDegreeInformationModal}
               ></Button>
             </Box>
