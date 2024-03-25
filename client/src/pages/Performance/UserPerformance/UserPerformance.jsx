@@ -303,10 +303,6 @@ const UserPerformance = () => {
                     />
                   </div>
                 </div>
-                {/* <p>Client: {assess.answer}</p>
-                <p>Supervisor: {assess.answerSupervisor}</p>
-                <p>Teacher: {assess.answerTeacher}</p>
- */}
                 {user?.role === 'teacher' ? (
                   <TeacherPerformanceFeedBack
                     selectedValues={selectedValues}
