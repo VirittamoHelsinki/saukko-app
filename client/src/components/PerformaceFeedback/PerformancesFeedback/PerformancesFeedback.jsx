@@ -4,18 +4,23 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import AuthContext from '../../../store/context/AuthContext';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 
 const PerformancesFeedback = ({
   setSelectedValues,
   unit,
   setSelectedUnitId,
-  setHasUnsavedChanges
+  setHasUnsavedChanges,
+  assessment,
+  setSelectedAssessmentId,
 }) => {
+  console.log('🚀 ~ assessment:', assessment._id);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState('');
   const [hasChanged, setHasChanged] = useState(false);
   const auth = useContext(AuthContext);
   const user = auth.user;
+  const { evaluation } = useContext(InternalApiContext);
 
     // Uncheck the radio button
     const handleRadioUncheck = (event) => {
@@ -28,7 +33,7 @@ const PerformancesFeedback = ({
       }
     };
 
-  const handleRadioChange = (event, unit) => {
+  /* const handleRadioChange = (event, unit) => {
     setSelectedRadio(event.target.value);
     setSelectedUnitId(unit._id); // This is the unit id
     setHasChanged(true);
@@ -40,7 +45,40 @@ const PerformancesFeedback = ({
     }
     console.log(event.target.value);
   };
- 
+ */ 
+
+  const handleRadioChange = (e, unit, info, value) => {
+    setSelectedRadio((prevValues) => ({
+      ...prevValues,
+      [info]: prevValues[info] === value ? '' : value,
+    }));
+    setHasChanged(true);
+    if (unit._id) {
+      setSelectedUnitId(unit._id); // This is the unit id
+      setSelectedAssessmentId(assessment._id);
+      setHasUnsavedChanges(true);
+    } else {
+      setHasUnsavedChanges(false);
+    }
+    if (e.target) {
+      if (selectedRadio === e.target.value) {
+        e.target.checked = false;
+        setSelectedRadio('');
+        setSelectedValues(0);
+        setHasChanged(false);
+        setHasUnsavedChanges(false);
+      } else {
+        setSelectedRadio(e.target.value);
+        if (e.target.value === 'Osaa ohjatusti') {
+          setSelectedValues(1);
+        } else if (e.target.value === 'Osaa itsenäisesti') {
+          setSelectedValues(2);
+        }
+      }
+      console.log(e.target.value);
+    }
+  };
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -56,7 +94,6 @@ const PerformancesFeedback = ({
   };
 
   // Defining the background color based on the user role
-
   const getBackgroundColor = () => {
     if (
       selectedRadio === 'Osaa ohjatusti' ||
@@ -70,6 +107,29 @@ const PerformancesFeedback = ({
     }
     return '#F2F2F2';
   };
+
+  const infodata = evaluation.units.flatMap((unit) => {
+    return unit.assessments.flatMap((assessment) => [
+      {
+        info: 'Itsearviointi',
+        disabled: true,
+        unitId: unit._id,
+        assessmentId: assessment._id,
+        answer: assessment.answer,
+      },
+      {
+        info: 'TPO:n havainto',
+        disabled: true,
+        unitId: unit._id,
+        assessmentId: assessment._id,
+        answerSupervisor: assessment.answerSupervisor,
+      },
+    ]);
+  });
+
+  const infodataForSelectedAssessment = infodata.filter(
+    (data) => data.assessmentId === assessment._id
+  );
 
   return (
     <main
@@ -89,7 +149,10 @@ const PerformancesFeedback = ({
             <FormControlLabel
               value='Osaa ohjatusti'
               control={
-                <Radio onClick={(event) => handleRadioUncheck(event)} onChange={(event) => handleRadioChange(event, unit)} />
+                <Radio 
+                  onClick={(event) => handleRadioUncheck(event)} 
+                  onChange={(event) => handleRadioChange(event, unit)}
+                 />
               }
               label='Osaa ohjatusti'
               labelPlacement='top'
