@@ -39,6 +39,10 @@ const UserPerformance = () => {
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
+  console.log(
+    '🚀 ~ UserPerformance ~ selectedAssessmentId:',
+    selectedAssessmentId
+  );
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
@@ -48,7 +52,6 @@ const UserPerformance = () => {
   const [lastLocation, setLastLocation] = useState(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
   const [destination, setDestination] = useState(null);
-
   // Modal for showing criteria
   const [criteriaModalContent, setCriteriaModalContent] = useState([]);
 
@@ -72,7 +75,6 @@ const UserPerformance = () => {
     // Handle cases where evaluation or evaluation.units is undefined
     console.log('Evaluation object or units array is undefined.');
   }
-
 
   const handleOpenCriteriaModal = (criteria) => {
     setCriteriaModalContent(criteria);
@@ -301,19 +303,20 @@ const UserPerformance = () => {
                     />
                   </div>
                 </div>
-                <p>Client: {assess.answer}</p>
+                {/* <p>Client: {assess.answer}</p>
                 <p>Supervisor: {assess.answerSupervisor}</p>
                 <p>Teacher: {assess.answerTeacher}</p>
-
+ */}
                 {user?.role === 'teacher' ? (
                   <TeacherPerformanceFeedBack
                     selectedValues={selectedValues}
                     setSelectedValues={setSelectedValues}
                     unit={unitObject}
                     setSelectedUnitId={setSelectedUnitId}
-                    setSelectedAssessmentId={setSelectedAssessmentId}
-                    selectedAssessmentId
+                    assessment={assess}
                     selectedUnitId={selectedUnitId}
+                    setSelectedAssessmentId={setSelectedAssessmentId}
+                    selectedAssessmentId={selectedAssessmentId}
                     hasUnsavedChanges={hasUnsavedChanges}
                     setHasUnsavedChanges={setHasUnsavedChanges}
                   />
@@ -328,7 +331,6 @@ const UserPerformance = () => {
                     setHasUnsavedChanges={setHasUnsavedChanges}
                   />
                 )}
-              
               </li>
             ))}
         </ul>

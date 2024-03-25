@@ -13,7 +13,10 @@ const TeacherPerformanceFeedBack = ({
   unit,
   setSelectedUnitId,
   setHasUnsavedChanges,
+  assessment,
+  setSelectedAssessmentId,
 }) => {
+  console.log('🚀 ~ assessment:', assessment._id);
   const [selectedRadio, setSelectedRadio] = useState({});
   const auth = useContext(AuthContext);
   const user = auth.user;
@@ -39,6 +42,7 @@ const TeacherPerformanceFeedBack = ({
     setHasChanged(true);
     if (unit._id) {
       setSelectedUnitId(unit._id); // This is the unit id
+      setSelectedAssessmentId(assessment._id);
       setHasUnsavedChanges(true);
     } else {
       setHasUnsavedChanges(false);
@@ -81,26 +85,28 @@ const TeacherPerformanceFeedBack = ({
         info: 'Itsearviointi',
         disabled: true,
         unitId: unit._id,
-        assessment: assessment._id,
+        assessmentId: assessment._id,
         answer: assessment.answer,
       },
       {
         info: 'TPO:n havainto',
         disabled: true,
         unitId: unit._id,
+        assessmentId: assessment._id,
         answerSupervisor: assessment.answerSupervisor,
       },
       {
         info: 'Opettajan merkintä',
         disabled: false,
         unitId: unit._id,
+        assessmentId: assessment._id,
         answerTeacher: assessment.answerTeacher,
       },
     ]);
   });
 
-  const infodataForSelectedUnit = infodata.filter(
-    (data) => data.unitId === unit._id
+  const infodataForSelectedAssessment = infodata.filter(
+    (data) => data.assessmentId === assessment._id
   );
 
   return (
@@ -116,7 +122,7 @@ const TeacherPerformanceFeedBack = ({
         <p style={{ padding: '4px' }}>Osaa itsenäisesti</p>
       </div>
       <div>
-        {infodataForSelectedUnit.map((item, index) => (
+        {infodataForSelectedAssessment.map((item, index) => (
           <div key={index} className='first-div-style'>
             <p style={{ width: '38%', marginTop: '10px' }}>{item.info}</p>
             <div style={{ marginTop: '10px' }}>
