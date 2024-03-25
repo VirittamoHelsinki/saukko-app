@@ -20,7 +20,6 @@ import AuthContext from '../../../store/context/AuthContext';
 // Fetch evaluation and units from store
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
-import useUnitsStore from '../../../store/zustand/unitsStore';
 
 // Fetch evaluation by id from api
 import {
@@ -28,60 +27,22 @@ import {
   updateEvaluationById,
 } from '../../../api/evaluation';
 
-/* const useFetchData = (evaluationId) => {
-  const [evaluation, setEvaluation] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetchEvaluationById(`${evaluationId}`);
-      setEvaluation(response.units);
-    };
-    fetchData();
-  }, [evaluationId]);
-  return evaluation;
-}; */
-
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
   let { evaluation } = useContext(InternalApiContext);
-  console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
-  /* let evaluationId = evaluation._id;
-  evaluation = useFetchData(evaluationId); */
-  const { units } = useContext(InternalApiContext);
+  console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { chosenUnitId } = useEvaluationStore();
-
-  let unitObject;
-  if (evaluation && evaluation.units) {
-    
-    // Use find() to search for the unit with matching _id
-    unitObject = evaluation.units.find(
-      (unit) => unit._id === chosenUnitId
-    );
-
-    if (unitObject) {
-      // Unit with matching _id found
-      console.log('Unit object found:', unitObject);
-    } else {
-      // Unit with matching _id not found
-      console.log(
-        'Unit with ID', chosenUnitId, 'not found in the evaluation.units'
-      );
-    }
-    
-  } else { 
-    // Handle cases where evaluation or evaluation.units is undefined
-    console.log('Evaluation object or units array is undefined.');
-  }
-
+  const { chosenAssessmentId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
+  const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  // console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
   const navigate = useNavigate();
   const location = useLocation();
   const [lastLocation, setLastLocation] = useState(null);
@@ -90,6 +51,28 @@ const UserPerformance = () => {
 
   // Modal for showing criteria
   const [criteriaModalContent, setCriteriaModalContent] = useState([]);
+
+  let unitObject;
+  if (evaluation && evaluation.units) {
+    // Use find() to search for the unit with matching _id
+    unitObject = evaluation.units.find((unit) => unit._id === chosenUnitId);
+
+    if (unitObject) {
+      // Unit with matching _id found
+      console.log('Unit object found:', unitObject);
+    } else {
+      // Unit with matching _id not found
+      console.log(
+        'Unit with ID',
+        chosenUnitId,
+        'not found in the evaluation.units'
+      );
+    }
+  } else {
+    // Handle cases where evaluation or evaluation.units is undefined
+    console.log('Evaluation object or units array is undefined.');
+  }
+
 
   const handleOpenCriteriaModal = (criteria) => {
     setCriteriaModalContent(criteria);
@@ -294,71 +277,60 @@ const UserPerformance = () => {
       <div>
         <ul>
           {/* Evaluation */}
-          {unitObject && 
-          unitObject.assessments.map((assess) => (
-            <li key={assess._id}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  margin: '0 15px 0 0',
-                }}
-              >
-                {/* <div>
-                  <p className='para-title-style'><b>{unit.name.fi}</b> </p>
-                </div> */}
-              {/* </div> */}
-              {/* {unitObject.assessments.map((assess) => (
-                <div key={assess._id}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      margin: '0 15px 0 0',
-                    }}
-                  > */}
-                    <div>
-                      <p className='para-title-style'>
-                        {assess.name.fi}
-                      </p>
-                    </div>
-                    <div>
-                      <Icon
-                        icon='material-symbols:info'
-                        color='#1769aa'
-                        style={{ verticalAlign: 'middle', fontSize: '21px' }}
-                        cursor={'pointer'}
-                        onClick={() => handleOpenCriteriaModal(assess.criteria)}
-                       />
-                    </div>
+          {unitObject &&
+            unitObject.assessments.map((assess) => (
+              <li key={assess._id}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    margin: '0 15px 0 0',
+                  }}
+                >
+                  <div key={unitObject._id}>
+                    <p className='para-title-style'>{assess.name.fi}</p>
                   </div>
-                  {user?.role === 'teacher' ? (
-                    <TeacherPerformanceFeedBack
-                      selectedValues={selectedValues}
-                      setSelectedValues={setSelectedValues}
-                      unit={unitObject}
-                      setSelectedUnitId={setSelectedUnitId}
-                      selectedUnitId={selectedUnitId}
-                      hasUnsavedChanges={hasUnsavedChanges}
-                      setHasUnsavedChanges={setHasUnsavedChanges}
+                  <div>
+                    <Icon
+                      icon='material-symbols:info'
+                      color='#1769aa'
+                      style={{ verticalAlign: 'middle', fontSize: '21px' }}
+                      cursor={'pointer'}
+                      onClick={() => handleOpenCriteriaModal(assess.criteria)}
                     />
-                  ) : (
-                    <PerformancesFeedback
-                      selectedValues={selectedValues}
-                      setSelectedValues={setSelectedValues}
-                      unit={unitObject}
-                      setSelectedUnitId={setSelectedUnitId}
-                      selectedUnitId={selectedUnitId}
-                      hasUnsavedChanges={hasUnsavedChanges}
-                      setHasUnsavedChanges={setHasUnsavedChanges}
-                    />
-                  )}
-                {/*  </div> 
-               ))} */}
-            </li>
-          ))}
+                  </div>
+                </div>
+                <p>Client: {assess.answer}</p>
+                <p>Supervisor: {assess.answerSupervisor}</p>
+                <p>Teacher: {assess.answerTeacher}</p>
+
+                {user?.role === 'teacher' ? (
+                  <TeacherPerformanceFeedBack
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unitObject}
+                    setSelectedUnitId={setSelectedUnitId}
+                    setSelectedAssessmentId={setSelectedAssessmentId}
+                    selectedAssessmentId
+                    selectedUnitId={selectedUnitId}
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    setHasUnsavedChanges={setHasUnsavedChanges}
+                  />
+                ) : (
+                  <PerformancesFeedback
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unitObject}
+                    setSelectedUnitId={setSelectedUnitId}
+                    selectedUnitId={selectedUnitId}
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    setHasUnsavedChanges={setHasUnsavedChanges}
+                  />
+                )}
+              
+              </li>
+            ))}
         </ul>
       </div>
 
