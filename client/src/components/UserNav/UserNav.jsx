@@ -188,6 +188,11 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
               <>
                 <Typography 
                   sx={{ fontWeight: '600' }}
+                  onClick={
+                    checkUnsavedChanges
+                      ? () => handleIconClick('/degrees/add')
+                      : () => navigate('/degrees/add')
+                  }
                   >Tutkinnot
                 </Typography>
                 <Typography

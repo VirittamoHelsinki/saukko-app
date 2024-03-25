@@ -18,7 +18,6 @@ const TeacherPerformanceFeedBack = ({
   const user = auth.user;
   const [hasChanged, setHasChanged] = useState(false);
 
-  
   // Modal for teacher comment
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
@@ -28,7 +27,6 @@ const TeacherPerformanceFeedBack = ({
   const handlePenClick = () => {
     setIsCommentModalOpen(true);
   };
-
 
   const handleRadioChange = (e, unit, info, value) => {
     setSelectedRadio((prevValues) => ({
@@ -160,13 +158,19 @@ const TeacherPerformanceFeedBack = ({
             </div>
           </div>
         ))}
-        <div className='teacher-comment-button-wrapper'  onClick={handlePenClick}>
-          <button className='teacher-comment-button'>
+        <div
+          className='teacher-comment-button-wrapper'
+          onClick={handlePenClick}
+        >
+          <button
+            className='teacher-comment-button'
+            style={{ backgroundColor: getBackgroundColor() }}
+          >
             Lisää opettajan kommentti{' '}
           </button>
-          <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem'/>
+          <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem' />
         </div>
-        
+
         <RequirementsAndCriteriaModal
           open={isCommentModalOpen}
           onClose={handleCloseCommentModal}
@@ -176,8 +180,7 @@ const TeacherPerformanceFeedBack = ({
           hideCancelButton={false}
           onSave={(comment) => {
             console.log('Comment:', comment);
-          }
-          }
+          }}
         />
       </div>
     </main>
