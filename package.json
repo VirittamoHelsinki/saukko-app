@@ -13,7 +13,7 @@
         "server:prod": "cd ts-server && npm start",
         "client": "cd client && npm start",
         "start:prod": "cd ts-server && node index",
-        "start:dev": "concurrently --kill-others-on-fail \" npm run server:dev\" \" npm run client\""
+        "start:dev": "concurrently -n Server,Client --kill-others-on-fail \" npm run server:dev\" \" npm run client\""
     },
     "author": "",
     "license": "ISC",

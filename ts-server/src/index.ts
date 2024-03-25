@@ -73,9 +73,9 @@ app.use('/api', (_req, res) => {
   });
 });
 
-// Serve the React app
+// Serve the React app 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../../client/build/index.html'));
 });
 
 app.listen(config.PORT, () => {
