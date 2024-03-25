@@ -37,15 +37,16 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const closeSuccess = () => setNotificationSuccess(false);
   const closeError = () => setNotificationError(false);
 
-  //edit description
+  //edit description modal
   const [degreeIdForModal, setDegreeIdForModal] = useState(null);
+  const [responseDegreeDescription, setResponseDegreeDescription] = useState(null);
 
   // Modal
   const [isDegreeNameModalOpen, setIsDegreeNameModalOpen] = useState(false);
   const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
   const [isDeleteDataModalOpen, setIsDeleteDataModalOpen] = useState(false);
-    // Modal for editing degree description
+  // Modal for editing degree description
   const [isDegreeDescriptionModalOpen,setIsDegreeDescriptionModalOpen] = useState(false);
 
   const handleUnitClick = (unitId) => {
@@ -75,10 +76,10 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   };
 
   // Modal for editing degree description
-const handleDegreeDescriptionClick = (degreeId)=>{
-  console.log('Clicked degree ID:', degreeId);
-  setDegreeIdForModal(degreeId);
-}
+  const handleDegreeDescriptionClick = (degreeId)=>{
+    console.log('Clicked degree ID:', degreeId);
+    setDegreeIdForModal(degreeIdForModal);
+  }
 
   const handleCloseDegreeDetailModal = () => {
     setIsDegreeDescriptionModalOpen(false);
@@ -98,6 +99,7 @@ const handleDegreeDescriptionClick = (degreeId)=>{
       // Add more cases for different areas as needed
       case 'degreeDescription':
         setIsDegreeDescriptionModalOpen(true);
+        break;
       default:
       // Handle default case if necessary
     }
@@ -157,6 +159,38 @@ const handleDegreeDescriptionClick = (degreeId)=>{
 
     // setAllInternalDegrees([...allInternalDegrees, response])
   };
+
+  // Save the updated degree description to the database
+  const saveDegreeDescription = async () => {
+    const saveDegreeDescriptionData = {
+      ...degreeDetails,
+      description: {
+        fi: degreeDetails.description.fi,
+      },
+    };
+
+    console.log('Data for put request:', saveDegreeDescriptionData);
+
+    // Send put request
+    const responseDegreeDescription = await updateDegree(`${degreeId}`, saveDegreeDescriptionData);
+    console.log('response', responseDegreeDescription);
+
+    // Save response to state
+    setResponseDegreeDescription(responseDegreeDescription);
+    setIsDegreeDescriptionModalOpen(false);
+
+    //Update the degree's description.fi field in the local state
+    const updatedDegreeDescription = {
+      ...degreeDetails,
+      description: {
+        ...degreeDetails.description.fi,
+        fi: degreeDetails.description.fi,
+      },
+    };
+    console.log('saveDegreeDescription:', degreeDetails.description.fi);
+
+  };
+
 
   // Save the updated unit name to the database
   const saveUnitName = async () => {
@@ -225,12 +259,6 @@ const handleDegreeDescriptionClick = (degreeId)=>{
                     fi: c.fi,
                   };
                 }),
-                // criteria: [
-                //   {
-                //     ...assessment.criteria[0],
-                //     fi: assessment.criteria[0].fi,
-                //   },
-                // ],
               };
             }
             return assessment;
@@ -888,8 +916,8 @@ const handleDegreeDescriptionClick = (degreeId)=>{
             <div className='circle-wrap-icon'>
               <Icon
                 onClick={()=>{
-                  handlePenClick('degreeDescription.fi');
-                  handleDegreeDescriptionClick()
+                  handlePenClick('degreeDescription');
+                  handleDegreeDescriptionClick(degreeIdForModal); //degreeId
                 }}
                 icon='uil:pen'
                 color='#0000bf'
@@ -904,6 +932,7 @@ const handleDegreeDescriptionClick = (degreeId)=>{
               hideIcon={true}
               dialogStyles={{
                 dialogTitle: {
+                  marginRight: '5px',
                   marginLeft: '5px',
                 },
               }}
@@ -936,10 +965,54 @@ const handleDegreeDescriptionClick = (degreeId)=>{
                   </IconButton>
                   <DialogContent>
                     <Box>
-                      <Typography>
-                        sx={{ fontSize: '16px', fontWeight: 'bold'}}
-                      Mikä tuohon tulee?
-                      </Typography>
+                      {/*edit modal description */}
+                      <TextField
+                      value={
+                        degreeDetails.description.fi
+                       ? degreeDetails.description.fi
+                          : ''
+                      }
+                      id='outlined-multiline-static'
+                      multiline={degreeDetails.description.fi && degreeDetails.description.fi > 5}
+                      onChange={(event) =>{
+                        setDegreeDetails((prevState) => ({
+                          ...prevState,
+                          description: {
+                            ...prevState.description,
+                            fi: event.target.value,
+                          },
+                        }))
+                      }}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderRadius: '0',
+                            borderColor: 'black',
+                            borderWidth: '1px',
+                          },
+                        },
+                        width: '100%',
+                        backgroundColor: 'white',
+                        marginTop: '8px',
+                        overflow: 'auto',
+                        height:'200px',
+                      }}
+                      >
+                      </TextField>
+                      <Button
+                        text='Tallenna'
+                        variant='contained'
+                        style={{
+                        marginLeft: '25%',
+                        marginTop: '30px',
+                        marginBottom: '30px',
+                        width: '50%',
+                        backgroundColor: '#0000BF',
+                        color: 'white',
+                        border: 'none',
+                        }}
+                       /*  onClick={saveDegreeDetailsDescription} */
+                        ></Button>
                     </Box>
                   </DialogContent>
                 </>

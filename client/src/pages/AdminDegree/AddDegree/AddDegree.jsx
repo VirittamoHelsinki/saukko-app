@@ -29,6 +29,8 @@ const CheckLength = ({
           onClick={() =>navigate(`${degree._id}`)}
         >
           <p>{degree.name.fi}</p>
+          <br />
+          <small>{degree.diaryNumber}</small>
         </div>
       ))}
     </>
