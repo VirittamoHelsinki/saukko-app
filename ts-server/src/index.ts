@@ -4,7 +4,13 @@ import mongoose from "mongoose";
 import cookieParser from 'cookie-parser';
 import config from "./utils/config";
 import cors, { CorsOptions } from 'cors';
-import {} from './middleware/middleware'
+import middleware from './middlewares/middleware.error';
+
+import authRouter from "./routers/authRouter";
+import degreeRouter from "./routers/degreeRouter";
+import workplaceRouter from "./routers/workplaceRouter";
+import evaluationRouter from "./routers/evaluationRouter";
+import eReqRouter from "./routers/eReqRouter"
 
 const app = express();
 
@@ -21,21 +27,29 @@ const corsOptions: CorsOptions = {
 };
 
 if (config.ENVIRONMENT === 'development') {
-  app.use(requestLogger);
+  app.use(middleware.requestLogger);
   app.use(cors(corsOptions));
   console.log("CORS options enabled")
 } else app.use(cors())
 
 // Connect to the database
 mongoose.set("strictQuery", true);
-mongoose.connect(config.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+// mongoose.connect(config.MONGODB_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// })
+if (!config.MONGODB_URI) throw new Error("Check the .env")
+mongoose.connect(config.MONGODB_URI)
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 db.once('open', () => console.log('Connected to MongoDB'));
+
+app.use("/auth", authRouter);
+app.use ("/api", degreeRouter);
+app.use("/api", workplaceRouter);
+app.use("/api", evaluationRouter);
+app.use("/api", eReqRouter);
 
 // Serve the React app
 app.get('*', (req, res) => {
