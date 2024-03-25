@@ -5,12 +5,17 @@ import cookieParser from 'cookie-parser';
 import config from "./utils/config";
 import cors, { CorsOptions } from 'cors';
 import middleware from './middlewares/middleware.error';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerOptions from './swaggerOptions';
 
 import authRouter from "./routers/authRouter";
 import degreeRouter from "./routers/degreeRouter";
 import workplaceRouter from "./routers/workplaceRouter";
 import evaluationRouter from "./routers/evaluationRouter";
 import eReqRouter from "./routers/eReqRouter"
+
+// import swaggerDocument from "./swaggerDoc.json"
 
 const app = express();
 
@@ -45,15 +50,34 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 db.once('open', () => console.log('Connected to MongoDB'));
 
+// Swagger
+const specs = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+app.get("/kek", () => {
+  throw new Error("KEK")
+})
+
+// Routes
 app.use("/auth", authRouter);
 app.use ("/api", degreeRouter);
 app.use("/api", workplaceRouter);
 app.use("/api", evaluationRouter);
 app.use("/api", eReqRouter);
 
+// Default route for API status
+app.use('/api', (_req, res) => {
+  res.json({
+    message: 'API is working',
+    mongoDbConnection: db.readyState === 1 ? 'connected' : 'disconnected',
+  });
+});
+
 // Serve the React app
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
-module.exports = app;
+app.listen(config.PORT, () => {
+  console.log(`Server is running on port ${config.PORT}`);
+})
