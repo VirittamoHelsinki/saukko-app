@@ -7,18 +7,28 @@ import config from "./config";
 // General email sending function
 const sendEmail = async ({ to, subject, html }: any) => {
   // Create a transporter using the configuration from your settings
+  // const transporter = nodemailer.createTransport({
+  //   // service: config.EMAIL_SERVICE, // TODO: maybe used in older version of nodemailer, commented out
+  //   // port: config.EMAIL_SERVICE_PORT, // TODO: maybe used in older version of nodemailer, commented out
+  //   auth: {
+  //     user: config.EMAIL_SERVICE_USER,
+  //     pass: config.EMAIL_SERVICE_PASSWORD,
+  //   },
+  // });
   const transporter = nodemailer.createTransport({
-    // service: config.EMAIL_SERVICE, // TODO: maybe used in older version of nodemailer, commented out
-    // port: config.EMAIL_SERVICE_PORT, // TODO: maybe used in older version of nodemailer, commented out
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false, // Use `true` for port 465, `false` for all other ports
     auth: {
-      user: config.EMAIL_SERVICE_USER,
-      pass: config.EMAIL_SERVICE_PASSWORD,
-    },
-  });
+        user: 'kaden1@ethereal.email',
+        pass: 'DtUfNWtwg8nk1dYQ9d'
+    }
+});
+
 
   // Define the email options
   const mailOptions = {
-    from: config.EMAIL_SERVICE_FROM,
+    from: '"Kaden O\'Connell 👻" <kaden1@ethereal.email>', // sender address
     to,
     subject,
     html,
@@ -49,7 +59,7 @@ const sendResetPasswordEmail = (user: User) => {
 };
 
 // Function for sending verification email
-const sendVerificationEmail = (user: User, verificationLink: string) => {
+export const sendVerificationEmail = (user: User, verificationLink: string) => {
   const subject = 'Verify Your Email';
   const html = `
     <p>Hello ${user.firstName},</p>
