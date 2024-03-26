@@ -181,43 +181,58 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                 <Icon icon="mdi:user-outline" color='black' onClick={() => navigate('/profile')}/>
             */}
             <Box  sx={{ height: '20vh', marginTop: '50px' }}>
-            <img src={HelsinkiLogo} alt="" />
-            <h1>OsTu</h1>
+              <img src={HelsinkiLogo} alt="" />
+              <h1>OsTu</h1>
             </Box>
             { user&&user.role === 'teacher' && (
               <>
+              <Typography
+              sx={{ fontWeight: '600', cursor: 'pointer' }}
+              onClick={()=>navigate('/')}
+              >
+                Home
+              </Typography>
+              <Typography 
+                sx={{ fontWeight: '600', cursor: 'pointer'  }}
+                onClick={
+                  checkUnsavedChanges
+                    ? () => handleIconClick('/degrees/add')
+                    : () => navigate('/degrees/add')
+                }
+              >Tutkinnot
+              </Typography>
+              <Typography
+                sx={{ fontWeight: '600', cursor: 'pointer' }}
+                onClick={()=>navigate('/add/companyname')}
+              >
+                Työpaikat
+              </Typography>
+              <Typography
+                sx={{ fontWeight: '600', cursor: 'pointer' }}
+                onClick={()=>navigate('/contract-info')}
+              >
+                + Luo uusi sopimus
+              </Typography>
+              <Typography
+                sx={{ fontWeight: '600',cursor: 'pointer' }}
+                onClick={()=>navigate('')}
+                >
+                Asiakkuudet
+              </Typography>
+              <Typography
+                sx={{ fontWeight: '600', cursor: 'pointer' }}
+                onClick={()=>navigate('/admin-menu')}
+              >
+                Opettajat
+              </Typography>
+              </>
+              )}
+              { user&&user.role !=='teacher' && (
+              <>
                 <Typography 
-                  sx={{ fontWeight: '600', cursor: 'pointer'  }}
-                  onClick={
-                    checkUnsavedChanges
-                      ? () => handleIconClick('/degrees/add')
-                      : () => navigate('/degrees/add')
-                  }
-                  >Tutkinnot
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: '600', cursor: 'pointer' }}
-                  onClick={()=>navigate('/add/companyname')}
-                  >
-                  Työpaikat
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: '600', cursor: 'pointer' }}
-                  onClick={()=>navigate('')}
-                  >
-                  + Luo uusi sopimus
-                </Typography>
-                <Typography
                   sx={{ fontWeight: '600',cursor: 'pointer' }}
-                  onClick={()=>navigate('')}
-                  >
-                  Asiakkuudet
-                </Typography>
-                <Typography
-                  sx={{ fontWeight: '600', cursor: 'pointer' }}
-                  onClick={()=>navigate('/admin-menu')}
-                  >
-                  Opettajat
+                  onClick={()=>navigate('/')}
+                >Home
                 </Typography>
               </>
               )}
