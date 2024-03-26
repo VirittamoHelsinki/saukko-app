@@ -131,6 +131,27 @@ const PerformancesFeedback = ({
     (data) => data.assessmentId === assessment._id
   );
 
+  console.log('assess', assessment);
+  console.log('asess id', assessment._id);
+  console.log('asess answer', assessment.answer);
+
+  const assessmentInfo = [
+    {
+      info: 'Itsearviointi',
+      disabled: false,
+      unitId: unit._id,
+      assessmentId: assessment._id,
+      answer: assessment.answer,
+    },
+    {
+      info: 'TPO:n havainto',
+      disabled: false,
+      unitId: unit._id,
+      assessmentId: assessment._id,
+      answerSupervisor: assessment.answerSupervisor,
+    },
+  ]
+
   return (
     <main
       className='feedbackpage__wrapper'
