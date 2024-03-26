@@ -209,19 +209,19 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
               </Typography>
               <Typography
                 sx={{ fontWeight: '600', cursor: 'pointer' }}
-                onClick={()=>navigate('/contract-info')}
+                onClick={()=>navigate('/evaluation-form')}
               >
                 + Luo uusi sopimus
               </Typography>
               <Typography
                 sx={{ fontWeight: '600',cursor: 'pointer' }}
-                onClick={()=>navigate('')}
+                onClick={()=>navigate('#')}
                 >
                 Asiakkuudet
               </Typography>
               <Typography
                 sx={{ fontWeight: '600', cursor: 'pointer' }}
-                onClick={()=>navigate('/admin-menu')}
+                onClick={()=>navigate('#')}
               >
                 Opettajat
               </Typography>
