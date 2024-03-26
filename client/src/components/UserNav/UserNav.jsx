@@ -187,7 +187,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             { user&&user.role === 'teacher' && (
               <>
                 <Typography 
-                  sx={{ fontWeight: '600' }}
+                  sx={{ fontWeight: '600', cursor: 'pointer'  }}
                   onClick={
                     checkUnsavedChanges
                       ? () => handleIconClick('/degrees/add')
@@ -196,29 +196,33 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                   >Tutkinnot
                 </Typography>
                 <Typography
-                  sx={{ fontWeight: '600' }}
+                  sx={{ fontWeight: '600', cursor: 'pointer' }}
+                  onClick={()=>navigate('/add/companyname')}
                   >
                   Työpaikat
                 </Typography>
                 <Typography
-                  sx={{ fontWeight: '600' }}
+                  sx={{ fontWeight: '600', cursor: 'pointer' }}
+                  onClick={()=>navigate('')}
                   >
                   + Luo uusi sopimus
                 </Typography>
                 <Typography
-                  sx={{ fontWeight: '600' }}
+                  sx={{ fontWeight: '600',cursor: 'pointer' }}
+                  onClick={()=>navigate('')}
                   >
                   Asiakkuudet
                 </Typography>
                 <Typography
-                  sx={{ fontWeight: '600' }}
+                  sx={{ fontWeight: '600', cursor: 'pointer' }}
+                  onClick={()=>navigate('/admin-menu')}
                   >
                   Opettajat
                 </Typography>
-                </>
+              </>
               )}
             <Typography 
-            sx={{ fontWeight: '600' }}
+            sx={{ fontWeight: '600',cursor: 'pointer' }}
             onClick={()=>navigate('/profile')}
             >Profiili
             </Typography>
@@ -230,7 +234,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
                   onClick={() => navigate('/profile')}
                   sx={{ marginRight: '20px', marginBottom:'20px' }}>
                   <Typography 
-                    sx={{ fontWeight: '600', fontSize:'14px' }} 
+                    sx={{ fontWeight: '600', fontSize:'14px',cursor: 'pointer' }} 
                     >
                       Kirjaudu ulos
                   </Typography>
