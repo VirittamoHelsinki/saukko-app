@@ -215,7 +215,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
               </Typography>
               <Typography
                 sx={{ fontWeight: '600',cursor: 'pointer' }}
-                onClick={()=>navigate('#')}
+                onClick={()=>navigate('#')} 
                 >
                 Asiakkuudet
               </Typography>
