@@ -233,7 +233,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
               <Typography 
                 onClick={()=>{
                   toggleMenu();
-                  navigate('/degrees/add');
+                  navigate('/evaluation-form');
               }}
                 sx={{ fontWeight: '600', cursor:'pointer' }}>
                 + Luo uusi sopimus
