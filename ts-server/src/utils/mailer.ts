@@ -1,11 +1,11 @@
 import { User } from "../models/userModel";
-import nodemailer from 'nodemailer';
+const nodemailer = require("nodemailer");
 import config from "./config";
 // Import nodemailer and your configuration settings
 // const nodemailer = require('nodemailer');
 
 // General email sending function
-const sendEmail = async ({ to, subject, html }: any) => {
+export const sendEmail = async ({ to, subject, html }: any) => {
   // Create a transporter using the configuration from your settings
   // const transporter = nodemailer.createTransport({
   //   // service: config.EMAIL_SERVICE, // TODO: maybe used in older version of nodemailer, commented out
@@ -16,19 +16,18 @@ const sendEmail = async ({ to, subject, html }: any) => {
   //   },
   // });
   const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
+    host: 'smtp.ethereal.email',
     port: 587,
-    secure: false, // Use `true` for port 465, `false` for all other ports
     auth: {
-        user: 'kaden1@ethereal.email',
-        pass: 'DtUfNWtwg8nk1dYQ9d'
+        user: 'mikayla.waters70@ethereal.email',
+        pass: 'bExN3qkeuHEAsyz8Qx'
     }
 });
 
 
   // Define the email options
   const mailOptions = {
-    from: '"Kaden O\'Connell 👻" <kaden1@ethereal.email>', // sender address
+    from: '"Mikayla Waters 👻" <mikayla.waters70@ethereal.email>', // sender address
     to,
     subject,
     html,
@@ -36,8 +35,8 @@ const sendEmail = async ({ to, subject, html }: any) => {
 
   // Attempt to send the email
   try {
-    await transporter.sendMail(mailOptions);
-    console.log(`Email sent to ${to}`);
+    const info = await transporter.sendMail(mailOptions);
+    return info;
   } catch (error) {
     console.error('Error sending email:', error);
   }
