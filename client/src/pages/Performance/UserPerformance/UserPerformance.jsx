@@ -292,6 +292,9 @@ const UserPerformance = () => {
                 >
                   <div key={unitObject._id}>
                     <p className='para-title-style'>{assess.name.fi}</p>
+                    <p>{assess.answer}</p>
+                    <p>{assess.answerSupervisor}</p>
+                    <p>{assess.answerTeacher}</p>
                   </div>
                   <div>
                     <Icon
@@ -322,7 +325,10 @@ const UserPerformance = () => {
                     setSelectedValues={setSelectedValues}
                     unit={unitObject}
                     setSelectedUnitId={setSelectedUnitId}
+                    assessment={assess}
                     selectedUnitId={selectedUnitId}
+                    setSelectedAssessmentId={setSelectedAssessmentId}
+                    selectedAssessmentId={selectedAssessmentId}
                     hasUnsavedChanges={hasUnsavedChanges}
                     setHasUnsavedChanges={setHasUnsavedChanges}
                   />

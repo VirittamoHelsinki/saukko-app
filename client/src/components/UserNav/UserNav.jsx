@@ -195,7 +195,22 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
           {user && user.role === 'teacher' && (
             <>
               <Typography
-                sx={{ fontWeight: '600' }}
+                sx={{ fontWeight: '600', cursor: 'pointer'  }}
+                onClick={() => {
+                  toggleMenu();
+                  // Check for unsaved changes and navigate if needed
+                  /* if (checkUnsavedChanges) {
+                    handleIconClick('/degrees/add');
+                  } else {
+                    navigate('/degrees/add');
+                  } */
+                  navigate('/');
+                }}
+              >
+                Home
+              </Typography>
+              <Typography
+                sx={{ fontWeight: '600', cursor: 'pointer'  }}
                 onClick={() => {
                   toggleMenu();
                   // Check for unsaved changes and navigate if needed
@@ -208,39 +223,79 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
               >
                 Tutkinnot
               </Typography>
-              <Typography sx={{ fontWeight: '600' }}>Työpaikat</Typography>
-              <Typography sx={{ fontWeight: '600' }}>
+              <Typography
+                onClick={() => {
+                  toggleMenu();
+                  navigate('/add/companyname');
+                  }
+                }
+                sx={{ fontWeight: '600', cursor: 'pointer'  }}>Työpaikat</Typography>
+              <Typography 
+                onClick={()=>{
+                  toggleMenu();
+                  navigate('/degrees/add');
+              }}
+                sx={{ fontWeight: '600', cursor:'pointer' }}>
                 + Luo uusi sopimus
               </Typography>
-              <Typography sx={{ fontWeight: '600' }}>Asiakkuudet</Typography>
-              <Typography sx={{ fontWeight: '600' }}>Opettajat</Typography>
+              <Typography
+                onClick={() => {
+                  toggleMenu();
+                  navigate('/'); // ominaiisuus ei vielä valmis:sprint 12
+                }} 
+                sx={{ fontWeight: '600', cursor: 'pointer'  }}>Asiakkuudet</Typography>
+              <Typography
+                onClick={() => {
+                  toggleMenu();
+                  navigate('/'); // ominaiisuus ei vielä valmis:sprint 12
+                }} 
+                sx={{ fontWeight: '600', cursor: 'pointer'  }}>Opettajat</Typography>
             </>
           )}
-          <Typography
-            sx={{ fontWeight: '600' }}
-            onClick={() => navigate('/profile')}
-          >
-            Profiili
-          </Typography>
-          {/*  {user.role !== 'customer' && evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>} */}
-          {/*  {user.role === 'teacher' && <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>}  */}
-          <Grid container alignItems='flex-start' justifyContent='flex-end'>
-            <Grid item>
-              <Button
-                onClick={() => navigate('/profile')}
-                sx={{ marginRight: '20px', marginBottom: '20px' }}
-              >
-                <Typography sx={{ fontWeight: '600', fontSize: '14px' }}>
-                  Kirjaudu ulos
+          <div>
+            {user && user.role !== 'teacher' && (
+              <>
+                <Typography
+                  sx={{ fontWeight: '600', cursor: 'pointer'  }}
+                  onClick={() => {
+                    toggleMenu();
+                    navigate('/');
+                  }}
+                >
+                  Home
                 </Typography>
-                <Icon
-                  icon='websymbol:logout'
-                  color='black'
-                  style={{ marginLeft: '10px' }}
-                />
-              </Button>
-            </Grid>
-          </Grid>
+              </>
+            )}
+          </div>
+              <Typography
+                sx={{ fontWeight: '600', cursor: 'pointer'  }}
+                onClick={() =>{
+                  toggleMenu(); 
+                  navigate('/profile');}}
+              >
+                Profiili
+              </Typography>
+              {/*  {user.role !== 'customer' && evaluation && <Icon icon="bx:file" onClick={() => navigate('/contract-info')}/>} */}
+              {/*  {user.role === 'teacher' && <Icon icon="mingcute:group-line" onClick={() => navigate('/admin-menu')}/>}  */}
+              <Grid container alignItems='flex-start' justifyContent='flex-end'>
+                <Grid item>
+                  <Button
+                    onClick={() =>{
+                      toggleMenu(); 
+                      navigate('/profile')}}
+                    sx={{ marginRight: '20px', marginBottom: '20px', cursor: 'pointer' }}
+                  >
+                    <Typography sx={{ fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
+                      Kirjaudu ulos
+                    </Typography>
+                    <Icon
+                      icon='websymbol:logout'
+                      color='black'
+                      style={{ marginLeft: '10px' }}
+                    />
+                  </Button>
+                </Grid>
+              </Grid>
         </div>
       </div>
     </main>
