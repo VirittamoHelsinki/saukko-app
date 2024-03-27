@@ -29,7 +29,7 @@ const UserPerformance = () => {
   const user = auth.user;
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
-  let { evaluation, setEvaluation } = useContext(InternalApiContext);
+  const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
   console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { chosenUnitId } = useEvaluationStore();
@@ -296,9 +296,9 @@ const UserPerformance = () => {
                 >
                   <div key={unitObject._id}>
                     <p className='para-title-style'>{assess.name.fi}</p>
-                    <p>{assess.answer}</p>
+                    {/* <p>{assess.answer}</p>
                     <p>{assess.answerSupervisor}</p>
-                    <p>{assess.answerTeacher}</p>
+                    <p>{assess.answerTeacher}</p> */}
                   </div>
                   <div>
                     <Icon
