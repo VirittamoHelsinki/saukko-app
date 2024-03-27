@@ -6,17 +6,23 @@ import FormControl from '@mui/material/FormControl';
 import AuthContext from '../../../store/context/AuthContext';
 import { Icon } from '@iconify/react';
 import RequirementsAndCriteriaModal from '../../RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
+import InternalApiContext from '../../../store/context/InternalApiContext';
 
 const TeacherPerformanceFeedBack = ({
   setSelectedValues,
   unit,
   setSelectedUnitId,
   setHasUnsavedChanges,
+  assessment,
+  setSelectedAssessmentId,
 }) => {
+  console.log('🚀 ~ assessment:', assessment._id);
   const [selectedRadio, setSelectedRadio] = useState({});
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [hasChanged, setHasChanged] = useState(false);
+  //Fetch evaluation and units from store
+  const { evaluation } = useContext(InternalApiContext);
 
   // Modal for teacher comment
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
@@ -36,6 +42,7 @@ const TeacherPerformanceFeedBack = ({
     setHasChanged(true);
     if (unit._id) {
       setSelectedUnitId(unit._id); // This is the unit id
+      setSelectedAssessmentId(assessment._id);
       setHasUnsavedChanges(true);
     } else {
       setHasUnsavedChanges(false);
@@ -71,21 +78,36 @@ const TeacherPerformanceFeedBack = ({
     return '#F2F2F2';
   };
 
-  // Mock data
-  const infodata = [
-    {
-      info: 'Itsearviointi',
-      disabled: true,
-    },
-    {
-      info: 'TPO:n havainto',
-      disabled: true,
-    },
-    {
-      info: 'Opettajan merkintä',
-      disabled: false,
-    },
-  ];
+  // Get data from db
+  const infodata = evaluation.units.flatMap((unit) => {
+    return unit.assessments.flatMap((assessment) => [
+      {
+        info: 'Itsearviointi',
+        disabled: true,
+        unitId: unit._id,
+        assessmentId: assessment._id,
+        answer: assessment.answer,
+      },
+      {
+        info: 'TPO:n havainto',
+        disabled: true,
+        unitId: unit._id,
+        assessmentId: assessment._id,
+        answerSupervisor: assessment.answerSupervisor,
+      },
+      {
+        info: 'Opettajan merkintä',
+        disabled: false,
+        unitId: unit._id,
+        assessmentId: assessment._id,
+        answerTeacher: assessment.answerTeacher,
+      },
+    ]);
+  });
+
+  const infodataForSelectedAssessment = infodata.filter(
+    (data) => data.assessmentId === assessment._id
+  );
 
   return (
     <main
@@ -100,7 +122,7 @@ const TeacherPerformanceFeedBack = ({
         <p style={{ padding: '4px' }}>Osaa itsenäisesti</p>
       </div>
       <div>
-        {infodata.map((item, index) => (
+        {infodataForSelectedAssessment.map((item, index) => (
           <div key={index} className='first-div-style'>
             <p style={{ width: '38%', marginTop: '10px' }}>{item.info}</p>
             <div style={{ marginTop: '10px' }}>
@@ -109,46 +131,48 @@ const TeacherPerformanceFeedBack = ({
                   row
                   aria-labelledby='demo-form-control-label-placement'
                   name={item.info}
-                  // value={selectedRadio}
                   value={selectedRadio[item.info] || ''}
                   unit={unit}
                   onClick={(e) => handleRadioChange(item.info, e, unit)}
                 >
                   <FormControlLabel
                     value='Osaa ohjatusti'
-                    // control={<Radio />}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '70px',
                       },
                     }}
-                    onChange={handleRadioChange}
-                    // disabled={item.disabled}
-                    control={
-                      <Radio
-                        disabled={item.info !== 'Opettajan merkintä'}
-                        onChange={(e) => handleRadioChange(e, unit, item.info)}
-                      />
-                    }
-                    checked={index < 2 || selectedRadio === 'Osaa ohjatusti'}
-                  />
-                  <FormControlLabel
-                    value='Osaa itsenäisesti'
-                    // control={<Radio />}
-                    sx={{
-                      '& .MuiSvgIcon-root': {
-                        marginRight: '8%',
-                      },
-                    }}
-                    // onChange={handleRadioChange}
-                    // disabled={item.disabled}
                     control={
                       <Radio
                         disabled={item.info !== 'Opettajan merkintä'}
                         onChange={(e) => handleRadioChange(e, unit, item.info)}
                         checked={
-                          item.info === 'Opettajan merkintä' &&
-                          selectedRadio === 'Osaa itsenäisesti'
+                          (item.info === 'Opettajan merkintä' &&
+                            selectedRadio === 'Osaa ohjatusti') ||
+                          item.answer === 1 ||
+                          item.answerSupervisor === 1 ||
+                          item.answerTeacher === 1
+                        }
+                      />
+                    }
+                  />
+                  <FormControlLabel
+                    value='Osaa itsenäisesti'
+                    sx={{
+                      '& .MuiSvgIcon-root': {
+                        marginRight: '8%',
+                      },
+                    }}
+                    control={
+                      <Radio
+                        disabled={item.info !== 'Opettajan merkintä'}
+                        onChange={(e) => handleRadioChange(e, unit, item.info)}
+                        checked={
+                          (item.info === 'Opettajan merkintä' &&
+                            selectedRadio === 'Osaa itsenäisesti') ||
+                          item.answer === 2 ||
+                          item.answerSupervisor === 2 ||
+                          item.answerTeacher === 2
                         }
                       />
                     }
@@ -157,7 +181,7 @@ const TeacherPerformanceFeedBack = ({
               </FormControl>
             </div>
           </div>
-        ))}
+        ))}{' '}
         <div
           className='teacher-comment-button-wrapper'
           onClick={handlePenClick}
@@ -170,7 +194,6 @@ const TeacherPerformanceFeedBack = ({
           </button>
           <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem' />
         </div>
-
         <RequirementsAndCriteriaModal
           open={isCommentModalOpen}
           onClose={handleCloseCommentModal}
