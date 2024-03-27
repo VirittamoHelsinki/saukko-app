@@ -1,6 +1,7 @@
 import { User } from "../models/userModel";
 const nodemailer = require("nodemailer");
 import config from "./config";
+import mailerTemplate from "./mailerTemplate";
 // Import nodemailer and your configuration settings
 // const nodemailer = require('nodemailer');
 
@@ -58,16 +59,29 @@ const sendResetPasswordEmail = (user: User) => {
 };
 
 // Function for sending verification email
-export const sendVerificationEmail = (user: User, verificationLink: string) => {
+// TODO: Partial<User> for testing purposes, change to User
+export const sendVerificationEmail = (user: Partial<User>, verificationLink: string) => {
+
+
+  const title = "Uuden käyttäjän verifikaatio";
+  const textUnderHeading = "Opettaja on luonut uuden tunnuksen TPO:lle ja/tai asiakkaalle littämällä heidät suoritukseen.";
+  const subHeading = "Verifikaatiolinkki";
+  const text = 
+  `
+  Tervetuloa OsTu-appin käyttäjäksi!
+  Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${verificationLink}">tästä linkistä</a>
+  Linkki vanhenee kahden tunnin kuluttua.
+
+  Ystävälisin terveisin,
+  Ylläpito
+  `;
+
   const subject = 'Verify Your Email';
-  const html = `
-    <p>Hello ${user.firstName},</p>
-    <p>Please click the link below to verify your email address and change you password: </p>
-    <a href="${verificationLink}">Verify Email</a>
-  `; // Place holder text need to be changed once its been agreed with the client what the email should say
+  const html = mailerTemplate(title, textUnderHeading, subHeading, text);
 
   sendEmail({ to: user.email, subject, html });
 };
+
 
 const sendNotificationMail = (user: User, newSupervisors: any) => { // TODO: fix types
   const subject = 'New Supervisor Added';
