@@ -111,17 +111,11 @@ const PerformancesFeedback = ({
   const infodata = evaluation.units.flatMap((unit) => {
     return unit.assessments.flatMap((assessment) => [
       {
-        info: 'Itsearviointi',
-        disabled: true,
+        info: user.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
+        disabled: false,
         unitId: unit._id,
         assessmentId: assessment._id,
         answer: assessment.answer,
-      },
-      {
-        info: 'TPO:n havainto',
-        disabled: true,
-        unitId: unit._id,
-        assessmentId: assessment._id,
         answerSupervisor: assessment.answerSupervisor,
       },
     ]);
@@ -134,23 +128,10 @@ const PerformancesFeedback = ({
   console.log('assess', assessment);
   console.log('asess id', assessment._id);
   console.log('asess answer', assessment.answer);
+  console.log('asess answer supervisor', assessment.answerSupervisor);
+  console.log('infodataForSelectedAssessment', infodataForSelectedAssessment);
+  console.log('infodataForSelectedAssessmentAnswer', infodataForSelectedAssessment);
 
-  const assessmentInfo = [
-    {
-      info: 'Itsearviointi',
-      disabled: false,
-      unitId: unit._id,
-      assessmentId: assessment._id,
-      answer: assessment.answer,
-    },
-    {
-      info: 'TPO:n havainto',
-      disabled: false,
-      unitId: unit._id,
-      assessmentId: assessment._id,
-      answerSupervisor: assessment.answerSupervisor,
-    },
-  ]
 
   return (
     <main
@@ -158,36 +139,107 @@ const PerformancesFeedback = ({
       style={{ backgroundColor: getBackgroundColor() }}
     >
       <div className='feedback'>
-        <FormControl>
+       {/*  {infodataForSelectedAssessment.map((item, index)=>(
+          <div key={index} className='first-div-style'>
+          <p style={{ width: '38%', marginTop: '10px' }}>{item.info}</p>
+          {user.role === 'customer' ? 'Itsearviointi' : 'TPO:n havainto'}
+          <div style={{ marginTop: '10px' }}>
+          <FormControl>
           <RadioGroup
             row
             aria-labelledby='demo-form-control-label-placement'
-            name='position'
-            value={selectedRadio}
+            name={item.info}
+            value={selectedRadio[item.info] || ''}
             unit={unit}
-            // onClick={(event) => handleRadioChange(event, unit)}
-          >
+            onClick={(event) => handleRadioChange(item.info,event, unit)}
+            >
             <FormControlLabel
               value='Osaa ohjatusti'
               control={
                 <Radio 
-                  onClick={(event) => handleRadioUncheck(event)} 
-                  onChange={(event) => handleRadioChange(event, unit)}
+                onChange={(event) => handleRadioChange(item.info,event, unit)}
+                checked={
+                  (selectedRadio === 'Osaa ohjatusti') ||
+                  (user.role === 'supervisor' && item.answerSupervisor === 1) ||
+                  (user.role !== 'supervisor' && item.answer === 1)
+                }
+                />
+              }
+              />
+            <FormControlLabel
+              value='Osaa itsenäisesti'
+              sx={{
+                '& .MuiSvgIcon-root': {
+                  marginRight: '70px',
+                },
+              }}
+              control={
+                <Radio 
+                onChange={(event) => handleRadioChange(item.info,event, unit)}
+                checked={
+                  (item.info === 'Opettajan merkintä' &&
+                    selectedRadio === 'Osaa ohjatusti') ||
+                  (user.role === 'supervisor' && item.answerSupervisor === 2) ||
+                  (user.role !== 'supervisor' && item.answer === 2)
+                }
                  />
+              }
+            />
+          </RadioGroup>
+          </FormControl>
+          </div>
+          </div>
+        ))} */}
+
+        {/* tästä */}
+        {infodataForSelectedAssessment.map((item, index)=>(
+        <FormControl>
+          <RadioGroup
+            row
+            aria-labelledby='demo-form-control-label-placement'
+            //name='position'
+            name={item.info}
+            value={selectedRadio[item.info] || ''}
+            unit={unit}
+            onClick={(event) => handleRadioChange(item.info, event, unit)}
+            >
+            <FormControlLabel
+              //value='Osaa ohjatusti'
+              value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
+              control={
+                <Radio 
+                //onClick={(event) => handleRadioUncheck(event)} 
+                onChange={(event) => handleRadioChange(item.info,event, unit)}
+                checked={
+                  (selectedRadio === 'Osaa ohjatusti') ||
+                  (user.role === 'supervisor' && item.answerSupervisor === 1) ||
+                  (user.role !== 'supervisor' && item.answer === 1)
+                }
+                />
               }
               label='Osaa ohjatusti'
               labelPlacement='top'
-            />
+              />
             <FormControlLabel
-              value='Osaa itsenäisesti'
+              //value='Osaa itsenäisesti'
+              value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
               control={
-                <Radio onClick={(event) => handleRadioUncheck(event)} onChange={(event) => handleRadioChange(event, unit)} />
+                <Radio 
+                onClick={(event) => handleRadioUncheck(event)} 
+                onChange={(event) => handleRadioChange(event, unit)}
+                checked={
+                  (selectedRadio === 'Osaa itsenäisesti') ||
+                  (user.role === 'supervisor' && item.answerSupervisor === 2) ||
+                  (user.role !== 'supervisor' && item.answer === 2)
+                }
+                 />
               }
               label='Osaa itsenäisesti'
               labelPlacement='top'
             />
           </RadioGroup>
-        </FormControl>{' '}
+        </FormControl>
+        ))}
       </div>
     </main>
   );
