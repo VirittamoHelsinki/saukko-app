@@ -1,10 +1,15 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { Request } from '../types/requestType';
 import userModel from '../models/userModel';
+import { IJwtPayloadAuth, IJwtPayloadChangePassword, IJwtPayloadVerifyEmail } from '../types/jwtPayload'; 
 import mailer from '../utils/mailer';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
 import bcrypt from 'bcrypt';
+import { PasswordValidator } from '../utils/password';
+import { passwordValidationOptions } from '../options';
 
+// TODO: FIX THE LINK
 const registerUser = async (req: Request, res: Response) => {
   // Retrieve the request body
   const body = req.body;
@@ -36,23 +41,8 @@ const registerUser = async (req: Request, res: Response) => {
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
-      role: body.role
-    }
-
-    if (newUserObject.role === "customer") { // add customer's unique properties from the body to the user object
-
-    }
-
-    if (newUserObject.role === "teacher") { // add teacher's unique properties from the body to the user object
-
-    }
-
-    if (newUserObject.role === "supervisor") { // add supervisor's unique properties from the body to the user object
-
-    }
-
-    if (newUserObject.role === "admin") { // add admin's unique properties from the body to the user object
-
+      role: body.role,
+      modified: Math.floor(Date.now() / 1000),
     }
 
     const newUser = new userModel(newUserObject);
@@ -129,51 +119,57 @@ const validateToken = async (req: Request, res: Response) => {
 }
 
 const resetPassword = async (req: Request, res: Response) => {
-  // Retrieve the token from the request body
-  const token = req.body.token || null
-
-  // Retrieve the new password from the request body
-  const newPassword = req.body.newPassword || null
-
-  // check if the token is null, return with an error message
-  if (token === null) {
-    console.log("no token")
-    return res.status(400).json({ errorMessage: "No token" })
-  }
-
-  // check if the new password is null, return with an error message
-  if (newPassword === null) {
-    console.log("password required")
-    return res.status(400).json({ errorMessage: "password required" })
-  }
-
-  // validate the token
-  jwt.verify(token, config.JWT_SECRET, (err: any, decoded: any) => {
-    if (err) {
-      console.log("Invalid token:", err.message)
-      return res.status(401).json({ errorMessage: "Invalid token" })
+  try {
+    // Check the password change token exists
+    if (!req.tokens?.changePassword) throw new Error("Token is missing");
+  
+    // Retrieve the new password from the request body and validate it
+    console.log("BODY", req.body)
+    const password = req.body.newPassword || null
+    const pv = new PasswordValidator()
+    const passwordValidatorErrors = pv.validate(password, passwordValidationOptions)
+  
+    // validate password
+    if (passwordValidatorErrors.length) {
+      console.log("authController.resetPassword.passwordValidatorError", ...passwordValidatorErrors)
+      return res.status(400).json({ errorMessage: `Password validating error: ${passwordValidatorErrors.join(" ")}` })
     }
-
-    // check if the user exists by using the decoded id
-    userModel.findById(decoded.id).then(exitsUser => {
-
-      // if the user does not exist, return with an error message
-      if (!exitsUser) {
-        console.log("user does not exist")
-        return res.status(401).json({ errorMessage: "User does not exist" })
-      }
-
-      // set the new password and save the user object
-      try {
-        exitsUser.setPassword(newPassword)
-        exitsUser.save()
-        console.log("password reset successful")
-        return res.status(200).json({ message: "Password reset successful" })
-      } catch (err) {
-        return _responseWithError(res, 400, err, "Password reset failed")
-      }
-    })
-  })
+  
+    const decoded = jwt.verify(req.tokens.changePassword, config.JWT_SECRET) as IJwtPayloadChangePassword;
+    const user = await userModel.findById(decoded.id);
+  
+    if (!user) {
+      // TODO: This is even that should be reported
+      console.log("resetPassword USER_NOT_FOUND")
+      return res.status(404).json({ errorMessage: 'User not found' });
+    }
+  
+    // Second factor for token validation, user modifiedTime should be older than the token creation time, that ensured that the token is valid only one time.
+    if (user.modified > decoded.iat) { // TODO: 
+      console.log("resetPassword SECOND_FACTOR_FAILS", user.modified, decoded.iat)
+      return res.status(401).json({
+        errorMessage: "Token is expired",
+      });
+    } else {
+      console.log("resetPassword SECOND_FACTOR_SUCCEED", user.modified, decoded.iat)
+    }
+  
+    user.setPassword(password);
+    user.modified = Math.floor(Date.now() / 1000);
+    user.save();
+    console.log("Password successfully changed");
+  
+    // Get Url based of current environment
+    const url = "http://localhost:3000"; // TODO: handle production
+  
+    return res
+      .clearCookie('change-token')
+      .status(200)
+      .json({ message: "Password reset successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ errorMessage: "Internal" })
+  }
 }
 
 const login = async (req: Request, res: Response) => {
@@ -186,11 +182,13 @@ const login = async (req: Request, res: Response) => {
       return res.status(400).json({ errorMessage: "Empty Field" });
     }
 
+    // TODO: Validate email and password
+
     // Check if user with the provided email exists
     const existingUser = await userModel.findOne({ email: email });
     if (!existingUser) {
       console.log("user does not exist")
-      return res.status(401).json({ errorMessage: "Wrong email/password" });
+      return res.status(401).json({ errorMessage: "Incorrect email/password" });
     }
 
     // Check if the provided password matches the hashed password stored in the database
@@ -201,7 +199,7 @@ const login = async (req: Request, res: Response) => {
 
     if (!passwordCorrect) {
       console.log("incorrect password")
-      return res.status(401).json({ errorMessage: "Incorrect password" });
+      return res.status(401).json({ errorMessage: "Incorrect email/password" });
     }
 
     // Create a token for the user, with the user id, name and role
@@ -212,10 +210,11 @@ const login = async (req: Request, res: Response) => {
       console.log("Logged in")
     );
   } catch (err) {
-    return _responseWithError(res, 500, err, "Incorrect username or password");
+    _responseWithError(res, 500, err, "Internal server error");
   }
 }
 
+// TODO: This is pointless, client can just check did the token exists.
 const isLoggedIn = async (req: Request, res: Response) => {
   try {
     // Retrieve token from cookies
@@ -226,9 +225,9 @@ const isLoggedIn = async (req: Request, res: Response) => {
     }
 
     // Verify the token using the JWT_SECRET
-    const validateUser = jwt.verify(token, config.JWT_SECRET);
+    const validateUser = jwt.verify(token, config.JWT_SECRET) as IJwtPayloadAuth;
 
-    console.log("token verified")
+    console.log("validateUser", validateUser)
 
     // If the token is valid, respond with loggedIn:true and the decoded user information
     res.json({ loggedIn: true, user: validateUser });
@@ -240,6 +239,7 @@ const isLoggedIn = async (req: Request, res: Response) => {
   }
 }
 
+// TODO: This is pointless, client can just remove the token on logout.
 const logout = async (req: Request, res: Response) => {
   // Clear the token cookie
   res.cookie("token", "", {
@@ -249,26 +249,55 @@ const logout = async (req: Request, res: Response) => {
 }
 
 const verifyEmail = async (req: Request, res: Response) => {
-  console.log('Verify email endpoint hit with token:', req.params.token);
   try {
-    const { token } = req.params;
-    const decoded = jwt.verify(token, config.JWT_SECRET)
-    if (typeof decoded === "string") {
-      throw new Error('"decoded" is unexpectedly a string')
-    }
+    // Check the request contains the token
+    if (!req.tokens?.verifyEmail) throw new Error("Token is missing");
+
+    // Verify the token
+    const decoded = jwt.verify(req.tokens.verifyEmail, config.JWT_SECRET) as IJwtPayloadVerifyEmail;
+
+    // Get the user that is related to this token
     const user = await userModel.findById(decoded.id);
 
     if (!user) {
-      console.error("User not found with ID:", decoded.id);
-      return res.status(400).json({ errorMessage: 'User not found' });
+      // User does not exists
+      // TODO: This is even that should be reported
+      console.log("verifyEmailm USER_NOT_FOUND")
+      return res.status(404).json({ errorMessage: 'User not found' });
     }
 
+    // Second factor for token validation, user modifiedTime should be older than the token creation time, that ensured that the token is valid only one time.
+    if (user.modified > decoded.iat) { // TODO: 
+      console.log("verifyEmailm SECOND_FACTOR_FAILS", user.modified, decoded.iat)
+      return res.status(401).json({
+        errorMessage: "Token is expired",
+      });
+    } else {
+      console.log("verifyEmailm SECOND_FACTOR_SUCCEED", user.modified, decoded.iat)
+    }
+
+    // Update the state of email verification
     user.emailVerified = true;
+    user.modified = Math.floor(Date.now() / 1000);
     await user.save();
+    console.log("Email successfully activated");
+
+    // Create password change token
+    // can use only once, if user is modified after the token is created, then the token should be useless
+    const passwordChanegeToken = user.generateResetPasswordToken();
+
+    // Get Url based of current environment
+    const url = "http://localhost:3000"; // TODO: handle production
 
     // Redirect user to the reset-password page
-    return res.redirect(`https://saukko.azurewebsites.net/reset-password/${token}`);
+    console.log("Returning REDIRECT TO", url)
+    return res
+      .clearCookie('verification-token')
+      .cookie("change-token", passwordChanegeToken, { httpOnly: true })
+      .json({ redirectURL: `${url}/set-password` });
+      // .redirect(`${url}/reset-password`);
   } catch (err) {
+    console.log("AuthController.verifyEmail. Token: {", req.tokens?.verifyEmail, "}", err)
     return _responseWithError(res, 500, err, 'Error verifying email');
   }
 }

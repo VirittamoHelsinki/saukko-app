@@ -10,6 +10,6 @@ router.post("/reset-password", authController.resetPassword);
 router.post("/login", authController.login);
 router.get("/loggedIn", authController.isLoggedIn);
 router.get("/logout", authController.logout);
-router.get("/verify-email/:token", authController.verifyEmail);
+router.get("/verify-email", authController.verifyEmail);
 
 export default router;

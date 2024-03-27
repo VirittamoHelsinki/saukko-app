@@ -1,21 +1,26 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { Request } from '../types/requestType';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
+import { IJwtPayloadAuth } from '../types/jwtPayload';
+import userModel from '../models/userModel';
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  // Function to authenticate user
+const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.cookies.token; // Extracting token from cookies
-    if (!token)
-      return res.status(401).json({ errorMessage: "Unauthorized" }); // Check if token is missing
+    if (!req.tokens?.auth) throw new Error("Unauthorized");
 
-    const verified = jwt.verify(token, config.JWT_SECRET); // Verify token using JWT_SECRET
-    // TODO: Create dependency injection is needed
-    // req.user = verified.user; // Assign verified user to request object
+    const verified = jwt.verify(req.tokens.auth, config.JWT_SECRET) as IJwtPayloadAuth;
+    req.user = verified;
 
-    next(); // Calling the 'next' function to pass control to the next middleware function
-  } catch (err) {
-    console.error(err);
+    // if (!req.user.emailVerified) {
+    //   const user = await userModel.findOne({ id: verified.id })
+    //   const link = user?.generateEmailVerificationLink()
+    //   console.log("LINK:", link)
+    // }
+
+    next();
+  } catch (error) {
+    console.error("Err(authMiddleware)", error)
     res.status(401).json({ errorMessage: "Unauthorized" });
   }
 }

@@ -14,6 +14,7 @@ import degreeRouter from "./routers/degreeRouter";
 import workplaceRouter from "./routers/workplaceRouter";
 import evaluationRouter from "./routers/evaluationRouter";
 import eReqRouter from "./routers/eReqRouter"
+import tokensMiddleware from "./middlewares/middleware.tokens";
 
 // import swaggerDocument from "./swaggerDoc.json"
 
@@ -39,10 +40,6 @@ if (config.ENVIRONMENT === 'development') {
 
 // Connect to the database
 mongoose.set("strictQuery", true);
-// mongoose.connect(config.MONGODB_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// })
 if (!config.MONGODB_URI) throw new Error("Check the .env")
 mongoose.connect(config.MONGODB_URI)
 const db = mongoose.connection;
@@ -50,22 +47,20 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 db.once('open', () => console.log('Connected to MongoDB'));
 
+// Inject tokens to in Request
+app.use("*", tokensMiddleware);
+
 // Swagger
 const specs = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-app.get("/kek", () => {
-  throw new Error("KEK")
-})
-
 // Routes
 app.use("/auth", authRouter);
-app.use ("/api", degreeRouter);
+app.use("/api", degreeRouter);
 app.use("/api", workplaceRouter);
 app.use("/api", evaluationRouter);
 app.use("/api", eReqRouter);
 
-// Default route for API status
 app.use('/api', (_req, res) => {
   res.json({
     message: 'API is working',

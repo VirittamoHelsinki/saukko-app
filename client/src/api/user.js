@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Uvc from 'universal-cookie'
 
 const baseURL = process.env.REACT_APP_BACKEND_URL
 
@@ -49,16 +50,29 @@ const tokenValidation = async (token) => {
   return response
 }
 
-const resetPassword = async (token, newPassword) => {
+const resetPassword = async (newPassword) => {
   const response = await axios.post(baseURL + middleURL + '/reset-password', {
-    token: token,
-    newPassword: newPassword,
-  })
-  return response
+    newPassword,
+    withCredentials: true
+  });
+  return response;
 }
 
-const verifyEmail = async (token) => {
-  const response = await axios.get(`${baseURL}${middleURL}/verify-email/${token}`);
+const verifyEmail = async () => {
+  const uvc = new Uvc();
+  const verificationToken = uvc.get("verification-token");
+
+  if (!verificationToken) {
+    throw new Error("verification-token missing.")
+  }
+
+  const response = await axios.get(`${baseURL}${middleURL}/verify-email`, {
+    headers: {
+      "verification-token": verificationToken,
+    },
+    withCredentials: true
+  })
+
   return response;
 };
 

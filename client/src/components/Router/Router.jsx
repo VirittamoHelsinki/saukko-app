@@ -36,6 +36,7 @@ import UserPerformance from '../../pages/Performance/UserPerformance/UserPerform
 import AddCompanyName from '../../pages/AddCompanyName/AddCompanyName';
 import EmailVerification from '../../pages/VerifyEmail/VerifyEmail';
 import CreateUnitsSummary from '../../pages/CreateSummary/CreateUnitsSummary';
+import SetPassword from '../../pages/setPassword/SetPassword';
 
 const Router = () => {
   let location = useLocation();
@@ -81,6 +82,7 @@ const Router = () => {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
+            <Route path='/set-password' element={<SetPassword />} />
           </>
         )}
 

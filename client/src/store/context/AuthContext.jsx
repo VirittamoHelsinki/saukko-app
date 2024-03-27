@@ -7,6 +7,7 @@ const AuthContextProvider = (props) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState(null); // Set default to null to clearly indicate "no user"
   const [role, setRole] = useState(' ');
+  const [emailVerified, setEmailVerified] = useState(false);
 
   const getLoggedIn = async () => {
     try {
@@ -16,7 +17,10 @@ const AuthContextProvider = (props) => {
       if (isUserLoggedIn && response.data.user) {
         setUser(response.data.user);
         setRole(response.data.user.role || ' '); // Set a default role if it's not provided
-        console.log("User role: ", response.data.user.role);
+        setEmailVerified(response.data.user.emailVerified)
+        if (!response.data.user.emailVerified) {
+          console.warn("EMAIL IS NOT VERIFIED!")
+        }
       } else {
         setUser(null);
         setRole(' ');
@@ -31,7 +35,7 @@ const AuthContextProvider = (props) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ loggedIn, getLoggedIn, user, role }}>
+    <AuthContext.Provider value={{ loggedIn, getLoggedIn, user, role, emailVerified }}>
       {props.children}
     </AuthContext.Provider>
   );

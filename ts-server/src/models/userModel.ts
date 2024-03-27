@@ -10,8 +10,10 @@ export interface IUser extends Document {
   passwordHash: string;
   role: string;
   emailVerified: boolean;
+  modified: number; // UNIX-timestamp in seconds
   isValidPassword: (password: string) => boolean;
   generateEmailVerificationToken: () => string;
+  generateEmailVerificationLink: () => string;
   setPassword: (password: string) => void;
   generateResetPasswordToken: () => string;
   generateResetPasswordLink: () => string;
@@ -34,6 +36,11 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
     unique: true,
+  },
+  modified: {
+    type: Number,
+    required: true,
+    default: Math.floor(Date.now() / 1000),
   },
   passwordHash: {
     type: String,
@@ -64,6 +71,12 @@ userSchema.methods.generateEmailVerificationToken = function() {
   );
 };
 
+userSchema.methods.generateEmailVerificationLink = function() {
+  return `${
+    config.EMAIL_SERVICE_HOST
+  }/verify-email/${this.generateEmailVerificationToken()}`
+}
+
 // method to set passwordHash
 userSchema.methods.setPassword = function setPassword(password: string) {
   this.passwordHash = bcrypt.hashSync(password, 10);
@@ -75,6 +88,7 @@ userSchema.methods.generateResetPasswordToken =
     return jwt.sign(
       {
         id: this._id,
+        allowPasswordReset: true,
       },
       config.JWT_SECRET,
       { expiresIn: '1h' }
@@ -91,6 +105,7 @@ userSchema.methods.generateResetPasswordLink =
 
 // method to generate JWT token for authentication
 userSchema.methods.generateJWT = function generateJWT() {
+  console.log("this", this)
   return jwt.sign(
     {
       id: this._id,
@@ -98,6 +113,7 @@ userSchema.methods.generateJWT = function generateJWT() {
       firstName: this.firstName,
       lastName: this.lastName,
       role: this.role,
+      emailVerified: this.emailVerified,
     },
     config.JWT_SECRET,
     { expiresIn: '3d' }

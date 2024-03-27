@@ -1,9 +1,11 @@
-import swaggerUi, { SwaggerOptions } from 'swagger-ui-express';
+import { SwaggerOptions } from 'swagger-ui-express';
 
 const swaggerDefinition = {
-  version: '1.0.0',
+  openapi: '3.0.0',
   info: {
-    title: 'Saukko app',
+    title: 'Saukko API with Swagger',
+    version: '1.0.0',
+    description: 'This is API Documentation fot the Saukko-app-API',
   },
   servers: [
     {
@@ -14,8 +16,9 @@ const swaggerDefinition = {
 }
 
 const swaggerOptions: SwaggerOptions = {
-  swaggerDefinition,
-  apis: ['./routes/*.ts'],
+  failOnErrors: true,
+  definition: swaggerDefinition,
+  apis: ['./index.ts', './routers/*.ts'],
 }
 
 export default swaggerOptions;

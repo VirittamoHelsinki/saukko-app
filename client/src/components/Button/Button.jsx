@@ -5,10 +5,11 @@ const Button = (props) => {
     <>
       {/* button and props properties */}
       <button
-        className="button__container"
+        className={"button__container " + (props.className ?? "")}
         onClick={props.onClick}
         type={props.type}
         style={props.style}
+        disabled={props.disabled}
         /* iconeStyle={props.iconeStyle} */
         onSubmit={props.onSubmit}
       >
