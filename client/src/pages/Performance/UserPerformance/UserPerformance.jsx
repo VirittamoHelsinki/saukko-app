@@ -22,20 +22,17 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Fetch evaluation by id from api
-import {
-  fetchEvaluationById,
-  updateEvaluationById,
-} from '../../../api/evaluation';
+import { updateEvaluationById } from '../../../api/evaluation';
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
-  let { evaluation } = useContext(InternalApiContext);
+  let { evaluation, setEvaluation } = useContext(InternalApiContext);
+  const evaluationId = evaluation?._id;
   console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { chosenUnitId } = useEvaluationStore();
-  const { chosenAssessmentId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
@@ -154,24 +151,22 @@ const UserPerformance = () => {
     setOpenNotificationModal(true);
   };
 
-  const handleNotificationModalClose = useCallback(() => {
-    // Navigate to 'unit-list' route
-    if (user?.role === 'customer') {
-      navigate('/unit-list');
-    } else {
-      navigate('/customer-list');
-    }
-
-    // Reload the page
-    window.location.reload();
-  }, [navigate]);
+  // const handleNotificationModalClose = useCallback(() => {
+  //   // Navigate to 'unit-list' route
+  //   if (user?.role === 'customer') {
+  //     navigate('/unit-list');
+  //   } else {
+  //     navigate('/customer-list');
+  //   }
+  //   // Reload the page
+  //   // window.location.reload();
+  // }, [navigate]);
 
   const handleSubmit = async () => {
-    const updatedUnits = evaluation.map((unit) => {
+    const updatedUnits = evaluation.units.map((unit) => {
       if (unit._id === selectedUnitId) {
-        return {
-          ...unit,
-          assessments: unit.assessments.map((assessment) => {
+        const updatedAssessments = unit.assessments.map((assessment) => {
+          if (assessment._id === selectedAssessmentId) {
             let answer = assessment.answer;
             let answerSupervisor = assessment.answerSupervisor;
             let answerTeacher = assessment.answerTeacher;
@@ -188,21 +183,30 @@ const UserPerformance = () => {
               answerSupervisor,
               answerTeacher,
             };
-          }),
+          } else {
+            return assessment;
+          }
+        });
+        return {
+          ...unit,
+          assessments: updatedAssessments,
         };
       } else {
         return unit;
       }
     });
+
     const updatedData = {
       units: updatedUnits,
     };
     try {
       const response = await updateEvaluationById(
-        /* `${evaluationId}`, */
+        `${evaluationId}`,
         updatedData
       );
 
+      // set response to the store
+      setEvaluation(response);
       console.log('Evaluation updated:', response.units);
       setSelectedValues([]);
     } catch (error) {
@@ -292,9 +296,9 @@ const UserPerformance = () => {
                 >
                   <div key={unitObject._id}>
                     <p className='para-title-style'>{assess.name.fi}</p>
-                    {/* <p>{assess.answer}</p>
+                    <p>{assess.answer}</p>
                     <p>{assess.answerSupervisor}</p>
-                    <p>{assess.answerTeacher}</p> */}
+                    <p>{assess.answerTeacher}</p>
                   </div>
                   <div>
                     <Icon
@@ -525,7 +529,7 @@ const UserPerformance = () => {
         title='Lähetetty'
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
-        handleClose={handleNotificationModalClose}
+        // handleClose={handleNotificationModalClose}
       />
     </main>
   );
