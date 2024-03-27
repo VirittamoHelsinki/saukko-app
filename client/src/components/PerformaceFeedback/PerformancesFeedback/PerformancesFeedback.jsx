@@ -125,13 +125,6 @@ const PerformancesFeedback = ({
     (data) => data.assessmentId === assessment._id
   );
 
-  console.log('assess', assessment);
-  console.log('asess id', assessment._id);
-  console.log('asess answer', assessment.answer);
-  console.log('asess answer supervisor', assessment.answerSupervisor);
-  console.log('infodataForSelectedAssessment', infodataForSelectedAssessment);
-  console.log('infodataForSelectedAssessmentAnswer', infodataForSelectedAssessment);
-
 
   return (
     <main
@@ -204,8 +197,8 @@ const PerformancesFeedback = ({
             onClick={(event) => handleRadioChange(item.info, event, unit)}
             >
             <FormControlLabel
-              //value='Osaa ohjatusti'
-              value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
+              value='Osaa ohjatusti'
+              //value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
               control={
                 <Radio 
                 //onClick={(event) => handleRadioUncheck(event)} 
@@ -213,7 +206,7 @@ const PerformancesFeedback = ({
                 checked={
                   (selectedRadio === 'Osaa ohjatusti') ||
                   (user.role === 'supervisor' && item.answerSupervisor === 1) ||
-                  (user.role !== 'supervisor' && item.answer === 1)
+                  (user.role === 'customer' && item.answer === 1)
                 }
                 />
               }
@@ -221,8 +214,8 @@ const PerformancesFeedback = ({
               labelPlacement='top'
               />
             <FormControlLabel
-              //value='Osaa itsenäisesti'
-              value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
+              value='Osaa itsenäisesti'
+              //value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
               control={
                 <Radio 
                 onClick={(event) => handleRadioUncheck(event)} 
@@ -230,7 +223,7 @@ const PerformancesFeedback = ({
                 checked={
                   (selectedRadio === 'Osaa itsenäisesti') ||
                   (user.role === 'supervisor' && item.answerSupervisor === 2) ||
-                  (user.role !== 'supervisor' && item.answer === 2)
+                  (user.role === 'customer' && item.answer === 2)
                 }
                  />
               }
