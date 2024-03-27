@@ -20,15 +20,15 @@ export const sendEmail = async ({ to, subject, html }: any) => {
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-        user: 'mikayla.waters70@ethereal.email',
-        pass: 'bExN3qkeuHEAsyz8Qx'
+        user: 'adolphus.price@ethereal.email',
+        pass: '9E5bUarmV9Vzt7pTz8'
     }
 });
 
 
   // Define the email options
   const mailOptions = {
-    from: '"Mikayla Waters 👻" <mikayla.waters70@ethereal.email>', // sender address
+    from: '"Adolphus Price 👻" <adolphus.price@ethereal.email>', // sender address
     to,
     subject,
     html,
@@ -36,8 +36,7 @@ export const sendEmail = async ({ to, subject, html }: any) => {
 
   // Attempt to send the email
   try {
-    const info = await transporter.sendMail(mailOptions);
-    return info;
+    await transporter.sendMail(mailOptions);
   } catch (error) {
     console.error('Error sending email:', error);
   }
@@ -76,7 +75,32 @@ export const sendVerificationEmail = (user: Partial<User>, verificationLink: str
   Ylläpito
   `;
 
-  const subject = 'Verify Your Email';
+  const subject = 'Vahvista sähköpostiosoitteesi';
+  const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+
+  sendEmail({ to: user.email, subject, html });
+};
+
+export const sendVerificationDoneEmail = (user: Partial<User>) => {
+
+
+  const title = "Uuden käyttäjän verifikaatio";
+  const textUnderHeading = "Opettaja on luonut uuden tunnuksen TPO:lle ja/tai asiakkaalle littämällä heidät suoritukseen.";
+  const subHeading = "Verifiointi tehty";
+  const text = 
+  `
+  Sinulla on nyt käyttäjätili OsTu –appiin.
+
+  Löydät asiakkuuteesi liittyvät tiedot omalta tililtäsi, jossa voit myös päivittää omia tietojasi. 
+  
+  Tervetuloa mukaan! 
+  
+  
+  Ystävällisin terveisin, 
+  Ylläpito
+  `;
+
+  const subject = 'Sähköpostiosoitteesi on vahvistettu';
   const html = mailerTemplate(title, textUnderHeading, subHeading, text);
 
   sendEmail({ to: user.email, subject, html });

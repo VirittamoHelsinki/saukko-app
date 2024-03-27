@@ -36,6 +36,10 @@ const mailTemplate = (title: string, textUnderHeading: string, subHeading: strin
             margin-left: 50px;
             text-align: left;
         }
+        .body pre {
+            font-family:Helvetica, Neue, sans-serif;
+        }
+
         </style>
         </head>
         <body>
