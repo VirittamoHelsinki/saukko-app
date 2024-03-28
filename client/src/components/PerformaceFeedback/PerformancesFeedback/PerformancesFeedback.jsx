@@ -65,16 +65,36 @@ const PerformancesFeedback = ({
     }
   };
 
+  // const getBackgroundColor = () => {
+  //   if (
+  //     selectedRadio === 'Osaa ohjatusti' ||
+  //     selectedRadio === 'Osaa itsenäisesti'
+  //   ) {
+  //     if (user?.role === 'supervisor') {
+  //       return '#F6E2E6';
+  //     } else if (user?.role === 'customer') {
+  //       return '#E2F5F3'; 
+  //     }
+  //   }
+  //   return '#F2F2F2';
+  // };
+
   const getBackgroundColor = () => {
     if (
       selectedRadio === 'Osaa ohjatusti' ||
       selectedRadio === 'Osaa itsenäisesti'
     ) {
       if (user?.role === 'supervisor') {
-        return (assessment.answerSupervisor === 1 || assessment.answerSupervisor === 2) ? '#F6E2E6' : '#F2F2F2';
+        return '#F6E2E6';
       } else if (user?.role === 'customer') {
-        return (assessment.answer === 1 || assessment.answer === 2) ? '#E2F5F3' : '#F2F2F2'; 
+        return '#E2F5F3'; 
       }
+    }
+    // check the answer and set the background color
+    if(user?.role === 'supervisor' && assessment.answerSupervisor !== 0) {
+      return '#F6E2E6';
+    }else if(user?.role === 'customer' && assessment.answer !== 0) {
+      return '#E2F5F3';
     }
     return '#F2F2F2';
   };

@@ -296,9 +296,9 @@ const UserPerformance = () => {
                 >
                   <div key={unitObject._id}>
                     <p className='para-title-style'>{assess.name.fi}</p>
-                    {/* <p>{assess.answer}</p>
+                    <p>{assess.answer}</p>
                     <p>{assess.answerSupervisor}</p>
-                    <p>{assess.answerTeacher}</p> */}
+                    <p>{assess.answerTeacher}</p>
                   </div>
                   <div>
                     <Icon
