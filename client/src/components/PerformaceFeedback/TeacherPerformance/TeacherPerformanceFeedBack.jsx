@@ -75,7 +75,7 @@ const TeacherPerformanceFeedBack = ({
         return '#FFF4B4';
       }
     }
-    return '#F2F2F2';
+     return (assessment.answerTeacher !== 0) ? '#FFF4B4' : '#F2F2F2';
   };
 
   // Get data from db
