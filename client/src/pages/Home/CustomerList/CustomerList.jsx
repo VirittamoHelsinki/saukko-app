@@ -108,7 +108,7 @@ export default function CustomerList() {
   return (
     <main className='customerList__wrapper'>
       <WavesHeader
-        title={`Tervetuloa ${user?.firstName}`}
+        title={`Tervetuloa, ${user?.firstName}`}
         disabled={true}
       />
 

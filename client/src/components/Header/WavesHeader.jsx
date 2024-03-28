@@ -77,7 +77,7 @@ const WavesHeader = (props) => {
       )}
       {/* <img src={logoToUse} alt='' /> */}
       <h1><b>{props.title}</b></h1>
-      <h2>{props.secondTitle}</h2>
+      <p>{props.secondTitle}</p>
       <Waves fill={headerColor}/>
     </main>
   );

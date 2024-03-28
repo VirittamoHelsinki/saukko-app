@@ -39,10 +39,26 @@ const UnitList = () => {
 
   return (
     <main className='unitList__wrapper'>
-      <WavesHeader
-        title='Saukko'
-        secondTitle={`Tervetuloa, ${user?.firstName}`}
-      />
+      {/* <WavesHeader
+        title={`${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`}
+        secondTitle='Suoritukset'
+        disabled={true}
+      /> */}
+
+{user.role === 'teacher' || user.role === 'supervisor' ? (
+  <WavesHeader
+    title={`${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`}
+    secondTitle='Suoritukset'
+    disabled={true}
+  />
+) : (
+  <WavesHeader
+    title={`Tervetuloa, ${evaluation?.customerId.firstName} `}
+    secondTitle='Suoritukset'
+    disabled={true}
+  />
+)}
+
       <div className='unitList__notifications'>
         <h3> Ilmoitukset </h3>
         <NotificationBadge number1={10} number2={5} />
