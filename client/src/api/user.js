@@ -9,6 +9,7 @@ const fetchLoggedIn = async () => {
   const response = await axios.get(baseURL + middleURL + '/loggedIn')
   return response
 }
+
 const registration = async (registrationData) => {
   const { firstName, lastName, email, password, role } = registrationData;
   try {
@@ -27,6 +28,7 @@ const registration = async (registrationData) => {
     throw error;
   }
 };
+
 const logoutUser = async () => {
   await axios.get(baseURL + middleURL + '/logout');
 }
@@ -58,7 +60,25 @@ const resetPassword = async (newPassword) => {
   return response;
 }
 
+const requestEmailVerificationLinkAsync = async () => {
+  // Because the client cannot access to http-only cookies, this is the "case" when we cannot use these
+  // Cookie is send as header and handled in backend cookie-middleware.
+  const uvc = new Uvc();
+  const verificationToken = uvc.get("verification-token");
+
+  const response = await axios.get(baseURL + middleURL + '/resend-email-verification', {
+    headers: {
+      "verification-token": verificationToken,
+    },
+    withCredentials: true
+  });
+
+  return response;
+}
+
 const verifyEmail = async () => {
+  // Because the client cannot access to http-only cookies, this is the "case" when we cannot use these
+  // Cookie is send as header and handled in backend cookie-middleware.
   const uvc = new Uvc();
   const verificationToken = uvc.get("verification-token");
 
@@ -70,11 +90,20 @@ const verifyEmail = async () => {
     headers: {
       "verification-token": verificationToken,
     },
-    withCredentials: true
+    withCredentials: true,
   })
 
   return response;
 };
 
-export { forgotPassword, fetchLoggedIn, logoutUser, loginUser, tokenValidation, resetPassword, registration, verifyEmail }
-
+export {
+  forgotPassword,
+  fetchLoggedIn,
+  logoutUser,
+  loginUser,
+  tokenValidation,
+  resetPassword,
+  registration,
+  verifyEmail,
+  requestEmailVerificationLinkAsync,
+}

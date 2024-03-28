@@ -11,5 +11,6 @@ router.post("/login", authController.login);
 router.get("/loggedIn", authController.isLoggedIn);
 router.get("/logout", authController.logout);
 router.get("/verify-email", authController.verifyEmail);
+router.get("/resend-email-verification", authController.resendEmailVerificationLink)
 
 export default router;

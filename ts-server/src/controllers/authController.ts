@@ -9,6 +9,15 @@ import bcrypt from 'bcrypt';
 import { PasswordValidator } from '../utils/password';
 import { passwordValidationOptions } from '../options';
 
+const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
+  if (err.message) {
+    console.log(err.message)
+    res.status(statusCode).json({ errorMessage: err.message })
+  } else {
+    res.status(statusCode).json({ errorMessage: optionalMessage ?? "unknown error" })
+  }
+}
+
 // TODO: FIX THE LINK
 const registerUser = async (req: Request, res: Response) => {
   // Retrieve the request body
@@ -69,15 +78,6 @@ const registerUser = async (req: Request, res: Response) => {
   } catch (err) {
     console.error(err);
     res.status(500).send();
-  }
-}
-
-const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
-  if (err.message) {
-    console.log(err.message)
-    res.status(statusCode).json({ errorMessage: err.message })
-  } else {
-    res.status(statusCode).json({ errorMessage: optionalMessage ?? "unknown error" })
   }
 }
 
@@ -158,9 +158,6 @@ const resetPassword = async (req: Request, res: Response) => {
     user.modified = Math.floor(Date.now() / 1000);
     user.save();
     console.log("Password successfully changed");
-  
-    // Get Url based of current environment
-    const url = "http://localhost:3000"; // TODO: handle production
   
     return res
       .clearCookie('change-token')
@@ -302,6 +299,42 @@ const verifyEmail = async (req: Request, res: Response) => {
   }
 }
 
+const resendEmailVerificationLink = async (req: Request, res: Response) => {
+  // Check the request contains the token
+  if (!req.tokens?.verifyEmail) throw new Error("Token is missing");
+
+  // Verify the token
+  const decoded = jwt.verify(req.tokens.verifyEmail, config.JWT_SECRET) as IJwtPayloadVerifyEmail;
+
+  // Get the user that is related to this token
+  const user = await userModel.findById(decoded.id);
+
+  if (!user) {
+    // User does not exists
+    // TODO: This is even that should be reported
+    console.log("resendEmailVerificationLink USER_NOT_FOUND")
+    return res.status(404).json({ errorMessage: 'Invalid token' });
+  }
+
+  if (user.emailVerified) {
+    return res.status(400).json({ errorMessage: 'Invalid token' });
+  }
+
+  
+  if (user.role !== 'supervisor') {
+    const verificationToken = user.generateEmailVerificationToken();
+    const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`; // TODO: fix the link
+
+    // Send verification email
+    mailer.sendVerificationEmail(user, verificationLink);
+    console.log('user created and verification email sent');
+  }
+
+  res
+    .status(201)
+    .json({ message: "Verification email sent." });
+}
+
 export default {
   registerUser,
   forgotPassword,
@@ -311,4 +344,5 @@ export default {
   isLoggedIn,
   logout,
   verifyEmail,
+  resendEmailVerificationLink,
 }

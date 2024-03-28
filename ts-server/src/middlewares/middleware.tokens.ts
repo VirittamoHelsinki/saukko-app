@@ -3,9 +3,12 @@ import { Request } from '../types/requestType';
 
 const tokensMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log("Cookies", req.cookies)
     const auth: string|undefined = req.cookies.token;
     const changePassword: string|undefined = req.cookies["change-token"];
+
+    // Because user is accessed for that cookie via email, we cannot set that as http-only cookie
+    // Only server can set the http-only cookies, not in client-side
+    // However, this is a singleuse token and headers are also SSL encrypted so everything should be ok.
     const verifyEmail = req.headers["verification-token"] as string|undefined;
 
     req.tokens = {
@@ -13,9 +16,6 @@ const tokensMiddleware = async (req: Request, res: Response, next: NextFunction)
       changePassword,
       verifyEmail
     }
-
-    // console.log(`TOKENS\nauth: ${auth}\nchangePassword: ${changePassword}\nverifyEmail: ${verifyEmail}`);
-
 
     next();
   } catch (error) {
