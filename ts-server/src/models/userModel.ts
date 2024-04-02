@@ -2,6 +2,7 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from '../utils/config'
+import { IJwtPayload, useCase } from "../types/jwtPayload";
 
 export interface IUser extends Document {
   firstName: string;
@@ -17,7 +18,7 @@ export interface IUser extends Document {
   setPassword: (password: string) => void;
   generateResetPasswordToken: () => string;
   generateResetPasswordLink: () => string;
-  generateJWT: () => string;
+  generateJWT: () => { info: string; auth: string };
   addProperties: () => void;
 }
 
@@ -58,23 +59,25 @@ const userSchema = new Schema<IUser>({
 });
 
 // method to check if password is correct
-userSchema.methods.isValidPassword = function(password: string) {
+userSchema.methods.isValidPassword = function (password: string) {
   bcrypt.compareSync(password, this.passwordHash)
 }
 
 // method to generate email verification token
-userSchema.methods.generateEmailVerificationToken = function() {
+userSchema.methods.generateEmailVerificationToken = function () {
   return jwt.sign(
-    { id: this._id, email: this.email },
+    {
+      id: this._id,
+      useCase: useCase.VERIFY_EMAIL,
+    },
     config.JWT_SECRET,
-    { expiresIn: '1d' } 
+    { expiresIn: '1d' }
   );
 };
 
-userSchema.methods.generateEmailVerificationLink = function() {
-  return `${
-    config.EMAIL_SERVICE_HOST
-  }/verify-email/${this.generateEmailVerificationToken()}`
+userSchema.methods.generateEmailVerificationLink = function () {
+  return `${config.EMAIL_SERVICE_HOST
+    }/verify-email/${this.generateEmailVerificationToken()}`
 }
 
 // method to set passwordHash
@@ -88,7 +91,7 @@ userSchema.methods.generateResetPasswordToken =
     return jwt.sign(
       {
         id: this._id,
-        allowPasswordReset: true,
+        useCase: useCase.CHANGE_PASSWORD,
       },
       config.JWT_SECRET,
       { expiresIn: '1h' }
@@ -98,26 +101,33 @@ userSchema.methods.generateResetPasswordToken =
 // method to generate reset-password token and link
 userSchema.methods.generateResetPasswordLink =
   function generateResetPasswordLink() {
-    return `${
-      config.EMAIL_SERVICE_HOST
-    }/reset-password/${this.generateResetPasswordToken()}`;
+    return `${config.EMAIL_SERVICE_HOST
+      }/reset-password/${this.generateResetPasswordToken()}`;
   };
 
 // method to generate JWT token for authentication
 userSchema.methods.generateJWT = function generateJWT() {
-  console.log("this", this)
-  return jwt.sign(
-    {
-      id: this._id,
-      email: this.email,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      role: this.role,
-      emailVerified: this.emailVerified,
-    },
-    config.JWT_SECRET,
-    { expiresIn: '3d' }
-  );
+
+  return {
+    auth: jwt.sign(
+      {
+        id: this._id,
+        useCase: useCase.AUTH,
+        role: this.role,
+        verified: this.emailVerified,
+      },
+      config.JWT_SECRET,
+      { expiresIn: '3d' }
+    ),
+    info: jwt.sign(
+      {
+        id: this._id,
+        useCase: useCase.INFO,
+      },
+      config.JWT_SECRET,
+      { expiresIn: '3d' }
+    ),
+  };
 };
 
 // Transform the returned object to remove the passwordHash and __v properties
@@ -127,27 +137,5 @@ userSchema.set('toJSON', {
     delete returnedObject.passwordHash;
   },
 });
-
-// const User = mongoose.model('User', userSchema);
-// User.addProperties = function addProperties(role) {
-//   if (role === 'customer') {
-//     userSchema.add({
-//       // add here the properties for the customer if needed
-//     });
-//   } else if (role === 'teacher') {
-//     userSchema.add({
-//       // add here the properties for the teacher if needed
-//     });
-//   } else if (role === 'supervisor') {
-//     userSchema.add({
-//       // add here the properties for the supervisor if needed
-//     });
-//   } else if (role === 'admin') {
-//     userSchema.add({
-//       // add here the properties for the admin if needed
-//     });
-//   }
-// };
-
 
 export default mongoose.model<IUser & Document>("User", userSchema);

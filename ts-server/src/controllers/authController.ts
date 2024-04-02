@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { Request } from '../types/requestType';
 import userModel from '../models/userModel';
-import { IJwtPayloadAuth, IJwtPayloadChangePassword, IJwtPayloadVerifyEmail } from '../types/jwtPayload'; 
+import { IJwtPayload, useCase } from '../types/jwtPayload';
 import mailer from '../utils/mailer';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
@@ -41,8 +41,6 @@ const registerUser = async (req: Request, res: Response) => {
     console.log("user already exists")
     return res.status(400).json({ errorMessage: "User already exists" });
   }
-
-  // userModel.addProperties(body.role) // add unique properties to the user object based on the role
 
   try {
     // Create a new user object, with the provided name, email, password and role
@@ -108,6 +106,7 @@ const forgotPassword = async (req: Request, res: Response) => {
   }
 }
 
+// TODO: this is pointless, frontend dont need if token is valid or not. or what is reason for it?
 const validateToken = async (req: Request, res: Response) => {
   jwt.verify(req.body.token, config.JWT_SECRET, (err: any, decoded: any) => {
     if (err) {
@@ -122,29 +121,36 @@ const resetPassword = async (req: Request, res: Response) => {
   try {
     // Check the password change token exists
     if (!req.tokens?.changePassword) throw new Error("Token is missing");
-  
+
     // Retrieve the new password from the request body and validate it
     console.log("BODY", req.body)
     const password = req.body.newPassword || null
     const pv = new PasswordValidator()
     const passwordValidatorErrors = pv.validate(password, passwordValidationOptions)
-  
+
     // validate password
     if (passwordValidatorErrors.length) {
       console.log("authController.resetPassword.passwordValidatorError", ...passwordValidatorErrors)
       return res.status(400).json({ errorMessage: `Password validating error: ${passwordValidatorErrors.join(" ")}` })
     }
-  
-    const decoded = jwt.verify(req.tokens.changePassword, config.JWT_SECRET) as IJwtPayloadChangePassword;
+
+    const decoded = jwt.verify(req.tokens.changePassword, config.JWT_SECRET) as IJwtPayload;
     const user = await userModel.findById(decoded.id);
-  
+
     if (!user) {
       // TODO: This is even that should be reported
       console.log("resetPassword USER_NOT_FOUND")
       return res.status(404).json({ errorMessage: 'User not found' });
     }
-  
-    // Second factor for token validation, user modifiedTime should be older than the token creation time, that ensured that the token is valid only one time.
+
+    // Second factor for token validation, token should be created for password change process
+    if (decoded.useCase !== useCase.CHANGE_PASSWORD) {
+      return res.status(401).json({
+        errorMessage: "Invalid token",
+      })
+    }
+
+    // Third factor for token validation, user modifiedTime should be older than the token creation time, that ensured that the token is valid only one time.
     if (user.modified > decoded.iat) { // TODO: 
       console.log("resetPassword SECOND_FACTOR_FAILS", user.modified, decoded.iat)
       return res.status(401).json({
@@ -153,12 +159,12 @@ const resetPassword = async (req: Request, res: Response) => {
     } else {
       console.log("resetPassword SECOND_FACTOR_SUCCEED", user.modified, decoded.iat)
     }
-  
+
     user.setPassword(password);
     user.modified = Math.floor(Date.now() / 1000);
     user.save();
     console.log("Password successfully changed");
-  
+
     return res
       .clearCookie('change-token')
       .status(200)
@@ -199,13 +205,19 @@ const login = async (req: Request, res: Response) => {
       return res.status(401).json({ errorMessage: "Incorrect email/password" });
     }
 
-    // Create a token for the user, with the user id, name and role
-    const token = await existingUser.generateJWT()
+    // Create a tokens for the user
+    const tokens = existingUser.generateJWT();
 
     // Send token via HTTP-only cookie
-    res.cookie("token", token, { httpOnly: true }).send(
-      console.log("Logged in")
-    );
+    res
+      .status(200)
+      // This token have the same expiration time than auth token and it's accessible from client.
+      // So client side can use that token to test, did the user is signed in or not. It is not possible to use that auth_state token for authorization.
+      .cookie("auth_state", tokens.info, { httpOnly: false })
+      // "token" is "HTTP-Only" token, it is not programmatically accessible from client, but client can add it automatically in requests.
+      // It is used for authorize the requests created by the client.
+      .cookie("token", tokens.auth, { httpOnly: true })
+      .json({ message: "User is signed in" })
   } catch (err) {
     _responseWithError(res, 500, err, "Internal server error");
   }
@@ -222,7 +234,7 @@ const isLoggedIn = async (req: Request, res: Response) => {
     }
 
     // Verify the token using the JWT_SECRET
-    const validateUser = jwt.verify(token, config.JWT_SECRET) as IJwtPayloadAuth;
+    const validateUser = jwt.verify(token, config.JWT_SECRET) as IJwtPayload;
 
     console.log("validateUser", validateUser)
 
@@ -236,13 +248,12 @@ const isLoggedIn = async (req: Request, res: Response) => {
   }
 }
 
-// TODO: This is pointless, client can just remove the token on logout.
-const logout = async (req: Request, res: Response) => {
+const logout = async (_req: Request, res: Response) => {
   // Clear the token cookie
-  res.cookie("token", "", {
-    httpOnly: true,
-    expires: new Date(0),
-  }).send(console.log("Logged out"));
+  res
+    .status(200)
+    .clearCookie('token')
+    .json({ message: "User is signed out" })
 }
 
 const verifyEmail = async (req: Request, res: Response) => {
@@ -251,7 +262,7 @@ const verifyEmail = async (req: Request, res: Response) => {
     if (!req.tokens?.verifyEmail) throw new Error("Token is missing");
 
     // Verify the token
-    const decoded = jwt.verify(req.tokens.verifyEmail, config.JWT_SECRET) as IJwtPayloadVerifyEmail;
+    const decoded = jwt.verify(req.tokens.verifyEmail, config.JWT_SECRET) as IJwtPayload;
 
     // Get the user that is related to this token
     const user = await userModel.findById(decoded.id);
@@ -292,7 +303,7 @@ const verifyEmail = async (req: Request, res: Response) => {
       .clearCookie('verification-token')
       .cookie("change-token", passwordChanegeToken, { httpOnly: true })
       .json({ redirectURL: `${url}/set-password` });
-      // .redirect(`${url}/reset-password`);
+    // .redirect(`${url}/reset-password`);
   } catch (err) {
     console.log("AuthController.verifyEmail. Token: {", req.tokens?.verifyEmail, "}", err)
     return _responseWithError(res, 500, err, 'Error verifying email');
@@ -304,7 +315,7 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
   if (!req.tokens?.verifyEmail) throw new Error("Token is missing");
 
   // Verify the token
-  const decoded = jwt.verify(req.tokens.verifyEmail, config.JWT_SECRET) as IJwtPayloadVerifyEmail;
+  const decoded = jwt.verify(req.tokens.verifyEmail, config.JWT_SECRET) as IJwtPayload;
 
   // Get the user that is related to this token
   const user = await userModel.findById(decoded.id);
@@ -320,7 +331,7 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
     return res.status(400).json({ errorMessage: 'Invalid token' });
   }
 
-  
+
   if (user.role !== 'supervisor') {
     const verificationToken = user.generateEmailVerificationToken();
     const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`; // TODO: fix the link

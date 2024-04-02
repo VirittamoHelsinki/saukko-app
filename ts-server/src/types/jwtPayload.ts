@@ -1,22 +1,15 @@
-export interface IJwtPayloadAuth {
-  id: string,
-  email: string,
-  firstName: string,
-  lastName: string,
-  role: string;
-  emailVerified: boolean;
+export enum useCase {
+  AUTH,
+  CHANGE_PASSWORD,
+  VERIFY_EMAIL,
+  INFO,
 }
 
-export interface IJwtPayloadChangePassword {
-  id: string;
-  allowPasswordReset: boolean;
+export interface IJwtPayload {
+  id: string, // User-ID
+  useCase: useCase; // Reason for the token
   iat: number; // UNIX-Timestamp in seconds
   exp: number; // UNIX-Timestamp in seconds
-}
-
-export interface IJwtPayloadVerifyEmail {
-  id: string;
-  email: string;
-  iat: number; // UNIX-Timestamp in seconds
-  exp: number; // UNIX-Timestamp in seconds
+  role?: string; // Role of the user
+  verified?: boolean; // Did the email is verified
 }

@@ -1,8 +1,8 @@
 import { Request as ExpressRequest } from 'express'
-import { IJwtPayloadAuth } from './jwtPayload'
+import { User } from '../models/userModel';
 
 export interface Request extends  ExpressRequest {
-  user?: IJwtPayloadAuth,
+  user?: User,
   tokens?: {
     auth?: string;
     changePassword?: string;
