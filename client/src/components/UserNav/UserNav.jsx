@@ -173,7 +173,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
       {/* for hamburger menu*/}
       <div className='mobile-menu-button' onClick={toggleMenu}>
         {/* Hamburger icon */}
-        <Icon icon='ci:menu-alt-05' onClick={toggleMenu} />
+        <Icon icon='ci:menu-alt-05' />
       </div>
       <div
         className={`userNav__menu ${isMenuOpen ? 'userNav__menu--open' : ''}`}
