@@ -34,8 +34,10 @@ const UserPerformance = () => {
   const evaluationId = evaluation?._id;
   console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { allInternalDegrees } = useContext(InternalApiContext);
-  const degreeName = (allInternalDegrees && allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId));
-  console.log("🚀 ~ UserPerformance ~degree name:", degreeName)
+  const degreeName =
+    allInternalDegrees &&
+    allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
+  console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   const { chosenUnitId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
@@ -274,34 +276,15 @@ const UserPerformance = () => {
           disabled={true}
         />
       </div>
-      <h2
-        style={{
-          textAlign: 'center',
-          fontSize: '18px',
-          // textDecoration: 'underline',
-          marginTop: '150px',
-        }}
-      >
-        {degreeName?.name.fi}
-        {/* {evaluation.name.fi} */}
-        {/* <br />
-        Ammattitaitovaatimusten arviointi */}
-      </h2>
-      <h4 style={{ textAlign: 'center' }}> {unitObject.name.fi}</h4>
+      <h2 className='degree-name'>{degreeName?.name.fi}</h2>
+      <h4 className='degree-unit-name'> {unitObject.name.fi}</h4>
       <div>
         <ul>
           {/* Evaluation */}
           {unitObject &&
             unitObject.assessments.map((assess) => (
               <li key={assess._id}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    margin: '0 15px 0 0',
-                  }}
-                >
+                <div className='assessments'>
                   <div key={unitObject._id}>
                     <p className='para-title-style'>{assess.name.fi}</p>
                     {/* <p>{assess.answer}</p>
