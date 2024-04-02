@@ -1,5 +1,5 @@
 import React, { useEffect, useState, createContext } from 'react';
-import { fetchLoggedIn } from '../../api/user.js';
+import { fetchCurrentUser } from '../../api/user.js';
 
 const AuthContext = createContext();
 
@@ -9,16 +9,21 @@ const AuthContextProvider = (props) => {
   const [role, setRole] = useState(' ');
   const [emailVerified, setEmailVerified] = useState(false);
 
+  // TODO: Need to refactor, is the user logged in should be test by reading "auth_state" token and it's expiration time
+  // only if user is logged-in, we can call teh fetchCurrentUser method, currently that not happen
   const getLoggedIn = async () => {
     try {
-      const response = await fetchLoggedIn();
-      const isUserLoggedIn = response.data.loggedIn;
+      const response = await fetchCurrentUser();
+      const data = response.data;
+      console.log("response", data.role, data.emailVerified, data.email )
+
+      const isUserLoggedIn = !!data.email;
       setLoggedIn(isUserLoggedIn);
-      if (isUserLoggedIn && response.data.user) {
-        setUser(response.data.user);
-        setRole(response.data.user.role || ' '); // Set a default role if it's not provided
-        setEmailVerified(response.data.user.emailVerified)
-        if (!response.data.user.emailVerified) {
+      if (isUserLoggedIn && data) {
+        setUser(data);
+        setRole(data.role || ' '); // Set a default role if it's not provided
+        setEmailVerified(data.emailVerified)
+        if (!data.emailVerified) {
           console.warn("EMAIL IS NOT VERIFIED!")
         }
       } else {

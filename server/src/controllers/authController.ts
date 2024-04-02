@@ -223,31 +223,6 @@ const login = async (req: Request, res: Response) => {
   }
 }
 
-// TODO: This is pointless, client can just check did the token exists.
-const isLoggedIn = async (req: Request, res: Response) => {
-  try {
-    // Retrieve token from cookies
-    const token = req.cookies.token;
-    if (!token) {
-      console.log("token unverified")
-      return res.json({ loggedIn: false });
-    }
-
-    // Verify the token using the JWT_SECRET
-    const validateUser = jwt.verify(token, config.JWT_SECRET) as IJwtPayload;
-
-    console.log("validateUser", validateUser)
-
-    // If the token is valid, respond with loggedIn:true and the decoded user information
-    res.json({ loggedIn: true, user: validateUser });
-  } catch (err) {
-    console.error(err)
-    // console.error(err.message);
-    // If there is an error, respond with loggedIn:false
-    res.json({ loggedIn: false });
-  }
-}
-
 const logout = async (_req: Request, res: Response) => {
   // Clear the token cookie
   res
@@ -346,14 +321,32 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
     .json({ message: "Verification email sent." });
 }
 
+const getCurrentUser = (req: Request, res: Response) => {
+  if (req.user) {
+    const { firstName, lastName, email, role, emailVerified, _id } = req.user;
+
+    // Do not send whole user object, like password hash.
+    return res.status(200).json({
+      id: _id,
+      firstName,
+      lastName,
+      email,
+      role,
+      emailVerified,
+    })
+  }
+
+  res.status(401).json({ errorMessage: 'Unauthorized' })
+}
+
 export default {
   registerUser,
   forgotPassword,
   validateToken,
   resetPassword,
   login,
-  isLoggedIn,
   logout,
   verifyEmail,
   resendEmailVerificationLink,
+  getCurrentUser,
 }

@@ -1,5 +1,9 @@
 import { Response, NextFunction } from 'express';
 import { Request } from '../types/requestType';
+import jwt from 'jsonwebtoken';
+import userModel from '../models/userModel';
+import { IJwtPayload } from '../types/jwtPayload';
+import config from '../utils/config';
 
 const tokensMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -15,6 +19,12 @@ const tokensMiddleware = async (req: Request, res: Response, next: NextFunction)
       auth,
       changePassword,
       verifyEmail
+    }
+
+    if (auth && !req.user) {
+      const verified = jwt.verify(auth, config.JWT_SECRET) as IJwtPayload;
+      const user = await userModel.findById(verified.id);
+      req.user = user ?? undefined;
     }
 
     next();
