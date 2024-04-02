@@ -27,19 +27,27 @@ import { updateEvaluationById } from '../../../api/evaluation';
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
   const user = auth.user;
+  console.log('🚀 ~ UserPerformance ~ user:', user);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
+
   console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
+  const { allInternalDegrees } = useContext(InternalApiContext);
+  const degreeName =
+    allInternalDegrees &&
+    allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
+  console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
+
   const { chosenUnitId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
-  console.log(
-    '🚀 ~ UserPerformance ~ selectedAssessmentId:',
-    selectedAssessmentId
-  );
+  // console.log(
+  //   '🚀 ~ UserPerformance ~ selectedAssessmentId:',
+  //   selectedAssessmentId
+  // );
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
@@ -51,6 +59,14 @@ const UserPerformance = () => {
   const [destination, setDestination] = useState(null);
   // Modal for showing criteria
   const [criteriaModalContent, setCriteriaModalContent] = useState([]);
+  const [customerFirstName, setCustomerFirstName] = useState(null);
+  const [customerLastName, setCustomerLastName] = useState(null);
+  useEffect(() => {
+    if (evaluation && evaluation.customerId) {
+      setCustomerFirstName(`${evaluation?.customerId.firstName}`);
+      setCustomerLastName(`${evaluation?.customerId.lastName}`);
+    }
+  }, [customerFirstName, customerLastName]);
 
   let unitObject;
   if (evaluation && evaluation.units) {
@@ -59,7 +75,7 @@ const UserPerformance = () => {
 
     if (unitObject) {
       // Unit with matching _id found
-      console.log('Unit object found:', unitObject);
+      // console.log('Unit object found:', unitObject);
     } else {
       // Unit with matching _id not found
       console.log(
@@ -258,42 +274,35 @@ const UserPerformance = () => {
   };
 
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
-  console.log('unitObject', unitObject);
+  // console.log('unitObject', unitObject);
 
   return (
     <main>
       <div>
-        <WavesHeader
-          title='Saukko'
-          secondTitle={`Tervetuloa, ${user?.firstName}`}
-        />
+        {/* <WavesHeader
+          title={customerInformation}
+          secondTitle='Ammaattitaitovaatimusten arviointi'
+          disabled={true}
+        /> */}
+        {user?.role === 'teacher' || user?.role === 'supervisor' ? (
+          <WavesHeader
+            title={customerFirstName + ' ' + customerLastName}
+            secondTitle='Ammaattitaitovaatimusten arviointi'
+            disabled={true}
+          />
+        ) : (
+          <WavesHeader title={`Tervetuloa, ${customerFirstName} `} />
+        )}
       </div>
-      <h2
-        style={{
-          textAlign: 'center',
-          fontSize: '18px',
-          textDecoration: 'underline',
-          marginTop: '58%',
-        }}
-      >
-        {unitObject.name.fi}
-        <br />
-        Ammattitaitovaatimusten arviointi
-      </h2>
+      <h2 className='degree-name'>{degreeName?.name.fi}</h2>
+      <h4 className='degree-unit-name'> {unitObject.name.fi}</h4>
       <div>
         <ul>
           {/* Evaluation */}
           {unitObject &&
             unitObject.assessments.map((assess) => (
               <li key={assess._id}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    margin: '0 15px 0 0',
-                  }}
-                >
+                <div className='assessments'>
                   <div key={unitObject._id}>
                     <p className='para-title-style'>{assess.name.fi}</p>
                     {/* <p>{assess.answer}</p>

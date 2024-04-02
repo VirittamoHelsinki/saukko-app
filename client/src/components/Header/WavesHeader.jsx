@@ -14,7 +14,7 @@ const Waves = (props) => {
       xmlns='http://www.w3.org/2000/svg'
       aria-hidden='true'
       width='100%'
-      height='85'
+      height='35'
       fill={props.fill}
     >
       <defs>
@@ -32,7 +32,7 @@ const Waves = (props) => {
           />
         </pattern>
       </defs>
-      <rect fill='url(#korosBasic)' width='100%' height='85' />
+      <rect fill='url(#korosBasic)' width='100%' height='35' />
     </svg>
   );
 };
@@ -75,10 +75,10 @@ const WavesHeader = (props) => {
           <Icon icon='typcn:arrow-left' style={{ color: logoColor }} />
         </button>
       )}
-      <img src={logoToUse} alt='' />
-      <h1>{props.title}</h1>
-      <h2>{props.secondTitle}</h2>
-      <Waves fill={headerColor} />
+      {/* <img src={logoToUse} alt='' /> */}
+      <h1><b>{props.title}</b></h1>
+      <p>{props.secondTitle}</p>
+      <Waves fill={headerColor}/>
     </main>
   );
 };

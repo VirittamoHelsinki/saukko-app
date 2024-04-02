@@ -61,7 +61,7 @@ const PerformancesFeedback = ({
         }
       }
       console.log(e.target.value);
-      console.log('selectedRadio',selectedRadio);
+      console.log('selectedRadio', selectedRadio);
     }
   };
 
@@ -71,10 +71,16 @@ const PerformancesFeedback = ({
       selectedRadio === 'Osaa itsenäisesti'
     ) {
       if (user?.role === 'supervisor') {
-        return (assessment.answerSupervisor === 1 || assessment.answerSupervisor === 2) ? '#F6E2E6' : '#F2F2F2';
+        return '#F6E2E6';
       } else if (user?.role === 'customer') {
-        return (assessment.answer === 1 || assessment.answer === 2) ? '#E2F5F3' : '#F2F2F2'; 
+        return '#E2F5F3';
       }
+    }
+    // check the answer and set the background color
+    if (user?.role === 'supervisor' && assessment.answerSupervisor !== 0) {
+      return '#F6E2E6';
+    } else if (user?.role === 'customer' && assessment.answer !== 0) {
+      return '#E2F5F3';
     }
     return '#F2F2F2';
   };
@@ -95,7 +101,6 @@ const PerformancesFeedback = ({
   const infodataForSelectedAssessment = infodata.filter(
     (data) => data.assessmentId === assessment._id
   );
-
 
   return (
     <main
@@ -119,11 +124,12 @@ const PerformancesFeedback = ({
                 //value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
                 control={
                   <Radio
-                    onClick={(event) => handleRadioUncheck(event)} 
+                    onClick={(event) => handleRadioUncheck(event)}
                     onChange={(event) => handleRadioChange(event, unit)}
                     checked={
-                      (selectedRadio === 'Osaa ohjatusti') ||
-                      (user.role === 'supervisor' && item.answerSupervisor === 1) ||
+                      selectedRadio === 'Osaa ohjatusti' ||
+                      (user.role === 'supervisor' &&
+                        item.answerSupervisor === 1) ||
                       (user.role === 'customer' && item.answer === 1)
                     }
                   />
@@ -139,8 +145,9 @@ const PerformancesFeedback = ({
                     onClick={(event) => handleRadioUncheck(event)}
                     onChange={(event) => handleRadioChange(event, unit)}
                     checked={
-                      (selectedRadio === 'Osaa itsenäisesti') ||
-                      (user.role === 'supervisor' && item.answerSupervisor === 2) ||
+                      selectedRadio === 'Osaa itsenäisesti' ||
+                      (user.role === 'supervisor' &&
+                        item.answerSupervisor === 2) ||
                       (user.role === 'customer' && item.answer === 2)
                     }
                   />
