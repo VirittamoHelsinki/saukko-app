@@ -14,10 +14,9 @@ import AuthContext from '../../store/context/AuthContext';
 import { logoutUser } from '../../api/user';
 
 function ProfilePage() {
-
   // User info from AuthContext
   const { getLoggedIn, user } = useContext(AuthContext);
-  
+
   // Logout
   const navigate = useNavigate();
 
@@ -31,12 +30,12 @@ function ProfilePage() {
       console.error(error);
     }
   };
-  
+
   // State for opening & closing email pop up
   const [openEmailPopUp, setOpenEmailPopUp] = useState(false);
   const handleOpenEmailPopUp = () => setOpenEmailPopUp(true);
   const handleCloseEmailPopUp = () => setOpenEmailPopUp(false);
-  
+
   // State for opening & closing email notification
   const [openEmailNotification, setOpenEmailNotification] = useState(false);
   const handleOpenEmailNotification = () => setOpenEmailNotification(true);
@@ -47,9 +46,9 @@ function ProfilePage() {
     e.preventDefault();
     handleCloseEmailPopUp();
     handleOpenEmailNotification();
-    
+
     // Verify password & change email here
-  }
+  };
 
   // State for opening & closing password pop up
   const [openPasswordPopUp, setOpenPasswordPopUp] = useState(false);
@@ -57,9 +56,12 @@ function ProfilePage() {
   const handleClosePasswordPopUp = () => setOpenPasswordPopUp(false);
 
   // State for opening & closing email notification
-  const [openPasswordNotification, setOpenPasswordNotification] = useState(false);
-  const handleOpenPasswordNotification = () => setOpenPasswordNotification(true);
-  const handleClosePasswordNotification = () => setOpenPasswordNotification(false);
+  const [openPasswordNotification, setOpenPasswordNotification] =
+    useState(false);
+  const handleOpenPasswordNotification = () =>
+    setOpenPasswordNotification(true);
+  const handleClosePasswordNotification = () =>
+    setOpenPasswordNotification(false);
 
   // Password form handler
   const handleSubmitPasswordPopUp = (e) => {
@@ -73,42 +75,57 @@ function ProfilePage() {
     console.log('new password:', newPassword);
     const verifyPassword = form.querySelector("[name='passwordVerify']").value;
     console.log('verify password:', verifyPassword);
-    
+
     // Verify old password (here or backend?)
 
     // Check if new password and password confirmation match
     if (newPassword !== verifyPassword) {
-      return alert('Salasanat eivät täsmää')
+      return alert('Salasanat eivät täsmää');
     }
 
     // Send a request to change password here
 
     handleClosePasswordPopUp();
     handleOpenPasswordNotification();
-  }
-  
+  };
+
   return (
     <main className='profile__wrapper'>
-	    <WavesHeader title='Saukko' secondTitle='Profiili' disabled={false} />
+      <WavesHeader title='Oma profiili' disabled={true} />
       <section className='profile__container'>
-        <div className='profile__container--row'>
-          <p className='profile__container--row-value'>{user?.firstName} {user?.lastName}</p>
-          <Icon icon='iconamoon:arrow-right-2' className='profile__container-row-arrow'/>
+        <div className='profile__container--row name'>
+          <p className='profile__container--row-value'>
+            {user?.firstName} {user?.lastName}
+          </p>
+          <Icon
+            icon='iconamoon:arrow-right-2'
+            className='profile__container-row-arrow'
+          />
         </div>
         <div className='profile__container---change-email'>
-          <div className='profile__container--row' onClick={handleOpenEmailPopUp}>
+          <div
+            className='profile__container--row'
+            onClick={handleOpenEmailPopUp}
+          >
             <p className='profile__container--row-value'>{user?.email}</p>
-            <Icon icon='iconamoon:arrow-right-2' className='profile__container-row-arrow'/>
+            <Icon
+              icon='iconamoon:arrow-right-2'
+              className='profile__container-row-arrow'
+            />
           </div>
 
           {/* Change email pop-up */}
-          <PopUpForm 
-            title='Vaihda sähköpostiosoite' 
-            content={    
+          <PopUpForm
+            title='Vaihda sähköpostiosoite'
+            content={
               <div className='popup-form'>
-                <PasswordInput value='passwordOld' inputName='passwordOld' label='Vahvista nykyinen salasana *' />
+                <PasswordInput
+                  value='passwordOld'
+                  inputName='passwordOld'
+                  label='Vahvista nykyinen salasana *'
+                />
                 <label htmlFor='new-email'>Anna uusi sähköposti *</label>
-                <input type='email' name='new-email' required/>
+                <input type='email' name='new-email' required />
               </div>
             }
             buttonText='Lähetä'
@@ -125,23 +142,40 @@ function ProfilePage() {
             title='Sähköposti vaihdettu!'
             body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
           />
-
         </div>
         <div className='profile__container---change-password'>
-          <div className='profile__container--row' onClick={handleOpenPasswordPopUp}>
+          <div
+            className='profile__container--row'
+            onClick={handleOpenPasswordPopUp}
+          >
             <p className='profile__container--row-value'>Vaihda salasana</p>
-            <Icon icon='iconamoon:arrow-right-2' className='profile__container-row-arrow'/>
+            <Icon
+              icon='iconamoon:arrow-right-2'
+              className='profile__container-row-arrow'
+            />
           </div>
 
           {/* Change password pop-up */}
-          <PopUpForm 
-            title='Vaihda salasana' 
+          <PopUpForm
+            title='Vaihda salasana'
             description='Syötä alle uusi salasanasi'
-            content={    
+            content={
               <div className='popup-form'>
-                <PasswordInput value='passwordOld' inputName='passwordOld' label='Vanha salasana *' />
-                <PasswordInput value='passwordNew' inputName='passwordNew' label='Uusi salasana *' />
-                <PasswordInput value='passwordVerify' inputName='passwordVerify' label='Vahvista salasana *' />
+                <PasswordInput
+                  value='passwordOld'
+                  inputName='passwordOld'
+                  label='Vanha salasana *'
+                />
+                <PasswordInput
+                  value='passwordNew'
+                  inputName='passwordNew'
+                  label='Uusi salasana *'
+                />
+                <PasswordInput
+                  value='passwordVerify'
+                  inputName='passwordVerify'
+                  label='Vahvista salasana *'
+                />
               </div>
             }
             buttonText='Vaihda salasana'
@@ -158,7 +192,6 @@ function ProfilePage() {
             title='Salasana vaihdettu!'
             body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
           />
-          
         </div>
       </section>
       <section className='profile__logout'>
@@ -170,7 +203,7 @@ function ProfilePage() {
       </section>
       <UserNav />
     </main>
-  )
+  );
 }
 
-export default ProfilePage
+export default ProfilePage;
