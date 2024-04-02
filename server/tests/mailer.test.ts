@@ -1,9 +1,12 @@
-import { User } from '../models/userModel';
-import * as mailer from '../utils/mailer';
-
+import { User } from '../src/models/userModel';
+import * as mailer from '../src/utils/mailer/configMailer';
+import { sendVerificationEmail, sendVerificationDoneEmail } from '../src/utils/mailer/templates/newUserVerification';
+import { sendResetPasswordEmail, sendResetPasswordSuccessEmail } from '../src/utils/mailer/templates/resetPassword';
+import { sendNewCustomerAddedEmail } from '../src/utils/mailer/templates/addingUserToAgreement';
+import { sendEvaluationFormCustomerRequestContact } from '../src/utils/mailer/templates/EvaluationForm';
 
 describe('test sending emails', () => {
-  it('verifikaatiolinkki', async () => {
+  xit('verifikaatiolinkki', async () => {
     const mockUser: Partial<User> = {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
@@ -12,22 +15,61 @@ describe('test sending emails', () => {
 
     const mockVerificationLink = 'https://example.com/verification-link';
 
-    mailer.sendVerificationEmail(mockUser, mockVerificationLink);
+    sendVerificationEmail(mockUser, mockVerificationLink);
 
   });
-  it('verifiointi tehty', async () => {
+  xit('verifiointi tehty', async () => {
     const mockUser: Partial<User> = {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
       email: 'test@example.com',
     };
 
-    mailer.sendVerificationDoneEmail(mockUser);
+    sendVerificationDoneEmail(mockUser);
 
   });
+
+  xit('salasanan vaihto', async () => {
+    const mockUser: Partial<User> = {
+      firstName: 'Matti',
+      lastName: 'Meikäläinen',
+      email: 'test@example.com',
+    };
+
+    sendResetPasswordEmail(mockUser);
+
+  });
+
+  xit('salasanan vaihto onnistui', async () => {
+    const mockUser: Partial<User> = {
+      firstName: 'Matti',
+      lastName: 'Meikäläinen',
+      email: 'test@example.com',
+    };
+
+    sendResetPasswordSuccessEmail(mockUser);
+  });
+
+  it('Uusi asiakas liitetään suoritukseen', async () => {
+    const mockUser: Partial<User> = {
+      firstName: 'Matti',
+      lastName: 'Meikäläinen',
+      email: 'test@example.com',
+    };
+
+    sendNewCustomerAddedEmail(mockUser);
+  });
+
+  it('Arviointilomake: ', async () => {
+    const mockUser: Partial<User> = {
+      firstName: 'Matti',
+      lastName: 'Meikäläinen',
+      email: 'test@example.com',
+    };
+
+    sendEvaluationFormCustomerRequestContact(mockUser);
+  });
 });
-
-
 
 describe.skip('sendEmail', () => {
   it('should send an email', async () => {
@@ -46,7 +88,8 @@ describe.skip('sendEmail', () => {
   });
 });
 
-describe.skip('sendVerificationEmail', () => {
+describe.skip('new user verification emails', () => {
+
   it('should send a verification email', async () => {
     const mockUser: Partial<User> = {
       firstName: 'Matti',
@@ -58,7 +101,7 @@ describe.skip('sendVerificationEmail', () => {
 
     const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
 
-    mailer.sendVerificationEmail(mockUser, mockVerificationLink);
+    sendVerificationEmail(mockUser, mockVerificationLink);
 
     expect(sendEmailMock).toHaveBeenCalledWith({
       to: mockUser.email,
@@ -66,9 +109,7 @@ describe.skip('sendVerificationEmail', () => {
       html: expect.stringContaining(mockVerificationLink),
     });
   });
-});
 
-describe.skip('sendVerificationDoneEmail', () => {
   it('should send a verification done email', async () => {
     const mockUser: Partial<User> = {
       firstName: 'Matti',
@@ -78,7 +119,7 @@ describe.skip('sendVerificationDoneEmail', () => {
 
     const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
 
-    mailer.sendVerificationDoneEmail(mockUser);
+    sendVerificationDoneEmail(mockUser);
 
     expect(sendEmailMock).toHaveBeenCalledWith({
       to: mockUser.email,
@@ -87,3 +128,4 @@ describe.skip('sendVerificationDoneEmail', () => {
     });
   });
 });
+

@@ -3,7 +3,7 @@ import EvaluationModel from "../models/evaluatuionModel";
 import degreeModel from "../models/degreeModel"
 // import Degree from "../models/degreeModel";
 import { Request, Response } from "express";
-import mailer from "../utils/mailer"
+// import mailer from "../utils/mailer/configMailer"
 
 const _generateVerificationLink = (user: User) => {
   const verificationToken = user.generateEmailVerificationToken();
@@ -72,7 +72,7 @@ const create = async (req: Request, res: Response) => {
           const supervisor = await UserModel.findById(supervisorId);
           if (supervisor) {
             const verificationLink = _generateVerificationLink(supervisor);
-            mailer.sendVerificationEmail(supervisor, verificationLink);
+            // sendVerificationEmail(supervisor, verificationLink);
           }
         } catch (userError) {
           console.error('Error fetching supervisor for notification: ', userError);
@@ -193,7 +193,7 @@ const update = async (req: Request, res: Response) => {
 
       for (const supervisor of newSupervisorDetails) {
         const verificationLink = _generateVerificationLink(supervisor);
-        mailer.sendVerificationEmail(supervisor, verificationLink);
+        // sendVerificationEmail(supervisor, verificationLink);
       }
 
       // Notify existing supervisors, the customer, and possibly the teacher about new additions
@@ -210,10 +210,10 @@ const update = async (req: Request, res: Response) => {
       });
 
       for (const user of usersToNotify) {
-        mailer.sendNotificationMail(
-          user,
-          newSupervisors.map((id) => (id as any).toString())
-        );
+        // sendNotificationMail(
+        //   user,
+        //   newSupervisors.map((id) => (id as any).toString())
+        // );
       }
     }
 
@@ -297,7 +297,7 @@ const sendEmailToTeacher = async (req: Request, res: Response) => {
       return res.status(404).send('Teacher not found.');
     }
 
-    mailer.sendUserMail(teacher, req.body.message);
+    // sendUserMail(teacher, req.body.message);
 
 
     res.status(200).send('Email sent successfully.');

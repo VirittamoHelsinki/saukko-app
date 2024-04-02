@@ -2,12 +2,13 @@ import { Response } from 'express';
 import { Request } from '../types/requestType';
 import userModel from '../models/userModel';
 import { IJwtPayload, useCase } from '../types/jwtPayload';
-import mailer from '../utils/mailer';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
 import bcrypt from 'bcrypt';
 import { PasswordValidator } from '../utils/password';
 import { passwordValidationOptions } from '../options';
+import { sendVerificationEmail } from '../utils/mailer/templates/newUserVerification';
+import { sendResetPasswordEmail} from '../utils/mailer/templates/resetPassword';
 
 const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
   if (err.message) {
@@ -66,7 +67,7 @@ const registerUser = async (req: Request, res: Response) => {
       const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`;
 
       // Send verification email
-      mailer.sendVerificationEmail(newUser, verificationLink);
+      sendVerificationEmail(newUser, verificationLink);
       console.log('user created and verification email sent');
     } else {
       console.log('user created without verification email (role: supervisor)');
@@ -99,7 +100,7 @@ const forgotPassword = async (req: Request, res: Response) => {
   }
 
   try {
-    mailer.sendResetPasswordEmail(existUser)
+    sendResetPasswordEmail(existUser)
     res.status(200).json({ message: "Password reset link sent to email" })
   } catch (err) {
     return _responseWithError(res, 400, err)
@@ -312,7 +313,7 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
     const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`; // TODO: fix the link
 
     // Send verification email
-    mailer.sendVerificationEmail(user, verificationLink);
+    sendVerificationEmail(user, verificationLink);
     console.log('user created and verification email sent');
   }
 
