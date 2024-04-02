@@ -57,6 +57,12 @@ const resetPassword = async (newPassword) => {
   return response;
 }
 
+const requestPasswordChangeTokenAsUser = async (password) =>
+  await axios.post(baseURL + middleURL + '/request-pwd-change-token', {
+    password,
+    withCredentials: true
+  });
+
 const requestEmailVerificationLinkAsync = async () => {
   // Because the client cannot access to http-only cookies, this is the "case" when we cannot use these
   // Cookie is send as header and handled in backend cookie-middleware.
@@ -102,5 +108,9 @@ export {
   resetPassword,
   registration,
   verifyEmail,
+
+  // This is medicine if email-verification-link are expired
   requestEmailVerificationLinkAsync,
+  // The user must request a password reset token before the user can change the password
+  requestPasswordChangeTokenAsUser,
 }
