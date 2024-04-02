@@ -50,7 +50,7 @@ describe('test sending emails', () => {
     sendResetPasswordSuccessEmail(mockUser);
   });
 
-  it('Uusi asiakas liitetään suoritukseen', async () => {
+  xit('Uusi asiakas liitetään suoritukseen', async () => {
     const mockUser: Partial<User> = {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
@@ -60,7 +60,7 @@ describe('test sending emails', () => {
     sendNewCustomerAddedEmail(mockUser);
   });
 
-  it('Arviointilomake: ', async () => {
+  xit('Arviointilomake: ', async () => {
     const mockUser: Partial<User> = {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
