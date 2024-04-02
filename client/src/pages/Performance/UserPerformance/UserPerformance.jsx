@@ -23,15 +23,16 @@ import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Fetch evaluation by id from api
 import { updateEvaluationById } from '../../../api/evaluation';
-import { fetchInternalDegreeById } from '../../../api/degree.js';
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
   const user = auth.user;
+  console.log('🚀 ~ UserPerformance ~ user:', user);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
+
   console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { allInternalDegrees } = useContext(InternalApiContext);
   const degreeName =
@@ -58,6 +59,14 @@ const UserPerformance = () => {
   const [destination, setDestination] = useState(null);
   // Modal for showing criteria
   const [criteriaModalContent, setCriteriaModalContent] = useState([]);
+  const [customerFirstName, setCustomerFirstName] = useState(null);
+  const [customerLastName, setCustomerLastName] = useState(null);
+  useEffect(() => {
+    if (evaluation && evaluation.customerId) {
+      setCustomerFirstName(`${evaluation?.customerId.firstName}`);
+      setCustomerLastName(`${evaluation?.customerId.lastName}`);
+    }
+  }, [customerFirstName, customerLastName]);
 
   let unitObject;
   if (evaluation && evaluation.units) {
@@ -270,11 +279,20 @@ const UserPerformance = () => {
   return (
     <main>
       <div>
-        <WavesHeader
-          title={`${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`}
+        {/* <WavesHeader
+          title={customerInformation}
           secondTitle='Ammaattitaitovaatimusten arviointi'
           disabled={true}
-        />
+        /> */}
+        {user?.role === 'teacher' || user?.role === 'supervisor' ? (
+          <WavesHeader
+            title={customerFirstName + ' ' + customerLastName}
+            secondTitle='Ammaattitaitovaatimusten arviointi'
+            disabled={true}
+          />
+        ) : (
+          <WavesHeader title={`Tervetuloa, ${customerFirstName} `} />
+        )}
       </div>
       <h2 className='degree-name'>{degreeName?.name.fi}</h2>
       <h4 className='degree-unit-name'> {unitObject.name.fi}</h4>

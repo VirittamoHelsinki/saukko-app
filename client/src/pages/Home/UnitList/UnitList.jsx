@@ -22,7 +22,13 @@ const UnitList = () => {
     evaluations,
     setInternalEvaluations,
     setInternalEvaluation,
+    allInternalDegrees,
   } = useContext(InternalApiContext);
+
+  const degreeName =
+    allInternalDegrees &&
+    allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
+  console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   // Set evaluation automatically when role is customer
   useEffect(() => {
@@ -58,7 +64,17 @@ const UnitList = () => {
         <NotificationBadge number1={10} number2={5} />
       </div>
       <div className='unitList__units'>
-        <h3> Omat suoritukset </h3>
+        {user.role === 'customer' ? (
+          <>
+            <h3 style={{ paddingLeft: '35px', margin: '3rem 0' }}>
+              {degreeName?.name.fi}
+            </h3>
+            <h3> Omat suoritukset </h3>
+          </>
+        ) : (
+          <h3> Asiakkaan suoritukset </h3>
+        )}
+
         {evaluation &&
           evaluation.units.map((unit) => (
             <UnitStatus
