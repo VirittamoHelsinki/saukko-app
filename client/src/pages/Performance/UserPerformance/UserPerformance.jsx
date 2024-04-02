@@ -23,6 +23,7 @@ import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Fetch evaluation by id from api
 import { updateEvaluationById } from '../../../api/evaluation';
+import { fetchInternalDegreeById } from '../../../api/degree.js';
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
@@ -32,14 +33,18 @@ const UserPerformance = () => {
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
   console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
+  const { allInternalDegrees } = useContext(InternalApiContext);
+  const degreeName = (allInternalDegrees && allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId));
+  console.log("🚀 ~ UserPerformance ~degree name:", degreeName)
+
   const { chosenUnitId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
-  console.log(
-    '🚀 ~ UserPerformance ~ selectedAssessmentId:',
-    selectedAssessmentId
-  );
+  // console.log(
+  //   '🚀 ~ UserPerformance ~ selectedAssessmentId:',
+  //   selectedAssessmentId
+  // );
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
@@ -59,7 +64,7 @@ const UserPerformance = () => {
 
     if (unitObject) {
       // Unit with matching _id found
-      console.log('Unit object found:', unitObject);
+      // console.log('Unit object found:', unitObject);
     } else {
       // Unit with matching _id not found
       console.log(
@@ -258,28 +263,31 @@ const UserPerformance = () => {
   };
 
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
-  console.log('unitObject', unitObject);
+  // console.log('unitObject', unitObject);
 
   return (
     <main>
       <div>
         <WavesHeader
-          title='Saukko'
-          secondTitle={`Tervetuloa, ${user?.firstName}`}
+          title={`${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`}
+          secondTitle='Ammaattitaitovaatimusten arviointi'
+          disabled={true}
         />
       </div>
       <h2
         style={{
           textAlign: 'center',
           fontSize: '18px',
-          textDecoration: 'underline',
-          marginTop: '58%',
+          // textDecoration: 'underline',
+          marginTop: '150px',
         }}
       >
-        {unitObject.name.fi}
-        <br />
-        Ammattitaitovaatimusten arviointi
+        {degreeName?.name.fi}
+        {/* {evaluation.name.fi} */}
+        {/* <br />
+        Ammattitaitovaatimusten arviointi */}
       </h2>
+      <h4 style={{ textAlign: 'center' }}> {unitObject.name.fi}</h4>
       <div>
         <ul>
           {/* Evaluation */}
@@ -296,9 +304,9 @@ const UserPerformance = () => {
                 >
                   <div key={unitObject._id}>
                     <p className='para-title-style'>{assess.name.fi}</p>
-                    <p>{assess.answer}</p>
+                    {/* <p>{assess.answer}</p>
                     <p>{assess.answerSupervisor}</p>
-                    <p>{assess.answerTeacher}</p>
+                    <p>{assess.answerTeacher}</p> */}
                   </div>
                   <div>
                     <Icon
