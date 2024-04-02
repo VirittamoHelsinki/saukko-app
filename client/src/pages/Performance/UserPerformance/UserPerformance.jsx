@@ -1,67 +1,77 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
+
 import { useLocation, useNavigate } from 'react-router';
+
 import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';
 import Button from '../../../components/Button/Button';
 import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
-import useStore from '../../../store/zustand/formStore';
-import AuthContext from '../../../store/context/AuthContext';
+
 import { Icon } from '@iconify/react';
-import InternalApiContext from '../../../store/context/InternalApiContext';
-import TextField from '@mui/material/TextField';
 import DialogContent from '@mui/material/DialogContent';
+import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
+import useStore from '../../../store/zustand/formStore';
+import AuthContext from '../../../store/context/AuthContext';
 // Fetch evaluation and units from store
-// import useEvaluationStore from '../../../store/zustand/evaluationStore';
-// import useUnitsStore from '../../../store/zustand/unitsStore';
+import InternalApiContext from '../../../store/context/InternalApiContext';
+import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Fetch evaluation by id from api
-import {
-  fetchEvaluationById,
-  updateEvaluationById,
-} from '../../../api/evaluation';
-
-const useFetchData = (evaluationId) => {
-  const [evaluation, setEvaluation] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetchEvaluationById(`${evaluationId}`);
-      setEvaluation(response.units);
-    };
-    fetchData();
-  }, [evaluationId]);
-  return evaluation;
-};
+import { updateEvaluationById } from '../../../api/evaluation';
 
 const UserPerformance = () => {
   const auth = useContext(AuthContext);
   const user = auth.user;
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
-  let { evaluation } = useContext(InternalApiContext);
-  console.log("🚀 ~ UserPerformance ~ evaluation:", evaluation)
-  let evaluationId = evaluation._id;
-  evaluation = useFetchData(evaluationId);
-
+  const { evaluation, setEvaluation } = useContext(InternalApiContext);
+  const evaluationId = evaluation?._id;
+  console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
+  const { chosenUnitId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
+  const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
+  console.log(
+    '🚀 ~ UserPerformance ~ selectedAssessmentId:',
+    selectedAssessmentId
+  );
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  // console.log('🚀 ~ UserPerformance ~ hasUnsavedChanges:', hasUnsavedChanges);
   const navigate = useNavigate();
   const location = useLocation();
   const [lastLocation, setLastLocation] = useState(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
   const [destination, setDestination] = useState(null);
-
   // Modal for showing criteria
   const [criteriaModalContent, setCriteriaModalContent] = useState([]);
+
+  let unitObject;
+  if (evaluation && evaluation.units) {
+    // Use find() to search for the unit with matching _id
+    unitObject = evaluation.units.find((unit) => unit._id === chosenUnitId);
+
+    if (unitObject) {
+      // Unit with matching _id found
+      console.log('Unit object found:', unitObject);
+    } else {
+      // Unit with matching _id not found
+      console.log(
+        'Unit with ID',
+        chosenUnitId,
+        'not found in the evaluation.units'
+      );
+    }
+  } else {
+    // Handle cases where evaluation or evaluation.units is undefined
+    console.log('Evaluation object or units array is undefined.');
+  }
 
   const handleOpenCriteriaModal = (criteria) => {
     setCriteriaModalContent(criteria);
@@ -141,24 +151,22 @@ const UserPerformance = () => {
     setOpenNotificationModal(true);
   };
 
-  const handleNotificationModalClose = useCallback(() => {
-    // Navigate to 'unit-list' route
-    if (user?.role === 'customer') {
-      navigate('/unit-list');
-    } else {
-      navigate('/customer-list');
-    }
-
-    // Reload the page
-    window.location.reload();
-  }, [navigate]);
+  // const handleNotificationModalClose = useCallback(() => {
+  //   // Navigate to 'unit-list' route
+  //   if (user?.role === 'customer') {
+  //     navigate('/unit-list');
+  //   } else {
+  //     navigate('/customer-list');
+  //   }
+  //   // Reload the page
+  //   // window.location.reload();
+  // }, [navigate]);
 
   const handleSubmit = async () => {
-    const updatedUnits = evaluation.map((unit) => {
+    const updatedUnits = evaluation.units.map((unit) => {
       if (unit._id === selectedUnitId) {
-        return {
-          ...unit,
-          assessments: unit.assessments.map((assessment) => {
+        const updatedAssessments = unit.assessments.map((assessment) => {
+          if (assessment._id === selectedAssessmentId) {
             let answer = assessment.answer;
             let answerSupervisor = assessment.answerSupervisor;
             let answerTeacher = assessment.answerTeacher;
@@ -175,12 +183,19 @@ const UserPerformance = () => {
               answerSupervisor,
               answerTeacher,
             };
-          }),
+          } else {
+            return assessment;
+          }
+        });
+        return {
+          ...unit,
+          assessments: updatedAssessments,
         };
       } else {
         return unit;
       }
     });
+
     const updatedData = {
       units: updatedUnits,
     };
@@ -190,6 +205,8 @@ const UserPerformance = () => {
         updatedData
       );
 
+      // set response to the store
+      setEvaluation(response);
       console.log('Evaluation updated:', response.units);
       setSelectedValues([]);
     } catch (error) {
@@ -241,6 +258,7 @@ const UserPerformance = () => {
   };
 
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
+  console.log('unitObject', unitObject);
 
   return (
     <main>
@@ -258,83 +276,69 @@ const UserPerformance = () => {
           marginTop: '58%',
         }}
       >
-        Ammattitaitovaatimukset
+        {unitObject.name.fi}
+        <br />
+        Ammattitaitovaatimusten arviointi
       </h2>
       <div>
         <ul>
           {/* Evaluation */}
-          {evaluation.map((unit, index) => (
-            <li key={index}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  margin: '0 15px 0 0',
-                }}
-              >
-                <div>
-                  <p className='para-title-style'><b>{unit.name.fi}</b> </p>
-                </div>
-              </div>
-              {unit.assessments.map((assess, index) => (
-                <div key={index}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      margin: '0 15px 0 0',
-                    }}
-                  >
-                    <div>
-                      <p className='para-title-style'>
-                        {assess.name.fi}
-                      </p>
-                    </div>
-                    <div>
-                      <Icon
-                        icon='material-symbols:info'
-                        color='#1769aa'
-                        style={{ verticalAlign: 'middle', fontSize: '21px' }}
-                        cursor={'pointer'}
-                        onClick={() => handleOpenCriteriaModal(assess.criteria)}
-                      />
-                    </div>
+          {unitObject &&
+            unitObject.assessments.map((assess) => (
+              <li key={assess._id}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    margin: '0 15px 0 0',
+                  }}
+                >
+                  <div key={unitObject._id}>
+                    <p className='para-title-style'>{assess.name.fi}</p>
+                    {/* <p>{assess.answer}</p>
+                    <p>{assess.answerSupervisor}</p>
+                    <p>{assess.answerTeacher}</p> */}
                   </div>
-                  {/* {assess.criteria.map((crit, index) => (
-                    <p key={index}>
-                      <b>Criteria</b>: {crit.fi}
-                    </p>
-                  ))} */}
-                  {/* <p>Student: {assess.answer}</p>
-                  <p>Supervisor: {assess.answerSupervisor}</p>
-                  <p>Teacher: {assess.answerTeacher}</p> */}
-                  {user?.role === 'teacher' ? (
-                    <TeacherPerformanceFeedBack
-                      selectedValues={selectedValues}
-                      setSelectedValues={setSelectedValues}
-                      unit={unit}
-                      setSelectedUnitId={setSelectedUnitId}
-                      selectedUnitId={selectedUnitId}
-                      hasUnsavedChanges={hasUnsavedChanges}
-                      setHasUnsavedChanges={setHasUnsavedChanges}
+                  <div>
+                    <Icon
+                      icon='material-symbols:info'
+                      color='#1769aa'
+                      style={{ verticalAlign: 'middle', fontSize: '21px' }}
+                      cursor={'pointer'}
+                      onClick={() => handleOpenCriteriaModal(assess.criteria)}
                     />
-                  ) : (
-                    <PerformancesFeedback
-                      selectedValues={selectedValues}
-                      setSelectedValues={setSelectedValues}
-                      unit={unit}
-                      setSelectedUnitId={setSelectedUnitId}
-                      selectedUnitId={selectedUnitId}
-                      hasUnsavedChanges={hasUnsavedChanges}
-                      setHasUnsavedChanges={setHasUnsavedChanges}
-                    />
-                  )}
+                  </div>
                 </div>
-              ))}
-            </li>
-          ))}
+                {user?.role === 'teacher' ? (
+                  <TeacherPerformanceFeedBack
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unitObject}
+                    setSelectedUnitId={setSelectedUnitId}
+                    assessment={assess}
+                    selectedUnitId={selectedUnitId}
+                    setSelectedAssessmentId={setSelectedAssessmentId}
+                    selectedAssessmentId={selectedAssessmentId}
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    setHasUnsavedChanges={setHasUnsavedChanges}
+                  />
+                ) : (
+                  <PerformancesFeedback
+                    selectedValues={selectedValues}
+                    setSelectedValues={setSelectedValues}
+                    unit={unitObject}
+                    setSelectedUnitId={setSelectedUnitId}
+                    assessment={assess}
+                    selectedUnitId={selectedUnitId}
+                    setSelectedAssessmentId={setSelectedAssessmentId}
+                    selectedAssessmentId={selectedAssessmentId}
+                    hasUnsavedChanges={hasUnsavedChanges}
+                    setHasUnsavedChanges={setHasUnsavedChanges}
+                  />
+                )}
+              </li>
+            ))}
         </ul>
       </div>
 
@@ -525,7 +529,7 @@ const UserPerformance = () => {
         title='Lähetetty'
         body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
         open={openNotificationModal}
-        handleClose={handleNotificationModalClose}
+        // handleClose={handleNotificationModalClose}
       />
     </main>
   );

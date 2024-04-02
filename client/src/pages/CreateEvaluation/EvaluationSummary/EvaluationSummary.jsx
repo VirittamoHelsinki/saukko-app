@@ -196,7 +196,7 @@ function EvaluationSummary() {
         <PageNavigationButtons
           handleBack={() => navigate(`/evaluation-units`)}
           handleForward={handleUserPostReq}
-          forwardButtonText={'Vahvista'}
+          forwardButtonText={'Tallenna'}
           showForwardButton={true}
         />
       </section>
@@ -207,7 +207,7 @@ function EvaluationSummary() {
         body='Asiakkaan tiedot tallennettu'
         open={successNotification}
         handleClose={closeSuccessNotification}
-        redirectLink='/admin-menu'
+        redirectLink='/customer-list'
       />
       <NotificationModal
         type='warning'

@@ -86,6 +86,10 @@
       .unit-name-icons-container {
         display: flex;
         align-items: initial;
+
+        .degree-diary-number {
+          flex-grow: 1;
+        }
       }
 
       .unit-title {

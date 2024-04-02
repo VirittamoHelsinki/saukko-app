@@ -35,8 +35,28 @@ const create = async (req: Request, res: Response) => {
   }
 }
 
+const update = async (req: Request, res: Response) => {
+  try {
+    const updatedDegree = await degreeModel.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      { new: true, runValidators: true }
+    );
+    console.log("🚀 ~ degreeRouter.put ~ updatedDegree:", updatedDegree)
+
+    if (!updatedDegree) {
+      return res.status(400).send({ message: 'Degree not found' });
+    }
+    res.status(200).json(updatedDegree);
+  } catch (error) {
+    console.error('Error updating degree:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 export default {
   create,
   getAll,
-  getById
+  getById,
+  update,
 }

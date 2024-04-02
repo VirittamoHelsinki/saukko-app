@@ -73,13 +73,13 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 function BootstrapDialogTitle(props) {
-  const { children, onClose, ...other } = props;
+  const { children, onClose, hideCloseButton, ...other } = props;
   
 
   return (
     <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
       {children}
-      {onClose ? (
+      {!hideCloseButton && onClose ? (
         <IconButton
           aria-label='close'
           onClick={onClose}
@@ -100,6 +100,7 @@ function BootstrapDialogTitle(props) {
 export default function CustomizedDialogs(props) {
   const navigate = useNavigate();
   const { setOpenNotificationModal } = useStore();
+  const { dialogStyles } = props;
 
   let icon = 'material-symbols:info';
   let bgColor = '#fff';
@@ -148,11 +149,13 @@ export default function CustomizedDialogs(props) {
             background: bgColor,
             borderLeft: 'solid 10px',
             color,
+            ...(dialogStyles && dialogStyles.dialogPaper),
           },
           '& .MuiDialogTitle-root': {
             marginLeft: '35px',
             fontSize: '0.875 rem',
             fontWeight: '700',
+            ...(dialogStyles && dialogStyles.dialogTitle),
           },
         }}
       >
@@ -172,6 +175,7 @@ export default function CustomizedDialogs(props) {
         <BootstrapDialogTitle
           id='customized-dialog-title'
           onClose={handleClose}
+          hideCloseButton={props.hideCloseButton}
         >
           {props.title}
         </BootstrapDialogTitle>
