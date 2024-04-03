@@ -1,21 +1,29 @@
-import { User } from "../../../models/userModel";
 import { sendEmail } from "../configMailer";
 import mailerTemplate from "../mailerHtmlTemplate";
 
-export const sendEvaluationFormCustomerRequestContact = (user: Partial<User>) => {
-    const title = "Asiakas pyytää yhteydenottoa";
-    const textUnderHeading = "";
-    const subHeading = "";
+
+// Asiakas pyytää yhteydenottoa
+
+interface ISendEvaluationFormCustomerRequestContact {
+    userName: string;
+    userEmail: string;
+    degreeName: string;
+    unitName: string;
+    supervisorName: string;
+}
+
+export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluationFormCustomerRequestContact) => {
+
     const text =
         `
-    Hei [Käyttäjänimi],
+    Hei ${params.userName},
   
     Asiakas [Asiakkaan nimi] pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
     
     
-    Tutkinto:		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
-    Työpaikkaohjaaja: 	[Työpaikkaohjaajan nimi]
+    Tutkinto:		${params.degreeName}
+    Tutkinnonosa: 		${params.unitName}
+    Työpaikkaohjaaja: 	${params.supervisorName}
     
     
     Ystävällisin terveisin,
@@ -23,25 +31,35 @@ export const sendEvaluationFormCustomerRequestContact = (user: Partial<User>) =>
     `;
 
     const subject = 'Arviointilomake: asiakkaan yhteydenottopyyntö';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
 
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.userEmail, subject, html });
 };
 
-export const sendEvaluationFormSupervisorRequestContact = (user: Partial<User>) => {
-    const title = "Työpaikkaohjaaja pyytää yhteydenottoa";
-    const textUnderHeading = "";
-    const subHeading = "";
+// Työpaikkaohjaaja pyytää yhteydenottoa
+
+interface ISendEvaluationFormSupervisorRequestContact {
+    userName: string;
+    userEmail: string;
+    degreeName: string;
+    unitName: string;
+    supervisorName: string;
+    customerName: string;
+}
+
+
+export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluationFormSupervisorRequestContact) => {
+
     const text =
     `
-    Hei [Käyttäjänimi],
+    Hei ${params.userName},
 
-    Työpaikkaohjaaja [Työpaikka ohjaajan nimi] pyytää yhteydenottoa liittyen seuraavaan 	suoritukseen:
+    Työpaikkaohjaaja ${params.supervisorName} pyytää yhteydenottoa liittyen seuraavaan 	suoritukseen:
         
         
-    Asiakas:		[Asiakkaan nimi]
-    Tutkinto: 		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
+    Asiakas:		${params.customerName}
+    Tutkinto: 		${params.degreeName} 
+    Tutkinnonosa: 		${params.unitName}
         
         
     Ystävällisin terveisin,
@@ -49,25 +67,35 @@ export const sendEvaluationFormSupervisorRequestContact = (user: Partial<User>) 
     `;
 
     const subject = 'Arviointilomake: työpaikkaohjaajan yhteydenottopyyntö';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
 
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.userEmail, subject, html });
 };
 
-export const sendEvaluationFormTeacherRequestContactMessageCustomer = (user: Partial<User>) => {
-    const title = "Opettaja pyytää yhteydenottoa";
-    const textUnderHeading = "";
-    const subHeading = "";
+// Opettaja pyytää yhteydenottoa
+
+interface ISendEvaluationFormCustomerRequestContactMessageTeacher {
+    userName: string;
+    userEmail: string;
+    degreeName: string;
+    unitName: string;
+    supervisorName: string;
+    teacherName: string;
+}
+
+
+export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: ISendEvaluationFormCustomerRequestContactMessageTeacher) => {
+
     const text =
         `
-    Hei [Käyttäjänimi],
+    Hei ${params.userName},
   
-    Opettaja [Opettajan nimi] pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+    Opettaja ${params.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
     
     
-    Tutkinto: 		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
-    Työpaikkaohjaaja: 	[Työpaikkaohjaajan nimi]
+    Tutkinto: 		${params.degreeName}
+    Tutkinnonosa: 		${params.unitName}
+    Työpaikkaohjaaja: 	${params.supervisorName}
     
     
     Ystävällisin terveisin,
@@ -75,27 +103,34 @@ export const sendEvaluationFormTeacherRequestContactMessageCustomer = (user: Par
     `;
 
     const subject = 'Arviointilomake: Opettajan yhteydenottopyyntö';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
 
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.userEmail, subject, html });
 };
 
-export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (user: Partial<User>) => {
-    const title = "Opettaja pyytää yhteydenottoa";
-    const textUnderHeading = "";
-    const subHeading = "";
+interface ISendEvaluationFormTeacherRequestContactMessageSupervisor {
+    userName: string;
+    userEmail: string;
+    customerName: string;
+    degreeName: string;
+    unitName: string;
+    teacherName: string;
+    vocationalCompetenceName: string;
+}
+
+export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor) => {
+
     const text =
-        `
+    `
+    Hei ${params.userName},
   
-    Hei [Käyttäjänimi],
-  
-    Opettaja [Opettajan nimi] pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+    Opettaja ${params.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
     
     
-    Asiakas: 		[Asiakkaan nimi]
-    Tutkinto: 		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
-    Ammattitaitovaatimus: 	[Ammattitaitovaatimuksen nimi]
+    Asiakas:        ${params.customerName}
+    Tutkinto:       ${params.degreeName}
+    Tutkinnonosa: 		${params.unitName}
+    Ammattitaitovaatimus: 	${params.vocationalCompetenceName}
     
     
     Ystävällisin terveisin,
@@ -103,188 +138,97 @@ export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (user: P
     `;
 
     const subject = 'Arviointilomake: Opettajan yhteydenottopyyntö';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
 
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.userEmail, subject, html });
 };
 
-export const sendEvaluationFormCustomerReadyMessageTeacher = (user: Partial<User>) => {
-    const title = "Asiakkaan valmis lomake";
-    const textUnderHeading = "";
-    const subHeading = "";
+// Arviointilomake: valmis lomake
+// Asiakkaan ja opettajan valmis lomake
+
+enum AssessmentStatus {
+    READY = 'Valmis',
+    IN_PROGRESS = 'Kesken'
+}
+
+interface ISendEvaluationFormReady {
+    userFirstName: string;
+    customerName: string;
+    supervisorName: string;
+    degreeName: string;
+    unitName: string;
+    customerAssessment: AssessmentStatus;
+    supervisorAssessment: AssessmentStatus;
+    additionalInfo: string;
+    userEmail: string;
+}
+
+export const sendEvaluationFormCustomerOrTeacherReady = (params: ISendEvaluationFormReady, subject: string) => {
+
     const text =
         `
-  
-    Hei [Etunimi],
+    Hei ${params.userFirstName},
   
     Tutkinnonosa on valmis tarkistettavaksi.
     
     
-    Asiakas: 		[Asiakkaan nimi]
-    Työpaikkaohjaaja: 	[Työpaikkaohjaajan nimi]
-    Tutkinto: 		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
-    Asiakkaan arvio: 	[    /Valmis]
-    Työpaikkaohjaajan arvio: 	[    /Valmis]	
-    Lisätiedot: 		”[Kommenttiboksiin kirjoitettu teksti]”
+    Asiakas: 		    ${params.customerName}
+    Työpaikkaohjaaja: 	${params.supervisorName}
+    Tutkinto: 		    ${params.degreeName} 
+    Tutkinnonosa: 		${params.unitName}
+    Asiakkaan arvio: 	${params.customerAssessment}
+    Työpaikkaohjaajan arvio:       ${params.supervisorAssessment}	
+    Lisätiedot: 		${params.additionalInfo}
     
     
     Ystävällisin terveisin,
     Ylläpito
     `;
 
-    const subject = 'Asiakkaan lomake valmis';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
 
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.userEmail, subject, html });
 };
 
-export const sendEvaluationFormCustomerReadyMessageSupervisor = (user: Partial<User>) => {
-    const title = "Asiakkaan valmis lomake";
-    const textUnderHeading = "";
-    const subHeading = "";
+enum EvaluationStatus {
+    ACCEPTED = 'Kyllä',
+    REJECTED = 'Ei'
+}
+
+interface ISendEvaluationFormTeacherReady {
+    customerFirstName: string,
+    customerName: string,
+    supervisorName: string,
+    degreeName: string,
+    unitName: string,
+    evaluationAccepted: EvaluationStatus,
+    additionalInfo: string,
+    userEmail: string
+}
+
+// Opettajan valmis lomake
+
+export const sendEvaluationFormTeacherReady = (params: ISendEvaluationFormTeacherReady, subject: string) => {
+
     const text =
         `
-  
-    Hei [Etunimi], 
+    Hei ${params.customerFirstName}, 
   
     Tutkinnonosa on valmis tarkistettavaksi.
     
     
-    Asiakas: 		[Asiakkaan nimi]
-    Tutkinto: 		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
-    Asiakkaan arvio: 	[    /Valmis]
-    Työpaikkaohjaajan arvio: 	[    /Valmis]	
-    Lisätiedot: 		”[Kommenttiboksiin kirjoitettu teksti]”
+    Asiakas: 		    ${params.customerName}
+    Tutkinto: 		    ${params.degreeName}
+    Tutkinnonosa: 		    ${params.unitName}
+    Suoritus hyväksytty:	${params.evaluationAccepted}
+    Lisätiedot: 		    ${params.additionalInfo}
     
     
     Ystävällisin terveisin,
     Ylläpito
     `;
 
-    const subject = 'Asiakkaan lomake valmis';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
 
-    sendEmail({ to: user.email, subject, html });
-};
-
-export const sendEvaluationFormSupervisorReadyMessageCustomer = (user: Partial<User>) => {
-    const title = "Työpaikkaohjaajan valmis lomake";
-    const textUnderHeading = "";
-    const subHeading = "";
-    const text =
-        `
-  
-    Hei [Etunimi], 
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: 		[Asiakkaan nimi]
-    Tutkinto: 		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
-    Asiakkaan arvio: 	[    /Valmis]
-    Työpaikkaohjaajan arvio: 	[    /Valmis]	
-    Lisätiedot: 		”[Kommenttiboksiin kirjoitettu teksti]”
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
-    `;
-
-    const subject = 'Työpaikkaohjaajan lomake valmis';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
-
-    sendEmail({ to: user.email, subject, html });
-};
-
-export const sendEvaluationFormSupervisorReadyMessageTeacher = (user: Partial<User>) => {
-    const title = "Työpaikkaohjaajan valmis lomake";
-    const textUnderHeading = "";
-    const subHeading = "";
-    const text =
-        `
-  
-    Hei [Etunimi], 
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: 		[Asiakkaan nimi]
-    Tutkinto: 		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
-    Asiakkaan arvio: 	[    /Valmis]
-    Työpaikkaohjaajan arvio: 	[    /Valmis]	
-    Lisätiedot: 		”[Kommenttiboksiin kirjoitettu teksti]”
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
-    `;
-
-    const subject = 'Työpaikkaohjaajan lomake valmis';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
-
-    sendEmail({ to: user.email, subject, html });
-};
-
-export const sendEvaluationFormTeacherReadyMessageCustomer = (user: Partial<User>) => {
-    const title = "Opettajan valmis lomake";
-    const textUnderHeading = "";
-    const subHeading = "";
-    const text =
-        `
-  
-    Hei [Etunimi], 
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: 		[Asiakkaan nimi]
-    Tutkinto: 		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
-    Asiakkaan arvio: 	[    /Valmis]
-    Työpaikkaohjaajan arvio: 	[    /Valmis]	
-    Lisätiedot: 		”[Kommenttiboksiin kirjoitettu teksti]”
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
-    `;
-
-    const subject = 'Opettajan lomake valmis';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
-
-    sendEmail({ to: user.email, subject, html });
-};
-
-export const sendEvaluationFormTeacherReadyMessageSupervisor = (user: Partial<User>) => {
-    const title = "Opettajan valmis lomake";
-    const textUnderHeading = "";
-    const subHeading = "";
-    const text =
-        `
-  
-    Hei [Etunimi], 
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: 		[Asiakkaan nimi]
-    Tutkinto: 		[Tutkinnon nimi] 
-    Tutkinnonosa: 		[Tutkinnonosan nimi]
-    Asiakkaan arvio: 	[    /Valmis]
-    Työpaikkaohjaajan arvio: 	[    /Valmis]	
-    Lisätiedot: 		”[Kommenttiboksiin kirjoitettu teksti]”
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
-    `;
-
-    const subject = 'Opettajan lomake valmis';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
-
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.customerName, subject, html });
 };
