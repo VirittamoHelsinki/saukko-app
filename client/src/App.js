@@ -1,7 +1,6 @@
 // importing all sass styling
 import './scss/index.scss';
 import axios from 'axios';
-import { AuthContextProvider as OldAuthContextProvider } from './store/context/AuthContext';
 import { ExternalApiContextProvider } from './store/context/ExternalApiContext';
 import { InternalApiContextProvider } from "./store/context/InternalApiContext";
 
@@ -17,15 +16,13 @@ const App = () => {
   return (
     <main className='app__wrapper'>
       <ErrorBoundary>
-        <OldAuthContextProvider>
-          <AuthContextProvider>
-            <InternalApiContextProvider>
-              <ExternalApiContextProvider>
-                <Router />
-              </ExternalApiContextProvider>
-            </InternalApiContextProvider>
-          </AuthContextProvider>
-        </OldAuthContextProvider>
+        <AuthContextProvider>
+          <InternalApiContextProvider>
+            <ExternalApiContextProvider>
+              <Router />
+            </ExternalApiContextProvider>
+          </InternalApiContextProvider>
+        </AuthContextProvider>
       </ErrorBoundary>
     </main>
   );
