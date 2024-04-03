@@ -7,10 +7,7 @@ import {
   fetchInternalDegreeById,
 } from '../../api/degree.js';
 import { fetchAllInternalWorkplaces } from '../../api/workplace.js';
-import {
-  fetchAllEvaluations,
-  fetchEvaluationById,
-} from '../../api/evaluation.js';
+import { fetchAllEvaluations } from '../../api/evaluation.js';
 
 // Internal state variable access.
 import useUnitsStore from '../zustand/unitsStore.js';
@@ -70,37 +67,8 @@ export const InternalApiContextProvider = (props) => {
   // Fetch all evaluations
   const setInternalEvaluations = async () => {
     try {
-      const allEvaluations = await fetchAllEvaluations();
-
-      // Filter evaluations based on role and ensure _id is not null
-      let matchingEvaluations = [];
-
-      // Find evaluations belonging to current user & set to state
-      if (role === 'teacher') {
-        matchingEvaluations = allEvaluations.filter(
-          (evaluation) =>
-            evaluation.teacherId && evaluation.teacherId._id === user.id
-        );
-        // setEvaluations(matchingEvaluations);
-      } else if (role === 'supervisor') {
-        matchingEvaluations = allEvaluations.filter((evaluation) =>
-          evaluation.supervisorIds.some(
-            (supervisor) => supervisor && supervisor._id === user.id
-          )
-        );
-        // console.log(
-        //   '🚀 ~ setInternalEvaluations ~ matchingEvaluations:',
-        //   matchingEvaluations
-        // );
-        // setEvaluations(matchingEvaluations);
-      } else if (role === 'customer') {
-        matchingEvaluations = allEvaluations.filter(
-          (evaluation) =>
-            evaluation.customerId && evaluation.customerId._id === user.id
-        );
-        // setEvaluations(matchingEvaluations);
-      }
-      setEvaluations(matchingEvaluations);
+      // Fetch all the Evaluations for the current user
+      setEvaluations(await fetchAllEvaluations());
     } catch (err) {
       console.log(err);
     }
@@ -109,9 +77,10 @@ export const InternalApiContextProvider = (props) => {
   // Fetch single evaluation by id
   const setInternalEvaluation = async (evaluationId) => {
     try {
-      /* setLoading(true) */ // When logging in as customer this gives an infinite loop??
-      const evaluation = await fetchEvaluationById(evaluationId);
-      setEvaluation(evaluation);
+      if (!evaluations) {
+        await setInternalEvaluations()
+      }
+      setEvaluation(evaluations.find(x => x._id === evaluationId));
     } catch (err) {
       console.log(err);
     } /* finally {
