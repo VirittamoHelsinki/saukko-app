@@ -36,6 +36,8 @@ import UserPerformance from '../../pages/Performance/UserPerformance/UserPerform
 import AddCompanyName from '../../pages/AddCompanyName/AddCompanyName';
 import EmailVerification from '../../pages/VerifyEmail/VerifyEmail';
 import CreateUnitsSummary from '../../pages/CreateSummary/CreateUnitsSummary';
+import SetPassword from '../../pages/setPassword/SetPassword';
+import ErrorBoundary from '../errorBoundary';
 
 const Router = () => {
   let location = useLocation();
@@ -68,7 +70,7 @@ const Router = () => {
   }, [loggedIn, allInternalDegrees, workplaces]);
 
   return (
-    <>
+    <ErrorBoundary>
       <Routes key={location.pathname} location={location}>
 
         {/* Placeholders for development */}
@@ -81,6 +83,7 @@ const Router = () => {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
+            <Route path='/set-password' element={<SetPassword />} />
           </>
         )}
 
@@ -132,7 +135,7 @@ const Router = () => {
           </>
         )}
       </Routes>
-    </>
+    </ErrorBoundary>
   );
 };
 

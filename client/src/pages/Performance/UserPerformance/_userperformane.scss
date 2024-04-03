@@ -5,13 +5,29 @@
 //     }
 // }
 
-.para-title-style{
+.para-title-style {
   margin-left: 18px;
-   margin-bottom: 16px;
-    margin-top: 18px;
-     font-size: 16px ;
-     
-    
-
+  margin-bottom: 16px;
+  margin-top: 18px;
+  font-size: 16px;
 }
 
+.degree-name {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 150px;
+}
+
+.degree-unit-name {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  padding: 0 5px;
+}
+
+.assessments {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 15px 0 0;
+}

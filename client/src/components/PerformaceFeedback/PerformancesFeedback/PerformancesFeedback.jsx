@@ -15,37 +15,22 @@ const PerformancesFeedback = ({
   setSelectedAssessmentId,
 }) => {
   console.log('🚀 ~ assessment:', assessment._id);
-  const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState('');
   const [hasChanged, setHasChanged] = useState(false);
   const auth = useContext(AuthContext);
   const user = auth.user;
   const { evaluation } = useContext(InternalApiContext);
 
-    // Uncheck the radio button
-    const handleRadioUncheck = (event) => {
-      if (selectedRadio === event.target.value) {
-        setSelectedRadio('');
-        setSelectedValues(0);
-        setSelectedUnitId(null);
-        setHasChanged(false);
-        setHasUnsavedChanges(false);
-      }
-    };
-
-  /* const handleRadioChange = (event, unit) => {
-    setSelectedRadio(event.target.value);
-    setSelectedUnitId(unit._id); // This is the unit id
-    setHasChanged(true);
-    setHasUnsavedChanges(true);
-    if (event.target.value === 'Osaa ohjatusti') {
-      setSelectedValues(1);
-    } else if (event.target.value === 'Osaa itsenäisesti') {
-      setSelectedValues(2);
+  // Uncheck the radio button
+  const handleRadioUncheck = (event) => {
+    if (selectedRadio === event.target.value) {
+      setSelectedRadio('');
+      setSelectedValues(0);
+      setSelectedUnitId(null);
+      setHasChanged(false);
+      setHasUnsavedChanges(false);
     }
-    console.log(event.target.value);
   };
- */ 
 
   const handleRadioChange = (e, unit, info, value) => {
     setSelectedRadio((prevValues) => ({
@@ -76,24 +61,10 @@ const PerformancesFeedback = ({
         }
       }
       console.log(e.target.value);
+      console.log('selectedRadio', selectedRadio);
     }
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      // Check file type and size
-      if (file.type === 'image/jpeg' || file.type === 'image/png') {
-        if (file.size <= 2 * 1024 * 1024) {
-          setSelectedFiles([...selectedFiles, file]);
-        } else {
-          alert('File size exceeds the limit (Max 2 MB)');
-        }
-      }
-    }
-  };
-
-  // Defining the background color based on the user role
   const getBackgroundColor = () => {
     if (
       selectedRadio === 'Osaa ohjatusti' ||
@@ -105,23 +76,23 @@ const PerformancesFeedback = ({
         return '#E2F5F3';
       }
     }
+    // check the answer and set the background color
+    if (user?.role === 'supervisor' && assessment.answerSupervisor !== 0) {
+      return '#F6E2E6';
+    } else if (user?.role === 'customer' && assessment.answer !== 0) {
+      return '#E2F5F3';
+    }
     return '#F2F2F2';
   };
 
   const infodata = evaluation.units.flatMap((unit) => {
     return unit.assessments.flatMap((assessment) => [
       {
-        info: 'Itsearviointi',
-        disabled: true,
+        info: user.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
+        disabled: false,
         unitId: unit._id,
         assessmentId: assessment._id,
         answer: assessment.answer,
-      },
-      {
-        info: 'TPO:n havainto',
-        disabled: true,
-        unitId: unit._id,
-        assessmentId: assessment._id,
         answerSupervisor: assessment.answerSupervisor,
       },
     ]);
@@ -137,36 +108,56 @@ const PerformancesFeedback = ({
       style={{ backgroundColor: getBackgroundColor() }}
     >
       <div className='feedback'>
-        <FormControl>
-          <RadioGroup
-            row
-            aria-labelledby='demo-form-control-label-placement'
-            name='position'
-            value={selectedRadio}
-            unit={unit}
-            // onClick={(event) => handleRadioChange(event, unit)}
-          >
-            <FormControlLabel
-              value='Osaa ohjatusti'
-              control={
-                <Radio 
-                  onClick={(event) => handleRadioUncheck(event)} 
-                  onChange={(event) => handleRadioChange(event, unit)}
-                 />
-              }
-              label='Osaa ohjatusti'
-              labelPlacement='top'
-            />
-            <FormControlLabel
-              value='Osaa itsenäisesti'
-              control={
-                <Radio onClick={(event) => handleRadioUncheck(event)} onChange={(event) => handleRadioChange(event, unit)} />
-              }
-              label='Osaa itsenäisesti'
-              labelPlacement='top'
-            />
-          </RadioGroup>
-        </FormControl>{' '}
+        {infodataForSelectedAssessment.map((item, index) => (
+          <FormControl>
+            <RadioGroup
+              row
+              aria-labelledby='demo-form-control-label-placement'
+              //name='position'
+              name={item.info}
+              value={selectedRadio[item.info] || ''}
+              unit={unit}
+              //onClick={(event) => handleRadioChange(item.info, event, unit)}
+            >
+              <FormControlLabel
+                value='Osaa ohjatusti'
+                //value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
+                control={
+                  <Radio
+                    onClick={(event) => handleRadioUncheck(event)}
+                    onChange={(event) => handleRadioChange(event, unit)}
+                    checked={
+                      selectedRadio === 'Osaa ohjatusti' ||
+                      (user.role === 'supervisor' &&
+                        item.answerSupervisor === 1) ||
+                      (user.role === 'customer' && item.answer === 1)
+                    }
+                  />
+                }
+                label='Osaa ohjatusti'
+                labelPlacement='top'
+              />
+              <FormControlLabel
+                value='Osaa itsenäisesti'
+                //value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
+                control={
+                  <Radio
+                    onClick={(event) => handleRadioUncheck(event)}
+                    onChange={(event) => handleRadioChange(event, unit)}
+                    checked={
+                      selectedRadio === 'Osaa itsenäisesti' ||
+                      (user.role === 'supervisor' &&
+                        item.answerSupervisor === 2) ||
+                      (user.role === 'customer' && item.answer === 2)
+                    }
+                  />
+                }
+                label='Osaa itsenäisesti'
+                labelPlacement='top'
+              />
+            </RadioGroup>
+          </FormControl>
+        ))}
       </div>
     </main>
   );
