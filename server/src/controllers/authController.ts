@@ -67,7 +67,7 @@ const registerUser = async (req: Request, res: Response) => {
       const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`;
 
       // Send verification email
-      sendVerificationEmail(newUser, verificationLink);
+      sendVerificationEmail({userEmail: newUser.email, verificationLink});
       console.log('user created and verification email sent');
     } else {
       console.log('user created without verification email (role: supervisor)');
@@ -100,7 +100,8 @@ const forgotPassword = async (req: Request, res: Response) => {
   }
 
   try {
-    sendResetPasswordEmail(existUser)
+    const resetPasswordLink = existUser.generateResetPasswordLink();
+    sendResetPasswordEmail({userFirstName: existUser.firstName, userEmail: existUser.email, resetPasswordLink});
     res.status(200).json({ message: "Password reset link sent to email" })
   } catch (err) {
     return _responseWithError(res, 400, err)
@@ -310,10 +311,10 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
 
   if (user.role !== 'supervisor') {
     const verificationToken = user.generateEmailVerificationToken();
-    const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`; // TODO: fix the link
+    const verificationLink = user.generateEmailVerificationLink();
 
     // Send verification email
-    sendVerificationEmail(user, verificationLink);
+    sendVerificationEmail({userEmail: user.email, verificationLink});
     console.log('user created and verification email sent');
   }
 
