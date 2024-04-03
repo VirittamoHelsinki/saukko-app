@@ -98,10 +98,12 @@ userSchema.methods.generateResetPasswordToken =
     );
   };
 
+  
+  
 // method to generate reset-password token and link
 userSchema.methods.generateResetPasswordLink =
   function generateResetPasswordLink() {
-    return `${config.EMAIL_SERVICE_HOST
+    return `${process.env.NODE_ENV === "production" ? config.EMAIL_SERVICE_HOST : "localhost:3000"
       }/reset-password/${this.generateResetPasswordToken()}`;
   };
 

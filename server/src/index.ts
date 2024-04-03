@@ -61,7 +61,7 @@ app.use("/api", workplaceRouter);
 app.use("/api", evaluationRouter);
 app.use("/api", eReqRouter);
 
-app.use('/api', (_req, res) => {
+app.use('/api/status', (_req, res) => {
   res.json({
     message: 'API is working',
     mongoDbConnection: db.readyState === 1 ? 'connected' : 'disconnected',

@@ -11,7 +11,11 @@ import NotificationModal from '../../components/NotificationModal/NotificationMo
 import PopUpForm from '../../components/PopUpForm/PopUpForm';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import AuthContext from '../../store/context/AuthContext';
-import { logoutUser } from '../../api/user';
+import {
+  logoutUser,
+  requestPasswordChangeTokenAsUser,
+  resetPassword,
+} from '../../api/user';
 
 function ProfilePage() {
   // User info from AuthContext
@@ -31,6 +35,8 @@ function ProfilePage() {
     }
   };
 
+  const [invalidPasswordError, setInvalidPasswordError] = useState(false);
+  
   // State for opening & closing email pop up
   const [openEmailPopUp, setOpenEmailPopUp] = useState(false);
   const handleOpenEmailPopUp = () => setOpenEmailPopUp(true);
@@ -70,25 +76,43 @@ function ProfilePage() {
     // Get input values
     const form = e.target;
     const oldPassword = form.querySelector("[name='passwordOld']").value;
-    console.log('old password:', oldPassword);
     const newPassword = form.querySelector("[name='passwordNew']").value;
-    console.log('new password:', newPassword);
     const verifyPassword = form.querySelector("[name='passwordVerify']").value;
-    console.log('verify password:', verifyPassword);
 
-    // Verify old password (here or backend?)
-
-    // Check if new password and password confirmation match
     if (newPassword !== verifyPassword) {
-      return alert('Salasanat eivät täsmää');
+      console.log(newPassword, verifyPassword)
+      form.querySelector("[name='passwordVerify']").setCustomValidity('Salasanat eivät täsmää.');
+      form.querySelector("[name='passwordVerify']").reportValidity();
+      return;
+    } else {
+      form.querySelector("[name='passwordVerify']").setCustomValidity('');
+      form.querySelector("[name='passwordVerify']").reportValidity();
     }
 
-    // Send a request to change password here
-
-    handleClosePasswordPopUp();
-    handleOpenPasswordNotification();
-  };
-
+    requestPasswordChangeTokenAsUser(oldPassword)
+      .then((response) => {
+        console.log("We have a response", response)
+        if (response.status === 200) {
+          // "change-token" is set as HTTP-Only
+          return;
+        } else throw new Error(`Request "change-token" was failed, server returned ${response.status}`);
+      })
+      .then(() => resetPassword(newPassword))
+      .then((response) => { // this is the password change response
+        if (response.status === 200) {
+          // "change-token" is now erased from the cookie jar
+          handleClosePasswordPopUp();
+          handleOpenPasswordNotification();
+        } else throw new Error(`Request "password-reset" was failed, server returned ${response.status}`)
+      })
+      .catch((err) => {
+        console.error("Failed to change the password", err)
+        if (err.response && err.response.data && err.response.data.errorMessage === "Invalid password") {
+          setInvalidPasswordError(true)
+        }
+      });
+  }
+  
   return (
     <main className='profile__wrapper'>
       <WavesHeader title='Oma profiili' disabled={true} />
@@ -161,21 +185,10 @@ function ProfilePage() {
             description='Syötä alle uusi salasanasi'
             content={
               <div className='popup-form'>
-                <PasswordInput
-                  value='passwordOld'
-                  inputName='passwordOld'
-                  label='Vanha salasana *'
-                />
-                <PasswordInput
-                  value='passwordNew'
-                  inputName='passwordNew'
-                  label='Uusi salasana *'
-                />
-                <PasswordInput
-                  value='passwordVerify'
-                  inputName='passwordVerify'
-                  label='Vahvista salasana *'
-                />
+                <PasswordInput value='passwordOld' inputName='passwordOld' label='Vanha salasana *' />
+                <PasswordInput value='passwordNew' inputName='passwordNew' label='Uusi salasana *' />
+                <PasswordInput value='passwordVerify' inputName='passwordVerify' label='Vahvista salasana *' />
+                {invalidPasswordError && <p style={{color: "red"}}>Tarkista salasanasi ja yritä uudelleen!</p>}
               </div>
             }
             buttonText='Vaihda salasana'
