@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
@@ -7,7 +7,6 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Stepper from '../../../components/Stepper/Stepper';
-import AuthContext from '../../../store/context/AuthContext';
 import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 
@@ -16,6 +15,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ function EvaluationForm() {
   } = useEvaluationFormStore();
 
   // Get user from AuthContext
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useAuthContext();
 
   // Opening / closing notificationModal
   const [openNotificationModalAllFields, setOpenNotificationModalAllFields] =
@@ -114,7 +114,7 @@ function EvaluationForm() {
     // Create evaluation object
     const evaluation = {
       customerId: '', // After user created -> server generates id -> fetch that
-      teacherId: user ? user._id : '',
+      teacherId: currentUser ? currentUser._id : '',
       startDate,
       endDate,
       workTasks,
