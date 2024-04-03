@@ -111,61 +111,44 @@ describe('test sending emails', () => {
 
 });
 
-// describe.skip('sendEmail', () => {
-//   it('should send an email', async () => {
-//     const mockEmail = {
-//       to: 'test@example.com',
-//       subject: 'Hello',
-//       html: '<p>This is a test email</p>',
-//     };
+describe.skip('sendEmail', () => {
+  it('should send an email', async () => {
+    const mockEmail = {
+      to: 'test@example.com',
+      subject: 'Hello',
+      html: '<p>This is a test email</p>',
+    };
 
-//     const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
+    const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
 
-//     mailer.sendEmail(mockEmail);
+    mailer.sendEmail(mockEmail);
 
-//     expect(sendEmailMock).toHaveBeenCalledWith(mockEmail);
+    expect(sendEmailMock).toHaveBeenCalledWith(mockEmail);
 
-//   });
-// });
+  });
+});
 
-// describe.skip('new user verification emails', () => {
+describe('new user verification emails', () => {
 
-//   it('should send a verification email', async () => {
-//     const mockUser: Partial<User> = {
-//       firstName: 'Matti',
-//       lastName: 'Meikäläinen',
-//       email: 'test@example.com',
-//     };
+  it('should send a verification email', async () => {
+    const mockUser: IUser = {
+      firstName: 'Matti',
+      lastName: 'Meikäläinen',
+      email: 'test@example.com',
+    };
 
-//     const mockVerificationLink = 'https://example.com/verification-link';
+    const mockVerificationLink = 'https://example.com/verification-link';
 
-//     const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
+    const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
 
-//     sendVerificationEmail(mockUser, mockVerificationLink);
+    sendVerificationEmail({userEmail: mockUser.email, verificationLink: mockVerificationLink});
 
-//     expect(sendEmailMock).toHaveBeenCalledWith({
-//       to: mockUser.email,
-//       subject: 'Vahvista sähköpostiosoitteesi',
-//       html: expect.stringContaining(mockVerificationLink),
-//     });
-//   });
+    expect(sendEmailMock).toHaveBeenCalledWith({
+      to: mockUser.email,
+      subject: 'Vahvista sähköpostiosoitteesi',
+      html: expect.stringContaining(mockVerificationLink),
+    });
+  });
 
-//   it('should send a verification done email', async () => {
-//     const mockUser: Partial<User> = {
-//       firstName: 'Matti',
-//       lastName: 'Meikäläinen',
-//       email: 'test@example.com',
-//     };
-
-//     const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
-
-//     sendVerificationDoneEmail(mockUser);
-
-//     expect(sendEmailMock).toHaveBeenCalledWith({
-//       to: mockUser.email,
-//       subject: 'Sähköpostiosoitteesi on vahvistettu',
-//       html: expect.any(String),
-//     });
-//   });
-// });
+});
 
