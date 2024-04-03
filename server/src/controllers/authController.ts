@@ -256,6 +256,7 @@ const logout = async (_req: Request, res: Response) => {
   res
     .status(200)
     .clearCookie('token')
+    .clearCookie('auth_state')
     .json({ message: "User is signed out" })
 }
 
