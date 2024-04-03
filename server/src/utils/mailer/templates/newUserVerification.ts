@@ -1,4 +1,3 @@
-import { User } from "../../../models/userModel";
 import { sendEmail } from "../configMailer";
 import mailerTemplate from "../mailerHtmlTemplate";
 

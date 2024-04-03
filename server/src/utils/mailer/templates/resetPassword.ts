@@ -1,30 +1,22 @@
-import { User } from "../../../models/userModel";
 import { sendEmail } from "../configMailer";
 import mailerTemplate from "../mailerHtmlTemplate";
 
-// Function for sending reset password email
-// const sendResetPasswordEmail = (user: User) => {
-//   const subject = 'Reset Your Password';
-//   const html = `
-//       <p>Hi ${user.firstName},</p>
-//       <p>Please click the following link to reset your password:</p>
-//       <a href="${user.generateResetPasswordLink()}">Reset Password</a>
-//     `; // Place holder text need to be changed once its been agreed with the client what the email should say
 
-//   sendEmail({ to: user.email, subject, html });
-// };
+interface ISendResetPasswordEmail {
+  userFirstName: string;
+  userEmail: string;
+  resetPasswordLink: string;
+}
 
-export const sendResetPasswordEmail = (user: Partial<User>) => {
-  const title = "Salasanan vaihto";
-  const textUnderHeading = "";
-  const subHeading = "";
+export const sendResetPasswordEmail = (params: ISendResetPasswordEmail) => {
+
   const text =
     `
-    Hei ${user.firstName}. 
+    Hei ${params.userFirstName}. 
     Olet pyytänyt salasanasi nollaamista.  
     
     Voit nollata salasanasi alla olevasta linkistä: 
-    <a href="https://www.google.com">Nollaa salasana</a> 
+    <a href=${params.resetPasswordLink}>Nollaa salasana</a> 
     
     Jos et pyytänyt salasanasi nollaamista, voit ohittaa tämän viestin. 
     
@@ -34,22 +26,26 @@ export const sendResetPasswordEmail = (user: Partial<User>) => {
     `;
 
   const subject = 'Salasanan vaihto';
-  const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+  const html = mailerTemplate(text);
 
-  sendEmail({ to: user.email, subject, html });
+  sendEmail({ to: params.userEmail, subject, html });
 };
 
-export const sendResetPasswordSuccessEmail = (user: Partial<User>) => {
-  const title = "Salasanan vaihto";
-  const textUnderHeading = "";
-  const subHeading = "";
+interface ISendResetPasswordSuccessEmail {
+  userFirstName: string;
+  userEmail: string;
+  technicalSupportLink: string;
+}
+
+export const sendResetPasswordSuccessEmail = (params: ISendResetPasswordSuccessEmail) => {
+
   const text =
     `
-    Hei ${user.firstName}.
+    Hei ${params.userFirstName}.
     
     Salasanasi on nyt vaihdettu.  
   
-    Jos et ole itse vaihtanut salasanaasi, ota yhteys Saukon tekniseen tukeen <a href="https://digitalents.powerappsportals.com/ict">tästä</a>. 
+    Jos et ole itse vaihtanut salasanaasi, ota yhteys Saukon tekniseen tukeen <a href=${params.technicalSupportLink}>tästä</a>. 
   
 
     Ystävällisin terveisin, 
@@ -57,31 +53,9 @@ export const sendResetPasswordSuccessEmail = (user: Partial<User>) => {
     `;
 
   const subject = 'Salasanan vaihto onnistunut';
-  const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+  const html = mailerTemplate(text);
 
-  sendEmail({ to: user.email, subject, html });
+  sendEmail({ to: params.userEmail, subject, html });
 };
 
-const sendResetPasswordFailEmail = (user: Partial<User>) => {
-  const title = "Salasanan vaihto";
-  const textUnderHeading = "";
-  const subHeading = "";
-  const text =
-    `
-    Hei ${user.firstName}. 
-
-    Salasanasi on vaihto epäonnistui.
-  
-    Ota yhteys Saukon tekniseen tukeen <a href="https://digitalents.powerappsportals.com/ict">Tuki</a>. 
-  
-
-    Ystävällisin terveisin, 
-    Ylläpito 
-    `;
-
-  const subject = 'Salasanan vaihto epäonnistui';
-  const html = mailerTemplate(title, textUnderHeading, subHeading, text);
-
-  sendEmail({ to: user.email, subject, html });
-};
 
