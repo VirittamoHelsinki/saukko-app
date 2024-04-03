@@ -2,7 +2,16 @@ import { User } from "../../../models/userModel";
 import { sendEmail } from "../configMailer";
 import mailerTemplate from "../mailerHtmlTemplate";
 
-export const sendNewCustomerAddedEmail = (user: Partial<User>) => {
+interface IsendNewCustomerAddedEmail {
+  user: Partial<User>;
+  degreeName: string;
+  supervisorName: string;
+  teacherName: string;
+  verificationLink: string;
+  userEmail: string;
+}
+
+export const sendNewCustomerAddedEmail = (params: IsendNewCustomerAddedEmail) => {
   const title = "Uusi asiakas liitetään Suoritukseen";
   const textUnderHeading = "";
   const subHeading = "";
@@ -10,63 +19,70 @@ export const sendNewCustomerAddedEmail = (user: Partial<User>) => {
   `
   Tervetuloa OsTu-appin käyttäjäksi! 
 
-  Sinut on liitetty henkilön [Asiakkaan nimi] osaamisen tunnistamisen toteutukseen. 
+  Sinut on liitetty osaamisen tunnistamisen toteutukseen. 
   
   
-  Asiakas: [Asiakkaan nimi] 
-  Tutkinto: [Tutkinnon nimi] 
-  Työpaikkaohjaaja: Työpaikkaohjaajan nimi] 
+  Tutkinto: ${params.degreeName}
+  Työpaikkaohjaaja: ${params.supervisorName}
+  Opettaja: ${params.teacherName}
   
   
-  Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun tästä linkistä: 
-  [SÄHKÖPOSTIN VAHVISTAMISLINKKI] 
+  Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
   
-  Linkki vanhenee kahden tunnin kuluttua. 
-    
+  Linkki vanhenee kahden tunnin kuluttua.
+   
   
-  Ystävällisin terveisin, 
-  Ylläpito 
+  Ystävällisin terveisin,
+  Ylläpito
+  
   `;
 
-  const subject = 'Uusi asiakas liitetty suoritukseen';
+  const subject = 'Uuden asiakkaan lisääminen suoritukseen';
   const html = mailerTemplate(title, textUnderHeading, subHeading, text);
 
-  sendEmail({ to: user.email, subject, html });
+  sendEmail({ to: params.userEmail, subject, html });
 };
 
-export const sendNewCustomerVerifiedEmail = (user: Partial<User>) => {
+interface IsendNewSupervisorAddedEmail {
+  userFirstName: string;
+  userEmail: string;
+}
+
+export const sendNewCustomerVerifiedEmail = (params: IsendNewSupervisorAddedEmail) => {
   const title = "";
   const textUnderHeading = "";
   const subHeading = "";
   const text =
   `
-  Tervetuloa OsTu-appin käyttäjäksi! 
+  Hei ${params.userFirstName}.
 
-  Sinut on liitetty henkilön [Asiakkaan nimi] osaamisen tunnistamisen toteutukseen. 
+  Salasanasi on nyt vaihdettu ja tilisi aktivoitu. Sinulla on nyt käyttäjätili OsTu-appiin!
+  
+  Löydät asiakkuuteesi liittyvät tiedot omalta tililtäsi, jossa voit myös päivittää omia tietojasi.
+  
+  Tervetuloa mukaan!
   
   
-  Asiakas: [Asiakkaan nimi] 
-  Tutkinto: [Tutkinnon nimi] 
-  Työpaikkaohjaaja: Työpaikkaohjaajan nimi] 
-  
-  
-  Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun tästä linkistä: 
-  [SÄHKÖPOSTIN VAHVISTAMISLINKKI] 
-  
-  Linkki vanhenee kahden tunnin kuluttua. 
-    
-  
-  Ystävällisin terveisin, 
-  Ylläpito 
+  Ystävällisin terveisin,
+  Ylläpito
   `;
  
   const subject = 'Uusi asiakas liitetty suoritukseen';
   const html = mailerTemplate(title, textUnderHeading, subHeading, text);
 
-  sendEmail({ to: user.email, subject, html });
+  sendEmail({ to: params.userEmail, subject, html });
 };
 
-export const sendNewSupervisorAddedEmail = (user: Partial<User>) => {
+
+interface IsendNewSupervisorAddedEmail {
+  userEmail: string;
+  customerName: string;
+  degreeName: string;
+  supervisorName: string;
+  verificationLink: string;
+}
+
+export const sendNewSupervisorAddedEmail = (params: IsendNewSupervisorAddedEmail) => {
     const title = "Uusi työpaikkaohjaaja liitetään Suoritukseen";
     const textUnderHeading = "";
     const subHeading = "";
@@ -74,16 +90,15 @@ export const sendNewSupervisorAddedEmail = (user: Partial<User>) => {
     `
     Tervetuloa OsTu-appin käyttäjäksi! 
   
-    Sinut on liitetty henkilön [Asiakkaan nimi] osaamisen tunnistamisen toteutukseen. 
+    Sinut on liitetty henkilön ${params.customerName} osaamisen tunnistamisen toteutukseen. 
     
     
-    Asiakas: [Asiakkaan nimi] 
-    Tutkinto: [Tutkinnon nimi] 
-    Työpaikkaohjaaja: Työpaikkaohjaajan nimi] 
+    Asiakas: ${params.customerName}
+    Tutkinto: ${params.degreeName}
+    Työpaikkaohjaaja: ${params.supervisorName}
     
     
-    Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun tästä linkistä: 
-    [SÄHKÖPOSTIN VAHVISTAMISLINKKI] 
+    Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
     
     Linkki vanhenee kahden tunnin kuluttua. 
       
@@ -95,23 +110,32 @@ export const sendNewSupervisorAddedEmail = (user: Partial<User>) => {
     const subject = 'Uusi työpaikkaohjaaja liitetty suoritukseen';
     const html = mailerTemplate(title, textUnderHeading, subHeading, text);
   
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.userEmail, subject, html });
   };
+
+  interface ISendOldSupervisorAddedEmail {
+    userFirstName: string;
+    userEmail: string;
+    customerName: string;
+    degreeName: string;
+    teacherName: string;
+  }
+
   
-  export const sendOldSupervisorAddedEmail = (user: Partial<User>) => {
+  export const sendOldSupervisorAddedEmail = (params: ISendOldSupervisorAddedEmail) => {
     const title = "Vanha työpaikkaohjaaja liitetään Suoritukseen";
     const textUnderHeading = "";
     const subHeading = "";
     const text =
     `
-    Hei ${user.firstName}.
+    Hei ${params.userFirstName}.
   
-    Sinut on liitetty henkilön [Asiakkaan nimi] osaamisen tunnistamisen toteutukseen.
+    Sinut on liitetty henkilön ${params.customerName} osaamisen tunnistamisen toteutukseen.
     
     
-    Asiakas: [Asiakkaan nimi]
-    Tutkinto: [Tutkinnon nimi]
-    Opettaja: [Opettajan nimi]
+    Asiakas: ${params.customerName} 
+    Tutkinto: ${params.degreeName} 
+    Opettaja: ${params.teacherName} 
     
     
     Ystävällisin terveisin,
@@ -122,5 +146,5 @@ export const sendNewSupervisorAddedEmail = (user: Partial<User>) => {
     const subject = 'Vanha työpaikkaohjaaja liitetty suoritukseen';
     const html = mailerTemplate(title, textUnderHeading, subHeading, text);
   
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.userEmail, subject, html });
   };
