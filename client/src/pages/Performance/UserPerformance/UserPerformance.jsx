@@ -16,7 +16,6 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import useStore from '../../../store/zustand/formStore';
-import AuthContext from '../../../store/context/AuthContext';
 // Fetch evaluation and units from store
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
@@ -26,8 +25,6 @@ import { updateEvaluationById } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 
 const UserPerformance = () => {
-  // const auth = useContext(AuthContext);
-  // const user = auth.user;
   const { loggedIn, currentUser } = useAuthContext();
 
   console.log('🚀 ~ UserPerformance ~ user:', currentUser);
