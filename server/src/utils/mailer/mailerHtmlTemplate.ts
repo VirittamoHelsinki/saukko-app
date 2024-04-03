@@ -10,9 +10,7 @@ const wavesSvg = `
 </svg>
 `;
 
-// TODO: sanna.velin@hel.fi kysy halutaanko tyylittelyä
-
-const mailTemplate = (title: string, textUnderHeading: string, subHeading: string, text: string) => {
+const mailTemplate = (text: string) => {
     return `
         <!DOCTYPE html>
         <html>

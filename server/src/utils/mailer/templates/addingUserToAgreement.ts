@@ -12,9 +12,7 @@ interface IsendNewCustomerAddedEmail {
 }
 
 export const sendNewCustomerAddedEmail = (params: IsendNewCustomerAddedEmail) => {
-  const title = "Uusi asiakas liitetään Suoritukseen";
-  const textUnderHeading = "";
-  const subHeading = "";
+
   const text =
   `
   Tervetuloa OsTu-appin käyttäjäksi! 
@@ -38,7 +36,7 @@ export const sendNewCustomerAddedEmail = (params: IsendNewCustomerAddedEmail) =>
   `;
 
   const subject = 'Uuden asiakkaan lisääminen suoritukseen';
-  const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+  const html = mailerTemplate(text);
 
   sendEmail({ to: params.userEmail, subject, html });
 };
@@ -49,9 +47,7 @@ interface IsendNewSupervisorAddedEmail {
 }
 
 export const sendNewCustomerVerifiedEmail = (params: IsendNewSupervisorAddedEmail) => {
-  const title = "";
-  const textUnderHeading = "";
-  const subHeading = "";
+
   const text =
   `
   Hei ${params.userFirstName}.
@@ -68,7 +64,7 @@ export const sendNewCustomerVerifiedEmail = (params: IsendNewSupervisorAddedEmai
   `;
  
   const subject = 'Uusi asiakas liitetty suoritukseen';
-  const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+  const html = mailerTemplate(text);
 
   sendEmail({ to: params.userEmail, subject, html });
 };
@@ -83,9 +79,7 @@ interface IsendNewSupervisorAddedEmail {
 }
 
 export const sendNewSupervisorAddedEmail = (params: IsendNewSupervisorAddedEmail) => {
-    const title = "Uusi työpaikkaohjaaja liitetään Suoritukseen";
-    const textUnderHeading = "";
-    const subHeading = "";
+
     const text =
     `
     Tervetuloa OsTu-appin käyttäjäksi! 
@@ -108,7 +102,7 @@ export const sendNewSupervisorAddedEmail = (params: IsendNewSupervisorAddedEmail
     `;
   
     const subject = 'Uusi työpaikkaohjaaja liitetty suoritukseen';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
   
     sendEmail({ to: params.userEmail, subject, html });
   };
@@ -123,9 +117,7 @@ export const sendNewSupervisorAddedEmail = (params: IsendNewSupervisorAddedEmail
 
   
   export const sendOldSupervisorAddedEmail = (params: ISendOldSupervisorAddedEmail) => {
-    const title = "Vanha työpaikkaohjaaja liitetään Suoritukseen";
-    const textUnderHeading = "";
-    const subHeading = "";
+
     const text =
     `
     Hei ${params.userFirstName}.
@@ -144,7 +136,7 @@ export const sendNewSupervisorAddedEmail = (params: IsendNewSupervisorAddedEmail
     `;
   
     const subject = 'Vanha työpaikkaohjaaja liitetty suoritukseen';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
   
     sendEmail({ to: params.userEmail, subject, html });
   };

@@ -2,18 +2,18 @@ import { User } from "../../../models/userModel";
 import { sendEmail } from "../configMailer";
 import mailerTemplate from "../mailerHtmlTemplate";
 
-// TODO: Partial<User> for testing purposes, change to User
-export const sendVerificationEmail = (user: Partial<User>, verificationLink: string) => {
+interface IsendVerificationEmail {
+  userEmail: string;
+  verificationLink: string;
+}
+
+export const sendVerificationEmail = (params: IsendVerificationEmail) => {
   
-  
-    const title = "Uuden käyttäjän verifikaatio";
-    const textUnderHeading = "";
-    const subHeading = "";
     const text =
       `
     Tervetuloa OsTu-appin käyttäjäksi!
 
-    Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${verificationLink}">tästä linkistä</a>.
+    Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
 
     Linkki vanhenee kahden tunnin kuluttua.
 
@@ -23,16 +23,17 @@ export const sendVerificationEmail = (user: Partial<User>, verificationLink: str
     `;
   
     const subject = 'Vahvista sähköpostiosoitteesi';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
   
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.userEmail, subject, html });
   };
+
+  interface IsendVerificationDoneEmail {
+    userEmail: string;
+  }
   
-export const sendVerificationDoneEmail = (user: Partial<User>) => {
+export const sendVerificationDoneEmail = (params: IsendVerificationDoneEmail) => {
   
-    const title = "Uuden käyttäjän verifikaatio";
-    const textUnderHeading = "";
-    const subHeading = "";
     const text =
       `
     Sinulla on nyt käyttäjätili OsTu –appiin.
@@ -47,7 +48,7 @@ export const sendVerificationDoneEmail = (user: Partial<User>) => {
     `;
   
     const subject = 'Sähköpostiosoitteesi on vahvistettu';
-    const html = mailerTemplate(title, textUnderHeading, subHeading, text);
+    const html = mailerTemplate(text);
   
-    sendEmail({ to: user.email, subject, html });
+    sendEmail({ to: params.userEmail, subject, html });
   };
