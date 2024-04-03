@@ -7,8 +7,8 @@ import config from '../utils/config';
 import bcrypt from 'bcrypt';
 import { PasswordValidator } from '../utils/password';
 import { passwordValidationOptions } from '../options';
-import { sendVerificationEmail } from '../utils/mailer/templates/newUserVerification';
-import { sendResetPasswordEmail} from '../utils/mailer/templates/resetPassword';
+import { sendVerificationEmail } from '../mailer/templates/newUserVerification';
+import { sendResetPasswordEmail} from '../mailer/templates/resetPassword';
 
 const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
   if (err.message) {

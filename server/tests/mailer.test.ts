@@ -1,13 +1,20 @@
-import { User } from '../src/models/userModel';
-import * as mailer from '../src/utils/mailer/configMailer';
-import { sendVerificationEmail, sendVerificationDoneEmail } from '../src/utils/mailer/templates/newUserVerification';
-import { sendResetPasswordEmail, sendResetPasswordSuccessEmail } from '../src/utils/mailer/templates/resetPassword';
-import { sendNewCustomerAddedEmail } from '../src/utils/mailer/templates/addingUserToAgreement';
-import { sendEvaluationFormCustomerRequestContact } from '../src/utils/mailer/templates/EvaluationForm';
+import * as mailer from '../src/mailer/configMailer';
+import { sendVerificationEmail, sendVerificationDoneEmail } from '../src/mailer/templates/newUserVerification';
+import { sendResetPasswordEmail, sendResetPasswordSuccessEmail } from '../src/mailer/templates/resetPassword';
+import { sendNewCustomerAddedEmail } from '../src/mailer/templates/addingUserToAgreement';
+import { AssessmentStatus, ISendEvaluationFormReady, sendEvaluationFormCustomerRequestContact, sendEvaluationFormCustomerOrSupervisorReady } from '../src/mailer/templates/EvaluationForm';
+import { send } from 'process';
+
+
+interface IUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 describe('test sending emails', () => {
-  xit('verifikaatiolinkki', async () => {
-    const mockUser: Partial<User> = {
+  it('verifikaatiolinkki', async () => {
+    const mockUser: IUser = {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
       email: 'test@example.com',
@@ -15,83 +22,22 @@ describe('test sending emails', () => {
 
     const mockVerificationLink = 'https://example.com/verification-link';
 
-    sendVerificationEmail(mockUser, mockVerificationLink);
+    sendVerificationEmail({userEmail: mockUser.email, verificationLink: mockVerificationLink});
 
   });
-  xit('verifiointi tehty', async () => {
-    const mockUser: Partial<User> = {
+  it('verifiointi tehty', async () => {
+    const mockUser: IUser = {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
       email: 'test@example.com',
     };
 
-    sendVerificationDoneEmail(mockUser);
+    sendVerificationDoneEmail({userEmail: mockUser.email});
 
   });
 
-  xit('salasanan vaihto', async () => {
-    const mockUser: Partial<User> = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
-
-    sendResetPasswordEmail(mockUser);
-
-  });
-
-  xit('salasanan vaihto onnistui', async () => {
-    const mockUser: Partial<User> = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
-
-    sendResetPasswordSuccessEmail(mockUser);
-  });
-
-  xit('Uusi asiakas liitetään suoritukseen', async () => {
-    const mockUser: Partial<User> = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
-
-    sendNewCustomerAddedEmail(mockUser);
-  });
-
-  xit('Arviointilomake: ', async () => {
-    const mockUser: Partial<User> = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
-
-    sendEvaluationFormCustomerRequestContact(mockUser);
-  });
-});
-
-describe.skip('sendEmail', () => {
-  it('should send an email', async () => {
-    const mockEmail = {
-      to: 'test@example.com',
-      subject: 'Hello',
-      html: '<p>This is a test email</p>',
-    };
-
-    const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
-
-    mailer.sendEmail(mockEmail);
-
-    expect(sendEmailMock).toHaveBeenCalledWith(mockEmail);
-
-  });
-});
-
-describe.skip('new user verification emails', () => {
-
-  it('should send a verification email', async () => {
-    const mockUser: Partial<User> = {
+  it('salasanan vaihto', async () => {
+    const mockUser: IUser = {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
       email: 'test@example.com',
@@ -99,33 +45,127 @@ describe.skip('new user verification emails', () => {
 
     const mockVerificationLink = 'https://example.com/verification-link';
 
-    const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
+    sendResetPasswordEmail({userFirstName: mockUser.firstName, userEmail: mockUser.email, resetPasswordLink: mockVerificationLink});
 
-    sendVerificationEmail(mockUser, mockVerificationLink);
-
-    expect(sendEmailMock).toHaveBeenCalledWith({
-      to: mockUser.email,
-      subject: 'Vahvista sähköpostiosoitteesi',
-      html: expect.stringContaining(mockVerificationLink),
-    });
   });
 
-  it('should send a verification done email', async () => {
-    const mockUser: Partial<User> = {
+  it('salasanan vaihto onnistui', async () => {
+    const mockUser: IUser= {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
       email: 'test@example.com',
     };
 
-    const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
-
-    sendVerificationDoneEmail(mockUser);
-
-    expect(sendEmailMock).toHaveBeenCalledWith({
-      to: mockUser.email,
-      subject: 'Sähköpostiosoitteesi on vahvistettu',
-      html: expect.any(String),
-    });
+    sendResetPasswordSuccessEmail({userFirstName: mockUser.firstName, userEmail: mockUser.email, technicalSupportLink: 'https://example.com/verification-link'});
   });
+
+  it('Uusi asiakas liitetään suoritukseen', async () => {
+    const mockUser: IUser = {
+      firstName: 'Matti',
+      lastName: 'Meikäläinen',
+      email: 'test@example.com',
+    };
+
+    sendNewCustomerAddedEmail({userEmail: mockUser.email, teacherName: 'Pentti', degreeName: 'Testi', supervisorName: 'Testi', verificationLink: 'https://example.com/verification-link'});
+  });
+
+  it('Arviointilomake: ', async () => {
+    const mockUser: IUser= {
+      firstName: 'Matti',
+      lastName: 'Meikäläinen',
+      email: 'test@example.com',
+    };
+
+    sendEvaluationFormCustomerRequestContact({userName: (mockUser.firstName + ' ' + mockUser.lastName), userEmail: mockUser.email, degreeName: 'Testi', unitName: 'Testi', supervisorName: 'Testi'});
+  });
+
+  it('Arviointilomake: ', async () => {
+    const mockUser: IUser= {
+      firstName: 'Matti',
+      lastName: 'Meikäläinen',
+      email: 'test@example.com',
+    };
+
+    sendEvaluationFormCustomerRequestContact({userName: (mockUser.firstName + ' ' + mockUser.lastName), userEmail: mockUser.email, degreeName: 'Testi', unitName: 'Testi', supervisorName: 'Testi'});
+  });
+
+
+  it('Arviointilomake: ', async () => {
+    const mockForm: ISendEvaluationFormReady= {
+      userFirstName: 'Matti',
+      customerName: 'Meikäläinen',
+      supervisorName: 'Pentti Papukaija',
+      degreeName: 'Testi',
+      unitName: 'Testi',
+      customerAssessment: AssessmentStatus.READY,
+      supervisorAssessment: AssessmentStatus.READY,
+      additionalInfo: 'Testi lksdkafalsdkjöalksdj öalk jöslkfjsaölkfjasödlfkj öalskdfjöaslkfjsöldkjf asölkasjdlfö sadflkajsdölfkasjdlök akföalsdjföalskd',
+      userEmail: 'test@test.com'
+    };
+
+    const subject = 'hyvää päivää!'
+
+    sendEvaluationFormCustomerOrSupervisorReady(mockForm, subject);
+
 });
+
+});
+
+// describe.skip('sendEmail', () => {
+//   it('should send an email', async () => {
+//     const mockEmail = {
+//       to: 'test@example.com',
+//       subject: 'Hello',
+//       html: '<p>This is a test email</p>',
+//     };
+
+//     const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
+
+//     mailer.sendEmail(mockEmail);
+
+//     expect(sendEmailMock).toHaveBeenCalledWith(mockEmail);
+
+//   });
+// });
+
+// describe.skip('new user verification emails', () => {
+
+//   it('should send a verification email', async () => {
+//     const mockUser: Partial<User> = {
+//       firstName: 'Matti',
+//       lastName: 'Meikäläinen',
+//       email: 'test@example.com',
+//     };
+
+//     const mockVerificationLink = 'https://example.com/verification-link';
+
+//     const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
+
+//     sendVerificationEmail(mockUser, mockVerificationLink);
+
+//     expect(sendEmailMock).toHaveBeenCalledWith({
+//       to: mockUser.email,
+//       subject: 'Vahvista sähköpostiosoitteesi',
+//       html: expect.stringContaining(mockVerificationLink),
+//     });
+//   });
+
+//   it('should send a verification done email', async () => {
+//     const mockUser: Partial<User> = {
+//       firstName: 'Matti',
+//       lastName: 'Meikäläinen',
+//       email: 'test@example.com',
+//     };
+
+//     const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
+
+//     sendVerificationDoneEmail(mockUser);
+
+//     expect(sendEmailMock).toHaveBeenCalledWith({
+//       to: mockUser.email,
+//       subject: 'Sähköpostiosoitteesi on vahvistettu',
+//       html: expect.any(String),
+//     });
+//   });
+// });
 

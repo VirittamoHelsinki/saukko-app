@@ -43,7 +43,9 @@ const mailTemplate = (text: string) => {
         .body pre {
             font-family:Helvetica, Neue, sans-serif;
             background-color: #ffffff;
-            font-size: 1.5vw;
+            font-size: medium;
+            word-wrap: break-word;
+            white-space: pre-line;
         }
 
         </style>

@@ -1,9 +1,8 @@
-import { User } from "../../../models/userModel";
+import { User } from "../../models/userModel";
 import { sendEmail } from "../configMailer";
 import mailerTemplate from "../mailerHtmlTemplate";
 
 interface IsendNewCustomerAddedEmail {
-  user: Partial<User>;
   degreeName: string;
   supervisorName: string;
   teacherName: string;
