@@ -17,25 +17,16 @@ const createEvaluation = async (evaluation) => {
   }
 };
 
-// Fetch all evaluations
+/**
+ * @description GET - Request to `/api/evaluation` to get all evaluations for the current teacher
+ * @returns Evaluation[]
+ */
 const fetchAllEvaluations = async () => {
   try {
     const response = await axios.get(`${baseURL}${middleURL}/evaluation/`);
     return response.data;
   } catch (error) {
     console.log('Error fetching all evaluations:', error);
-  }
-};
-
-// Fetch evaluation by id
-const fetchEvaluationById = async (evaluationId) => {
-  try {
-    const response = await axios.get(
-      `${baseURL}${middleURL}/evaluation/${evaluationId}`
-    );
-    return response.data;
-  } catch (error) {
-    console.log('Error fetching single evaluation:', error);
   }
 };
 
@@ -64,7 +55,6 @@ const sendEmail = async (message) => {
 export {
   createEvaluation,
   fetchAllEvaluations,
-  fetchEvaluationById,
   updateEvaluationById,
   sendEmail,
 };

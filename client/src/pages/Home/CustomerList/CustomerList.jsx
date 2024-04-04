@@ -15,11 +15,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/material';
 
-import Button from '../../../components/Button/Button';
-
 // Import state management
-import AuthContext from '../../../store/context/AuthContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 // Import MUI
 // import Accordion from '@mui/material/Accordion';
@@ -32,7 +30,7 @@ export default function CustomerList() {
   const navigate = useNavigate();
 
   // Data from store management
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useAuthContext();
   const { evaluations, setInternalEvaluations, setInternalEvaluation } =
     useContext(InternalApiContext);
 
@@ -108,8 +106,7 @@ export default function CustomerList() {
   return (
     <main className='customerList__wrapper'>
       <WavesHeader
-        title='Saukko'
-        secondTitle={`Tervetuloa, ${user?.firstName}`}
+        title={`Tervetuloa, ${currentUser?.firstName}`}
         disabled={true}
       />
 

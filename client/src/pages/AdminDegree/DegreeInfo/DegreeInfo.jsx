@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 // Import state management
 import useStore from '../../../store/zustand/formStore';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
-import AuthContext from '../../../store/context/AuthContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -16,14 +15,14 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 function DegreeInfo() {
   const navigate = useNavigate();
   const params = useParams();
 
   // Get values from state management
-  const auth = useContext(AuthContext);
-  const user = auth.user;
+  const { currentUser } = useAuthContext();
   const { degree, degreeFound, allDegrees } = useContext(ExternalApiContext);
   const {
     degreeName,
@@ -185,7 +184,7 @@ function DegreeInfo() {
             justifyContent: 'center',
           }}
         >
-          {user?.role === 'teacher' && (
+          {currentUser?.role === 'teacher' && (
             <Button
               id='editButton'
               onClick={handleEditToggle}

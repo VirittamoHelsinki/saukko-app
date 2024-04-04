@@ -3,7 +3,6 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import React, { useContext, useEffect } from 'react';
 
 // importing state management
-import AuthContext from '../../store/context/AuthContext';
 import InternalApiContext from '../../store/context/InternalApiContext';
 
 // importing all pages which need routing
@@ -37,12 +36,15 @@ import AddCompanyName from '../../pages/AddCompanyName/AddCompanyName';
 import EmailVerification from '../../pages/VerifyEmail/VerifyEmail';
 import CreateUnitsSummary from '../../pages/CreateSummary/CreateUnitsSummary';
 import SetPassword from '../../pages/setPassword/SetPassword';
+import ErrorBoundary from '../errorBoundary';
+import { useAuthContext } from '../../store/context/authContextProvider';
 
 const Router = () => {
   let location = useLocation();
   const path = location.pathname;
   const navigate = useNavigate();
-  const { loggedIn, user } = useContext(AuthContext);
+  // const { loggedIn, user } = useContext(AuthContext);
+  const { loggedIn, currentUser } = useAuthContext();
 
   // Used only for console.log at the moment.
   const { allInternalDegrees, workplaces } = useContext(InternalApiContext);
@@ -50,13 +52,13 @@ const Router = () => {
   // Redirect to home page from login pages when already logged in
   useEffect(() => {
     if (loggedIn && (path === '/' || path === '/login' || path === '/forgot-password')) {
-      if (user.role === 'teacher' || user.role === 'supervisor') {
+      if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
         navigate('/customer-list');
-      } else if (user.role === 'customer') {
+      } else if (currentUser.role === 'customer') {
         navigate('/unit-list');
       }
     }
-  }, [loggedIn, path]);
+  }, [currentUser, loggedIn, navigate, path]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -69,7 +71,7 @@ const Router = () => {
   }, [loggedIn, allInternalDegrees, workplaces]);
 
   return (
-    <>
+    <ErrorBoundary>
       <Routes key={location.pathname} location={location}>
 
         {/* Placeholders for development */}
@@ -97,12 +99,12 @@ const Router = () => {
         )}
 
         {/* Teacher or supervisor */}
-        {loggedIn && (user.role === 'teacher' || user.role === 'supervisor') && (
+        {loggedIn && (currentUser.role === 'teacher' || currentUser.role === 'supervisor') && (
           <Route path='/customer-list' element={<CustomerList />} />
         )}
 
         {/* Teacher only */}
-        {loggedIn && user.role === 'teacher' && (
+        {loggedIn && currentUser.role === 'teacher' && (
           <>
             <Route path='/admin-menu' element={<AdminMenu />} />
 
@@ -134,7 +136,7 @@ const Router = () => {
           </>
         )}
       </Routes>
-    </>
+    </ErrorBoundary>
   );
 };
 

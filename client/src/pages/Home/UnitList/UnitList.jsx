@@ -10,45 +10,71 @@ import UserNav from '../../../components/UserNav/UserNav';
 import Button from '../../../components/Button/Button';
 
 // Import state management
-import AuthContext from '../../../store/context/AuthContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 const UnitList = () => {
   const navigate = useNavigate();
   // Data from store management
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useAuthContext();
   const {
     evaluation,
     evaluations,
     setInternalEvaluations,
     setInternalEvaluation,
+    allInternalDegrees,
   } = useContext(InternalApiContext);
+
+  const degreeName =
+    allInternalDegrees &&
+    allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
+  console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   // Set evaluation automatically when role is customer
   useEffect(() => {
-    if (user.role === 'customer') {
+    if (currentUser.role === 'customer') {
       setInternalEvaluations();
     }
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
-    if (user.role === 'customer' && evaluations && evaluations.length > 0) {
+    if (currentUser.role === 'customer' && evaluations && evaluations.length > 0) {
       setInternalEvaluation(evaluations[0]._id);
     }
   }, [evaluations]);
 
   return (
     <main className='unitList__wrapper'>
-      <WavesHeader
-        title='Saukko'
-        secondTitle={`Tervetuloa, ${user?.firstName}`}
-      />
+      {currentUser.role === 'teacher' || currentUser.role === 'supervisor' ? (
+        <WavesHeader
+          title={`${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`}
+          secondTitle='Suoritukset'
+          disabled={true}
+        />
+      ) : (
+        <WavesHeader
+          title={`Tervetuloa, ${evaluation?.customerId.firstName} `}
+          secondTitle='Suoritukset'
+          disabled={true}
+        />
+      )}
+
       <div className='unitList__notifications'>
         <h3> Ilmoitukset </h3>
         <NotificationBadge number1={10} number2={5} />
       </div>
       <div className='unitList__units'>
-        <h3> Omat suoritukset </h3>
+        {currentUser.role === 'customer' ? (
+          <>
+            <h3 style={{ paddingLeft: '35px', margin: '3rem 0' }}>
+              {degreeName?.name.fi}
+            </h3>
+            <h3> Omat suoritukset </h3>
+          </>
+        ) : (
+          <h3> Asiakkaan suoritukset </h3>
+        )}
+
         {evaluation &&
           evaluation.units.map((unit) => (
             <UnitStatus

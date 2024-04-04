@@ -1,10 +1,18 @@
 import UserModel, { User } from "../models/userModel";
 import EvaluationModel from "../models/evaluatuionModel";
-import degreeModel from "../models/degreeModel"
+import degreeModel from "../models/degreeModel";
 import { Response } from "express";
 import { Request } from "../types/requestType"
 import { sendVerificationEmail } from "../mailer/templates/newUserVerification";
-import { sendNewCustomerAddedEmail, sendNewSupervisorAddedEmail, sendOldSupervisorAddedEmail, sendNewCustomerVerifiedEmail, ISendNewCustomerAddedEmail, ISendNewSupervisorAddedEmail, ISendOldSupervisorAddedEmail } from "../mailer/templates/addingUserToAgreement";
+import {
+  sendNewCustomerAddedEmail,
+  sendNewSupervisorAddedEmail,
+  sendOldSupervisorAddedEmail,
+  sendNewCustomerVerifiedEmail,
+  ISendNewCustomerAddedEmail,
+  ISendNewSupervisorAddedEmail,
+  ISendOldSupervisorAddedEmail
+} from "../mailer/templates/addingUserToAgreement";
 
 const _generateVerificationLink = (user: User) => {
   const verificationToken = user.generateEmailVerificationToken();
@@ -88,6 +96,10 @@ const create = async (req: Request, res: Response) => {
   }
 }
 
+/**
+ * 
+ * @deprecated use getAllForCurrentUser instead
+ */
 const getAll = async (req: Request, res: Response) => {
   try {
     const evaluations = await EvaluationModel.find()
@@ -97,6 +109,36 @@ const getAll = async (req: Request, res: Response) => {
       .populate('workplaceId'); 
 
     res.send(evaluations);
+  } catch (error) {
+    return _responseWithError(res, 500, error, 'Failed to fetch evaluations');
+  }
+}
+
+const getAllForCurrentUser = async (req: Request, res: Response) => {
+  try {
+    const user = (req.user as User) ?? (() => { throw new Error("User is not defined") })
+
+    const getFilter = () => {
+      switch (user.role) {
+        case 'customer':
+          return { customerId: user.id };
+        case 'teacher':
+          return { teacherId: user.id };
+        case 'supervisor':
+          return { supervisorIds: { "$in": [user.id] } };
+        default:
+          throw new Error("Unknown role");
+      }
+    }
+
+    const evaluations = await EvaluationModel
+      .find(getFilter())
+      .populate('customerId', 'firstName lastName')
+      .populate('teacherId', 'firstName lastName')
+      .populate('supervisorIds', 'firstName lastName')
+      .populate('workplaceId');
+
+      res.send(evaluations)
   } catch (error) {
     return _responseWithError(res, 500, error, 'Failed to fetch evaluations');
   }
@@ -341,6 +383,7 @@ const sendEmailToTeacher = async (req: Request, res: Response) => {
 export default {
   create,
   getAll,
+  getAllForCurrentUser,
   getById,
   update,
   deleteById,

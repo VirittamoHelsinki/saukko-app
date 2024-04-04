@@ -16,30 +16,38 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import useStore from '../../../store/zustand/formStore';
-import AuthContext from '../../../store/context/AuthContext';
 // Fetch evaluation and units from store
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Fetch evaluation by id from api
 import { updateEvaluationById } from '../../../api/evaluation';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 const UserPerformance = () => {
-  const auth = useContext(AuthContext);
-  const user = auth.user;
+  const { loggedIn, currentUser } = useAuthContext();
+
+  console.log('🚀 ~ UserPerformance ~ user:', currentUser);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
+
   console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
+  const { allInternalDegrees } = useContext(InternalApiContext);
+  const degreeName =
+    allInternalDegrees &&
+    allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
+  console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
+
   const { chosenUnitId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
-  console.log(
-    '🚀 ~ UserPerformance ~ selectedAssessmentId:',
-    selectedAssessmentId
-  );
+  // console.log(
+  //   '🚀 ~ UserPerformance ~ selectedAssessmentId:',
+  //   selectedAssessmentId
+  // );
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
@@ -51,6 +59,14 @@ const UserPerformance = () => {
   const [destination, setDestination] = useState(null);
   // Modal for showing criteria
   const [criteriaModalContent, setCriteriaModalContent] = useState([]);
+  const [customerFirstName, setCustomerFirstName] = useState(null);
+  const [customerLastName, setCustomerLastName] = useState(null);
+  useEffect(() => {
+    if (evaluation && evaluation.customerId) {
+      setCustomerFirstName(`${evaluation?.customerId.firstName}`);
+      setCustomerLastName(`${evaluation?.customerId.lastName}`);
+    }
+  }, [customerFirstName, customerLastName]);
 
   let unitObject;
   if (evaluation && evaluation.units) {
@@ -59,7 +75,7 @@ const UserPerformance = () => {
 
     if (unitObject) {
       // Unit with matching _id found
-      console.log('Unit object found:', unitObject);
+      // console.log('Unit object found:', unitObject);
     } else {
       // Unit with matching _id not found
       console.log(
@@ -170,11 +186,11 @@ const UserPerformance = () => {
             let answer = assessment.answer;
             let answerSupervisor = assessment.answerSupervisor;
             let answerTeacher = assessment.answerTeacher;
-            if (user?.role === 'customer') {
+            if (currentUser?.role === 'customer') {
               answer = selectedValues === 1 ? 1 : 2;
-            } else if (user?.role === 'supervisor') {
+            } else if (currentUser?.role === 'supervisor') {
               answerSupervisor = selectedValues === 1 ? 1 : 2;
-            } else if (user?.role === 'teacher') {
+            } else if (currentUser?.role === 'teacher') {
               answerTeacher = selectedValues === 1 ? 1 : 2;
             }
             return {
@@ -217,7 +233,7 @@ const UserPerformance = () => {
   };
 
   const getButtonText = () => {
-    if (user?.role === 'customer') {
+    if (currentUser?.role === 'customer') {
       if (selectedValues['valmisLahetettavaksi']) {
         return 'Tallenna ja Lähettä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
@@ -225,7 +241,7 @@ const UserPerformance = () => {
       } else {
         return 'Tallenna luonnos';
       }
-    } else if (user?.role === 'supervisor') {
+    } else if (currentUser?.role === 'supervisor') {
       if (selectedValues['valmisLahetettavaksi']) {
         return 'Tallenna ja Lähettä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
@@ -233,7 +249,7 @@ const UserPerformance = () => {
       } else {
         return 'Tallenna luonnos';
       }
-    } else if (user?.role === 'teacher') {
+    } else if (currentUser?.role === 'teacher') {
       if (
         selectedValues['pyydetaanYhteydenottoaAsiakkaalta'] ||
         selectedValues['pyydetaanYhteydenottoaOhjaajalta']
@@ -248,52 +264,45 @@ const UserPerformance = () => {
   };
 
   const isPalauteSectionDisabled = () => {
-    if (user?.role === 'teacher') {
+    if (currentUser?.role === 'teacher') {
       return !selectedValues['suoritusValmis'];
-    } else if (user?.role === 'customer') {
+    } else if (currentUser?.role === 'customer') {
       return !selectedValues['valmisLahetettavaksi'];
-    } else if (user?.role === 'supervisor') {
+    } else if (currentUser?.role === 'supervisor') {
       return !selectedValues['valmisLahetettavaksi'];
     }
   };
 
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
-  console.log('unitObject', unitObject);
+  // console.log('unitObject', unitObject);
 
   return (
     <main>
       <div>
-        <WavesHeader
-          title='Saukko'
-          secondTitle={`Tervetuloa, ${user?.firstName}`}
-        />
+        {/* <WavesHeader
+          title={customerInformation}
+          secondTitle='Ammaattitaitovaatimusten arviointi'
+          disabled={true}
+        /> */}
+        {currentUser?.role === 'teacher' || currentUser?.role === 'supervisor' ? (
+          <WavesHeader
+            title={customerFirstName + ' ' + customerLastName}
+            secondTitle='Ammaattitaitovaatimusten arviointi'
+            disabled={true}
+          />
+        ) : (
+          <WavesHeader title={`Tervetuloa, ${customerFirstName} `} />
+        )}
       </div>
-      <h2
-        style={{
-          textAlign: 'center',
-          fontSize: '18px',
-          textDecoration: 'underline',
-          marginTop: '58%',
-        }}
-      >
-        {unitObject.name.fi}
-        <br />
-        Ammattitaitovaatimusten arviointi
-      </h2>
+      <h2 className='degree-name'>{degreeName?.name.fi}</h2>
+      <h4 className='degree-unit-name'> {unitObject?.name.fi}</h4>
       <div>
         <ul>
           {/* Evaluation */}
           {unitObject &&
             unitObject.assessments.map((assess) => (
               <li key={assess._id}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    margin: '0 15px 0 0',
-                  }}
-                >
+                <div className='assessments'>
                   <div key={unitObject._id}>
                     <p className='para-title-style'>{assess.name.fi}</p>
                     {/* <p>{assess.answer}</p>
@@ -310,7 +319,7 @@ const UserPerformance = () => {
                     />
                   </div>
                 </div>
-                {user?.role === 'teacher' ? (
+                {currentUser?.role === 'teacher' ? (
                   <TeacherPerformanceFeedBack
                     selectedValues={selectedValues}
                     setSelectedValues={setSelectedValues}
@@ -345,7 +354,7 @@ const UserPerformance = () => {
       {error && <p>{error}</p>}
 
       <div style={{ fontSize: '20px', marginTop: '40px', marginLeft: '18px' }}>
-        {user?.role === 'teacher' ? (
+        {currentUser?.role === 'teacher' ? (
           <>
             <input
               type='checkbox'
@@ -424,14 +433,14 @@ const UserPerformance = () => {
           color: h2Color, // Set the color dynamically
         }}
       >
-        {user?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
+        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
       </h2>
       <form action=''>
         <textarea
           placeholder={
-            user?.role === 'teacher'
+            currentUser?.role === 'teacher'
               ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
-              : user?.role === 'supervisor'
+              : currentUser?.role === 'supervisor'
               ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
               : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
           }

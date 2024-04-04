@@ -119,13 +119,13 @@ const validateToken = async (req: Request, res: Response) => {
   })
 }
 
+// TOKEN-BASED PASWORD CHANGE METHOD (changePassword - token)
 const resetPassword = async (req: Request, res: Response) => {
   try {
     // Check the password change token exists
     if (!req.tokens?.changePassword) throw new Error("Token is missing");
 
     // Retrieve the new password from the request body and validate it
-    console.log("BODY", req.body)
     const password = req.body.newPassword || null
     const pv = new PasswordValidator()
     const passwordValidatorErrors = pv.validate(password, passwordValidationOptions)
@@ -137,7 +137,7 @@ const resetPassword = async (req: Request, res: Response) => {
     }
 
     const decoded = jwt.verify(req.tokens.changePassword, config.JWT_SECRET) as IJwtPayload;
-    const user = await userModel.findById(decoded.id);
+    const user = req.user ?? await userModel.findById(decoded.id);
 
     if (!user) {
       // TODO: This is even that should be reported
@@ -174,6 +174,34 @@ const resetPassword = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ errorMessage: "Internal" })
+  }
+}
+
+// Request password change token using auth token
+const requestPasswordChangeTokenAsUser = async (req: Request, res: Response) => {
+  try {
+    if (req.user) {
+      const { password } = req.body;
+
+      const passwordCorrect = await bcrypt.compare(
+        password,
+        req.user.passwordHash
+      );
+
+      if (passwordCorrect) {
+        const t = req.user.generateResetPasswordToken();
+        return res
+          .status(200)
+          .cookie("change-token", t, { httpOnly: true })
+          .send();
+      }
+      return res.status(401).json({ errorMessage: "Invalid password" });;
+    }
+  
+    throw new Error("Internal")
+  } catch (error) {
+    console.error("requestPasswordChangeTokenAsUser", error)
+    return res.status(500).json({ errorMessage: "internal" })
   }
 }
 
@@ -230,6 +258,7 @@ const logout = async (_req: Request, res: Response) => {
   res
     .status(200)
     .clearCookie('token')
+    .clearCookie('auth_state')
     .json({ message: "User is signed out" })
 }
 
@@ -351,4 +380,5 @@ export default {
   verifyEmail,
   resendEmailVerificationLink,
   getCurrentUser,
+  requestPasswordChangeTokenAsUser,
 }
