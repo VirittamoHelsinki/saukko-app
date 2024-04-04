@@ -2,11 +2,12 @@
   "name": "ts-server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node dist/src/index.js",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+    "build": "tsc -p tsconfig.json"
   },
   "keywords": [],
   "author": "",
