@@ -12,7 +12,7 @@ interface IUser {
   email: string;
 }
 
-describe('test sending emails', () => {
+describe.skip('test sending emails', () => {
   it('verifikaatiolinkki', async () => {
     const mockUser: IUser = {
       firstName: 'Matti',

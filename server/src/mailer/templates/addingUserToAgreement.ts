@@ -1,8 +1,7 @@
-import { User } from "../../models/userModel";
 import { sendEmail } from "../configMailer";
 import mailerTemplate from "../mailerHtmlTemplate";
 
-interface IsendNewCustomerAddedEmail {
+export interface ISendNewCustomerAddedEmail {
   degreeName: string;
   supervisorName: string;
   teacherName: string;
@@ -10,7 +9,7 @@ interface IsendNewCustomerAddedEmail {
   userEmail: string;
 }
 
-export const sendNewCustomerAddedEmail = (params: IsendNewCustomerAddedEmail) => {
+export const sendNewCustomerAddedEmail = (params: ISendNewCustomerAddedEmail) => {
 
   const text =
   `
@@ -40,12 +39,12 @@ export const sendNewCustomerAddedEmail = (params: IsendNewCustomerAddedEmail) =>
   sendEmail({ to: params.userEmail, subject, html });
 };
 
-interface IsendNewSupervisorAddedEmail {
+export interface ISendNewCustomerVerfiedEmail {
   userFirstName: string;
   userEmail: string;
 }
 
-export const sendNewCustomerVerifiedEmail = (params: IsendNewSupervisorAddedEmail) => {
+export const sendNewCustomerVerifiedEmail = (params: ISendNewCustomerVerfiedEmail) => {
 
   const text =
   `
@@ -69,7 +68,7 @@ export const sendNewCustomerVerifiedEmail = (params: IsendNewSupervisorAddedEmai
 };
 
 
-interface IsendNewSupervisorAddedEmail {
+export interface ISendNewSupervisorAddedEmail {
   userEmail: string;
   customerName: string;
   degreeName: string;
@@ -77,7 +76,7 @@ interface IsendNewSupervisorAddedEmail {
   verificationLink: string;
 }
 
-export const sendNewSupervisorAddedEmail = (params: IsendNewSupervisorAddedEmail) => {
+export const sendNewSupervisorAddedEmail = (params: ISendNewSupervisorAddedEmail) => {
 
     const text =
     `
@@ -106,7 +105,7 @@ export const sendNewSupervisorAddedEmail = (params: IsendNewSupervisorAddedEmail
     sendEmail({ to: params.userEmail, subject, html });
   };
 
-  interface ISendOldSupervisorAddedEmail {
+  export interface ISendOldSupervisorAddedEmail {
     userFirstName: string;
     userEmail: string;
     customerName: string;

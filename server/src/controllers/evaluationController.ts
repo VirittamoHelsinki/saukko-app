@@ -1,9 +1,10 @@
-import UserModel, { IUser, User } from "../models/userModel";
+import UserModel, { User } from "../models/userModel";
 import EvaluationModel from "../models/evaluatuionModel";
 import degreeModel from "../models/degreeModel"
-// import Degree from "../models/degreeModel";
-import { Request, Response } from "express";
-// import mailer from "../utils/mailer/configMailer"
+import { Response } from "express";
+import { Request } from "../types/requestType"
+import { sendVerificationEmail } from "../mailer/templates/newUserVerification";
+import { sendNewCustomerAddedEmail, sendNewSupervisorAddedEmail, sendOldSupervisorAddedEmail, sendNewCustomerVerifiedEmail, ISendNewCustomerAddedEmail, ISendNewSupervisorAddedEmail, ISendOldSupervisorAddedEmail } from "../mailer/templates/addingUserToAgreement";
 
 const _generateVerificationLink = (user: User) => {
   const verificationToken = user.generateEmailVerificationToken();
@@ -72,7 +73,7 @@ const create = async (req: Request, res: Response) => {
           const supervisor = await UserModel.findById(supervisorId);
           if (supervisor) {
             const verificationLink = _generateVerificationLink(supervisor);
-            // sendVerificationEmail(supervisor, verificationLink);
+            sendVerificationEmail({userEmail: supervisor.email, verificationLink});
           }
         } catch (userError) {
           console.error('Error fetching supervisor for notification: ', userError);
@@ -193,7 +194,7 @@ const update = async (req: Request, res: Response) => {
 
       for (const supervisor of newSupervisorDetails) {
         const verificationLink = _generateVerificationLink(supervisor);
-        // sendVerificationEmail(supervisor, verificationLink);
+        sendVerificationEmail({userEmail: supervisor.email, verificationLink});
       }
 
       // Notify existing supervisors, the customer, and possibly the teacher about new additions
@@ -208,12 +209,40 @@ const update = async (req: Request, res: Response) => {
       const usersToNotify = await UserModel.find({
         _id: { $in: usersToNotifyIds },
       });
+      // TODO: refactor objects
+      const customerParams: ISendNewCustomerAddedEmail = {
+        degreeName: 'degreeName',
+        supervisorName: 'supervisorName',
+        teacherName: 'teacherName',
+        verificationLink: 'verificationLink',
+        userEmail: 'userEmail',
+      };
+
+      const newSupervisorParams: ISendNewSupervisorAddedEmail = {
+        userEmail: 'userEmail',
+        customerName: 'customerName',
+        degreeName: 'degreeName',
+        supervisorName: 'supervisorName',
+        verificationLink: 'verificationLink'
+      };
+
+      const oldSupervisorParams: ISendOldSupervisorAddedEmail = {
+        userFirstName: 'userFirstName',
+        userEmail: 'userEmail',
+        customerName: 'customerName',
+        degreeName: 'degreeName',
+        teacherName: 'teacherName',
+      };
 
       for (const user of usersToNotify) {
-        // sendNotificationMail(
-        //   user,
-        //   newSupervisors.map((id) => (id as any).toString())
-        // );
+
+        if (user.role === 'customer') {
+          sendNewCustomerAddedEmail(customerParams);
+        } else if (user.role === 'supervisor') {
+          sendNewSupervisorAddedEmail(newSupervisorParams);
+        } else if (user.role === 'teacher') {
+          sendOldSupervisorAddedEmail(oldSupervisorParams);
+        }
       }
     }
 
@@ -296,6 +325,8 @@ const sendEmailToTeacher = async (req: Request, res: Response) => {
     if (!teacher) {
       return res.status(404).send('Teacher not found.');
     }
+
+    //TODO: Implement correct function
 
     // sendUserMail(teacher, req.body.message);
 
