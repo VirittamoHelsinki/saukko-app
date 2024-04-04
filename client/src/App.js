@@ -1,13 +1,13 @@
 // importing all sass styling
 import './scss/index.scss';
 import axios from 'axios';
-import { AuthContextProvider } from './store/context/AuthContext';
 import { ExternalApiContextProvider } from './store/context/ExternalApiContext';
 import { InternalApiContextProvider } from "./store/context/InternalApiContext";
 
 // importing page routing
 import Router from "./components/Router/Router";
 import ErrorBoundary from './components/errorBoundary';
+import AuthContextProvider from './store/context/authContextProvider';
 
 axios.defaults.withCredentials = true;
 

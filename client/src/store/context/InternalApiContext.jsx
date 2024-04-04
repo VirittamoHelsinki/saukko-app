@@ -1,5 +1,5 @@
 import { CircularProgress } from '@mui/material';
-import React, { createContext, useEffect, useState, useContext } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 // Internal API calls
 import {
@@ -11,7 +11,7 @@ import { fetchAllEvaluations } from '../../api/evaluation.js';
 
 // Internal state variable access.
 import useUnitsStore from '../zustand/unitsStore.js';
-import AuthContext from './AuthContext';
+import { useAuthContext } from './authContextProvider.jsx';
 
 const InternalApiContext = createContext();
 
@@ -26,13 +26,13 @@ export const InternalApiContextProvider = (props) => {
   const [evaluations, setEvaluations] = useState([]);
   const [evaluation, setEvaluation] = useState(null);
 
-  const { loggedIn, role, user } = useContext(AuthContext);
+  const { loggedIn, currentUser } = useAuthContext();
 
   // Runs on each reload of the page and when the user logs in.
   useEffect(() => {
     // Fetch degrees from saukko database
     const getInternalDegrees = async () => {
-      if (!loggedIn || role !== 'teacher') return;
+      if (!loggedIn || currentUser.role !== 'teacher') return;
       try {
         setLoading(true);
         const internalDegrees = await fetchInternalDegrees();
@@ -45,12 +45,12 @@ export const InternalApiContextProvider = (props) => {
       }
     };
     getInternalDegrees();
-  }, [loggedIn, role]);
+  }, [loggedIn, currentUser]);
 
   // Fetch all workplaces from saukko database
   useEffect(() => {
     const getWorkplaces = async () => {
-      if (!loggedIn || role !== 'teacher') return;
+      if (!loggedIn || currentUser.role !== 'teacher') return;
       try {
         setLoading(true);
         const workplaces = await fetchAllInternalWorkplaces();
@@ -62,7 +62,7 @@ export const InternalApiContextProvider = (props) => {
       }
     };
     getWorkplaces();
-  }, [loggedIn, role]);
+  }, [loggedIn, currentUser]);
 
   // Fetch all evaluations
   const setInternalEvaluations = async () => {
@@ -104,7 +104,7 @@ export const InternalApiContextProvider = (props) => {
   // Fetch degree by id
   useEffect(() => {
     const getInternalDegree = async () => {
-      if (!loggedIn || role !== 'teacher') return;
+      if (!loggedIn || currentUser.role !== 'teacher') return;
 
       try {
         setLoading(true);
@@ -121,7 +121,7 @@ export const InternalApiContextProvider = (props) => {
 
     setInternalDegree({});
     getInternalDegree();
-  }, [internalDegreeId]);
+  }, [currentUser, internalDegreeId, loggedIn]);
 
   const degreeFound = Object.keys(internalDegree).length > 0 ? true : false;
   const clearCheckedUnits = useUnitsStore((state) => state.clearCheckedUnits);

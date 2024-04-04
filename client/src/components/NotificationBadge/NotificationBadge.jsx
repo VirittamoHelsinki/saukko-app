@@ -1,10 +1,10 @@
 import icone from '../../assets/Internallink.svg';
-import React, { useContext } from 'react';
-import AuthContext from '../../store/context/AuthContext';
+import React from 'react';
+import { useAuthContext } from '../../store/context/authContextProvider';
 
 const NotificationBadge = (props) => {
-  const { user } = useContext(AuthContext);
-  const role = user?.role;
+  const { currentUser } = useAuthContext();
+  const role = currentUser?.role;
   const { number1, number2 } = props;
   let badgeStyle1 = {};
   let badgeStyle2 = {};

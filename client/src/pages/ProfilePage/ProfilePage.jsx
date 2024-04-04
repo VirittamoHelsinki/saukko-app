@@ -1,5 +1,5 @@
 // Import react packages & dependencies
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 
@@ -10,16 +10,16 @@ import UserNav from '../../components/UserNav/UserNav';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 import PopUpForm from '../../components/PopUpForm/PopUpForm';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
-import AuthContext from '../../store/context/AuthContext';
 import {
   logoutUser,
   requestPasswordChangeTokenAsUser,
   resetPassword,
 } from '../../api/user';
+import { useAuthContext } from '../../store/context/authContextProvider';
 
 function ProfilePage() {
   // User info from AuthContext
-  const { getLoggedIn, user } = useContext(AuthContext);
+  const { currentUser  } = useAuthContext();
 
   // Logout
   const navigate = useNavigate();
@@ -27,8 +27,6 @@ function ProfilePage() {
   const LogOut = async () => {
     try {
       await logoutUser();
-      localStorage.removeItem('token');
-      await getLoggedIn();
       navigate('/');
     } catch (error) {
       console.error(error);
@@ -119,7 +117,7 @@ function ProfilePage() {
       <section className='profile__container'>
         <div className='profile__container--row name'>
           <p className='profile__container--row-value'>
-            {user?.firstName} {user?.lastName}
+            {currentUser?.firstName} {currentUser?.lastName}
           </p>
           <Icon
             icon='iconamoon:arrow-right-2'
@@ -131,7 +129,7 @@ function ProfilePage() {
             className='profile__container--row'
             onClick={handleOpenEmailPopUp}
           >
-            <p className='profile__container--row-value'>{user?.email}</p>
+            <p className='profile__container--row-value'>{currentUser?.email}</p>
             <Icon
               icon='iconamoon:arrow-right-2'
               className='profile__container-row-arrow'

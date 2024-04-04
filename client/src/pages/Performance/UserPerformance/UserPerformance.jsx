@@ -16,18 +16,18 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import useStore from '../../../store/zustand/formStore';
-import AuthContext from '../../../store/context/AuthContext';
 // Fetch evaluation and units from store
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Fetch evaluation by id from api
 import { updateEvaluationById } from '../../../api/evaluation';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 const UserPerformance = () => {
-  const auth = useContext(AuthContext);
-  const user = auth.user;
-  console.log('🚀 ~ UserPerformance ~ user:', user);
+  const { loggedIn, currentUser } = useAuthContext();
+
+  console.log('🚀 ~ UserPerformance ~ user:', currentUser);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
@@ -186,11 +186,11 @@ const UserPerformance = () => {
             let answer = assessment.answer;
             let answerSupervisor = assessment.answerSupervisor;
             let answerTeacher = assessment.answerTeacher;
-            if (user?.role === 'customer') {
+            if (currentUser?.role === 'customer') {
               answer = selectedValues === 1 ? 1 : 2;
-            } else if (user?.role === 'supervisor') {
+            } else if (currentUser?.role === 'supervisor') {
               answerSupervisor = selectedValues === 1 ? 1 : 2;
-            } else if (user?.role === 'teacher') {
+            } else if (currentUser?.role === 'teacher') {
               answerTeacher = selectedValues === 1 ? 1 : 2;
             }
             return {
@@ -233,7 +233,7 @@ const UserPerformance = () => {
   };
 
   const getButtonText = () => {
-    if (user?.role === 'customer') {
+    if (currentUser?.role === 'customer') {
       if (selectedValues['valmisLahetettavaksi']) {
         return 'Tallenna ja Lähettä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
@@ -241,7 +241,7 @@ const UserPerformance = () => {
       } else {
         return 'Tallenna luonnos';
       }
-    } else if (user?.role === 'supervisor') {
+    } else if (currentUser?.role === 'supervisor') {
       if (selectedValues['valmisLahetettavaksi']) {
         return 'Tallenna ja Lähettä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
@@ -249,7 +249,7 @@ const UserPerformance = () => {
       } else {
         return 'Tallenna luonnos';
       }
-    } else if (user?.role === 'teacher') {
+    } else if (currentUser?.role === 'teacher') {
       if (
         selectedValues['pyydetaanYhteydenottoaAsiakkaalta'] ||
         selectedValues['pyydetaanYhteydenottoaOhjaajalta']
@@ -264,11 +264,11 @@ const UserPerformance = () => {
   };
 
   const isPalauteSectionDisabled = () => {
-    if (user?.role === 'teacher') {
+    if (currentUser?.role === 'teacher') {
       return !selectedValues['suoritusValmis'];
-    } else if (user?.role === 'customer') {
+    } else if (currentUser?.role === 'customer') {
       return !selectedValues['valmisLahetettavaksi'];
-    } else if (user?.role === 'supervisor') {
+    } else if (currentUser?.role === 'supervisor') {
       return !selectedValues['valmisLahetettavaksi'];
     }
   };
@@ -284,7 +284,7 @@ const UserPerformance = () => {
           secondTitle='Ammaattitaitovaatimusten arviointi'
           disabled={true}
         /> */}
-        {user?.role === 'teacher' || user?.role === 'supervisor' ? (
+        {currentUser?.role === 'teacher' || currentUser?.role === 'supervisor' ? (
           <WavesHeader
             title={customerFirstName + ' ' + customerLastName}
             secondTitle='Ammaattitaitovaatimusten arviointi'
@@ -295,7 +295,7 @@ const UserPerformance = () => {
         )}
       </div>
       <h2 className='degree-name'>{degreeName?.name.fi}</h2>
-      <h4 className='degree-unit-name'> {unitObject.name.fi}</h4>
+      <h4 className='degree-unit-name'> {unitObject?.name.fi}</h4>
       <div>
         <ul>
           {/* Evaluation */}
@@ -319,7 +319,7 @@ const UserPerformance = () => {
                     />
                   </div>
                 </div>
-                {user?.role === 'teacher' ? (
+                {currentUser?.role === 'teacher' ? (
                   <TeacherPerformanceFeedBack
                     selectedValues={selectedValues}
                     setSelectedValues={setSelectedValues}
@@ -354,7 +354,7 @@ const UserPerformance = () => {
       {error && <p>{error}</p>}
 
       <div style={{ fontSize: '20px', marginTop: '40px', marginLeft: '18px' }}>
-        {user?.role === 'teacher' ? (
+        {currentUser?.role === 'teacher' ? (
           <>
             <input
               type='checkbox'
@@ -433,14 +433,14 @@ const UserPerformance = () => {
           color: h2Color, // Set the color dynamically
         }}
       >
-        {user?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
+        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
       </h2>
       <form action=''>
         <textarea
           placeholder={
-            user?.role === 'teacher'
+            currentUser?.role === 'teacher'
               ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
-              : user?.role === 'supervisor'
+              : currentUser?.role === 'supervisor'
               ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
               : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
           }

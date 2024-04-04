@@ -1,11 +1,8 @@
-import React, { useEffect, useState, createContext, useContext } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import useUnitsStore from '../zustand/unitsStore';
 import { fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
-
 import { CircularProgress } from '@mui/material';
-
-import AuthContext from './AuthContext';
-
+import { useAuthContext } from './authContextProvider.jsx';
 
 const ExternalApiContext = createContext();
 
@@ -22,17 +19,13 @@ export const ExternalApiContextProvider = (props) => {
   const [allloading, setallLoading] = useState(false)
   const [loading, setLoading] = useState(false)
 
-
-  const { loggedIn, role } = useContext(AuthContext);
+  const { loggedIn, currentUser } = useAuthContext()
 
 
   // Fetch all degrees from ePerusteet
   useEffect(() => {
     const getDegrees = async () => {
-
-
-
-      if (!loggedIn || role !== "teacher") return;
+      if (!loggedIn || currentUser.role !== "teacher") return;
 
       try {
         setallLoading(true);
@@ -46,14 +39,14 @@ export const ExternalApiContextProvider = (props) => {
 
     };
     getDegrees();
-  }, [loggedIn, role]);
+  }, [loggedIn, currentUser]);
 
 
 
   // Fetch degree by id
   useEffect(() => {
     const getDegree = async () => {
-      if (!loggedIn || role !== "teacher") return;
+      if (!loggedIn || currentUser.role !== "teacher") return;
       try {
         setLoading(true);
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
@@ -66,7 +59,7 @@ export const ExternalApiContextProvider = (props) => {
     };
     setDegree({});
     getDegree();
-  }, [degreeId]);
+  }, [degreeId, currentUser]);
 
   // Check if degree object is empty  
   const degreeFound = Object.keys(degree).length > 0 ? true : false

@@ -1,8 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import alert from '../../assets/circle-red.svg'
 import Button from '../../components/Button/Button';
 import WavesHeader from '../../components/Header/WavesHeader';
-import AuthContext from '../../store/context/AuthContext';
 import { loginUser } from '../../api/user';
 import { Icon } from '@iconify/react';
 
@@ -13,8 +12,6 @@ const LoginPage = () => {
   const [buttonDisabled, setButtonDisabled] = useState();
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { getLoggedIn } = useContext(AuthContext);
-
   const processLogin = async (e) => {
     e.preventDefault();
 
@@ -24,7 +21,6 @@ const LoginPage = () => {
         password,
       };
       await loginUser(loginData);
-      await getLoggedIn();
     } catch (err) {
       if (err.response && err.response.status === 401) {
         setErrorMessage('Salasana väärin');

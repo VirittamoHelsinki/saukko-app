@@ -15,12 +15,12 @@ import Stepper from '../../../components/Stepper/Stepper';
 
 // Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
-import AuthContext from '../../../store/context/AuthContext';
 
 // Import API call functions
 import { registration } from '../../../api/user';
 import { createEvaluation } from '../../../api/evaluation';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function EvaluationSummary() {
   const { workplace, department, supervisor } = useEvaluationStore();
   const { customer, evaluation, resetFormData } = useEvaluationFormStore(); // Include resetFormData
   const { checkedUnits } = useUnitsStore();
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useAuthContext();
   const { setInternalEvaluations } = useContext(InternalApiContext);
 
   // NotificationModal
@@ -120,7 +120,7 @@ function EvaluationSummary() {
     const evaluationRequestData = {
       degreeId: workplace && workplace.degreeId ? workplace.degreeId : null,
       customerId: userId,
-      teacherId: user && user.id ? user.id : null,
+      teacherId: currentUser && currentUser.id ? currentUser.id : null,
       supervisorId: supervisor && supervisor._id ? supervisor._id : null,
       workplaceId: workplace && workplace._id ? workplace._id : null,
       units: checkedUnits,
