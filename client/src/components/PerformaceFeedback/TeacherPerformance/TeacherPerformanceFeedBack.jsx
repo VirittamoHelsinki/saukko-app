@@ -3,10 +3,10 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import AuthContext from '../../../store/context/AuthContext';
 import { Icon } from '@iconify/react';
 import RequirementsAndCriteriaModal from '../../RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 const TeacherPerformanceFeedBack = ({
   setSelectedValues,
@@ -18,8 +18,7 @@ const TeacherPerformanceFeedBack = ({
 }) => {
   // console.log('🚀 ~ assessment:', assessment._id);
   const [selectedRadio, setSelectedRadio] = useState({});
-  const auth = useContext(AuthContext);
-  const user = auth.user;
+  const { currentUser } = useAuthContext();
   const [hasChanged, setHasChanged] = useState(false);
   //Fetch evaluation and units from store
   const { evaluation } = useContext(InternalApiContext);
@@ -71,7 +70,7 @@ const TeacherPerformanceFeedBack = ({
       selectedRadio === 'Osaa ohjatusti' ||
       selectedRadio === 'Osaa itsenäisesti'
     ) {
-      if (user?.role === 'teacher') {
+      if (currentUser?.role === 'teacher') {
         return '#FFF4B4';
       }
     }

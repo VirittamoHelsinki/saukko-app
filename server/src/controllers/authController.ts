@@ -2,12 +2,13 @@ import { Response } from 'express';
 import { Request } from '../types/requestType';
 import userModel from '../models/userModel';
 import { IJwtPayload, useCase } from '../types/jwtPayload';
-import mailer from '../utils/mailer';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
 import bcrypt from 'bcrypt';
 import { PasswordValidator } from '../utils/password';
 import { passwordValidationOptions } from '../options';
+import { sendVerificationEmail } from '../mailer/templates/newUserVerification';
+import { sendResetPasswordEmail} from '../mailer/templates/resetPassword';
 
 const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
   if (err.message) {
@@ -66,7 +67,7 @@ const registerUser = async (req: Request, res: Response) => {
       const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`;
 
       // Send verification email
-      mailer.sendVerificationEmail(newUser, verificationLink);
+      sendVerificationEmail({userEmail: newUser.email, verificationLink});
       console.log('user created and verification email sent');
     } else {
       console.log('user created without verification email (role: supervisor)');
@@ -99,7 +100,8 @@ const forgotPassword = async (req: Request, res: Response) => {
   }
 
   try {
-    mailer.sendResetPasswordEmail(existUser)
+    const resetPasswordLink = existUser.generateResetPasswordLink();
+    sendResetPasswordEmail({userFirstName: existUser.firstName, userEmail: existUser.email, resetPasswordLink});
     res.status(200).json({ message: "Password reset link sent to email" })
   } catch (err) {
     return _responseWithError(res, 400, err)
@@ -256,6 +258,7 @@ const logout = async (_req: Request, res: Response) => {
   res
     .status(200)
     .clearCookie('token')
+    .clearCookie('auth_state')
     .json({ message: "User is signed out" })
 }
 
@@ -337,10 +340,10 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
 
   if (user.role !== 'supervisor') {
     const verificationToken = user.generateEmailVerificationToken();
-    const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`; // TODO: fix the link
+    const verificationLink = user.generateEmailVerificationLink();
 
     // Send verification email
-    mailer.sendVerificationEmail(user, verificationLink);
+    sendVerificationEmail({userEmail: user.email, verificationLink});
     console.log('user created and verification email sent');
   }
 

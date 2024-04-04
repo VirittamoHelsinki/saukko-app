@@ -1,16 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-import AuthContext from '../../store/context/AuthContext';
 import InternalApiContext from '../../store/context/InternalApiContext';
-
 import { Icon } from '@iconify/react';
 import { Box, Button, Grid, Typography } from '@mui/material';
-
 import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
+import { useAuthContext } from '../../store/context/authContextProvider';
 
 const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useAuthContext();
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -52,11 +49,11 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
     if (
       !isExcludedRoute &&
       evaluation !== null &&
-      (user.role === 'teacher' || user.role === 'supervisor')
+      (currentUser.role === 'teacher' || currentUser.role === 'supervisor')
     ) {
       setEvaluation(null);
     }
-  }, [location.pathname, evaluation, user.role, setEvaluation]);
+  }, [location.pathname, evaluation, currentUser, setEvaluation]);
 
   const handleIconClick = (destination) => {
     checkUnsavedChanges();
@@ -183,7 +180,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
         </div>
         {/* Hamburger  Menu Items */}
         {/* set background color user's role */}
-        <div className={`userNav__icons ${user.role}`}>
+        <div className={`userNav__icons ${currentUser.role}`}>
           {/* <Icon icon="ic:outline-home" color="black" onClick={() => navigate('/unit-list')}/>
                 <Icon icon="bx:file" color='black' onClick={() => navigate('/contract-info')}/>
                 <Icon icon="mdi:user-outline" color='black' onClick={() => navigate('/profile')}/>
@@ -192,7 +189,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             <img src={HelsinkiLogo} alt='' />
             <h1>OsTu</h1>
           </Box>
-          {user && user.role === 'teacher' && (
+          {currentUser && currentUser.role === 'teacher' && (
             <>
               <Typography
                 sx={{ fontWeight: '600', cursor: 'pointer'  }}
@@ -253,7 +250,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, destination }) => {
             </>
           )}
           <div>
-            {user && user.role !== 'teacher' && (
+            {currentUser && currentUser.role !== 'teacher' && (
               <>
                 <Typography
                   sx={{ fontWeight: '600', cursor: 'pointer'  }}

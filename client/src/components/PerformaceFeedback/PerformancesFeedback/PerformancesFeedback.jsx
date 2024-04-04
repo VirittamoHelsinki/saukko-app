@@ -3,8 +3,8 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import AuthContext from '../../../store/context/AuthContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 const PerformancesFeedback = ({
   setSelectedValues,
@@ -17,8 +17,7 @@ const PerformancesFeedback = ({
   console.log('🚀 ~ assessment:', assessment._id);
   const [selectedRadio, setSelectedRadio] = useState('');
   const [hasChanged, setHasChanged] = useState(false);
-  const auth = useContext(AuthContext);
-  const user = auth.user;
+  const { currentUser } = useAuthContext();
   const { evaluation } = useContext(InternalApiContext);
 
   // Uncheck the radio button
@@ -70,16 +69,16 @@ const PerformancesFeedback = ({
       selectedRadio === 'Osaa ohjatusti' ||
       selectedRadio === 'Osaa itsenäisesti'
     ) {
-      if (user?.role === 'supervisor') {
+      if (currentUser?.role === 'supervisor') {
         return '#F6E2E6';
-      } else if (user?.role === 'customer') {
+      } else if (currentUser?.role === 'customer') {
         return '#E2F5F3';
       }
     }
     // check the answer and set the background color
-    if (user?.role === 'supervisor' && assessment.answerSupervisor !== 0) {
+    if (currentUser?.role === 'supervisor' && assessment.answerSupervisor !== 0) {
       return '#F6E2E6';
-    } else if (user?.role === 'customer' && assessment.answer !== 0) {
+    } else if (currentUser?.role === 'customer' && assessment.answer !== 0) {
       return '#E2F5F3';
     }
     return '#F2F2F2';
@@ -88,7 +87,7 @@ const PerformancesFeedback = ({
   const infodata = evaluation.units.flatMap((unit) => {
     return unit.assessments.flatMap((assessment) => [
       {
-        info: user.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
+        info: currentUser.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
         disabled: false,
         unitId: unit._id,
         assessmentId: assessment._id,
@@ -128,9 +127,9 @@ const PerformancesFeedback = ({
                     onChange={(event) => handleRadioChange(event, unit)}
                     checked={
                       selectedRadio === 'Osaa ohjatusti' ||
-                      (user.role === 'supervisor' &&
+                      (currentUser.role === 'supervisor' &&
                         item.answerSupervisor === 1) ||
-                      (user.role === 'customer' && item.answer === 1)
+                      (currentUser.role === 'customer' && item.answer === 1)
                     }
                   />
                 }
@@ -146,9 +145,9 @@ const PerformancesFeedback = ({
                     onChange={(event) => handleRadioChange(event, unit)}
                     checked={
                       selectedRadio === 'Osaa itsenäisesti' ||
-                      (user.role === 'supervisor' &&
+                      (currentUser.role === 'supervisor' &&
                         item.answerSupervisor === 2) ||
-                      (user.role === 'customer' && item.answer === 2)
+                      (currentUser.role === 'customer' && item.answer === 2)
                     }
                   />
                 }
