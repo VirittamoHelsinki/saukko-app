@@ -27,7 +27,7 @@ jobs:
           npm run build:server --if-present
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip release.zip ./server/dist/* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -58,4 +58,4 @@ jobs:
           app-name: 'dev-saukko-backend-fzhpicxhe5j74'
           slot-name: 'production'
           package: .
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_ab4918f963a445e5a465d478a9953772 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_43623C6525244DF0BE0A3E30484AB54B }}
