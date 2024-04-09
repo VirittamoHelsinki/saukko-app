@@ -1,4 +1,4 @@
-.app__wrapper {
+/* .app__wrapper {
   .userNav__wrapper {
     display: flex;
     justify-content: center;
@@ -34,9 +34,8 @@
     background-color: #FFC61E;
   }
 }
+ 
 
-
-// hamburger css
 .userNav__wrapper {
   position: relative;
 }
@@ -62,7 +61,7 @@
   right: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.2);
   align-items: center;
   justify-content: center;
   transform: translateX(100%);
@@ -106,4 +105,121 @@
     height: 30px;
     cursor: pointer;
   }
+
+  .nav-MenuList {
+    text-align: left;
+  }
+
+  .NavText {
+    font-weight: 600;
+    cursor: 'pointer';
+    margin-bottom: '10px';
+  }
 }
+
+*/
+
+.app__wrapper {
+  .userNav__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    bottom: 0%;
+  }
+
+  .userNav__icons {
+    padding: 10px 30px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    svg {
+      height: 30px;
+      width: 30px;
+    }
+
+    &.customer {
+      background-color: #9FC9EB;
+    }
+
+    &.supervisor {
+      background-color: #F5A3C7;
+    }
+
+    &.teacher {
+      background-color: #FFC61E;
+    }
+  }
+
+  .mobile-menu-button {
+    cursor: pointer;
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    z-index: 100;
+    margin: 10px;
+
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .userNav__menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2);
+    align-items: center;
+    justify-content: center;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+
+    //
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-right: 15vh; // Adjust as needed
+    //
+
+    &--open {
+      transform: translateX(0);
+    }
+
+    &__closeBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+      color: white;
+      z-index: 101;
+    }
+
+    .userNav__icons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      //gap: 20px;
+
+      svg {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .NavText {
+    font-weight: 600;
+    cursor: 'pointer';
+    margin-bottom: '10px';
+  }
+}
+
