@@ -18,6 +18,7 @@
     "axios": "^1.2.2",
     "dayjs": "^1.11.9",
     "email-validator": "^2.0.4",
+    "hds-react": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
     "password-validator": "^5.3.0",
