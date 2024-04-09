@@ -31,6 +31,12 @@ const logoutUser = async () => {
 }
 
 const loginUser = async (loginData) => {
+  console.log("login request URL", {
+    baseURL,
+    middleURL,
+    endpoint: "/login",
+    URL: baseURL + middleURL + '/login'
+  });
   const response = await axios.post(baseURL + middleURL + '/login', loginData)
   return response
 }
