@@ -63,6 +63,7 @@ app.use("*", tokensMiddleware);
 // Swagger
 const specs = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/env', (_req, res) => res.json({ env: config.ENVIRONMENT }))
 
 // Routes
 app.use("/auth", authRouter);
@@ -70,6 +71,7 @@ app.use("/api", degreeRouter);
 app.use("/api", workplaceRouter);
 app.use("/api", evaluationRouter);
 app.use("/api", eReqRouter);
+
 
 app.use('/api/status', (_req, res) => {
   res.json({
