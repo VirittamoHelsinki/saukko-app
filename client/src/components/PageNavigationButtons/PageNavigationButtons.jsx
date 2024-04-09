@@ -16,6 +16,7 @@ import Button from '../../components/Button/Button';
 
 function PageNavigationButtons(props) {
   
+  // eslint-disable-next-line no-unused-vars
   const [editMode, setEditMode ] = useState(false);
   return (
     <section className='buttons__container' id="pageNavigationButtonsContainer">

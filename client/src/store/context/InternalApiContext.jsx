@@ -129,6 +129,7 @@ export const InternalApiContextProvider = (props) => {
   useEffect(() => {
     clearCheckedUnits();
     setInternalDegree({});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [internalDegreeId]);
 
   if (loading) {

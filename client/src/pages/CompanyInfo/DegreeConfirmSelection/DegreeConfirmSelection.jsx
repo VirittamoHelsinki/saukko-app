@@ -37,18 +37,21 @@ function DegreeConfirmSelection() {
   useEffect(() => {
     setinternalDegreeId(params?.degreeId);
     // console.log('internal degree-------------', params.degreeId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.degreeId]);
 
   const checkedUnits = useUnitsStore((state) => state?.checkedUnits);
 
   console.log('checkedunits.........', checkedUnits);
 
+  // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isFailure, setIsFailure] = useState(false);
 
   const { openNotificationModal, setOpenNotificationModal } = useStore();
 
+  // eslint-disable-next-line no-unused-vars
   const handleNotificationModalOpen = () => {
     setOpenNotificationModal(true);
   };
@@ -174,6 +177,7 @@ function DegreeConfirmSelection() {
     } else if (isFailure) {
       setOpenNotificationModal(true);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isFailure]);
 
   return (

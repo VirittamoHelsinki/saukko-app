@@ -15,6 +15,7 @@ import DeleteDataModal from '../../components/EditDegreeModals/DeleteDataModal';
 
 const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const params = useParams();
   const { degreeId } = useParams();
   const [degreeDetails, setDegreeDetails] = useState(null);

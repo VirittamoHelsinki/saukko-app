@@ -65,6 +65,7 @@ export default function CustomerList() {
   // Set evaluations
   useEffect(() => {
     setInternalEvaluations();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Find evaluations in progress

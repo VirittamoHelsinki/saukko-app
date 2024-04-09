@@ -26,6 +26,7 @@ function CompanyDegreeUnits() {
 
   useEffect(() => {
     setinternalDegreeId(params.degreeId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Save degree units to state once degree is fetched
@@ -35,6 +36,7 @@ function CompanyDegreeUnits() {
 
   useEffect(() => {
     setFilteredUnits(degreeUnits);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [internalDegree]);
 
   // Searchbar logic
