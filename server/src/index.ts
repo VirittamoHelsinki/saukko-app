@@ -35,8 +35,8 @@ const corsOptions: CorsOptions = {
 const corsOptions2: CorsOptions = {
   origin: config.ENVIRONMENT === 'development'
     ? "http://localhost:3000" : config.ENVIRONMENT === 'staging'
-    ? "https://dev-saukko-backend-fzhpicxhe5j74.azurewebsites.net/" // TODO: make env
-    : "https://dev-saukko-backend-fzhpicxhe5j74.azurewebsites.net/", // TODO: make env, set prod front URL
+    ? "dev-saukko-app-fzhpicxhe5j74.azurewebsites.net" // TODO: make env
+    : "dev-saukko-app-fzhpicxhe5j74.azurewebsites.net", // TODO: make env, set prod front URL
   credentials: true,
 }
 
