@@ -23,6 +23,10 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Setup env vars
+        run: |
+          echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL_STAGING }}" >> $GITHUB_ENV
+
       - name: npm install, build, and test
         run: |
           npm run install:client
