@@ -25,9 +25,11 @@ import { updateEvaluationById } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 
 const UserPerformance = () => {
+  // eslint-disable-next-line no-unused-vars
   const { loggedIn, currentUser } = useAuthContext();
 
   console.log('🚀 ~ UserPerformance ~ user:', currentUser);
+  // eslint-disable-next-line no-unused-vars
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
@@ -48,11 +50,13 @@ const UserPerformance = () => {
   //   '🚀 ~ UserPerformance ~ selectedAssessmentId:',
   //   selectedAssessmentId
   // );
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const navigate = useNavigate();
+  // eslint-disable-next-line no-unused-vars
   const location = useLocation();
   const [lastLocation, setLastLocation] = useState(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
@@ -66,6 +70,7 @@ const UserPerformance = () => {
       setCustomerFirstName(`${evaluation?.customerId.firstName}`);
       setCustomerLastName(`${evaluation?.customerId.lastName}`);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerFirstName, customerLastName]);
 
   let unitObject;
@@ -118,6 +123,7 @@ const UserPerformance = () => {
       // Clean-up state on confirmed navigation
       setConfirmedNavigation(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmedNavigation, lastLocation]);
 
   const handleNavigation = (destination) => {

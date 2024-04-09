@@ -35,12 +35,14 @@ const UnitList = () => {
     if (currentUser.role === 'customer') {
       setInternalEvaluations();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   useEffect(() => {
     if (currentUser.role === 'customer' && evaluations && evaluations.length > 0) {
       setInternalEvaluation(evaluations[0]._id);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evaluations]);
 
   return (

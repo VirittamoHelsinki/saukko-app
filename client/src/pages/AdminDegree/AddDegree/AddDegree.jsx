@@ -93,6 +93,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
 
 const AddDegree = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [paginate, setPaginate] = useState(5);
   const [filteredList, setFilteredList] = useState([]);
 

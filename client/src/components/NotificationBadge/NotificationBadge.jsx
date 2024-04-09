@@ -5,6 +5,7 @@ import { useAuthContext } from '../../store/context/authContextProvider';
 const NotificationBadge = (props) => {
   const { currentUser } = useAuthContext();
   const role = currentUser?.role;
+  // eslint-disable-next-line no-unused-vars
   const { number1, number2 } = props;
   let badgeStyle1 = {};
   let badgeStyle2 = {};
@@ -37,6 +38,7 @@ const NotificationBadge = (props) => {
       width: '100%',
       height: '50%',
     };
+    // eslint-disable-next-line no-unused-vars
     badgeStyle2 = {
       backgroundColor: '#D0E6F7',
       width: '180px',

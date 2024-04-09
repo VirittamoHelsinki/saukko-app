@@ -97,6 +97,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
 
 const SearchPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+	// eslint-disable-next-line no-unused-vars
 	const [paginate, setPaginate] = useState(5);
 	const [filteredList, setFilteredList] = useState([]);
   
@@ -108,6 +109,7 @@ const SearchPage = () => {
   useEffect(() => {
     resetDegreeData()
     setDegreeId('');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   // Searchbar logic

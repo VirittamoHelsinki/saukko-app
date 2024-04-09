@@ -33,9 +33,11 @@ function DegreeUnits() {
 
   useEffect(() => {
     setFilteredUnits(degreeUnits);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);
 
   // Searchbar logic
+  // eslint-disable-next-line no-unused-vars
   const handleSearch = (event) => {
     setPage(1); // Reset to the first page
     setFilteredUnits(
