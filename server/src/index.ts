@@ -28,15 +28,11 @@ app.use(express.static('../client/build'));
 app.use(cookieParser());
 
 const corsOptions: CorsOptions = {
-  origin: "http://localhost:3000", // or wherever your server is hosted "https://eperusteet.opintopolku.fi/eperusteet-service/api/external"
-  credentials: true, // if your frontend needs to send cookies or authentication headers
-};
-
-const corsOptions2: CorsOptions = {
   origin: config.ENVIRONMENT === 'development'
-    ? "http://localhost:3000" : config.ENVIRONMENT === 'staging'
-    ? "dev-saukko-app-fzhpicxhe5j74.azurewebsites.net" // TODO: make env
-    : "dev-saukko-app-fzhpicxhe5j74.azurewebsites.net", // TODO: make env, set prod front URL
+    ? "http://localhost:3000"
+    : `https://${config.ENVIRONMENT === 'staging'
+      ? "dev-saukko-app-fzhpicxhe5j74.azurewebsites.net"
+      : "dev-saukko-app-fzhpicxhe5j74.azurewebsites.net"}`,
   credentials: true,
 }
 
@@ -46,7 +42,7 @@ if (config.ENVIRONMENT === 'development') {
   // console.log("CORS options enabled")
 } /*else app.use(cors())*/
 
-app.use(cors(corsOptions2))
+app.use(cors(corsOptions))
 
 // Connect to the database
 mongoose.set("strictQuery", true);
