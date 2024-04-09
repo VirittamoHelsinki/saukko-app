@@ -32,11 +32,21 @@ const corsOptions: CorsOptions = {
   credentials: true, // if your frontend needs to send cookies or authentication headers
 };
 
+const corsOptions2: CorsOptions = {
+  origin: config.ENVIRONMENT === 'development'
+    ? "http://localhost:3000" : config.ENVIRONMENT === 'staging'
+    ? "https://dev-saukko-backend-fzhpicxhe5j74.azurewebsites.net/" // TODO: make env
+    : "https://dev-saukko-backend-fzhpicxhe5j74.azurewebsites.net/", // TODO: make env, set prod front URL
+  credentials: true,
+}
+
 if (config.ENVIRONMENT === 'development') {
   app.use(middleware.requestLogger);
-  app.use(cors(corsOptions));
-  console.log("CORS options enabled")
-} else app.use(cors())
+  // app.use(cors(corsOptions));
+  // console.log("CORS options enabled")
+} /*else app.use(cors())*/
+
+app.use(cors(corsOptions2))
 
 // Connect to the database
 mongoose.set("strictQuery", true);
