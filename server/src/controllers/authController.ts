@@ -243,10 +243,10 @@ const login = async (req: Request, res: Response) => {
       .status(200)
       // This token have the same expiration time than auth token and it's accessible from client.
       // So client side can use that token to test, did the user is signed in or not. It is not possible to use that auth_state token for authorization.
-      .cookie("auth_state", tokens.info, { httpOnly: false, sameSite: 'none', secure: false })
+      .cookie("auth_state", tokens.info, { httpOnly: false })
       // "token" is "HTTP-Only" token, it is not programmatically accessible from client, but client can add it automatically in requests.
       // It is used for authorize the requests created by the client.
-      .cookie("token", tokens.auth, { httpOnly: true, sameSite: 'none', secure: false })
+      .cookie("token", tokens.auth, { httpOnly: true })
       .json({ message: "User is signed in" })
   } catch (err) {
     _responseWithError(res, 500, err, "Internal server error");
