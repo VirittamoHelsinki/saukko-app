@@ -46,6 +46,7 @@ function EditUnits() {
       setEditMode(true)
       handleAddUnit()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputChange = (unitId, e) => {

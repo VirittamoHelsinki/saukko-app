@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
     "setup": "npm install && npm run install:server && npm run install:client",
     "install:server": "cd server && npm install",
-    "install:client": "cd client && npm install",
+    "install:client": "cd client && npm install --legacy-peer-deps",
     "server:dev": "cd server && npm run dev",
     "server:prod": "cd server && npm start",
     "client": "cd client && npm start",
@@ -32,10 +33,6 @@
     ]
   },
   "dependencies": {
-    "concurrently": "^7.6.0",
-    "hds-react": "^2.16.0",
-    "react-icons": "^4.10.1",
-    "react-scroll": "^1.8.9",
-    "react-swipeable-views": "^0.14.0"
+    "concurrently": "^7.6.0"
   }
 }

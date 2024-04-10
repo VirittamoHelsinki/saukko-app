@@ -42,6 +42,7 @@ const TestPage = () => {
     setOpenNotificationModal,
   } = useStore();
 
+  // eslint-disable-next-line no-unused-vars
   const handleClickOpen = () => {
     setOpenNotificationModal(true);
   };

@@ -115,6 +115,7 @@ function DegreeInfo() {
         }
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);
 
   // Toggle text editable mode

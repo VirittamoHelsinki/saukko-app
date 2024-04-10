@@ -59,6 +59,7 @@ export const ExternalApiContextProvider = (props) => {
     };
     setDegree({});
     getDegree();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degreeId, currentUser]);
 
   // Check if degree object is empty  
@@ -70,6 +71,7 @@ export const ExternalApiContextProvider = (props) => {
   useEffect(() => {
     clearCheckedUnits();
     setDegree({});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degreeId]);
 
   if (allloading || loading) {

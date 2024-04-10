@@ -27,6 +27,7 @@ const CompanyInfo = () => {
     setBusinessIdError,
     name,
     setName,
+    // eslint-disable-next-line no-unused-vars
     departments,
     setDepartmentName,
     editedCompanyName,

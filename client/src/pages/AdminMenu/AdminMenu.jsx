@@ -26,6 +26,7 @@ function AdminMenu() {
     clearEvaluationFromStore()
     clearWorkplace()
     clearCheckedUnits()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

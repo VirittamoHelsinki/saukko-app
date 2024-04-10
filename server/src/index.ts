@@ -28,15 +28,21 @@ app.use(express.static('../client/build'));
 app.use(cookieParser());
 
 const corsOptions: CorsOptions = {
-  origin: "http://localhost:3000", // or wherever your server is hosted "https://eperusteet.opintopolku.fi/eperusteet-service/api/external"
-  credentials: true, // if your frontend needs to send cookies or authentication headers
-};
+  origin: config.ENVIRONMENT === 'development'
+    ? "http://localhost:3000"
+    : `https://${config.ENVIRONMENT === 'staging'
+      ? "dev-saukko-app-fzhpicxhe5j74.azurewebsites.net"
+      : "dev-saukko-app-fzhpicxhe5j74.azurewebsites.net"}`,
+  credentials: true,
+}
 
 if (config.ENVIRONMENT === 'development') {
   app.use(middleware.requestLogger);
-  app.use(cors(corsOptions));
-  console.log("CORS options enabled")
-} else app.use(cors())
+  // app.use(cors(corsOptions));
+  // console.log("CORS options enabled")
+} /*else app.use(cors())*/
+
+app.use(cors(corsOptions))
 
 // Connect to the database
 mongoose.set("strictQuery", true);
@@ -53,6 +59,7 @@ app.use("*", tokensMiddleware);
 // Swagger
 const specs = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/env', (_req, res) => res.json({ env: config.ENVIRONMENT }))
 
 // Routes
 app.use("/auth", authRouter);
@@ -60,6 +67,7 @@ app.use("/api", degreeRouter);
 app.use("/api", workplaceRouter);
 app.use("/api", evaluationRouter);
 app.use("/api", eReqRouter);
+
 
 app.use('/api/status', (_req, res) => {
   res.json({
