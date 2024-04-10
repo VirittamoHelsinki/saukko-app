@@ -179,12 +179,12 @@
     height: 100vh;
     align-items: center;
     justify-content: center;
-    transform: translateX(100%);
+    transform: translateX(-100%);
     transition: transform 0.3s ease;
     // hamburger padding
     align-items: flex-end;
     justify-content: flex-end;
-    padding-right: 15vh;
+    padding-right: 8vh;
 
     &--open {
       transform: translateX(0);

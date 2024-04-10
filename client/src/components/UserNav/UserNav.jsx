@@ -72,6 +72,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation }) => {
             <h1>OsTu</h1>
           </Box>
           {user && user.role === 'teacher' && (
+            <>
             <Box
               alignItems='left'
               style={{ maxHeight: '100%', overflowY: 'auto', marginLeft: '-30px' }}
@@ -175,14 +176,16 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation }) => {
                   </ListItem>
                 </List>
               </div>
-              <Grid container alignItems='flex-start' justifyContent='flex-end'>
-                <Grid item>
+              </Box>
+              
+              <Grid container alignItems='flex-end' justifyContent='flex-end'>
+                <Grid>
                   <Button
                     onClick={() => {
                       toggleMenu();
                       navigate('/profile')
                     }}
-                    sx={{ marginRight: '20px', marginBottom: '20px', cursor: 'pointer' }}
+                    sx={{ marginRight: '15px', marginBottom: '20px', cursor: 'pointer' }}
                   >
                     <Typography
                       sx={{ fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
@@ -196,7 +199,8 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation }) => {
                   </Button>
                 </Grid>
               </Grid>
-            </Box>
+            </>  
+          /* </Box> */
 
           )}
 

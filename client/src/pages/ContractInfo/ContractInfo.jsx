@@ -1,5 +1,5 @@
 // Import react packages & dependencies
-import React from 'react';
+import React, { useContext } from 'react';
 
 // Import components
 import WavesHeader from '../../components/Header/WavesHeader';
@@ -7,7 +7,18 @@ import InfoList from '../../components/InfoList/InfoList';
 import Hyperlink from '../../components/Hyperlink/Hyperlink';
 import UserNav from '../../components/UserNav/UserNav';
 
+import AuthContext from '../../store/context/AuthContext';
+import InternalApiContext from '../../store/context/InternalApiContext';
+
 const ContractInfo = () => {
+  const auth = useContext(AuthContext);
+  const user = auth.user;
+  console.log('user', user);
+
+  const { evaluation } = useContext(InternalApiContext);
+  const evaluationId = evaluation?._id;
+  console.log('evaluationId', evaluationId);
+
   const data = [
     {
       title: 'Asiakkaan nimi',
