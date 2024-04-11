@@ -52,7 +52,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'dev-saukko-app-fzhpicxhe5j74'
+          app-name: 'saukko-dev-app-cf2pynvwyijf4'
           slot-name: 'production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C5B75311526A4ADFB61D0D90BDA675E3 }}
