@@ -11,32 +11,14 @@
 param location string = resourceGroup().location
 param app_name string = resourceGroup().name
 
-var webappName = '${app_name}-app-${uniqueString(resourceGroup().id)}'
 var workspaceName = '${app_name}-ws-${uniqueString(resourceGroup().id)}'
 var appInsightName = '${app_name}-insight-${uniqueString(resourceGroup().id)}'
-var nodeJsBackendName = '${app_name}-backend-${uniqueString(resourceGroup().id)}'
-
-var appServicePlanName = '${app_name}-asp'
-var backendAppServicePlanName = '${app_name}-basp'
-
-// App Service plan for client
-resource ASP_App_Service 'Microsoft.Web/serverfarms@2023-01-01' = {
-  name: appServicePlanName
-  location: location
-  kind: 'app'
-  properties: { }
-  sku: {
-    name: 'F1'
-    tier: 'Free'
-    size: 'F1'
-    family: 'F'
-    capacity: 0
-  }
-}
+var webappName = '${app_name}-app-${uniqueString(resourceGroup().id)}'
+var appServicePlanName = '${app_name}-basp'
 
 // App Service plan for backend
-resource ASP_NodeJS_Backend 'Microsoft.Web/serverfarms@2023-01-01' = {
-  name: backendAppServicePlanName
+resource ASP_NodeJS_AppService 'Microsoft.Web/serverfarms@2023-01-01' = {
+  name: appServicePlanName
   location: location
   kind: 'linux'
   properties: {
@@ -51,43 +33,18 @@ resource ASP_NodeJS_Backend 'Microsoft.Web/serverfarms@2023-01-01' = {
   }
 }
 
-// Backend
-resource NodeJS_Backend 'Microsoft.Web/sites@2023-01-01' = {
-  name: nodeJsBackendName
+resource NodeJS_AppService 'Microsoft.Web/sites@2023-01-01' = {
+  name: webappName
   kind: 'app,linux'
   location: location
   properties: {
     reserved: true
-    serverFarmId: ASP_NodeJS_Backend.id
+    serverFarmId: ASP_NodeJS_AppService.id
     siteConfig: {
       numberOfWorkers: 1
       functionAppScaleLimit: 0
       minimumElasticInstanceCount: 0
       linuxFxVersion: 'NODE:20-lts'
-      appSettings: [
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: Application_Insights.properties.InstrumentationKey
-        }
-        {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: Application_Insights.properties.ConnectionString
-        }
-      ]
-    }
-  }
-}
-
-// Client
-resource App_Service 'Microsoft.Web/sites@2023-01-01' = {
-  name: webappName
-  kind: 'app'
-  location: location
-  properties: {
-    reserved: true
-    serverFarmId: ASP_App_Service.id
-    siteConfig: {
-      numberOfWorkers: 1
       appSettings: [
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
