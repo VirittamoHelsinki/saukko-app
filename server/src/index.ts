@@ -78,7 +78,12 @@ app.use('/api/status', (_req, res) => {
 
 // Serve the React app 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../static/index.html'));
+  if (config.ENVIRONMENT === 'development') {
+    return res.status(404).json({
+      errorMessage: `For developing react app, use port 3000 insted ${config.PORT}`
+    })
+  }
+  res.sendFile(path.join(__dirname, './static/index.html'));
 });
 
 app.listen(config.PORT, () => {
