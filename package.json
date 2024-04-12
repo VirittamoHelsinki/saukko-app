@@ -15,7 +15,7 @@
     "client": "cd client && npm start",
     "start:prod": "cd server && npm run start",
     "start:dev": "concurrently -n Server,Client --kill-others-on-fail \" npm run server:dev\" \" npm run client\"",
-    "clean-install": "rimraf node_modules/ && rimraf server/node_modules/ && rimraf client/node_modules/ && npm install && cd server && npm install && cd .. && cd client && npm install && cd .."
+    "clean-install": "rimraf node_modules/ && rimraf server/node_modules/ && rimraf client/node_modules/ && npm install && cd server && npm install && cd .. && cd client && npm install --legacy-peer-deps && cd .."
   },
   "author": "",
   "license": "ISC",
