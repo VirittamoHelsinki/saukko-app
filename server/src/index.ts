@@ -53,6 +53,9 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 db.once('open', () => console.log('Connected to MongoDB'));
 
+const staticPath = path.join(__dirname, 'static');
+app.use(express.static(staticPath));
+
 // Inject tokens to in Request
 app.use("*", tokensMiddleware);
 
@@ -75,9 +78,6 @@ app.use('/api/status', (_req, res) => {
     mongoDbConnection: db.readyState === 1 ? 'connected' : 'disconnected',
   });
 });
-
-const staticPath = path.join(__dirname, 'static');
-app.use(express.static(staticPath));
 
 // Serve the React app 
 app.get('*', (req, res) => {
