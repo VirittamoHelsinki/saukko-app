@@ -76,6 +76,9 @@ app.use('/api/status', (_req, res) => {
   });
 });
 
+const staticPath = path.join(__dirname, 'static');
+app.use(express.static(staticPath));
+
 // Serve the React app 
 app.get('*', (req, res) => {
   if (config.ENVIRONMENT === 'development') {
@@ -83,7 +86,7 @@ app.get('*', (req, res) => {
       errorMessage: `For developing react app, use port 3000 insted ${config.PORT}`
     })
   }
-  res.sendFile(path.join(__dirname, './static/index.html'));
+  res.sendFile(path.join(staticPath, 'index.html'));
 });
 
 app.listen(config.PORT, () => {
