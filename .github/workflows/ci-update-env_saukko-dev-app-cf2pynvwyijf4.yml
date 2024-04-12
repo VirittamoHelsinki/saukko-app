@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - saukko-dev-app-cf2pynvwyij
 on:
   push:
     branches:
-      - ci-update-env
+      - dev
   workflow_dispatch:
 
 jobs:
