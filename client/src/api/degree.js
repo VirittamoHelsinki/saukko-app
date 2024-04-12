@@ -1,31 +1,27 @@
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_BACKEND_URL;
-
-const middleURL = '/api';
-
 // Fetch all degrees from ePerusteet.
 const fetchDegreesFromEperusteet = async () => {
-  const response = await axios.get(`${baseURL}${middleURL}/degrees`);
+  const response = await axios.get(`api/degrees`);
   return response;
 };
 
 // Fetch a degree by id from ePerusteet.
 const fetchDegreeByIdFromEperusteet = async (id) => {
-  const response = await axios.get(`${baseURL}${middleURL}/degree/${id}`);
+  const response = await axios.get(`api/degree/${id}`);
   return response;
 };
 
 // Fetch all degrees from internal saukko database.
 const fetchInternalDegrees = async () => {
-  const response = await axios.get(`${baseURL}${middleURL}/internal/degrees`);
+  const response = await axios.get(`api/internal/degrees`);
   return response.data;
 };
 
 // Fetch a degree by id from internal saukko database.
 const fetchInternalDegreeById = async (id) => {
   const response = await axios.get(
-    `${baseURL}${middleURL}/internal/degree/${id}`
+    `api/internal/degree/${id}`
   );
   return response.data;
 };
@@ -33,7 +29,7 @@ const fetchInternalDegreeById = async (id) => {
 // Post a degree to internal saukko database.
 const postDegree = async (degree) => {
   const response = await axios.post(
-    `${baseURL}${middleURL}/internal/degrees`,
+    `api/internal/degrees`,
     degree
   );
   return response.data;
@@ -43,7 +39,7 @@ const postDegree = async (degree) => {
 const updateDegree = async (id, degree) => {
   try {
     const response = await axios.put(
-      `${baseURL}${middleURL}/internal/degree/${id}`,
+      `api/internal/degree/${id}`,
       degree
     );
     return response.data;

@@ -1,10 +1,6 @@
 import axios from 'axios'
 import Uvc from 'universal-cookie'
 
-const baseURL = process.env.REACT_APP_BACKEND_URL
-
-const middleURL = '/auth'
-
 const fetchCurrentUser = async () => axios.get('auth/get-current-user');
 
 const registration = async (registrationData) => {
@@ -31,12 +27,6 @@ const logoutUser = async () => {
 }
 
 const loginUser = async (loginData) => {
-  console.log("login request URL", {
-    baseURL,
-    middleURL,
-    endpoint: "/login",
-    URL: baseURL + middleURL + '/login'
-  });
   const response = await axios.post('auth/login', loginData)
   return response
 }
