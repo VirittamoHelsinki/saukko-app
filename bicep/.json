@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.54.24096",
-      "templateHash": "5455448117557328165"
+      "templateHash": "15138389237944214001"
     }
   },
   "parameters": {
@@ -16,6 +16,10 @@
     "app_name": {
       "type": "string",
       "defaultValue": "[resourceGroup().name]"
+    },
+    "frontEndEndpointHostName": {
+      "type": "string",
+      "defaultValue": "exampleFrontDoor.azurefd.net"
     }
   },
   "variables": {
@@ -23,6 +27,7 @@
     "workspaceName": "[format('{0}-ws-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
     "appInsightName": "[format('{0}-insight-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
     "nodeJsBackendName": "[format('{0}-backend-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
+    "frontDoorName": "[format('{0}-fd-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
     "appServicePlanName": "[format('{0}-asp', parameters('app_name'))]",
     "backendAppServicePlanName": "[format('{0}-basp', parameters('app_name'))]"
   },
@@ -72,7 +77,7 @@
           "numberOfWorkers": 1,
           "functionAppScaleLimit": 0,
           "minimumElasticInstanceCount": 0,
-          "linuxFxVersion": "NODE:18-lts",
+          "linuxFxVersion": "NODE:20-lts",
           "appSettings": [
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
@@ -145,6 +150,71 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/frontDoors",
+      "apiVersion": "2021-06-01",
+      "name": "[variables('frontDoorName')]",
+      "location": "global",
+      "properties": {
+        "friendlyName": "[variables('frontDoorName')]",
+        "routingRules": [
+          {
+            "name": "apiAndAuthRule",
+            "properties": {
+              "acceptedProtocols": [
+                "Https"
+              ],
+              "patternsToMatch": [
+                "/api/*",
+                "/auth/*"
+              ],
+              "routeConfiguration": {
+                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration"
+              },
+              "enabledState": "Enabled"
+            }
+          }
+        ],
+        "backendPools": [
+          {
+            "name": "NodeJSBackendPool",
+            "properties": {
+              "backends": [
+                {
+                  "address": "[reference(resourceId('Microsoft.Web/sites', variables('nodeJsBackendName')), '2023-01-01').defaultHostName]",
+                  "httpPort": 80,
+                  "httpsPort": 443
+                }
+              ]
+            }
+          },
+          {
+            "name": "AppServicePool",
+            "properties": {
+              "backends": [
+                {
+                  "address": "[reference(resourceId('Microsoft.Web/sites', variables('webappName')), '2023-01-01').defaultHostName]",
+                  "httpPort": 80,
+                  "httpsPort": 443
+                }
+              ]
+            }
+          }
+        ],
+        "frontendEndpoints": [
+          {
+            "name": "mainFrontendEndpoint",
+            "properties": {
+              "hostName": "[parameters('frontEndEndpointHostName')]"
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('webappName'))]",
+        "[resourceId('Microsoft.Web/sites', variables('nodeJsBackendName'))]"
       ]
     }
   ]
