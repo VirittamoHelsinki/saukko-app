@@ -9,10 +9,10 @@
     "build:server": "cd server && npm run build",
     "setup": "npm install && npm run install:server && npm run install:client",
     "install:server": "cd server && npm install",
-    "install:client": "cd client && npm install --legacy-peer-deps",
+    "install:client": "cd client && npm install",
     "server:dev": "cd server && npm run dev",
     "server:prod": "cd server && npm start",
-    "client": "cd client && npm start",
+    "client": "cd client && npm run dev",
     "start:prod": "cd server && npm run start",
     "start:dev": "concurrently -n Server,Client --kill-others-on-fail \" npm run server:dev\" \" npm run client\"",
     "clean-install": "rimraf node_modules/ && rimraf server/node_modules/ && rimraf client/node_modules/ && npm install && cd server && npm install && cd .. && cd client && npm install && cd .."
