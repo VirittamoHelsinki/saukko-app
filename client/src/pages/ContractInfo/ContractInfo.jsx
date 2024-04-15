@@ -7,11 +7,10 @@ import InfoList from '../../components/InfoList/InfoList';
 import UserNav from '../../components/UserNav/UserNav';
 import InternalApiContext from '../../store/context/InternalApiContext';
 import { fetchInternalDegreeById } from '../../api/degree';
-import { all } from 'axios';
 
 const ContractInfo = () => {
   const { evaluation } = useContext(InternalApiContext);
-  console.log("🚀 ~ ContractInfo ~ evaluation:", evaluation)
+  console.log('🚀 ~ ContractInfo ~ evaluation:', evaluation);
   const [degreeDetails, setDegreeDetails] = useState(null);
 
   useEffect(() => {
@@ -96,7 +95,7 @@ const ContractInfo = () => {
     },
     {
       title: 'TPO:n sähköposti',
-      content: supervisorEmails
+      content: supervisorEmails,
     },
     {
       title: 'Tutkinnon nimi',
@@ -141,7 +140,7 @@ const ContractInfo = () => {
     {
       title: 'Omat tavoitteet',
       content: evaluation?.workGoals,
-    }
+    },
   ];
   return (
     <main className='contractInfo__wrapper'>
@@ -158,38 +157,48 @@ const ContractInfo = () => {
         <section className='contractInfo__container--description'>
           <InfoList data={data} />
         </section>
-        <section className='contractInfo__container--description'>
+        <section
+          className='contractInfo__container--description'
+          style={{
+            marginTop: '4rem',
+            backgroundColor: '#f2f2f2',
+            padding: '1rem 3.5rem',
+          }}
+        >
+          {/* <ul>
+            {evaluation &&
+              evaluation.units.map((unit, index) => (
+                <li key={index}>
+                  <h4 style={{margin: '10px 0'}}>{unit.name.fi}</h4>
+                  {unit &&
+                    unit.assessments.map((assessment, index) => (
+                      <ul key={index}>
+                        <li style={{padding: '2px'}}>{index + 1}. {assessment.name.fi}</li>
+                      </ul>
+                    ))}
+                    <hr  style={{margin: '12px 0'}}/>
+                </li>
+              ))}
+          </ul> */}
           <ul>
             {evaluation &&
               evaluation.units.map((unit, index) => (
                 <li key={index}>
-                  <h4>{unit.name.fi}</h4>
+                  <h4 style={{ margin: '10px 0' }}>{unit.name.fi}</h4>
                   {unit &&
-                    unit.assessments.map((assessment, index) => (
-                      <div key={index}>
-                        <h5>{assessment.name.fi}</h5>
-                      </div>
+                    unit.assessments.map((assessment, innerIndex) => (
+                      <ul key={innerIndex}>
+                        <li style={{ padding: '2px' }}>
+                          {innerIndex + 1}. {assessment.name.fi}
+                        </li>
+                      </ul>
                     ))}
+                  {index !== evaluation.units.length - 1 && (
+                    <hr style={{ margin: '12px 0' }} />
+                  )}
                 </li>
               ))}
           </ul>
-          {/* <h3>Tutkinnon suorittaneen osaaminen</h3>
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima
-            adipisci delectus soluta velit ducimus qui nihil nam reprehenderit.
-            Libero nam reprehenderit dolorem officia reiciendis aperiam,
-            accusamus possimus doloribus? Voluptate, porro? Lorem ipsum dolor
-            sit amet consectetur adipisicing elit. Nemo vel saepe odio
-            recusandae tempore soluta voluptatibus iste excepturi laboriosam,
-            commodi, fugit doloribus atque sed ipsum quaerat enim et quibusdam
-            tenetur.
-          </p>
-          <Hyperlink
-            linkText={'Lue lisää tästä linkistä'}
-            linkSource={
-              'https://eperusteet.opintopolku.fi/#/fi/ammatillinenperustutkinto/3397336/tiedot'
-            }
-          /> */}
         </section>
       </div>
       <UserNav />
