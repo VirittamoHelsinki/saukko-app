@@ -1,0 +1,104 @@
+.app__wrapper {
+  .addDegree__wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    background: var(--saukko-main-white);
+    text-align: left;
+
+    .addDegree__container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0px 36px 86px 36px;
+      margin-top: 225px;
+      width: 100%;
+      gap: 20px;
+
+      .button__container {
+        flex-direction: row-reverse;
+
+        .button__icon {
+          font-size: 1.5rem;
+        }
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .addDegree__container--list {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+        margin-top: 1rem;
+
+        .addDegree__container--list-item {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 20px;
+
+          p {
+            font-size: 1rem;
+          }
+
+          .addDegree__container--list-item-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            li {
+              font-size: 18px;
+              text-align: end;
+            }
+          }
+
+          &:nth-child(even) {
+            background-color: var(--additional-light-yellow);
+          }
+
+          &:nth-child(odd) {
+            background-color: var(--additional-light-blue);
+          }
+        }
+      }
+      .addDegree__container--list-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+
+        .pagination__button {
+          background: var(--saukko-main-white);
+          border-radius: 50%;
+          border: none;
+          height: 40px;
+          width: 40px;
+        }
+
+        .pagination__button--active {
+          color: var(--saukko-main-white);
+          background: var(--saukko-main-black);
+        }
+
+        .addDegree__container--list-pagination-arrows {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+
+          .arrow__button {
+            font-weight: 600;
+            background: none;
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}

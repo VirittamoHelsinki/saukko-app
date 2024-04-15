@@ -1,0 +1,36 @@
+.selectUnit__container--units-unit {
+  margin-top: 5px;
+  padding: 10px 20px;
+  height: 80px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 5px;
+  background-color: var(--grayscale-background-box);
+  font-weight: bold;
+
+  &.checked {
+    background-color: var(--list-checked);
+  }
+
+  .selectUnit__container--units-unit-checkbox {
+      margin-right: 5px;
+      background-color: var(--saukko-main-white);
+      border: 2px solid var(--saukko-main-grey);
+      border-radius: 10%;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+
+      &.checked {
+        border: 2px solid var(--checkbox-green);
+        background-color: var(--checkbox-green);
+      }
+  }
+  
+  .selectUnit__container--units-unit-arrow {
+    margin-left: auto;
+    font-size: 30px;
+    flex-shrink: 0;
+  }
+}
