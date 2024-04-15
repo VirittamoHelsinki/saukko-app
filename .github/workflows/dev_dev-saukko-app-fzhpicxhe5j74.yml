@@ -9,6 +9,11 @@ on:
       - dev
     paths:
       - 'client/**'
+  pull_request:
+    branches:
+      - dev
+    paths:
+      - 'client/**'
   workflow_dispatch:
 
 env:
@@ -29,6 +34,7 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm run install:client
+          npm run test
           npm run build
       
       - name: Upload artifact for deployment job
