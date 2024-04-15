@@ -11,13 +11,14 @@ import { all } from 'axios';
 
 const ContractInfo = () => {
   const { evaluation } = useContext(InternalApiContext);
+  console.log("🚀 ~ ContractInfo ~ evaluation:", evaluation)
   const [degreeDetails, setDegreeDetails] = useState(null);
 
   useEffect(() => {
     const degree = async () => {
       try {
         const response = await fetchInternalDegreeById(evaluation?.degreeId);
-        // console.log(response);
+        console.log('Degree details: ', response);
         setDegreeDetails(response);
       } catch (error) {
         console.error(error);
@@ -50,6 +51,16 @@ const ContractInfo = () => {
     supervisorNames = supervisorNames.slice(0, -2);
   }
 
+  let supervisorEmails;
+  if (evaluation?.supervisorIds && evaluation.supervisorIds.length > 0) {
+    supervisorEmails = ''; // Reset the default message
+    evaluation.supervisorIds.forEach((supervisor) => {
+      const email = supervisor.email || '';
+      supervisorEmails += `${email}, `;
+    });
+    supervisorEmails = supervisorEmails.slice(0, -2);
+  }
+
   const data = [
     {
       title: 'Nimi',
@@ -57,12 +68,11 @@ const ContractInfo = () => {
     },
     {
       title: 'Sähköposti',
-      content: 's-posti',
+      content: evaluation && evaluation?.customerId?.email,
     },
     {
       title: 'Asiakkuuden aloituspäivä',
       content: formatDate(startDateString),
-      // content: evaluation ? evaluation.startDate.format('DD.MM.YYYY') : '',
     },
     {
       title: 'Asiakkuuden lopeutuspäivä',
@@ -86,7 +96,7 @@ const ContractInfo = () => {
     },
     {
       title: 'TPO:n sähköposti',
-      content: 's-posti',
+      content: supervisorEmails
     },
     {
       title: 'Tutkinnon nimi',
@@ -131,11 +141,7 @@ const ContractInfo = () => {
     {
       title: 'Omat tavoitteet',
       content: evaluation?.workGoals,
-    },
-    // {
-    //   title: 'Opettaja',
-    //   content: 'Sanna Virtanen',
-    // },
+    }
   ];
   return (
     <main className='contractInfo__wrapper'>
