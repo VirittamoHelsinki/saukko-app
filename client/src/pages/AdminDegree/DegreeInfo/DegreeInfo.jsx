@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import state management
@@ -239,7 +239,7 @@ function DegreeInfo() {
               }}
             >
               <ContentEditable
-                html={degreeName}
+                html={degreeName ?? "degreeName is NULL"}
                 onChange={(e) => {
                   setDegreeName(e.target.value)
                   setIsContentChanged(true)
@@ -260,7 +260,7 @@ function DegreeInfo() {
               }}
             >
               <ContentEditable
-                html={diaryNumber}
+                html={diaryNumber ?? "diaryNumber is NULL"}
                 onChange={(e) => {
                   setDiaryNumber(e.target.value)
                   setIsContentChanged(true)
@@ -281,7 +281,7 @@ function DegreeInfo() {
               }}
             >
               <ContentEditable
-                html={regulationDate}
+                html={regulationDate ?? "regulationDate is NULL"}
                 onChange={(e) => {
                   setRegulationDate(e.target.value)
                   setIsContentChanged(true)
@@ -302,7 +302,7 @@ function DegreeInfo() {
               }}
             >
               <ContentEditable
-                html={validFrom}
+                html={validFrom ?? "validFrom is NULL"}
                 onChange={(e) => {
                   setValidFrom(e.target.value)
                   setIsContentChanged(true)
@@ -323,7 +323,7 @@ function DegreeInfo() {
               }}
             >
               <ContentEditable
-                html={expiry}
+                html={expiry ?? "expiry is NULL"}
                 onChange={(e) => {
                   setExpiry(e.target.value)
                   setIsContentChanged(true)
@@ -344,7 +344,7 @@ function DegreeInfo() {
               }}
             >
               <ContentEditable
-                html={transitionEnds}
+                html={transitionEnds ?? "transitionEnds is NULL"}
                 onChange={(e) => {
                   setTransitionEnds(e.target.value)
                   setIsContentChanged(true)

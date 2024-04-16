@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
