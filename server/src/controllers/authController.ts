@@ -337,7 +337,6 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
 
 
   if (user.role !== 'supervisor') {
-    const verificationToken = user.generateEmailVerificationToken();
     const verificationLink = user.generateEmailVerificationLink();
 
     // Send verification email
