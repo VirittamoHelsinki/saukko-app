@@ -9,7 +9,7 @@
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "build": "tsc -p tsconfig.json ",
     "prebuild": "cd ../client && npm run build",
-    "postbuild": "shx cp -R node_modules dist/node_modules && shx cp -R ../client/build ./dist/static"
+    "postbuild": "shx cp -R node_modules dist/node_modules && shx cp -R ../client/dist ./dist/static"
   },
   "keywords": [],
   "author": "",
