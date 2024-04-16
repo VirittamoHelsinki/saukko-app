@@ -63,9 +63,7 @@ const registerUser = async (req: Request, res: Response) => {
 
 
     if (newUser.role !== 'supervisor') {
-      const verificationToken = newUser.generateEmailVerificationToken();
-      const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`;
-
+      const verificationLink = newUser.generateEmailVerificationLink();
       // Send verification email
       sendVerificationEmail({userEmail: newUser.email, verificationLink});
       console.log('user created and verification email sent');
