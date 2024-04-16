@@ -4,7 +4,7 @@ import mailerTemplate from "../mailerHtmlTemplate";
 
 // Asiakas pyytää yhteydenottoa
 
-interface ISendEvaluationFormCustomerRequestContact {
+export interface ISendEvaluationFormCustomerRequestContact {
     userName: string;
     userEmail: string;
     degreeName: string;

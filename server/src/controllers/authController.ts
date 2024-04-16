@@ -63,8 +63,8 @@ const registerUser = async (req: Request, res: Response) => {
 
 
     if (newUser.role !== 'supervisor') {
-      const verificationToken = newUser.generateEmailVerificationToken();
-      const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`;
+      const verificationLink = newUser.generateEmailVerificationLink();
+      // const verificationLink = `https://saukko.azurewebsites.net/verify-email/${verificationToken}`;
 
       // Send verification email
       sendVerificationEmail({userEmail: newUser.email, verificationLink});
@@ -339,7 +339,7 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
 
 
   if (user.role !== 'supervisor') {
-    const verificationToken = user.generateEmailVerificationToken();
+    // const verificationToken = user.generateEmailVerificationToken();
     const verificationLink = user.generateEmailVerificationLink();
 
     // Send verification email

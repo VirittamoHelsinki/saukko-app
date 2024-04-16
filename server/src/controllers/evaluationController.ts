@@ -203,8 +203,13 @@ const getById = async (req: Request, res: Response) => {
 }
 
 const update = async (req: Request, res: Response) => {
+  console.log('req body: ', req.body);
+  console.log('req user: ', req.user); // userInfo
+  console.log('req params: ', req.params); // evaluationID
   try {
-    const evaluation = await EvaluationModel.findById(req.params.id);
+    const evaluation = await EvaluationModel.findById(req.params.id).populate('User');
+
+    console.log('evaluation: ', evaluation);
 
     if (!evaluation) {
       return res.status(404).send({ message: 'Evaluation not found' });
