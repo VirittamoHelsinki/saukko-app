@@ -11,6 +11,13 @@
 param location string = resourceGroup().location
 param app_name string = resourceGroup().name
 
+var environment = contains(resourceGroup().name, 'dev') ? 'dev' : contains(resourceGroup().name, 'prod') ? 'prod': 'other'
+var isProd = environment == 'prod'
+
+var skuName = isProd ? 'B1' : 'F1'
+var skuTier = isProd ? 'Basic' : 'Free'
+var skuSize = isProd ? 'B1' : 'F1'
+
 var workspaceName = '${app_name}-ws-${uniqueString(resourceGroup().id)}'
 var appInsightName = '${app_name}-insight-${uniqueString(resourceGroup().id)}'
 var webappName = '${app_name}-app-${uniqueString(resourceGroup().id)}'
@@ -25,11 +32,9 @@ resource ASP_NodeJS_AppService 'Microsoft.Web/serverfarms@2023-01-01' = {
     reserved: true
   }
   sku: {
-    name: 'F1'
-    tier: 'Free'
-    size: 'F1'
-    family: 'F'
-    capacity: 0
+    name: skuName
+    tier: skuTier
+    size: skuSize
   }
 }
 
