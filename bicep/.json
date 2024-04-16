@@ -1,0 +1,221 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.26.54.24096",
+      "templateHash": "15138389237944214001"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "app_name": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]"
+    },
+    "frontEndEndpointHostName": {
+      "type": "string",
+      "defaultValue": "exampleFrontDoor.azurefd.net"
+    }
+  },
+  "variables": {
+    "webappName": "[format('{0}-app-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
+    "workspaceName": "[format('{0}-ws-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
+    "appInsightName": "[format('{0}-insight-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
+    "nodeJsBackendName": "[format('{0}-backend-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
+    "frontDoorName": "[format('{0}-fd-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
+    "appServicePlanName": "[format('{0}-asp', parameters('app_name'))]",
+    "backendAppServicePlanName": "[format('{0}-basp', parameters('app_name'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2023-01-01",
+      "name": "[variables('appServicePlanName')]",
+      "location": "[parameters('location')]",
+      "kind": "app",
+      "properties": {},
+      "sku": {
+        "name": "F1",
+        "tier": "Free",
+        "size": "F1",
+        "family": "F",
+        "capacity": 0
+      }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2023-01-01",
+      "name": "[variables('backendAppServicePlanName')]",
+      "location": "[parameters('location')]",
+      "kind": "linux",
+      "properties": {
+        "reserved": true
+      },
+      "sku": {
+        "name": "F1",
+        "tier": "Free",
+        "size": "F1",
+        "family": "F",
+        "capacity": 0
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2023-01-01",
+      "name": "[variables('nodeJsBackendName')]",
+      "kind": "app,linux",
+      "location": "[parameters('location')]",
+      "properties": {
+        "reserved": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('backendAppServicePlanName'))]",
+        "siteConfig": {
+          "numberOfWorkers": 1,
+          "functionAppScaleLimit": 0,
+          "minimumElasticInstanceCount": 0,
+          "linuxFxVersion": "NODE:20-lts",
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2020-02-02').InstrumentationKey]"
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2020-02-02').ConnectionString]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('backendAppServicePlanName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2023-01-01",
+      "name": "[variables('webappName')]",
+      "kind": "app",
+      "location": "[parameters('location')]",
+      "properties": {
+        "reserved": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "siteConfig": {
+          "numberOfWorkers": 1,
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2020-02-02').InstrumentationKey]"
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2020-02-02').ConnectionString]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('workspaceName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "sku": {
+          "name": "PerGB2018"
+        },
+        "retentionInDays": 30,
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Disabled"
+      }
+    },
+    {
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[variables('appInsightName')]",
+      "location": "[parameters('location')]",
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web",
+        "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))]",
+        "Flow_Type": "Bluefield"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/frontDoors",
+      "apiVersion": "2021-06-01",
+      "name": "[variables('frontDoorName')]",
+      "location": "global",
+      "properties": {
+        "friendlyName": "[variables('frontDoorName')]",
+        "routingRules": [
+          {
+            "name": "apiAndAuthRule",
+            "properties": {
+              "acceptedProtocols": [
+                "Https"
+              ],
+              "patternsToMatch": [
+                "/api/*",
+                "/auth/*"
+              ],
+              "routeConfiguration": {
+                "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration"
+              },
+              "enabledState": "Enabled"
+            }
+          }
+        ],
+        "backendPools": [
+          {
+            "name": "NodeJSBackendPool",
+            "properties": {
+              "backends": [
+                {
+                  "address": "[reference(resourceId('Microsoft.Web/sites', variables('nodeJsBackendName')), '2023-01-01').defaultHostName]",
+                  "httpPort": 80,
+                  "httpsPort": 443
+                }
+              ]
+            }
+          },
+          {
+            "name": "AppServicePool",
+            "properties": {
+              "backends": [
+                {
+                  "address": "[reference(resourceId('Microsoft.Web/sites', variables('webappName')), '2023-01-01').defaultHostName]",
+                  "httpPort": 80,
+                  "httpsPort": 443
+                }
+              ]
+            }
+          }
+        ],
+        "frontendEndpoints": [
+          {
+            "name": "mainFrontendEndpoint",
+            "properties": {
+              "hostName": "[parameters('frontEndEndpointHostName')]"
+            }
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('webappName'))]",
+        "[resourceId('Microsoft.Web/sites', variables('nodeJsBackendName'))]"
+      ]
+    }
+  ]
+}

@@ -18,6 +18,7 @@ RUN npm run build
 WORKDIR /app/server
 
 RUN npm install
+RUN npm run build
 
 WORKDIR /app
 # Install server dependencies

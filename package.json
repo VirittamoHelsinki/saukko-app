@@ -1,38 +1,38 @@
 {
-    "name": "saukko-app",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build":"cd client && npm run build",
-        "setup": "npm install && npm run install:server && npm run install:client",
-        "install:server": "cd server && npm install",
-        "install:client": "cd client && npm install",
-        "server:dev": "cd server && npm run dev",
-        "server:prod": "cd server && npm start",
-        "client": "cd client && npm start",
-        "start:prod": "cd server && node index",
-        "start:dev": "concurrently --kill-others-on-fail \" npm run server:dev\" \" npm run client\""
-    },
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-        "@iconify/react": "^4.1.1",
-        "husky": "^8.0.3",
-        "lint-staged": "^13.2.2",
-        "prettier": "^2.8.8"
-    },
-    "lint-staged": {
-        "*.{js,jsx}": [
-            "prettier --write"
-        ]
-    },
-    "dependencies": {
-        "concurrently": "^7.6.0",
-        "hds-react": "^2.16.0",
-        "react-icons": "^4.10.1",
-        "react-scroll": "^1.8.9",
-        "react-swipeable-views": "^0.14.0"
-    }
+  "name": "saukko-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd server && npm run build",
+    "build:server": "cd server && npm run build",
+    "setup": "npm install && npm run install:server && npm run install:client",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "server:dev": "cd server && npm run dev",
+    "server:prod": "cd server && npm start",
+    "client": "cd client && npm run dev",
+    "start:prod": "cd server && npm run start",
+    "start:dev": "concurrently -n Server,Client --kill-others-on-fail \" npm run server:dev\" \" npm run client\"",
+    "clean-install": "rimraf node_modules/ && rimraf server/node_modules/ && rimraf client/node_modules/ && npm install && cd server && npm install && cd .. && cd client && npm install && cd .."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@iconify/react": "^4.1.1",
+    "@types/jest": "^29.5.12",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
+    "ts-jest": "^29.1.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
 }

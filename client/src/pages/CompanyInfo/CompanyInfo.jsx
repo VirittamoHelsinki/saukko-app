@@ -1,7 +1,7 @@
 // Import components & libraries
-import React, { useContext } from 'react';
-import { TextInput } from 'hds-react';
-import { IconCrossCircle, IconSearch } from 'hds-react';
+import { useContext } from 'react';
+import { RxCrossCircled } from "react-icons/rx";
+import { CiSearch } from "react-icons/ci";
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import { fetchExternalCompanyData } from '../../api/workplace';
@@ -18,7 +18,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-
 const CompanyInfo = () => {
   const navigate = useNavigate();
   const {
@@ -28,6 +27,7 @@ const CompanyInfo = () => {
     setBusinessIdError,
     name,
     setName,
+    // eslint-disable-next-line no-unused-vars
     departments,
     setDepartmentName,
     editedCompanyName,
@@ -44,24 +44,23 @@ const CompanyInfo = () => {
 
   const { internalDegree } = useContext(InternalApiContext);
 
-
   // Labels and urls for Stepper
   const stepperData = [
     {
       label: 'Lisää tiedot',
-      url: '/company-info'
+      url: '/company-info',
     },
     {
       label: 'Valitse tutkinto',
-      url: '/internal/degrees'
+      url: '/internal/degrees',
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: `/internal/degrees/${internalDegree._id}/units`
+      url: `/internal/degrees/${internalDegree._id}/units`,
     },
     {
       label: 'Vahvista',
-      url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`
+      url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`,
     },
   ];
 
@@ -100,8 +99,6 @@ const CompanyInfo = () => {
     }
   };
 
-
-
   const handleClearBusinessId = () => {
     setBusinessId('');
     setName(null);
@@ -134,7 +131,11 @@ const CompanyInfo = () => {
   //Adding the supervisors
   const addSupervisors = () => {
     if (firstName && lastName && työpaikkaohjaajaEmail) {
-      const newSupervisor = createSupervisor(firstName, lastName, työpaikkaohjaajaEmail);
+      const newSupervisor = createSupervisor(
+        firstName,
+        lastName,
+        työpaikkaohjaajaEmail
+      );
       setSupervisors([...supervisors, newSupervisor]);
       setFirstName('');
       setLastName('');
@@ -146,7 +147,13 @@ const CompanyInfo = () => {
     e.preventDefault();
 
     // Form validation: check for empty fields
-    if ((!businessId || (!name && !editedCompanyName)) || !firstName || !lastName || !työpaikkaohjaajaEmail) {
+    if (
+      !businessId ||
+      (!name && !editedCompanyName) ||
+      !firstName ||
+      !lastName ||
+      !työpaikkaohjaajaEmail
+    ) {
       alert('Please fill in all required fields.');
       return;
     }
@@ -160,7 +167,11 @@ const CompanyInfo = () => {
 
     // Create supervisor & save to temporary storage
     if (firstName && lastName && työpaikkaohjaajaEmail) {
-      const newSupervisor = createSupervisor(firstName, lastName, työpaikkaohjaajaEmail);
+      const newSupervisor = createSupervisor(
+        firstName,
+        lastName,
+        työpaikkaohjaajaEmail
+      );
       addSupervisors(newSupervisor);
     }
 
@@ -170,70 +181,109 @@ const CompanyInfo = () => {
 
   return (
     <div>
-      <WavesHeader title='Saukko' fill='#9fc9eb' secondTitle='Lisää uusi työpaikka' />
+      <WavesHeader
+        title='Saukko'
+        fill='#9fc9eb'
+        secondTitle='Lisää uusi työpaikka'
+      />
       <div className='info__stepper__container'>
-        <Stepper
-          activePage={1}
-          totalPages={4}
-          data={stepperData}
-        />
+        <Stepper activePage={1} totalPages={4} data={stepperData} />
       </div>
       <div style={{ margin: '16px', marginBottom: '28px', marginTop: '60px' }}>
         <Accordion
-          className="heading_style"
-          sx={{ backgroundColor: '#F2F2F2', paddingTop: '17px', paddingBottom: '20px' }}
+          className='heading_style'
+          sx={{
+            backgroundColor: '#F2F2F2',
+            paddingTop: '17px',
+            paddingBottom: '20px',
+          }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls='panel1a-content'
+            id='panel1a-header'
           >
-            <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>1. Työpaikka tiedot</Typography>
+            <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>
+              1. Työpaikka tiedot
+            </Typography>
           </AccordionSummary>
           <form onSubmit={handleForward}>
             <div>
-              <label className="workplace-form-label" htmlFor="business-id-input">
+              <label
+                className='workplace-form-label'
+                htmlFor='business-id-input'
+              >
                 Työpaikan Y-tunnus *
               </label>
-              <div className='text_input businessID__search-field'>
-                <TextInput
-                  id="business-id-input"
-                  className="text_input_businessID"
-                  name="Työpaikan Y-tunnus"
+              <div className='text_input businessID__search-field' style={{ padding: 0, position: 'relative' }}>
+                <input type="text" id='business-id-input'
+                  style={{width: '100%', height: '100%', margin: 0}}
+                  name='Työpaikan Y-tunnus'
                   required
                   placeholder='1234567-6'
                   value={businessId}
-                  onChange={handleBusinessId}
-                />
-                <IconCrossCircle
-                  className="cross-icone-style"
-                  aria-hidden="true"
+                  onChange={handleBusinessId} />
+                <div style={{ position: 'absolute', margin: '1em'}}>
+                  <RxCrossCircled
+                  style={{marginRight: '.5em'}}
+                    className='cross-icone-style'
+                    aria-hidden='true'
+                    onClick={handleClearBusinessId}
+                  />
+                  <CiSearch
+                    className='search-icone-style'
+                    aria-hidden='true'
+                    onClick={handleSearchClick}
+                  />
+                </div>
+              </div>
+              {/* <input className='text_input businessID__search-field' id='business-id-input'
+                name='Työpaikan Y-tunnus'
+                required
+                placeholder='1234567-6'
+                value={businessId}
+                onChange={handleBusinessId}>
+                <RxCrossCircled
+                  className='cross-icone-style'
+                  aria-hidden='true'
                   onClick={handleClearBusinessId}
                 />
-                <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} />
-              </div>
+                <CiSearch
+                  className='search-icone-style'
+                  aria-hidden='true'
+                  onClick={handleSearchClick}
+                />
+              </input> */}
             </div>
             {/* <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} /> */}
             <div>
-              <label className="workplace-form-label" htmlFor="company-name-input">
+              <label
+                className='workplace-form-label'
+                htmlFor='company-name-input'
+              >
                 Työpaikka *
               </label>
-              <TextInput
-                id="company-name-input"
-                className="text_input"
-                name="Työpaikan Y-tunnus"
+              <input
+                type='text'
+                className='text_input businessID__search-field text_input'
+                id='company-name-input'
+                name='Työpaikan Y-tunnus'
                 required
                 value={editedCompanyName || (name && name.name) || ''}
                 onChange={handleCompanyName}
-              />
+              >
+              </input>
             </div>
 
             <div className='department-container'>
-              <label htmlFor='department' className="workplace-form-label"> Yksikkö (ei pakollinen) </label>
-              <TextInput
-                id="department-name-input"
-                className="text_input"
-                name="Työpaikan yksikkö"
+              <label htmlFor='department' className='workplace-form-label'>
+                {' '}
+                Yksikkö (ei pakollinen){' '}
+              </label>
+              <input
+                className='text_input businessID__search-field'
+                id='department-name-input'
+                name='Työpaikan yksikkö'
                 onChange={handleDepartment}
               />
             </div>
@@ -242,108 +292,135 @@ const CompanyInfo = () => {
       </div>
       <div style={{ margin: '16px', marginBottom: '28px' }}>
         <Accordion
-          className="heading_style"
-          heading="2. Työpaikkaohjaajan tiedot"
-          language="en"
-          style={{ backgroundColor: '#F2F2F2', paddingTop: '17px', paddingBottom: '17px' }}
+          className='heading_style'
+          heading='2. Työpaikkaohjaajan tiedot'
+          language='en'
+          style={{
+            backgroundColor: '#F2F2F2',
+            paddingTop: '17px',
+            paddingBottom: '17px',
+          }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+            aria-controls='panel1a-content'
+            id='panel1a-header'
           >
-            <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>2. Työpaikkaohjaajan tiedot</Typography>
+            <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>
+              2. Työpaikkaohjaajan tiedot
+            </Typography>
           </AccordionSummary>
           <form onSubmit={handleForward}>
-            <div className='ohjaajat-info' >
-              {supervisors.slice().reverse().map((ohjaaja, index) => (
-                <div key={index} style={{ borderBottom: '2px solid white', marginTop: '9px', marginBottom: '9px' }}>
-                  <label className="workplace-form-label" htmlFor={`first-name-input-${index}`}>
-                    Etunimi *
-                  </label>
-                  <TextInput
-                    id={`first-name-input-${index}`}
-                    className="text_input"
-                    name="Etunimi"
-                    required
-                    value={ohjaaja.firstName}
-                    readOnly
-                  />
-                  <label className="workplace-form-label" htmlFor={`last-name-input-${index}`}>
-                    Sukunimi *
-                  </label>
-                  <TextInput
-                    id={`last-name-input-${index}`}
-                    className="text_input"
-                    name="Sukunimi"
-                    required
-                    value={ohjaaja.lastName}
-                    readOnly
-                  />
-                  <label className="workplace-form-label" htmlFor={`email-input-${index}`}>
-                    Sähköposti *
-                  </label>
-                  <TextInput
-                    id={`email-input-${index}`}
-                    style={{ marginBottom: '20px' }}
-                    className="text_input"
-                    name="Sähköposti"
-                    type="email"
-                    required
-                    value={ohjaaja.email}
-                    readOnly
-                  />
-                </div>
-              ))}
+            <div className='ohjaajat-info'>
+              {supervisors
+                .slice()
+                .reverse()
+                .map((ohjaaja, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      borderBottom: '2px solid white',
+                      marginTop: '9px',
+                      marginBottom: '9px',
+                    }}
+                  >
+                    <label
+                      className='workplace-form-label'
+                      htmlFor={`first-name-input-${index}`}
+                    >
+                      Etunimi *
+                    </label>
+                    <input
+                      className='text_input businessID__search-field'
+                      id={`first-name-input-${index}`}
+                      name='Etunimi'
+                      required
+                      value={ohjaaja.firstName}
+                      readOnly
+                    />
+                    <label
+                      className='workplace-form-label'
+                      htmlFor={`last-name-input-${index}`}
+                    >
+                      Sukunimi *
+                    </label>
+                    <input className='text_input businessID__search-field' id={`last-name-input-${index}`}
+                      name='Sukunimi'
+                      required
+                      value={ohjaaja.lastName}
+                      readOnly
+                    />
+                    <label
+                      className='workplace-form-label'
+                      htmlFor={`email-input-${index}`}
+                    >
+                      Sähköposti *
+                    </label>
+                    <input
+                      className='text_input businessID__search-field' id={`email-input-${index}`}
+                      style={{ marginBottom: '20px' }}
+                      name='Sähköposti'
+                      type='email'
+                      required
+                      value={ohjaaja.email}
+                      readOnly
+                    />
+                  </div>
+                ))}
             </div>
             <div className='ohjaja' style={{}}>
-              <label className="workplace-form-label" htmlFor="first-name-input">
+              <label
+                className='workplace-form-label'
+                htmlFor='first-name-input'
+              >
                 Etunimi *
               </label>
-              <TextInput
-                id="first-name-input"
-                className="text_input"
-                name="Etunimi"
+              <input
+                className='text_input businessID__search-field'
+                id='first-name-input'
+                name='Etunimi'
                 required
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
+                onChange={(e) => setFirstName(e.target.value)} />
               <div>
-                <label className="workplace-form-label" htmlFor="last-name-input">
+                <label
+                  className='workplace-form-label'
+                  htmlFor='last-name-input'
+                >
                   Sukunimi *
                 </label>
-                <TextInput
-                  id="last-name-input"
-                  className="text_input"
-                  name="Sukunimi"
+                <div
+                  className='text_input businessID__search-field'
+                  id='last-name-input'
+                  name='Sukunimi'
                   required
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
               <div>
-                <label className="workplace-form-label" htmlFor="email-input">
+                <label className='workplace-form-label' htmlFor='email-input'>
                   Sähkoposti *
                 </label>
-                <TextInput
-                  id="email-input"
-                  className="text_input"
-                  name="Sähkoposti"
-                  type="email"
+                <div
+                  className='text_input businessID__search-field'
+                  id='email-input'
+                  name='Sähkoposti'
+                  type='email'
                   required
                   value={työpaikkaohjaajaEmail}
                   onChange={(e) => setTyöpaikkaohjaajaEmail(e.target.value)}
                 />
               </div>
               <Button
-                text="Lisää toinen ohjaaja"
+                text='Lisää toinen ohjaaja'
                 style={{
                   marginLeft: '17%',
                   marginBottom: '30px',
                   backgroundColor: '#0000BF',
                   color: 'white',
                   marginTop: '25px',
-                  width: '65%'
+                  width: '65%',
                 }}
                 icon={'ic:baseline-plus'}
                 onClick={addSupervisors}
@@ -352,7 +429,11 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
-      <PageNavigationButtons handleBack={() => navigate('/admin-menu')} handleForward={handleForward} />
+      <PageNavigationButtons
+        handleBack={() => navigate('/admin-menu')}
+        handleForward={handleForward}
+        showForwardButton={true}
+      />
       <div style={{ marginBottom: '90px' }}>
         <UserNav></UserNav>
       </div>
@@ -361,5 +442,3 @@ const CompanyInfo = () => {
 };
 
 export default CompanyInfo;
-
-

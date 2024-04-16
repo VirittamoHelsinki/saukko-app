@@ -1,9 +1,8 @@
 // importing necessary packages for routing
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 // importing state management
-import AuthContext from '../../store/context/AuthContext';
 import InternalApiContext from '../../store/context/InternalApiContext';
 
 // importing all pages which need routing
@@ -34,44 +33,44 @@ import CompanyDegreeUnits from '../../pages/CompanyInfo/CompanyDegreeUnits/Compa
 import DegreeConfirmSelection from '../../pages/CompanyInfo/DegreeConfirmSelection/DegreeConfirmSelection';
 import UserPerformance from '../../pages/Performance/UserPerformance/UserPerformance';
 import AddCompanyName from '../../pages/AddCompanyName/AddCompanyName';
+import EmailVerification from '../../pages/VerifyEmail/VerifyEmail';
+import CreateUnitsSummary from '../../pages/CreateSummary/CreateUnitsSummary';
+import SetPassword from '../../pages/setPassword/SetPassword';
+import ErrorBoundary from '../errorBoundary';
+import { useAuthContext } from '../../store/context/authContextProvider';
 
 const Router = () => {
   let location = useLocation();
   const path = location.pathname;
   const navigate = useNavigate();
-  const { loggedIn, user } = useContext(AuthContext);
+  // const { loggedIn, user } = useContext(AuthContext);
+  const { loggedIn, currentUser } = useAuthContext();
 
   // Used only for console.log at the moment.
-  const { allInternalDegrees, workplaces } = useContext(InternalApiContext);
+  const { allInternalDegrees } = useContext(InternalApiContext);
 
   // Redirect to home page from login pages when already logged in
   useEffect(() => {
     if (loggedIn && (path === '/' || path === '/login' || path === '/forgot-password')) {
-      if (user.role === 'teacher' || user.role === 'supervisor') {
+      if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
         navigate('/customer-list');
-      } else if (user.role === 'customer') {
+      } else if (currentUser.role === 'customer') {
         navigate('/unit-list');
       }
     }
-  }, [loggedIn, path]);
+  }, [currentUser, loggedIn, navigate, path]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [path]);
 
-  // Prints data in Context that came from internal saukko database.
-  useEffect(() => {
-    console.log('Internal database degrees: ', allInternalDegrees);
-    console.log('Internal database workplaces: ', workplaces);
-  }, [loggedIn, allInternalDegrees, workplaces]);
-
   return (
-    <>
+    <ErrorBoundary>
       <Routes key={location.pathname} location={location}>
 
         {/* Placeholders for development */}
         <Route path='/test-page' element={<TestPage />} />
-
+        <Route path="/verify-email/:token" element={<EmailVerification />} />
         {/* Not logged in */}
         {!loggedIn && (
           <>
@@ -79,6 +78,7 @@ const Router = () => {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
+            <Route path='/set-password' element={<SetPassword />} />
           </>
         )}
 
@@ -93,17 +93,18 @@ const Router = () => {
         )}
 
         {/* Teacher or supervisor */}
-        {loggedIn && (user.role === 'teacher' || user.role === 'supervisor') && (
+        {loggedIn && (currentUser.role === 'teacher' || currentUser.role === 'supervisor') && (
           <Route path='/customer-list' element={<CustomerList />} />
         )}
 
         {/* Teacher only */}
-        {loggedIn && user.role === 'teacher' && (
+        {loggedIn && currentUser.role === 'teacher' && (
           <>
             <Route path='/admin-menu' element={<AdminMenu />} />
 
             {/* Degree flow */}
             <Route path='/degrees/add' element={<AddDegree />} />
+            <Route path='/degrees/add/:degreeId' element={<CreateUnitsSummary allInternalDegrees={allInternalDegrees} />} />
             <Route path='/degrees' element={<SearchPage />} />
             <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
             <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
@@ -123,10 +124,13 @@ const Router = () => {
             <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
             <Route path='/evaluation-units' element={<EvaluationUnits />} />
             <Route path='/evaluation-summary' element={<EvaluationSummary />} />
+
+            {/* Units flow */}
+            <Route path='/create-units-summary' element={<CreateUnitsSummary />} />
           </>
         )}
       </Routes>
-    </>
+    </ErrorBoundary>
   );
 };
 

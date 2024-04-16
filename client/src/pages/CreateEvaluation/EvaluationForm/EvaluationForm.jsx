@@ -1,5 +1,5 @@
 // Import react packages
-import React, { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
@@ -7,8 +7,7 @@ import WavesHeader from '../../../components/Header/WavesHeader';
 import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Stepper from '../../../components/Stepper/Stepper';
-import AuthContext from '../../../store/context/AuthContext';
-import useEvaluationStore from '../../../store/zustand/evaluationStore';
+import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 
 // Import MUI
@@ -16,40 +15,77 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 function EvaluationForm() {
   const navigate = useNavigate();
 
-  // Get user from AuthContext
-  const { user } = useContext(AuthContext);
+  const {
+    firstName,
+    lastName,
+    email,
+    startDate,
+    endDate,
+    workTasks,
+    workGoals,
+    setFirstName,
+    setLastName,
+    setEmail,
+    setStartDate,
+    setEndDate,
+    setWorkTasks,
+    setWorkGoals,
+    setCustomer,
+    setEvaluation, // Include the new setters
+    // ... add other state variables and setters as needed
+  } = useEvaluationFormStore();
 
-  // Save form inputs to state
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [startDate, setStartDate] = useState('DD.MM.YYYY');
-  const [endDate, setEndDate] = useState('DD.MM.YYYY');
-  const [workTasks, setWorkTasks] = useState('');
-  const [workGoals, setWorkGoals] = useState('');
+  // Get user from AuthContext
+  const { currentUser } = useAuthContext();
 
   // Opening / closing notificationModal
-  const [openNotificationModalAllFields, setOpenNotificationModalAllFields] = useState(false)
-  const [openNotificationModalEmail, setOpenNotificationModalEmail] = useState(false)
-  const [openNotificationModalDate, setOpenNotificationModalDate] = useState(false)
+  const [openNotificationModalAllFields, setOpenNotificationModalAllFields] =
+    useState(false);
+  const [openNotificationModalEmail, setOpenNotificationModalEmail] =
+    useState(false);
+  const [openNotificationModalDate, setOpenNotificationModalDate] =
+    useState(false);
 
-  const handleCloseAllFields = () => setOpenNotificationModalAllFields(false)
-  const handleCloseEmail = () => setOpenNotificationModalEmail(false)
-  const handleCloseDate = () => setOpenNotificationModalDate(false)
+  const handleCloseAllFields = () => setOpenNotificationModalAllFields(false);
+  const handleCloseEmail = () => setOpenNotificationModalEmail(false);
+  const handleCloseDate = () => setOpenNotificationModalDate(false);
 
-  // Get functions and values from zustand store
-  const { setCustomer, setEvaluation } = useEvaluationStore();
+  const [showWarningModal, setShowWarningModal] = useState(false);
+
+  const handleBack = () => {
+    // Display a warning modal before navigating to '/admin-menu'
+    setShowWarningModal(true);
+  };
+
+  const handleConfirmBack = () => {
+    // User confirmed, navigate to '/admin-menu'
+    setShowWarningModal(false);
+  };
+
+  const handleCancelBack = () => {
+    // User canceled, close the warning modal
+    setShowWarningModal(false);
+  };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Form validation: check for empty fields
-    if (!firstName || !lastName || !email || !startDate || !endDate || !workTasks || !workGoals) {
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !startDate ||
+      !endDate ||
+      !workTasks ||
+      !workGoals
+    ) {
       setOpenNotificationModalAllFields(true);
       return;
     }
@@ -74,11 +110,11 @@ function EvaluationForm() {
       email,
       role: 'customer',
     };
-    
+
     // Create evaluation object
     const evaluation = {
       customerId: '', // After user created -> server generates id -> fetch that
-      teacherId: user ? user._id : '',
+      teacherId: currentUser ? currentUser._id : '',
       startDate,
       endDate,
       workTasks,
@@ -88,28 +124,27 @@ function EvaluationForm() {
     // Save objects to temporary store
     setCustomer(customer);
     setEvaluation(evaluation);
-    
+
     // Navigate to the next page
     navigate(`/evaluation-workplace`);
   };
-
   // Stepper labels & urls
   const stepperData = [
     {
       label: 'Lisää tiedot',
-      url: '/evaluation-form'
+      url: '/evaluation-form',
     },
     {
       label: 'Valitse työpaikka',
-      url: '/evaluation-workplace'
+      url: '/evaluation-workplace',
     },
     {
       label: 'Valitse tutkinnonosat',
-      url: '/evaluation-units'
+      url: '/evaluation-units',
     },
     {
       label: 'Aktivoi suoritus',
-      url: '/evaluation-summary'
+      url: '/evaluation-summary',
     },
   ];
 
@@ -124,56 +159,55 @@ function EvaluationForm() {
       MuiButtonBase: {
         styleOverrides: {
           root: {
-           '&.Mui-selected': {
+            '&.Mui-selected': {
               borderRadius: '0px',
             },
-           '&:not(.Mui-selected)': {
+            '&:not(.Mui-selected)': {
               borderRadius: '0px',
             },
             '&.MuiPickersDay-root:not(.Mui-selected)': {
               borderColor: '#0072C6',
               backgroundColor: 'white',
-            }
-          }
-        }
-      }
-    }
+            },
+          },
+        },
+      },
+    },
   });
 
   return (
     <main className='evaluationForm__wrapper'>
       <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='evaluationForm__container'>
-      <Stepper
-          activePage={1}
-          totalPages={4}
-          data={stepperData}
-      />
+        <Stepper activePage={1} totalPages={4} data={stepperData} />
         <h1>Lisää asiakkaan tiedot</h1>
 
         {/* Customer information form */}
         <form onSubmit={handleSubmit}>
           <div className='form__firstName'>
             <label>Etunimi *</label>
-            <input 
-              className='form-input' 
+            <input
+              id='firstName'
+              className='form-input'
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
           <div className='form__lastName'>
             <label>Sukunimi *</label>
-            <input 
-              className='form-input' 
+            <input
+              id='lastName'
+              className='form-input'
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
           <div className='form__email'>
             <label>Sähköposti *</label>
-            <input 
-              type='email' 
-              className='form-input' 
+            <input
+              id='email'
+              type='email'
+              className='form-input'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -182,22 +216,23 @@ function EvaluationForm() {
             <label>Asiakkuuden aloituspäivä *</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ThemeProvider theme={theme}>
-                <DesktopDatePicker 
+                <DesktopDatePicker
+                  id='startDate'
                   format='DD.MM.YYYY'
                   value={startDate}
                   onChange={(date) => setStartDate(date)}
                 />
               </ThemeProvider>
             </LocalizationProvider>
-          </div>
-          <div className='form__endDate'>
             <label>Asiakkuuden lopetuspäivä *</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ThemeProvider theme={theme}>
-                <DesktopDatePicker 
+                <DesktopDatePicker
+                  id='endDate'
                   format='DD.MM.YYYY'
                   value={endDate}
                   onChange={(date) => setEndDate(date)}
+                  minDate={startDate} // Set minDate to startDate
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -206,7 +241,7 @@ function EvaluationForm() {
             <label className='disabled'>Täydennysjakson päättymispäivä *</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ThemeProvider theme={theme}>
-                <DesktopDatePicker 
+                <DesktopDatePicker
                   disabled={true}
                   format='DD.MM.YYYY'
                   value={'DD.MM.YYYY'}
@@ -216,7 +251,8 @@ function EvaluationForm() {
           </div>
           <div className='form__tasks'>
             <label>Työtehtäväsi *</label>
-            <textarea 
+            <textarea
+              id='workTasks'
               className='form-input'
               value={workTasks}
               onChange={(e) => setWorkTasks(e.target.value)}
@@ -224,7 +260,8 @@ function EvaluationForm() {
           </div>
           <div className='form__goals'>
             <label>Omat tavoitteesi *</label>
-            <textarea 
+            <textarea
+              id='workGoals'
               className='form-input'
               value={workGoals}
               onChange={(e) => setWorkGoals(e.target.value)}
@@ -232,7 +269,12 @@ function EvaluationForm() {
           </div>
         </form>
 
-        <PageNavigationButtons handleBack={() => navigate(`/admin-menu`)} handleForward={handleSubmit} />
+        <PageNavigationButtons
+          handleBack={handleBack}
+          handleForward={handleSubmit}
+          showForwardButton={true}
+
+        />
       </section>
       <NotificationModal
         type='warning'
@@ -255,6 +297,15 @@ function EvaluationForm() {
         open={openNotificationModalDate}
         handleClose={handleCloseDate}
       />
+      <NotificationModal
+        type='alert'
+        title='Varoitus: Lomakkeen tiedot menetetään'
+        body='Oletko varma, että haluat poistua sivulta?'
+        open={showWarningModal}
+        handleClose={handleCancelBack}
+        handleConfirm={handleConfirmBack}
+      />
+
       <UserNav />
     </main>
   );

@@ -1,11 +1,10 @@
 // Import react packages
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import state management
 import useStore from '../../../store/zustand/formStore';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
-import AuthContext from '../../../store/context/AuthContext';
 
 // Import components
 import WavesHeader from '../../../components/Header/WavesHeader';
@@ -16,14 +15,14 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 
 function DegreeInfo() {
   const navigate = useNavigate();
   const params = useParams();
 
   // Get values from state management
-  const auth = useContext(AuthContext);
-  const user = auth.user;
+  const { currentUser } = useAuthContext();
   const { degree, degreeFound, allDegrees } = useContext(ExternalApiContext);
   const {
     degreeName,
@@ -116,6 +115,7 @@ function DegreeInfo() {
         }
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);
 
   // Toggle text editable mode
@@ -185,8 +185,9 @@ function DegreeInfo() {
             justifyContent: 'center',
           }}
         >
-          {user?.role === 'teacher' && (
+          {currentUser?.role === 'teacher' && (
             <Button
+              id='editButton'
               onClick={handleEditToggle}
               type='submit'
               style={isEditable ? buttonStyleSave : buttonStyleEdit}
@@ -204,6 +205,7 @@ function DegreeInfo() {
 
             {degreeDescription ? (
               <div
+                id='degreeDescriptionTextBox'
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -230,13 +232,14 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block dark'>
             <h2>Perusteen nimi</h2>
             <div
+              id='degreeNameTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
               <ContentEditable
-                html={degreeName}
+                html={degreeName ?? "degreeName is NULL"}
                 onChange={(e) => {
                   setDegreeName(e.target.value)
                   setIsContentChanged(true)
@@ -250,13 +253,14 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block'>
             <h2>Määräyksen diaarinumero</h2>
             <div
+              id='diaryNumberTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
               <ContentEditable
-                html={diaryNumber}
+                html={diaryNumber ?? "diaryNumber is NULL"}
                 onChange={(e) => {
                   setDiaryNumber(e.target.value)
                   setIsContentChanged(true)
@@ -270,13 +274,14 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block dark'>
             <h2>Määräyksen päätöspäivämäärä</h2>
             <div
+              id='regulationDateTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
               <ContentEditable
-                html={regulationDate}
+                html={regulationDate ?? "regulationDate is NULL"}
                 onChange={(e) => {
                   setRegulationDate(e.target.value)
                   setIsContentChanged(true)
@@ -290,13 +295,14 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block'>
             <h2>Voimaantulo</h2>
             <div
+              id='validFromTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
               <ContentEditable
-                html={validFrom}
+                html={validFrom ?? "validFrom is NULL"}
                 onChange={(e) => {
                   setValidFrom(e.target.value)
                   setIsContentChanged(true)
@@ -310,13 +316,14 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block dark'>
             <h2>Voimassaolon päättyminen</h2>
             <div
+              id='expiryTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
               <ContentEditable
-                html={expiry}
+                html={expiry ?? "expiry is NULL"}
                 onChange={(e) => {
                   setExpiry(e.target.value)
                   setIsContentChanged(true)
@@ -330,13 +337,14 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block'>
             <h2>Siirtymäajan päättymisaika</h2>
             <div
+              id='transitionEndsTextBox'
               style={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
               <ContentEditable
-                html={transitionEnds}
+                html={transitionEnds ?? "transitionEnds is NULL"}
                 onChange={(e) => {
                   setTransitionEnds(e.target.value)
                   setIsContentChanged(true)
@@ -357,6 +365,7 @@ function DegreeInfo() {
         <PageNavigationButtons
           handleBack={() => navigate('/degrees')}
           handleForward={handleForward}
+          showForwardButton={true}
           forwardButtonText={
             isContentChanged ? 'Tallenna ja jatka' : 'Seuraava'
           }
@@ -375,8 +384,3 @@ function DegreeInfo() {
 }
 
 export default DegreeInfo;
-
-
-
-
-

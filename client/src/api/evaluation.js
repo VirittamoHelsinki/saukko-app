@@ -1,36 +1,57 @@
-import axios from 'axios'
-
-const baseURL = process.env.REACT_APP_BACKEND_URL
-const middleURL = '/api'
+import axios from 'axios';
 
 // Create evaluation
-const createEvaluation = async evaluation => {
+const createEvaluation = async (evaluation) => {
+  console.log(evaluation);
   try {
-    const response = await axios.post(`${baseURL}${middleURL}/evaluation/`, evaluation)
-    return response.data
+    const response = await axios.post(
+      `/api/evaluation/`,
+      evaluation
+    );
+    return response.data;
   } catch (error) {
-    console.log('Error creating evaluation:', error)
+    console.log('Error creating evaluation:', error);
   }
-}
+};
 
-// Fetch all evaluations
+/**
+ * @description GET - Request to `/api/evaluation` to get all evaluations for the current teacher
+ * @returns Evaluation[]
+ */
 const fetchAllEvaluations = async () => {
   try {
-    const response = await axios.get(`${baseURL}${middleURL}/evaluation/`)
-    return response.data
+    const response = await axios.get(`/api/evaluation/`);
+    return response.data;
   } catch (error) {
-    console.log('Error fetching all evaluations:', error)
+    console.log('Error fetching all evaluations:', error);
   }
-}
+};
 
-// Fetch evaluation by id
-const fetchEvaluationById = async (evaluationId) => {
+// Update evaluation by id
+const updateEvaluationById = async (evaluationId, updatedData) => {
   try {
-    const response = await axios.get(`${baseURL}${middleURL}/evaluation/${evaluationId}`)
+    const response = await axios.put(`/api/evaluation/${evaluationId}`, updatedData)
     return response.data
   } catch (error) {
     console.log('Error fetching single evaluation:', error)
   }
 }
 
-export { createEvaluation, fetchAllEvaluations, fetchEvaluationById }
+const sendEmail = async (message) => {
+  try {
+    const response = await axios.post(
+      `/api/evaluation/sendEmail`,
+      message
+    );
+    return response.data;
+  } catch (error) {
+    console.log('Error sending email:', error);
+  }
+};
+
+export {
+  createEvaluation,
+  fetchAllEvaluations,
+  updateEvaluationById,
+  sendEmail,
+};
