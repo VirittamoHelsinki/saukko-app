@@ -1,0 +1,12 @@
+.link__wrapper {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 20px;
+
+  svg {
+    color: var(--link-blue);
+  }
+}

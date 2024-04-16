@@ -1,6 +1,6 @@
 // importing necessary packages for routing
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 // importing state management
 import InternalApiContext from '../../store/context/InternalApiContext';
@@ -47,7 +47,7 @@ const Router = () => {
   const { loggedIn, currentUser } = useAuthContext();
 
   // Used only for console.log at the moment.
-  const { allInternalDegrees, workplaces } = useContext(InternalApiContext);
+  const { allInternalDegrees } = useContext(InternalApiContext);
 
   // Redirect to home page from login pages when already logged in
   useEffect(() => {
@@ -63,12 +63,6 @@ const Router = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [path]);
-
-  // Prints data in Context that came from internal saukko database.
-  useEffect(() => {
-    console.log('Internal database degrees: ', allInternalDegrees);
-    console.log('Internal database workplaces: ', workplaces);
-  }, [loggedIn, allInternalDegrees, workplaces]);
 
   return (
     <ErrorBoundary>
