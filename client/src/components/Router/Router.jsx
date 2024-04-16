@@ -1,6 +1,6 @@
 // importing necessary packages for routing
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 // importing state management
 import InternalApiContext from '../../store/context/InternalApiContext';
