@@ -36,6 +36,16 @@ const ContractInfo = () => {
     return `${day}.${month}.${year}`;
   }
 
+  function formatDateWithStringMonth(dateString) {
+    const months = ['tammikuuta', 'helmikuuta', 'maaliskuuta', 'huhtikuuta', 'toukokuuta', 'kesäkuuta', 'heinäkuuta', 'elokuuta', 'syyskuuta', 'lokakuuta', 'marraskuuta', 'joulukuuta'];
+    const startDate = new Date(dateString);
+    const day = startDate.getDate().toString().padStart(2, '0'); // Get day with leading zero if necessary
+    const monthIndex = startDate.getMonth();
+    const monthName = months[monthIndex];
+    const year = startDate.getFullYear();
+    return `${day}.${monthName} ${year}`;
+}
+
   const startDateString = evaluation?.startDate; // Get start date from evaluation object
   const endDateString = evaluation?.endDate; // Get end date from evaluation object
 
@@ -74,7 +84,7 @@ const ContractInfo = () => {
       content: formatDate(startDateString),
     },
     {
-      title: 'Asiakkuuden lopeutuspäivä',
+      title: 'Asiakkuuden lopetuspäivä',
       content: formatDate(endDateString),
     },
     {
@@ -109,28 +119,28 @@ const ContractInfo = () => {
       title: 'Määräyksen päättöspäivämäärä',
       content:
         degreeDetails && degreeDetails.regulationDate
-          ? formatDate(degreeDetails.regulationDate)
+          ? formatDateWithStringMonth(degreeDetails.regulationDate)
           : '-',
     },
     {
       title: 'Voimaantulo',
       content:
         degreeDetails && degreeDetails.validFrom
-          ? formatDate(degreeDetails.validFrom)
+          ? formatDateWithStringMonth(degreeDetails.validFrom)
           : '-',
     },
     {
-      title: 'Voimassaolo päätyminen',
+      title: 'Voimassaolon päätyminen',
       content:
         degreeDetails && degreeDetails.expiry
-          ? formatDate(degreeDetails.expiry)
+          ? formatDateWithStringMonth(degreeDetails.expiry)
           : '-',
     },
     {
       title: 'Siirtymäajan päättymisaika',
       content:
         degreeDetails && degreeDetails.transitionEnds
-          ? formatDate(degreeDetails.transitionEnds)
+          ? formatDateWithStringMonth(degreeDetails.transitionEnds)
           : '-',
     },
     {
@@ -165,21 +175,6 @@ const ContractInfo = () => {
             padding: '1rem 3.5rem',
           }}
         >
-          {/* <ul>
-            {evaluation &&
-              evaluation.units.map((unit, index) => (
-                <li key={index}>
-                  <h4 style={{margin: '10px 0'}}>{unit.name.fi}</h4>
-                  {unit &&
-                    unit.assessments.map((assessment, index) => (
-                      <ul key={index}>
-                        <li style={{padding: '2px'}}>{index + 1}. {assessment.name.fi}</li>
-                      </ul>
-                    ))}
-                    <hr  style={{margin: '12px 0'}}/>
-                </li>
-              ))}
-          </ul> */}
           <ul>
             {evaluation &&
               evaluation.units.map((unit, index) => (
