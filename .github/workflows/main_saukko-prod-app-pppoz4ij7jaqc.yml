@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
@@ -58,6 +58,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'saukko-prod-app-pppoz4ij7jaqc'
-          slot-name: 'Production'
+          slot-name: 'production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_43623C6525244DF0BE0A3E30484AB54B }}
