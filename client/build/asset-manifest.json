@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/static/css/main.41415b4c.css",
+    "main.js": "/static/js/main.b994fbb2.js",
+    "static/media/HELSINKI_Tunnus_MUSTA_90x41.webp": "/static/media/HELSINKI_Tunnus_MUSTA_90x41.0f6e5a366a189d6fdf2e.webp",
+    "index.html": "/index.html",
+    "static/media/circle-yellow.svg": "/static/media/circle-yellow.438411b55271f256cd4114b2030f6ae4.svg",
+    "static/media/Internallink.svg": "/static/media/Internallink.dff5a49cbb9d9c9662ccb9b6af372479.svg",
+    "static/media/circle-green.svg": "/static/media/circle-green.983dd4e7815278bf139abb7ce574875c.svg",
+    "static/media/circle-red.svg": "/static/media/circle-red.ff21b559a1e736abfde6da4df4e93724.svg",
+    "static/media/circle-black.svg": "/static/media/circle-black.f55077a55a5192e3ccb376383450dfa1.svg",
+    "static/media/angle-right.svg": "/static/media/angle-right.ae554b10c17a10198ba8d13e516d4f9b.svg",
+    "static/media/circle-blue.svg": "/static/media/circle-blue.72468088221de34314270b6275f904b1.svg",
+    "main.41415b4c.css.map": "/static/css/main.41415b4c.css.map",
+    "main.b994fbb2.js.map": "/static/js/main.b994fbb2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.41415b4c.css",
+    "static/js/main.b994fbb2.js"
+  ]
+}
