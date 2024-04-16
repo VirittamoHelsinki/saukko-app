@@ -5,7 +5,7 @@ const createEvaluation = async (evaluation) => {
   console.log(evaluation);
   try {
     const response = await axios.post(
-      `api/evaluation/`,
+      `/api/evaluation/`,
       evaluation
     );
     return response.data;
@@ -20,7 +20,7 @@ const createEvaluation = async (evaluation) => {
  */
 const fetchAllEvaluations = async () => {
   try {
-    const response = await axios.get(`api/evaluation/`);
+    const response = await axios.get(`/api/evaluation/`);
     return response.data;
   } catch (error) {
     console.log('Error fetching all evaluations:', error);
@@ -30,7 +30,7 @@ const fetchAllEvaluations = async () => {
 // Update evaluation by id
 const updateEvaluationById = async (evaluationId, updatedData) => {
   try {
-    const response = await axios.put(`api/evaluation/${evaluationId}`, updatedData)
+    const response = await axios.put(`/api/evaluation/${evaluationId}`, updatedData)
     return response.data
   } catch (error) {
     console.log('Error fetching single evaluation:', error)
@@ -40,7 +40,7 @@ const updateEvaluationById = async (evaluationId, updatedData) => {
 const sendEmail = async (message) => {
   try {
     const response = await axios.post(
-      `api/evaluation/sendEmail`,
+      `/api/evaluation/sendEmail`,
       message
     );
     return response.data;

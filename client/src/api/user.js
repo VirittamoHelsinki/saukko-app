@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Uvc from 'universal-cookie'
 
-const fetchCurrentUser = async () => axios.get('auth/get-current-user');
+const fetchCurrentUser = async () => axios.get('/auth/get-current-user');
 
 const registration = async (registrationData) => {
   const { firstName, lastName, email, password, role } = registrationData;
@@ -23,30 +23,30 @@ const registration = async (registrationData) => {
 };
 
 const logoutUser = async () => {
-  await axios.get('auth/logout');
+  await axios.get('/auth/logout');
 }
 
 const loginUser = async (loginData) => {
-  const response = await axios.post('auth/login', loginData)
+  const response = await axios.post('/auth/login', loginData)
   return response
 }
 
 const forgotPassword = async (email) => {
-  const response = await axios.post('auth/forgot-password', {
+  const response = await axios.post('/auth/forgot-password', {
     email: email,
   })
   return response
 }
 
 const tokenValidation = async (token) => {
-  const response = await axios.post('auth/validate-token', {
+  const response = await axios.post('/auth/validate-token', {
     token: token,
   })
   return response
 }
 
 const resetPassword = async (newPassword) => {
-  const response = await axios.post('auth/reset-password', {
+  const response = await axios.post('/auth/reset-password', {
     newPassword,
     withCredentials: true
   });
@@ -54,7 +54,7 @@ const resetPassword = async (newPassword) => {
 }
 
 const requestPasswordChangeTokenAsUser = async (password) =>
-  await axios.post('auth/request-pwd-change-token', {
+  await axios.post('/auth/request-pwd-change-token', {
     password,
     withCredentials: true
   });
@@ -65,7 +65,7 @@ const requestEmailVerificationLinkAsync = async () => {
   const uvc = new Uvc();
   const verificationToken = uvc.get("verification-token");
 
-  const response = await axios.get('auth/resend-email-verification', {
+  const response = await axios.get('/auth/resend-email-verification', {
     headers: {
       "verification-token": verificationToken,
     },
@@ -85,7 +85,7 @@ const verifyEmail = async () => {
     throw new Error("verification-token missing.")
   }
 
-  const response = await axios.get('auth/verify-email', {
+  const response = await axios.get('/auth/verify-email', {
     headers: {
       "verification-token": verificationToken,
     },
