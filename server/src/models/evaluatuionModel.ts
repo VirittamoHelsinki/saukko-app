@@ -1,10 +1,11 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
+import { IName } from './degreeModel';
 
 export interface IEvaluation extends Document {
-  degreeId: mongoose.Schema.Types.ObjectId;
-  customerId: mongoose.Schema.Types.ObjectId;
-  teacherId: mongoose.Schema.Types.ObjectId;
-  supervisorIds: mongoose.Schema.Types.ObjectId[];
+  degreeId: IDegree;
+  customerId: IUser;
+  teacherId: IUser;
+  supervisorIds: IUser[];
   workplaceId: mongoose.Schema.Types.ObjectId;
   startDate: Date;
   endDate: Date;
@@ -18,6 +19,18 @@ export interface IEvaluation extends Document {
   validFrom: Date;
   expiry: Date;
   units: IUnit[]
+}
+
+interface IDegree {
+  name: IName
+  id: mongoose.Schema.Types.ObjectId;
+}
+
+interface IUser {
+  firstName: string,
+  lastName: string,
+  email: string
+  id: mongoose.Schema.Types.ObjectId;
 }
 
 interface IUnit {

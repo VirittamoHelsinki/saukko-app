@@ -222,6 +222,7 @@ const UserPerformance = () => {
       units: updatedUnits,
     };
     try {
+      console.log('updatedData:', updatedData);
       const response = await updateEvaluationById(
         `${evaluationId}`,
         updatedData

@@ -13,6 +13,7 @@ import {
   ISendNewSupervisorAddedEmail,
   ISendOldSupervisorAddedEmail
 } from "../mailer/templates/addingUserToAgreement";
+import DegreeModel from '../models/degreeModel';
 
 const _generateVerificationLink = (user: User) => {
   const verificationToken = user.generateEmailVerificationToken();
@@ -203,14 +204,19 @@ const getById = async (req: Request, res: Response) => {
 }
 
 const update = async (req: Request, res: Response) => {
-  console.log('req body: ', req.body);
+  console.log('req body: ', req.body.units[0].assessments[0]);
   console.log('req user: ', req.user); // userInfo
   console.log('req params: ', req.params); // evaluationID
   try {
-    const evaluation = await EvaluationModel.findById(req.params.id).populate('User');
-
-    console.log('evaluation: ', evaluation);
-
+    const evaluation = await EvaluationModel.findById(req.params.id)
+      .populate({
+        path:'degreeId',
+        select:'name'
+      })
+      .populate('customerId')
+      .populate('teacherId')
+      .populate('supervisorIds');
+    console.log('degree info: ', evaluation!.degreeId.name.fi);
     if (!evaluation) {
       return res.status(404).send({ message: 'Evaluation not found' });
     }
