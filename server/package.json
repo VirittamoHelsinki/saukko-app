@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
-    
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
     "build": "tsc -p tsconfig.json ",
     "prebuild": "cd ../client && npm run build",
     "postbuild": "shx cp -R node_modules dist/node_modules && shx cp -R ../client/dist ./dist/static"
