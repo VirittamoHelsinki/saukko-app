@@ -1,5 +1,5 @@
 import { CircularProgress } from '@mui/material';
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 // Internal API calls
 import {
