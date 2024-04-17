@@ -104,7 +104,7 @@ export const InternalApiContextProvider = (props) => {
   // Fetch degree by id
   useEffect(() => {
     const getInternalDegree = async () => {
-      if (!loggedIn || currentUser.role !== 'teacher') return;
+      if (!loggedIn || currentUser.role !== 'teacher' || !internalDegreeId) return;
 
       try {
         setLoading(true);
