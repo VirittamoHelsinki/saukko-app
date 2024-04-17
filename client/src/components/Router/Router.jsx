@@ -53,7 +53,7 @@ const Router = () => {
   useEffect(() => {
     if (loggedIn && (path === '/' || path === '/login' || path === '/forgot-password')) {
       if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
-        navigate('/customer-list');
+        navigate('/');
       } else if (currentUser.role === 'customer') {
         navigate('/unit-list');
       }
@@ -94,7 +94,7 @@ const Router = () => {
 
         {/* Teacher or supervisor */}
         {loggedIn && (currentUser.role === 'teacher' || currentUser.role === 'supervisor') && (
-          <Route path='/customer-list' element={<CustomerList />} />
+          <Route path='/' element={<CustomerList />} />
         )}
 
         {/* Teacher only */}

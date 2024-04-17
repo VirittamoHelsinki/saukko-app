@@ -28,7 +28,7 @@ export const ExternalApiContextProvider = (props) => {
   // Fetch degree by id
   useEffect(() => {
     const getDegree = async () => {
-      if (!loggedIn || currentUser.role !== "teacher") return;
+      if (!loggedIn || currentUser.role !== "teacher" | !degreeId) return;
       try {
         setLoading(true);
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
