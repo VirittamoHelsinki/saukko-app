@@ -56,7 +56,7 @@ const registerUser = async (req: Request, res: Response) => {
     const newUser = new userModel(newUserObject);
 
     // set password to the user object
-    await newUser.setPassword(body.password)
+    newUser.setPassword(body.password)
 
     // save the user object to the database
     await newUser.save()
@@ -99,6 +99,7 @@ const forgotPassword = async (req: Request, res: Response) => {
 
   try {
     const resetPasswordLink = existUser.generateResetPasswordLink();
+    console.log("resetPasswordLink:", resetPasswordLink)
     sendResetPasswordEmail({userFirstName: existUser.firstName, userEmail: existUser.email, resetPasswordLink});
     res.status(200).json({ message: "Password reset link sent to email" })
   } catch (err) {
