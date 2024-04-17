@@ -45,9 +45,12 @@ const tokenValidation = async (token) => {
   return response
 }
 
-const resetPassword = async (newPassword) => {
+const resetPassword = async (newPassword, token) => {
   const response = await axios.post('/auth/reset-password', {
     newPassword,
+    headers: {
+      "change-token": token
+    },
     withCredentials: true
   });
   return response;
