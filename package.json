@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd server && npm run build",
     "build:server": "cd server && npm run build",
     "setup": "npm install && npm run install:server && npm run install:client",
@@ -23,7 +23,6 @@
     "@iconify/react": "^4.1.1",
     "@types/jest": "^29.5.12",
     "husky": "^8.0.3",
-    "jest": "^27.4.7",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8",
     "ts-jest": "^29.1.2"
