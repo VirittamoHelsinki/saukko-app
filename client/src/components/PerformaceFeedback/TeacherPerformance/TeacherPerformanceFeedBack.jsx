@@ -41,7 +41,7 @@ const TeacherPerformanceFeedBack = ({
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
   const cancelTeacherComment = () => {
-    setComment('');
+    setComment(assessment.comment.text);
   };
 
   const handleCloseCommentModal = () => {
