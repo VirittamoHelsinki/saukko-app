@@ -28,7 +28,7 @@ const UnitList = () => {
   const degreeName =
     allInternalDegrees &&
     allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
-  console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
+  // console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   // Set evaluation automatically when role is customer
   useEffect(() => {

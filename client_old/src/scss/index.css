@@ -1,0 +1,811 @@
+:root {
+  --saukko-main-white: #ffffff;
+  --saukko-main-black: #000000;
+  --saukko-main: #9fc9eb;
+  --saukko-main-soft: #b1e7ff;
+  --saukkod-main-bright: #48c5f8;
+  --saukko-main-light: #107eab;
+  --saukko-main-active: #005379;
+  --saukko-main-dark: #003146;
+  --saukko-main-nearly-black: #000222;
+  --saukko-main-grey: #666666;
+  --link-blue: #0000bf;
+  --link-disabled: #cccccc;
+  --grayscale-white: #fff;
+  --grayscale-slightly-gray: #fefefe;
+  --grayscale-light: #f8f8f8;
+  --grayscale-medium: #d2d2d2;
+  --grayscale-background-box: #f5f5f5;
+  --grayscale-tabs-border: #e6e6e6;
+  --grayscale-background-arrow: #dfdfdf;
+  --grayscale-medium-dark: #979797;
+  --grayscale-dark: #555555;
+  --grayscale-dark-text: #222222;
+  --grayscale-black: #000000;
+  --additional-red-light: #e5053a;
+  --additional-red-dark: #a31621;
+  --additional-purple-light: #420039;
+  --additional-pink: #f5a3c7;
+  --additional-yellow: #ffc61e;
+  --additional-skyblue: #9fc9eb;
+  --additional-orange: #d14600;
+  --additional-turquoise: #00d7a7;
+  --additional-green-light: #96ba3c;
+  --additional-green-dark: #006400;
+  --hover-gray: #eaeaea;
+  --base-font-size: 16px;
+  --base-font-size-mobile: 14px;
+  --saukko-main-font: Arial, sans-serif;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+  scroll-behavior: smooth;
+  font-family: var(--saukko-main-font);
+}
+
+html body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: var(--saukko-main-white);
+}
+html body h1,
+html body h2,
+html body h3,
+html body h4,
+html body h5,
+html body h6 {
+  color: var(--saukko-main-black);
+  font-family: var(--saukko-main-font);
+}
+html body label,
+html body li,
+html body p {
+  color: var(--saukko-main-black);
+  font-size: var(--base-font-size-mobile);
+}
+html body a {
+  font-family: var(--saukko-main-font);
+  text-decoration: underline;
+  color: var(--link-blue);
+  font-size: var(--base-font-size-mobile);
+}
+html body img {
+  max-width: 100%;
+}
+html body input:focus,
+html body select:focus,
+html body textarea:focus,
+html body button:focus {
+  outline: none;
+}
+html body button:hover {
+  cursor: pointer;
+}
+html body .button__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 56px;
+  background: none;
+  color: var(--saukko-main-black);
+  border: 2px solid var(--saukko-main-black);
+}
+
+.app__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100vh;
+}
+
+.app__wrapper .wavesHeader__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 36px 0px 36px;
+  width: 100%;
+  height: 175px;
+  background: var(--saukko-main);
+  text-align: center;
+  position: absolute;
+  gap: 10px;
+  top: 0;
+}
+.app__wrapper .wavesHeader__wrapper button {
+  position: absolute;
+  padding: 58px 0px 0px 36px;
+  background: none;
+  border: none;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+.app__wrapper .wavesHeader__wrapper h1 {
+  font-size: 32px;
+  font-weight: 600;
+  z-index: 1;
+}
+.app__wrapper .wavesHeader__wrapper img {
+  z-index: 1;
+}
+.app__wrapper .wavesHeader__wrapper svg {
+  width: 100%;
+  height: auto;
+  transform: scaleY(-1);
+  fill: var(--saukko-main);
+  position: absolute;
+  bottom: -25px;
+  z-index: 0;
+}
+
+.app__wrapper .footer__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--saukko-main-black);
+  height: 200px;
+  width: 100%;
+}
+
+.app__wrapper .userNav__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--saukko-main);
+  border-top: 2px solid var(--saukko-main-black);
+  padding: 0px 36px 0px 36px;
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  bottom: 0%;
+}
+.app__wrapper .userNav__wrapper .userNav__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.app__wrapper .userNav__wrapper .userNav__container button {
+  background: none;
+  border: none;
+}
+.app__wrapper .userNav__wrapper .userNav__container svg {
+  width: auto;
+  height: 25px;
+}
+
+.app__wrapper .loginPage__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.app__wrapper .loginPage__wrapper .loginPage__container {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 36px 0px 36px;
+  margin-bottom: 80px;
+  width: 100%;
+  gap: 10px;
+}
+.app__wrapper .loginPage__wrapper .loginPage__container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+.app__wrapper .loginPage__wrapper .loginPage__container .loginPage__container--form-text {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 10px;
+}
+.app__wrapper .loginPage__wrapper .loginPage__container .loginPage__container--form-text input {
+  width: 100%;
+  height: 56px;
+  background: none;
+  color: var(--saukko-main-black);
+  border: 2px solid var(--saukko-main-black);
+}
+.app__wrapper .loginPage__wrapper .loginPage__container .loginPage__container--form-text a {
+  text-align: right;
+}
+.app__wrapper .loginPage__wrapper form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  gap: 8px;
+}
+.app__wrapper .loginPage__wrapper form label {
+  font-size: 16px;
+}
+.app__wrapper .loginPage__wrapper form input {
+  width: 250px;
+  height: 30px;
+  padding: 7px;
+  border: 1px solid var(--saukko-main-black);
+}
+.app__wrapper .loginPage__wrapper .loginPage__form--bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  text-align: center;
+  padding: 0px 36px 36px 36px;
+  width: 100%;
+  bottom: 0;
+  gap: 65px;
+}
+
+.app__wrapper .registerPage__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  align-items: center;
+  height: 100%;
+}
+.app__wrapper .registerPage__wrapper .registerPage__container {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 36px 0px 36px;
+  width: 100%;
+  gap: 10px;
+}
+.app__wrapper .registerPage__wrapper .registerPage__container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+.app__wrapper .registerPage__wrapper .registerPage__container .registerPage__container--form-text {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 10px;
+}
+.app__wrapper .registerPage__wrapper .registerPage__container .registerPage__container--form-text input {
+  width: 100%;
+  height: 56px;
+  background: none;
+  color: var(--saukko-main-black);
+  border: 2px solid var(--saukko-main-black);
+}
+.app__wrapper .registerPage__wrapper .registerPage__container .registerPage__container--form-text p {
+  text-align: center;
+}
+.app__wrapper .registerPage__wrapper form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  gap: 8px;
+}
+.app__wrapper .registerPage__wrapper form label {
+  font-size: 16px;
+}
+.app__wrapper .registerPage__wrapper form input {
+  width: 250px;
+  height: 30px;
+  padding: 7px;
+  border: 1px solid var(--saukko-main-black);
+}
+.app__wrapper .registerPage__wrapper .registerPage__form--bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  text-align: center;
+  padding: 0px 36px 36px 36px;
+  width: 100%;
+  bottom: 0;
+}
+
+.app__wrapper .landingPage__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  padding: 36px;
+  background: var(--saukko-main);
+  text-align: center;
+}
+.app__wrapper .landingPage__wrapper h1 {
+  font-size: 78px;
+  font-weight: bold;
+}
+.app__wrapper .landingPage__wrapper p {
+  font-size: 18px;
+}
+.app__wrapper .landingPage__wrapper .landingPage__textcontainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.app__wrapper .landingPage__wrapper .landingPage__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.app__wrapper .forgotPassword__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.app__wrapper .forgotPassword__wrapper .forgotPassword__container {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 36px 0px 36px;
+  margin-bottom: 150px;
+  width: 100%;
+  gap: 10px;
+}
+.app__wrapper .forgotPassword__wrapper .forgotPassword__container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+.app__wrapper .forgotPassword__wrapper .forgotPassword__container p {
+  text-align: center;
+  color: var(--saukko-main-grey);
+}
+.app__wrapper .forgotPassword__wrapper .forgotPassword__container .forgotPassword__container--form-text {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  gap: 10px;
+}
+.app__wrapper .forgotPassword__wrapper .forgotPassword__container .forgotPassword__container--form-text input {
+  width: 100%;
+  height: 56px;
+  background: none;
+  color: var(--saukko-main-black);
+  border: 2px solid var(--saukko-main-black);
+}
+.app__wrapper .forgotPassword__wrapper .forgotPassword__container .forgotPassword__container--form-text a {
+  text-align: right;
+}
+.app__wrapper .forgotPassword__wrapper form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  gap: 8px;
+}
+.app__wrapper .forgotPassword__wrapper form label {
+  font-size: 16px;
+}
+.app__wrapper .forgotPassword__wrapper form input {
+  width: 250px;
+  height: 30px;
+  padding: 7px;
+  border: 1px solid var(--saukko-main-black);
+}
+.app__wrapper .forgotPassword__wrapper .forgotPassword__form--bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  text-align: center;
+  padding: 0px 36px 36px 36px;
+  width: 100%;
+  bottom: 0;
+}
+
+.app__wrapper .userPage__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background: var(--saukko-main-white);
+  text-align: left;
+}
+.app__wrapper .userPage__wrapper .userPage__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 36px 36px 36px;
+  margin-top: 180px;
+  width: 100%;
+  gap: 22px;
+}
+.app__wrapper .userPage__wrapper .userPage__container h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.app__wrapper .userPage__wrapper .userPage__container h3 {
+  font-size: 14px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--accomplishments {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 6px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--accomplishments .userPage__container--accomplishments-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--accomplishments .userPage__container--accomplishments-degrees {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--accomplishments .userPage__container--accomplishments-degrees .userPage__container--accomplishments-degrees-item {
+  display: flex;
+  flex-direction: column;
+  background: var(--additional-turquoise);
+  border: 2px solid var(--saukko-main-black);
+  padding: 12px;
+  height: 75px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--accomplishments .userPage__container--accomplishments-degrees .userPage__container--accomplishments-degrees-item h3 {
+  font-size: 32px;
+  color: var(--saukko-main-black);
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--accomplishments .userPage__container--accomplishments-degrees .userPage__container--accomplishments-degrees-item p {
+  font-size: 12px;
+  font-weight: 600;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--accomplishments .userPage__container--accomplishments-degrees .userPage__container--accomplishments-degrees-item:last-of-type {
+  background: var(--additional-yellow);
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--teachers {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 6px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--teachers .userPage__container--teachers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--teachers .userPage__container--teachers-list .userPage__container--teachers-list-item {
+  background: var(--hover-gray);
+  border: 2px solid var(--saukko-main-black);
+  padding: 6px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--degrees {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 6px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--degrees .userPage__container--degrees-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--degrees .userPage__container--degrees-list {
+  display: flex;
+  max-width: 100%;
+  gap: 6px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--degrees .userPage__container--degrees-list .userPage__container--degrees-list-item {
+  display: flex;
+  flex-direction: column;
+  background: var(--hover-gray);
+  border: 2px solid var(--saukko-main-black);
+  height: 150px;
+  width: 150px;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--degrees .userPage__container--degrees-list .userPage__container--degrees-list-item .userPage__container--degrees-list-item-top {
+  background: var(--additional-skyblue);
+  padding: 12px;
+  height: 50%;
+  width: 100%;
+}
+.app__wrapper .userPage__wrapper .userPage__container .userPage__container--degrees .userPage__container--degrees-list .userPage__container--degrees-list-item .userPage__container--degrees-list-item-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  height: 50%;
+  width: 100%;
+}
+
+.app__wrapper .searchPage__wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  background: var(--saukko-main-white);
+  text-align: left;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px 36px 86px 36px;
+  margin-top: 225px;
+  width: 100%;
+  gap: 20px;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container h2 {
+  font-size: 18px;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container input {
+  width: 100%;
+  height: 52px;
+  background: none;
+  padding: 15px;
+  color: var(--saukko-main-black);
+  border: 2px solid var(--grayscale-medium-dark);
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list .searchPage__container--list-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--additional-turquoise);
+  border: 2px solid var(--saukko-main-black);
+  max-height: 125px;
+  height: 125px;
+  padding: 12px;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list .searchPage__container--list-item h3 {
+  font-size: 16px;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list .searchPage__container--list-item .searchPage__container--list-item-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list .searchPage__container--list-item .searchPage__container--list-item-bottom div {
+  display: flex;
+  justify-content: space-between;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list .searchPage__container--list-item .searchPage__container--list-item-bottom p {
+  font-size: 12px;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list .searchPage__container--list-item .searchPage__container--list-item-bottom li {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: end;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list .searchPage__container--list-item:nth-of-type(4n + 2) {
+  background: var(--additional-yellow); /* dark green */
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list .searchPage__container--list-item:nth-of-type(4n + 3) {
+  background: var(--additional-pink); /* light blue */
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list .searchPage__container--list-item:nth-of-type(4n + 4) {
+  background: var(--additional-skyblue); /* light green */
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  gap: 12px;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list-pagination .pagination__button {
+  background: var(--saukko-main-white);
+  border-radius: 50%;
+  border: none;
+  height: 40px;
+  width: 40px;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list-pagination .pagination__button--active {
+  color: var(--saukko-main-white);
+  background: var(--saukko-main-black);
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list-pagination .searchPage__container--list-pagination-arrows {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.app__wrapper .searchPage__wrapper .searchPage__container .searchPage__container--list-pagination .searchPage__container--list-pagination-arrows .arrow__button {
+  font-weight: 600;
+  background: none;
+  border: none;
+}
+
+.app__wrapper .firstLogin__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.app__wrapper .firstLogin__wrapper .wavesHeader__wrapper {
+  background: var(--link-blue);
+}
+.app__wrapper .firstLogin__wrapper .wavesHeader__wrapper h1,
+.app__wrapper .firstLogin__wrapper .wavesHeader__wrapper img,
+.app__wrapper .firstLogin__wrapper .wavesHeader__wrapper #backArrowSVG {
+  filter: invert(100%);
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 36px 36px 36px;
+  margin-top: 375px;
+  width: 100%;
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container .firstLogin__container--form-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container .firstLogin__container--form-text h2 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 16px;
+  top: 0;
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container .firstLogin__container--form-text input {
+  width: 100%;
+  height: 56px;
+  background: none;
+  color: var(--saukko-main-black);
+  border: 2px solid var(--saukko-main-black);
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container .firstLogin__container--form-text textarea {
+  width: 100%;
+  height: 56px;
+  padding: 7px;
+  min-height: 56px;
+  max-height: 250px;
+  resize: vertical;
+  background: none;
+  color: var(--saukko-main-black);
+  border: 2px solid var(--saukko-main-black);
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container .firstLogin__container--form-text p {
+  text-align: center;
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container .firstLogin__container--form-text .firstLogin__container--form-double-container {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container .firstLogin__container--form-text .firstLogin__container--form-double-container .firstLogin__container--form-double {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 8px;
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container--form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  gap: 8px;
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container--form label {
+  font-size: 16px;
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__container--form input {
+  width: 250px;
+  height: 30px;
+  padding: 7px;
+  border: 1px solid var(--saukko-main-black);
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__form--bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 16px;
+  width: 100%;
+}
+.app__wrapper .firstLogin__wrapper .firstLogin__form--bottom-step2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 16px;
+  width: 100%;
+  gap: 8px;
+}
+
+.app__wrapper .pickAccountType__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 225px;
+  height: 100%;
+}
+.app__wrapper .pickAccountType__wrapper .pickAccountType__container {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 36px 0px 36px;
+  width: 100%;
+  gap: 64px;
+}
+.app__wrapper .pickAccountType__wrapper .pickAccountType__container .pickAccountType__container--text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+.app__wrapper .pickAccountType__wrapper .pickAccountType__container .pickAccountType__container--text p {
+  color: var(--link-blue);
+}
+.app__wrapper .pickAccountType__wrapper .pickAccountType__container .pickAccountType__container--buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 32px;
+}
+.app__wrapper .pickAccountType__wrapper .pickAccountType__container .pickAccountType__container--buttons button {
+  color: var(--link-blue);
+  border: 2px solid var(--link-blue);
+}
+
+.app_wrapper .loggiedpage__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  padding: 36px;
+  background: var(--saukko-main);
+  text-align: center;
+}
+.app_wrapper .loggiedpage__wrapper h1 {
+  font-size: 78px;
+  font-weight: bold;
+}
+.app_wrapper .loggiedpage__wrapper h2 {
+  font-size: 18px;
+}
+.app_wrapper .loggiedpage__wrapper .loggiedin-user__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.app_wrapper .loggiedpage__wrapper .loggedPage__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}/*# sourceMappingURL=index.css.map */

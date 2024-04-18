@@ -1,9 +1,10 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import Uvc from 'universal-cookie';
 import { fetchCurrentUser } from '../../api/user.js';
 
 const Ctx = createContext(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
   const ctx = useContext(Ctx);
 
@@ -27,7 +28,7 @@ const AuthContextProvider = ({ children }) => {
     // cookieChangeListener is manually triggered, check the 🍪
     if (!ccl) {
       const c = cookies.get("auth_state");
-      if (!!c) {
+      if (c) {
         setCookieAuthState(true);
       }
       return;

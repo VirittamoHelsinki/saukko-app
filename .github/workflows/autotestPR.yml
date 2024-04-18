@@ -1,0 +1,34 @@
+name: Pull Request Test
+
+on:
+  pull_request:
+    branches:
+      - Sh-Saukko
+  workflow_dispatch: # Manually trigger
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      # Optional: Upload test artifacts if test results exist
+      - name: Upload Test Results
+        if: success() && always() # Only run if previous steps succeed
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: /coverage # have to be sure if path is right

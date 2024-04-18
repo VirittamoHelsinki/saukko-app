@@ -103,9 +103,9 @@ const create = async (req: Request, res: Response) => {
 const getAll = async (req: Request, res: Response) => {
   try {
     const evaluations = await EvaluationModel.find()
-      .populate('customerId', 'firstName lastName')
+      .populate('customerId', 'firstName lastName email')
       .populate('teacherId', 'firstName lastName')
-      .populate('supervisorIds', 'firstName lastName')
+      .populate('supervisorIds', 'firstName lastName email')
       .populate('workplaceId'); 
 
     res.send(evaluations);
@@ -133,9 +133,9 @@ const getAllForCurrentUser = async (req: Request, res: Response) => {
 
     const evaluations = await EvaluationModel
       .find(getFilter())
-      .populate('customerId', 'firstName lastName')
+      .populate('customerId', 'firstName lastName email')
       .populate('teacherId', 'firstName lastName')
-      .populate('supervisorIds', 'firstName lastName')
+      .populate('supervisorIds', 'firstName lastName email')
       .populate('workplaceId');
 
       res.send(evaluations)

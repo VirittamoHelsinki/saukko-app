@@ -53,6 +53,9 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
 db.once('open', () => console.log('Connected to MongoDB'));
 
+const staticPath = path.join(__dirname, 'static');
+app.use(express.static(staticPath));
+
 // Inject tokens to in Request
 app.use("*", tokensMiddleware);
 
@@ -78,7 +81,12 @@ app.use('/api/status', (_req, res) => {
 
 // Serve the React app 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/build/index.html'));
+  if (config.ENVIRONMENT === 'development') {
+    return res.status(404).json({
+      errorMessage: `For developing react app, use port 3000 insted ${config.PORT}`
+    })
+  }
+  res.sendFile(path.join(staticPath, 'index.html'));
 });
 
 app.listen(config.PORT, () => {
