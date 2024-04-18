@@ -21,8 +21,10 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Fetch evaluation by id from api
-import { updateEvaluationById } from '../../../api/evaluation';
+// import { updateEvaluationById } from '../../../api/evaluation';
+import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+// import { sendEmails } from '../../../api/performance';
 
 const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
@@ -217,16 +219,26 @@ const UserPerformance = () => {
         return unit;
       }
     });
-
+    // TODO: contactRequests currently for testing
+    // TODO: additional info for testing
+    const contactRequests = ["supervisor"]
+    const additionalInfo = "Ostakaa seiska"
     const updatedData = {
       units: updatedUnits,
+      contactRequests: contactRequests,
+      additionalInfo: additionalInfo
     };
+
     try {
       console.log('updatedData:', updatedData);
-      const response = await updateEvaluationById(
+      const response = await handleUserPerformanceEmails(
         `${evaluationId}`,
-        updatedData
+        updatedData,
       );
+      // const response = await updateEvaluationById(
+      //   `${evaluationId}`,
+      //   updatedData
+      // );
 
       // set response to the store
       setEvaluation(response);

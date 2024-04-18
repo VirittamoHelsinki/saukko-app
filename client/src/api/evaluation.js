@@ -9,7 +9,7 @@ const createEvaluation = async (evaluation) => {
   try {
     const response = await axios.post(
       `${baseURL}${middleURL}/evaluation/`,
-      evaluation
+      evaluation,
     );
     return response.data;
   } catch (error) {
@@ -31,20 +31,20 @@ const fetchAllEvaluations = async () => {
 };
 
 // Update evaluation by id
-const updateEvaluationById = async (evaluationId, updatedData) => {
+/*const updateEvaluationById = async (evaluationId, updatedData) => {
   try {
-    const response = await axios.put(`${baseURL}${middleURL}/evaluation/${evaluationId}`, updatedData)
-    return response.data
+    const response = await axios.put(`${baseURL}${middleURL}/evaluation/${evaluationId}`, updatedData);
+    return response.data;
   } catch (error) {
-    console.log('Error fetching single evaluation:', error)
+    console.log('Error fetching single evaluation:', error);
   }
-}
+};*/
 
 const sendEmail = async (message) => {
   try {
     const response = await axios.post(
       `${baseURL}${middleURL}/evaluation/sendEmail`,
-      message
+      message,
     );
     return response.data;
   } catch (error) {
@@ -52,9 +52,20 @@ const sendEmail = async (message) => {
   }
 };
 
+const handleUserPerformanceEmails = async (evaluationId, updatedData, contactRequests) =>
+{
+  try {
+    const response = await axios.put(`${baseURL}${middleURL}/evaluation/${evaluationId}`, updatedData, contactRequests);
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching single evaluation:', error);
+  }
+}
+
 export {
   createEvaluation,
   fetchAllEvaluations,
-  updateEvaluationById,
+  // updateEvaluationById,
   sendEmail,
+  handleUserPerformanceEmails
 };

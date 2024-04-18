@@ -14,6 +14,14 @@ import {
   ISendOldSupervisorAddedEmail
 } from "../mailer/templates/addingUserToAgreement";
 import DegreeModel from '../models/degreeModel';
+import {
+  sendEvaluationFormCustomerOrSupervisorReady,
+  sendEvaluationFormCustomerRequestContact,
+  sendEvaluationFormSupervisorRequestContact,
+  sendEvaluationFormTeacherReady,
+  sendEvaluationFormTeacherRequestContactMessageCustomer,
+  sendEvaluationFormTeacherRequestContactMessageSupervisor,
+} from '../mailer/templates/EvaluationForm';
 
 const _generateVerificationLink = (user: User) => {
   const verificationToken = user.generateEmailVerificationToken();
@@ -391,6 +399,143 @@ const sendEmailToTeacher = async (req: Request, res: Response) => {
   }
 }
 
+enum EvaluationStatus {
+  ACCEPTED = 'Kyllä',
+  REJECTED = 'Ei'
+}
+
+enum AssessmentStatus {
+  READY = 'Valmis',
+  IN_PROGRESS = 'Kesken'
+}
+
+const handeUserPerformanceEmails = async (req: Request, res: Response) => {
+  console.log('request body: ', req.body)
+  console.log('user: ', req.user)
+  try {
+    const evaluation = await EvaluationModel.findById(req.params.id)
+      .populate({
+        path: 'degreeId',
+        select: 'name.fi',
+      })
+      .populate('customerId')
+      .populate('teacherId')
+      .populate('supervisorIds')
+      .populate('units');
+
+    console.log('assessments: ', evaluation?.units[0].assessments)
+
+    if (!evaluation) {
+      return res.status(404).send({ message: 'Evaluation not found' });
+    }
+
+    const user = req.user as User
+    const params = {
+      degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
+      unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
+      supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+      customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+      additionalInfo: req.body.additionalInfo,
+      userEmail: req.user?.email || 'Unknown Email',
+    };
+
+    // suoritus valmis
+    switch (user.role) {
+      case 'supervisor':
+        sendEvaluationFormTeacherReady(
+          {
+            ...params,
+            customerFirstName: evaluation.customerId?.firstName || 'Unknown Customer First Name',
+            evaluationAccepted: EvaluationStatus.ACCEPTED,
+          },
+          'TPO:n valmis lomake');
+        sendEvaluationFormCustomerOrSupervisorReady(
+          {
+            ...params,
+            userFirstName: user.firstName,
+            customerAssessment: AssessmentStatus.READY,
+            supervisorAssessment: AssessmentStatus.READY,
+          },
+          'TPO:n valmis lomake');
+        break;
+      case 'customer':
+        sendEvaluationFormTeacherReady({
+          ...params,
+          customerFirstName: '',
+          evaluationAccepted: EvaluationStatus.ACCEPTED,
+        }, 'Asiakkaan valmis lomake');
+        sendEvaluationFormCustomerOrSupervisorReady({
+          ...params,
+          userFirstName: '',
+          customerAssessment: AssessmentStatus.READY,
+          supervisorAssessment: AssessmentStatus.READY,
+
+        }, 'Asiakkaan valmis lomake');
+        break;
+      case 'teacher':
+        sendEvaluationFormCustomerOrSupervisorReady({
+          ...params,
+          userFirstName: '',
+          customerAssessment: AssessmentStatus.READY,
+          supervisorAssessment: AssessmentStatus.READY,
+
+        }, 'opettajan valmis lomake');
+        sendEvaluationFormCustomerOrSupervisorReady({
+          ...params,
+          userFirstName: '',
+          customerAssessment: AssessmentStatus.READY,
+          supervisorAssessment: AssessmentStatus.READY,
+
+        }, 'opettajan valmis lomake');
+        break;
+    }
+    const params2 = {
+      userName: user.firstName + ' ' + user.lastName,
+      userEmail: user?.email || 'Unknown Email',
+      degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
+      unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
+    };
+
+    // yhteydenottopyynnöt
+    if (req.body.contactRequests && req.body.contactRequests.length > 0) {
+      // If contact requests exist, choose one or more recipients from the list
+      req.body.contactRequests.forEach((recipient: string) => {
+        if (recipient === 'supervisor') {
+          sendEvaluationFormTeacherRequestContactMessageSupervisor({
+            ...params2,
+            customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+            teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+            vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
+          });
+        } else if (recipient === 'customer' && user.role === 'teacher') {
+          sendEvaluationFormTeacherRequestContactMessageCustomer({
+            ...params2,
+            supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+            teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+          });
+        } else if (recipient === 'teacher' && user.role === 'supervisor') {
+          sendEvaluationFormSupervisorRequestContact({
+            ...params2,
+            supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+            customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+          });
+        } else if (recipient === 'teacher' && user.role === 'customer') {
+          sendEvaluationFormCustomerRequestContact(
+            {
+              ...params2,
+              supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+            },
+          );
+        }
+      });
+    }
+    res.status(200).send({ message: 'Emails handled successfully' });
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ message: 'Internal server error' });
+  }
+};
+
 export default {
   create,
   getAll,
@@ -399,4 +544,5 @@ export default {
   update,
   deleteById,
   sendEmailToTeacher,
+  handeUserPerformanceEmails
 }

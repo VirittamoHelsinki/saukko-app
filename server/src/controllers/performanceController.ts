@@ -1,3 +1,4 @@
+/*
 import { Request, Response } from 'express';
 import {
   sendEvaluationFormCustomerRequestContact,
@@ -20,6 +21,7 @@ enum AssessmentStatus {
 }
 
 const handeUserPerformanceEmails = async (req: Request, res: Response) => {
+  console.log('request body: ', req.body)
   try {
     const evaluation = await EvaluationModel.findById(req.params.id)
       .populate({
@@ -115,13 +117,13 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
           sendEvaluationFormTeacherRequestContactMessageCustomer({
             ...params2,
             supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-            teacherName:evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+            teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
           });
         } else if (recipient === 'teacher' && req.user.role === 'supervisor') {
           sendEvaluationFormSupervisorRequestContact({
             ...params2,
             supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-            customerName:  evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+            customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
           });
         } else if (recipient === 'teacher' && req.user.role === 'customer') {
           sendEvaluationFormCustomerRequestContact(
@@ -132,12 +134,11 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
           );
         }
       });
-    } else {
-      console.log('no contact request')
     }
   } catch (error) {
-    console.log(error);
+    console.error('performanceController error: ', error);
   }
 };
 
-export { handeUserPerformanceEmails };
+export default { handeUserPerformanceEmails };
+*/
