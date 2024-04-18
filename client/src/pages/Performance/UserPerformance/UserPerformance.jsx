@@ -28,19 +28,19 @@ const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
   const { loggedIn, currentUser } = useAuthContext();
 
-  console.log('🚀 ~ UserPerformance ~ user:', currentUser);
+  // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
   // eslint-disable-next-line no-unused-vars
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
 
-  console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
+  // console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { allInternalDegrees } = useContext(InternalApiContext);
   const degreeName =
     allInternalDegrees &&
     allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
-  console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
+  // console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   const { chosenUnitId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
@@ -337,6 +337,7 @@ const UserPerformance = () => {
                     selectedAssessmentId={selectedAssessmentId}
                     hasUnsavedChanges={hasUnsavedChanges}
                     setHasUnsavedChanges={setHasUnsavedChanges}
+                    evaluationId={evaluationId}
                   />
                 ) : (
                   <PerformancesFeedback
@@ -467,7 +468,7 @@ const UserPerformance = () => {
           type='submit'
           text={getButtonText()}
           onClick={handleSubmit}
-          disabled={isPalauteSectionDisabled()}
+          // disabled={isPalauteSectionDisabled()}
         />
       </section>
       <div style={{ marginBottom: '90px' }}>

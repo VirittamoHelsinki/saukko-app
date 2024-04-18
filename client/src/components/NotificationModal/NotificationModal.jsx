@@ -112,7 +112,7 @@ export default function CustomizedDialogs(props) {
     color = '#d18200';
   } else if (props.type === 'info') {
     icon = 'material-symbols:info';
-    bgColor = '#e5eff8';
+    bgColor = '#E5F6FD';
     color = '#0062b9';
   } else if (props.type === 'success') {
     icon = 'material-symbols:check-circle';
