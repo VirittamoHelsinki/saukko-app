@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - Sh-Saukko
+  workflow_dispatch: # Manually trigger
 
 jobs:
   test:
