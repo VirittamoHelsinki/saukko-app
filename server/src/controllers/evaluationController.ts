@@ -1,24 +1,26 @@
-import UserModel, { User } from "../models/userModel";
-import EvaluationModel from "../models/evaluatuionModel";
-import degreeModel from "../models/degreeModel";
-import { Response } from "express";
-import { Request } from "../types/requestType"
-import { sendVerificationEmail } from "../mailer/templates/newUserVerification";
+import UserModel, { User } from '../models/userModel';
+import EvaluationModel from '../models/evaluatuionModel';
+import degreeModel from '../models/degreeModel';
+import { Response } from 'express';
+import { Request } from '../types/requestType';
+import { sendVerificationEmail } from '../mailer/templates/newUserVerification';
 import {
+  ISendNewCustomerAddedEmail,
+  ISendNewSupervisorAddedEmail,
+  ISendOldSupervisorAddedEmail,
   sendNewCustomerAddedEmail,
   sendNewSupervisorAddedEmail,
   sendOldSupervisorAddedEmail,
-  sendNewCustomerVerifiedEmail,
-  ISendNewCustomerAddedEmail,
-  ISendNewSupervisorAddedEmail,
-  ISendOldSupervisorAddedEmail
-} from "../mailer/templates/addingUserToAgreement";
-import DegreeModel from '../models/degreeModel';
+} from '../mailer/templates/addingUserToAgreement';
 import {
-  sendEvaluationFormCustomerOrSupervisorReady,
+  sendEvaluationFormCustomerReadyMessageSupervisor,
+  sendEvaluationFormCustomerReadyMessageTeacher,
   sendEvaluationFormCustomerRequestContact,
+  sendEvaluationFormSupervisorReadyMessageCustomer,
+  sendEvaluationFormSupervisorReadyMessageTeacher,
   sendEvaluationFormSupervisorRequestContact,
-  sendEvaluationFormTeacherReady,
+  sendEvaluationFormTeacherReadyMessageCustomer,
+  sendEvaluationFormTeacherReadyMessageSupervisor,
   sendEvaluationFormTeacherRequestContactMessageCustomer,
   sendEvaluationFormTeacherRequestContactMessageSupervisor,
 } from '../mailer/templates/EvaluationForm';
@@ -430,63 +432,67 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
     }
 
     const user = req.user as User
+
     const params = {
       degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
       unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
       customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
       additionalInfo: req.body.additionalInfo,
-      userEmail: req.user?.email || 'Unknown Email',
     };
+
+    const customerEmail = evaluation.customerId?.email || 'Unknown Customer Email';
+    const teacherEmail = evaluation.teacherId?.email || 'Unknown Teacher Email';
+    const supervisorEmail = evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email';
 
     // suoritus valmis
     switch (user.role) {
       case 'supervisor':
-        sendEvaluationFormTeacherReady(
+        sendEvaluationFormSupervisorReadyMessageCustomer(
           {
             ...params,
             customerFirstName: evaluation.customerId?.firstName || 'Unknown Customer First Name',
-            evaluationAccepted: EvaluationStatus.ACCEPTED,
+            customerAssessment: AssessmentStatus.READY,
+            supervisorAssessment: AssessmentStatus.READY
           },
-          'TPO:n valmis lomake');
-        sendEvaluationFormCustomerOrSupervisorReady(
+          'TPO:n valmis lomake',customerEmail);
+        sendEvaluationFormSupervisorReadyMessageTeacher(
           {
             ...params,
-            userFirstName: user.firstName,
+            teacherFirstName: evaluation.teacherId?.firstName || 'Unknown Customer First Name',
             customerAssessment: AssessmentStatus.READY,
             supervisorAssessment: AssessmentStatus.READY,
           },
-          'TPO:n valmis lomake');
+          'TPO:n valmis lomake',teacherEmail);
         break;
       case 'customer':
-        sendEvaluationFormTeacherReady({
+        sendEvaluationFormCustomerReadyMessageSupervisor({
           ...params,
-          customerFirstName: '',
-          evaluationAccepted: EvaluationStatus.ACCEPTED,
-        }, 'Asiakkaan valmis lomake');
-        sendEvaluationFormCustomerOrSupervisorReady({
+          supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+          customerAssessment: AssessmentStatus.READY,
+          supervisorAssessment: AssessmentStatus.READY,
+        }, 'Asiakkaan valmis lomake',supervisorEmail);
+        sendEvaluationFormCustomerReadyMessageTeacher({
           ...params,
-          userFirstName: '',
+          teacherFirstName: evaluation.teacherId?.firstName,
           customerAssessment: AssessmentStatus.READY,
           supervisorAssessment: AssessmentStatus.READY,
 
-        }, 'Asiakkaan valmis lomake');
+        }, 'Asiakkaan valmis lomake',supervisorEmail);
         break;
       case 'teacher':
-        sendEvaluationFormCustomerOrSupervisorReady({
+        sendEvaluationFormTeacherReadyMessageSupervisor({
           ...params,
-          userFirstName: '',
-          customerAssessment: AssessmentStatus.READY,
-          supervisorAssessment: AssessmentStatus.READY,
+          supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+          evaluationAccepted: EvaluationStatus.ACCEPTED
 
-        }, 'opettajan valmis lomake');
-        sendEvaluationFormCustomerOrSupervisorReady({
+        }, 'opettajan valmis lomake',supervisorEmail);
+        sendEvaluationFormTeacherReadyMessageCustomer({
           ...params,
-          userFirstName: '',
-          customerAssessment: AssessmentStatus.READY,
-          supervisorAssessment: AssessmentStatus.READY,
+          customerFirstName: evaluation.customerId?.firstName,
+          evaluationAccepted: EvaluationStatus.ACCEPTED
 
-        }, 'opettajan valmis lomake');
+        }, 'opettajan valmis lomake', customerEmail);
         break;
     }
     const params2 = {
