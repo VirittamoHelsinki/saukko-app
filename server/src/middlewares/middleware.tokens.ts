@@ -14,9 +14,11 @@ const tokensMiddleware = async (req: Request, res: Response, next: NextFunction)
       // try get the token from headers, in this case token is received from email..
       const referer = req.headers["referer"];
       const refArr = referer?.split("/");
-      const t = refArr![refArr!.length -1]
-      if (t.length > 20) {
-        changePassword = t;
+      if (refArr && refArr.length) {
+        const t = refArr[refArr!.length -1];
+        if (t.length > 20) {
+          changePassword = t;
+        }
       }
     }
 
