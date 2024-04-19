@@ -18,10 +18,15 @@
 }
 
 .businessID__search-field {
-  justify-content: flex-end;
+  justify-content: flex-start;
+  // position: relative;
+  // padding: 0;
 
   .text_input_businessID {
-    margin-right: auto;
+    // margin: 0 20px;
+    width: 100%;
+    // height: 100%;
+    border: none;
   }
 
   input::placeholder {

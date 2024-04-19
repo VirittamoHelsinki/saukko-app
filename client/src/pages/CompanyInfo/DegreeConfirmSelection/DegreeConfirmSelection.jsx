@@ -244,9 +244,9 @@ function DegreeConfirmSelection() {
         <NotificationModal
           type='success'
           title='Uusi työpaikka lisätty'
-          body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+          body='Tiedot on tallennettu OsTu-appin tietokantaan.'
           open={openNotificationModal}
-          redirectLink='/admin-menu'
+          redirectLink='/add/companyname'
         />
       )}
 

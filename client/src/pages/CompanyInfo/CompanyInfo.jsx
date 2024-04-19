@@ -1,7 +1,7 @@
 // Import components & libraries
 import { useContext } from 'react';
-import { RxCrossCircled } from "react-icons/rx";
-import { CiSearch } from "react-icons/ci";
+import { RxCrossCircled } from 'react-icons/rx';
+import { CiSearch } from 'react-icons/ci';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import { fetchExternalCompanyData } from '../../api/workplace';
@@ -215,35 +215,24 @@ const CompanyInfo = () => {
               >
                 Työpaikan Y-tunnus *
               </label>
-              <div className='text_input businessID__search-field' style={{ padding: 0, position: 'relative' }}>
-                <input type="text" id='business-id-input'
-                  style={{width: '100%', height: '100%', margin: 0}}
+              <div
+                className='text_input businessID__search-field'
+                // style={{ padding: 0, position: 'relative' }}
+              >
+                <input
+                  type='text'
+                  id='business-id-input'
+                  className='text_input_businessID'
+                  // style={{ width: '100%', height: '100%', margin: 0 }}
                   name='Työpaikan Y-tunnus'
                   required
                   placeholder='1234567-6'
                   value={businessId}
-                  onChange={handleBusinessId} />
-                <div style={{ position: 'absolute', margin: '1em'}}>
-                  <RxCrossCircled
-                  style={{marginRight: '.5em'}}
-                    className='cross-icone-style'
-                    aria-hidden='true'
-                    onClick={handleClearBusinessId}
-                  />
-                  <CiSearch
-                    className='search-icone-style'
-                    aria-hidden='true'
-                    onClick={handleSearchClick}
-                  />
-                </div>
-              </div>
-              {/* <input className='text_input businessID__search-field' id='business-id-input'
-                name='Työpaikan Y-tunnus'
-                required
-                placeholder='1234567-6'
-                value={businessId}
-                onChange={handleBusinessId}>
+                  onChange={handleBusinessId}
+                />
+                {/* <div style={{ position: 'absolute', margin: '1em' }}> */}
                 <RxCrossCircled
+                  // style={{ marginRight: '.5em' }}
                   className='cross-icone-style'
                   aria-hidden='true'
                   onClick={handleClearBusinessId}
@@ -253,7 +242,8 @@ const CompanyInfo = () => {
                   aria-hidden='true'
                   onClick={handleSearchClick}
                 />
-              </input> */}
+                {/* </div> */}
+              </div>
             </div>
             {/* <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} /> */}
             <div>
@@ -265,14 +255,13 @@ const CompanyInfo = () => {
               </label>
               <input
                 type='text'
-                className='text_input businessID__search-field text_input'
+                className='text_input'
                 id='company-name-input'
                 name='Työpaikan Y-tunnus'
                 required
                 value={editedCompanyName || (name && name.name) || ''}
                 onChange={handleCompanyName}
-              >
-              </input>
+              ></input>
             </div>
 
             <div className='department-container'>
@@ -281,7 +270,7 @@ const CompanyInfo = () => {
                 Yksikkö (ei pakollinen){' '}
               </label>
               <input
-                className='text_input businessID__search-field'
+                className='text_input'
                 id='department-name-input'
                 name='Työpaikan yksikkö'
                 onChange={handleDepartment}
@@ -331,7 +320,7 @@ const CompanyInfo = () => {
                       Etunimi *
                     </label>
                     <input
-                      className='text_input businessID__search-field'
+                      className='text_input'
                       id={`first-name-input-${index}`}
                       name='Etunimi'
                       required
@@ -344,7 +333,9 @@ const CompanyInfo = () => {
                     >
                       Sukunimi *
                     </label>
-                    <input className='text_input businessID__search-field' id={`last-name-input-${index}`}
+                    <input
+                      className='text_input'
+                      id={`last-name-input-${index}`}
                       name='Sukunimi'
                       required
                       value={ohjaaja.lastName}
@@ -357,7 +348,8 @@ const CompanyInfo = () => {
                       Sähköposti *
                     </label>
                     <input
-                      className='text_input businessID__search-field' id={`email-input-${index}`}
+                      className='text_input'
+                      id={`email-input-${index}`}
                       style={{ marginBottom: '20px' }}
                       name='Sähköposti'
                       type='email'
@@ -376,12 +368,13 @@ const CompanyInfo = () => {
                 Etunimi *
               </label>
               <input
-                className='text_input businessID__search-field'
+                className='text_input'
                 id='first-name-input'
                 name='Etunimi'
                 required
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)} />
+                onChange={(e) => setFirstName(e.target.value)}
+              />
               <div>
                 <label
                   className='workplace-form-label'
@@ -389,8 +382,8 @@ const CompanyInfo = () => {
                 >
                   Sukunimi *
                 </label>
-                <div
-                  className='text_input businessID__search-field'
+                <input
+                  className='text_input'
                   id='last-name-input'
                   name='Sukunimi'
                   required
@@ -402,8 +395,8 @@ const CompanyInfo = () => {
                 <label className='workplace-form-label' htmlFor='email-input'>
                   Sähkoposti *
                 </label>
-                <div
-                  className='text_input businessID__search-field'
+                <input
+                  className='text_input'
                   id='email-input'
                   name='Sähkoposti'
                   type='email'
