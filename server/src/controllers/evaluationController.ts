@@ -27,17 +27,17 @@ import {
 
 const _generateVerificationLink = (user: User) => {
   const verificationToken = user.generateEmailVerificationToken();
-  return `https://saukko.azurewebsites.net/verify-email/${verificationToken}` // TODO: move to env
-}
+  return `https://saukko.azurewebsites.net/verify-email/${verificationToken}`; // TODO: move to env
+};
 
 const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
   if (err.message) {
-    console.log(err.message)
-    res.status(statusCode).json({ errorMessage: err.message })
+    console.log(err.message);
+    res.status(statusCode).json({ errorMessage: err.message });
   } else {
-    res.status(statusCode).json({ errorMessage: optionalMessage ?? "unknown error" })
+    res.status(statusCode).json({ errorMessage: optionalMessage ?? 'unknown error' });
   }
-}
+};
 
 const create = async (req: Request, res: Response) => {
   const evaluationData = req.body;
@@ -50,16 +50,16 @@ const create = async (req: Request, res: Response) => {
     }
 
     if (!evaluationData.units) {
-      evaluationData.units = []; 
+      evaluationData.units = [];
     }
 
     // Fetch the degree based on degreeId to include criteria details from the degree
     const degree = await degreeModel.findById(evaluationData.degreeId);
     if (!degree) {
-      return res.status(404).send({ error: "Degree not found" });
+      return res.status(404).send({ error: 'Degree not found' });
     }
 
-    
+
     evaluationData.units = evaluationData.units.map((unit: any) => {
       const degreeUnit = degree.units.find(du => du._id.toString() === unit._id.toString());
       if (degreeUnit) {
@@ -69,10 +69,10 @@ const create = async (req: Request, res: Response) => {
             // Here we map criteria from the degree and add them to the evaluation's assessment
             assessment.criteria = degreeAssessment.criteria.map(criteria => {
               return {
-                criterionId: criteria._id, 
-                fi: criteria.fi, 
-                sv: criteria.sv, 
-                en: criteria.en  
+                criterionId: criteria._id,
+                fi: criteria.fi,
+                sv: criteria.sv,
+                en: criteria.en,
               };
             });
           }
@@ -92,7 +92,7 @@ const create = async (req: Request, res: Response) => {
           const supervisor = await UserModel.findById(supervisorId);
           if (supervisor) {
             const verificationLink = _generateVerificationLink(supervisor);
-            sendVerificationEmail({userEmail: supervisor.email, verificationLink});
+            sendVerificationEmail({ userEmail: supervisor.email, verificationLink });
           }
         } catch (userError) {
           console.error('Error fetching supervisor for notification: ', userError);
@@ -105,10 +105,10 @@ const create = async (req: Request, res: Response) => {
     console.error('Error creating evaluation: ', error);
     res.status(400).send(error);
   }
-}
+};
 
 /**
- * 
+ *
  * @deprecated use getAllForCurrentUser instead
  */
 const getAll = async (req: Request, res: Response) => {
@@ -117,17 +117,19 @@ const getAll = async (req: Request, res: Response) => {
       .populate('customerId', 'firstName lastName')
       .populate('teacherId', 'firstName lastName')
       .populate('supervisorIds', 'firstName lastName')
-      .populate('workplaceId'); 
+      .populate('workplaceId');
 
     res.send(evaluations);
   } catch (error) {
     return _responseWithError(res, 500, error, 'Failed to fetch evaluations');
   }
-}
+};
 
 const getAllForCurrentUser = async (req: Request, res: Response) => {
   try {
-    const user = (req.user as User) ?? (() => { throw new Error("User is not defined") })
+    const user = (req.user as User) ?? (() => {
+      throw new Error('User is not defined');
+    });
 
     const getFilter = () => {
       switch (user.role) {
@@ -136,11 +138,11 @@ const getAllForCurrentUser = async (req: Request, res: Response) => {
         case 'teacher':
           return { teacherId: user.id };
         case 'supervisor':
-          return { supervisorIds: { "$in": [user.id] } };
+          return { supervisorIds: { '$in': [user.id] } };
         default:
-          throw new Error("Unknown role");
+          throw new Error('Unknown role');
       }
-    }
+    };
 
     const evaluations = await EvaluationModel
       .find(getFilter())
@@ -149,11 +151,11 @@ const getAllForCurrentUser = async (req: Request, res: Response) => {
       .populate('supervisorIds', 'firstName lastName')
       .populate('workplaceId');
 
-      res.send(evaluations)
+    res.send(evaluations);
   } catch (error) {
     return _responseWithError(res, 500, error, 'Failed to fetch evaluations');
   }
-}
+};
 
 const getById = async (req: Request, res: Response) => {
   try {
@@ -169,11 +171,11 @@ const getById = async (req: Request, res: Response) => {
 
     const degree = await degreeModel.findById(evaluation.degreeId);
     if (!degree) {
-      return res.status(404).send({ message: "Degree not found" });
+      return res.status(404).send({ message: 'Degree not found' });
     }
 
     // Convert evaluation document to a JavaScript object for modification
-    evaluation = evaluation.toObject(); 
+    evaluation = evaluation.toObject();
 
     // TODO: What is reason of that????
     // COMMENTED OUT, seems like that is pointless
@@ -207,11 +209,11 @@ const getById = async (req: Request, res: Response) => {
 
     res.status(200).send(evaluation);
   } catch (error) {
-    _responseWithError(res, 500, error)
+    _responseWithError(res, 500, error);
     // console.error('Error fetching evaluation: ', error);
     // res.status(500).send({ message: 'Failed to fetch evaluation', error: error.message });
   }
-}
+};
 
 const update = async (req: Request, res: Response) => {
   console.log('req body: ', req.body.units[0].assessments[0]);
@@ -220,8 +222,8 @@ const update = async (req: Request, res: Response) => {
   try {
     const evaluation = await EvaluationModel.findById(req.params.id)
       .populate({
-        path:'degreeId',
-        select:'name'
+        path: 'degreeId',
+        select: 'name',
       })
       .populate('customerId')
       .populate('teacherId')
@@ -233,12 +235,12 @@ const update = async (req: Request, res: Response) => {
 
     const updatedSupervisorIds = new Set(req.body.supervisorIds || []);
     const existingSupervisorIds = new Set(
-      evaluation.supervisorIds.map((id) => id.toString())
+      evaluation.supervisorIds.map((id) => id.toString()),
     );
 
     // Identify new supervisors
     const newSupervisors = [...updatedSupervisorIds].filter(
-      (id) => !existingSupervisorIds.has(id as any)
+      (id) => !existingSupervisorIds.has(id as any),
     );
 
     // Replace the entire supervisor list
@@ -257,7 +259,7 @@ const update = async (req: Request, res: Response) => {
 
       for (const supervisor of newSupervisorDetails) {
         const verificationLink = _generateVerificationLink(supervisor);
-        sendVerificationEmail({userEmail: supervisor.email, verificationLink});
+        sendVerificationEmail({ userEmail: supervisor.email, verificationLink });
       }
 
       // Notify existing supervisors, the customer, and possibly the teacher about new additions
@@ -286,7 +288,7 @@ const update = async (req: Request, res: Response) => {
         customerName: 'customerName',
         degreeName: 'degreeName',
         supervisorName: 'supervisorName',
-        verificationLink: 'verificationLink'
+        verificationLink: 'verificationLink',
       };
 
       const oldSupervisorParams: ISendOldSupervisorAddedEmail = {
@@ -319,7 +321,7 @@ const update = async (req: Request, res: Response) => {
         const { answer, answerTeacher, answerSupervisor } = assessment;
         if (
           [answer, answerTeacher, answerSupervisor].some(
-            (ans) => ans === 1 || ans === 2
+            (ans) => ans === 1 || ans === 2,
           )
         ) {
           anyAssessmentInProgress = true;
@@ -332,9 +334,9 @@ const update = async (req: Request, res: Response) => {
       });
 
       if ((allAssessmentsCompleted && unit.ready) || unit.ready) {
-        unit.status = 2; 
+        unit.status = 2;
       } else if (anyAssessmentInProgress) {
-        unit.status = 1; 
+        unit.status = 1;
       }
 
       return unit;
@@ -354,13 +356,13 @@ const update = async (req: Request, res: Response) => {
     await evaluation.save();
     res.send(evaluation);
   } catch (error) {
-    return _responseWithError(res, 400, error, )
+    return _responseWithError(res, 400, error);
     // console.error('Error updating evaluation: ', error, 'Error updating evaluation');
     // res
     //   .status(400)
     //   .send({ message: 'Error updating evaluation', error: error.message });
   }
-}
+};
 
 const deleteById = async (req: Request, res: Response) => {
   try {
@@ -372,7 +374,7 @@ const deleteById = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).send(error);
   }
-}
+};
 
 // TODO, this would be fit better to own controller
 const sendEmailToTeacher = async (req: Request, res: Response) => {
@@ -399,7 +401,7 @@ const sendEmailToTeacher = async (req: Request, res: Response) => {
     console.error('Error in sending email: ', error);
     res.status(500).send('Internal Server Error');
   }
-}
+};
 
 enum EvaluationStatus {
   ACCEPTED = 'Kyllä',
@@ -412,8 +414,7 @@ enum AssessmentStatus {
 }
 
 const handeUserPerformanceEmails = async (req: Request, res: Response) => {
-  console.log('request body: ', req.body)
-  console.log('user: ', req.user)
+
   try {
     const evaluation = await EvaluationModel.findById(req.params.id)
       .populate({
@@ -425,13 +426,12 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
       .populate('supervisorIds')
       .populate('units');
 
-    console.log('assessments: ', evaluation?.units[0].assessments)
 
     if (!evaluation) {
       return res.status(404).send({ message: 'Evaluation not found' });
     }
 
-    const user = req.user as User
+    const user = req.user as User;
 
     const params = {
       degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
@@ -453,9 +453,9 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
             ...params,
             customerFirstName: evaluation.customerId?.firstName || 'Unknown Customer First Name',
             customerAssessment: AssessmentStatus.READY,
-            supervisorAssessment: AssessmentStatus.READY
+            supervisorAssessment: AssessmentStatus.READY,
           },
-          'TPO:n valmis lomake',customerEmail);
+          'TPO:n valmis lomake', customerEmail);
         sendEvaluationFormSupervisorReadyMessageTeacher(
           {
             ...params,
@@ -463,7 +463,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
             customerAssessment: AssessmentStatus.READY,
             supervisorAssessment: AssessmentStatus.READY,
           },
-          'TPO:n valmis lomake',teacherEmail);
+          'TPO:n valmis lomake', teacherEmail);
         break;
       case 'customer':
         sendEvaluationFormCustomerReadyMessageSupervisor({
@@ -471,26 +471,26 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
           supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
           customerAssessment: AssessmentStatus.READY,
           supervisorAssessment: AssessmentStatus.READY,
-        }, 'Asiakkaan valmis lomake',supervisorEmail);
+        }, 'Asiakkaan valmis lomake', supervisorEmail);
         sendEvaluationFormCustomerReadyMessageTeacher({
           ...params,
           teacherFirstName: evaluation.teacherId?.firstName,
           customerAssessment: AssessmentStatus.READY,
           supervisorAssessment: AssessmentStatus.READY,
 
-        }, 'Asiakkaan valmis lomake',supervisorEmail);
+        }, 'Asiakkaan valmis lomake', supervisorEmail);
         break;
       case 'teacher':
         sendEvaluationFormTeacherReadyMessageSupervisor({
           ...params,
           supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
-          evaluationAccepted: EvaluationStatus.ACCEPTED
+          evaluationAccepted: EvaluationStatus.ACCEPTED,
 
-        }, 'opettajan valmis lomake',supervisorEmail);
+        }, 'opettajan valmis lomake', supervisorEmail);
         sendEvaluationFormTeacherReadyMessageCustomer({
           ...params,
           customerFirstName: evaluation.customerId?.firstName,
-          evaluationAccepted: EvaluationStatus.ACCEPTED
+          evaluationAccepted: EvaluationStatus.ACCEPTED,
 
         }, 'opettajan valmis lomake', customerEmail);
         break;
@@ -506,43 +506,51 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
     if (req.body.contactRequests && req.body.contactRequests.length > 0) {
       // If contact requests exist, choose one or more recipients from the list
       req.body.contactRequests.forEach((recipient: string) => {
-        switch (recipient) {
-          case 'supervisor':
-            if (user.role === 'teacher') {
-              sendEvaluationFormTeacherRequestContactMessageSupervisor({
-                ...params2,
-                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-                vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
-              });
-            }
-          case 'customer':
-            if (user.role === 'teacher') {
-              sendEvaluationFormTeacherRequestContactMessageCustomer({
-                ...params2,
-                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-              });
-            }
-          case 'teacher':
-            if (user.role === 'supervisor') {
-              sendEvaluationFormSupervisorRequestContact({
-                ...params2,
-                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-              });
-            } else if (user.role === 'customer') {
-              sendEvaluationFormCustomerRequestContact({
-                ...params2,
-                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-              });
-            }
+        if (recipient === 'supervisor') {
+          if (user.role === 'teacher') {
+            sendEvaluationFormTeacherRequestContactMessageSupervisor({
+              ...params2,
+              supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+              customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+              teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+              vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
+            },supervisorEmail);
+          }
+        }
+
+        if (recipient === 'customer') {
+          if (user.role === 'teacher') {
+            sendEvaluationFormTeacherRequestContactMessageCustomer({
+              ...params2,
+              customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+              supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+              teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+            },customerEmail);
+          }
+        }
+
+        if (recipient === 'teacher') {
+          if (user.role === 'supervisor') {
+            sendEvaluationFormSupervisorRequestContact({
+              ...params2,
+              teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+              supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+              customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+            }, teacherEmail);
+          } else if (user.role === 'customer') {
+            sendEvaluationFormCustomerRequestContact({
+              ...params2,
+              teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+              customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+              supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+            },teacherEmail);
+          }
         }
       });
     }
     res.status(200).send({ message: 'Emails handled successfully' });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).send({ message: 'Internal server error' });
   }
 };
@@ -555,5 +563,5 @@ export default {
   update,
   deleteById,
   sendEmailToTeacher,
-  handeUserPerformanceEmails
-}
+  handeUserPerformanceEmails,
+};

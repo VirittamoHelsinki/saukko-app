@@ -221,8 +221,8 @@ const UserPerformance = () => {
     });
     // TODO: contactRequests currently for testing
     // TODO: additional info for testing
-    const contactRequests = ["supervisor"]
-    const additionalInfo = "Ostakaa seiska"
+    const contactRequests = ["supervisor", "customer"]
+    const additionalInfo = "Ostakaa seiska!!!"
     const updatedData = {
       units: updatedUnits,
       contactRequests: contactRequests,

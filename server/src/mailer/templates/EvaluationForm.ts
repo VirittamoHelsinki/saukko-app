@@ -5,20 +5,20 @@ import mailerTemplate from '../mailerHtmlTemplate';
 // Asiakas pyytää yhteydenottoa
 
 export interface ISendEvaluationFormCustomerRequestContact {
-  userName: string;
-  userEmail: string;
+  teacherName: string;
+  customerName: string;
   degreeName: string;
   unitName: string;
   supervisorName: string;
 }
 
-export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluationFormCustomerRequestContact) => {
+export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluationFormCustomerRequestContact, to: string) => {
 
   const text =
     `
-    Hei ${params.userName},
+    Hei ${params.teacherName},
   
-    Asiakas ${params.userName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+    Asiakas ${params.customerName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
     
     
     Tutkinto: ${params.degreeName}
@@ -33,13 +33,13 @@ export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluation
   const subject = 'Arviointilomake: asiakkaan yhteydenottopyyntö';
   const html = mailerTemplate(text);
 
-  sendEmail({ to: params.userEmail, subject, html });
+  sendEmail({ to, subject, html });
 };
 
 // Työpaikkaohjaaja pyytää yhteydenottoa
 
 interface ISendEvaluationFormSupervisorRequestContact {
-  userName: string;
+  teacherName: string;
   userEmail: string;
   degreeName: string;
   unitName: string;
@@ -48,11 +48,11 @@ interface ISendEvaluationFormSupervisorRequestContact {
 }
 
 
-export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluationFormSupervisorRequestContact) => {
+export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluationFormSupervisorRequestContact, to: string) => {
 
   const text =
     `
-    Hei ${params.userName},
+    Hei ${params.teacherName},
 
     Työpaikkaohjaaja ${params.supervisorName} pyytää yhteydenottoa liittyen seuraavaan 	suoritukseen:
         
@@ -69,13 +69,13 @@ export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluati
   const subject = 'Arviointilomake: työpaikkaohjaajan yhteydenottopyyntö';
   const html = mailerTemplate(text);
 
-  sendEmail({ to: params.userEmail, subject, html });
+  sendEmail({ to, subject, html });
 };
 
 // Opettaja pyytää yhteydenottoa
 
 interface ISendEvaluationFormCustomerRequestContactMessageTeacher {
-  userName: string;
+  customerName: string;
   userEmail: string;
   degreeName: string;
   unitName: string;
@@ -84,11 +84,11 @@ interface ISendEvaluationFormCustomerRequestContactMessageTeacher {
 }
 
 
-export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: ISendEvaluationFormCustomerRequestContactMessageTeacher) => {
+export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: ISendEvaluationFormCustomerRequestContactMessageTeacher, to: string) => {
 
   const text =
     `
-    Hei ${params.userName},
+    Hei ${params.customerName},
   
     Opettaja ${params.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
     
@@ -105,12 +105,11 @@ export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: I
   const subject = 'Arviointilomake: opettajan yhteydenottopyyntö';
   const html = mailerTemplate(text);
 
-  sendEmail({ to: params.userEmail, subject, html });
+  sendEmail({ to, subject, html });
 };
 
 interface ISendEvaluationFormTeacherRequestContactMessageSupervisor {
-  userName: string;
-  userEmail: string;
+  supervisorName: string;
   customerName: string;
   degreeName: string;
   unitName: string;
@@ -118,11 +117,11 @@ interface ISendEvaluationFormTeacherRequestContactMessageSupervisor {
   vocationalCompetenceName: string;
 }
 
-export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor) => {
+export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor, to:string) => {
 
   const text =
     `
-    Hei ${params.userName},
+    Hei ${params.supervisorName},
   
     Opettaja ${params.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
     
@@ -140,7 +139,7 @@ export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params:
   const subject = 'Arviointilomake: opettajan yhteydenottopyyntö';
   const html = mailerTemplate(text);
 
-  sendEmail({ to: params.userEmail, subject, html });
+  sendEmail({ to, subject, html });
 };
 
 // Arviointilomake: valmis lomake
