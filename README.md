@@ -1,5 +1,15 @@
 # **Saukko (StadinAO)**
 
+
+![DEVELOPMENT](https://img.shields.io/badge/SATGING-3d72a8)
+[![STAGING website status](https://img.shields.io/website?url=https%3A//saukko-dev-app-cf2pynvwyijf4.azurewebsites.net)](https://saukko-dev-app-cf2pynvwyijf4.azurewebsites.net)
+[![Build and deploy Node.js app to Azure Web App - saukko-dev-app-cf2pynvwyijf4](https://github.com/VirittamoHelsinki/saukko-app/actions/workflows/ci-update-env_saukko-dev-app-cf2pynvwyijf4.yml/badge.svg)](https://github.com/VirittamoHelsinki/saukko-app/actions/workflows/ci-update-env_saukko-dev-app-cf2pynvwyijf4.yml)
+
+![PRODUCTION](https://img.shields.io/badge/PRODUCTION-8A2BE2)
+[![PRODUCTION website status](https://img.shields.io/website?url=https%3A//saukko-prod-app-pppoz4ij7jaqc.azurewebsites.net)](https://saukko-prod-app-pppoz4ij7jaqc.azurewebsites.net)
+[![Build and deploy Node.js app to Azure Web App - saukko-prod-app-pppoz4ij7jaqc](https://github.com/VirittamoHelsinki/saukko-app/actions/workflows/main_saukko-prod-app-pppoz4ij7jaqc.yml/badge.svg)](https://github.com/VirittamoHelsinki/saukko-app/actions/workflows/main_saukko-prod-app-pppoz4ij7jaqc.yml)
+
+
 Saukko is an innovative platform designed to empower working professionals in completing their degrees while balancing their work commitments. The platform offers a flexible and efficient way for users to demonstrate their competence in various areas of study and earn their desired degrees.
 
 With Saukko, users have the freedom to learn and progress at their own pace, fitting their educational journey seamlessly into their work schedules. The platform utilizes a unique system where users can check off different demonstrations of competence, representing their acquired knowledge and skills in specific subjects.
@@ -31,9 +41,6 @@ cd saukko-app
 
 # Install all dependencies simultaneously for the front-end, back-end, and root
 npm run setup 
-
-# run the project's back-end and front-end simultaneously in production mode
-npm run start:prod
 
 # run the project's back-end and front-end simultaneously in development mode
 npm run start:dev

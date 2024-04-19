@@ -36,8 +36,8 @@ import AddCompanyName from '../../pages/AddCompanyName/AddCompanyName';
 import EmailVerification from '../../pages/VerifyEmail/VerifyEmail';
 import CreateUnitsSummary from '../../pages/CreateSummary/CreateUnitsSummary';
 import SetPassword from '../../pages/setPassword/SetPassword';
-import ErrorBoundary from '../errorBoundary';
 import { useAuthContext } from '../../store/context/authContextProvider';
+import TestEnvWarning from '../debugging/testEnvWarning';
 
 const Router = () => {
   let location = useLocation();
@@ -53,7 +53,7 @@ const Router = () => {
   useEffect(() => {
     if (loggedIn && (path === '/' || path === '/login' || path === '/forgot-password')) {
       if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
-        navigate('/customer-list');
+        navigate('/');
       } else if (currentUser.role === 'customer') {
         navigate('/unit-list');
       }
@@ -65,7 +65,8 @@ const Router = () => {
   }, [path]);
 
   return (
-    <ErrorBoundary>
+    <>
+      <TestEnvWarning />
       <Routes key={location.pathname} location={location}>
 
         {/* Placeholders for development */}
@@ -94,7 +95,7 @@ const Router = () => {
 
         {/* Teacher or supervisor */}
         {loggedIn && (currentUser.role === 'teacher' || currentUser.role === 'supervisor') && (
-          <Route path='/customer-list' element={<CustomerList />} />
+          <Route path='/' element={<CustomerList />} />
         )}
 
         {/* Teacher only */}
@@ -130,7 +131,7 @@ const Router = () => {
           </>
         )}
       </Routes>
-    </ErrorBoundary>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Button from "../../components/Button/Button";
@@ -73,7 +73,8 @@ const ResetPassword = () => {
 
     // sending data to the backend
     try {
-      await resetPassword(token, password);
+      if (!token) throw new Error("processResetPassword, token is not set")
+      await resetPassword(password, token);
       setNotificationVisible(true);
     } catch (error) {
       console.log(error);
