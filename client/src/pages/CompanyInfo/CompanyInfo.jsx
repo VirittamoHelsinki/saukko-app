@@ -215,24 +215,18 @@ const CompanyInfo = () => {
               >
                 Työpaikan Y-tunnus *
               </label>
-              <div
-                className='text_input businessID__search-field'
-                // style={{ padding: 0, position: 'relative' }}
-              >
+              <div className='text_input businessID__search-field'>
                 <input
                   type='text'
                   id='business-id-input'
                   className='text_input_businessID'
-                  // style={{ width: '100%', height: '100%', margin: 0 }}
                   name='Työpaikan Y-tunnus'
                   required
                   placeholder='1234567-6'
                   value={businessId}
                   onChange={handleBusinessId}
                 />
-                {/* <div style={{ position: 'absolute', margin: '1em' }}> */}
                 <RxCrossCircled
-                  // style={{ marginRight: '.5em' }}
                   className='cross-icone-style'
                   aria-hidden='true'
                   onClick={handleClearBusinessId}
@@ -244,37 +238,35 @@ const CompanyInfo = () => {
                 />
                 {/* </div> */}
               </div>
-            </div>
-            {/* <IconSearch className="search-icone-style" aria-hidden="true" onClick={handleSearchClick} /> */}
-            <div>
               <label
                 className='workplace-form-label'
                 htmlFor='company-name-input'
               >
                 Työpaikka *
               </label>
-              <input
-                type='text'
-                className='text_input'
-                id='company-name-input'
-                name='Työpaikan Y-tunnus'
-                required
-                value={editedCompanyName || (name && name.name) || ''}
-                onChange={handleCompanyName}
-              ></input>
-            </div>
-
-            <div className='department-container'>
+              <div className='text_input businessInformation'>
+                <input
+                  type='text'
+                  className='text_input_businessInformation'
+                  id='company-name-input'
+                  name='Työpaikan Y-tunnus'
+                  required
+                  value={editedCompanyName || (name && name.name) || ''}
+                  onChange={handleCompanyName}
+                ></input>
+              </div>
               <label htmlFor='department' className='workplace-form-label'>
                 {' '}
                 Yksikkö (ei pakollinen){' '}
               </label>
-              <input
-                className='text_input'
-                id='department-name-input'
-                name='Työpaikan yksikkö'
-                onChange={handleDepartment}
-              />
+              <div className='text_input businessInformation'>
+                <input
+                  className='text_input_businessInformation'
+                  id='department-name-input'
+                  name='Työpaikan yksikkö'
+                  onChange={handleDepartment}
+                />
+              </div>
             </div>
           </form>
         </Accordion>
@@ -308,7 +300,7 @@ const CompanyInfo = () => {
                   <div
                     key={index}
                     style={{
-                      borderBottom: '2px solid white',
+                      borderBottom: '4px solid white',
                       marginTop: '9px',
                       marginBottom: '9px',
                     }}
@@ -319,71 +311,78 @@ const CompanyInfo = () => {
                     >
                       Etunimi *
                     </label>
-                    <input
-                      className='text_input'
-                      id={`first-name-input-${index}`}
-                      name='Etunimi'
-                      required
-                      value={ohjaaja.firstName}
-                      readOnly
-                    />
+                    <div className='text_input supervisorInformation'>
+                      <input
+                        className='text_input_supervisorInformation'
+                        id={`first-name-input-${index}`}
+                        name='Etunimi'
+                        required
+                        value={ohjaaja.firstName}
+                        readOnly
+                      />
+                    </div>
                     <label
                       className='workplace-form-label'
                       htmlFor={`last-name-input-${index}`}
                     >
                       Sukunimi *
                     </label>
-                    <input
-                      className='text_input'
-                      id={`last-name-input-${index}`}
-                      name='Sukunimi'
-                      required
-                      value={ohjaaja.lastName}
-                      readOnly
-                    />
+                    <div className='text_input supervisorInformation'>
+                      <input
+                        className='text_input_supervisorInformation'
+                        id={`last-name-input-${index}`}
+                        name='Sukunimi'
+                        required
+                        value={ohjaaja.lastName}
+                        readOnly
+                      />
+                    </div>
                     <label
                       className='workplace-form-label'
                       htmlFor={`email-input-${index}`}
                     >
                       Sähköposti *
                     </label>
-                    <input
-                      className='text_input'
-                      id={`email-input-${index}`}
-                      style={{ marginBottom: '20px' }}
-                      name='Sähköposti'
-                      type='email'
-                      required
-                      value={ohjaaja.email}
-                      readOnly
-                    />
+                    <div
+                      className='text_input businessInformation'
+                      style={{ marginBottom: '2rem' }}
+                    >
+                      <input
+                        className='text_input_businessInformation'
+                        id={`email-input-${index}`}
+                        name='Sähköposti'
+                        type='email'
+                        required
+                        value={ohjaaja.email}
+                        readOnly
+                      />
+                    </div>
                   </div>
                 ))}
             </div>
-            <div className='ohjaja' style={{}}>
+            <div className='ohjaja'>
               <label
                 className='workplace-form-label'
                 htmlFor='first-name-input'
               >
                 Etunimi *
               </label>
-              <input
-                className='text_input'
-                id='first-name-input'
-                name='Etunimi'
-                required
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <div>
-                <label
-                  className='workplace-form-label'
-                  htmlFor='last-name-input'
-                >
-                  Sukunimi *
-                </label>
+              <div className='text_input supervisorInformation'>
                 <input
-                  className='text_input'
+                  className='text_input_supervisorInformation'
+                  id='first-name-input'
+                  name='Etunimi'
+                  required
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </div>
+              <label className='workplace-form-label' htmlFor='last-name-input'>
+                Sukunimi *
+              </label>
+              <div className='text_input supervisorInformation'>
+                <input
+                  className='text_input_supervisorInformation'
                   id='last-name-input'
                   name='Sukunimi'
                   required
@@ -391,12 +390,12 @@ const CompanyInfo = () => {
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
-              <div>
-                <label className='workplace-form-label' htmlFor='email-input'>
-                  Sähkoposti *
-                </label>
+              <label className='workplace-form-label' htmlFor='email-input'>
+                Sähkoposti *
+              </label>
+              <div className='text_input supervisorInformation'>
                 <input
-                  className='text_input'
+                  className='text_input_supervisorInformation'
                   id='email-input'
                   name='Sähkoposti'
                   type='email'
@@ -423,7 +422,7 @@ const CompanyInfo = () => {
         </Accordion>
       </div>
       <PageNavigationButtons
-        handleBack={() => navigate('/admin-menu')}
+        handleBack={() => navigate('/add/companyname')}
         handleForward={handleForward}
         showForwardButton={true}
       />
