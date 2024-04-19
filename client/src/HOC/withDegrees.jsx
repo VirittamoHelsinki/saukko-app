@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { fetchDegreesFromEperusteet } from '../api/degree'
 import { useExternalApiContext } from "../store/context/ExternalApiContext";
-import ErrorBoundary from '../components/errorBoundary';
 
 const withDegrees = (Component) => {
   return function WrappedComponent(props) {
     const { allDegrees, setAllDegrees } = useExternalApiContext();
-
-    // const [degrees, setDegrees] = useState(allDegrees);
     const [error, setError] = useState(null)
 
     useEffect(() => {
@@ -27,9 +24,7 @@ const withDegrees = (Component) => {
     }
 
     return (
-      <ErrorBoundary>
-        <Component {...props} allDegrees={allDegrees} />
-      </ErrorBoundary>
+      <Component {...props} allDegrees={allDegrees} />
     )
   }
 }

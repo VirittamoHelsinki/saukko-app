@@ -36,8 +36,8 @@ import AddCompanyName from '../../pages/AddCompanyName/AddCompanyName';
 import EmailVerification from '../../pages/VerifyEmail/VerifyEmail';
 import CreateUnitsSummary from '../../pages/CreateSummary/CreateUnitsSummary';
 import SetPassword from '../../pages/setPassword/SetPassword';
-import ErrorBoundary from '../errorBoundary';
 import { useAuthContext } from '../../store/context/authContextProvider';
+import TestEnvWarning from '../debugging/testEnvWarning';
 
 const Router = () => {
   let location = useLocation();
@@ -65,7 +65,8 @@ const Router = () => {
   }, [path]);
 
   return (
-    <ErrorBoundary>
+    <>
+      <TestEnvWarning />
       <Routes key={location.pathname} location={location}>
 
         {/* Placeholders for development */}
@@ -130,7 +131,7 @@ const Router = () => {
           </>
         )}
       </Routes>
-    </ErrorBoundary>
+    </>
   );
 };
 
