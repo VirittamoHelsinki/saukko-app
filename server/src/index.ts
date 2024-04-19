@@ -83,7 +83,7 @@ app.use('/api/status', (_req, res) => {
 app.get('*', (req, res) => {
   if (config.ENVIRONMENT === 'development') {
     return res.status(404).json({
-      errorMessage: `For developing react app, use port 3000 insted ${config.PORT}`
+      errorMessage: `For developing react app, use port 5173 insted ${config.PORT}`
     })
   }
   res.sendFile(path.join(staticPath, 'index.html'));

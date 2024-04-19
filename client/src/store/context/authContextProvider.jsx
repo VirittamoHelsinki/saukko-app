@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import Uvc from 'universal-cookie';
-import { fetchCurrentUser } from '../../api/user.js';
+import { fetchCurrentUser, refreshAuthToken } from '../../api/user.js';
+import { jwtDecode } from 'jwt-decode';
 
 const Ctx = createContext(null);
 
@@ -20,6 +21,8 @@ const AuthContextProvider = ({ children }) => {
   const [cookieAuthState, setCookieAuthState] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState();
+  const [authTokenExpiry, setAuthTokenExpiry] = useState(null);
+  const [error, setError] = useState(null);
 
   // Check the Auth-state from cookies
   const cookieChangeListener = useCallback((ccl) => {
@@ -30,6 +33,8 @@ const AuthContextProvider = ({ children }) => {
       const c = cookies.get("auth_state");
       if (c) {
         setCookieAuthState(true);
+        const decoded = jwtDecode(c);
+        setAuthTokenExpiry(new Date(decoded.exp * 1000))
       }
       return;
     }
@@ -42,6 +47,7 @@ const AuthContextProvider = ({ children }) => {
     } else if (ccl.name === "auth_state" && !!ccl.value) {
       // Cookie exists and has a value
       setCookieAuthState(true);
+      setAuthTokenExpiry(new Date(jwtDecode(ccl).exp * 1000))
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,6 +61,36 @@ const AuthContextProvider = ({ children }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cookieChangeListener])
+
+  const refreshOrRemoveTokenIfNeeded = useCallback(() => {
+    const now = new Date();
+    if (authTokenExpiry) {
+      const timeLeft = authTokenExpiry.getTime() - now.getTime();
+      const refreshThreshold = (authTokenExpiry.getTime() - new Date(authTokenExpiry.getTime() - authTokenExpiry.getTime() / 6).getTime());
+
+      if (timeLeft <= 1000 * 60 * 4) {
+        cookies.remove("auth_state");
+        setLoggedIn(false);
+        setCurrentUser(undefined);
+        setCookieAuthState(false);
+        setAuthTokenExpiry(null);
+      } else if (timeLeft <= refreshThreshold) {
+        refreshAuthToken()
+          .then(() => {
+            console.log("auth token was refreshed.");
+          })
+          .catch(setError);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authTokenExpiry])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshOrRemoveTokenIfNeeded();
+    }, 1000 * 60 * 5);
+    return () => clearInterval(interval)
+  }, [refreshOrRemoveTokenIfNeeded])
 
   // Fetch current user
   const fetchCurrentUserDataAsync = useCallback(async () => {
@@ -87,6 +123,10 @@ const AuthContextProvider = ({ children }) => {
     console.log("role", currentUser?.role);
     console.groupEnd();
   }, [currentUser, loggedIn])
+
+  if (error) {
+    throw error;
+  }
 
   return (
     <Ctx.Provider value={{ loggedIn, currentUser }}>

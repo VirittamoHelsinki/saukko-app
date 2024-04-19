@@ -31,6 +31,11 @@ const loginUser = async (loginData) => {
   return response
 }
 
+const refreshAuthToken = async () => {
+  const response = await axios.get('/auth/renew-token');
+  return response;
+}
+
 const forgotPassword = async (email) => {
   const response = await axios.post('/auth/forgot-password', {
     email: email,
@@ -107,7 +112,7 @@ export {
   resetPassword,
   registration,
   verifyEmail,
-
+  refreshAuthToken,
   // This is medicine if email-verification-link are expired
   requestEmailVerificationLinkAsync,
   // The user must request a password reset token before the user can change the password
