@@ -42,9 +42,6 @@ cd saukko-app
 # Install all dependencies simultaneously for the front-end, back-end, and root
 npm run setup 
 
-# run the project's back-end and front-end simultaneously in production mode
-npm run start:prod
-
 # run the project's back-end and front-end simultaneously in development mode
 npm run start:dev
 ```
