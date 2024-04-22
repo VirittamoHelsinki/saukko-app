@@ -7,8 +7,6 @@ import useStore from '../../../store/zustand/formStore';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import Hyperlink from '../../../components/Hyperlink/Hyperlink';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
@@ -16,6 +14,7 @@ import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 function DegreeInfo() {
   const navigate = useNavigate();
@@ -83,7 +82,10 @@ function DegreeInfo() {
     }
   }
 
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
   useEffect(() => {
+    setSiteTitle("Tutkintojen hallinta"), setSubHeading("Tutkintojen hallinta"), setHeading("Saukko");
     if (degreeFound) {
       setDegreeDescription(degree?.description?.fi);
       setDegreeName(degree?.name?.fi);
@@ -165,11 +167,7 @@ function DegreeInfo() {
   }
 
   return (
-    <main className='degreeInfo__wrapper'>
-      <WavesHeader
-        title='Saukko'
-        secondTitle='Tutkintojen hallinta'
-      />
+    <div className='degreeInfo__wrapper'>
       <section className='degreeInfo__container'>
         <Stepper
           activePage={1}
@@ -378,8 +376,7 @@ function DegreeInfo() {
         open={openNotificationModalDate}
         handleClose={handleCloseDate}
       />
-      <UserNav />
-    </main>
+    </div>
   );
 }
 
