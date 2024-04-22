@@ -1,19 +1,20 @@
 // Import react packages & dependencies
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 // Import components
-import WavesHeader from '../../components/Header/WavesHeader';
-import InfoList from '../../components/InfoList/InfoList';
-import UserNav from '../../components/UserNav/UserNav';
 import InternalApiContext from '../../store/context/InternalApiContext';
 import { fetchInternalDegreeById } from '../../api/degree';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
+import InfoList from '../../components/InfoList/InfoList';
 
 const ContractInfo = () => {
   const { evaluation } = useContext(InternalApiContext);
   console.log('🚀 ~ ContractInfo ~ evaluation:', evaluation);
   const [degreeDetails, setDegreeDetails] = useState(null);
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
+    setSiteTitle("Sopimus"), setSubHeading(evaluation?.customerId?.firstName + ' ' + evaluation?.customerId?.lastName), setHeading("Sopimus")
     const degree = async () => {
       try {
         const response = await fetchInternalDegreeById(evaluation?.degreeId);
@@ -26,7 +27,7 @@ const ContractInfo = () => {
     };
 
     degree();
-  }, [evaluation]);
+  }, [evaluation, setHeading, setSiteTitle, setSubHeading]);
 
   function formatDate(dateString) {
     const startDate = new Date(dateString);
@@ -44,7 +45,7 @@ const ContractInfo = () => {
     const monthName = months[monthIndex];
     const year = startDate.getFullYear();
     return `${day}.${monthName} ${year}`;
-}
+  }
 
   const startDateString = evaluation?.startDate; // Get start date from evaluation object
   const endDateString = evaluation?.endDate; // Get end date from evaluation object
@@ -153,16 +154,7 @@ const ContractInfo = () => {
     },
   ];
   return (
-    <main className='contractInfo__wrapper'>
-      <WavesHeader
-        title='Sopimus'
-        secondTitle={
-          evaluation?.customerId?.firstName +
-          ' ' +
-          evaluation?.customerId?.lastName
-        }
-        disabled={true}
-      />
+    <div className='contractInfo__wrapper'>
       <div className='contractInfo__container'>
         <section className='contractInfo__container--description'>
           <InfoList data={data} />
@@ -196,8 +188,7 @@ const ContractInfo = () => {
           </ul>
         </section>
       </div>
-      <UserNav />
-    </main>
+    </div>
   );
 };
 
