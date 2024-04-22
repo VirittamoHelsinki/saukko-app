@@ -32,7 +32,7 @@ export default function CustomerList() {
 
   // Data from store management
   const { currentUser } = useAuthContext();
-  const { setHeading } = useHeadingContext();
+  const { setHeading, setSiteTitle } = useHeadingContext();
   const { evaluations, setInternalEvaluations, setInternalEvaluation } =
     useContext(InternalApiContext);
 
@@ -67,6 +67,7 @@ export default function CustomerList() {
   // Set evaluations
   useEffect(() => {
     setHeading(`Tervetuloa, ${currentUser?.firstName}`)
+    setSiteTitle("Etusivu")
     setInternalEvaluations();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

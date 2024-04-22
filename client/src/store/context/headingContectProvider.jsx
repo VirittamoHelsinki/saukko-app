@@ -13,12 +13,15 @@ export const useHeadingContext = () => {
 const HeadingContextProvider = ({children}) => {
   const [heading, setHeading] = useState("");
   const [subHeading, setSubHeading] = useState("");
+  const [siteTitle, setSiteTitle] = useState("");
   return (
     <Ctx.Provider value={{
       heading,
       setHeading,
       subHeading,
       setSubHeading,
+      siteTitle,
+      setSiteTitle
     }}>
       {children}
     </Ctx.Provider>

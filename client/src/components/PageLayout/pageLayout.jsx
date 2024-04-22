@@ -4,7 +4,7 @@ import { useAuthContext } from '../../store/context/authContextProvider';
 import styles from './pageLayout.module.scss';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import UserNav from '../UserNav/UserNav';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Waves = (props) => {
   return (
@@ -51,7 +51,7 @@ const getHeaderColor = (role) => {
 
 const PageLayout = () => {
   const { currentUser } = useAuthContext();
-  const { heading, subHeading } = useHeadingContext();
+  const { heading, subHeading, siteTitle } = useHeadingContext();
   const navigate = useNavigate();
   const location = useLocation();
   const navigationType = useNavigationType();
@@ -65,6 +65,10 @@ const PageLayout = () => {
   const logoColor = currentUser?.role ? '#000' : '#fff';
 
   const showBackButton = navigationType !== 'POP' && location.key !== 'default';
+
+  useEffect(() => {
+    document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
+  }, [siteTitle]);
 
   return (
     <>
