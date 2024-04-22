@@ -56,6 +56,7 @@ const PageLayout = () => {
   const location = useLocation();
   const navigationType = useNavigationType();
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [headinIsDisabled, setHeadingIsDisabled] = useState(false);
 
   const headerColor = getHeaderColor(currentUser?.role);
   const wrapperStyle = {
@@ -68,6 +69,15 @@ const PageLayout = () => {
 
   const renderHeader = currentUser && currentUser.role;
 
+  
+  useEffect(() => {
+    const wavesHeadingDisabledPaths = ["verify-email"]
+    setHeadingIsDisabled(wavesHeadingDisabledPaths.some(path => {
+      console.log(window.location.pathname, path);
+      return window.location.pathname.includes(path)
+    }))
+  }, [])
+
   useEffect(() => {
     document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
   }, [siteTitle]);
@@ -75,7 +85,7 @@ const PageLayout = () => {
   return (
     <>
       <div className={styles.container}>
-        {renderHeader && <header style={wrapperStyle}>
+        {renderHeader && !headinIsDisabled && <header style={wrapperStyle}>
           {showBackButton  && <button onClick={() => navigate(-1)}>
             <Icon icon="typcn:arrow-left" style={{ color: logoColor }} />
           </button>}

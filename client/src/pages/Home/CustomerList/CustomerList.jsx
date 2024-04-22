@@ -110,11 +110,6 @@ export default function CustomerList() {
 
   return (
     <div className='customerList__wrapper'>
-      {/* <WavesHeader
-        title={`Tervetuloa, ${currentUser?.firstName}`}
-        disabled={true}
-      /> */}
-
       {/* Notifications */}
       <div className='customerList__notifications'>
         <h3> Ilmoitukset </h3>

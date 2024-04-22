@@ -1,10 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserNav from '../../../components/UserNav/UserNav';
-import WavesHeader from '../../../components/Header/WavesHeader';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Button from '../../../components/Button/Button';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({
@@ -92,6 +91,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
 };
 
 const AddDegree = () => {
+  const { setHeading, setSiteTitle, setSubHeading } = useHeadingContext();
   const [currentPage, setCurrentPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [paginate, setPaginate] = useState(5);
@@ -123,14 +123,14 @@ const AddDegree = () => {
     setCurrentPage(pageNum);
   };
 
+  useEffect(() => {
+    setHeading("Saukko");
+    setSubHeading("Tutkintojen hallinta");
+    setSiteTitle("Tutkintojen hallinta")
+  })
+
   return (
-    <main className='addDegree__wrapper'>
-      <WavesHeader
-        title='Saukko'
-        secondTitle='Tutkintojen hallinta'
-        disabled={false}
-      />
-      <UserNav />
+    <div className='addDegree__wrapper'>
       <section className='addDegree__container'>
         <Button
           id='addDegreeButton'
@@ -164,7 +164,7 @@ const AddDegree = () => {
           handlePageClick={handlePageClick}
         />
       </section>
-    </main>
+    </div>
   );
 };
 
