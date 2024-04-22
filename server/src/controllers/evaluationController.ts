@@ -445,7 +445,6 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
     const teacherEmail = evaluation.teacherId?.email || 'Unknown Teacher Email';
     const supervisorEmail = evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email';
 
-
     // suoritus valmis
     switch (user.role) {
       case 'supervisor':
@@ -515,7 +514,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
               customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
               teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
               vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
-            },supervisorEmail);
+            }, supervisorEmail);
           }
         }
 
@@ -526,7 +525,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
               customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
               supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
               teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-            },customerEmail);
+            }, customerEmail);
           }
         }
 
@@ -544,7 +543,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
               teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
               customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
               supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-            },teacherEmail);
+            }, teacherEmail);
           }
         }
       });
