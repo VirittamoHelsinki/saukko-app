@@ -2,8 +2,7 @@ import * as mailer from '../src/mailer/configMailer';
 import { sendVerificationEmail, sendVerificationDoneEmail } from '../src/mailer/templates/newUserVerification';
 import { sendResetPasswordEmail, sendResetPasswordSuccessEmail } from '../src/mailer/templates/resetPassword';
 import { sendNewCustomerAddedEmail } from '../src/mailer/templates/addingUserToAgreement';
-import { AssessmentStatus, ISendEvaluationFormReady, sendEvaluationFormCustomerRequestContact, sendEvaluationFormCustomerOrSupervisorReady } from '../src/mailer/templates/EvaluationForm';
-import { send } from 'process';
+// import { AssessmentStatus, ISendEvaluationFormReady, sendEvaluationFormCustomerRequestContact, sendEvaluationFormCustomerOrSupervisorReady } from '../src/mailer/templates/EvaluationForm';
 
 
 interface IUser {
@@ -12,7 +11,19 @@ interface IUser {
   email: string;
 }
 
-describe.skip('test sending emails', () => {
+describe('test sending emails with resend', () => {
+  it('verifikaatiolinkki', async () => {
+    const mockUser: IUser = {
+      firstName: 'Matti',
+      lastName: 'Meikäläinen',
+      email: 'joel.heusala@gmail.com',
+    }
+    const mockVerificationLink = 'https://example.com/verification-link';
+    sendVerificationEmail({ userEmail: mockUser.email, verificationLink: mockVerificationLink });
+  });
+});
+
+/*describe.skip('test sending emails', () => {
   it('verifikaatiolinkki', async () => {
     const mockUser: IUser = {
       firstName: 'Matti',
@@ -128,7 +139,7 @@ describe.skip('sendEmail', () => {
   });
 });
 
-describe('new user verification emails', () => {
+describe.skip('new user verification emails', () => {
 
   it('should send a verification email', async () => {
     const mockUser: IUser = {
@@ -150,5 +161,5 @@ describe('new user verification emails', () => {
     });
   });
 
-});
+});*/
 

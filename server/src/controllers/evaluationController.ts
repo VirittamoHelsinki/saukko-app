@@ -445,6 +445,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
     const teacherEmail = evaluation.teacherId?.email || 'Unknown Teacher Email';
     const supervisorEmail = evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email';
 
+
     // suoritus valmis
     switch (user.role) {
       case 'supervisor':

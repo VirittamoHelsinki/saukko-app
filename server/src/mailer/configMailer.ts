@@ -12,9 +12,18 @@ export const sendEmail = async ({ to, subject, html }: any) => {
     }
   });
 
+/*  const transporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE,
+    host: process.env.EMAIL_SERVICE_HOST,
+    auth: {
+      user: process.env.EMAIL_SERVICE_USER,
+      pass: process.env.EMAIL_SERVICE_PASSWORD,
+    },
+  });*/
+
   // Define the email options
   const mailOptions = {
-    from: '"Jamie Sauer 👻" <jamie.sauer86@ethereal.email>', // sender address
+    from: process.env.EMAIL_SERVICE_FROM,
     to,
     subject,
     html,
