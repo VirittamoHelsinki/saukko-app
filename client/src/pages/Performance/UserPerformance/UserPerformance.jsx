@@ -1,9 +1,7 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 
 import { useLocation, useNavigate } from 'react-router';
 
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';
 import Button from '../../../components/Button/Button';
@@ -23,6 +21,7 @@ import useEvaluationStore from '../../../store/zustand/evaluationStore';
 // Fetch evaluation by id from api
 import { updateEvaluationById } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
@@ -34,6 +33,7 @@ const UserPerformance = () => {
   const [textareaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { allInternalDegrees } = useContext(InternalApiContext);
@@ -60,7 +60,6 @@ const UserPerformance = () => {
   const location = useLocation();
   const [lastLocation, setLastLocation] = useState(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
-  const [destination, setDestination] = useState(null);
   // Modal for showing criteria
   const [criteriaModalContent, setCriteriaModalContent] = useState([]);
   const [customerFirstName, setCustomerFirstName] = useState(null);
@@ -126,19 +125,19 @@ const UserPerformance = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmedNavigation, lastLocation]);
 
-  const handleNavigation = (destination) => {
-    if (hasUnsavedChanges) {
-      setShowWarningModal(true);
-      setDestination(destination);
-    } else {
-      console.log('Destination before navigation:', destination);
-      navigate(destination);
-    }
-    console.log('Destination before navigation222:', destination);
-    setLastLocation(destination);
+  // const handleNavigation = (destination) => {
+  //   if (hasUnsavedChanges) {
+  //     setShowWarningModal(true);
+  //     setDestination(destination);
+  //   } else {
+  //     console.log('Destination before navigation:', destination);
+  //     navigate(destination);
+  //   }
+  //   console.log('Destination before navigation222:', destination);
+  //   setLastLocation(destination);
 
-    console.log('Destination after navigation:', destination);
-  };
+  //   console.log('Destination after navigation:', destination);
+  // };
 
   useEffect(() => {
     const buttonStyle = {
@@ -282,24 +281,17 @@ const UserPerformance = () => {
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
   // console.log('unitObject', unitObject);
 
+  useEffect(() => {
+    setSiteTitle("Arviointi"), setSubHeading("Ammaattitaitovaatimusten arviointi");
+    if (currentUser && (currentUser.role === 'teacher' || currentUser.role === 'supervisor')) {
+      setHeading(customerFirstName + ' ' + customerLastName)
+    } else {
+      setHeading(`Tervetuloa, ${customerFirstName}`)
+    }
+  })
+
   return (
-    <main>
-      <div>
-        {/* <WavesHeader
-          title={customerInformation}
-          secondTitle='Ammaattitaitovaatimusten arviointi'
-          disabled={true}
-        /> */}
-        {currentUser?.role === 'teacher' || currentUser?.role === 'supervisor' ? (
-          <WavesHeader
-            title={customerFirstName + ' ' + customerLastName}
-            secondTitle='Ammaattitaitovaatimusten arviointi'
-            disabled={true}
-          />
-        ) : (
-          <WavesHeader title={`Tervetuloa, ${customerFirstName} `} />
-        )}
-      </div>
+    <div>
       <h2 className='degree-name'>{degreeName?.name.fi}</h2>
       <h4 className='degree-unit-name'> {unitObject?.name.fi}</h4>
       <div>
@@ -471,15 +463,6 @@ const UserPerformance = () => {
           // disabled={isPalauteSectionDisabled()}
         />
       </section>
-      <div style={{ marginBottom: '90px' }}>
-        <UserNav
-          checkUnsavedChanges={
-            hasUnsavedChanges ? () => setHasUnsavedChanges(true) : null
-          }
-          handleNavigation={handleNavigation}
-          destination={destination}
-        ></UserNav>
-      </div>
 
       {/* Warning notification modal */}
       <NotificationModal
@@ -547,7 +530,7 @@ const UserPerformance = () => {
         open={openNotificationModal}
         // handleClose={handleNotificationModalClose}
       />
-    </main>
+    </div>
   );
 };
 
