@@ -1,17 +1,16 @@
 // Import React
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UnitStatus from '../../../components/UnitStatus/UnitStatus';
-import UserNav from '../../../components/UserNav/UserNav';
 import Button from '../../../components/Button/Button';
 
 // Import state management
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 const UnitList = () => {
   const navigate = useNavigate();
@@ -25,6 +24,8 @@ const UnitList = () => {
     allInternalDegrees,
   } = useContext(InternalApiContext);
 
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
   const degreeName =
     allInternalDegrees &&
     allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
@@ -32,6 +33,12 @@ const UnitList = () => {
 
   // Set evaluation automatically when role is customer
   useEffect(() => {
+    setSiteTitle("Suoritukset"), setSubHeading("Suoritukset")
+    if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
+      setHeading(`${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`)
+    } else {
+      setHeading(`Tervetuloa, ${evaluation?.customerId.firstName} `)
+    }
     if (currentUser.role === 'customer') {
       setInternalEvaluations();
     }
@@ -46,21 +53,7 @@ const UnitList = () => {
   }, [evaluations]);
 
   return (
-    <main className='unitList__wrapper'>
-      {currentUser.role === 'teacher' || currentUser.role === 'supervisor' ? (
-        <WavesHeader
-          title={`${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`}
-          secondTitle='Suoritukset'
-          disabled={true}
-        />
-      ) : (
-        <WavesHeader
-          title={`Tervetuloa, ${evaluation?.customerId.firstName} `}
-          secondTitle='Suoritukset'
-          disabled={true}
-        />
-      )}
-
+    <div className='unitList__wrapper'>
       <div className='unitList__notifications'>
         <h3> Ilmoitukset </h3>
         <NotificationBadge number1={10} number2={5} />
@@ -103,9 +96,7 @@ const UnitList = () => {
           />
         </div>
       </div>
-
-      <UserNav />
-    </main>
+    </div>
   );
 };
 
