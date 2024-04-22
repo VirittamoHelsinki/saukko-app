@@ -1,11 +1,10 @@
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserNav from '../../../components/UserNav/UserNav';
-import WavesHeader from '../../../components/Header/WavesHeader';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import useStore from '../../../store/zustand/formStore';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import withDegrees from '../../../HOC/withDegrees';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
@@ -103,9 +102,11 @@ const SearchPage = ({ allDegrees }) => {
   // Get values and functions from state management
   const { setDegreeId } = useContext(ExternalApiContext);
   const { resetDegreeData } = useStore();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Clear degree on first render
   useEffect(() => {
+    setSiteTitle("Saukko"), setSubHeading("Tutkintojen hallinta"), setHeading("Tutkintojen hallinta");
     resetDegreeData()
     setDegreeId('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -134,11 +135,9 @@ const SearchPage = ({ allDegrees }) => {
   const handlePageClick = (pageNum) => {
     setCurrentPage(pageNum);
   };
-  
+
   return (
-    <main className="searchPage__wrapper">
-      <WavesHeader title="Saukko" secondTitle="Tutkintojen hallinta" disabled={false} />
-      <UserNav />
+    <dev className="searchPage__wrapper">
       <section className="searchPage__container">
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
         {allDegrees ? (
@@ -164,7 +163,7 @@ const SearchPage = ({ allDegrees }) => {
             </div>
           )}
       </section>
-    </main>
+    </dev>
   );
 };
 
