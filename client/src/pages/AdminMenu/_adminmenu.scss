@@ -4,14 +4,11 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    min-height: 100vh;
 
     .adminMenu__container {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-top: 220px;
-      margin-bottom: 50px;
       flex-grow: 1;
       overflow-y: auto;
       width: 100%;
