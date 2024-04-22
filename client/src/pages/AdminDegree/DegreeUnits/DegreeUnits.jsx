@@ -1,13 +1,11 @@
 // Import react packages
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import libraries
 import Pagination from '@mui/material/Pagination';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 // import Searchbar from '../../../components/Searchbar/Searchbar';
@@ -16,6 +14,7 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 // Import state management
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import useStore from '../../../store/zustand/formStore';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 function DegreeUnits() {
   const navigate = useNavigate();
@@ -26,12 +25,14 @@ function DegreeUnits() {
 
   // Get degree name from zustand store
   const { degreeName } = useStore();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Save degree units to state once degree is fetched
   const degreeUnits = degree.units;
   const [filteredUnits, setFilteredUnits] = useState(degreeUnits);
 
   useEffect(() => {
+    setSiteTitle("Tutkintojen hallinta"), setSubHeading("Tutkintojen hallinta"), setHeading("Saukko")
     setFilteredUnits(degreeUnits);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);
@@ -81,7 +82,6 @@ function DegreeUnits() {
 
   return (
     <main className='degreeUnits__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
       <section className='degreeUnits__container'>
         <Stepper
           activePage={2}
@@ -120,7 +120,6 @@ function DegreeUnits() {
           showForwardButton={true}
         />
       </section>
-      <UserNav />
     </main>
   );
 }

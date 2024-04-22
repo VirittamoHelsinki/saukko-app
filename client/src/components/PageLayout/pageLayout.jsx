@@ -71,7 +71,8 @@ const PageLayout = () => {
 
   
   useEffect(() => {
-    const wavesHeadingDisabledPaths = ["verify-email"]
+    // Add pages in array below, where the waves header should not render
+    const wavesHeadingDisabledPaths = ["verify-email", ]
     setHeadingIsDisabled(wavesHeadingDisabledPaths.some(path => {
       console.log(window.location.pathname, path);
       return window.location.pathname.includes(path)
