@@ -415,145 +415,187 @@ enum AssessmentStatus {
 
 const handeUserPerformanceEmails = async (req: Request, res: Response) => {
 
-  try {
-    const evaluation = await EvaluationModel.findById(req.params.id)
-      .populate({
-        path: 'degreeId',
-        select: 'name.fi',
-      })
-      .populate('customerId')
-      .populate('teacherId')
-      .populate('supervisorIds')
-      .populate('units');
+    try {
+      const evaluation = await EvaluationModel.findById(req.params.id)
+        .populate({
+          path: 'degreeId',
+          select: 'name.fi',
+        })
+        .populate('customerId')
+        .populate('teacherId')
+        .populate('supervisorIds')
+        .populate('units');
 
 
-    if (!evaluation) {
-      return res.status(404).send({ message: 'Evaluation not found' });
-    }
+      if (!evaluation) {
+        return res.status(404).send({ message: 'Evaluation not found' });
+      }
 
-    const user = req.user as User;
+      const user = req.user as User;
 
-    const params = {
-      degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
-      unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
-      supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-      customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-      additionalInfo: req.body.additionalInfo,
-    };
+      const params = {
+        degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
+        unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
+        supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+        customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+        additionalInfo: req.body.additionalInfo,
+      };
 
-    const customerEmail = evaluation.customerId?.email || 'Unknown Customer Email';
-    const teacherEmail = evaluation.teacherId?.email || 'Unknown Teacher Email';
-    const supervisorEmail = evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email';
+      const customerEmail = evaluation.customerId?.email || 'Unknown Customer Email';
+      const teacherEmail = evaluation.teacherId?.email || 'Unknown Teacher Email';
+      const supervisorEmail = evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email';
 
-    // suoritus valmis
-    switch (user.role) {
-      case 'supervisor':
-        sendEvaluationFormSupervisorReadyMessageCustomer(
-          {
-            ...params,
-            customerFirstName: evaluation.customerId?.firstName || 'Unknown Customer First Name',
-            customerAssessment: AssessmentStatus.READY,
-            supervisorAssessment: AssessmentStatus.READY,
-          },
-          'TPO:n valmis lomake', customerEmail);
-        sendEvaluationFormSupervisorReadyMessageTeacher(
-          {
-            ...params,
-            teacherFirstName: evaluation.teacherId?.firstName || 'Unknown Customer First Name',
-            customerAssessment: AssessmentStatus.READY,
-            supervisorAssessment: AssessmentStatus.READY,
-          },
-          'TPO:n valmis lomake', teacherEmail);
-        break;
-      case 'customer':
-        sendEvaluationFormCustomerReadyMessageSupervisor({
-          ...params,
-          supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
-          customerAssessment: AssessmentStatus.READY,
-          supervisorAssessment: AssessmentStatus.READY,
-        }, 'Asiakkaan valmis lomake', supervisorEmail);
-        sendEvaluationFormCustomerReadyMessageTeacher({
-          ...params,
-          teacherFirstName: evaluation.teacherId?.firstName,
-          customerAssessment: AssessmentStatus.READY,
-          supervisorAssessment: AssessmentStatus.READY,
+      const selectedValues = req.body.selectedValues;
 
-        }, 'Asiakkaan valmis lomake', supervisorEmail);
-        break;
-      case 'teacher':
-        sendEvaluationFormTeacherReadyMessageSupervisor({
-          ...params,
-          supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
-          evaluationAccepted: EvaluationStatus.ACCEPTED,
+      if (selectedValues.suoritusValmis) {
+        // suoritus valmis
+        switch (user.role) {
+          case 'supervisor':
+            sendEvaluationFormSupervisorReadyMessageCustomer(
+              {
+                ...params,
+                customerFirstName: evaluation.customerId?.firstName || 'Unknown Customer First Name',
+                customerAssessment: AssessmentStatus.READY,
+                supervisorAssessment: AssessmentStatus.READY,
+              },
+              'TPO:n valmis lomake', customerEmail);
+            sendEvaluationFormSupervisorReadyMessageTeacher(
+              {
+                ...params,
+                teacherFirstName: evaluation.teacherId?.firstName || 'Unknown Customer First Name',
+                customerAssessment: AssessmentStatus.READY,
+                supervisorAssessment: AssessmentStatus.READY,
+              },
+              'TPO:n valmis lomake', teacherEmail);
+            break;
+          case 'customer':
+            sendEvaluationFormCustomerReadyMessageSupervisor({
+              ...params,
+              supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+              customerAssessment: AssessmentStatus.READY,
+              supervisorAssessment: AssessmentStatus.READY,
+            }, 'Asiakkaan valmis lomake', supervisorEmail);
+            sendEvaluationFormCustomerReadyMessageTeacher({
+              ...params,
+              teacherFirstName: evaluation.teacherId?.firstName,
+              customerAssessment: AssessmentStatus.READY,
+              supervisorAssessment: AssessmentStatus.READY,
 
-        }, 'opettajan valmis lomake', supervisorEmail);
-        sendEvaluationFormTeacherReadyMessageCustomer({
-          ...params,
-          customerFirstName: evaluation.customerId?.firstName,
-          evaluationAccepted: EvaluationStatus.ACCEPTED,
+            }, 'Asiakkaan valmis lomake', supervisorEmail);
+            break;
+          case 'teacher':
+            sendEvaluationFormTeacherReadyMessageSupervisor({
+              ...params,
+              supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+              evaluationAccepted: EvaluationStatus.ACCEPTED,
 
-        }, 'opettajan valmis lomake', customerEmail);
-        break;
-    }
-    const params2 = {
-      userName: user.firstName + ' ' + user.lastName,
-      userEmail: user?.email || 'Unknown Email',
-      degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
-      unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
-    };
+            }, 'opettajan valmis lomake', supervisorEmail);
+            sendEvaluationFormTeacherReadyMessageCustomer({
+              ...params,
+              customerFirstName: evaluation.customerId?.firstName,
+              evaluationAccepted: EvaluationStatus.ACCEPTED,
 
-    // yhteydenottopyynnöt
-    if (req.body.contactRequests && req.body.contactRequests.length > 0) {
-      // If contact requests exist, choose one or more recipients from the list
-      req.body.contactRequests.forEach((recipient: string) => {
-        if (recipient === 'supervisor') {
-          if (user.role === 'teacher') {
-            sendEvaluationFormTeacherRequestContactMessageSupervisor({
-              ...params2,
-              supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-              customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-              teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-              vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
-            }, supervisorEmail);
-          }
+            }, 'opettajan valmis lomake', customerEmail);
+            break;
         }
+      }
+      const params2 = {
+        userName: user.firstName + ' ' + user.lastName,
+        userEmail: user?.email || 'Unknown Email',
+        degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
+        unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
+      };
 
-        if (recipient === 'customer') {
-          if (user.role === 'teacher') {
-            sendEvaluationFormTeacherRequestContactMessageCustomer({
-              ...params2,
-              customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-              supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-              teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-            }, customerEmail);
-          }
-        }
 
-        if (recipient === 'teacher') {
-          if (user.role === 'supervisor') {
-            sendEvaluationFormSupervisorRequestContact({
-              ...params2,
-              teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-              supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-              customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-            }, teacherEmail);
-          } else if (user.role === 'customer') {
-            sendEvaluationFormCustomerRequestContact({
-              ...params2,
-              teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-              customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-              supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-            }, teacherEmail);
+      if (selectedValues.pyydetaanYhteydenottoaOpettajalta && user.role === 'customer') {
+        sendEvaluationFormCustomerRequestContact({
+          ...params2,
+          teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+          customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+          supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+        }, teacherEmail);
+      }
+
+      if (selectedValues.pyydetaanYhteydenottoaOpettajalta && user.role === 'supervisor') {
+        sendEvaluationFormSupervisorRequestContact({
+          ...params2,
+          teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+          supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+          customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+        }, teacherEmail);
+      }
+      if (selectedValues.pyydetaanYhteydenottoaAsiakkaalta && user.role === 'teacher') {
+        sendEvaluationFormTeacherRequestContactMessageCustomer({
+          ...params2,
+          customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+          supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+          teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+        }, customerEmail);
+      }
+      if (selectedValues.pyydetaanYhteydenottoOhjaajalta && user.role === 'teacher') {
+        sendEvaluationFormTeacherRequestContactMessageSupervisor({
+          ...params2,
+          supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+          customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+          teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+          vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
+        }, supervisorEmail);
+      }
+      // yhteydenottopyynnöt
+     /* if (req.body.contactRequests && req.body.contactRequests.length > 0) {
+        // If contact requests exist, choose one or more recipients from the list
+        req.body.contactRequests.forEach((recipient: string) => {
+          if (recipient === 'supervisor') {
+            if (user.role === 'teacher') {
+              sendEvaluationFormTeacherRequestContactMessageSupervisor({
+                ...params2,
+                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+                vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
+              }, supervisorEmail);
+            }
           }
-        }
-      });
+
+          if (recipient === 'customer') {
+            if (user.role === 'teacher') {
+              sendEvaluationFormTeacherRequestContactMessageCustomer({
+                ...params2,
+                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+              }, customerEmail);
+            }
+          }
+
+          if (recipient === 'teacher') {
+            if (user.role === 'supervisor') {
+              sendEvaluationFormSupervisorRequestContact({
+                ...params2,
+                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+              }, teacherEmail);
+            } else if (user.role === 'customer') {
+              sendEvaluationFormCustomerRequestContact({
+                ...params2,
+                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+              }, teacherEmail);
+            }
+          }
+        });
+      } */
+      res.status(200).send({ message: 'Emails handled successfully' });
+    } catch
+      (error)
+    {
+      console.log(error);
+      res.status(500).send({ message: 'Internal server error' });
     }
-    res.status(200).send({ message: 'Emails handled successfully' });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: 'Internal server error' });
   }
-};
+;
 
 export default {
   create,

@@ -30,19 +30,19 @@ const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
   const { loggedIn, currentUser } = useAuthContext();
 
-  console.log('🚀 ~ UserPerformance ~ user:', currentUser);
+  // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
   // eslint-disable-next-line no-unused-vars
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [textareaValue, setTextareaValue] = useState('');
+  const [textAreaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
 
-  console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
+  // console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { allInternalDegrees } = useContext(InternalApiContext);
   const degreeName =
     allInternalDegrees &&
     allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
-  console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
+  // console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   const { chosenUnitId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
@@ -127,6 +127,10 @@ const UserPerformance = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmedNavigation, lastLocation]);
+
+  useEffect(() => {
+    console.log('selectedValues: ', selectedValues);
+  },[selectedValues]);
 
   const handleNavigation = (destination) => {
     if (hasUnsavedChanges) {
@@ -222,11 +226,11 @@ const UserPerformance = () => {
     // TODO: contactRequests currently for testing
     // TODO: additional info for testing
     const contactRequests = ["supervisor", "customer"]
-    const additionalInfo = "Ostakaa seiska!!!"
     const updatedData = {
       units: updatedUnits,
+      selectedValues: selectedValues,
       contactRequests: contactRequests,
-      additionalInfo: additionalInfo
+      additionalInfo: textAreaValue
     };
 
     try {
@@ -254,17 +258,17 @@ const UserPerformance = () => {
   const getButtonText = () => {
     if (currentUser?.role === 'customer') {
       if (selectedValues['valmisLahetettavaksi']) {
-        return 'Tallenna ja Lähettä';
+        return 'Tallenna ja Lähetä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
-        return 'Tallenna luonnos ja Lähettä pyynto';
+        return 'Tallenna luonnos ja Lähettä pyyntö';
       } else {
         return 'Tallenna luonnos';
       }
     } else if (currentUser?.role === 'supervisor') {
       if (selectedValues['valmisLahetettavaksi']) {
-        return 'Tallenna ja Lähettä';
+        return 'Tallenna ja Lähetä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
-        return 'Tallenna luonnos ja Lähettä pyynto';
+        return 'Tallenna luonnos ja Lähettä pyyntö';
       } else {
         return 'Tallenna luonnos';
       }
@@ -273,9 +277,9 @@ const UserPerformance = () => {
         selectedValues['pyydetaanYhteydenottoaAsiakkaalta'] ||
         selectedValues['pyydetaanYhteydenottoaOhjaajalta']
       ) {
-        return 'Tallenna ja Lähettä pyynto';
+        return 'Tallenna ja Lähetä pyynto';
       } else if (selectedValues['suoritusValmis']) {
-        return 'Tallenna ja Lähettä';
+        return 'Tallenna ja Lähetä';
       } else {
         return 'Tallenna luonnos';
       }
@@ -398,7 +402,7 @@ const UserPerformance = () => {
                 })
               }
             />
-            <label> Pyydään yhteydenottoa asiakkaalta</label>
+            <label> Pyydetään yhteydenottoa asiakkaalta</label>
             <br />
             <input
               type='checkbox'
@@ -411,7 +415,7 @@ const UserPerformance = () => {
                 })
               }
             />
-            <label> Pyydään yhteydenottoa ohjaajalta </label>
+            <label> Pyydetään yhteydenottoa ohjaajalta </label>
           </>
         ) : (
           <>
@@ -467,7 +471,7 @@ const UserPerformance = () => {
           cols={38}
           style={{ width: '87%', padding: '5px' }}
           className='para-title-style'
-          value={textareaValue}
+          value={textAreaValue}
           onChange={(e) => setTextareaValue(e.target.value)}
           disabled={isPalauteSectionDisabled()}
         />
