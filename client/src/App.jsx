@@ -17,15 +17,15 @@ const App = () => {
   return (
     <main className='app__wrapper'>
       <ErrorBoundary>
-        <HeadingContextProvider>
-          <AuthContextProvider>
+        <AuthContextProvider>
+          <HeadingContextProvider>
             <InternalApiContextProvider>
               <ExternalApiContextProvider>
                 <Router />
               </ExternalApiContextProvider>
             </InternalApiContextProvider>
-          </AuthContextProvider>
-        </HeadingContextProvider>
+          </HeadingContextProvider>
+        </AuthContextProvider>
       </ErrorBoundary>
     </main>
   );

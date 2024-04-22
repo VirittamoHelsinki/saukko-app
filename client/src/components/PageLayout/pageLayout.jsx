@@ -66,6 +66,8 @@ const PageLayout = () => {
 
   const showBackButton = navigationType !== 'POP' && location.key !== 'default';
 
+  const renderHeader = currentUser && currentUser.role;
+
   useEffect(() => {
     document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
   }, [siteTitle]);
@@ -73,7 +75,7 @@ const PageLayout = () => {
   return (
     <>
       <div className={styles.container}>
-        <header style={wrapperStyle}>
+        {renderHeader && <header style={wrapperStyle}>
           {showBackButton  && <button onClick={() => navigate(-1)}>
             <Icon icon="typcn:arrow-left" style={{ color: logoColor }} />
           </button>}
@@ -83,7 +85,7 @@ const PageLayout = () => {
           {heading && <h1>{heading}</h1>}
           {subHeading && <p>{subHeading}</p>}
           <Waves fill="#fff" />
-        </header>
+        </header>}
         <main>
           <Outlet />
         </main>
