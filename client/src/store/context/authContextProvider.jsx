@@ -10,7 +10,7 @@ export const useAuthContext = () => {
   const ctx = useContext(Ctx);
 
   if (!ctx) {
-    throw new Error('Call "useAuthContext" on inside a "AuthContextProvider"')
+    throw new Error('Call "useAuthContext" only inside a "AuthContextProvider"')
   }
 
   return ctx;

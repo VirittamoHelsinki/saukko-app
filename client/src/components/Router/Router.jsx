@@ -11,6 +11,7 @@ import React, { useContext, useEffect, Suspense } from 'react';
 import InternalApiContext from '../../store/context/InternalApiContext';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import TestEnvWarning from '../debugging/testEnvWarning';
+import PageLayout from '../PageLayout/pageLayout';
 
 // importing all pages which need routing, using lazy, only resources that client needs are loaded ⚡
 const TestPage = React.lazy(() => import('../../pages/TestPage/TestPage'));
@@ -74,68 +75,72 @@ const Router = () => {
       <TestEnvWarning />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes key={location.pathname} location={location}>
+          <Route path='/' element={<PageLayout />}>
+            {/* Placeholders for development */}
+            <Route path='/test-page' element={<TestPage />} />
+            <Route path="/verify-email/:token" element={<EmailVerification />} />
+            {/* Not logged in */}
+            {!loggedIn && (
+              <>
+                <Route exact='true' path='/' element={<LandingPage />} />
+                <Route path='/login' element={<LoginPage />} />
+                <Route path='/forgot-password' element={<ForgotPassword />} />
+                <Route path='/reset-password/:token' element={<ResetPassword />} />
+                <Route path='/set-password' element={<SetPassword />} />
+              </>
+            )}
 
-          {/* Placeholders for development */}
-          <Route path='/test-page' element={<TestPage />} />
-          <Route path="/verify-email/:token" element={<EmailVerification />} />
-          {/* Not logged in */}
-          {!loggedIn && (
-            <>
-              <Route exact='true' path='/' element={<LandingPage />} />
-              <Route path='/login' element={<LoginPage />} />
-              <Route path='/forgot-password' element={<ForgotPassword />} />
-              <Route path='/reset-password/:token' element={<ResetPassword />} />
-              <Route path='/set-password' element={<SetPassword />} />
-            </>
-          )}
+            {/* All logged in users */}
+            {loggedIn && (
+              <>
+                <Route path='/profile' element={<ProfilePage />} />
+                <Route path='/unit-list' element={<UnitList />} />
+                <Route path='/contract-info' element={<ContractInfo />} />
+                <Route path='/userperformance' element={<UserPerformance />} />
+              </>
+            )}
 
-          {/* All logged in users */}
-          {loggedIn && (
-            <>
-              <Route path='/profile' element={<ProfilePage />} />
-              <Route path='/unit-list' element={<UnitList />} />
-              <Route path='/contract-info' element={<ContractInfo />} />
-              <Route path='/userperformance' element={<UserPerformance />} />
-            </>
-          )}
+            {/* <Route path='/DO_NOT_LEAVE_THAT_HERE' element={<PageLayout><div>Content</div></PageLayout>} /> */}
 
-          {/* Teacher or supervisor */}
-          {loggedIn && (currentUser.role === 'teacher' || currentUser.role === 'supervisor') && (
-            <Route path='/' element={<CustomerList />} />
-          )}
+            {/* Teacher or supervisor */}
+            {loggedIn && (currentUser.role === 'teacher' || currentUser.role === 'supervisor') && (
+              <Route path='/' element={<CustomerList />} />
+            )}
 
-          {/* Teacher only */}
-          {loggedIn && currentUser.role === 'teacher' && (
-            <>
-              <Route path='/admin-menu' element={<AdminMenu />} />
+            {/* Teacher only */}
+            {loggedIn && currentUser.role === 'teacher' && (
+              <>
+                <Route path='/admin-menu' element={<AdminMenu />} />
 
-              {/* Degree flow */}
-              <Route path='/degrees/add' element={<AddDegree />} />
-              <Route path='/degrees/add/:degreeId' element={<CreateUnitsSummary allInternalDegrees={allInternalDegrees} />} />
-              <Route path='/degrees' element={<SearchPage />} />
-              <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
-              <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
-              <Route path='/degrees/:degreeId/edit-units' element={<EditUnits />} />
-              <Route path='/degrees/:degreeId/units/tasks' element={<SpecifyTasks />} />
-              <Route path='/degrees/:degreeId/summary' element={<Summary />} />
+                {/* Degree flow */}
+                <Route path='/degrees/add' element={<AddDegree />} />
+                <Route path='/degrees/add/:degreeId' element={<CreateUnitsSummary allInternalDegrees={allInternalDegrees} />} />
+                <Route path='/degrees' element={<SearchPage />} />
+                <Route path='/degrees/:degreeId' element={<DegreeInfo />} />
+                <Route path='/degrees/:degreeId/units' element={<DegreeUnits />} />
+                <Route path='/degrees/:degreeId/edit-units' element={<EditUnits />} />
+                <Route path='/degrees/:degreeId/units/tasks' element={<SpecifyTasks />} />
+                <Route path='/degrees/:degreeId/summary' element={<Summary />} />
 
-              {/* Workplace flow */}
-              <Route path='/add/companyname' element={<AddCompanyName></AddCompanyName>} />
-              <Route path='/company-info' element={<CompanyInfo />} />
-              <Route path='/internal/degrees' element={<CompanySearchPage />} />
-              <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
-              <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
+                {/* Workplace flow */}
+                <Route path='/add/companyname' element={<AddCompanyName></AddCompanyName>} />
+                <Route path='/company-info' element={<CompanyInfo />} />
+                <Route path='/internal/degrees' element={<CompanySearchPage />} />
+                <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
+                <Route path='internal/degrees/:degreeId/units/confirm-selection' element={<DegreeConfirmSelection />} />
 
-              {/* Evaluation flow */}
-              <Route path='/evaluation-form' element={<EvaluationForm />} />
-              <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
-              <Route path='/evaluation-units' element={<EvaluationUnits />} />
-              <Route path='/evaluation-summary' element={<EvaluationSummary />} />
+                {/* Evaluation flow */}
+                <Route path='/evaluation-form' element={<EvaluationForm />} />
+                <Route path='/evaluation-workplace' element={<EvaluationWorkplace />} />
+                <Route path='/evaluation-units' element={<EvaluationUnits />} />
+                <Route path='/evaluation-summary' element={<EvaluationSummary />} />
 
-              {/* Units flow */}
-              <Route path='/create-units-summary' element={<CreateUnitsSummary />} />
-            </>
-          )}
+                {/* Units flow */}
+                <Route path='/create-units-summary' element={<CreateUnitsSummary />} />
+              </>
+            )}
+
+          </Route>
         </Routes>
       </Suspense>
     </>

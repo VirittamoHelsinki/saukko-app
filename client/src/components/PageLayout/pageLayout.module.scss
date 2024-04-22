@@ -1,0 +1,36 @@
+.container {
+  user-select: none;
+  height: 100vh;
+  width: 100vw;
+}
+
+.container header {
+  position: relative;
+  height: 115px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container header h1 {
+  font-size: 18px;
+  margin-top: .5em;
+}
+
+.container header button {
+  position: absolute;
+  background: none;
+  border: none;
+  left: 10px;
+  bottom: 50%;
+  z-index: 9999;
+}
+
+.container header button svg {
+  font-size: 32px;
+}
+
+.container main {
+  height: calc(100% - (115px));
+}

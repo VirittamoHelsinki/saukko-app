@@ -1,6 +1,5 @@
 // Import necessary react components
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
 import { Icon } from '@iconify/react';
 
 // Import helsinki logo
