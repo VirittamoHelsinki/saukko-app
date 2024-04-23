@@ -85,7 +85,7 @@ function DegreeInfo() {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
-    setSiteTitle("Tutkintojen hallinta"), setSubHeading("Tutkintojen hallinta"), setHeading("Saukko");
+    setSiteTitle("Tutkintojen hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta");
     if (degreeFound) {
       setDegreeDescription(degree?.description?.fi);
       setDegreeName(degree?.name?.fi);

@@ -45,7 +45,7 @@ function SpecifyTasks() {
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   useEffect(() => {
-    setSiteTitle("Tutkintojen hallinta"), setSubHeading("Tutkintojen hallinta"), setHeading("Saukko")
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     // Initialize saved data object
     const initialData = {};
     checkedUnits.forEach((unit) => {

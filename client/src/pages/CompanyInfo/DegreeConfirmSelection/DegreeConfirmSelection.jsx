@@ -1,19 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
+
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import Stepper from '../../../components/Stepper/Stepper';
+
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import useStore from '../../../store/zustand/formStore';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import { postWorkplace } from '../../../api/workplace';
-// import axios from 'axios';
 import { registration } from '../../../api/user';
-// import { IconTwitter } from 'hds-react';
-// import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
 import { fetchAllInternalWorkplaces } from '../../../api/workplace';
 
 function DegreeConfirmSelection() {
@@ -34,6 +32,13 @@ function DegreeConfirmSelection() {
 
   const params = useParams();
 
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  useEffect(() => {
+    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikkaa"), setHeading("Työpaikkojen hallinta")
+  }, [setSiteTitle, setSubHeading, setHeading]);
+
+
   useEffect(() => {
     setinternalDegreeId(params?.degreeId);
     // console.log('internal degree-------------', params.degreeId);
@@ -51,6 +56,7 @@ function DegreeConfirmSelection() {
 
   const { openNotificationModal, setOpenNotificationModal } = useStore();
 
+  
   // eslint-disable-next-line no-unused-vars
   const handleNotificationModalOpen = () => {
     setOpenNotificationModal(true);
@@ -182,7 +188,6 @@ function DegreeConfirmSelection() {
 
   return (
     <main className='confirmSelection__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Lisää uusi työpaikka' />
       <section className='confirmSelection__container'>
         <div>
           <Stepper activePage={4} totalPages={4} data={stepperData} />
@@ -239,7 +244,6 @@ function DegreeConfirmSelection() {
 
         />
       </section>
-      <UserNav />
       {isSuccess && (
         <NotificationModal
           type='success'

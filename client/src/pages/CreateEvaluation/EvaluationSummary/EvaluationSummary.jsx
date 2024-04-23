@@ -1,10 +1,8 @@
 // Import react packages
-import React, { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InfoList from '../../../components/InfoList/InfoList';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
@@ -15,6 +13,7 @@ import Stepper from '../../../components/Stepper/Stepper';
 
 // Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // Import API call functions
 import { registration } from '../../../api/user';
@@ -31,6 +30,7 @@ function EvaluationSummary() {
   const { checkedUnits } = useUnitsStore();
   const { currentUser } = useAuthContext();
   const { setInternalEvaluations } = useContext(InternalApiContext);
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // NotificationModal
   const [successNotification, setSuccessNotification] = useState(false);
@@ -38,6 +38,10 @@ function EvaluationSummary() {
 
   const closeSuccessNotification = () => setSuccessNotification(false);
   const closeErrorNotification = () => setErrorNotification(false);
+
+  useEffect(()=>{
+    setSiteTitle("OsTu"),setSubHeading("Lisää uusi asiakas"),setHeading("Asiakkuudet")
+  }, [setSiteTitle, setHeading, setSubHeading]);
 
   // Data array for InfoList component
   const summaryData = [
@@ -177,7 +181,6 @@ function EvaluationSummary() {
 
   return (
     <main className='summary__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
       <section className='summary__container'>
         <Stepper activePage={4} totalPages={4} data={stepperData} />
         <InfoList title={'Yhteenveto'} data={summaryData} />
@@ -200,7 +203,6 @@ function EvaluationSummary() {
           showForwardButton={true}
         />
       </section>
-      <UserNav />
       <NotificationModal
         type='success'
         title='Suorituksen aktivoiminen onnistui'

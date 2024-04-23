@@ -1,8 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 
-// import WavesHeader from '../../components/Header/WavesHeader';
-// import UserNav from '../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import { Icon } from '@iconify/react';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
@@ -100,7 +98,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   };
 
   useEffect(() => {
-    setHeading("Saukko"), setSubHeading("Tutkintojen hallinta"), setSiteTitle("Tutkintojen hallinta");
+    setHeading("Suoritusten hallinnointi"), setSubHeading(""), setSiteTitle("Tutkintojen hallinta");
     // Fetch degreeDetails based on degreeId and set the state
     const fetchedDegreeDetails = allInternalDegrees.find(
       (degree) => degree._id === degreeId

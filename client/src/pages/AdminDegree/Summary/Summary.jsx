@@ -117,7 +117,7 @@ function Summary() {
 
   // Trigger NotificationModal
   useEffect(() => {
-    setSiteTitle("Tutkintojen hallinta"), setSubHeading("Tutkintojen hallinta"), setHeading("Saukko")
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     if (response && allInternalDegrees.some(degree => degree._id === response._id)) {
       setNotificationSuccess(true);
     } else if (response) {

@@ -32,7 +32,7 @@ function DegreeUnits() {
   const [filteredUnits, setFilteredUnits] = useState(degreeUnits);
 
   useEffect(() => {
-    setSiteTitle("Tutkintojen hallinta"), setSubHeading("Tutkintojen hallinta"), setHeading("Saukko")
+    setSiteTitle("Suoritusten hallinnoi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     setFilteredUnits(degreeUnits);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);

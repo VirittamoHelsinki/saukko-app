@@ -42,7 +42,7 @@ function EditUnits() {
 
   // If no checkedUnits go straight into edit mode
   useEffect(() => {
-    setSiteTitle("Tutkintojen hallinta"), setSubHeading("Tutkintojen hallinta"), setHeading("Saukko")
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     if (checkedUnits.length === 0) {
       setEditMode(true)
       handleAddUnit()

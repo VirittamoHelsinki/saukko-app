@@ -17,7 +17,7 @@ const CheckLength = ({
   const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
   
   const navigate = useNavigate();
-  
+
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
@@ -124,9 +124,9 @@ const AddDegree = () => {
   };
 
   useEffect(() => {
-    setHeading("Saukko");
-    setSubHeading("Tutkintojen hallinta");
-    setSiteTitle("Tutkintojen hallinta")
+    setHeading("Tutkintojen hallinta");
+    setSubHeading("");
+    setSiteTitle("Suoritusten hallinnointi")
   })
 
   return (

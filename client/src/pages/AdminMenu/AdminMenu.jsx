@@ -20,7 +20,7 @@ function AdminMenu() {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
-    setSiteTitle("Hallinnointi"), setSubHeading("Hallinnointi"), setHeading("Saukko")
+    setSiteTitle("Hallinnointi"), setSubHeading(""), setHeading("Hallinnointi")
     resetDegreeData()
     setDegreeId('')
     setEvaluation(null)
