@@ -506,7 +506,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
         unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
       };
 
-
+      // yhteydenottopyynnöt
       if (selectedValues.pyydetaanYhteydenottoaOpettajalta && user.role === 'customer') {
         sendEvaluationFormCustomerRequestContact({
           ...params2,
@@ -532,7 +532,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
           teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
         }, customerEmail);
       }
-      if (selectedValues.pyydetaanYhteydenottoOhjaajalta && user.role === 'teacher') {
+      if (selectedValues.pyydetaanYhteydenottoaOhjaajalta && user.role === 'teacher') {
         sendEvaluationFormTeacherRequestContactMessageSupervisor({
           ...params2,
           supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
@@ -541,52 +541,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
           vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
         }, supervisorEmail);
       }
-      // yhteydenottopyynnöt
-     /* if (req.body.contactRequests && req.body.contactRequests.length > 0) {
-        // If contact requests exist, choose one or more recipients from the list
-        req.body.contactRequests.forEach((recipient: string) => {
-          if (recipient === 'supervisor') {
-            if (user.role === 'teacher') {
-              sendEvaluationFormTeacherRequestContactMessageSupervisor({
-                ...params2,
-                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-                vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
-              }, supervisorEmail);
-            }
-          }
 
-          if (recipient === 'customer') {
-            if (user.role === 'teacher') {
-              sendEvaluationFormTeacherRequestContactMessageCustomer({
-                ...params2,
-                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-              }, customerEmail);
-            }
-          }
-
-          if (recipient === 'teacher') {
-            if (user.role === 'supervisor') {
-              sendEvaluationFormSupervisorRequestContact({
-                ...params2,
-                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-              }, teacherEmail);
-            } else if (user.role === 'customer') {
-              sendEvaluationFormCustomerRequestContact({
-                ...params2,
-                teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-                customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-                supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-              }, teacherEmail);
-            }
-          }
-        });
-      } */
       res.status(200).send({ message: 'Emails handled successfully' });
     } catch
       (error)
