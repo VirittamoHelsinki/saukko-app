@@ -123,7 +123,7 @@ const Router = () => {
                 <Route path='/degrees/:degreeId/summary' element={<Summary />} />
 
                 {/* Workplace flow */}
-                <Route path='/add/companyname' element={<AddCompanyName></AddCompanyName>} />
+                <Route path='/add/companyname' element={<AddCompanyName />} />
                 <Route path='/company-info' element={<CompanyInfo />} />
                 <Route path='/internal/degrees' element={<CompanySearchPage />} />
                 <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
