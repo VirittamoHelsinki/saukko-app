@@ -542,10 +542,53 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
         }, supervisorEmail);
       }
 
-      res.status(200).send({ message: 'Emails handled successfully' });
+      // TODO: fix and check
+      evaluation.units = req.body.units.map((unit: any) => {
+        let allAssessmentsCompleted = true;
+        let anyAssessmentInProgress = false;
+
+        // Check if any assessment is in progress or all assessments are completed and ready is true
+        unit.assessments.forEach((assessment: any) => {
+          const { answer, answerTeacher, answerSupervisor } = assessment;
+          if (
+            [answer, answerTeacher, answerSupervisor].some(
+              (ans) => ans === 1 || ans === 2,
+            )
+          ) {
+            anyAssessmentInProgress = true;
+          }
+          if (
+            [answer, answerTeacher, answerSupervisor].some((ans) => ans === 0)
+          ) {
+            allAssessmentsCompleted = false;
+          }
+        });
+
+        if ((allAssessmentsCompleted && unit.ready) || unit.ready) {
+          unit.status = 2;
+        } else if (anyAssessmentInProgress) {
+          unit.status = 1;
+        }
+
+        return unit;
+      });
+
+      // Update other fields of the evaluation as needed or add new in future
+      evaluation.workTasks = req.body.workTasks || evaluation.workTasks;
+      evaluation.workGoals = req.body.workGoals || evaluation.workGoals;
+      evaluation.completed =
+        req.body.completed !== undefined
+          ? req.body.completed
+          : evaluation.completed;
+      evaluation.startDate = req.body.startDate || evaluation.startDate;
+      evaluation.endDate = req.body.endDate || evaluation.endDate;
+      evaluation.units = req.body.units || evaluation.units;
+
+      await evaluation.save();
+      res.send(evaluation);
+      // res.status(200).send({ message: 'Emails handled successfully' });
     } catch
-      (error)
-    {
+      (error) {
       console.log(error);
       res.status(500).send({ message: 'Internal server error' });
     }
