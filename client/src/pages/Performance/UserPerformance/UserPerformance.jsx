@@ -225,16 +225,13 @@ const UserPerformance = () => {
     });
     // TODO: contactRequests currently for testing
     // TODO: additional info for testing
-    const contactRequests = ["supervisor", "customer"]
     const updatedData = {
       units: updatedUnits,
       selectedValues: selectedValues,
-      contactRequests: contactRequests,
       additionalInfo: textAreaValue
     };
 
     try {
-      console.log('updatedData:', updatedData);
       const response = await handleUserPerformanceEmails(
         `${evaluationId}`,
         updatedData,

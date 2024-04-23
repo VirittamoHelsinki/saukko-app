@@ -409,7 +409,6 @@ enum AssessmentStatus {
 }
 
 const handeUserPerformanceEmails = async (req: Request, res: Response) => {
-
     try {
       const evaluation = await EvaluationModel.findById(req.params.id)
         .populate({
