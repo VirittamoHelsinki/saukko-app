@@ -103,7 +103,7 @@ userSchema.methods.generateResetPasswordToken =
 // method to generate reset-password token and link
 userSchema.methods.generateResetPasswordLink =
   function generateResetPasswordLink() {
-    return `${process.env.NODE_ENV === "production" ? config.EMAIL_SERVICE_HOST : "localhost:3000"
+    return `${process.env.NODE_ENV === "production" ? config.EMAIL_SERVICE_HOST : "localhost:5173"
       }/reset-password/${this.generateResetPasswordToken()}`;
   };
 

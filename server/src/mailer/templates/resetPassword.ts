@@ -16,14 +16,14 @@ export const sendResetPasswordEmail = (params: ISendResetPasswordEmail) => {
     Olet pyytänyt salasanasi nollaamista.  
     
     Voit nollata salasanasi alla olevasta linkistä: 
-    <a href=${params.resetPasswordLink}>Nollaa salasana</a> 
+    <a href="${params.resetPasswordLink}">Nollaa salasana</a> 
     
     Jos et pyytänyt salasanasi nollaamista, voit ohittaa tämän viestin. 
     
 
     Ystävällisin terveisin, 
     Ylläpito 
-    `;
+    `.trim();
 
   const subject = 'Salasanan vaihto';
   const html = mailerTemplate(text);

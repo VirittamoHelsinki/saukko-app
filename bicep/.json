@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.26.54.24096",
-      "templateHash": "5455448117557328165"
+      "version": "0.26.170.59819",
+      "templateHash": "17164154320138269512"
     }
   },
   "parameters": {
@@ -19,12 +19,15 @@
     }
   },
   "variables": {
-    "webappName": "[format('{0}-app-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
+    "environment": "[if(contains(resourceGroup().name, 'dev'), 'dev', if(contains(resourceGroup().name, 'prod'), 'prod', 'other'))]",
+    "isProd": "[equals(variables('environment'), 'prod')]",
+    "skuName": "[if(variables('isProd'), 'B1', 'F1')]",
+    "skuTier": "[if(variables('isProd'), 'Basic', 'Free')]",
+    "skuSize": "[if(variables('isProd'), 'B1', 'F1')]",
     "workspaceName": "[format('{0}-ws-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
     "appInsightName": "[format('{0}-insight-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
-    "nodeJsBackendName": "[format('{0}-backend-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
-    "appServicePlanName": "[format('{0}-asp', parameters('app_name'))]",
-    "backendAppServicePlanName": "[format('{0}-basp', parameters('app_name'))]"
+    "webappName": "[format('{0}-app-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
+    "appServicePlanName": "[format('{0}-asp', parameters('app_name'))]"
   },
   "resources": [
     {
@@ -32,75 +35,30 @@
       "apiVersion": "2023-01-01",
       "name": "[variables('appServicePlanName')]",
       "location": "[parameters('location')]",
-      "kind": "app",
-      "properties": {},
-      "sku": {
-        "name": "F1",
-        "tier": "Free",
-        "size": "F1",
-        "family": "F",
-        "capacity": 0
-      }
-    },
-    {
-      "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2023-01-01",
-      "name": "[variables('backendAppServicePlanName')]",
-      "location": "[parameters('location')]",
       "kind": "linux",
       "properties": {
         "reserved": true
       },
       "sku": {
-        "name": "F1",
-        "tier": "Free",
-        "size": "F1",
-        "family": "F",
-        "capacity": 0
+        "name": "[variables('skuName')]",
+        "tier": "[variables('skuTier')]",
+        "size": "[variables('skuSize')]"
       }
     },
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2023-01-01",
-      "name": "[variables('nodeJsBackendName')]",
-      "kind": "app,linux",
-      "location": "[parameters('location')]",
-      "properties": {
-        "reserved": true,
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('backendAppServicePlanName'))]",
-        "siteConfig": {
-          "numberOfWorkers": 1,
-          "functionAppScaleLimit": 0,
-          "minimumElasticInstanceCount": 0,
-          "linuxFxVersion": "NODE:18-lts",
-          "appSettings": [
-            {
-              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2020-02-02').InstrumentationKey]"
-            },
-            {
-              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-              "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2020-02-02').ConnectionString]"
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
-        "[resourceId('Microsoft.Web/serverfarms', variables('backendAppServicePlanName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Web/sites",
-      "apiVersion": "2023-01-01",
       "name": "[variables('webappName')]",
-      "kind": "app",
+      "kind": "app,linux",
       "location": "[parameters('location')]",
       "properties": {
         "reserved": true,
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
         "siteConfig": {
           "numberOfWorkers": 1,
+          "functionAppScaleLimit": 0,
+          "minimumElasticInstanceCount": 0,
+          "linuxFxVersion": "NODE|20-lts",
           "appSettings": [
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
@@ -109,6 +67,38 @@
             {
               "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
               "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2020-02-02').ConnectionString]"
+            },
+            {
+              "name": "MONGODB_URI",
+              "value": "."
+            },
+            {
+              "name": "JWT_SECRET",
+              "value": "."
+            },
+            {
+              "name": "EMAIL_SERVICE",
+              "value": "."
+            },
+            {
+              "name": "EMAIL_SERVICE_HOST",
+              "value": "."
+            },
+            {
+              "name": "EMAIL_SERVICE_PORT",
+              "value": "."
+            },
+            {
+              "name": "EMAIL_SERVICE_USER",
+              "value": "."
+            },
+            {
+              "name": "EMAIL_SERVICE_PASSWORD",
+              "value": ""
+            },
+            {
+              "name": "EMAIL_SERVICE_FROM",
+              "value": "."
             }
           ]
         }
@@ -119,20 +109,6 @@
       ]
     },
     {
-      "type": "Microsoft.OperationalInsights/workspaces",
-      "apiVersion": "2023-09-01",
-      "name": "[variables('workspaceName')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "sku": {
-          "name": "PerGB2018"
-        },
-        "retentionInDays": 30,
-        "publicNetworkAccessForIngestion": "Enabled",
-        "publicNetworkAccessForQuery": "Disabled"
-      }
-    },
-    {
       "type": "Microsoft.Insights/components",
       "apiVersion": "2020-02-02",
       "name": "[variables('appInsightName')]",
@@ -140,12 +116,40 @@
       "kind": "web",
       "properties": {
         "Application_Type": "web",
+        "Flow_Type": "Redfield",
+        "Request_Source": "IbizaAIExtensionEnablementBlade",
+        "SamplingPercentage": null,
+        "RetentionInDays": 90,
         "WorkspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))]",
-        "Flow_Type": "Bluefield"
+        "IngestionMode": "LogAnalytics",
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
       },
       "dependsOn": [
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))]"
       ]
+    },
+    {
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2023-09-01",
+      "name": "[variables('workspaceName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "sku": {
+          "name": "pergb2018"
+        },
+        "retentionInDays": 30,
+        "features": {
+          "legacy": 0,
+          "searchVersion": 1,
+          "enableLogAccessUsingOnlyResourcePermissions": true
+        },
+        "workspaceCapping": {
+          "dailyQuotaGb": "[json('-1.0')]"
+        },
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
+      }
     }
   ]
 }

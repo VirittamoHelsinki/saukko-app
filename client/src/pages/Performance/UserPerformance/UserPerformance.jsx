@@ -354,6 +354,7 @@ const UserPerformance = () => {
                     selectedAssessmentId={selectedAssessmentId}
                     hasUnsavedChanges={hasUnsavedChanges}
                     setHasUnsavedChanges={setHasUnsavedChanges}
+                    evaluationId={evaluationId}
                   />
                 ) : (
                   <PerformancesFeedback
@@ -484,7 +485,7 @@ const UserPerformance = () => {
           type='submit'
           text={getButtonText()}
           onClick={handleSubmit}
-          disabled={isPalauteSectionDisabled()}
+          // disabled={isPalauteSectionDisabled()}
         />
       </section>
       <div style={{ marginBottom: '90px' }}>

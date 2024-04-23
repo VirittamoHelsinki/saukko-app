@@ -108,16 +108,16 @@ const create = async (req: Request, res: Response) => {
 };
 
 /**
- *
+ * 
  * @deprecated use getAllForCurrentUser instead
  */
 const getAll = async (req: Request, res: Response) => {
   try {
     const evaluations = await EvaluationModel.find()
-      .populate('customerId', 'firstName lastName')
+      .populate('customerId', 'firstName lastName email')
       .populate('teacherId', 'firstName lastName')
-      .populate('supervisorIds', 'firstName lastName')
-      .populate('workplaceId');
+      .populate('supervisorIds', 'firstName lastName email')
+      .populate('workplaceId'); 
 
     res.send(evaluations);
   } catch (error) {
@@ -127,9 +127,7 @@ const getAll = async (req: Request, res: Response) => {
 
 const getAllForCurrentUser = async (req: Request, res: Response) => {
   try {
-    const user = (req.user as User) ?? (() => {
-      throw new Error('User is not defined');
-    });
+    const user = (req.user as User) ?? (() => { throw new Error("User is not defined") })
 
     const getFilter = () => {
       switch (user.role) {
@@ -146,9 +144,9 @@ const getAllForCurrentUser = async (req: Request, res: Response) => {
 
     const evaluations = await EvaluationModel
       .find(getFilter())
-      .populate('customerId', 'firstName lastName')
+      .populate('customerId', 'firstName lastName email')
       .populate('teacherId', 'firstName lastName')
-      .populate('supervisorIds', 'firstName lastName')
+      .populate('supervisorIds', 'firstName lastName email')
       .populate('workplaceId');
 
     res.send(evaluations);
@@ -216,9 +214,6 @@ const getById = async (req: Request, res: Response) => {
 };
 
 const update = async (req: Request, res: Response) => {
-  console.log('req body: ', req.body.units[0].assessments[0]);
-  console.log('req user: ', req.user); // userInfo
-  console.log('req params: ', req.params); // evaluationID
   try {
     const evaluation = await EvaluationModel.findById(req.params.id)
       .populate({
@@ -235,12 +230,12 @@ const update = async (req: Request, res: Response) => {
 
     const updatedSupervisorIds = new Set(req.body.supervisorIds || []);
     const existingSupervisorIds = new Set(
-      evaluation.supervisorIds.map((id) => id.toString()),
+      evaluation.supervisorIds.map((id) => id.toString())
     );
 
     // Identify new supervisors
     const newSupervisors = [...updatedSupervisorIds].filter(
-      (id) => !existingSupervisorIds.has(id as any),
+      (id) => !existingSupervisorIds.has(id as any)
     );
 
     // Replace the entire supervisor list
@@ -259,7 +254,7 @@ const update = async (req: Request, res: Response) => {
 
       for (const supervisor of newSupervisorDetails) {
         const verificationLink = _generateVerificationLink(supervisor);
-        sendVerificationEmail({ userEmail: supervisor.email, verificationLink });
+        sendVerificationEmail({userEmail: supervisor.email, verificationLink});
       }
 
       // Notify existing supervisors, the customer, and possibly the teacher about new additions
@@ -288,7 +283,7 @@ const update = async (req: Request, res: Response) => {
         customerName: 'customerName',
         degreeName: 'degreeName',
         supervisorName: 'supervisorName',
-        verificationLink: 'verificationLink',
+        verificationLink: 'verificationLink'
       };
 
       const oldSupervisorParams: ISendOldSupervisorAddedEmail = {
@@ -321,7 +316,7 @@ const update = async (req: Request, res: Response) => {
         const { answer, answerTeacher, answerSupervisor } = assessment;
         if (
           [answer, answerTeacher, answerSupervisor].some(
-            (ans) => ans === 1 || ans === 2,
+            (ans) => ans === 1 || ans === 2
           )
         ) {
           anyAssessmentInProgress = true;

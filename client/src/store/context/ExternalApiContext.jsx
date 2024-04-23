@@ -1,10 +1,16 @@
-import React, { useEffect, useState, createContext } from 'react';
+import { useEffect, useState, createContext, useContext } from 'react';
 import useUnitsStore from '../zustand/unitsStore';
-import { fetchDegreesFromEperusteet, fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
+import { fetchDegreeByIdFromEperusteet } from '../../api/degree.js';
 import { CircularProgress } from '@mui/material';
 import { useAuthContext } from './authContextProvider.jsx';
 
-const ExternalApiContext = createContext();
+const ExternalApiContext = createContext(null);
+
+export const useExternalApiContext = () => {
+  const ctx = useContext(ExternalApiContext)
+  if (!ctx) throw new Error("Use 'useExternalApiContext' only inside a 'ExternalApiContextProvider'")
+  return ctx;
+}
 
 // Purpose of this Provider is to give manage data fetched from external APIs
 // Currently used for fetching degrees from ePerusteet.
@@ -12,41 +18,17 @@ const ExternalApiContext = createContext();
 export const ExternalApiContextProvider = (props) => {
 
   // Initialize state
-  const [allDegrees, setAllDegrees] = useState([]);
+  const [allDegrees, setAllDegrees] = useState(null);
   const [degree, setDegree] = useState({});
   const [degreeId, setDegreeId] = useState('');
-
-  const [allloading, setallLoading] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const { loggedIn, currentUser } = useAuthContext()
 
-
-  // Fetch all degrees from ePerusteet
-  useEffect(() => {
-    const getDegrees = async () => {
-      if (!loggedIn || currentUser.role !== "teacher") return;
-
-      try {
-        setallLoading(true);
-        const response = await fetchDegreesFromEperusteet();
-        setAllDegrees(response.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setallLoading(false)
-      }
-
-    };
-    getDegrees();
-  }, [loggedIn, currentUser]);
-
-
-
   // Fetch degree by id
   useEffect(() => {
     const getDegree = async () => {
-      if (!loggedIn || currentUser.role !== "teacher") return;
+      if (!loggedIn || currentUser.role !== "teacher" | !degreeId) return;
       try {
         setLoading(true);
         const degreeResponse = await fetchDegreeByIdFromEperusteet(degreeId);
@@ -74,7 +56,7 @@ export const ExternalApiContextProvider = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degreeId]);
 
-  if (allloading || loading) {
+  if (loading) {
     return (
       <div
         style={{
@@ -90,7 +72,7 @@ export const ExternalApiContextProvider = (props) => {
   }
 
   return (
-    <ExternalApiContext.Provider value={{ degree, allDegrees, setDegreeId, degreeFound }}>
+    <ExternalApiContext.Provider value={{ degree, allDegrees, setAllDegrees, setDegreeId, degreeFound }}>
       {props.children}
     </ExternalApiContext.Provider>
   );

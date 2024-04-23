@@ -18,7 +18,7 @@ export interface IEvaluation extends Document {
   transitionEnds: Date;
   validFrom: Date;
   expiry: Date;
-  units: IUnit[]
+  units: IUnit[];
 }
 
 interface IDegree {
@@ -40,8 +40,8 @@ interface IUnit {
   name: {
     fi: string;
     sv: string;
-  }
-  assessments: IAssessments[]
+  };
+  assessments: IAssessments[];
 }
 
 interface IAssessments {
@@ -62,11 +62,11 @@ interface ICriteria {
   fi: string;
   sv: string;
   en: string;
-};
+}
 
 export type Evaluation = (Document<unknown, {}, IEvaluation & Document<any, any, any>> & IEvaluation & Document<any, any, any> & {
-  _id: Types.ObjectId;
-});
+    _id: Types.ObjectId;
+  });
 
 const evaluationSchema = new Schema<IEvaluation>({
   degreeId: {
@@ -217,16 +217,25 @@ const evaluationSchema = new Schema<IEvaluation>({
               },
             },
           ],
+          comment: {
+            text: {
+              type: String,
+              default: '',
+            },
+          },
         },
       ],
     },
   ],
 });
 
-evaluationSchema.set("toJSON", {
+evaluationSchema.set('toJSON', {
   transform: (_, returnedObject) => {
     delete returnedObject.__v;
-  }
-})
+  },
+});
 
-export default mongoose.model<IEvaluation & Document>("Evaluation", evaluationSchema);
+export default mongoose.model<IEvaluation & Document>(
+  'Evaluation',
+  evaluationSchema
+);

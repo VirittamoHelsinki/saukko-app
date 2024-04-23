@@ -1,16 +1,12 @@
 import axios from 'axios'
 import Uvc from 'universal-cookie'
 
-const baseURL = process.env.REACT_APP_BACKEND_URL
-
-const middleURL = '/auth'
-
-const fetchCurrentUser = async () => axios.get(baseURL + middleURL + '/get-current-user');
+const fetchCurrentUser = async () => axios.get('/auth/get-current-user');
 
 const registration = async (registrationData) => {
   const { firstName, lastName, email, password, role } = registrationData;
   try {
-    const response = await axios.post(baseURL + middleURL, {
+    const response = await axios.post('/auth', {
       firstName,
       lastName,
       email,
@@ -27,44 +23,46 @@ const registration = async (registrationData) => {
 };
 
 const logoutUser = async () => {
-  await axios.get(baseURL + middleURL + '/logout');
+  await axios.get('/auth/logout');
 }
 
 const loginUser = async (loginData) => {
-  console.log("login request URL", {
-    baseURL,
-    middleURL,
-    endpoint: "/login",
-    URL: baseURL + middleURL + '/login'
-  });
-  const response = await axios.post(baseURL + middleURL + '/login', loginData)
+  const response = await axios.post('/auth/login', loginData)
   return response
 }
 
+const refreshAuthToken = async () => {
+  const response = await axios.get('/auth/renew-token');
+  return response;
+}
+
 const forgotPassword = async (email) => {
-  const response = await axios.post(baseURL + middleURL + '/forgot-password', {
+  const response = await axios.post('/auth/forgot-password', {
     email: email,
   })
   return response
 }
 
 const tokenValidation = async (token) => {
-  const response = await axios.post(baseURL + middleURL + '/validate-token', {
+  const response = await axios.post('/auth/validate-token', {
     token: token,
   })
   return response
 }
 
-const resetPassword = async (newPassword) => {
-  const response = await axios.post(baseURL + middleURL + '/reset-password', {
+const resetPassword = async (newPassword, token) => {
+  const response = await axios.post('/auth/reset-password', {
     newPassword,
+    headers: {
+      "change-token": token
+    },
     withCredentials: true
   });
   return response;
 }
 
 const requestPasswordChangeTokenAsUser = async (password) =>
-  await axios.post(baseURL + middleURL + '/request-pwd-change-token', {
+  await axios.post('/auth/request-pwd-change-token', {
     password,
     withCredentials: true
   });
@@ -75,7 +73,7 @@ const requestEmailVerificationLinkAsync = async () => {
   const uvc = new Uvc();
   const verificationToken = uvc.get("verification-token");
 
-  const response = await axios.get(baseURL + middleURL + '/resend-email-verification', {
+  const response = await axios.get('/auth/resend-email-verification', {
     headers: {
       "verification-token": verificationToken,
     },
@@ -95,7 +93,7 @@ const verifyEmail = async () => {
     throw new Error("verification-token missing.")
   }
 
-  const response = await axios.get(`${baseURL}${middleURL}/verify-email`, {
+  const response = await axios.get('/auth/verify-email', {
     headers: {
       "verification-token": verificationToken,
     },
@@ -114,7 +112,7 @@ export {
   resetPassword,
   registration,
   verifyEmail,
-
+  refreshAuthToken,
   // This is medicine if email-verification-link are expired
   requestEmailVerificationLinkAsync,
   // The user must request a password reset token before the user can change the password

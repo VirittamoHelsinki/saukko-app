@@ -70,7 +70,7 @@ const getDegreeById = async (req: Request, res: Response) => {
     const degreeData = await _fetchDataAsync(`${ePerusteAPI}/peruste/${degreeId}`);
     if (!degreeData) throw new Error('Degree data not found');
 
-    const degreeUnits = await _fetchDataAsync(`${ePerusteAPI}/peruste/${degreeId}/tutkinnonOsat`);
+    const degreeUnits = degreeData.tutkinnonOsat;
     if (!degreeUnits) throw new Error('Degree units not found');
 
     let unitList: any[] = [];

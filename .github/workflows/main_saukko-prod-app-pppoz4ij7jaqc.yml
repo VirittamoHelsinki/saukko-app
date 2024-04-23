@@ -1,22 +1,17 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - dev-saukko-app-fzhpicxhe5j74
+name: Build and deploy Node.js app to Azure Web App - saukko-prod-app-pppoz4ij7jaqc
 
 on:
   push:
     branches:
-      - dev
-    paths:
-      - 'client/**'
+      - main
   workflow_dispatch:
 
-env:
-  REACT_APP_BACKEND_URL: https://dev-saukko-backend-fzhpicxhe5j74.azurewebsites.net
-    
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -28,14 +23,19 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm run install:client
+          npm run setup
           npm run build
-      
+
+      - name: Zip artifact for deployment
+        run: |
+          cd ./server/dist
+          zip -r ../../release.zip .
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: ./client/build
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -49,12 +49,15 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: node-app
+
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
       
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
         with:
-          app-name: 'dev-saukko-app-fzhpicxhe5j74'
+          app-name: 'saukko-prod-app-pppoz4ij7jaqc'
           slot-name: 'production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C5B75311526A4ADFB61D0D90BDA675E3 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_43623C6525244DF0BE0A3E30484AB54B }}
