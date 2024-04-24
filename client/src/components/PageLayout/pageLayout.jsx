@@ -6,14 +6,14 @@ import { useHeadingContext } from '../../store/context/headingContectProvider';
 import UserNav from '../UserNav/UserNav';
 import { useEffect, useState } from 'react';
 
-const Waves = (props) => {
+const Waves = ({ fill }) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       aria-hidden='true'
       width='100%'
       height='35'
-      fill={props.fill}
+      fill={fill}
     >
       <defs>
         <pattern
@@ -56,7 +56,7 @@ const PageLayout = () => {
   const location = useLocation();
   const navigationType = useNavigationType();
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [headinIsDisabled, setHeadingIsDisabled] = useState(false);
+  const [headingIsDisabled, setHeadingIsDisabled] = useState(false);
 
   const headerColor = getHeaderColor(currentUser?.role);
   const wrapperStyle = {
@@ -69,10 +69,10 @@ const PageLayout = () => {
 
   const renderHeader = currentUser && currentUser.role;
 
-  
+
   useEffect(() => {
     // Add pages in array below, where the waves header should not render
-    const wavesHeadingDisabledPaths = ["verify-email", ]
+    const wavesHeadingDisabledPaths = ["verify-email",]
     setHeadingIsDisabled(wavesHeadingDisabledPaths.some(path => {
       console.log(window.location.pathname, path);
       return window.location.pathname.includes(path)
@@ -86,17 +86,25 @@ const PageLayout = () => {
   return (
     <>
       <div className={styles.container}>
-        {renderHeader && !headinIsDisabled && <header style={wrapperStyle}>
-          {showBackButton  && <button onClick={() => navigate(-1)}>
-            <Icon icon="typcn:arrow-left" style={{ color: logoColor }} />
-          </button>}
-          <button onClick={() => setMenuIsOpen(!menuIsOpen)}>
-            <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:menu-alt-05'} />
-          </button>
-          {heading && <h1>{heading}</h1>}
-          {subHeading && <p>{subHeading}</p>}
-          <Waves fill="#fff" />
-        </header>}
+        {renderHeader && !headingIsDisabled && (
+          <header>
+            {showBackButton && (
+              <button onClick={() => navigate(-1)}>
+                <Icon icon="typcn:arrow-left" style={{ color: logoColor }} />
+              </button>
+            )}
+            <div className={styles.buttonContainer}>
+              <button onClick={() => setMenuIsOpen(!menuIsOpen)}>
+                <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:menu-alt-05'} />
+              </button>
+            </div>
+            <div className={styles.headerBox} style={wrapperStyle}>
+              {heading && <h1>{heading}</h1>}
+              {subHeading && <p>{subHeading}</p>}
+            </div>
+            <Waves fill={headerColor} />
+          </header>
+        )}
         <main>
           <Outlet />
         </main>

@@ -1,12 +1,16 @@
+$header-height: 115px;
+
 .container {
   user-select: none;
   height: 100vh;
   width: 100vw;
 }
 
-.container header {
-  position: relative;
-  height: 115px;
+.container header {  
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  height: $header-height;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -18,19 +22,36 @@
   margin-top: .5em;
 }
 
-.container header button {
+.container header .buttonContainer {
   position: absolute;
-  background: none;
-  border: none;
   left: 10px;
-  bottom: 50%;
-  z-index: 9999;
+  font-size: 38px;
+  height: 100%;
+  display: flex;
 }
 
-.container header button svg {
+.buttonContainer button {
+  background: none;
+  border: none;
+}
+
+.container header div button svg {
   font-size: 32px;
 }
 
 .container main {
-  height: calc(100% - (115px));
+  height: calc(100vh - $header-height);
+}
+
+.container header .headerBox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header svg {
+  transform: rotate(180deg);
 }
