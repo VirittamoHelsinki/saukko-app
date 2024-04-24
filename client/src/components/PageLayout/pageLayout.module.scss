@@ -28,6 +28,7 @@ $header-height: 115px;
   font-size: 38px;
   height: 100%;
   display: flex;
+  z-index: 999;
 }
 
 .buttonContainer button {

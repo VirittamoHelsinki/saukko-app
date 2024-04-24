@@ -85,6 +85,7 @@ const PageLayout = () => {
 
   return (
     <>
+      <UserNav setMenuIsOpen={setMenuIsOpen} menuIsOpen={menuIsOpen} />
       <div className={styles.container}>
         {renderHeader && !headingIsDisabled && (
           <header>
@@ -98,10 +99,10 @@ const PageLayout = () => {
                 <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:menu-alt-05'} />
               </button>
             </div>
-            <div className={styles.headerBox} style={wrapperStyle}>
-              {heading && <h1>{heading}</h1>}
-              {subHeading && <p>{subHeading}</p>}
-            </div>
+            {!menuIsOpen && <div className={styles.headerBox} style={wrapperStyle}>
+              {<h1>{heading}</h1>}
+              {<p>{subHeading}</p>}
+            </div>}
             <Waves fill={headerColor} />
           </header>
         )}
@@ -109,7 +110,6 @@ const PageLayout = () => {
           <Outlet />
         </main>
       </div>
-      <UserNav setMenuIsOpen={setMenuIsOpen} menuIsOpen={menuIsOpen} />
     </>
   )
 }
