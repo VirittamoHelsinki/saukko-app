@@ -18,4 +18,5 @@ export default {
   EMAIL_SERVICE_USER: process.env.EMAIL_SERVICE_USER!,
   EMAIL_SERVICE_PASSWORD: process.env.EMAIL_SERVICE_PASSWORD!,
   EMAIL_SERVICE_FROM: process.env.EMAIL_SERVICE_FROM!,
+  APP_URL: process.env.APP_URL!,
 }
