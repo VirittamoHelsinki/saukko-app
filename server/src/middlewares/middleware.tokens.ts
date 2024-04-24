@@ -8,7 +8,19 @@ import config from '../utils/config';
 const tokensMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const auth: string|undefined = req.cookies.token;
-    const changePassword: string|undefined = req.cookies["change-token"];
+    let changePassword: string|undefined = req.cookies["change-token"];
+
+    if (!changePassword) {
+      // try get the token from headers, in this case token is received from email..
+      const referer = req.headers["referer"];
+      const refArr = referer?.split("/");
+      if (refArr && refArr.length) {
+        const t = refArr[refArr!.length -1];
+        if (t.length > 20) {
+          changePassword = t;
+        }
+      }
+    }
 
     // Because user is accessed for that cookie via email, we cannot set that as http-only cookie
     // Only server can set the http-only cookies, not in client-side

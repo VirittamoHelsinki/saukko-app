@@ -45,7 +45,7 @@ function CustomDialogTitle(props) {
 }
 
 export default function RequirementsAndCriteriaModal(props) {
-  let bgColor = '#e5eff8';
+  let bgColor = '#E5F6FD';
   let color = '#0288D1';
   const [inputValueTitle, setInputValueTitle] = useState('');
   const [inputValueCriteria, setInputValueCriteria] = useState('');
@@ -210,10 +210,6 @@ export default function RequirementsAndCriteriaModal(props) {
                   color: '#0000BF',
                   borderRadius: '0',
                   fontWeight: 'bold',
-                  '&:hover': {
-                    backgroundColor: '#0000BF',
-                    color: '#FFFFFF',
-                  },
                 }}
               >
                 Peruuta
@@ -230,11 +226,6 @@ export default function RequirementsAndCriteriaModal(props) {
                   color: '#FFFFFF',
                   borderRadius: '0',
                   fontWeight: 'bold',
-                  '&:hover': {
-                    backgroundColor: '#FFFFFF',
-                    color: '#0000BF',
-                    border: '2px solid #0000BF',
-                  },
                 }}
               >
                 Tallenna

@@ -1,10 +1,11 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
+import { IName } from './degreeModel';
 
 export interface IEvaluation extends Document {
-  degreeId: mongoose.Schema.Types.ObjectId;
-  customerId: mongoose.Schema.Types.ObjectId;
-  teacherId: mongoose.Schema.Types.ObjectId;
-  supervisorIds: mongoose.Schema.Types.ObjectId[];
+  degreeId: IDegree;
+  customerId: IUser;
+  teacherId: IUser;
+  supervisorIds: IUser[];
   workplaceId: mongoose.Schema.Types.ObjectId;
   startDate: Date;
   endDate: Date;
@@ -17,7 +18,19 @@ export interface IEvaluation extends Document {
   transitionEnds: Date;
   validFrom: Date;
   expiry: Date;
-  units: IUnit[]
+  units: IUnit[];
+}
+
+interface IDegree {
+  name: IName
+  id: mongoose.Schema.Types.ObjectId;
+}
+
+interface IUser {
+  firstName: string,
+  lastName: string,
+  email: string
+  id: mongoose.Schema.Types.ObjectId;
 }
 
 interface IUnit {
@@ -27,8 +40,8 @@ interface IUnit {
   name: {
     fi: string;
     sv: string;
-  }
-  assessments: IAssessments[]
+  };
+  assessments: IAssessments[];
 }
 
 interface IAssessments {
@@ -49,11 +62,11 @@ interface ICriteria {
   fi: string;
   sv: string;
   en: string;
-};
+}
 
 export type Evaluation = (Document<unknown, {}, IEvaluation & Document<any, any, any>> & IEvaluation & Document<any, any, any> & {
-  _id: Types.ObjectId;
-});
+    _id: Types.ObjectId;
+  });
 
 const evaluationSchema = new Schema<IEvaluation>({
   degreeId: {
@@ -204,16 +217,25 @@ const evaluationSchema = new Schema<IEvaluation>({
               },
             },
           ],
+          comment: {
+            text: {
+              type: String,
+              default: '',
+            },
+          },
         },
       ],
     },
   ],
 });
 
-evaluationSchema.set("toJSON", {
+evaluationSchema.set('toJSON', {
   transform: (_, returnedObject) => {
     delete returnedObject.__v;
-  }
-})
+  },
+});
 
-export default mongoose.model<IEvaluation & Document>("Evaluation", evaluationSchema);
+export default mongoose.model<IEvaluation & Document>(
+  'Evaluation',
+  evaluationSchema
+);

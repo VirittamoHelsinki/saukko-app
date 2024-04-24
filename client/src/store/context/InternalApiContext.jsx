@@ -1,5 +1,5 @@
 import { CircularProgress } from '@mui/material';
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 // Internal API calls
 import {
@@ -104,7 +104,7 @@ export const InternalApiContextProvider = (props) => {
   // Fetch degree by id
   useEffect(() => {
     const getInternalDegree = async () => {
-      if (!loggedIn || currentUser.role !== 'teacher') return;
+      if (!loggedIn || currentUser.role !== 'teacher' || !internalDegreeId) return;
 
       try {
         setLoading(true);

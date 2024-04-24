@@ -6,7 +6,7 @@ import { InternalApiContextProvider } from "./store/context/InternalApiContext";
 
 // importing page routing
 import Router from "./components/Router/Router";
-import ErrorBoundary from './components/errorBoundary';
+import {ErrorBoundary} from './components/errorBoundary';
 import AuthContextProvider from './store/context/authContextProvider';
 
 axios.defaults.withCredentials = true;

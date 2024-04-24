@@ -12,6 +12,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@microsoft/applicationinsights-react-js": "^17.1.2",
+    "@microsoft/applicationinsights-web": "^3.1.2",
     "@mui/icons-material": "^5.14.1",
     "@mui/lab": "^5.0.0-alpha.133",
     "@mui/material": "^5.14.1",
@@ -19,12 +21,14 @@
     "axios": "^1.6.8",
     "dayjs": "^1.11.10",
     "email-validator": "^2.0.4",
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-contenteditable": "^3.3.7",
     "react-dom": "^18.2.0",
     "react-icons": "^5.1.0",
     "react-router-dom": "^6.22.3",
     "universal-cookie": "^7.1.4",
+    "uuid": "^9.0.1",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

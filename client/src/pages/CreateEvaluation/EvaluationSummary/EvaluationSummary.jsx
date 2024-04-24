@@ -207,7 +207,7 @@ function EvaluationSummary() {
         body='Asiakkaan tiedot tallennettu'
         open={successNotification}
         handleClose={closeSuccessNotification}
-        redirectLink='/customer-list'
+        redirectLink='/'
       />
       <NotificationModal
         type='warning'

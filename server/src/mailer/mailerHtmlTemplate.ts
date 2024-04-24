@@ -57,7 +57,7 @@ const mailTemplate = (text: string) => {
 
         <div class="header">
 
-        <img src="http://localhost:3000/Helsinki_white_logo.png" alt="Helsinki Logo"/>
+        <img src="http://localhost:5173/Helsinki_white_logo.png" alt="Helsinki Logo"/>
         
         <h1>OsTu</h1>
 
