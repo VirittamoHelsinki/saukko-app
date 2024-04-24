@@ -236,10 +236,10 @@ const UserPerformance = () => {
         `${evaluationId}`,
         updatedData,
       );
-      // const response = await updateEvaluationById(
-      //   `${evaluationId}`,
-      //   updatedData
-      // );
+/*      const response = await updateEvaluationById(
+        `${evaluationId}`,
+        updatedData
+      );*/
 
       // set response to the store
       setEvaluation(response);

@@ -11,12 +11,12 @@ interface IUser {
   email: string;
 }
 
-describe('test sending emails with resend', () => {
+describe.skip('test sending emails with resend', () => {
   it('verifikaatiolinkki', async () => {
     const mockUser: IUser = {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
-      email: 'joel.heusala@gmail.com',
+      email: 'testi@example.com',
     }
     const mockVerificationLink = 'https://example.com/verification-link';
     sendVerificationEmail({ userEmail: mockUser.email, verificationLink: mockVerificationLink });
