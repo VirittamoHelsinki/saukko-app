@@ -252,6 +252,19 @@ const login = async (req: Request, res: Response) => {
   }
 }
 
+const renewToken = async (req: Request, res: Response) => {
+  const existingUser = req.user;
+  if (!existingUser) {
+    return res.status(401).json({ errorMessage: 'Unauthorized' })
+  }
+  // Create a tokens for the user
+  const tokens = existingUser.generateJWT();
+  return res
+    .status(200)
+    .cookie("auth_state", tokens.info, { httpOnly: false })
+    .cookie("token", tokens.auth, { httpOnly: true })
+}
+
 const logout = async (_req: Request, res: Response) => {
   // Clear the token cookie
   res
@@ -374,6 +387,7 @@ export default {
   validateToken,
   resetPassword,
   login,
+  renew: renewToken,
   logout,
   verifyEmail,
   resendEmailVerificationLink,

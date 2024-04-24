@@ -6,7 +6,7 @@ const fetchCurrentUser = async () => axios.get('/auth/get-current-user');
 const registration = async (registrationData) => {
   const { firstName, lastName, email, password, role } = registrationData;
   try {
-    const response = await axios.post('auth', {
+    const response = await axios.post('/auth', {
       firstName,
       lastName,
       email,
@@ -29,6 +29,11 @@ const logoutUser = async () => {
 const loginUser = async (loginData) => {
   const response = await axios.post('/auth/login', loginData)
   return response
+}
+
+const refreshAuthToken = async () => {
+  const response = await axios.get('/auth/renew-token');
+  return response;
 }
 
 const forgotPassword = async (email) => {
@@ -107,7 +112,7 @@ export {
   resetPassword,
   registration,
   verifyEmail,
-
+  refreshAuthToken,
   // This is medicine if email-verification-link are expired
   requestEmailVerificationLinkAsync,
   // The user must request a password reset token before the user can change the password
