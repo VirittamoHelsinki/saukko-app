@@ -49,9 +49,20 @@ const sendEmail = async (message) => {
   }
 };
 
+const handleUserPerformanceEmails = async (evaluationId, updatedData) =>
+{
+  try {
+    const response = await axios.put(`/api/evaluation/${evaluationId}`, updatedData);
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching single evaluation:', error);
+  }
+}
+
 export {
   createEvaluation,
   fetchAllEvaluations,
   updateEvaluationById,
   sendEmail,
+  handleUserPerformanceEmails
 };

@@ -15,7 +15,7 @@ export interface IDegree extends Document {
   units: IUnit[];
 }
 
-interface IName {
+export interface IName {
   fi?: string; // degree finnish name
   sv?: string; // degree swedish name
   en?: string; // degree english name

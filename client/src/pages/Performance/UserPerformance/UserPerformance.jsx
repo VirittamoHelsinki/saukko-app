@@ -21,8 +21,10 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Fetch evaluation by id from api
-import { updateEvaluationById } from '../../../api/evaluation';
+// import { updateEvaluationById } from '../../../api/evaluation';
+import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+// import { sendEmails } from '../../../api/performance';
 
 const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
@@ -31,7 +33,7 @@ const UserPerformance = () => {
   // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
   // eslint-disable-next-line no-unused-vars
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-  const [textareaValue, setTextareaValue] = useState('');
+  const [textAreaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
 
@@ -126,6 +128,10 @@ const UserPerformance = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmedNavigation, lastLocation]);
 
+  useEffect(() => {
+    console.log('selectedValues: ', selectedValues);
+  },[selectedValues]);
+
   const handleNavigation = (destination) => {
     if (hasUnsavedChanges) {
       setShowWarningModal(true);
@@ -217,15 +223,23 @@ const UserPerformance = () => {
         return unit;
       }
     });
-
+    // TODO: contactRequests currently for testing
+    // TODO: additional info for testing
     const updatedData = {
       units: updatedUnits,
+      selectedValues: selectedValues,
+      additionalInfo: textAreaValue
     };
+
     try {
-      const response = await updateEvaluationById(
+      const response = await handleUserPerformanceEmails(
+        `${evaluationId}`,
+        updatedData,
+      );
+/*      const response = await updateEvaluationById(
         `${evaluationId}`,
         updatedData
-      );
+      );*/
 
       // set response to the store
       setEvaluation(response);
@@ -241,17 +255,17 @@ const UserPerformance = () => {
   const getButtonText = () => {
     if (currentUser?.role === 'customer') {
       if (selectedValues['valmisLahetettavaksi']) {
-        return 'Tallenna ja Lähettä';
+        return 'Tallenna ja Lähetä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
-        return 'Tallenna luonnos ja Lähettä pyynto';
+        return 'Tallenna luonnos ja Lähettä pyyntö';
       } else {
         return 'Tallenna luonnos';
       }
     } else if (currentUser?.role === 'supervisor') {
       if (selectedValues['valmisLahetettavaksi']) {
-        return 'Tallenna ja Lähettä';
+        return 'Tallenna ja Lähetä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
-        return 'Tallenna luonnos ja Lähettä pyynto';
+        return 'Tallenna luonnos ja Lähettä pyyntö';
       } else {
         return 'Tallenna luonnos';
       }
@@ -260,9 +274,9 @@ const UserPerformance = () => {
         selectedValues['pyydetaanYhteydenottoaAsiakkaalta'] ||
         selectedValues['pyydetaanYhteydenottoaOhjaajalta']
       ) {
-        return 'Tallenna ja Lähettä pyynto';
+        return 'Tallenna ja Lähetä pyynto';
       } else if (selectedValues['suoritusValmis']) {
-        return 'Tallenna ja Lähettä';
+        return 'Tallenna ja Lähetä';
       } else {
         return 'Tallenna luonnos';
       }
@@ -386,7 +400,7 @@ const UserPerformance = () => {
                 })
               }
             />
-            <label> Pyydään yhteydenottoa asiakkaalta</label>
+            <label> Pyydetään yhteydenottoa asiakkaalta</label>
             <br />
             <input
               type='checkbox'
@@ -399,7 +413,7 @@ const UserPerformance = () => {
                 })
               }
             />
-            <label> Pyydään yhteydenottoa ohjaajalta </label>
+            <label> Pyydetään yhteydenottoa ohjaajalta </label>
           </>
         ) : (
           <>
@@ -455,7 +469,7 @@ const UserPerformance = () => {
           cols={38}
           style={{ width: '87%', padding: '5px' }}
           className='para-title-style'
-          value={textareaValue}
+          value={textAreaValue}
           onChange={(e) => setTextareaValue(e.target.value)}
           disabled={isPalauteSectionDisabled()}
         />
