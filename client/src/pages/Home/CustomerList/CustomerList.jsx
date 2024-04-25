@@ -3,9 +3,9 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
+// import WavesHeader from '../../../components/Header/WavesHeader';
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
-import UserNav from '../../../components/UserNav/UserNav';
+// import UserNav from '../../../components/UserNav/UserNav';
 
 import { Icon } from '@iconify/react';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
@@ -18,6 +18,7 @@ import { Box } from '@mui/material';
 // Import state management
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // Import MUI
 // import Accordion from '@mui/material/Accordion';
@@ -31,6 +32,7 @@ export default function CustomerList() {
 
   // Data from store management
   const { currentUser } = useAuthContext();
+  const { setHeading, setSiteTitle } = useHeadingContext();
   const { evaluations, setInternalEvaluations, setInternalEvaluation } =
     useContext(InternalApiContext);
 
@@ -64,6 +66,8 @@ export default function CustomerList() {
 
   // Set evaluations
   useEffect(() => {
+    setHeading(`Tervetuloa, ${currentUser?.firstName}`)
+    setSiteTitle("Etusivu")
     setInternalEvaluations();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -105,12 +109,7 @@ export default function CustomerList() {
   };
 
   return (
-    <main className='customerList__wrapper'>
-      <WavesHeader
-        title={`Tervetuloa, ${currentUser?.firstName}`}
-        disabled={true}
-      />
-
+    <div className='customerList__wrapper'>
       {/* Notifications */}
       <div className='customerList__notifications'>
         <h3> Ilmoitukset </h3>
@@ -285,7 +284,7 @@ export default function CustomerList() {
         open={isInfoButtonOpen}
         handleClose={handleCloseInfoButton}
       />
-      <UserNav />
-    </main>
+      {/* <UserNav /> */}
+    </div>
   );
 }

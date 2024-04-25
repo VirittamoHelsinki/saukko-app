@@ -1,8 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 
-import WavesHeader from '../../components/Header/WavesHeader';
-import UserNav from '../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import { Icon } from '@iconify/react';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
@@ -12,11 +10,13 @@ import DegreeInformationModal from '../../components/EditDegreeModals/DegreeInfo
 import DegreeNameModal from '../../components/EditDegreeModals/DegreeNameModal';
 import UnitInformationModal from '../../components/EditDegreeModals/UnitInformationModal';
 import DeleteDataModal from '../../components/EditDegreeModals/DeleteDataModal';
+import styles from './createUnitSummary.module.scss'
+import classNames from 'classnames';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
 
 const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
-  const params = useParams();
+  const { setHeading, setSubHeading, setSiteTitle } = useHeadingContext();
   const { degreeId } = useParams();
   const [degreeDetails, setDegreeDetails] = useState(null);
   // console.log('🚀 ~ CreateUnitesSummary ~ degreeDetails:', degreeDetails);
@@ -98,12 +98,13 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   };
 
   useEffect(() => {
+    setHeading("Suoritusten hallinnointi"), setSubHeading(""), setSiteTitle("Tutkintojen hallinta");
     // Fetch degreeDetails based on degreeId and set the state
     const fetchedDegreeDetails = allInternalDegrees.find(
       (degree) => degree._id === degreeId
     );
     setDegreeDetails(fetchedDegreeDetails);
-  }, [allInternalDegrees, degreeId]);
+  }, [allInternalDegrees, degreeId, setHeading, setSiteTitle, setSubHeading]);
 
   // Save the updated degree name to the database
   const saveDegreeName = async () => {
@@ -395,189 +396,186 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   }
 
   return (
-    <main className='summary__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
-      <section className='summary__container'>
-        <div className='degree-summary'>
-          <h1 className='degree-title '>
-            {degreeDetails.name?.fi}{' '}
-            <span className='icon-wrapper'>
-              {' '}
-              <div>
+    // summary__container
+    <section className={styles.container}>
+      <div className={styles.degreeSummary}>
+        <h1 className={styles.degreeTitle}>
+          {degreeDetails.name?.fi}{' '}
+          <span className={styles.iconWrapper}>
+            {' '}
+            <div>
+              <Icon
+                icon='uil:pen'
+                color='#0000bf'
+                onClick={() => handlePenClick('degreeDetails')}
+              />
+            </div>
+          </span>
+        </h1>
+      </div>
+      <div className={styles.sectionTitle}>Tutkinnonosat ja tehtävät</div>
+      <div className={styles.box}>
+        {/* Display other degree details as needed */}
+        {degreeDetails.units.map((unit) => (
+          <div key={unit._id} className={styles.unitContainer}>
+            <div className={styles.unitNameIconsContainer}>
+              <strong className={styles.unitTitle}>{unit.name.fi}</strong>
+              <div className={styles.circleWrapIcon}>
                 <Icon
-                  icon='uil:pen'
-                  color='#0000bf'
-                  onClick={() => handlePenClick('degreeDetails')}
+                  onClick={handleDeleteClick}
+                  icon='material-symbols:delete-outline'
+                  color='A0A0A0'
+                  height='18'
+                  preserveAspectRatio='xMinYMid meet'
                 />
               </div>
-            </span>
-          </h1>
-        </div>
-        <div className='section-title'>Tutkinnonosat ja tehtävät</div>
-        <div className='summary__container--box'>
-          {/* Display other degree details as needed */}
-          {degreeDetails.units.map((unit) => (
-            <div key={unit._id} className='unit-container'>
-              <div className='unit-name-icons-container'>
-                <strong className='unit-title'>{unit.name.fi}</strong>
-                <div className='circle-wrap-icon'>
+              <div className={styles.circleWrapIcon}>
+                <span>
                   <Icon
-                    onClick={handleDeleteClick}
-                    icon='material-symbols:delete-outline'
-                    color='A0A0A0'
+                    onClick={() => {
+                      handlePenClick('unitName');
+                      handleUnitClick(unit._id);
+                    }}
+                    icon='uil:pen'
+                    color='#0000bf'
                     height='18'
                     preserveAspectRatio='xMinYMid meet'
                   />
-                </div>
-                <div className='circle-wrap-icon'>
-                  <span>
-                    <Icon
-                      onClick={() => {
-                        handlePenClick('unitName');
-                        handleUnitClick(unit._id);
-                      }}
-                      icon='uil:pen'
-                      color='#0000bf'
-                      height='18'
-                      preserveAspectRatio='xMinYMid meet'
+                  {/* Here starts the nested modal where unit's name, ATV and criteria can be saved to the database */}
+                  {unit._id && unit._id === unitId && isUnitModalOpen && (
+                    // Modal for editing unit's name and ATV
+                    <UnitInformationModal
+                      degreeDetails={degreeDetails}
+                      setDegreeDetails={setDegreeDetails}
+                      handleCloseUnitModal={handleCloseUnitModal}
+                      unit={unit}
+                      unitId={unitId}
+                      assessment={unit.assessments}
+                      assessmentId={assessmentId}
+                      saveATVAndCriteria={saveATVAndCriteria}
+                      saveUnitName={saveUnitName}
+                      isUnitModalOpen={isUnitModalOpen}
+                      handlePenClick={handlePenClick}
+                      handleATVClick={handleATVClick}
+                      setAssessmentUnitId={setAssessmentUnitId}
+                      isAssessmentModalOpen={isAssessmentModalOpen}
+                      handleCloseAssessmentModal={handleCloseAssessmentModal}
+                      handleDeleteClick={handleDeleteClick}
                     />
-                    {/* Here starts the nested modal where unit's name, ATV and criteria can be saved to the database */}
-                    {unit._id && unit._id === unitId && isUnitModalOpen && (
-                      // Modal for editing unit's name and ATV
-                      <UnitInformationModal
-                        degreeDetails={degreeDetails}
-                        setDegreeDetails={setDegreeDetails}
-                        handleCloseUnitModal={handleCloseUnitModal}
-                        unit={unit}
-                        unitId={unitId}
-                        assessment={unit.assessments}
-                        assessmentId={assessmentId}
-                        saveATVAndCriteria={saveATVAndCriteria}
-                        saveUnitName={saveUnitName}
-                        isUnitModalOpen={isUnitModalOpen}
-                        handlePenClick={handlePenClick}
-                        handleATVClick={handleATVClick}
-                        setAssessmentUnitId={setAssessmentUnitId}
-                        isAssessmentModalOpen={isAssessmentModalOpen}
-                        handleCloseAssessmentModal={handleCloseAssessmentModal}
-                        handleDeleteClick={handleDeleteClick}
-                      />
-                    )}
-                  </span>
-                </div>
+                  )}
+                </span>
               </div>
-              {unit.assessments &&
-                unit.assessments.map((assessment, assessmentIndex) => (
-                  <p key={assessmentIndex}>
-                    {assessmentIndex + 1}. {assessment.name?.fi}
-                  </p>
-                ))}
             </div>
-          ))}
-        </div>
-        <div className='section-title'>Tutkinnon suorittaneen osaaminen</div>
-        <div className='summary__container--box unit-description'>
-          <div className='description-content'>
-            {degreeDetails.description.fi ? (
-              degreeDetails.description.fi
-            ) : (
-              <p>No description data.</p>
-            )}
+            {unit.assessments &&
+              unit.assessments.map((assessment, assessmentIndex) => (
+                <p key={assessmentIndex}>
+                  {assessmentIndex + 1}. {assessment.name?.fi}
+                </p>
+              ))}
           </div>
-          <div>
-            <div className='circle-wrap-icon'>
-              <Icon
-                onClick={handlePenClick}
-                icon='uil:pen'
-                color='#0000bf'
-                height='18'
-                preserveAspectRatio='xMinYMid meet'
-              />
-            </div>
+        ))}
+      </div>
+      <div className={styles.sectionTitle}>Tutkinnon suorittaneen osaaminen</div>
+      <div className={classNames(styles.box, styles.unitDescription)}>
+        <div className={styles.descriptionContent}>
+          {degreeDetails.description.fi ? (
+            degreeDetails.description.fi
+          ) : (
+            <p>No description data.</p>
+          )}
+        </div>
+        <div>
+          <div className={styles.circleWrapIcon}>
+            <Icon
+              onClick={handlePenClick}
+              icon='uil:pen'
+              color='#0000bf'
+              height='18'
+              preserveAspectRatio='xMinYMid meet'
+            />
           </div>
         </div>
-        <div className='section-title'>Tutkintotiedot</div>
-        <ul className='summary__container--box'>
-          <div className='unit-name-icons-container'>
-            <div className='degree-diary-number'>
-              <strong className='unit-title'>Määräyksen diaarinumero</strong>{' '}
-              <li>{degreeDetails.diaryNumber}</li>
-            </div>
-            {/* <div> */}
-            <div className='circle-wrap-icon'>
-              <Icon
-                onClick={() => handlePenClick('degreeInformation')}
-                icon='uil:pen'
-                color='#0000bf'
-                height='18'
-                preserveAspectRatio='xMinYMid meet'
-              />
-            </div>
-            {/* </div> */}
+      </div>
+      <div className={styles.sectionTitle}>Tutkintotiedot</div>
+      <ul className={styles.box}>
+        <div className={styles.unitNameIconsContainer}>
+          <div className={styles.degreeDiaryNumber}>
+            <strong className={styles.unitTitle}>Määräyksen diaarinumero</strong>{' '}
+            <li>{degreeDetails.diaryNumber}</li>
           </div>
-          <strong> Määräyksen päätöspäivämäärä</strong>
-          <li>{formattedDate(degreeDetails.regulationDate)}</li>
-          <strong>Voimaantulo</strong>
-          <li>{formattedDate(degreeDetails.validFrom)}</li>
-          <strong>Voimassaolon päättyminen</strong>
-          <li>{formattedDate(degreeDetails.expiry)}</li>
-          <strong>Siirtymäajan päättymisaika</strong>
-          <li>{formattedDate(degreeDetails.transitionEnds)}</li>
-        </ul>
-
-        {/* Modal to save the degree name */}
-        <DegreeNameModal
-          handleCloseDegreeNameModal={handleCloseDegreeNameModal}
-          degreeDetails={degreeDetails}
-          setDegreeDetails={setDegreeDetails}
-          saveDegreeName={saveDegreeName}
-          isDegreeNameModalOpen={isDegreeNameModalOpen}
-        />
-
-        {/* Modal for updating general degree's information */}
-        <DegreeInformationModal
-          handleCloseDegreeInformationModal={handleCloseDegreeInformationModal}
-          degreeDetails={degreeDetails}
-          setDegreeDetails={setDegreeDetails}
-          saveDegreeInformation={saveDegreeInformation}
-          isDegreeInformationModalOpen={isDegreeInformationModalOpen}
-        />
-
-        {/* Modal to delete the data */}
-        <DeleteDataModal
-          isDeleteDataModalOpen={isDeleteDataModalOpen}
-          handleCloseDeleteDataModal={handleCloseDeleteDataModal}
-        />
-
-        {/* Notification for successfully update the data */}
-        <NotificationModal
-          type='success'
-          title='Tiedot tallennettu'
-          body='Tutkinto on tallennettu tietokantaan'
-          open={notificationSuccess}
-          handleClose={closeSuccess}
-        />
-
-        {/* Notification error */}
-        <NotificationModal
-          type='warning'
-          title='Lomakkeen lähetys epäonnistui'
-          open={notificationError}
-          handleClose={closeError}
-        />
-
-        <div className='page-navigation-container'>
-          <PageNavigationButtons
-            handleBackText={'Takaisin'}
-            handleBack={() => navigate(`/degrees/add`)}
-            showForwardButton={false}
-            icon={'mingcute:pencil-line'}
-            style={{ justifyContent: 'flex-start' }}
-          />
+          {/* <div> */}
+          <div className={styles.circleWrapIcon}>
+            <Icon
+              onClick={() => handlePenClick('degreeInformation')}
+              icon='uil:pen'
+              color='#0000bf'
+              height='18'
+              preserveAspectRatio='xMinYMid meet'
+            />
+          </div>
+          {/* </div> */}
         </div>
-      </section>
-      <UserNav />
-    </main>
+        <strong> Määräyksen päätöspäivämäärä</strong>
+        <li>{formattedDate(degreeDetails.regulationDate)}</li>
+        <strong>Voimaantulo</strong>
+        <li>{formattedDate(degreeDetails.validFrom)}</li>
+        <strong>Voimassaolon päättyminen</strong>
+        <li>{formattedDate(degreeDetails.expiry)}</li>
+        <strong>Siirtymäajan päättymisaika</strong>
+        <li>{formattedDate(degreeDetails.transitionEnds)}</li>
+      </ul>
+
+      {/* Modal to save the degree name */}
+      <DegreeNameModal
+        handleCloseDegreeNameModal={handleCloseDegreeNameModal}
+        degreeDetails={degreeDetails}
+        setDegreeDetails={setDegreeDetails}
+        saveDegreeName={saveDegreeName}
+        isDegreeNameModalOpen={isDegreeNameModalOpen}
+      />
+
+      {/* Modal for updating general degree's information */}
+      <DegreeInformationModal
+        handleCloseDegreeInformationModal={handleCloseDegreeInformationModal}
+        degreeDetails={degreeDetails}
+        setDegreeDetails={setDegreeDetails}
+        saveDegreeInformation={saveDegreeInformation}
+        isDegreeInformationModalOpen={isDegreeInformationModalOpen}
+      />
+
+      {/* Modal to delete the data */}
+      <DeleteDataModal
+        isDeleteDataModalOpen={isDeleteDataModalOpen}
+        handleCloseDeleteDataModal={handleCloseDeleteDataModal}
+      />
+
+      {/* Notification for successfully update the data */}
+      <NotificationModal
+        type='success'
+        title='Tiedot tallennettu'
+        body='Tutkinto on tallennettu tietokantaan'
+        open={notificationSuccess}
+        handleClose={closeSuccess}
+      />
+
+      {/* Notification error */}
+      <NotificationModal
+        type='warning'
+        title='Lomakkeen lähetys epäonnistui'
+        open={notificationError}
+        handleClose={closeError}
+      />
+
+      <div>
+        <PageNavigationButtons
+          handleBackText={'Takaisin'}
+          handleBack={() => navigate(`/degrees/add`)}
+          showForwardButton={false}
+          icon={'mingcute:pencil-line'}
+          style={{ justifyContent: 'flex-start' }}
+        />
+      </div>
+    </section>
   );
 };
 

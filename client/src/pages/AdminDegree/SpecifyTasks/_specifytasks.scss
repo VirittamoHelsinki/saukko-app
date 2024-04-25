@@ -4,13 +4,11 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    min-height: 100vh;
 
     .specify-tasks__container {
       display: flex;
       flex-direction: column;
       gap: 20px;
-      margin-top: 200px;
       margin-bottom: 50px;
       width: 100%;
       flex-grow: 1;

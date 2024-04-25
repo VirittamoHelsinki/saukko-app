@@ -1,18 +1,17 @@
 // Import components & libraries
-import { useContext } from 'react';
-import { RxCrossCircled } from 'react-icons/rx';
-import { CiSearch } from 'react-icons/ci';
+import { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
-import { fetchExternalCompanyData } from '../../api/workplace';
-import WavesHeader from '../../components/Header/WavesHeader';
-import UserNav from '../../components/UserNav/UserNav';
-import { useNavigate } from 'react-router';
 import Stepper from '../../components/Stepper/Stepper';
+
+import { fetchExternalCompanyData } from '../../api/workplace';
 import useStore from '../../store/zustand/formStore';
 import InternalApiContext from '../../store/context/InternalApiContext';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
 
-// Import MUI
+import { CiSearch } from 'react-icons/ci';
+import { RxCrossCircled } from 'react-icons/rx';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
@@ -43,8 +42,12 @@ const CompanyInfo = () => {
   } = useStore();
 
   const { internalDegree } = useContext(InternalApiContext);
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
-  // Labels and urls for Stepper
+  useEffect(() => {
+    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikkaa"), setHeading("Työpaikkojen hallinta")
+  }, [setSiteTitle, setSubHeading, setHeading]);
+
   const stepperData = [
     {
       label: 'Lisää tiedot',
@@ -181,11 +184,11 @@ const CompanyInfo = () => {
 
   return (
     <div>
-      <WavesHeader
+      {/* <WavesHeader
         title='Saukko'
         fill='#9fc9eb'
         secondTitle='Lisää uusi työpaikka'
-      />
+      /> */}
       <div className='info__stepper__container'>
         <Stepper activePage={1} totalPages={4} data={stepperData} />
       </div>
@@ -236,7 +239,6 @@ const CompanyInfo = () => {
                   aria-hidden='true'
                   onClick={handleSearchClick}
                 />
-                {/* </div> */}
               </div>
               <label
                 className='workplace-form-label'
@@ -426,9 +428,6 @@ const CompanyInfo = () => {
         handleForward={handleForward}
         showForwardButton={true}
       />
-      <div style={{ marginBottom: '90px' }}>
-        <UserNav></UserNav>
-      </div>
     </div>
   );
 };

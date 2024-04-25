@@ -1,16 +1,15 @@
 // Import react packages
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Stepper from '../../../components/Stepper/Stepper';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // Import libraries
 import { Icon } from '@iconify/react';
@@ -31,6 +30,8 @@ function EvaluationWorkplace() {
 
   // Fetch workplaces & save to state
   const { workplaces } = useContext(InternalApiContext);
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
   const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
 
   // Setter functions from evaluationStore
@@ -50,6 +51,11 @@ function EvaluationWorkplace() {
   const closeSupervisorNotification = () => setSupervisorNotification(false)
   const closeRedirectNotification = () => setRedirectNotification(false)
 
+  useEffect(()=>{
+    setSiteTitle('Suorituksetn aktivoiminen'),
+    setSubHeading('Lisää uusi asiakas'),
+    setHeading('Asiakkuudet')
+  },[setHeading, setSiteTitle, setSubHeading])
   // Workplace selection
   const toggleWorkplace = (event) => {
     clearWorkplace();
@@ -66,7 +72,7 @@ function EvaluationWorkplace() {
       setDepartment(findDepartmentById);
     } else {
       setDepartmentNotification(true);
-    };
+    }
   };
   console.log('Department from store:', departmentFromStore)
 
@@ -145,7 +151,7 @@ function EvaluationWorkplace() {
 
   return (
     <main className='evaluationWorkplace__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
+      {/* <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' /> */}
       <section className='evaluationWorkplace__container'>
         <Stepper
             activePage={2}
@@ -277,7 +283,6 @@ function EvaluationWorkplace() {
 
         />
       </section>
-      <UserNav />
       <NotificationModal
         type='warning'
         title='Yksikön valinta epäonnistui'

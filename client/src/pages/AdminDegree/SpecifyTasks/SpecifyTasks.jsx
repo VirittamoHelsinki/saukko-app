@@ -8,8 +8,6 @@ import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import useStore from '../../../store/zustand/formStore';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
@@ -24,10 +22,13 @@ import { useTheme } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 // Import criteria modal
 import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 function SpecifyTasks() {
   const navigate = useNavigate();
   const params = useParams();
+
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Initialize state
   const [assessments, setAssessments] = useState([]);
@@ -44,13 +45,14 @@ function SpecifyTasks() {
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   useEffect(() => {
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     // Initialize saved data object
     const initialData = {};
     checkedUnits.forEach((unit) => {
       initialData[unit._id] = [];
     });
     setSavedDataCriteria(initialData);
-  }, [checkedUnits]);
+  }, [checkedUnits, setHeading, setSiteTitle, setSubHeading]);
 
   const handleSave = (title, criteria) => {
     const newData = { ...savedDataCriteria };
@@ -117,8 +119,7 @@ function SpecifyTasks() {
   };
 
   return (
-    <main className='specify-tasks__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
+    <div className='specify-tasks__wrapper'>
       <section className='specify-tasks__container'>
         <Stepper activePage={3} totalPages={4} data={stepperData} />
         <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
@@ -240,8 +241,7 @@ function SpecifyTasks() {
 
         />
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 }
 

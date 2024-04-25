@@ -2,17 +2,12 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  // align-items: center;
-  min-height: 100vh;
 
   h2 {
     font-size: 1.2rem;
   }
 
   .contractInfo__container {
-    margin-top: 150px;
-    margin-bottom: 50px;
-
     .contractInfo__container--description {
       // padding: 1.2rem;
       h3 {

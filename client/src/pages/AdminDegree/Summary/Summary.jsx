@@ -1,5 +1,5 @@
 // Import react packages & dependencies
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import Zustand store and custom context
@@ -9,13 +9,12 @@ import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 
 import { postDegree } from '../../../api/degree';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 function Summary() {
   const navigate = useNavigate();
@@ -34,6 +33,7 @@ function Summary() {
   const { degree, degreeFound } = useContext(ExternalApiContext);
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
   const { checkedUnits } = useUnitsStore();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // NotificationModal
   const [notificationSuccess, setNotificationSuccess] = useState(false)
@@ -117,16 +117,16 @@ function Summary() {
 
   // Trigger NotificationModal
   useEffect(() => {
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     if (response && allInternalDegrees.some(degree => degree._id === response._id)) {
       setNotificationSuccess(true);
     } else if (response) {
       setNotificationError(true);
     }
-  }, [allInternalDegrees, response]);
+  }, [allInternalDegrees, response, setHeading, setSiteTitle, setSubHeading]);
 
   return (
     <main className='summary__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
       <section className='summary__container'>
         <Stepper
           activePage={4}
@@ -186,7 +186,6 @@ function Summary() {
           handleClose={closeError}
         />
       </section>
-      <UserNav />
     </main>
   );
 }
