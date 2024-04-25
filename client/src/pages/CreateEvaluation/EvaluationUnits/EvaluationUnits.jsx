@@ -54,7 +54,7 @@ function EvaluationUnits() {
   ];
 
   return (
-    <main className='evaluationUnits__wrapper'>
+    <div className='evaluationUnits__wrapper'>
       <section className='evaluationUnits__container'>
         <Stepper activePage={3} totalPages={4} data={stepperData} />
         <h1>
@@ -87,7 +87,7 @@ function EvaluationUnits() {
         body='Valitse ainakin yksi tutkinnonosa'
         open={openNotificationModal}
       />
-    </main>
+    </div>
   );
 }
 

@@ -131,7 +131,7 @@ const AddCompanyName = () => {
   };
 
   return (
-    <main className='addDegree__wrapper'>
+    <div className='addDegree__wrapper'>
       <section className='addDegree__container'>
         <Button
           id='addWorkplaceButton'
@@ -165,7 +165,7 @@ const AddCompanyName = () => {
           handlePageClick={handlePageClick}
         />
       </section>
-    </main>
+    </div>
   );
 };
 

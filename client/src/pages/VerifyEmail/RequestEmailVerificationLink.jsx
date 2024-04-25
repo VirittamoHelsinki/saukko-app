@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../../components/Button/Button";
-import WavesHeader from "../../components/Header/WavesHeader";
+//import WavesHeader from "../../components/Header/WavesHeader";
 import Notification from "../../components/Notification/Notification";
 import { requestEmailVerificationLinkAsync } from '../../api/user';
+import { useHeadingContext } from "../../store/context/headingContectProvider";
 
 
 const RequestEmailVerificationLink = () => {
   const [notificationVisible, setNotificationVisible] =  useState(false);
   const [busy, setBusy] = useState(false);
+
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  useEffect(()=>{
+    setSiteTitle(""), setSubHeading(""), setHeading("OsTu")
+  },[setHeading, setSiteTitle, setSubHeading])
 
   const handleFrom = async (e) => {
     e.preventDefault();
@@ -23,8 +30,8 @@ const RequestEmailVerificationLink = () => {
   }
 
   return !notificationVisible ? (
-    <main className="resetPassword__wrapper">
-      <WavesHeader title="Saukko" fill="#9fc9eb" />
+    <div className="resetPassword__wrapper">
+      {/* <WavesHeader title="Saukko" fill="#9fc9eb" /> */}
       <section className="resetPassword__container">
         <h2>Linkki on vanhentunut</h2>
         <form onSubmit={handleFrom}>
@@ -40,9 +47,9 @@ const RequestEmailVerificationLink = () => {
           </section>
         </form>
       </section>
-    </main>
+    </div>
   ) : (
-    <main className="resetPassword__wrapper">
+    <div className="resetPassword__wrapper">
       <Notification
         navigatePage="/login"
         headerColor={"#00005E"}
@@ -52,7 +59,7 @@ const RequestEmailVerificationLink = () => {
         icon='gg:check-o'
         iconColor={'white'}
       />
-    </main>
+    </div>
   )
 }
 

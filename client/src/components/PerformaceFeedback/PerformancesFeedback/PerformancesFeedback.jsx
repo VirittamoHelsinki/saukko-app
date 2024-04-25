@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -103,13 +103,13 @@ const PerformancesFeedback = ({
   );
 
   return (
-    <main
+    <div
       className='feedbackpage__wrapper'
       style={{ backgroundColor: getBackgroundColor() }}
     >
       <div className='feedback'>
         {infodataForSelectedAssessment.map((item, index) => (
-          <FormControl>
+          <FormControl key={index}>
             <RadioGroup
               row
               aria-labelledby='demo-form-control-label-placement'
@@ -159,7 +159,7 @@ const PerformancesFeedback = ({
           </FormControl>
         ))}
       </div>
-    </main>
+    </div>
   );
 };
 

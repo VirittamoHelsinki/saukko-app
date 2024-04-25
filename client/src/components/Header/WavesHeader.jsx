@@ -53,11 +53,11 @@ const WavesHeader = (props) => {
   };
 
   return (
-    <main className='wavesHeader__wrapper' style={wrapperStyle}>
+    <div className='wavesHeader__wrapper' style={wrapperStyle}>
       <h1><b>{props.title}</b></h1>
       <p>{props.secondTitle}</p>
       <Waves fill={headerColor}/>
-    </main>
+    </div>
   );
 };
 

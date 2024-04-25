@@ -41,7 +41,7 @@ $header-height: 115px;
 }
 
 .container main {
-  height: calc(100vh - $header-height);
+  min-height: calc(100vh - $header-height);
 }
 
 .container header .headerBox {

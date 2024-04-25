@@ -187,7 +187,7 @@ function DegreeConfirmSelection() {
   }, [isSuccess, isFailure]);
 
   return (
-    <main className='confirmSelection__wrapper'>
+    <div className='confirmSelection__wrapper'>
       <section className='confirmSelection__container'>
         <div>
           <Stepper activePage={4} totalPages={4} data={stepperData} />
@@ -263,7 +263,7 @@ function DegreeConfirmSelection() {
           redirectLink='/company-info'
         />
       )}
-    </main>
+    </div>
   );
 }
 

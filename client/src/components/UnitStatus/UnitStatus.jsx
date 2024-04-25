@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import evaluationStore from '../../store/zustand/evaluationStore';
 import greenicone from '../../assets/circle-green.svg';
@@ -36,7 +35,7 @@ const UnitStatus = ({ unitId, status, subheader, link }) => {
   }
   
   return (
-    <main
+    <div
       className='unitstatus-wrapper'
       style={{ backgroundColor }}
       onClick={handleClick}
@@ -47,7 +46,7 @@ const UnitStatus = ({ unitId, status, subheader, link }) => {
         <img className='icone-img-style' src={rightAngle} alt='Angle Icone' />
       </div>
       {subheader && <h2>{subheader}</h2>}
-    </main>
+    </div>
   );
 };
 

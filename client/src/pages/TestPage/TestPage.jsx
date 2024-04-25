@@ -1,5 +1,5 @@
 // Importing React packages
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useStore from '../../store/zustand/formStore';
 
 // Importing components
@@ -71,7 +71,7 @@ const TestPage = () => {
   ];
 
   return (
-    <main className='testpage__wrapper'>
+    <div className='testpage__wrapper'>
 
 
 
@@ -143,7 +143,7 @@ const TestPage = () => {
         </ul>
       </div>
 
-    </main>
+    </div>
   );
 };
 

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import alert from '../../assets/circle-red.svg'
 import Button from '../../components/Button/Button';
-import WavesHeader from '../../components/Header/WavesHeader';
 import { loginUser } from '../../api/user';
 import { Icon } from '@iconify/react';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +11,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState();
   const [errorMessage, setErrorMessage] = useState('');
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   const processLogin = async (e) => {
     e.preventDefault();
@@ -39,6 +40,12 @@ const LoginPage = () => {
     setButtonDisabled(![email, password].every((input) => input.length > 0));
   }, [email, password]);
 
+
+  useEffect(()=>{
+    setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
+  },[setHeading, setSiteTitle, setSubHeading])
+
+
   // button styling/CSS
   const buttonStyleDisabled = {
     color: 'var(--saukko-main-white)',
@@ -52,8 +59,7 @@ const LoginPage = () => {
   };
 
   return (
-    <main className='loginPage__wrapper'>
-      <WavesHeader title='Saukko' fill='#00005E' />
+    <div className='loginPage__wrapper'>
       <section className='loginPage__container'>
         <h2>Kirjaudu sisään</h2>
 
@@ -121,7 +127,7 @@ const LoginPage = () => {
         />
       </section>
 
-    </main>
+    </div>
   );
 };
 

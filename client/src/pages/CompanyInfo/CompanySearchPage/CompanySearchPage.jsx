@@ -140,7 +140,7 @@ const CompanySearchPage = () => {
   ];
 
   return (
-    <main className="company__searchPage__wrapper">
+    <div className="company__searchPage__wrapper">
       <section className="company__searchPage__container">
         <div className='stepper__container'>
           <Stepper
@@ -166,7 +166,7 @@ const CompanySearchPage = () => {
           handlePageClick={handlePageClick}
         />
       </section>
-    </main>
+    </div>
   );
 };
 

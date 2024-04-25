@@ -180,7 +180,7 @@ function EvaluationSummary() {
   ];
 
   return (
-    <main className='summary__wrapper'>
+    <div className='summary__wrapper'>
       <section className='summary__container'>
         <Stepper activePage={4} totalPages={4} data={stepperData} />
         <InfoList title={'Yhteenveto'} data={summaryData} />
@@ -218,7 +218,7 @@ function EvaluationSummary() {
         open={errorNotification}
         handleClose={closeErrorNotification}
       />
-    </main>
+    </div>
   );
 }
 

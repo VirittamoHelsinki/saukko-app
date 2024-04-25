@@ -15,7 +15,7 @@ axios.defaults.withCredentials = true;
 // main app
 const App = () => {
   return (
-    <main className='app__wrapper'>
+    <div className='app__wrapper'>
       <ErrorBoundary>
         <AuthContextProvider>
           <HeadingContextProvider>
@@ -27,7 +27,7 @@ const App = () => {
           </HeadingContextProvider>
         </AuthContextProvider>
       </ErrorBoundary>
-    </main>
+    </div>
   );
 };
 
