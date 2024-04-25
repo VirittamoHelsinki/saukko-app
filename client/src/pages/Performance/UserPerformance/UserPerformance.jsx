@@ -25,7 +25,6 @@ import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 // import { sendEmails } from '../../../api/performance';
 
-
 const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
   const { loggedIn, currentUser } = useAuthContext();
@@ -72,7 +71,7 @@ const UserPerformance = () => {
       setCustomerFirstName(`${evaluation?.customerId.firstName}`);
       setCustomerLastName(`${evaluation?.customerId.lastName}`);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerFirstName, customerLastName]);
 
   let unitObject;
@@ -125,9 +124,8 @@ const UserPerformance = () => {
       // Clean-up state on confirmed navigation
       setConfirmedNavigation(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmedNavigation, lastLocation]);
-
 
   // const handleNavigation = (destination) => {
   //   if (hasUnsavedChanges) {
@@ -142,22 +140,7 @@ const UserPerformance = () => {
 
   useEffect(() => {
     console.log('selectedValues: ', selectedValues);
-  },[selectedValues]);
-
-  const handleNavigation = (destination) => {
-    if (hasUnsavedChanges) {
-      setShowWarningModal(true);
-      setDestination(destination);
-    } else {
-      console.log('Destination before navigation:', destination);
-      navigate(destination);
-    }
-    console.log('Destination before navigation222:', destination);
-    setLastLocation(destination);
-
-
-  //   console.log('Destination after navigation:', destination);
-  // };
+  }, [selectedValues]);
 
   useEffect(() => {
     const buttonStyle = {
@@ -241,15 +224,15 @@ const UserPerformance = () => {
     const updatedData = {
       units: updatedUnits,
       selectedValues: selectedValues,
-      additionalInfo: textAreaValue
+      additionalInfo: textAreaValue,
     };
 
     try {
       const response = await handleUserPerformanceEmails(
         `${evaluationId}`,
-        updatedData,
+        updatedData
       );
-/*      const response = await updateEvaluationById(
+      /*      const response = await updateEvaluationById(
         `${evaluationId}`,
         updatedData
       );*/
@@ -310,13 +293,17 @@ const UserPerformance = () => {
   // console.log('unitObject', unitObject);
 
   useEffect(() => {
-    setSiteTitle("Arviointi"), setSubHeading("Ammaattitaitovaatimusten arviointi");
-    if (currentUser && (currentUser.role === 'teacher' || currentUser.role === 'supervisor')) {
-      setHeading(customerFirstName + ' ' + customerLastName)
+    setSiteTitle('Arviointi'),
+      setSubHeading('Ammaattitaitovaatimusten arviointi');
+    if (
+      currentUser &&
+      (currentUser.role === 'teacher' || currentUser.role === 'supervisor')
+    ) {
+      setHeading(customerFirstName + ' ' + customerLastName);
     } else {
-      setHeading(`Tervetuloa, ${customerFirstName}`)
+      setHeading(`Tervetuloa, ${customerFirstName}`);
     }
-  })
+  });
 
   return (
     <div>
