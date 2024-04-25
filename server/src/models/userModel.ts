@@ -76,7 +76,7 @@ userSchema.methods.generateEmailVerificationToken = function () {
 };
 
 userSchema.methods.generateEmailVerificationLink = function () {
-  return `${config.EMAIL_SERVICE_HOST
+  return `${config.APP_URL
     }/verify-email/${this.generateEmailVerificationToken()}`
 }
 
