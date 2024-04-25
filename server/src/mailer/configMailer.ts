@@ -1,20 +1,29 @@
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer';
 
 // General email sending function
 export const sendEmail = async ({ to, subject, html }: any) => {
-
-  const transporter = nodemailer.createTransport({
+// for testing
+/*  const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
       user: 'jamie.sauer86@ethereal.email',
-      pass: '2FgEanEy4g4DUZt9wV'
-    }
-  });
+      pass: '2FgEanEy4g4DUZt9wV',
+    },
+  });*/
+// for real gmail
+    const transporter = nodemailer.createTransport({
+      service: process.env.SERVICE,
+      host: process.env.EMAIL_SERVICE_HOST,
+      auth: {
+        user: process.env.EMAIL_SERVICE_USER,
+        pass: process.env.EMAIL_SERVICE_PASSWORD,
+      },
+    });
 
   // Define the email options
   const mailOptions = {
-    from: '"Jamie Sauer 👻" <jamie.sauer86@ethereal.email>', // sender address
+    from: process.env.EMAIL_SERVICE_FROM,
     to,
     subject,
     html,

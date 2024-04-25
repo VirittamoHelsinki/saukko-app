@@ -26,7 +26,7 @@ const environments = {
   },
   production: {
     showTestEnvironmentWarning: false,
-    appInsightsInstrumentationKey: undefined,
+    appInsightsInstrumentationKey: "e3bae532-eb64-494a-8fb9-7f3663ca3d73", // TODO: use env,
     environentName: 'PRODUCTION'
   }
 }
