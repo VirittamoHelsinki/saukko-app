@@ -150,7 +150,7 @@ function EvaluationWorkplace() {
   ];
 
   return (
-    <main className='evaluationWorkplace__wrapper'>
+    <div className='evaluationWorkplace__wrapper'>
       {/* <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' /> */}
       <section className='evaluationWorkplace__container'>
         <Stepper
@@ -304,7 +304,7 @@ function EvaluationWorkplace() {
         open={redirectNotification}
         handleClose={closeRedirectNotification}
       />
-    </main>
+    </div>
   );
 }
 

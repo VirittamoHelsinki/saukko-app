@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -180,7 +180,7 @@ const TeacherPerformanceFeedBack = ({
   };
 
   return (
-    <main
+    <div
       className='feedback__wrapper'
       style={{ backgroundColor: getBackgroundColor() }}
     >
@@ -397,7 +397,7 @@ const TeacherPerformanceFeedBack = ({
           }}
         /> */}
       </div>
-    </main>
+    </div>
   );
 };
 

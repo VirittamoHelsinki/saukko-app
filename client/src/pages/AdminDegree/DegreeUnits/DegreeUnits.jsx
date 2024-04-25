@@ -81,7 +81,7 @@ function DegreeUnits() {
   ];
 
   return (
-    <main className='degreeUnits__wrapper'>
+    <div className='degreeUnits__wrapper'>
       <section className='degreeUnits__container'>
         <Stepper
           activePage={2}
@@ -120,7 +120,7 @@ function DegreeUnits() {
           showForwardButton={true}
         />
       </section>
-    </main>
+    </div>
   );
 }
 

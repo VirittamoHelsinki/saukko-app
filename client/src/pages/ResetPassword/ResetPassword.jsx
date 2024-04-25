@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Button from "../../components/Button/Button";
-import WavesHeader from "../../components/Header/WavesHeader";
 import Notification from "../../components/Notification/Notification";
 import { tokenValidation, resetPassword } from '../../api/user';
 
@@ -116,8 +115,8 @@ const ResetPassword = () => {
   }
 
   return (
-    <main className="resetPassword__wrapper">
-      {!notificationVisible && <WavesHeader title="Saukko" fill="#9fc9eb" />}
+    <div className="resetPassword__wrapper">
+     {/*  {!notificationVisible && <WavesHeader title="Saukko" fill="#9fc9eb" />} */}
       {!notificationVisible && (
         <section className="resetPassword__container">
           <h2>Vaihda salasana</h2>
@@ -194,7 +193,7 @@ const ResetPassword = () => {
 
         />
       )}
-    </main>
+    </div>
   );
 };
 

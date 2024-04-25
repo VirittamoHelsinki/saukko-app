@@ -126,7 +126,7 @@ function Summary() {
   }, [allInternalDegrees, response, setHeading, setSiteTitle, setSubHeading]);
 
   return (
-    <main className='summary__wrapper'>
+    <div className='summary__wrapper'>
       <section className='summary__container'>
         <Stepper
           activePage={4}
@@ -186,7 +186,7 @@ function Summary() {
           handleClose={closeError}
         />
       </section>
-    </main>
+    </div>
   );
 }
 

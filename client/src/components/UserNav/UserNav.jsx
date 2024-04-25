@@ -40,7 +40,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
   const toggleMenu = () => setMenuIsOpen(!menuIsOpen);
 
   return (
-    <main className='userNav__wrapper'>
+    <div className='userNav__wrapper'>
       {/* for hamburger menu*/}
       {/* <div className='mobile-menu-button' onClick={toggleMenu}>
         <Icon icon='ci:menu-alt-05' />
@@ -187,7 +187,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
           </Grid>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

@@ -86,7 +86,7 @@ function CompanyDegreeUnits() {
   ];
 
   return (
-    <main id='degreeUnitsWrapper' className='degreeUnits__wrapper'>
+    <div id='degreeUnitsWrapper' className='degreeUnits__wrapper'>
       <section className='degreeUnits__container'>
         <Stepper
           activePage={3}
@@ -126,7 +126,7 @@ function CompanyDegreeUnits() {
           showForwardButton={true}
         />
       </section>
-    </main>
+    </div>
   );
 }
 
