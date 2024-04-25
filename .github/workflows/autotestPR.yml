@@ -7,28 +7,64 @@ on:
   workflow_dispatch: # Manually trigger
 
 jobs:
-  test:
+  test-client:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout client code
         uses: actions/checkout@v2
+        with:
+          path: client # Specify the directory for client code
 
-      - name: Set up Node.js
+      - name: Set up Node.js for client
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
+        # working-directory: client # Set working directory to client
 
-      - name: Install dependencies
+      - name: Install dependencies for client
         run: npm install
+        working-directory: client # Set working directory to client
 
-      - name: Run tests
+      - name: Run tests for client
         run: npm test
+        working-directory: client # Set working directory to client
 
       # Optional: Upload test artifacts if test results exist
-      - name: Upload Test Results
+      - name: Upload Test Results for client
         if: success() && always() # Only run if previous steps succeed
         uses: actions/upload-artifact@v2
         with:
-          name: test-results
-          path: /coverage # have to be sure if path is right
+          name: test-results-client
+          path: client/coverage # Adjust the path to test results in client directory
+
+  test-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout server code
+        uses: actions/checkout@v2
+        with:
+          path: server # Specify the directory for server code
+
+      - name: Set up Node.js for server
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+        # working-directory: server # Set working directory to server
+
+      - name: Install dependencies for server
+        run: npm install
+        working-directory: server # Set working directory to server
+
+      - name: Run tests for server
+        run: npm test
+        working-directory: server # Set working directory to server
+
+      # Optional: Upload test artifacts if test results exist
+      - name: Upload Test Results for server
+        if: success() && always() # Only run if previous steps succeed
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results-server
+          path: server/coverage # Adjust the path to test results in server directory
