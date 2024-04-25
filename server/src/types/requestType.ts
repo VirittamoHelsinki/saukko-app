@@ -7,5 +7,6 @@ export interface Request extends  ExpressRequest {
     auth?: string;
     changePassword?: string;
     verifyEmail?: string;
-  }
+  },
+  contactRequests?: string[]
 }
