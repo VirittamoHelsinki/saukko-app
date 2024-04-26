@@ -24,6 +24,10 @@ const registerUser = async (req: Request, res: Response) => {
   // Retrieve the request body
   const body = req.body;
 
+  if (req.user && req.user.role !== 'teacher') {
+    return res.status(401).json({ errorMessage: 'Forbidden' });
+  }
+
   // Validation checks if any of the required fields are empty
   if (!body.email || !body.password) {
     console.log('email or password empty');
