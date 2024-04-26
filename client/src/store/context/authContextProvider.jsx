@@ -26,8 +26,6 @@ const AuthContextProvider = ({ children }) => {
 
   // Check the Auth-state from cookies
   const cookieChangeListener = useCallback((ccl) => {
-    console.log("Cookies updated", ccl)
-
     // cookieChangeListener is manually triggered, check the 🍪
     if (!ccl) {
       const c = cookies.get("auth_state");
@@ -47,7 +45,7 @@ const AuthContextProvider = ({ children }) => {
     } else if (ccl.name === "auth_state" && !!ccl.value) {
       // Cookie exists and has a value
       setCookieAuthState(true);
-      setAuthTokenExpiry(new Date(jwtDecode(ccl).exp * 1000))
+      setAuthTokenExpiry(new Date(jwtDecode(ccl.value).exp * 1000))
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
