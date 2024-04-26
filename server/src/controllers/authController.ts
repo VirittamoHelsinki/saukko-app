@@ -107,17 +107,6 @@ const forgotPassword = async (req: Request, res: Response) => {
   }
 }
 
-// TODO: this is pointless, frontend dont need if token is valid or not. or what is reason for it?
-const validateToken = async (req: Request, res: Response) => {
-  jwt.verify(req.body.token, config.JWT_SECRET, (err: any, decoded: any) => {
-    if (err) {
-      console.log(err.message)
-      return res.status(401).json({ errorMessage: "Invalid token" })
-    }
-    res.status(200).json({ message: "Token is valid" })
-  })
-}
-
 // TOKEN-BASED PASWORD CHANGE METHOD (changePassword - token)
 const resetPassword = async (req: Request, res: Response) => {
   try {
@@ -253,16 +242,27 @@ const login = async (req: Request, res: Response) => {
 }
 
 const renewToken = async (req: Request, res: Response) => {
-  const existingUser = req.user;
-  if (!existingUser) {
-    return res.status(401).json({ errorMessage: 'Unauthorized' })
+  console.log("RENEW_TOKEN")
+  try {
+    const existingUser = req.user;
+    if (!existingUser) {
+      console.log("RENEW_TOKEN: FAIL")
+      return res.status(401).json({ errorMessage: 'Unauthorized' })
+    }
+    // Create a tokens for the user
+    const tokens = existingUser.generateJWT();
+    console.log("RENEW_TOKEN: OK")
+    return res
+      .status(200)
+      .cookie("auth_state", tokens.info, { httpOnly: false })
+      .cookie("token", tokens.auth, { httpOnly: true })
+      .send()
+  } catch (error) {
+    console.log("renewToken was catch an error", error);
+    res.status(500).json({
+      errorMessage: 'Internal'
+    })
   }
-  // Create a tokens for the user
-  const tokens = existingUser.generateJWT();
-  return res
-    .status(200)
-    .cookie("auth_state", tokens.info, { httpOnly: false })
-    .cookie("token", tokens.auth, { httpOnly: true })
 }
 
 const logout = async (_req: Request, res: Response) => {
@@ -384,7 +384,7 @@ const getCurrentUser = (req: Request, res: Response) => {
 export default {
   registerUser,
   forgotPassword,
-  validateToken,
+  // validateToken,
   resetPassword,
   login,
   renew: renewToken,
