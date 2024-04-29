@@ -24,6 +24,7 @@ import {
   sendEvaluationFormTeacherRequestContactMessageCustomer,
   sendEvaluationFormTeacherRequestContactMessageSupervisor,
 } from '../mailer/templates/EvaluationForm';
+import { AssessmentStatus, EvaluationStatus, ISendEvaluationFormRequestContact } from '../mailer/types';
 
 const _generateVerificationLink = (user: User) => {
   const verificationToken = user.generateEmailVerificationToken();
@@ -398,16 +399,6 @@ const sendEmailToTeacher = async (req: Request, res: Response) => {
   }
 };
 
-enum EvaluationStatus {
-  ACCEPTED = 'Kyllä',
-  REJECTED = 'Ei'
-}
-
-enum AssessmentStatus {
-  READY = 'Valmis',
-  IN_PROGRESS = 'Kesken'
-}
-
 const handeUserPerformanceEmails = async (req: Request, res: Response) => {
     try {
       const evaluation = await EvaluationModel.findById(req.params.id)
@@ -427,7 +418,15 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
 
       const user = req.user as User;
 
-      const params = {
+      interface IFormIsReadyParams {
+        degreeName: string;
+        unitName: string;
+        supervisorName: string;
+        customerName: string;
+        additionalInfo: string;
+      }
+
+      const formIsReadyParams: IFormIsReadyParams = {
         degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
         unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
         supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
@@ -435,9 +434,9 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
         additionalInfo: req.body.additionalInfo,
       };
 
-      const customerEmail = evaluation.customerId?.email || 'Unknown Customer Email';
-      const teacherEmail = evaluation.teacherId?.email || 'Unknown Teacher Email';
-      const supervisorEmail = evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email';
+      const customerEmail: string = evaluation.customerId?.email || 'Unknown Customer Email';
+      const teacherEmail: string = evaluation.teacherId?.email || 'Unknown Teacher Email';
+      const supervisorEmail: string = evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email';
 
       const selectedValues = req.body.selectedValues;
 
@@ -447,7 +446,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
           case 'supervisor':
             sendEvaluationFormSupervisorReadyMessageCustomer(
               {
-                ...params,
+                ...formIsReadyParams,
                 customerFirstName: evaluation.customerId?.firstName || 'Unknown Customer First Name',
                 customerAssessment: AssessmentStatus.READY,
                 supervisorAssessment: AssessmentStatus.READY,
@@ -455,7 +454,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
               'TPO:n valmis lomake', customerEmail);
             sendEvaluationFormSupervisorReadyMessageTeacher(
               {
-                ...params,
+                ...formIsReadyParams,
                 teacherFirstName: evaluation.teacherId?.firstName || 'Unknown Customer First Name',
                 customerAssessment: AssessmentStatus.READY,
                 supervisorAssessment: AssessmentStatus.READY,
@@ -464,13 +463,13 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
             break;
           case 'customer':
             sendEvaluationFormCustomerReadyMessageSupervisor({
-              ...params,
+              ...formIsReadyParams,
               supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
               customerAssessment: AssessmentStatus.READY,
               supervisorAssessment: AssessmentStatus.READY,
             }, 'Asiakkaan valmis lomake', supervisorEmail);
             sendEvaluationFormCustomerReadyMessageTeacher({
-              ...params,
+              ...formIsReadyParams,
               teacherFirstName: evaluation.teacherId?.firstName,
               customerAssessment: AssessmentStatus.READY,
               supervisorAssessment: AssessmentStatus.READY,
@@ -479,13 +478,13 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
             break;
           case 'teacher':
             sendEvaluationFormTeacherReadyMessageSupervisor({
-              ...params,
+              ...formIsReadyParams,
               supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
               evaluationAccepted: EvaluationStatus.ACCEPTED,
 
             }, 'opettajan valmis lomake', supervisorEmail);
             sendEvaluationFormTeacherReadyMessageCustomer({
-              ...params,
+              ...formIsReadyParams,
               customerFirstName: evaluation.customerId?.firstName,
               evaluationAccepted: EvaluationStatus.ACCEPTED,
 
@@ -493,9 +492,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
             break;
         }
       }
-      const params2 = {
-        userName: user.firstName + ' ' + user.lastName,
-        userEmail: user?.email || 'Unknown Email',
+      const requestContactParams: ISendEvaluationFormRequestContact = {
         degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
         unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
         teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
@@ -506,17 +503,24 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
       // yhteydenottopyynnöt
       if (selectedValues.pyydetaanYhteydenottoaOpettajalta && user.role === 'customer') {
         sendEvaluationFormCustomerRequestContact({
-          ...params2,
+          ...requestContactParams,
         }, teacherEmail);
       }
+
+      if (selectedValues.pyydetaanYhteydenottoaOpettajalta && user.role === 'supervisor') {
+        sendEvaluationFormSupervisorRequestContact({
+          ...requestContactParams,
+        }, teacherEmail);
+      }
+
       if (selectedValues.pyydetaanYhteydenottoaAsiakkaalta && user.role === 'teacher') {
         sendEvaluationFormTeacherRequestContactMessageCustomer({
-          ...params2,
+          ...requestContactParams,
         }, customerEmail);
       }
       if (selectedValues.pyydetaanYhteydenottoaOhjaajalta && user.role === 'teacher') {
         sendEvaluationFormTeacherRequestContactMessageSupervisor({
-          ...params2,
+          ...requestContactParams,
           vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
         }, supervisorEmail);
       }
