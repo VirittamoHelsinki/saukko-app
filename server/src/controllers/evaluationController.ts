@@ -521,7 +521,6 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
         }, supervisorEmail);
       }
 
-      // TODO: fix and check
       evaluation.units = req.body.units.map((unit: any) => {
         let allAssessmentsCompleted = true;
         let anyAssessmentInProgress = false;
