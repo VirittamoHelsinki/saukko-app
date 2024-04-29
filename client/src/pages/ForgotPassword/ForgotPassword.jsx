@@ -1,15 +1,16 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Button from '../../components/Button/Button';
-import WavesHeader from '../../components/Header/WavesHeader';
 import Notification from '../../components/Notification/Notification';
 import * as EmailValidator from 'email-validator';
 import { forgotPassword } from '../../api/user';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
 
 const ForgotPassword = () => {
   const color = '#00005E'
   const [email, setEmail] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [notificationVisible, setNotificationVisible] = useState(false);
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   const formRef = useRef();
   const emailRef = useRef();
@@ -36,6 +37,11 @@ const ForgotPassword = () => {
     console.log(email);
   };
 
+
+  useEffect(()=>{
+    setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
+  },[setHeading, setSiteTitle, setSubHeading])
+
   useEffect(() => {
     setButtonDisabled(email.length === 0);
   }, [email]);
@@ -53,8 +59,8 @@ const ForgotPassword = () => {
   };
 
   return (
-    <main className='forgotPassword__wrapper'>
-      {!notificationVisible && <WavesHeader title='Saukko' fill='#9fc9eb' header={color} />}
+    <div className='forgotPassword__wrapper'>
+      {/* {!notificationVisible && <WavesHeader title='Saukko' fill='#9fc9eb' header={color} />} */}
       {!notificationVisible && (
         <section className='forgotPassword__container'>
           <h2>Unohtuiko salasana?</h2>
@@ -97,7 +103,7 @@ const ForgotPassword = () => {
           iconColor={'white'}
         />
       )}
-    </main>
+    </div>
   );
 };
 

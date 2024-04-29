@@ -1,21 +1,19 @@
 // Import react packages
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Import local files & components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Stepper from '../../../components/Stepper/Stepper';
 import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+import { useAuthContext } from '../../../store/context/authContextProvider';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // Import MUI
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAuthContext } from '../../../store/context/authContextProvider';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -56,6 +54,11 @@ function EvaluationForm() {
   const handleCloseDate = () => setOpenNotificationModalDate(false);
 
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  useEffect(()=>{
+    setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
+  },[setHeading, setSiteTitle, setSubHeading])
 
   const handleBack = () => {
     // Display a warning modal before navigating to '/admin-menu'
@@ -176,8 +179,7 @@ function EvaluationForm() {
   });
 
   return (
-    <main className='evaluationForm__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
+    <div className='evaluationForm__wrapper'>
       <section className='evaluationForm__container'>
         <Stepper activePage={1} totalPages={4} data={stepperData} />
         <h1>Lisää asiakkaan tiedot</h1>
@@ -305,9 +307,7 @@ function EvaluationForm() {
         handleClose={handleCancelBack}
         handleConfirm={handleConfirmBack}
       />
-
-      <UserNav />
-    </main>
+    </div>
   );
 }
 

@@ -1,5 +1,6 @@
-import { React, useState } from 'react';
+import { useState, useEffect } from 'react';
 import useStore from '../../store/zustand/formStore';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
 import { Icon } from '@iconify/react';
 
 /**
@@ -18,6 +19,13 @@ const PasswordInput = (props) => {
 
   // State variables for password visibility toggling
   const [showPassword, setShowPassword] = useState(false);
+
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  useEffect(()=>{
+    setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
+  },[setHeading, setSiteTitle, setSubHeading])
+
 
   // Toggle password visibility for password input
   const togglePasswordVisibility = () => {

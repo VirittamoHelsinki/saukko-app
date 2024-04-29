@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Icon } from "@iconify/react";
 import Button from "../../components/Button/Button";
-import WavesHeader from "../../components/Header/WavesHeader";
+//import WavesHeader from "../../components/Header/WavesHeader";
 import Notification from "../../components/Notification/Notification";
 import { resetPassword } from "../../api/user";
+import { useHeadingContext } from "../../store/context/headingContectProvider";
 
 /**
  * 
@@ -17,6 +18,7 @@ const SetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [notificationVisible, setNotificationVisible] = useState(false);
   const [busy, setBusy] = useState(false);
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -25,6 +27,12 @@ const SetPassword = () => {
   const togglePasswordVerifyVisibility = () => {
     setShowPasswordVerify(!showPasswordVerify);
   };
+
+
+  useEffect(()=>{
+    setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
+  },[setHeading, setSiteTitle, setSubHeading])
+
 
 
   const setThePassword = (e) => {
@@ -49,8 +57,8 @@ const SetPassword = () => {
   }
 
   return !notificationVisible ? (
-    <main className="resetPassword__wrapper">
-      <WavesHeader title="Saukko" fill="#9fc9eb" />
+    <div className="resetPassword__wrapper">
+      {/* <WavesHeader title="Saukko" fill="#9fc9eb" /> */}
       <section className="resetPassword__container">
         <h2>Vaihda salasana</h2>
         <form onSubmit={setThePassword}>
@@ -112,9 +120,9 @@ const SetPassword = () => {
           </section>
         </form>
       </section>
-    </main>
+    </div>
   ) : (
-    <main className="resetPassword__wrapper">
+    <div className="resetPassword__wrapper">
       <Notification
         navigatePage="/login"
         headerColor={"#00005E"}
@@ -124,7 +132,7 @@ const SetPassword = () => {
         icon='gg:check-o'
         iconColor={'white'}
       />
-    </main>
+    </div>
   )
 }
 

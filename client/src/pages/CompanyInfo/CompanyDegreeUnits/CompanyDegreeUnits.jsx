@@ -1,19 +1,16 @@
 // Import react packages
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// Import libraries
 import Pagination from '@mui/material/Pagination';
 
-// Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+
 import InternalApiContext from '../../../store/context/InternalApiContext';
-// import { amber } from '@mui/material/colors';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 function CompanyDegreeUnits() {
   const navigate = useNavigate();
@@ -28,6 +25,13 @@ function CompanyDegreeUnits() {
     setinternalDegreeId(params.degreeId);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  useEffect(() => {
+    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikkaa"), setHeading("Työpaikkojen hallinta")
+  }, [setSiteTitle, setSubHeading, setHeading]);
+
 
   // Save degree units to state once degree is fetched
   const degreeUnits = internalDegree.units;
@@ -82,24 +86,19 @@ function CompanyDegreeUnits() {
   ];
 
   return (
-    <main id='degreeUnitsWrapper' className='degreeUnits__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Lisää uusi työpaikka' />
+    <div id='degreeUnitsWrapper' className='degreeUnits__wrapper'>
       <section className='degreeUnits__container'>
         <Stepper
           activePage={3}
           totalPages={4}
           data={stepperData}
         />
-
         <h2>{degreeFound && internalDegree && internalDegree.name && internalDegree.name.fi} </h2>
-
-
         <Searchbar
           id='searchbarTutkinnonosat'
           handleSearch={handleSearch}
           placeholder={'Etsi tutkinnonosat'}
         />
-
         <div className='degreeUnits__container--units'>
           {currentUnits
             ? currentUnits.map((unit) => (
@@ -107,7 +106,6 @@ function CompanyDegreeUnits() {
                 key={unit._id}
                 unit={unit}
                 allUnits={internalDegree.units}
-
               />
             ))
             : 'ei dataa APIsta'}
@@ -120,20 +118,15 @@ function CompanyDegreeUnits() {
           page={page}
           onChange={handlePageChange}
         />
-
         <PageNavigationButtons
           handleBack={() => navigate(`../internal/degrees`)}
           handleForward={() => {
-
             navigate(`../internal/degrees/${internalDegree._id}/units/confirm-selection`);
-
           }}
           showForwardButton={true}
-
         />
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 }
 

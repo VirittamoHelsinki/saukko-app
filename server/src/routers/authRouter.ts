@@ -5,7 +5,6 @@ import auth from '../middlewares/middleware.auth'
 const router = Router();
 
 router.post("/forgot-password", authController.forgotPassword);
-router.post("/validate-token", authController.validateToken);                           // POINTLESS 🧨
 router.post("/reset-password", authController.resetPassword);
 router.post("/login", authController.login);
 router.get("/renew-token", authController.renew);

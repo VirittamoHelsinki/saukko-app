@@ -1,10 +1,13 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import WavesHeader from '../../../components/Header/WavesHeader';
-import Searchbar from '../../../components/Searchbar/Searchbar';
-import UserNav from '../../../components/UserNav/UserNav';
-import InternalApiContext from '../../../store/context/InternalApiContext';
+
 import Stepper from '../../../components/Stepper/Stepper';
+import Searchbar from '../../../components/Searchbar/Searchbar';
+
+import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
+
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({ filteredList, allInternalDegrees, paginate, currentPage }) => {
@@ -91,6 +94,11 @@ const CompanySearchPage = () => {
   // Get degrees from InternalApiContext
   const { allInternalDegrees, internalDegree } = useContext(InternalApiContext);
 
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  useEffect(()=>{
+    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikkaa"), setHeading("Työpaikkojen hallinta")
+  })
   // Searchbar logic
   const handleSearch = (event) => {
     setCurrentPage(1) // Reset page when searching
@@ -132,9 +140,7 @@ const CompanySearchPage = () => {
   ];
 
   return (
-    <main className="company__searchPage__wrapper">
-      <WavesHeader title="Koulutukset" secondTitle="Lisää uusi työpaikka" disabled={false} />
-
+    <div className="company__searchPage__wrapper">
       <section className="company__searchPage__container">
         <div className='stepper__container'>
           <Stepper
@@ -160,8 +166,7 @@ const CompanySearchPage = () => {
           handlePageClick={handlePageClick}
         />
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 };
 

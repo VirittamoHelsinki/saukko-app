@@ -17,7 +17,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <main className='landingPage__wrapper'>
+    <div className='landingPage__wrapper'>
       <section className='landingPage__textContainer'>
         <img src={HelsinkiLogo} alt='' />
         <h1>Saukko</h1>
@@ -36,7 +36,7 @@ const LandingPage = () => {
           }}
         />
       </section>
-    </main>
+    </div>
   );
 };
 

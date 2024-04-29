@@ -1,13 +1,12 @@
-import React, { useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import WavesHeader from '../../components/Header/WavesHeader';
-import UserNav from '../../components/UserNav/UserNav';
 import { Icon } from '@iconify/react';
 import useStore from '../../store/zustand/formStore';
 import useEvaluationStore from '../../store/zustand/evaluationStore';
 import useUnitsStore from '../../store/zustand/unitsStore';
 import ExternalApiContext from '../../store/context/ExternalApiContext';
 import InternalApiContext from '../../store/context/InternalApiContext';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
 
 function AdminMenu() {
   const navigate = useNavigate();
@@ -18,8 +17,10 @@ function AdminMenu() {
   const { resetDegreeData } = useStore();
   const { clearWorkplace, clearEvaluationFromStore } = useEvaluationStore();
   const { clearCheckedUnits } = useUnitsStore();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
+    setSiteTitle("Hallinnointi"), setSubHeading(""), setHeading("Hallinnointi")
     resetDegreeData()
     setDegreeId('')
     setEvaluation(null)
@@ -30,8 +31,7 @@ function AdminMenu() {
   }, []);
 
   return (
-    <main className='adminMenu__wrapper' id='main-wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Hallinnointi' />
+    <div className='adminMenu__wrapper' id='main-wrapper'>
       <section className='adminMenu__container'>
         <div className='menuItem__container' id='degrees-menu-item' onClick={() => navigate('/degrees/add')}>
           <div className='menuItem__topRow'>
@@ -55,8 +55,7 @@ function AdminMenu() {
           <p>Lisää uusi asiakkuus</p>
         </div>
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 
 }

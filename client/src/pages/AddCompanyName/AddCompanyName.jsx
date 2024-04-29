@@ -1,10 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Searchbar from '../../components/Searchbar/Searchbar';
 import Button from '../../components/Button/Button';
-import WavesHeader from '../../components/Header/WavesHeader';
-import UserNav from '../../components/UserNav/UserNav';
 import InternalApiContext from '../../store/context/InternalApiContext';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
 // import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
 // import { buildDeprecatedPropsWarning } from '@mui/x-date-pickers/internals';
 
@@ -18,6 +17,11 @@ const CheckLength = ({
   const startIndex = (currentPage - 1) * paginate;
   const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : workplaces;
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  useEffect(() => {
+    setSiteTitle("Lisää työpaikkaa"), setSubHeading(""), setHeading("Työpaikkojen hallinta")
+  },[setHeading, setSiteTitle, setSubHeading])
 
   //   const navigate = useNavigate();
   return (
@@ -127,13 +131,7 @@ const AddCompanyName = () => {
   };
 
   return (
-    <main className='addDegree__wrapper'>
-      <WavesHeader
-        title='Saukko'
-        secondTitle='Tutkintojen hallinta'
-        disabled={false}
-      />
-      <UserNav />
+    <div className='addDegree__wrapper'>
       <section className='addDegree__container'>
         <Button
           id='addWorkplaceButton'
@@ -167,7 +165,7 @@ const AddCompanyName = () => {
           handlePageClick={handlePageClick}
         />
       </section>
-    </main>
+    </div>
   );
 };
 
