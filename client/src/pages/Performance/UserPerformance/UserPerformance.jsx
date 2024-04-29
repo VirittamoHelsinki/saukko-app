@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
 
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';

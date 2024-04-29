@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 import { PasswordValidator } from '../utils/password';
 import { passwordValidationOptions } from '../options';
 import { sendVerificationEmail } from '../mailer/templates/newUserVerification';
-import { sendResetPasswordEmail} from '../mailer/templates/resetPassword';
+import { sendResetPasswordEmail } from '../mailer/templates/resetPassword';
 
 const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
   if (err.message) {
@@ -23,6 +23,10 @@ const _responseWithError = (res: Response, statusCode: number, err: any, optiona
 const registerUser = async (req: Request, res: Response) => {
   // Retrieve the request body
   const body = req.body;
+
+  if (req.user && req.user.role !== 'teacher') {
+    return res.status(401).json({ errorMessage: 'Forbidden' });
+  }
 
   // Validation checks if any of the required fields are empty
   if (!body.email || !body.password) {
@@ -62,15 +66,12 @@ const registerUser = async (req: Request, res: Response) => {
     await newUser.save()
 
 
-    if (newUser.role !== 'supervisor') {
-      const verificationLink = newUser.generateEmailVerificationLink();
-      // Send verification email
-      sendVerificationEmail({userEmail: newUser.email, verificationLink});
-      console.log('user created and verification email sent');
-    } else {
-      console.log('user created without verification email (role: supervisor)');
-    }
-    res.status(201).json({ userId: newUser._id, message: "User created. Verification email sent." });
+    const verificationLink = newUser.generateEmailVerificationLink();
+    console.log('verificationLink: ', verificationLink);
+    // Send verification email
+    sendVerificationEmail({ userEmail: newUser.email, verificationLink });
+
+    res.status(201).json({ userId: newUser._id, message: 'User created. Verification email sent.' });
 
   } catch (err) {
     console.error(err);
@@ -313,14 +314,12 @@ const verifyEmail = async (req: Request, res: Response) => {
     const passwordChanegeToken = user.generateResetPasswordToken();
 
     // Get Url based of current environment
-    const url = "http://localhost:3000"; // TODO: handle production
 
     // Redirect user to the reset-password page
-    console.log("Returning REDIRECT TO", url)
     return res
       .clearCookie('verification-token')
-      .cookie("change-token", passwordChanegeToken, { httpOnly: true })
-      .json({ redirectURL: `${url}/set-password` });
+      .cookie('change-token', passwordChanegeToken, { httpOnly: true })
+      .json({ redirectURL: `${config.APP_URL}/set-password` });
     // .redirect(`${url}/reset-password`);
   } catch (err) {
     console.log("AuthController.verifyEmail. Token: {", req.tokens?.verifyEmail, "}", err)
