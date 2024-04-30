@@ -37,6 +37,7 @@ interface IUnit {
   _id: number;
   status: number;
   ready: boolean;
+  feedBack: string;
   name: {
     fi: string;
     sv: string;
@@ -53,6 +54,7 @@ interface IAssessments {
   answer: number;
   answerTeacher: number;
   answerSupervisor: number;
+  comment: string;
   // TODO: SA-307 - Tänne opettajan kommentti itselleen muistiin. "yhteenveto".........
   criteria: ICriteria[];
 }
@@ -159,6 +161,11 @@ const evaluationSchema = new Schema<IEvaluation>({
           default: '',
         },
       },
+      feedBack: {
+        type: String,
+        default: '',
+      },
+
       // Assessments related to the unit
       assessments: [
         {
