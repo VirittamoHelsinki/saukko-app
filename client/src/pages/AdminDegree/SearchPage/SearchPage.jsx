@@ -137,7 +137,7 @@ const SearchPage = ({ allDegrees }) => {
   };
 
   return (
-    <dev className="searchPage__wrapper">
+    <div className="searchPage__wrapper">
       <section className="searchPage__container">
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
         {allDegrees ? (
@@ -163,7 +163,7 @@ const SearchPage = ({ allDegrees }) => {
             </div>
           )}
       </section>
-    </dev>
+    </div>
   );
 };
 

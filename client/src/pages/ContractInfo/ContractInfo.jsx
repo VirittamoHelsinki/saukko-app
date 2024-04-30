@@ -6,6 +6,7 @@ import InternalApiContext from '../../store/context/InternalApiContext';
 import { fetchInternalDegreeById } from '../../api/degree';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import InfoList from '../../components/InfoList/InfoList';
+import Button from '../../components/Button/Button';
 
 const ContractInfo = () => {
   const { evaluation } = useContext(InternalApiContext);
@@ -160,14 +161,14 @@ const ContractInfo = () => {
         <section className='contractInfo__container--description'>
           <InfoList data={data} />
         </section>
-        {/* <section
+        <section
           className='contractInfo__container--description'
           style={{
             marginTop: '4rem',
             backgroundColor: '#f2f2f2',
             padding: '1rem 3.5rem',
           }}
-        > */}
+        > 
           <ul>
             {evaluation &&
               evaluation?.units?.map((unit, index) => (
@@ -187,8 +188,15 @@ const ContractInfo = () => {
                 </li>
               ))}
           </ul>
-        {/* </section> */}
+        </section>
       </div>
+      <Button
+        text='Takaisin'
+        onClick={() => {
+          window.history.back();
+        }}
+        style={{ marginTop: '2rem' }}
+       />
     </div>
   );
 };
