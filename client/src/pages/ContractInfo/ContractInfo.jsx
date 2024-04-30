@@ -153,40 +153,41 @@ const ContractInfo = () => {
       content: evaluation?.workGoals,
     },
   ];
+
   return (
     <div className='contractInfo__wrapper'>
       <div className='contractInfo__container'>
         <section className='contractInfo__container--description'>
           <InfoList data={data} />
         </section>
-        <section
+        {/* <section
           className='contractInfo__container--description'
           style={{
             marginTop: '4rem',
             backgroundColor: '#f2f2f2',
             padding: '1rem 3.5rem',
           }}
-        >
+        > */}
           <ul>
             {evaluation &&
-              evaluation.units.map((unit, index) => (
+              evaluation?.units?.map((unit, index) => (
                 <li key={index}>
-                  <h4 style={{ margin: '10px 0' }}>{unit.name.fi}</h4>
+                  <h4 style={{ margin: '6px 0' }}>{unit.name.fi}</h4>
                   {unit &&
-                    unit.assessments.map((assessment, innerIndex) => (
+                    unit?.assessments?.map((assessment, innerIndex) => (
                       <ul key={innerIndex}>
                         <li style={{ padding: '2px' }}>
-                          {innerIndex + 1}. {assessment.name.fi}
+                          {innerIndex + 1}. {assessment?.name?.fi}
                         </li>
                       </ul>
                     ))}
-                  {index !== evaluation.units.length - 1 && (
+                  {index !== evaluation?.units?.length - 1 && (
                     <hr style={{ margin: '12px 0' }} />
                   )}
                 </li>
               ))}
           </ul>
-        </section>
+        {/* </section> */}
       </div>
     </div>
   );

@@ -48,15 +48,12 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
       <div
         className={`userNav__menu ${menuIsOpen ? 'userNav__menu--open' : ''}`}
       >
-        {/* <div className='userNav__menu__closeBtn' onClick={toggleMenu}>
-          x
-        </div> */}
         {/* Hamburger  Menu Items */}
         {/* set background color user's role */}
         <div className={`userNav__icons ${currentUser?.role}`}>
-          <Box sx={{ height: '20vh', marginTop: '50px' }}>
-            <img src={HelsinkiLogo} alt='' />
-            <h1>OsTu</h1>
+          <Box sx={{ height: '20vh', marginTop: '50px', textAlign:'center' }}>
+            <img className='helsinki-logo' src={HelsinkiLogo} alt='' />
+            <h1 className='logo-text'>OsTu</h1>
           </Box>
           <Box
             alignItems='left'
@@ -65,8 +62,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
               marginTop: '12px',
               width: '45%',
               height: '100vh',
-              fontSize: '32px',
-              fontWeight: '600',
               cursor: 'pointer',
               display: 'flex',
               flexDirection: 'column'
@@ -74,7 +69,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
           >
             <div style={{ textAlign: 'left', flexGrow: 1 }}>
               <List>
-                <ListItem style={{ marginBottom: '20px', paddingBottom: '10px' }}>
+                <ListItem  className='navListItem'>
                   <Typography
                     className='NavText'
                     onClick={() => {
@@ -87,7 +82,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                 </ListItem>
                 {currentUser && currentUser.role === 'teacher' && (
                   <>
-                    <ListItem style={{ marginBottom: '20px', paddingBottom: '10px' }}>
+                    <ListItem className='navListItem'>
                       <Typography
                         className='NavText'
                         onClick={() => {
@@ -104,7 +99,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                         Tutkinnot
                       </Typography>
                     </ListItem>
-                    <ListItem style={{ marginBottom: '20px', paddingBottom: '10px' }}>
+                    <ListItem className='navListItem'>
                       <Typography
                         onClick={() => {
                           toggleMenu();
@@ -116,7 +111,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                         Työpaikat
                       </Typography>
                     </ListItem>
-                    <ListItem style={{ marginBottom: '20px', paddingBottom: '10px' }}>
+                    <ListItem className='navListItem'>
                       <Typography
                         onClick={() => {
                           toggleMenu();
@@ -127,7 +122,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                         + Luo uusi sopimus
                       </Typography>
                     </ListItem>
-                    <ListItem style={{ marginBottom: '20px', paddingBottom: '10px' }}>
+                    <ListItem className='navListItem'>
                       <Typography
                         onClick={() => {
                           toggleMenu();
@@ -138,7 +133,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                         Asiakkuudet
                       </Typography>
                     </ListItem>
-                    <ListItem style={{ marginBottom: '20px', paddingBottom: '10px' }}>
+                    <ListItem className='navListItem'>
                       <Typography
                         onClick={() => {
                           toggleMenu();
@@ -151,7 +146,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                     </ListItem>
                   </>
                 )}
-                <ListItem style={{ marginBottom: '20px' }}>
+                <ListItem className='navListItem'>
                   <Typography
                     className='NavText'
                     onClick={() => {
@@ -173,7 +168,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                   navigate('/profile')
                 }}
                 sx={{ marginRight: '20px', marginBottom: '20px', cursor: 'pointer' }}
-              >
+                >
                 <Typography sx={{ fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
                   Kirjaudu ulos
                 </Typography>
@@ -181,7 +176,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                   icon='websymbol:logout'
                   color='black'
                   style={{ marginLeft: '10px' }}
-                />
+                  />
               </Button>
             </Grid>
           </Grid>

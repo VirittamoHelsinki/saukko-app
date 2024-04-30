@@ -2,20 +2,5 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  h2 {
-    font-size: 1.2rem;
-  }
-
-  .contractInfo__container {
-    .contractInfo__container--description {
-      // padding: 1.2rem;
-      h3 {
-        margin-bottom: 13px;
-      }
-      p {
-        line-height: 1.4rem;
-      }
-    }
-  }
+  padding-top: 5vh;
 }

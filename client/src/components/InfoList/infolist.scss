@@ -5,15 +5,10 @@
   align-content: space-around;
   width: 100%;
 
-  h1 {
-    font-size: 18px;
-    font-weight: 600;
-    text-transform: capitalize;
-    text-decoration: underline;
-    margin: 20px auto 33px;
-  }
   ul li {
-    padding: 5px 20px;
-    line-height: 25px;
+    height: 55px;
+    padding: 8px 20px;
+    line-height: 20px;
+    font-size: 16px;
   }
 }

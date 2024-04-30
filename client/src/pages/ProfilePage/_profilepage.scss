@@ -3,11 +3,13 @@
   .profile__wrapper {
     display: flex;
     flex-direction: column;
+    padding-top: 10vh;
+    padding-left: 3px;
 
     .profile__container {
       .profile__container--title {
         text-decoration: underline;
-        font-size: 16px;
+        //font-size: 16px;
         text-align: center;
       }
 
@@ -25,6 +27,7 @@
         
         .profile__container--row-value {
           color: var(--saukko-main-grey);
+          font-size: 16px;
         }
         
         .profile__container-row-arrow {
@@ -34,7 +37,7 @@
       }
     }
     
-    .profile__logout {
+    /* .profile__logout {
       margin: 50px 20px 100px 20px;
       
       .button__container {
@@ -56,6 +59,6 @@
           margin: 0;
         }
       }
-    }
+    } */
   }
 }
