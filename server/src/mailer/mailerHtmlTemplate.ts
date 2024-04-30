@@ -1,3 +1,4 @@
+import config from '../utils/config';
 
 const wavesSvg = `
 <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='85' fill='#ffffff'>
@@ -57,7 +58,7 @@ const mailTemplate = (text: string) => {
 
         <div class="header">
 
-        <img src="http://localhost:5173/Helsinki_white_logo.png" alt="Helsinki Logo"/>
+        <img src=${config.APP_URL}/Helsinki_white_logo.png alt="Helsinki Logo"/>
         
         <h1>OsTu</h1>
 
