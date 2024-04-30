@@ -6,10 +6,14 @@ import InternalApiContext from '../../store/context/InternalApiContext';
 import { fetchInternalDegreeById } from '../../api/degree';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import InfoList from '../../components/InfoList/InfoList';
+import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../components/Button/Button';
+
+import { useNavigate } from 'react-router-dom';
 
 const ContractInfo = () => {
   const { evaluation } = useContext(InternalApiContext);
+  const navigate = useNavigate();
   console.log('🚀 ~ ContractInfo ~ evaluation:', evaluation);
   const [degreeDetails, setDegreeDetails] = useState(null);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
@@ -168,7 +172,7 @@ const ContractInfo = () => {
             backgroundColor: '#f2f2f2',
             padding: '1rem 3.5rem',
           }}
-        > 
+        >
           <ul>
             {evaluation &&
               evaluation?.units?.map((unit, index) => (
@@ -190,13 +194,20 @@ const ContractInfo = () => {
           </ul>
         </section>
       </div>
-      <Button
-        text='Takaisin'
-        onClick={() => {
-          window.history.back();
-        }}
-        style={{ marginTop: '2rem' }}
-       />
+      <div className='contractinfo_button'>
+        <Button
+          style={{
+            color: '#0000BF',
+            fontSize: '15px',
+            border: '2px solid #0000BF',
+            width: '14rem',
+            height: '50px',
+          }}
+          text='Takaisin'
+          onClick={() => navigate('/')}
+          icon={'formkit:arrowleft'}
+        />
+      </div>
     </div>
   );
 };
