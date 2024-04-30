@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
+    // padding: theme.spacing(2),
   },
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
@@ -24,7 +24,7 @@ function CustomDialogTitle(props) {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+    <DialogTitle sx={{ m: 0, fontSize: '12px' }} {...other}>
       {children}
       {onClose ? (
         <IconButton
@@ -45,6 +45,7 @@ function CustomDialogTitle(props) {
 }
 
 export default function RequirementsAndCriteriaModal(props) {
+  // let bgColor = '#E5F6FD';
   let bgColor = '#E5F6FD';
   let color = '#0288D1';
   const [inputValueTitle, setInputValueTitle] = useState('');
@@ -57,6 +58,20 @@ export default function RequirementsAndCriteriaModal(props) {
       setInputValueTitle(value);
     } else if (inputField === 2) {
       setInputValueCriteria(value);
+    }
+  };
+
+  const handleClick = () => {
+    // Check if the input value is empty
+    if (inputValueCriteria.trim() === '') {
+      setInputValueCriteria('• '); // Insert a bullet point
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      setInputValueCriteria((prevValue) => prevValue + '\n• ');
     }
   };
 
@@ -89,12 +104,16 @@ export default function RequirementsAndCriteriaModal(props) {
       sx={{
         '& .MuiDialog-paper': {
           background: bgColor,
-          borderLeft: 'solid 6px',
+          // borderLeft: 'solid 6px',
           color,
           width: '100%',
           maxWidth: '350px',
           '@media (min-width:600px)': {
             maxWidth: '400px', // adjust this value as needed
+          },
+          '& .MuiDialogTitle-root': {
+            fontSize: '16px',
+            fontWeight: 'bold',
           },
         },
       }}
@@ -115,12 +134,29 @@ export default function RequirementsAndCriteriaModal(props) {
         {props.title}
       </CustomDialogTitle>
       <DialogContent>
-        <Box sx={{ color: 'black', marginBottom: '1rem' }}>
+        <Box sx={{ color: 'black' }}>
           {props.body}
-          <Typography gutterBottom>{props.modalUnitName}</Typography>
+          <Typography
+            gutterBottom
+            sx={{
+              fontSize: '12px',
+              fontWeight: 'bold',
+            }}
+          >
+            {props.modalUnitName}
+          </Typography>
           {!props.hideRequirementsField && (
             <>
-              <Typography gutterBottom>{props.requirementsTitle}</Typography>
+              <Typography
+                gutterBottom
+                sx={{
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  marginTop: '10px',
+                }}
+              >
+                {props.requirementsTitle}
+              </Typography>
               <TextField
                 value={inputValueTitle}
                 onChange={(e) => handleInputChange(e, 1)}
@@ -154,10 +190,21 @@ export default function RequirementsAndCriteriaModal(props) {
           )}
           {!props.hideCriteriaField && (
             <>
-              <Typography gutterBottom>{props.criteria}</Typography>
+              <Typography
+                gutterBottom
+                sx={{
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  marginTop: '10px',
+                }}
+              >
+                {props.criteria}
+              </Typography>
               <TextField
                 value={inputValueCriteria}
                 onChange={(e) => handleInputChange(e, 2)}
+                onClick={handleClick}
+                onKeyDown={handleKeyDown}
                 id='outlined-multiline-static'
                 rows={8}
                 cols={25}
@@ -180,6 +227,9 @@ export default function RequirementsAndCriteriaModal(props) {
                     '&.Mui-focused fieldset': {
                       borderColor: 'black',
                     },
+                    '& .MuiInputBase-input': {
+                      fontSize: '13px',
+                    },
                   },
                 }}
               >
@@ -190,12 +240,13 @@ export default function RequirementsAndCriteriaModal(props) {
 
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
+              // display: 'flex',
+              // justifyContent: 'space-between',
               // width: '100%',
-              padding: '16px 16px 16px 0',
-              marginTop: '20px',
-              marginBottom: '20px',
+              // padding: '16px 16px 16px 0',
+              marginTop: '10px',
+              textAlign: 'center',
+              // marginBottom: '20px',
             }}
           >
             {!props.hideCancelButton && (
@@ -205,7 +256,7 @@ export default function RequirementsAndCriteriaModal(props) {
                   textTransform: 'none',
                   backgroundColor: '#FFFFFF',
                   border: '2px solid #0000BF',
-                  width: '125px',
+                  // width: '125px',
                   height: '56px',
                   color: '#0000BF',
                   borderRadius: '0',
@@ -225,7 +276,8 @@ export default function RequirementsAndCriteriaModal(props) {
                   height: '56px',
                   color: '#FFFFFF',
                   borderRadius: '0',
-                  fontWeight: 'bold',
+                  // fontWeight: 'bold',
+                  fontSize: '16px',
                 }}
               >
                 Tallenna
