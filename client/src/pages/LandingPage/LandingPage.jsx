@@ -1,7 +1,7 @@
 // importing react packages
 import { useNavigate } from 'react-router-dom';
 
-// import helsinki logo..
+// import helsinki logo
 import HelsinkiLogo from '../../assets/Helsinki_white_logo.png';
 
 // importing components
