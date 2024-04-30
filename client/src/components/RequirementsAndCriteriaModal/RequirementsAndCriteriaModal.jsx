@@ -278,6 +278,10 @@ export default function RequirementsAndCriteriaModal(props) {
                   borderRadius: '0',
                   // fontWeight: 'bold',
                   fontSize: '16px',
+                  '&:hover': {  // Styles for hover state
+                    backgroundColor: '#0000BF',  // Same as default
+                    color: '#FFFFFF',  // Same as default
+                  },
                 }}
               >
                 Tallenna
