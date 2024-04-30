@@ -7,7 +7,7 @@ import { useHeadingContext } from '../../store/context/headingContectProvider';
 // import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
 // import { buildDeprecatedPropsWarning } from '@mui/x-date-pickers/internals';
 
-// controls how many company name are shown at once and renders them.
+// controls how many company name are shown at once and renders them
 const CheckLength = ({
   filteredList,
   workplaces,
