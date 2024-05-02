@@ -16,8 +16,7 @@ describe('test sending emails with resend', () => {
     const mockUser: IUser = {
       firstName: 'Matti',
       lastName: 'Meikäläinen',
-    //  email: '3751terra@fthcapital.com',
-      email: 'joel.heusala@gmail.com'
+      email: 'example@example.com',
     }
     const mockVerificationLink = 'https://example.com/verification-link';
     sendVerificationEmail({ userEmail: mockUser.email, verificationLink: mockVerificationLink });
