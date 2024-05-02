@@ -143,8 +143,11 @@ const UserPerformance = () => {
   }, [selectedValues]);
 
   useEffect(() => {
+    const isLaptop = window.innerWidth >= 1024;
     const buttonStyle = {
       marginTop: '35px',
+      marginLeft: isLaptop ? '25%' : '20px',
+      width: isLaptop ? '42%' : '88%',
       marginLeft: '20px',
       width: '88%',
       color: Object.values(selectedValues).some((value) => value)
@@ -161,12 +164,12 @@ const UserPerformance = () => {
   }, [selectedValues]);
 
   const [buttonStyle, setButtonStyle] = useState({
-    marginTop: '35px',
-    marginLeft: '20px',
-    width: '88%',
-    color: '#0000BF',
-    border: '#0000BF solid',
-    background: 'var(--saukko-main-white)',
+    // marginTop: '35px',
+    // marginLeft: '20px',
+    // width: '88%',
+    // color: '#0000BF',
+    // border: '#0000BF solid',
+    // background: 'var(--saukko-main-white)',
   });
 
   const { openNotificationModal, setOpenNotificationModal } = useStore();
@@ -530,7 +533,6 @@ const UserPerformance = () => {
                       '& fieldset': {
                         borderStyle: 'none',
                         padding: '0',
-
                       },
                     },
                     '& .MuiInputBase-input': {
