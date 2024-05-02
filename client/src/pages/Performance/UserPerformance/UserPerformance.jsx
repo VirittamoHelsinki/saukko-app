@@ -9,7 +9,7 @@ import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/T
 
 import { Icon } from '@iconify/react';
 import DialogContent from '@mui/material/DialogContent';
-import TextField from '@mui/material/TextField';
+import { TextField, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -492,8 +492,11 @@ const UserPerformance = () => {
       {/* Modal for showing criteria */}
       <NotificationModal
         type='info'
-        title='Osaamisen kriteerit'
-        style={{ width: '130%' }}
+        title={
+          <Typography sx={{ fontWeight: 'normal', marginRight: '2rem' }}>
+            Osaamisen kriteerit
+          </Typography>
+        }
         body={
           <>
             <IconButton
@@ -508,7 +511,7 @@ const UserPerformance = () => {
             >
               <CloseIcon />
             </IconButton>
-            <DialogContent sx={{ minWidth: '75vw' }}>
+            <DialogContent>
               {criteriaModalContent.map((crit, index) => (
                 <TextField
                   key={index}
@@ -526,7 +529,13 @@ const UserPerformance = () => {
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
                         borderStyle: 'none',
+                        padding: '0',
+
                       },
+                    },
+                    '& .MuiInputBase-input': {
+                      fontSize: '12px',
+                      paddingBottom: '0',
                     },
                   }}
                 ></TextField>
