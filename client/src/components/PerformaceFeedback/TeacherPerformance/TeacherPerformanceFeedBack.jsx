@@ -253,16 +253,17 @@ const TeacherPerformanceFeedBack = ({
           </div>
         ))}{' '}
         <div
-          className='teacher-comment-button-wrapper'
+          style={{ display: 'flex', justifyContent: 'flex-end' }}
           onClick={handlePenClick}
         >
           <button
-            className='teacher-comment-button'
+            id='teacher-comment-button'
+            className='teacher-comment-button-wrapper'
             style={{ backgroundColor: getBackgroundColor() }}
           >
-            Lisää opettajan kommentti{' '}
+            Lisää opettajan kommentti {/* </button> */}
+            <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem' />
           </button>
-          <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem' />
         </div>
         {/* Teacher comment */}
         <NotificationModal
@@ -385,17 +386,6 @@ const TeacherPerformanceFeedBack = ({
           }
           handleClose={handleCloseCommentModal}
         />
-        {/* <RequirementsAndCriteriaModal
-          open={isCommentModalOpen}
-          onClose={handleCloseCommentModal}
-          title='Lisää opettajan kommentti'
-          hideRequirementsField={true}
-          hideCriteriaField={false}
-          hideCancelButton={false}
-          onSave={(comment) => {
-            console.log('Comment:', comment);
-          }}
-        /> */}
       </div>
     </div>
   );

@@ -153,10 +153,14 @@ export default function CustomizedDialogs(props) {
           },
           '& .MuiDialogTitle-root': {
             marginLeft: '35px',
-            fontSize: '0.875 rem',
+            fontSize: '18px',
             fontWeight: '700',
             ...(dialogStyles && dialogStyles.dialogTitle),
           },
+          '& .MuiButtonBase-root.MuiIconButton-root': {
+            /* Your styles for MuiButtonBase-root within MuiDialog-paper */
+            color: 'black',
+          }
         }}
       >
          {!props.hideIcon && (
@@ -180,7 +184,7 @@ export default function CustomizedDialogs(props) {
           {props.title}
         </BootstrapDialogTitle>
         <DialogContent>
-          <Box sx={{ color: 'black', marginBottom: '1rem'}}>{props.body}</Box>
+          <Box sx={{ color: 'black', marginBottom: '1rem', fontSize: '14px'}}>{props.body}</Box>
           {props.type === 'alert' && (
             <Button onClick={handleConfirm} color='primary' variant='contained'>
               Kyllä
