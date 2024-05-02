@@ -12,9 +12,9 @@
       flex-direction: column;
       justify-content: center;
       padding: 0px 36px 86px 36px;
-      // margin-top: 225px;
       width: 100%;
       gap: 20px;
+      margin-top: 5rem;
 
       h2 {
         font-size: 18px;
@@ -75,6 +75,7 @@
         flex-direction: column;
         width: 100%;
         gap: 12px;
+        padding-top: 5rem;
 
         .pagination__button {
           background: var(--saukko-main-white);

@@ -7,7 +7,6 @@ import { fetchInternalDegreeById } from '../../api/degree';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import InfoList from '../../components/InfoList/InfoList';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
-import Button from '../../components/Button/Button';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -194,18 +193,14 @@ const ContractInfo = () => {
           </ul>
         </section>
       </div>
-      <div className='contractinfo_button'>
-        <Button
-          style={{
-            color: '#0000BF',
-            fontSize: '15px',
-            border: '2px solid #0000BF',
-            width: '14rem',
-            height: '50px',
-          }}
-          text='Takaisin'
-          onClick={() => navigate('/')}
-          icon={'formkit:arrowleft'}
+      <div className='leftAligned'>
+        <PageNavigationButtons
+          handleBackText={'Takaisin'}
+          //handleBack={() => navigate(`/degrees/add`)}
+          handleBack={() => navigate('/')}
+          showForwardButton={false}
+          icon={'mingcute:pencil-line'}
+          style={{ textAlign: 'left' }}
         />
       </div>
     </div>

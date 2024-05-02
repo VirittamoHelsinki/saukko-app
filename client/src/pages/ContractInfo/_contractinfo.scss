@@ -3,11 +3,9 @@
   flex-direction: column;
   justify-content: space-between;
   padding-top: 5vh;
+  padding-bottom: 2rem;
 
-  .contractinfo_button {
-    padding: 10vh;
-    display: flex;
-    justify-content: flex-start;
+  .leftAligned {
+    text-align: left;
   }
-
 }
