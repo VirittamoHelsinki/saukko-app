@@ -106,7 +106,7 @@ const SearchPage = ({ allDegrees }) => {
 
   // Clear degree on first render
   useEffect(() => {
-    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Tutkintojen hallinta"), setHeading("Tutkintojen hallinta");
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading(""), setHeading("Tutkintojen hallinta");
     resetDegreeData()
     setDegreeId('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
