@@ -148,7 +148,7 @@ const AddDegree = () => {
           onClick={() => navigate(`/degrees`)}
         />
 
-        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
+        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
 
         <div id='listContainer' className='addDegree__container--list'>
           <CheckLength

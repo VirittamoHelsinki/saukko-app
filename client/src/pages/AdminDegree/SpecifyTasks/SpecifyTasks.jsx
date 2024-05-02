@@ -137,11 +137,11 @@ function SpecifyTasks() {
           />
           <Paper square elevation={0}>
             <form>
-              <h3 className='degree-guidance'>
+              {/* <h3 className='degree-guidance'>
                 Lisää ammattitaitovaatimukset ja kriteerit
-              </h3>
+              </h3> */}
               <MobileStepper
-                sx={{ bgcolor: '#f2f2f2', borderBottom: '3px solid #333' }}
+                sx={{ bgcolor: '#f2f2f2' }}
                 variant='text'
                 steps={maxSteps}
                 position='static'
@@ -179,6 +179,9 @@ function SpecifyTasks() {
                   </Button>
                 }
               />
+              <h4 className='degree-guidance'>
+                Lisää ammattitaitovaatimukset ja kriteerit
+              </h4>
               <h3 className='unit-guidance'>
                 {checkedUnits[activeStep]?.name?.fi}
               </h3>

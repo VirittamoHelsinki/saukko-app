@@ -4,6 +4,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 
     .specify-tasks__container {
       display: flex;
@@ -28,19 +30,29 @@
 
       h3.unit-guidance {
         margin-top: 10px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #080808;
       }
 
       form {
         display: flex;
         flex-direction: column;
-        gap: 13px;
+        //gap: 13px;
         background: var(--accordion-background-grey);
         padding: 1.5rem 1rem;
         margin: 20px;
+        padding-top: 3rem;
+        position: none;
 
         h3 {
           font-size: 0.95rem;
           margin-bottom: 0.6rem;
+        }
+
+        h4.degree-guidance {
+          margin-top: 5px;
+          align-self: center;
+          font-size: 14px;
         }
 
         input {
@@ -61,6 +73,7 @@
         font-weight: 300;
         color: #fff;
         border-radius: 0;
+        margin-top: 10px;
       }
 
       .list_group_skills_titles {

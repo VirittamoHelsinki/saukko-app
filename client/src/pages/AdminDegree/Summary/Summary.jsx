@@ -169,7 +169,6 @@ function Summary() {
           handleForward={handleSubmit}
           forwardButtonText={'Tallenna tiedot'}
           showForwardButton={true}
-
         />
         <NotificationModal
           type='success'

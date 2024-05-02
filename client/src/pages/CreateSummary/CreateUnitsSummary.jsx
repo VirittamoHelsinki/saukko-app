@@ -565,8 +565,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         open={notificationError}
         handleClose={closeError}
       />
-
-      <div>
+      <div className='alignLeft'>
         <PageNavigationButtons
           handleBackText={'Takaisin'}
           handleBack={() => navigate(`/degrees/add`)}
