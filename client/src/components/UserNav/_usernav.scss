@@ -10,11 +10,20 @@
   }
 
   .userNav__icons {
-    padding: 10px 30px;
+    padding: 75px 100px;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: space-between;
+
+    .helsinki-logo {
+      width:110px;
+      height: 50px;
+    }
+
+    .logo-text {
+      font-size: 32px;
+    }
 
     svg {
       height: 30px;
@@ -66,7 +75,7 @@
   justify-content: center;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
-  padding-right: 8vh;
+  padding-right: 7vh;
 }
  
 .userNav__menu--open {
@@ -95,5 +104,14 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
+  }
+
+  .navListItem {
+    //padding: 25px;
+  }
+
+  .NavText {
+    font-size: 20px;
+    font-weight: 600;
   }
 }

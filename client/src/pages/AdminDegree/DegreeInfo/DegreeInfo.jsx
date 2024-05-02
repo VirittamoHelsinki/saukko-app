@@ -199,8 +199,6 @@ function DegreeInfo() {
           <div className='degreeInfo__container--info--block'>
             <h1>Tutkinnon suorittaneen osaaminen</h1>
             <h2>Tutkinnon kuvaus</h2>
-
-
             {degreeDescription ? (
               <div
                 id='degreeDescriptionTextBox'
