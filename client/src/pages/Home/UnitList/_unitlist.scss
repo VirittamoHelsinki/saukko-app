@@ -1,22 +1,24 @@
 .unitList__wrapper {
   padding-top: 5rem;
   padding-bottom: 3rem;
-  
+
   h3 {
-    margin-left: 15px;
-    margin-bottom: 20px;
-    font-size: 20px;
+    // margin-left: 15px;
+    // margin-bottom: 20px;
+    padding: 15px;
+    font-size: 18px;
+
   }
 
   .unitList__button {
     display: flex;
     justify-content: flex-end;
     padding: 0 16px;
-    
+
     .button__icon {
       font-size: 28px;
     }
-    
+
     .button__text {
       font-size: 14px;
       font-weight: bolder;
@@ -24,3 +26,18 @@
   }
 }
 
+@media (min-width: 768px) {
+  .unitList__wrapper {
+    padding-top: 1rem;
+  }
+}
+@media (min-width: 1024px) {
+  .unitList__wrapper {
+    padding-top: 1rem;
+  }
+}
+@media (min-width: 1440px) {
+  .unitList__wrapper {
+    padding-top: 1rem;
+  }
+}

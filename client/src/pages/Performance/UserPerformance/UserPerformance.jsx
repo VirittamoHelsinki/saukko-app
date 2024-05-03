@@ -529,6 +529,10 @@ const UserPerformance = () => {
                     readOnly: true, // Make the TextField read-only
                   }}
                   sx={{
+                    '& .MuiInputBase-root': {
+                      fontSize: '12px',
+                      padding: '0',
+                    },
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
                         borderStyle: 'none',
