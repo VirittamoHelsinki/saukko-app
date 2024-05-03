@@ -113,7 +113,7 @@ export default function CustomizedDialogs(props) {
   } else if (props.type === 'info') {
     icon = 'material-symbols:info';
     bgColor = '#E5F6FD';
-    color = '#0062b9';
+    color = '#0288D1';
   } else if (props.type === 'success') {
     icon = 'material-symbols:check-circle';
     bgColor = '#e2f5f3';
@@ -147,7 +147,7 @@ export default function CustomizedDialogs(props) {
         sx={{
           '& .MuiDialog-paper': {
             background: bgColor,
-            borderLeft: 'solid 10px',
+            borderLeft: 'solid 8px',
             color,
             ...(dialogStyles && dialogStyles.dialogPaper),
           },
@@ -158,7 +158,6 @@ export default function CustomizedDialogs(props) {
             ...(dialogStyles && dialogStyles.dialogTitle),
           },
           '& .MuiButtonBase-root.MuiIconButton-root': {
-            /* Your styles for MuiButtonBase-root within MuiDialog-paper */
             color: 'black',
           }
         }}

@@ -42,6 +42,7 @@ $header-height: 115px;
 
 .container main {
   min-height: calc(100vh - $header-height);
+  padding-bottom: 3rem;
 }
 
 .container header .headerBox {
@@ -56,4 +57,20 @@ $header-height: 115px;
 
 header svg {
   transform: rotate(180deg);
+}
+
+@media (min-width: 768px) {
+  main {
+    margin: 1rem 20%;
+  }
+}
+@media (min-width: 1024px) {
+  main {
+    margin: 1rem 30%;
+  }
+}
+@media (min-width: 1440px) {
+  main {
+    margin: 1rem 38%;
+  }
 }
