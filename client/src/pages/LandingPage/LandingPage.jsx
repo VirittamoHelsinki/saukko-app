@@ -1,4 +1,4 @@
-// importing react packages
+// importing react packages.
 import { useNavigate } from 'react-router-dom';
 
 // import helsinki logo
