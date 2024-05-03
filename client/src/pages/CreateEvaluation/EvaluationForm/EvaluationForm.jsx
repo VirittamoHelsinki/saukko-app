@@ -14,6 +14,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -56,9 +57,9 @@ function EvaluationForm() {
   const [showWarningModal, setShowWarningModal] = useState(false);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
-  useEffect(()=>{
+  useEffect(() => {
     setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
-  },[setHeading, setSiteTitle, setSubHeading])
+  }, [setHeading, setSiteTitle, setSubHeading])
 
   const handleBack = () => {
     // Display a warning modal before navigating to '/admin-menu'
@@ -187,7 +188,7 @@ function EvaluationForm() {
         {/* Customer information form */}
         <form onSubmit={handleSubmit}>
           <div className='form__firstName'>
-            <label>Etunimi *</label>
+            <label>Nimi *</label>
             <input
               id='firstName'
               className='form-input'
@@ -215,7 +216,7 @@ function EvaluationForm() {
             />
           </div>
           <div className='form__startDate'>
-            <label>Asiakkuuden aloituspäivä *</label>
+            <label className='form_text'>Asiakkuuden aloituspäivä *</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker
@@ -226,7 +227,7 @@ function EvaluationForm() {
                 />
               </ThemeProvider>
             </LocalizationProvider>
-            <label>Asiakkuuden lopetuspäivä *</label>
+            <label className='form_text'>Asiakkuuden lopetuspäivä *</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker
@@ -252,7 +253,7 @@ function EvaluationForm() {
             </LocalizationProvider>
           </div>
           <div className='form__tasks'>
-            <label>Työtehtäväsi *</label>
+            <label className='form_text'>Työtehtäväsi *</label>
             <textarea
               id='workTasks'
               className='form-input'
@@ -261,7 +262,7 @@ function EvaluationForm() {
             />
           </div>
           <div className='form__goals'>
-            <label>Omat tavoitteesi *</label>
+            <label className='form_text'>Omat tavoitteesi *</label>
             <textarea
               id='workGoals'
               className='form-input'
@@ -275,7 +276,6 @@ function EvaluationForm() {
           handleBack={handleBack}
           handleForward={handleSubmit}
           showForwardButton={true}
-
         />
       </section>
       <NotificationModal
