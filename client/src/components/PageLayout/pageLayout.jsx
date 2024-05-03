@@ -106,7 +106,7 @@ const PageLayout = () => {
             <Waves fill={headerColor} />
           </header>
         )}
-        <main>
+        <main className={styles.main}>
           <Outlet />
         </main>
       </div>
