@@ -33,23 +33,29 @@ const UnitList = () => {
 
   // Set evaluation automatically when role is customer
   useEffect(() => {
-    setSiteTitle("Suoritukset"), setSubHeading("Suoritukset")
+    setSiteTitle('Suoritukset'), setSubHeading('Suoritukset');
     if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
-      setHeading(`${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`)
+      setHeading(
+        `${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`
+      );
     } else {
-      setHeading(`Tervetuloa, ${evaluation?.customerId.firstName} `)
+      setHeading(`Tervetuloa, ${evaluation?.customerId.firstName} `);
     }
     if (currentUser.role === 'customer') {
       setInternalEvaluations();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   useEffect(() => {
-    if (currentUser.role === 'customer' && evaluations && evaluations.length > 0) {
+    if (
+      currentUser.role === 'customer' &&
+      evaluations &&
+      evaluations.length > 0
+    ) {
       setInternalEvaluation(evaluations[0]._id);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [evaluations]);
 
   return (
@@ -72,13 +78,15 @@ const UnitList = () => {
 
         {evaluation &&
           evaluation.units.map((unit) => (
-            <UnitStatus
-              key={unit._id}
-              unitId={unit._id}
-              status={unit.status}
-              subheader={unit.name.fi}
-              link='/userperformance'
-            />
+                <div style={{cursor: 'pointer'}} key={unit._id}>
+                  <UnitStatus
+                    key={unit._id}
+                    unitId={unit._id}
+                    status={unit.status}
+                    subheader={unit.name.fi}
+                    link='/userperformance'
+                  />
+                </div>
           ))}
         <div className='unitList__button'>
           <Button
