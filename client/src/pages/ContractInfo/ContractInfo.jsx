@@ -193,16 +193,14 @@ const ContractInfo = () => {
           </ul>
         </section>
       </div>
-      <div className='leftAligned'>
-        <PageNavigationButtons
-          handleBackText={'Takaisin'}
-          //handleBack={() => navigate(`/degrees/add`)}
-          handleBack={() => navigate('/')}
-          showForwardButton={false}
-          icon={'mingcute:pencil-line'}
-          style={{ textAlign: 'left' }}
-        />
-      </div>
+      <PageNavigationButtons
+        handleBackText={'Takaisin'}
+        //handleBack={() => navigate(`/degrees/add`)}
+        handleBack={() => navigate('/')}
+        showForwardButton={false}
+        icon={'mingcute:pencil-line'}
+        style={{ textAlign: 'left' }}
+      />
     </div>
   );
 };

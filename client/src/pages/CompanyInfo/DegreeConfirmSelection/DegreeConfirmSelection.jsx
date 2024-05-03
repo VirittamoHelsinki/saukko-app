@@ -35,7 +35,7 @@ function DegreeConfirmSelection() {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
-    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikkaa"), setHeading("Työpaikkojen hallinta")
+    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikka"), setHeading("Työpaikkojen hallinta")
   }, [setSiteTitle, setSubHeading, setHeading]);
 
 
