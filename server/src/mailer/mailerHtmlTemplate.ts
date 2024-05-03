@@ -56,10 +56,6 @@ const mailTemplate = (text: string) => {
           padding-top: 20px;
         }
         
-        .logo img {
-
-        }
-        
         .logo h1 {
           font-size: 12px;
 

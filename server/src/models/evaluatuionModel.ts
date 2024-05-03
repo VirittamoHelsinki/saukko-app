@@ -55,7 +55,6 @@ interface IAssessments {
   answerTeacher: number;
   answerSupervisor: number;
   comment: string;
-  // TODO: SA-307 - Tänne opettajan kommentti itselleen muistiin. "yhteenveto".........
   criteria: ICriteria[];
 }
 
