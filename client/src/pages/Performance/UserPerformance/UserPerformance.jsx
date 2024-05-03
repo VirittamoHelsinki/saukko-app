@@ -217,6 +217,7 @@ const UserPerformance = () => {
         return {
           ...unit,
           assessments: updatedAssessments,
+          feedBack: textAreaValue
         };
       } else {
         return unit;
