@@ -20,10 +20,12 @@ const mailTemplate = (text: string) => {
         .container 
         {
             background-color: #00005E;
+            
         }
         .header {
             text-align: center;
-            padding: 50px;
+            margin-top: -60px;
+            padding-bottom: 5px;
         }
         .header h1 {
             color: #ffffff;
@@ -32,12 +34,14 @@ const mailTemplate = (text: string) => {
             font-size: large;
         }
         .wave {
-            position: relative;
-            upper: 40px;
-            margin-bottom: -70px;
+            transform: rotate(180deg);
+            /*position: relative;*/
+            /*upper: 40px;*/
+            /*margin-bottom: -70px;*/
         }
         .body {
-            padding-top: 40px;
+            padding-top: 5px;
+            padding-bottom: 5px;
             background-color: #ffffff;
             text-align: left;
         }
@@ -48,6 +52,14 @@ const mailTemplate = (text: string) => {
             word-wrap: break-word;
             white-space: pre-line;
         }
+        .logo {
+          padding-top: 20px;
+        }
+        
+        .logo h1 {
+          font-size: 12px;
+
+        }
 
         </style>
 
@@ -55,21 +67,21 @@ const mailTemplate = (text: string) => {
         <body>
 
         <div class="container">
-
-        <div class="header">
-
-        <img src=${config.APP_URL}/Helsinki_white_logo.png alt="Helsinki Logo"/>
         
-        <h1>OsTu</h1>
-
+        <div class="body">
+        <pre>${text}</pre>
         </div>
 
+        <div class="header">
         <div class="wave">
         ${wavesSvg}
         </div>
-
-        <div class="body">
-        <pre>${text}</pre>
+        
+        <div class="logo">
+         <img src=${config.APP_URL}/Helsinki_white_logo.png alt="Helsinki Logo" width="60px"/> 
+         <h1>OsTu</h1>
+        </div>
+        
         </div>
 
         </div>
