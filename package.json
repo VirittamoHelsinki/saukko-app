@@ -5,7 +5,7 @@
   "main": "index.js",
   "author": "Helsingin Kaupunki - Virittämö",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cd client && npm run test",
     "build": "cd server && npm run build",
     "setup": "npm install && npm run install:server && npm run install:client",
     "install:server": "cd server && npm install",
