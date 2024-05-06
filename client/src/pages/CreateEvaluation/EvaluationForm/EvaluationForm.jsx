@@ -14,7 +14,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Box } from '@mui/material';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -163,15 +162,19 @@ function EvaluationForm() {
       MuiButtonBase: {
         styleOverrides: {
           root: {
+            position:'static',
             '&.Mui-selected': {
               borderRadius: '0px',
+              position:'static',
             },
             '&:not(.Mui-selected)': {
               borderRadius: '0px',
+              position:'static',
             },
             '&.MuiPickersDay-root:not(.Mui-selected)': {
               borderColor: '#0072C6',
               backgroundColor: 'white',
+              position:'static',
             },
           },
         },
@@ -188,7 +191,7 @@ function EvaluationForm() {
         {/* Customer information form */}
         <form onSubmit={handleSubmit}>
           <div className='form__firstName'>
-            <label>Nimi *</label>
+            <label>Etunimi *</label>
             <input
               id='firstName'
               className='form-input'
@@ -217,7 +220,7 @@ function EvaluationForm() {
           </div>
           <div className='form__startDate'>
             <label className='form_text'>Asiakkuuden aloituspäivä *</label>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}> 
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker
                   id='startDate'

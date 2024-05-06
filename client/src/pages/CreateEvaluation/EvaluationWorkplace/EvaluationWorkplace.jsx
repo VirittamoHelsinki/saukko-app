@@ -23,7 +23,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, styled } from '@mui/material/styles';
 
 function EvaluationWorkplace() {
   const navigate = useNavigate();
@@ -172,8 +172,9 @@ function EvaluationWorkplace() {
                 square
                 sx={{position:'static'}}
               >
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <AccordionSummary sx={{position:'static'}} expandIcon={<ExpandMoreIcon />}>
                   <FormControlLabel
+                    sx={{ position:'static'}}
                     value={workplace.name}
                     control=
                     {<Radio
@@ -199,9 +200,9 @@ function EvaluationWorkplace() {
                   {/* Departments */}
                   {workplace.departments.length > 0 && (
                     <>
-                      <Typography className="accordion-title"> Valitse yksikkö * </Typography>
+                      <Typography sx={{position:'static'}} className="accordion-title"> Valitse yksikkö * </Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionSummary sx={{position:'static'}} expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
                           {workplace.departments.map((department, index) => (
                             <div
@@ -223,7 +224,7 @@ function EvaluationWorkplace() {
                     <>
                       <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionSummary sx={{position:'static'}} expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
                           {workplace.supervisors.map((supervisor) => (
                             <div
@@ -244,7 +245,7 @@ function EvaluationWorkplace() {
                     <>
                       <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionSummary sx={{position:'static'}} expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
                           {departmentFromStore.supervisors.map((supervisor) => (
                             <div
@@ -270,11 +271,17 @@ function EvaluationWorkplace() {
         {/* Pagination */}
         <div className='pagination_evaluation_workplace'>
           {needsPagination &&
-            <Pagination
-              count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
-              page={page}
-              onChange={handlePageChange}
-            />
+            <div className='evaluation_workplace_pagenavigate'>
+              <Pagination
+                count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
+                page={page}
+                onChange={handlePageChange}
+                sx={{
+                  '& .MuiPaginationItem-root':{
+                    position: 'static'
+                }}}
+              />
+            </div>
           }
         </div>
 
@@ -283,7 +290,6 @@ function EvaluationWorkplace() {
           handleBack={() => navigate(`/evaluation-form`)}
           handleForward={validationHandler}
           showForwardButton={true}
-
         />
       </section>
       <NotificationModal

@@ -68,6 +68,7 @@
         border: 2px solid black;
         box-shadow: none;
         margin-bottom: 20px;
+        position: static;
 
         .MuiAccordionDetails-root {
           padding: 0px;
@@ -91,6 +92,7 @@
       .pagination_evaluation_workplace {
         align-self: center;
       }
+
     }
   }
 }
