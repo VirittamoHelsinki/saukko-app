@@ -1,8 +1,9 @@
 {
   "name": "saukko-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "OsTu - APP",
   "main": "index.js",
+  "author": "Helsingin Kaupunki - Virittämö",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd server && npm run build",
@@ -19,23 +20,10 @@
     "start:dev": "concurrently -n Server,Client --kill-others-on-fail \" npm run server:dev\" \" npm run client\"",
     "clean-install": "rimraf node_modules/ && rimraf server/node_modules/ && rimraf client/node_modules/ && npm install && cd server && npm install && cd .. && cd client && npm install && cd .."
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "@iconify/react": "^4.1.1",
-    "@types/jest": "^29.5.12",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
-    "prettier": "^2.8.8",
-    "ts-jest": "^29.1.2"
-  },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier --write"
-    ]
+    "husky": "^8.0.3"
   },
   "dependencies": {
-    "classnames": "^2.5.1",
     "concurrently": "^7.6.0"
   }
 }

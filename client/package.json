@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@iconify/react": "^4.1.1",
     "@microsoft/applicationinsights-react-js": "^17.1.2",
     "@microsoft/applicationinsights-web": "^3.1.2",
     "@mui/icons-material": "^5.14.1",
@@ -19,6 +20,7 @@
     "@mui/material": "^5.14.1",
     "@mui/x-date-pickers": "^6.10.1",
     "axios": "^1.6.8",
+    "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
     "email-validator": "^2.0.4",
     "jwt-decode": "^4.0.0",
