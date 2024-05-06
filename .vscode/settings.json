@@ -2,5 +2,6 @@
   "cSpell.words": [
     "Rekisteröidy",
     "Sähköposti"
-  ]
+  ],
+  "eslint.workingDirectories": ["./client", "./server"],
 }
