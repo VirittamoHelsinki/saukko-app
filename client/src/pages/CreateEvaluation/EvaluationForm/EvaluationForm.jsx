@@ -56,9 +56,9 @@ function EvaluationForm() {
   const [showWarningModal, setShowWarningModal] = useState(false);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
-  useEffect(()=>{
+  useEffect(() => {
     setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
-  },[setHeading, setSiteTitle, setSubHeading])
+  }, [setHeading, setSiteTitle, setSubHeading])
 
   const handleBack = () => {
     // Display a warning modal before navigating to '/admin-menu'
@@ -162,15 +162,19 @@ function EvaluationForm() {
       MuiButtonBase: {
         styleOverrides: {
           root: {
+            position:'static',
             '&.Mui-selected': {
               borderRadius: '0px',
+              position:'static',
             },
             '&:not(.Mui-selected)': {
               borderRadius: '0px',
+              position:'static',
             },
             '&.MuiPickersDay-root:not(.Mui-selected)': {
               borderColor: '#0072C6',
               backgroundColor: 'white',
+              position:'static',
             },
           },
         },
@@ -215,8 +219,8 @@ function EvaluationForm() {
             />
           </div>
           <div className='form__startDate'>
-            <label>Asiakkuuden aloituspäivä *</label>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <label className='form_text'>Asiakkuuden aloituspäivä *</label>
+            <LocalizationProvider dateAdapter={AdapterDayjs}> 
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker
                   id='startDate'
@@ -226,7 +230,7 @@ function EvaluationForm() {
                 />
               </ThemeProvider>
             </LocalizationProvider>
-            <label>Asiakkuuden lopetuspäivä *</label>
+            <label className='form_text'>Asiakkuuden lopetuspäivä *</label>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker
@@ -252,7 +256,7 @@ function EvaluationForm() {
             </LocalizationProvider>
           </div>
           <div className='form__tasks'>
-            <label>Työtehtäväsi *</label>
+            <label className='form_text'>Työtehtäväsi *</label>
             <textarea
               id='workTasks'
               className='form-input'
@@ -261,7 +265,7 @@ function EvaluationForm() {
             />
           </div>
           <div className='form__goals'>
-            <label>Omat tavoitteesi *</label>
+            <label className='form_text'>Omat tavoitteesi *</label>
             <textarea
               id='workGoals'
               className='form-input'
@@ -275,7 +279,6 @@ function EvaluationForm() {
           handleBack={handleBack}
           handleForward={handleSubmit}
           showForwardButton={true}
-
         />
       </section>
       <NotificationModal
