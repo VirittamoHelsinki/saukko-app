@@ -78,9 +78,7 @@ export async function ePerusteetTimedQuery(myTimer: Timer, context: InvocationCo
     }
   }));
   mongo.closeConnection();
-  const dataSavedTime = Date.now();
-
-  
+  const dataSavedTime = Date.now();  
 }
 
 app.timer('ePerusteetTimedQuery', {
