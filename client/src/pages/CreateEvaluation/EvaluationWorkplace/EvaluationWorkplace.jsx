@@ -279,7 +279,11 @@ function EvaluationWorkplace() {
                 sx={{
                   '& .MuiPaginationItem-root':{
                     position: 'static'
-                }}}
+                },
+                  '& .Mui-disabled': {
+                    position: 'static'
+                  }
+              }}
               />
             </div>
           }

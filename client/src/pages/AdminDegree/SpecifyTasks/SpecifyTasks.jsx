@@ -141,7 +141,9 @@ function SpecifyTasks() {
                 Lisää ammattitaitovaatimukset ja kriteerit
               </h3> */}
               <MobileStepper
-                sx={{ bgcolor: '#f2f2f2' }}
+                sx={{ 
+                  bgcolor: '#f2f2f2',
+                }}
                 variant='text'
                 steps={maxSteps}
                 position='static'
@@ -149,7 +151,11 @@ function SpecifyTasks() {
                 nextButton={
                   <Button
                     id='nextButton'
-                    sx={{ fontWeight: 'bold', color: '#000000' }}
+                    sx={{ 
+                      fontWeight: 'bold',
+                      color: '#000000',
+                      position:'static'
+                    }}
                     size='small'
                     onClick={handleNext}
                     disabled={activeStep === maxSteps - 1}
@@ -165,7 +171,11 @@ function SpecifyTasks() {
                 backButton={
                   <Button
                     id='backButton'
-                    sx={{ fontWeight: 'bold', color: '#000000' }}
+                    sx={{ 
+                      fontWeight: 'bold', 
+                      color: '#000000',
+                      position: 'static'
+                     }}
                     size='small'
                     onClick={handleBack}
                     disabled={activeStep === 0}
@@ -228,7 +238,11 @@ function SpecifyTasks() {
                 id='addCriteriaButton'
                 onClick={handleOpenCriteriaModal}
                 className='add-criteria-btn'
-                sx={{ paddingLeft: 0, textTransform: 'none' }}
+                sx={{ 
+                  paddingLeft: 0, 
+                  textTransform: 'none',
+                  position: 'static'
+                 }}
               >
                 + Lisää ammattitaitovaatimukset
               </Button>
