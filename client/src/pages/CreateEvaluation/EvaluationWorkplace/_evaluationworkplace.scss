@@ -2,7 +2,7 @@
   .evaluationWorkplace__wrapper {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    // height: 100vh;
     width: 100%;
     background: var(--saukko-main-white);
     text-align: left;
@@ -83,6 +83,7 @@
         justify-content: space-between;
         margin: 0px;
         padding: 20px;
+        cursor: pointer;
       }
 
       .accordion__wrapper-details:nth-of-type(odd) {

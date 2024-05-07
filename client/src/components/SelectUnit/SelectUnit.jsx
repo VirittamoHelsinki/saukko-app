@@ -27,11 +27,12 @@ function SelectUnit({ unit, allUnits }) {
       key={unit._id}
       className={`selectUnit__container--units-unit ${checkedUnits.includes(unit) && 'checked'
         }`}
+        onClick={handleCheckboxChange}
     >
       <div
         className={`selectUnit__container--units-unit-checkbox ${checkedUnits.includes(unit) && 'checked'
           }`}
-        onClick={handleCheckboxChange}
+        // onClick={handleCheckboxChange}
       >
         {checkedUnits.includes(unit) && <Icon icon='mdi:tick' color='white' />}
       </div>

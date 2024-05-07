@@ -20,6 +20,8 @@ import { registration } from '../../../api/user';
 import { createEvaluation } from '../../../api/evaluation';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+import styled from '@emotion/styled';
+import { Typography } from '@mui/material';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -39,8 +41,10 @@ function EvaluationSummary() {
   const closeSuccessNotification = () => setSuccessNotification(false);
   const closeErrorNotification = () => setErrorNotification(false);
 
-  useEffect(()=>{
-    setSiteTitle("OsTu"),setSubHeading("Lisää uusi asiakas"),setHeading("Asiakkuudet")
+  useEffect(() => {
+    setSiteTitle('OsTu'),
+      setSubHeading('Lisää uusi asiakas'),
+      setHeading('Asiakkuudet');
   }, [setSiteTitle, setHeading, setSubHeading]);
 
   // Data array for InfoList component
@@ -205,8 +209,22 @@ function EvaluationSummary() {
       </section>
       <NotificationModal
         type='success'
-        title='Suorituksen aktivoiminen onnistui'
-        body='Asiakkaan tiedot tallennettu'
+        title={
+          <Typography
+            style={{
+              fontSize: '18px',
+              fontWeight: 'bold',
+              marginRight: '1rem',
+            }}
+          >
+            Kutsut lähetetty!
+          </Typography>
+        }
+        body={
+          <Typography style={{ fontSize: '14px', marginRight: '2rem' }}>
+            Asiakkaan tiedot tallennettu OsTu-appin tietokantaan.
+          </Typography>
+        }
         open={successNotification}
         handleClose={closeSuccessNotification}
         redirectLink='/'
