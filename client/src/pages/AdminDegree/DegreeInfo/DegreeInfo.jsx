@@ -198,9 +198,6 @@ function DegreeInfo() {
         <div className='degreeInfo__container--info'>
           <div className='degreeInfo__container--info--block'>
             <h1>Tutkinnon suorittaneen osaaminen</h1>
-            <h2>Tutkinnon kuvaus</h2>
-
-
             {degreeDescription ? (
               <div
                 id='degreeDescriptionTextBox'
@@ -228,7 +225,7 @@ function DegreeInfo() {
 
           </div>
           <div className='degreeInfo__container--info--block dark'>
-            <h2>Perusteen nimi</h2>
+            <p>Tutkinon nimi</p>
             <div
               id='degreeNameTextBox'
               style={{
@@ -249,7 +246,7 @@ function DegreeInfo() {
             </div>
           </div>
           <div className='degreeInfo__container--info--block'>
-            <h2>Määräyksen diaarinumero</h2>
+            <p>Määräyksen diaarinumero</p>
             <div
               id='diaryNumberTextBox'
               style={{
@@ -270,7 +267,7 @@ function DegreeInfo() {
             </div>
           </div>
           <div className='degreeInfo__container--info--block dark'>
-            <h2>Määräyksen päätöspäivämäärä</h2>
+            <p>Määräyksen päätöspäivämäärä</p>
             <div
               id='regulationDateTextBox'
               style={{
@@ -291,7 +288,7 @@ function DegreeInfo() {
             </div>
           </div>
           <div className='degreeInfo__container--info--block'>
-            <h2>Voimaantulo</h2>
+            <p>Voimaantulo</p>
             <div
               id='validFromTextBox'
               style={{
@@ -312,7 +309,7 @@ function DegreeInfo() {
             </div>
           </div>
           <div className='degreeInfo__container--info--block dark'>
-            <h2>Voimassaolon päättyminen</h2>
+            <p>Voimassaolon päättyminen</p>
             <div
               id='expiryTextBox'
               style={{
@@ -333,7 +330,7 @@ function DegreeInfo() {
             </div>
           </div>
           <div className='degreeInfo__container--info--block'>
-            <h2>Siirtymäajan päättymisaika</h2>
+            <p>Siirtymäajan päättymisaika</p>
             <div
               id='transitionEndsTextBox'
               style={{

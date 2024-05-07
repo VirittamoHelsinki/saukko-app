@@ -10,11 +10,11 @@
     .degreeUnits__container {
       display: flex;
       flex-direction: column;
-      margin-top: 200px;
       margin-bottom: 50px;
       flex-grow: 1;
       overflow-y: auto;
       width: 100%;
+      padding-top: 3rem;
 
       .searchField__container {
         margin: 15px;
@@ -22,7 +22,6 @@
       
       h2 {
         text-align: center;
-        text-decoration: underline;
         font-size: 18px;
         padding: 30px;
       }
@@ -33,6 +32,7 @@
 
       .degreeUnits__container--units {
         margin-top: 20px;
+        
       }
 
       nav {

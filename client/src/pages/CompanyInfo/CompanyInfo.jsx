@@ -45,7 +45,7 @@ const CompanyInfo = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
-    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikkaa"), setHeading("Työpaikkojen hallinta")
+    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikka"), setHeading("Työpaikkojen hallinta")
   }, [setSiteTitle, setSubHeading, setHeading]);
 
   const stepperData = [
@@ -199,14 +199,17 @@ const CompanyInfo = () => {
             backgroundColor: '#F2F2F2',
             paddingTop: '17px',
             paddingBottom: '20px',
+            position: 'static'
           }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
+            sx={{position: 'static'}}
           >
-            <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>
+            <Typography 
+              sx={{ fontSize: '22px' }}>
               1. Työpaikka tiedot
             </Typography>
           </AccordionSummary>
@@ -278,18 +281,20 @@ const CompanyInfo = () => {
           className='heading_style'
           heading='2. Työpaikkaohjaajan tiedot'
           language='en'
-          style={{
+          sx={{
             backgroundColor: '#F2F2F2',
             paddingTop: '17px',
-            paddingBottom: '17px',
+            paddingBottom: '20px',
+            position: 'static'
           }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
+            sx={{position: 'static'}}
           >
-            <Typography sx={{ fontSize: '22px', fontWeight: '500px' }}>
+            <Typography sx={{ fontSize: '22px' }}>
               2. Työpaikkaohjaajan tiedot
             </Typography>
           </AccordionSummary>

@@ -11,8 +11,8 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
-      margin-top: 200px;
-      margin-bottom: 50px;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
       width: 100%;
       flex-grow: 1;
       overflow-y: auto;
@@ -46,7 +46,6 @@
 
       .Degree__confirmSelection__container--secondtitle{
         text-align: center;
-        text-decoration: underline;
         font-size: 18px;
         padding: 20px;
         margin-bottom: 10px;

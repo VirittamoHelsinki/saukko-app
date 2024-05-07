@@ -9,7 +9,7 @@ import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/T
 
 import { Icon } from '@iconify/react';
 import DialogContent from '@mui/material/DialogContent';
-import TextField from '@mui/material/TextField';
+import { TextField, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -143,8 +143,11 @@ const UserPerformance = () => {
   }, [selectedValues]);
 
   useEffect(() => {
+    const isLaptop = window.innerWidth >= 1024;
     const buttonStyle = {
       marginTop: '35px',
+      marginLeft: isLaptop ? '25%' : '20px',
+      width: isLaptop ? '42%' : '88%',
       marginLeft: '20px',
       width: '88%',
       color: Object.values(selectedValues).some((value) => value)
@@ -161,12 +164,12 @@ const UserPerformance = () => {
   }, [selectedValues]);
 
   const [buttonStyle, setButtonStyle] = useState({
-    marginTop: '35px',
-    marginLeft: '20px',
-    width: '88%',
-    color: '#0000BF',
-    border: '#0000BF solid',
-    background: 'var(--saukko-main-white)',
+    // marginTop: '35px',
+    // marginLeft: '20px',
+    // width: '88%',
+    // color: '#0000BF',
+    // border: '#0000BF solid',
+    // background: 'var(--saukko-main-white)',
   });
 
   const { openNotificationModal, setOpenNotificationModal } = useStore();
@@ -214,6 +217,7 @@ const UserPerformance = () => {
         return {
           ...unit,
           assessments: updatedAssessments,
+          feedBack: textAreaValue
         };
       } else {
         return unit;
@@ -492,8 +496,11 @@ const UserPerformance = () => {
       {/* Modal for showing criteria */}
       <NotificationModal
         type='info'
-        title='Osaamisen kriteerit'
-        style={{ width: '130%' }}
+        title={
+          <Typography sx={{ fontWeight: 'normal', marginRight: '2rem' }}>
+            Osaamisen kriteerit
+          </Typography>
+        }
         body={
           <>
             <IconButton
@@ -508,7 +515,7 @@ const UserPerformance = () => {
             >
               <CloseIcon />
             </IconButton>
-            <DialogContent sx={{ minWidth: '75vw' }}>
+            <DialogContent>
               {criteriaModalContent.map((crit, index) => (
                 <TextField
                   key={index}
@@ -523,10 +530,19 @@ const UserPerformance = () => {
                     readOnly: true, // Make the TextField read-only
                   }}
                   sx={{
+                    '& .MuiInputBase-root': {
+                      fontSize: '12px',
+                      padding: '0',
+                    },
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
                         borderStyle: 'none',
+                        padding: '0',
                       },
+                    },
+                    '& .MuiInputBase-input': {
+                      fontSize: '12px',
+                      paddingBottom: '0',
                     },
                   }}
                 ></TextField>

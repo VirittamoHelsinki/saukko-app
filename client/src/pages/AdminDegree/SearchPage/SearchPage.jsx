@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ExternalApiContext from '../../../store/context/ExternalApiContext';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import useStore from '../../../store/zustand/formStore';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import withDegrees from '../../../HOC/withDegrees';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
@@ -106,7 +106,7 @@ const SearchPage = ({ allDegrees }) => {
 
   // Clear degree on first render
   useEffect(() => {
-    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Tutkintojen hallinta"), setHeading("Tutkintojen hallinta");
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading(""), setHeading("Tutkintojen hallinta");
     resetDegreeData()
     setDegreeId('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,9 +137,9 @@ const SearchPage = ({ allDegrees }) => {
   };
 
   return (
-    <dev className="searchPage__wrapper">
+    <div className="searchPage__wrapper">
       <section className="searchPage__container">
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
+        <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
         {allDegrees ? (
           <>
             <div className="searchPage__container--list">
@@ -163,7 +163,7 @@ const SearchPage = ({ allDegrees }) => {
             </div>
           )}
       </section>
-    </dev>
+    </div>
   );
 };
 

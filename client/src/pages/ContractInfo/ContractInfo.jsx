@@ -6,9 +6,13 @@ import InternalApiContext from '../../store/context/InternalApiContext';
 import { fetchInternalDegreeById } from '../../api/degree';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import InfoList from '../../components/InfoList/InfoList';
+import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
+
+import { useNavigate } from 'react-router-dom';
 
 const ContractInfo = () => {
   const { evaluation } = useContext(InternalApiContext);
+  const navigate = useNavigate();
   console.log('🚀 ~ ContractInfo ~ evaluation:', evaluation);
   const [degreeDetails, setDegreeDetails] = useState(null);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
@@ -153,6 +157,7 @@ const ContractInfo = () => {
       content: evaluation?.workGoals,
     },
   ];
+
   return (
     <div className='contractInfo__wrapper'>
       <div className='contractInfo__container'>
@@ -169,18 +174,18 @@ const ContractInfo = () => {
         >
           <ul>
             {evaluation &&
-              evaluation.units.map((unit, index) => (
+              evaluation?.units?.map((unit, index) => (
                 <li key={index}>
-                  <h4 style={{ margin: '10px 0' }}>{unit.name.fi}</h4>
+                  <h4 style={{ margin: '6px 0' }}>{unit.name.fi}</h4>
                   {unit &&
-                    unit.assessments.map((assessment, innerIndex) => (
+                    unit?.assessments?.map((assessment, innerIndex) => (
                       <ul key={innerIndex}>
                         <li style={{ padding: '2px' }}>
-                          {innerIndex + 1}. {assessment.name.fi}
+                          {innerIndex + 1}. {assessment?.name?.fi}
                         </li>
                       </ul>
                     ))}
-                  {index !== evaluation.units.length - 1 && (
+                  {index !== evaluation?.units?.length - 1 && (
                     <hr style={{ margin: '12px 0' }} />
                   )}
                 </li>
@@ -188,6 +193,14 @@ const ContractInfo = () => {
           </ul>
         </section>
       </div>
+      <PageNavigationButtons
+        handleBackText={'Takaisin'}
+        //handleBack={() => navigate(`/degrees/add`)}
+        handleBack={() => navigate('/')}
+        showForwardButton={false}
+        icon={'mingcute:pencil-line'}
+        style={{ textAlign: 'left' }}
+      />
     </div>
   );
 };

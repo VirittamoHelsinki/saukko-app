@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Stepper from '../../../components/Stepper/Stepper';
 import Searchbar from '../../../components/Searchbar/Searchbar';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
@@ -96,8 +97,8 @@ const CompanySearchPage = () => {
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
-  useEffect(()=>{
-    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikkaa"), setHeading("Työpaikkojen hallinta")
+  useEffect(() => {
+    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikka"), setHeading("Työpaikkojen hallinta")
   })
   // Searchbar logic
   const handleSearch = (event) => {
@@ -150,8 +151,8 @@ const CompanySearchPage = () => {
           />
         </div>
 
+        <h2>Valitse tutkinto</h2>
         <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
-        <h2>Ammatilliset tutkinnot</h2>
         <div className="searchPage__container--list">
           <CheckLength
             filteredList={filteredList}
@@ -164,6 +165,13 @@ const CompanySearchPage = () => {
           currentPage={currentPage}
           pageCount={pageCount}
           handlePageClick={handlePageClick}
+        />
+        <PageNavigationButtons
+          handleBackText={'Takaisin'}
+          handleBack={() => navigate('/company-info')}
+          showForwardButton={false}
+          icon={'mingcute:pencil-line'}
+          style={{ textAlign: 'left' }}
         />
       </section>
     </div>

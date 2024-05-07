@@ -4,6 +4,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    padding-top: 5rem;
 
     .degreeInfo__container {
       display: flex;
@@ -17,6 +18,7 @@
         margin-top: 40px;
         align-self: center;
         font-size: 20px;
+        padding: 3rem;
       }
 
       .degreeInfo__container--info {
@@ -34,7 +36,6 @@
           h1 {
             margin-bottom: 15px;
             text-align: center;
-            text-decoration: underline;
             font-weight: 400;
           }
 

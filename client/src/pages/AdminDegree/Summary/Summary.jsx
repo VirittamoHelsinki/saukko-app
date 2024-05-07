@@ -169,15 +169,14 @@ function Summary() {
           handleForward={handleSubmit}
           forwardButtonText={'Tallenna tiedot'}
           showForwardButton={true}
-
         />
         <NotificationModal
           type='success'
-          title='Tiedot tallennettu'
-          body='Tutkinto on tallennettu tietokantaan'
+          title='Tiedot tallennettu!'
+          body='Tiedot on tallennettu OsTu-appin tietokantaan.'
           open={notificationSuccess}
           handleClose={closeSuccess}
-          redirectLink='/admin-menu'
+          redirectLink='/degrees/add'
         />
         <NotificationModal
           type='warning'

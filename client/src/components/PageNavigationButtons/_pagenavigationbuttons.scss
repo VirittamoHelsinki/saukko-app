@@ -18,6 +18,7 @@
 
   .buttons__container-back {
     width: 40%;
+    padding-top: 8px;
 
     .button__container {
       flex-direction: row-reverse;
@@ -29,6 +30,7 @@
 
   .buttons__container-forward {
     width: 60%;
+    padding-top: 8px;
 
     .button__container {
       background: var(--link-blue);
