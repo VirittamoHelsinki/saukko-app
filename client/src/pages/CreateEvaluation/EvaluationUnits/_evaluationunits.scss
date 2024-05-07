@@ -10,8 +10,8 @@
     .evaluationUnits__container {
       display: flex;
       flex-direction: column;
-      margin-top: 200px;
-      margin-bottom: 50px;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
       flex-grow: 1;
       overflow-y: auto;
       width: 100%;
@@ -20,7 +20,6 @@
         margin-top: 32px;
         margin-bottom: 32px;
         text-align: center;
-        text-decoration: underline;
         font-size: var(--base-font-size);
       }
     }

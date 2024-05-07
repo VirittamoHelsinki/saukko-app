@@ -69,7 +69,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
           >
             <div style={{ textAlign: 'left', flexGrow: 1 }}>
               <List>
-                <ListItem  className='navListItem'>
+                <ListItem className='navListItem'>
                   <Typography
                     className='NavText'
                     onClick={() => {

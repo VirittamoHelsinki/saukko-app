@@ -14,8 +14,8 @@
     .evaluationWorkplace__container {
       display: flex;
       flex-direction: column;
-      margin-top: 200px;
-      margin-bottom: 50px;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
       flex-grow: 1;
       overflow-y: auto;
       width: 100%;
@@ -24,7 +24,6 @@
       h1 {
         margin-top: 32px;
         text-align: center;
-        text-decoration: underline;
         font-size: var(--base-font-size);
       }
 
@@ -69,6 +68,7 @@
         border: 2px solid black;
         box-shadow: none;
         margin-bottom: 20px;
+        position: static;
 
         .MuiAccordionDetails-root {
           padding: 0px;
@@ -87,6 +87,10 @@
 
       .accordion__wrapper-details:nth-of-type(odd) {
         background-color: var(--accordion-background-grey);
+      }
+
+      .pagination_evaluation_workplace {
+        align-self: center;
       }
 
     }
