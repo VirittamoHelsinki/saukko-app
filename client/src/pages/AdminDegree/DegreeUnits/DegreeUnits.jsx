@@ -112,6 +112,10 @@ function DegreeUnits() {
           }
           page={page}
           onChange={handlePageChange}
+          sx={{
+            '& .MuiPaginationItem-root':{
+              position: 'static'
+          }}}
         />
 
         <PageNavigationButtons

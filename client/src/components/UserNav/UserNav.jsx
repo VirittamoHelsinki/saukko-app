@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import { Box, Button, Grid, Typography, List, ListItem } from '@mui/material';
 import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
 import { useAuthContext } from '../../store/context/authContextProvider';
+import { logoutUser } from '../../api/user';
 
 const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsOpen }) => {
   const { currentUser } = useAuthContext();
@@ -38,6 +39,17 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
   };
 
   const toggleMenu = () => setMenuIsOpen(!menuIsOpen);
+
+  const LogOut = async () => {
+    try {
+      await logoutUser();
+      toggleMenu();
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   return (
     <div className='userNav__wrapper'>
@@ -163,10 +175,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
           <Grid container alignItems='flex-start' justifyContent='flex-end'>
             <Grid item>
               <Button
-                onClick={() => {
-                  toggleMenu();
-                  navigate('/profile')
-                }}
+                onClick={LogOut}
                 sx={{ marginRight: '20px', marginBottom: '20px', cursor: 'pointer' }}
                 >
                 <Typography sx={{ fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>

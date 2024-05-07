@@ -116,6 +116,11 @@ function CompanyDegreeUnits() {
           }
           page={page}
           onChange={handlePageChange}
+          sx={{
+            '& .Mui-selected':{
+              position:'static'
+            }
+          }}
         />
         <PageNavigationButtons
           handleBack={() => navigate(`../internal/degrees`)}
