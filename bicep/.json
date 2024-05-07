@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "17164154320138269512"
+      "templateHash": "13083322699550073208"
     }
   },
   "parameters": {
@@ -19,15 +19,15 @@
     }
   },
   "variables": {
-    "environment": "[if(contains(resourceGroup().name, 'dev'), 'dev', if(contains(resourceGroup().name, 'prod'), 'prod', 'other'))]",
-    "isProd": "[equals(variables('environment'), 'prod')]",
-    "skuName": "[if(variables('isProd'), 'B1', 'F1')]",
-    "skuTier": "[if(variables('isProd'), 'Basic', 'Free')]",
-    "skuSize": "[if(variables('isProd'), 'B1', 'F1')]",
+    "skuName": "B1",
+    "skuTier": "Basic",
+    "skuSize": "B1",
     "workspaceName": "[format('{0}-ws-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
     "appInsightName": "[format('{0}-insight-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
     "webappName": "[format('{0}-app-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
-    "appServicePlanName": "[format('{0}-asp', parameters('app_name'))]"
+    "functionsAppName": "[format('{0}-fn-{1}', parameters('app_name'), uniqueString(resourceGroup().id))]",
+    "appServicePlanName": "[format('{0}-asp', parameters('app_name'))]",
+    "cosmosDbName": "[format('{0}-cosmos', parameters('app_name'))]"
   },
   "resources": [
     {
@@ -70,6 +70,10 @@
             },
             {
               "name": "MONGODB_URI",
+              "value": "[listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbName')), '2024-02-15-preview').connectionStrings[0].connectionString]"
+            },
+            {
+              "name": "APP_URL",
               "value": "."
             },
             {
@@ -99,13 +103,18 @@
             {
               "name": "EMAIL_SERVICE_FROM",
               "value": "."
+            },
+            {
+              "name": "NODE_ENV",
+              "value": "staging|production"
             }
           ]
         }
       },
       "dependsOn": [
         "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
-        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbName'))]"
       ]
     },
     {
@@ -149,6 +158,119 @@
         },
         "publicNetworkAccessForIngestion": "Enabled",
         "publicNetworkAccessForQuery": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2023-01-01",
+      "name": "[variables('functionsAppName')]",
+      "kind": "functionapp,linux",
+      "location": "[parameters('location')]",
+      "tags": {
+        "hidden-link: /app-insights-resource-id": "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
+      },
+      "properties": {
+        "enabled": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "reserved": true,
+        "isXenon": false,
+        "hyperV": false,
+        "siteConfig": {
+          "numberOfWorkers": 1,
+          "linuxFxVersion": "Node|20",
+          "windowsFxVersion": null,
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2020-02-02').InstrumentationKey]"
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2020-02-02').ConnectionString]"
+            },
+            {
+              "name": "MONGODB_URI",
+              "value": "[listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbName')), '2024-02-15-preview').connectionStrings[0].connectionString]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~4"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "node"
+            },
+            {
+              "name": "WEBSITE_RUN_FROM_PACKAGE",
+              "value": "0"
+            }
+          ]
+        },
+        "httpsOnly": true,
+        "redundancyMode": "None",
+        "publicNetworkAccess": "Enabled"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "2024-02-15-preview",
+      "name": "[variables('cosmosDbName')]",
+      "location": "[parameters('location')]",
+      "kind": "MongoDB",
+      "tags": {
+        "defaultExperience": "Azure Cosmos DB for MongoDB API",
+        "hidden-cosmos-mmspecial": ""
+      },
+      "properties": {
+        "publicNetworkAccess": "Enabled",
+        "databaseAccountOfferType": "Standard",
+        "defaultIdentity": "FirstPartyIdentity",
+        "minimalTlsVersion": "Tls12",
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "Session",
+          "maxIntervalInSeconds": 5,
+          "maxStalenessPrefix": 100
+        },
+        "apiProperties": {
+          "serverVersion": "6.0"
+        },
+        "locations": [
+          {
+            "locationName": "[parameters('location')]",
+            "failoverPriority": 0,
+            "isZoneRedundant": false
+          }
+        ],
+        "cors": [],
+        "capabilities": [
+          {
+            "name": "EnableMongo"
+          },
+          {
+            "name": "EnableServerless"
+          }
+        ],
+        "ipRules": [],
+        "backupPolicy": {
+          "type": "Periodic",
+          "periodicModeProperties": {
+            "backupIntervalInMinutes": 240,
+            "backupRetentionIntervalInHours": 8,
+            "backupStorageRedundancy": "Geo"
+          }
+        },
+        "networkAclBypassResourceIds": [],
+        "diagnosticLogSettings": {
+          "enableFullTextQuery": "None"
+        }
+      },
+      "identity": {
+        "type": "None"
       }
     }
   ]
