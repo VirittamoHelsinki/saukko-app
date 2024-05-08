@@ -98,7 +98,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   };
 
   useEffect(() => {
-    setHeading("Suoritusten hallinnointi"), setSubHeading(""), setSiteTitle("Tutkintojen hallinta");
+    setHeading("Tutkintojen hallinta"), setSubHeading("Muokkaa tukintoa"), setSiteTitle("Tutkintojen hallinta");
     // Fetch degreeDetails based on degreeId and set the state
     const fetchedDegreeDetails = allInternalDegrees.find(
       (degree) => degree._id === degreeId

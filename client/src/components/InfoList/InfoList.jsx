@@ -1,6 +1,7 @@
 const InfoList = ({ title, data }) => (
   <div className='infoList__container'>
     <ul>
+      <h1>{title}</h1>
       {data.map((row, index) => (
         <li
           key={index}

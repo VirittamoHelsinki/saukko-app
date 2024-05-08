@@ -1,109 +1,129 @@
-.heading_style {
-  color: #1a1a1a;
-  font-family: Helsinki Grotesk;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-}
+.companyInfo__wrapper {
+  padding-top: 3rem;
 
-// .text_input {
-//   margin: 10px 20px;
-//   height: 50px;
-//   padding: 12px;
-//   display: flex;
-//   align-items: center;
-//   gap: 10px;
-//   background-color: white;
-//   border: 2px solid black;
-// }
+  .heading_style {
+    color: #1a1a1a;
+    font-family: Helsinki Grotesk;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+  }
 
-.text_input {
-  width: auto;
-  padding: 12px;
-  margin: 10px 20px;
-  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
-  display: flex;
-  gap: 10px;
-  background-color: white;
-  border: 2px solid black;
-}
+  // .text_input {
+  //   margin: 10px 20px;
+  //   height: 50px;
+  //   padding: 12px;
+  //   display: flex;
+  //   align-items: center;
+  //   gap: 10px;
+  //   background-color: white;
+  //   border: 2px solid black;
+  // }
 
-.businessID__search-field {
-  justify-content: flex-start;
-  // position: relative;
-  // padding: 0;
+  .text_input {
+    width: auto;
+    padding: 12px;
+    margin: 10px 20px;
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+    display: flex;
+    gap: 10px;
+    background-color: white;
+    border: 2px solid black;
+  }
 
-  .text_input_businessID {
+  .businessID__search-field {
+    justify-content: flex-start;
+    // position: relative;
+    // padding: 0;
+
+    .text_input_businessID {
+      width: 100%;
+      border: none;
+    }
+
+    input::placeholder {
+      color: rgb(199, 199, 199) !important;
+    }
+
+    svg {
+      flex-shrink: 0;
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  .businessInformation {
+    justify-content: flex-start;
+
+    .text_input_businessInformation {
+      width: 100%;
+      border: none;
+    }
+
+    input::placeholder {
+      color: rgb(199, 199, 199) !important;
+    }
+
+    svg {
+      flex-shrink: 0;
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  .lalala {
+    position: static;
+  }
+
+  .supervisorInformation {
+    justify-content: flex-start;
+
+    .text_input_supervisorInformation {
+      width: 100%;
+      border: none;
+    }
+
+    input::placeholder {
+      color: rgb(199, 199, 199) !important;
+    }
+
+    svg {
+      flex-shrink: 0;
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  .workplace-form-label {
+    margin-left: 20px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .info__stepper__container {
+    display: flex;
+    flex-direction: column;
+    // margin-top: 200px;
+    margin-bottom: 50px;
+    flex-grow: 1;
+    overflow-y: auto;
     width: 100%;
-    border: none;
-  }
-
-  input::placeholder {
-    color: rgb(199, 199, 199) !important;
-  }
-
-  svg {
-    flex-shrink: 0;
-    height: 20px;
-    width: 20px;
   }
 }
 
-.businessInformation {
-  justify-content: flex-start;
-
-  .text_input_businessInformation {
-    width: 100%;
-    border: none;
-  }
-
-  input::placeholder {
-    color: rgb(199, 199, 199) !important;
-  }
-
-  svg {
-    flex-shrink: 0;
-    height: 20px;
-    width: 20px;
+@media (min-width: 768px) {
+  .companyInfo__wrapper {
+    padding-top: 1rem;
   }
 }
-
-.lalala {
-  position: static;
-}
-
-.supervisorInformation {
-  justify-content: flex-start;
-
-  .text_input_supervisorInformation {
-    width: 100%;
-    border: none;
-  }
-
-  input::placeholder {
-    color: rgb(199, 199, 199) !important;
-  }
-
-  svg {
-    flex-shrink: 0;
-    height: 20px;
-    width: 20px;
+@media (min-width: 1024px) {
+  .companyInfo__wrapper {
+    padding-top: 1rem;
   }
 }
-
-.workplace-form-label {
-  margin-left: 20px;
-  padding-top: 15px;
-  padding-bottom: 10px;
-  font-weight: bold;
-}
-
-.info__stepper__container {
-  display: flex;
-  flex-direction: column;
-  margin-top: 200px;
-  margin-bottom: 50px;
-  flex-grow: 1;
-  overflow-y: auto;
-  width: 100%;
+@media (min-width: 1440px) {
+  .companyInfo__wrapper {
+    padding-top: 1rem;
+  }
 }

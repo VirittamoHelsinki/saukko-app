@@ -1,4 +1,3 @@
-.app__wrapper {
   .company__searchPage__wrapper {
     display: flex;
     flex-direction: column;
@@ -6,12 +5,13 @@
     width: 100%;
     background: var(--saukko-main-white);
     text-align: left;
+    padding-top: 3rem;
 
     .company__searchPage__container {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin-top: 3rem;
+      // margin-top: 3rem;
       margin-bottom: 3rem;
       width: 100%;
       gap: 20px;
@@ -22,7 +22,7 @@
       }
 
       .searchPage__container--list {
-        padding: 0px 15px 86px 15px;
+        padding: 0px 15px 15px 15px;
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -126,5 +126,21 @@
       width: 100%;
     }
   }
-}
+
+  @media (min-width: 768px) {
+    .company__searchPage__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .company__searchPage__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1440px) {
+    .company__searchPage__wrapper {
+      padding-top: 1rem;
+    }
+  }
+
 

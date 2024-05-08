@@ -152,7 +152,7 @@ const CompanySearchPage = () => {
         </div>
 
         <h2>Valitse tutkinto</h2>
-        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
+        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
         <div className="searchPage__container--list">
           <CheckLength
             filteredList={filteredList}

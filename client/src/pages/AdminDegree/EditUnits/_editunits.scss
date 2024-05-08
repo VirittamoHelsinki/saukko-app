@@ -1,5 +1,3 @@
-.app__wrapper {
-
   .editDegree__wrapper {
     display: flex;
     flex-direction: column;
@@ -83,4 +81,20 @@
       }
     }
   }
-}
+
+  @media (min-width: 768px) {
+    .editDegree__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .editDegree__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1440px) {
+    .editDegree__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  
