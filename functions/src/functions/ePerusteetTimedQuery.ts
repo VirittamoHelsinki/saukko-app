@@ -14,7 +14,7 @@ export async function ePerusteetTimedQuery(myTimer: Timer, context: InvocationCo
   context.log('Timer function processed request.');
 
   const startTime = Date.now();
-  mongo.openConnection();
+  await mongo.openConnection();
 
   const params = new URLSearchParams();
   // only active degrees
@@ -74,8 +74,9 @@ export async function ePerusteetTimedQuery(myTimer: Timer, context: InvocationCo
       await Degree.create(degree)
     }
   }
-  mongo.closeConnection();
+  await mongo.closeConnection();
   const dataSavedTime = Date.now();
+
 }
 
 app.timer('ePerusteetTimedQuery', {
