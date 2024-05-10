@@ -60,27 +60,49 @@ header svg {
   transform: rotate(180deg);
 }
 
+// @media (min-width: 768px) {
+//   .container header div button svg {
+//     margin-left: 2rem;
+//   }
+//   main {
+//     margin: 1rem 20%;
+//   }
+// }
+// @media (min-width: 1024px) {
+//   .container header div button svg {
+//     margin-left: 2rem;
+//   }
+//   main {
+//     margin: 1rem 30%;
+//   }
+// }
+// @media (min-width: 1440px) {
+//   .container header div button svg {
+//     margin-left: 2rem;
+//   }
+//   main {
+//     margin: 1rem 38%;
+//   }
+// }
+
 @media (min-width: 768px) {
   .container header div button svg {
     margin-left: 2rem;
   }
-  main {
-    margin: 1rem 20%;
+  .container main {
+    margin: 1rem auto; /* Center content horizontally */
+    max-width: 50%; /* Limit content width for larger screens */
   }
 }
+
 @media (min-width: 1024px) {
-  .container header div button svg {
-    margin-left: 2rem;
-  }
-  main {
-    margin: 1rem 30%;
+  .container main {
+    max-width: 40%; /* Adjust max-width for wider screens */
   }
 }
+
 @media (min-width: 1440px) {
-  .container header div button svg {
-    margin-left: 2rem;
-  }
-  main {
-    margin: 1rem 38%;
+  .container main {
+    max-width: 30%; /* Adjust max-width for even wider screens */
   }
 }

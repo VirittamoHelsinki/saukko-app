@@ -9,46 +9,27 @@ const DeleteDataModal = ({
 }) => {
   return (
     <NotificationModal
-      type='iconInfo'
-      hideIcon={true}
-      hideCloseButton={true}
-      title={
-        <Box>
-          <Typography
-            sx={{
-              marginTop: '10px',
-              marginBottom: '10px',
-              marginRight: '10px',
-              fontSize: '1.2rem',
-              fontWeight: 'bold',
-            }}
-          >
-            Olet arkistoinnissa tietoa joka liittyy 2 työnantajaan.
-          </Typography>
-          <Typography
-            sx={{
-              paddingTop: '10px',
-              marginBottom: '10px',
-              fontSize: '1.2rem',
-              fontWeight: 'bold',
-            }}
-          >
-            Oletko varma?
-          </Typography>
-        </Box>
-      }
+      type='alert'
+      hideButton={true}
+      title='Olet arkistoinnissa tietoa.'
       open={isDeleteDataModalOpen}
       dialogStyles={{
         dialogPaper: {
-          borderLeft: 'none',
-          padding: '0 1.6rem',
-        },
-        dialogTitle: {
-          testAlign: 'center',
+          padding: '0 1rem',
+          '@media (min-width:768px)': {
+            maxWidth: '38%',
+          },
+          '@media (min-width:1024px)': {
+            maxWidth: '30%',
+          },
+          '@media (min-width:1440px)': {
+            maxWidth: '26%',
+          },
         },
       }}
       body={
         <Box>
+          <Typography style={{fontSize: '14px'}}>Oletko arkistoinnissa tietoa, joka liittyy 2 työnantajaan. Oletko varma?</Typography>
           <Box
             style={{
               display: 'flex',
@@ -61,16 +42,17 @@ const DeleteDataModal = ({
               variant='contained'
               style={{
                 backgroundColor: '#FFFFFF',
-                border: '2px solid #1A1A1A',
+                color: '#0000BF',
+                border: '2px solid #0000BF',
                 marginRight: '20px',
               }}
               onClick={handleCloseDeleteDataModal}
             ></Button>
             <Button
-              text='Arkistoi'
+              text='Kyllä, arkistoi'
               variant='contained'
               style={{
-                backgroundColor: '#B01038',
+                backgroundColor: '#0000BF',
                 color: 'white',
                 border: 'none',
               }}
