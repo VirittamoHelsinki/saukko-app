@@ -14,10 +14,6 @@
 param location string = resourceGroup().location
 param app_name string = resourceGroup().name
 
-// var environment = contains(resourceGroup().name, 'dev')
-//   ? 'dev'
-//   : contains(resourceGroup().name, 'prod') ? 'prod' : 'other'
-
 var skuName = 'B1'
 var skuTier = 'Basic'
 var skuSize = 'B1'
@@ -27,11 +23,8 @@ var appInsightName = '${app_name}-insight-${uniqueString(resourceGroup().id)}'
 var webappName = '${app_name}-app-${uniqueString(resourceGroup().id)}'
 var functionsAppName = '${app_name}-fn-${uniqueString(resourceGroup().id)}'
 var appServicePlanName = '${app_name}-asp'
-// var fnAppServicePlanName = '${app_name}-fn-asp'
-// var webjobsStorageName = 'webjobs${uniqueString(resourceGroup().id)}'
+var webjobsStorageName = 'webjobs${uniqueString(resourceGroup().id)}'
 var cosmosDbName = '${app_name}-cosmos'
-// var storageName = '${app_name}${uniqueString(resourceGroup().id)}'
-// var storageName = '${replace(app_name, '-', '')}${uniqueString(resourceGroup().id)}'
 
 // App Service plan for the APP
 resource ASP_NodeJS_AppService 'Microsoft.Web/serverfarms@2023-01-01' = {
@@ -155,94 +148,22 @@ resource Workspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   }
 }
 
-// Functions app App Service Plan
-// resource ASP_Functions_AppService 'Microsoft.Web/serverfarms@2023-01-01' = {
-//   name: fnAppServicePlanName
-//   kind: 'functionapp'
-//   location: location
-//   properties: {
-//     reserved: false
-//   }
-//   sku: {
-//     name: 'Y1'
-//     tier: 'Dynamic'
-//     size: 'Y1'
-//     family: 'Y'
-//     capacity: 0
-//   }
-// }
-
-// resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-//   name: storageName
-//   location: location
-//   sku: {
-//     name: 'Standard_LRS'
-//   }
-//   kind: 'StorageV2'
-// }
-
-// resource functionsStorage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-//   name: webjobsStorageName
-//   location: location
-//   sku: {
-//     name: 'Standard_LRS'
-//   }
-//   kind: 'StorageV2'
-// }
-
-// resource Functions_App 'Microsoft.Web/sites@2023-01-01' = {
-//   name: functionsAppName
-//   kind: 'functionapp'
-//   location: location
-//   identity: {
-//     type: 'SystemAssigned'
-//   }
-//   tags: {
-//     'hidden-link: /app-insights-resource-id': Application_Insights.id
-//   }
-//   properties: {
-//     reserved: false
-//     serverFarmId: ASP_Functions_AppService.id
-//     siteConfig: {
-//       // linuxFxVersion: 'node 20'
-//       appSettings: [
-//         {
-//           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-//           value: Application_Insights.properties.InstrumentationKey
-//         }
-//         {
-//           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-//           value: Application_Insights.properties.ConnectionString
-//         }
-//         {
-//           name: 'MONGODB_URI'
-//           value: Cosmos_Mongo.listConnectionStrings().connectionStrings[0].connectionString
-//         }
-//         {
-//           name: 'FUNCTIONS_EXTENSION_VERSION'
-//           value: '~4'
-//         }
-//         {
-//           name: 'FUNCTIONS_WORKER_RUNTIME'
-//           value: 'node'
-//         }
-//         {
-//           name: 'AzureWebJobsStorage'
-//           value: 'DefaultEndpointsProtocol=https;AccountName=${functionsStorage.name};AccountKey=${functionsStorage.listKeys().keys[0].value};EndpointSuffix=${az.environment().suffixes.storage}'
-//         }
-//         {
-//           name: 'WEBSITE_RUN_FROM_PACKAGE'
-//           value: '0'
-//         }
-//       ]
-//     }
-//   }
-// }
+resource functionsStorage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: webjobsStorageName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+}
 
 resource Functions_App 'Microsoft.Web/sites@2023-01-01' = {
   name: functionsAppName
   kind: 'functionapp,linux'
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   tags: {
     'hidden-link: /app-insights-resource-id': Application_Insights.id
   }
@@ -281,46 +202,35 @@ resource Functions_App 'Microsoft.Web/sites@2023-01-01' = {
           name: 'WEBSITE_RUN_FROM_PACKAGE'
           value: '0'
         }
+        {
+          name: 'AzureWebJobsStorage'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${functionsStorage.name};AccountKey=${functionsStorage.listKeys().keys[0].value};EndpointSuffix=${az.environment().suffixes.storage}'
+        }
       ]
     }
     httpsOnly: true
     redundancyMode: 'None'
     publicNetworkAccess: 'Enabled'
   }
-} /*
-  ba92f5b4-2d11-453d-a403-e96b0029c9fe
-  Allows for read, write and delete access to Azure Storage blob containers and data
-*/
-// resource Role_Assignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-//   scope: storageAccount
-//   name: guid(resourceGroup().id, storageAccount.id, Functions_App.id)
-//   properties: {
-//     principalId: Functions_App.identity.principalId
-//     roleDefinitionId: subscriptionResourceId(
-//       'Microsoft.Authorization/roleDefinitions',
-//       'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
-//     )
-//     principalType: 'ServicePrincipal'
-//   }
-// }
+}
 
 /*
   b24988ac-6180-42a0-ab88-20f7382dd24c
   Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC,
   manage assignments in Azure Blueprints, or share image galleries.
 */
-// resource Function_Role_Assignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-//   scope: functionsStorage
-//   name: guid(resourceGroup().id, functionsStorage.id, Functions_App.id)
-//   properties: {
-//     principalId: Functions_App.identity.principalId
-//     roleDefinitionId: subscriptionResourceId(
-//       'Microsoft.Authorization/roleDefinitions',
-//       'b24988ac-6180-42a0-ab88-20f7382dd24c'
-//     )
-//     principalType: 'ServicePrincipal'
-//   }
-// }
+resource Function_Role_Assignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  scope: functionsStorage
+  name: guid(resourceGroup().id, functionsStorage.id, Functions_App.id)
+  properties: {
+    principalId: Functions_App.identity.principalId
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      'b24988ac-6180-42a0-ab88-20f7382dd24c'
+    )
+    principalType: 'ServicePrincipal'
+  }
+}
 
 resource Cosmos_Mongo 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-preview' = {
   name: cosmosDbName

@@ -23,7 +23,7 @@ const updateParams = (url: string, key: string, value: string, allowAdd?: boolea
 const removeParam = (url: string, key: string, value: string) => {
   const u = new URL(url);
   const params = new URLSearchParams(u.search);
-  params.delete(key, value);
+  params.delete(key);
   u.search = params.toString();
   return u.href;
 }
