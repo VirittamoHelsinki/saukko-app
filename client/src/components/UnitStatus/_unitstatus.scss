@@ -37,6 +37,9 @@
   height: 24px;
 }
 
-
-
+@media (min-width: 768px) {
+  .unitstatus-wrapper {
+    width: 93%;
+  }
+}
 
