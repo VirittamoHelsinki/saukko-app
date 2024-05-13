@@ -58,12 +58,12 @@
           .MuiTextField-root {
             flex-direction: row;
             flex-wrap: nowrap;
-            display: static;
+            //display: static;
 
             fieldset {
               input::placeholder {
                 color: black;
-                position: static;
+                //position: static;
               }
             }
           }
@@ -76,13 +76,13 @@
             align-items: flex-end;
             border: 2px solid black;
             border-radius: 0%;
-            position: static;
+           // position: static;
           }
 
           .Mui-focused {
             fieldset {
               border: none;
-              position: static;
+              //position: static;
             }
           }
 
@@ -94,7 +94,7 @@
           .Mui-error {
             fieldset {
               border: none;
-              position: static;
+              //position: static;
             }
           }
 
@@ -102,22 +102,22 @@
           .MuiInputAdornment-root {
             margin-top: 7px;
             align-self: flex-start;
-            position: static;
+            //position: static;
 
             svg {
               color: black;
-              position: static;
+              //position: static;
             }
           }
 
           /* Disabled date picker style */
           .Mui-disabled {
             border-color: #999898;
-            position: static;
+            //position: static;
 
             svg {
               color: #999898;
-              position: static;
+              //position: static;
             }
           }
         }

@@ -162,19 +162,15 @@ function EvaluationForm() {
       MuiButtonBase: {
         styleOverrides: {
           root: {
-            position:'static',
             '&.Mui-selected': {
               borderRadius: '0px',
-              position:'static',
             },
             '&:not(.Mui-selected)': {
               borderRadius: '0px',
-              position:'static',
             },
             '&.MuiPickersDay-root:not(.Mui-selected)': {
               borderColor: '#0072C6',
               backgroundColor: 'white',
-              position:'static',
             },
           },
         },
