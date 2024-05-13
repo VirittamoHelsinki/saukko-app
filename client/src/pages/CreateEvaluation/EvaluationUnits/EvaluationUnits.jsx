@@ -18,6 +18,7 @@ function EvaluationUnits() {
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   console.log('Checked units:', checkedUnits);
   const { workplace } = useEvaluationStore();
+  console.log("🚀 ~ EvaluationUnits ~ workplace:", workplace)
   const { openNotificationModal, setOpenNotificationModal } = useStore();
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 

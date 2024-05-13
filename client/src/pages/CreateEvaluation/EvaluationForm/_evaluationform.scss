@@ -1,14 +1,15 @@
-.app__wrapper {
+
   .evaluationForm__wrapper {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
+    padding-top: 3rem;
 
     .evaluationForm__container {
       flex-direction: column;
-      margin-top: 3rem;
+      // margin-top: 3rem;
       margin-bottom: 3rem;
       flex-grow: 1;
       overflow-y: auto;
@@ -125,4 +126,19 @@
 
     }
   }
-}
+
+  @media (min-width: 768px) {
+    .evaluationForm__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .evaluationForm__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1440px) {
+    .evaluationForm__wrapper {
+      padding-top: 1rem;
+    }
+  }

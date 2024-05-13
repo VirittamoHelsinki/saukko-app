@@ -5,6 +5,7 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 import useStore from '../../../store/zustand/formStore';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import withDegrees from '../../../HOC/withDegrees';
+import { CircularProgress } from '@mui/material';
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
@@ -16,16 +17,20 @@ const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
   const { setDegreeId } = useContext(ExternalApiContext);
 
   const handleChooseDegree = async (degreeId) => {
-    await setDegreeId(degreeId)
-    navigate(`${degreeId}`)
-  }
+    await setDegreeId(degreeId);
+    navigate(`${degreeId}`);
+  };
 
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
-        <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
+        <div
+          key={index}
+          className='searchPage__container--list-item'
+          onClick={() => handleChooseDegree(degree._id)}
+        >
           <h3>{degree.name.fi}</h3>
-          <div className="searchPage__container--list-item-bottom">
+          <div className='searchPage__container--list-item-bottom'>
             <div>
               <p>Diaari: {degree.diaryNumber}</p>
               <p>Koodi: {degree.eduCodeValue}</p>
@@ -57,37 +62,38 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   }
 
   return (
-    <div className="searchPage__container--list-pagination">
-      <section className="searchPage__container--list-pagination-nums">
+    <div className='searchPage__container--list-pagination'>
+      <section className='searchPage__container--list-pagination-nums'>
         {/* Render numbered buttons */}
         {pages.map((pageNum) => (
           <button
             key={pageNum}
             onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? "pagination__button--active" : ""
-              }`}
+            className={`pagination__button ${
+              pageNum === currentPage ? 'pagination__button--active' : ''
+            }`}
           >
             {pageNum}
           </button>
         ))}
       </section>
       {/* Render previous and next buttons */}
-      <section className="searchPage__container--list-pagination-arrows">
+      <section className='searchPage__container--list-pagination-arrows'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
           onClick={() => handlePageClick(currentPage - 1)}
-          className="arrow__button"
+          className='arrow__button'
         >
-          {"< Previous"}
+          {'< Previous'}
         </button>
         <button
           // Disable button if current page is the last page
           disabled={currentPage === pageCount}
           onClick={() => handlePageClick(currentPage + 1)}
-          className="arrow__button"
+          className='arrow__button'
         >
-          {"Next >"}
+          {'Next >'}
         </button>
       </section>
     </div>
@@ -106,15 +112,17 @@ const SearchPage = ({ allDegrees }) => {
 
   // Clear degree on first render
   useEffect(() => {
-    setSiteTitle("Suoritusten hallinnointi"), setSubHeading(""), setHeading("Tutkintojen hallinta");
-    resetDegreeData()
+    setSiteTitle('Suoritusten hallinnointi'),
+      setSubHeading(''),
+      setHeading('Tutkintojen hallinta');
+    resetDegreeData();
     setDegreeId('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Searchbar logic
   const handleSearch = (event) => {
-    setCurrentPage(1) // Reset page when searching
+    setCurrentPage(1); // Reset page when searching
     setFilteredList(
       allDegrees.filter((degree) =>
         degree.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
@@ -130,19 +138,19 @@ const SearchPage = ({ allDegrees }) => {
     return filteredList.length > 0
       ? Math.ceil(filteredList.length / paginate)
       : Math.ceil(allDegrees.length / paginate);
-  }, [allDegrees, filteredList.length, paginate])
+  }, [allDegrees, filteredList.length, paginate]);
 
   const handlePageClick = (pageNum) => {
     setCurrentPage(pageNum);
   };
 
   return (
-    <div className="searchPage__wrapper">
-      <section className="searchPage__container">
+    <div className='searchPage__wrapper'>
+      <section className='searchPage__container'>
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
         {allDegrees ? (
           <>
-            <div className="searchPage__container--list">
+            <div className='searchPage__container--list'>
               <CheckLength
                 filteredList={filteredList}
                 allDegrees={allDegrees}
@@ -156,12 +164,26 @@ const SearchPage = ({ allDegrees }) => {
               handlePageClick={handlePageClick}
             />
           </>
-        )
-          : (
-            <div>
-              Loading...
-            </div>
-          )}
+        ) : (
+          <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'fixed', 
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            background: 'rgba(255, 255, 255, 0.5)', /* Semi-transparent background overlay */
+          }}
+        >
+          <div>
+            {/* <p>Loading...</p> */}
+            <CircularProgress />
+          </div>
+        </div>
+        )}
       </section>
     </div>
   );
