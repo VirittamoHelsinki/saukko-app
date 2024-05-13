@@ -62,6 +62,7 @@ const ForgotPassword = () => {
     <div className='forgotPassword__wrapper'>
       {/* {!notificationVisible && <WavesHeader title='Saukko' fill='#9fc9eb' header={color} />} */}
       {!notificationVisible && (
+        <>
         <section className='forgotPassword__container'>
           <h2>Unohtuiko salasana?</h2>
           <p>Täytä sähköpostiosoitteesi alle, jotta saat<br></br>ohjeet salasanasi vaihtamiseen. </p>
@@ -80,8 +81,17 @@ const ForgotPassword = () => {
             </section>
           </form>
         </section>
+         <section className='forgotPassword__form--bottom'>
+         <Button
+           style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
+           onClick={processForgotPassword}
+           type='submit'
+           text='Lähetä'
+         />
+       </section>
+       </>
       )}
-      {!notificationVisible && (
+      {/* {!notificationVisible && (
         <section className='forgotPassword__form--bottom'>
           <Button
             style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
@@ -90,7 +100,7 @@ const ForgotPassword = () => {
             text='Lähetä'
           />
         </section>
-      )}
+      )} */}
 
       {notificationVisible && (
         <Notification

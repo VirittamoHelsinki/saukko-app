@@ -310,7 +310,7 @@ const UserPerformance = () => {
   });
 
   return (
-    <div>
+    <div className='perfomance__wrapper'>
       <h2 className='degree-name'>{degreeName?.name.fi}</h2>
       <h4 className='degree-unit-name'> {unitObject?.name.fi}</h4>
       <div>

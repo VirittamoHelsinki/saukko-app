@@ -183,7 +183,7 @@ export default function CustomizedDialogs(props) {
         </BootstrapDialogTitle>
         <DialogContent>
           <Box sx={{ color: 'black', marginBottom: '1rem', fontSize: '14px'}}>{props.body}</Box>
-          {props.type === 'alert' && (
+          {props.type === 'alert' && !props.hideButton &&(
             <Button onClick={handleConfirm} color='primary' variant='contained'>
               Kyllä
             </Button>

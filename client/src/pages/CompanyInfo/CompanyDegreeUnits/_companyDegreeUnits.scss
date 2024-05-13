@@ -1,83 +1,96 @@
-.app__wrapper {
+.degreeUnits__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 3rem;
 
-  .degreeUnits__wrapper {
+
+  .degreeUnits__container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    min-height: 100vh;
+    margin-bottom: 50px;
+    flex-grow: 1;
+    overflow-y: auto;
+    width: 100%;
 
-    .degreeUnits__container {
+    .searchField__container {
+      margin: 15px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 18px;
+      padding: 30px;
+    }
+
+    p {
+      font-size: 15px;
+    }
+
+    .degreeUnits__container--units {
+      margin-top: 20px;
+    }
+
+    nav {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      align-self: center;
+    }
+
+    .degreeUnits__container--buttons {
+      margin: 15px;
       display: flex;
-      flex-direction: column;
-      margin-bottom: 50px;
-      flex-grow: 1;
-      overflow-y: auto;
-      width: 100%;
-      padding-top: 3rem;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
 
-      .searchField__container {
-        margin: 15px;
-      }
-      
-      h2 {
-        text-align: center;
-        font-size: 18px;
-        padding: 30px;
+      .button__container {
+        .button__icon {
+          width: 25px;
+          flex-shrink: 0;
+        }
+
+        .button__text {
+          font-size: 15px;
+        }
       }
 
-      p {
-        font-size: 15px;
-      }
-
-      .degreeUnits__container--units {
-        margin-top: 20px;
-        
-      }
-
-      nav {
-        margin-top: 20px;
-        margin-bottom: 20px;
-        align-self: center;
-      }
-
-      .degreeUnits__container--buttons {
-        margin: 15px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-
+      .degreeUnits__container--buttons-back {
+        width: 40%;
         .button__container {
-          .button__icon{
-            width: 25px;
-            flex-shrink: 0;
-          }
-
-          .button__text {
-            font-size: 15px;
-          }
+          flex-direction: row-reverse;
+          color: var(--link-blue);
+          background: var(--saukko-main-white);
+          border: 2px solid var(--link-blue);
         }
+      }
 
-        .degreeUnits__container--buttons-back {
-          width: 40%;
-          .button__container {
-            flex-direction: row-reverse;
-            color: var(--link-blue);
-            background: var(--saukko-main-white);
-            border: 2px solid var(--link-blue);
-          }
-        }
-
-        .degreeUnits__container--buttons-forward {
-          width: 60%;
-          .button__container {
-            background: var(--link-blue);
-            color: var(--saukko-main-white);
-            border: 2px solid var(--link-blue);
-          }
+      .degreeUnits__container--buttons-forward {
+        width: 60%;
+        .button__container {
+          background: var(--link-blue);
+          color: var(--saukko-main-white);
+          border: 2px solid var(--link-blue);
         }
       }
     }
+  }
+}
+
+@media (min-width: 768px) {
+  .degreeUnits__wrapper {
+    padding-top: 1rem;
+  }
+}
+@media (min-width: 1024px) {
+  .degreeUnits__wrapper {
+    padding-top: 1rem;
+  }
+}
+@media (min-width: 1440px) {
+  .degreeUnits__wrapper {
+    padding-top: 1rem;
   }
 }

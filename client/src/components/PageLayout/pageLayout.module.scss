@@ -4,9 +4,10 @@ $header-height: 115px;
   user-select: none;
   height: 100vh;
   width: 100vw;
+  // padding-bottom: 3rem;
 }
 
-.container header {  
+.container header {
   position: sticky;
   top: 0;
   width: 100vw;
@@ -19,7 +20,7 @@ $header-height: 115px;
 
 .container header h1 {
   font-size: 18px;
-  margin-top: .5em;
+  margin-top: 0.5em;
 }
 
 .container header .buttonContainer {
@@ -42,7 +43,7 @@ $header-height: 115px;
 
 .container main {
   min-height: calc(100vh - $header-height);
-  padding-bottom: 3rem;
+  // padding-bottom: 3rem;
 }
 
 .container header .headerBox {
@@ -60,17 +61,23 @@ header svg {
 }
 
 @media (min-width: 768px) {
-  main {
-    margin: 1rem 20%;
+  .container header div button svg {
+    margin-left: 2rem;
+  }
+  .container main {
+    margin: 1rem auto; /* Center content horizontally */
+    max-width: 50%; /* Limit content width for larger screens */
   }
 }
+
 @media (min-width: 1024px) {
-  main {
-    margin: 1rem 30%;
+  .container main {
+    max-width: 40%; /* Adjust max-width for wider screens */
   }
 }
+
 @media (min-width: 1440px) {
-  main {
-    margin: 1rem 38%;
+  .container main {
+    max-width: 30%; /* Adjust max-width for even wider screens */
   }
 }
