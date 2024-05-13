@@ -166,7 +166,7 @@ export default function CustomizedDialogs(props) {
           icon={icon}
           style={{
             position: 'absolute',
-            left: '28px',
+            left: '16px',
             top: '16px',
             fontSize: '27px',
             color: color,

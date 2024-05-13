@@ -23,7 +23,7 @@ const DeleteDataModal = ({
             maxWidth: '30%',
           },
           '@media (min-width:1440px)': {
-            maxWidth: '26%',
+            maxWidth: '20%',
           },
         },
       }}
