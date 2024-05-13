@@ -12,7 +12,10 @@ const degreeMinYear = 2018;
 
 export async function ePerusteetTimedQuery(myTimer: Timer, context: InvocationContext): Promise<void> {
   context.log('Timer function processed request.');
+
   const startTime = Date.now();
+  await mongo.openConnection();
+
   const params = new URLSearchParams();
   // only active degrees
   params.append("voimassa", "true");
@@ -65,20 +68,15 @@ export async function ePerusteetTimedQuery(myTimer: Timer, context: InvocationCo
   const dataGenerationTime = Date.now();
 
   // List of unsaved mongo documents
-  mongo.openConnection();
-  mongo.connection.once("connection", (async () => {
-    for (const degree of degreesList) {
-      const existingDoc = await Degree.findById(degree.degree_id);
-      if (!existingDoc) {
-        await Degree.create({
-          _id: degree.degree_id,
-          ...degree,
-        })
-      }
+  for (const degree of degreesList) {
+    const existingDoc = await Degree.findOne({ degree_id: degree.degree_id }); //await Degree.findById(degree.degree_id);
+    if (!existingDoc) {
+      await Degree.create(degree)
     }
-  }));
-  mongo.closeConnection();
-  const dataSavedTime = Date.now();  
+  }
+  await mongo.closeConnection();
+  const dataSavedTime = Date.now();
+
 }
 
 app.timer('ePerusteetTimedQuery', {
