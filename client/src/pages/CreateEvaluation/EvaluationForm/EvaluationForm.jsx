@@ -14,6 +14,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import zIndex from '@mui/material/styles/zIndex';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -223,6 +224,12 @@ function EvaluationForm() {
                   format='DD.MM.YYYY'
                   value={startDate}
                   onChange={(date) => setStartDate(date)}
+                  sx={{
+                    '.MuiOutlinedInput-root':{
+                      position:'relative',
+                      zIndex:'-1',
+                    }
+                  }}
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -235,6 +242,12 @@ function EvaluationForm() {
                   value={endDate}
                   onChange={(date) => setEndDate(date)}
                   minDate={startDate} // Set minDate to startDate
+                 /*  sx={{
+                    '.MuiOutlinedInput-root':{
+                      position:'relative',
+                      zIndex:'-1',
+                    }
+                  }} */
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -247,6 +260,12 @@ function EvaluationForm() {
                   disabled={true}
                   format='DD.MM.YYYY'
                   value={'DD.MM.YYYY'}
+                 /*  sx={{
+                    '.MuiOutlinedInput-root':{
+                      position:'relative',
+                      zIndex:'-1',
+                    }
+                  }} */
                 />
               </ThemeProvider>
             </LocalizationProvider>

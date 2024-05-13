@@ -281,7 +281,8 @@ function EvaluationWorkplace() {
                     position: 'static'
                 },
                   '& .Mui-disabled': {
-                    position: 'static'
+                    position: 'relative',
+                    zIndex: '-1',
                   }
               }}
               />
