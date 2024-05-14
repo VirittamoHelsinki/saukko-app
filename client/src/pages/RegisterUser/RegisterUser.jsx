@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { registration } from '../../api/user';
+import './_registerUser.scss';
 
 
 const RegisterUser = () => {
@@ -30,7 +31,7 @@ const RegisterUser = () => {
 	}
 
 	return (
-		<div>
+		<div className="register-user">
 			<h2>Käyttäjän rekisteröinti</h2>
 			<form onSubmit={handleSubmit}>
 				<label htmlFor="firstName">Etunimi:</label><br />
