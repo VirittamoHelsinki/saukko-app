@@ -1,38 +1,10 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import Degree, { IDegree } from "../models/degreeModel";
 import mongoManager from "../utils/mongo";
-import axios from "axios";
 import sp from "../utils/searchParams";
+import { fetchUnits } from "../utils/fetchUnits";
 
 const pageSizeDefault = 10;
-
-async function fetchUnits(degreeId: number, entityId: string) {
-  try {
-    const response = await axios.get(`https://eperusteet.opintopolku.fi/eperusteet-service/api/external/peruste/${degreeId}`);
-    if (response.status === 200 && response.data && response.data.tutkinnonOsat) {
-      const unitsData = response.data.tutkinnonOsat as any[];
-
-      const units = unitsData.map(unit => ({
-        _id: unit.id,
-        name: {
-          fi: unit.nimi.fi,
-          sv: unit.nimi.sv,
-          en: unit.nimi.en,
-        }
-      }));
-
-      await Degree.findByIdAndUpdate(entityId, {
-        units: units,
-      });
-
-      return units;
-    }
-  } catch (error) {
-    console.error("error fetching units")
-  }
-
-  return [];
-}
 
 export async function getDegrees(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   context.log(`Http function processed request for url "${request.url}"`);
