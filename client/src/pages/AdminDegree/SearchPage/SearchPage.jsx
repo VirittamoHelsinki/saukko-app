@@ -1,28 +1,19 @@
-import { useState, useContext, useEffect, useCallback } from 'react';
+/* eslint-disable no-unused-vars */
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
-import useStore from '../../../store/zustand/formStore';
 import Searchbar from '../../../components/Searchbar/Searchbar';
-import withDegrees from '../../../HOC/withDegrees';
+import withPaginatedDegrees from '../../../HOC/withPaginatedDegrees';
 
-// controls how many degrees are shown at once and renders them
-const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
-  const startIndex = (currentPage - 1) * paginate;
-  const endIndex = startIndex + paginate;
-  const list = filteredList.length > 0 ? filteredList : allDegrees;
-
+const DegreeList = ({ data }) => {
   const navigate = useNavigate();
-  const { setDegreeId } = useContext(ExternalApiContext);
-
   const handleChooseDegree = async (degreeId) => {
-    await setDegreeId(degreeId)
     navigate(`${degreeId}`)
   }
 
   return (
     <>
-      {list.slice(startIndex, endIndex).map((degree, index) => (
+      {data.map((degree, index) => (
         <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
           <h3>{degree.name.fi}</h3>
           <div className="searchPage__container--list-item-bottom">
@@ -94,65 +85,40 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   );
 };
 
-const SearchPage = ({ allDegrees }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [paginate] = useState(5);
-  const [filteredList, setFilteredList] = useState([]);
-
-  // Get values and functions from state management
-  const { setDegreeId } = useContext(ExternalApiContext);
-  const { resetDegreeData } = useStore();
+const SearchPage = ({ data, loading, page, setPage, totalPages }) => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Clear degree on first render
   useEffect(() => {
     setSiteTitle("Suoritusten hallinnointi"), setSubHeading(""), setHeading("Tutkintojen hallinta");
-    resetDegreeData()
-    setDegreeId('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Searchbar logic
   const handleSearch = (event) => {
-    setCurrentPage(1) // Reset page when searching
-    setFilteredList(
-      allDegrees.filter((degree) =>
-        degree.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
-      )
-    );
+    setPage(1) // Reset page when searching
   };
-
-  // Pagination logic
-
-  const pageCount = useCallback(() => {
-    if (!allDegrees) return 0;
-
-    return filteredList.length > 0
-      ? Math.ceil(filteredList.length / paginate)
-      : Math.ceil(allDegrees.length / paginate);
-  }, [allDegrees, filteredList.length, paginate])
 
   const handlePageClick = (pageNum) => {
-    setCurrentPage(pageNum);
+    setPage(pageNum);
   };
+
+  if (loading) {
+    return <p>Loading...</p>
+  }
 
   return (
     <div className="searchPage__wrapper">
       <section className="searchPage__container">
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
-        {allDegrees ? (
+        {data ? (
           <>
             <div className="searchPage__container--list">
-              <CheckLength
-                filteredList={filteredList}
-                allDegrees={allDegrees}
-                paginate={paginate}
-                currentPage={currentPage}
-              />
+              <DegreeList data={data} />
             </div>
             <PageButtons
-              currentPage={currentPage}
-              pageCount={pageCount()}
+              currentPage={page}
+              pageCount={totalPages}
               handlePageClick={handlePageClick}
             />
           </>
@@ -167,4 +133,4 @@ const SearchPage = ({ allDegrees }) => {
   );
 };
 
-export default withDegrees(SearchPage);
+export default withPaginatedDegrees(SearchPage);
