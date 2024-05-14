@@ -309,6 +309,11 @@ const UserPerformance = () => {
     }
   });
 
+  const handleEvaluation = () => {
+    navigate('/unit-list');
+    setOpenNotificationModal(false);
+  } 
+
   return (
     <div className='perfomance__wrapper'>
       <h2 className='degree-name'>{degreeName?.name.fi}</h2>
@@ -556,11 +561,10 @@ const UserPerformance = () => {
 
       <NotificationModal
         type='success'
-        title='Lähetetty'
-        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+        title='Tiedot tallennettu!'
+        body='Tiedot on tallennettu OsTu-appin tietokantaan.'
         open={openNotificationModal}
-        // handleClose={handleNotificationModalClose}
-      />
+        handleClose={handleEvaluation} />
     </div>
   );
 };

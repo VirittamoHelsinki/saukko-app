@@ -67,9 +67,7 @@ const UnitList = () => {
       <div className='unitList__units'>
         {currentUser.role === 'customer' ? (
           <>
-            <h3>
-              Tutkinnon nimi
-            </h3>
+            <h3>Tutkinnon nimi</h3>
             <h3> Omat suoritukset </h3>
           </>
         ) : (
@@ -78,30 +76,37 @@ const UnitList = () => {
 
         {evaluation &&
           evaluation.units.map((unit) => (
-                <div style={{cursor: 'pointer'}} key={unit._id}>
-                  <UnitStatus
-                    key={unit._id}
-                    unitId={unit._id}
-                    status={unit.status}
-                    subheader={unit.name.fi}
-                    link='/userperformance'
-                  />
-                </div>
+            <div style={{ cursor: 'pointer' }} key={unit._id}>
+              <UnitStatus
+                key={unit._id}
+                unitId={unit._id}
+                status={unit.status}
+                subheader={unit.name.fi}
+                link='/userperformance'
+              />
+            </div>
           ))}
         <div className='unitList__button'>
           <Button
-            style={{
-              color: '#0000BF',
-              fontSize: '15px',
-              border: '2px solid #0000BF',
-              width: '14rem',
-              height: '50px',
-            }}
+            text='Takaisin'
+            icon='bx:arrow-back'
+            onClick={() => navigate('/')}
+            className='unitList__button--back'
+          />
+          <Button
+            className='unitList__button--sopimus'
             text='Tarkastele sopimusta'
             color='info'
             icon='bx:file'
             onClick={() => navigate('/contract-info')}
           />
+        </div>
+        <div className='wrapper-button-pdf'>
+          <Button
+          text='Tee PDF-yhteenveto osaamisesta'
+          className='button--pdf'
+          icon='bx:file'
+           />
         </div>
       </div>
     </div>
