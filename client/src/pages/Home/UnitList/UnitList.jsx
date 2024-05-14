@@ -67,8 +67,8 @@ const UnitList = () => {
       <div className='unitList__units'>
         {currentUser.role === 'customer' ? (
           <>
-            <h3 style={{ paddingLeft: '35px', margin: '3rem 0' }}>
-              {degreeName?.name.fi}
+            <h3>
+              Tutkinnon nimi
             </h3>
             <h3> Omat suoritukset </h3>
           </>

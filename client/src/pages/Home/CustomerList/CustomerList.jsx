@@ -66,7 +66,7 @@ export default function CustomerList() {
 
   // Set evaluations
   useEffect(() => {
-    setHeading(`Tervetuloa, ${currentUser?.firstName}`)
+    setHeading(`Tervetuloa ${currentUser?.firstName}`)
     setSiteTitle("Etusivu")
     setInternalEvaluations();
   // eslint-disable-next-line react-hooks/exhaustive-deps

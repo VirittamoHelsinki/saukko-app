@@ -61,6 +61,7 @@ const PageLayout = () => {
   const headerColor = getHeaderColor(currentUser?.role);
   const wrapperStyle = {
     backgroundColor: headerColor,
+    marginBottom: '-1rem',
   };
 
   const logoColor = currentUser?.role ? '#000' : '#fff';

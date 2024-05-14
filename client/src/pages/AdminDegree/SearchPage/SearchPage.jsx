@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import withPaginatedDegrees from '../../../HOC/withPaginatedDegrees';
+import { CircularProgress } from '@mui/material';
 
 const DegreeList = ({ data }) => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const DegreeList = ({ data }) => {
       {data.map((degree, index) => (
         <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
           <h3>{degree.name.fi}</h3>
-          <div className="searchPage__container--list-item-bottom">
+          <div className='searchPage__container--list-item-bottom'>
             <div>
               <p>Diaari: {degree.diaryNumber}</p>
               <p>Koodi: {degree.eduCodeValue}</p>
@@ -48,37 +49,38 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   }
 
   return (
-    <div className="searchPage__container--list-pagination">
-      <section className="searchPage__container--list-pagination-nums">
+    <div className='searchPage__container--list-pagination'>
+      <section className='searchPage__container--list-pagination-nums'>
         {/* Render numbered buttons */}
         {pages.map((pageNum) => (
           <button
             key={pageNum}
             onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? "pagination__button--active" : ""
-              }`}
+            className={`pagination__button ${
+              pageNum === currentPage ? 'pagination__button--active' : ''
+            }`}
           >
             {pageNum}
           </button>
         ))}
       </section>
       {/* Render previous and next buttons */}
-      <section className="searchPage__container--list-pagination-arrows">
+      <section className='searchPage__container--list-pagination-arrows'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
           onClick={() => handlePageClick(currentPage - 1)}
-          className="arrow__button"
+          className='arrow__button'
         >
-          {"< Previous"}
+          {'< Previous'}
         </button>
         <button
           // Disable button if current page is the last page
           disabled={currentPage === pageCount}
           onClick={() => handlePageClick(currentPage + 1)}
-          className="arrow__button"
+          className='arrow__button'
         >
-          {"Next >"}
+          {'Next >'}
         </button>
       </section>
     </div>
@@ -108,8 +110,8 @@ const SearchPage = ({ data, loading, page, setPage, totalPages }) => {
   }
 
   return (
-    <div className="searchPage__wrapper">
-      <section className="searchPage__container">
+    <div className='searchPage__wrapper'>
+      <section className='searchPage__container'>
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
         {data ? (
           <>
@@ -122,12 +124,25 @@ const SearchPage = ({ data, loading, page, setPage, totalPages }) => {
               handlePageClick={handlePageClick}
             />
           </>
-        )
-          : (
-            <div>
-              Loading...
-            </div>
-          )}
+        ) : (
+          <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'fixed', 
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            background: 'rgba(255, 255, 255, 0.5)', /* Semi-transparent background overlay */
+          }}
+        >
+          <div>
+            <CircularProgress />
+          </div>
+        </div>
+        )}
       </section>
     </div>
   );

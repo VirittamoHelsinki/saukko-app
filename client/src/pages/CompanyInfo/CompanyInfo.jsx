@@ -183,7 +183,7 @@ const CompanyInfo = () => {
   };
 
   return (
-    <div>
+    <div className='companyInfo__wrapper'>
       {/* <WavesHeader
         title='Saukko'
         fill='#9fc9eb'

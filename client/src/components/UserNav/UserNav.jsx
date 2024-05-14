@@ -63,7 +63,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
         {/* Hamburger  Menu Items */}
         {/* set background color user's role */}
         <div className={`userNav__icons ${currentUser?.role}`}>
-          <Box sx={{ height: '20vh', marginTop: '50px', textAlign:'center' }}>
+          <Box sx={{ height: '20vh', marginTop: '50px', textAlign: 'center' }}>
             <img className='helsinki-logo' src={HelsinkiLogo} alt='' />
             <h1 className='logo-text'>OsTu</h1>
           </Box>
@@ -169,6 +169,17 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                     Profiili
                   </Typography>
                 </ListItem>
+                <ListItem className='navListItem'>
+                  <Typography
+                    className='NavText'
+                    onClick={() => {
+                      toggleMenu();
+                      navigate('/register-user');
+                    }}
+                  >
+                    Käyttäjän rekisteröinti
+                  </Typography>
+                </ListItem>
               </List>
             </div>
           </Box>
@@ -177,7 +188,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
               <Button
                 onClick={LogOut}
                 sx={{ marginRight: '20px', marginBottom: '20px', cursor: 'pointer' }}
-                >
+              >
                 <Typography sx={{ fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
                   Kirjaudu ulos
                 </Typography>
@@ -185,7 +196,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                   icon='websymbol:logout'
                   color='black'
                   style={{ marginLeft: '10px' }}
-                  />
+                />
               </Button>
             </Grid>
           </Grid>

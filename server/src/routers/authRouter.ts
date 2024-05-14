@@ -12,6 +12,8 @@ router.get("/get-current-user", authController.getCurrentUser);
 router.get("/verify-email", authController.verifyEmail);
 router.get("/resend-email-verification", authController.resendEmailVerificationLink)
 
+router.post("/register-user", authController.registerUser)
+
 // Enable auth middleware for specific endpoints
 router.post(["/", "/change-password", "/request-pwd-change-token"], auth);
 router.get(["/logout"], auth);

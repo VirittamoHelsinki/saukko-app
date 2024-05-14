@@ -1,4 +1,4 @@
-.app__wrapper {
+
   .evaluationUnits__wrapper {
     display: flex;
     flex-direction: column;
@@ -6,11 +6,12 @@
     width: 100%;
     background: var(--saukko-main-white);
     text-align: left;
+    padding-top: 3rem;
 
     .evaluationUnits__container {
       display: flex;
       flex-direction: column;
-      margin-top: 3rem;
+      // margin-top: 3rem;
       margin-bottom: 3rem;
       flex-grow: 1;
       overflow-y: auto;
@@ -25,4 +26,20 @@
       }
     }
   }
-}
+
+  @media (min-width: 768px) {
+    .evaluationUnits__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .evaluationUnits__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1440px) {
+    .evaluationUnits__wrapper{
+      padding-top: 1rem;
+    }
+  }
+

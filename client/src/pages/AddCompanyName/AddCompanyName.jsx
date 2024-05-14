@@ -137,7 +137,7 @@ const AddCompanyName = () => {
           id='addWorkplaceButton'
           text='Lisää työpaikka'
           style={{
-            marginLeft: '25%',
+            marginLeft: '20%',
             marginBottom: '10px',
             marginTop: '10px',
             width: '60%',

@@ -6,7 +6,7 @@ const fetchCurrentUser = async () => axios.get('/auth/get-current-user');
 const registration = async (registrationData) => {
   const { firstName, lastName, email, password, role } = registrationData;
   try {
-    const response = await axios.post('/auth', {
+    const response = await axios.post('/auth/register-user', {
       firstName,
       lastName,
       email,
