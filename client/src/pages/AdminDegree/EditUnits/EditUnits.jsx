@@ -1,18 +1,17 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import { Icon } from '@iconify/react';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import WithDegree from '../../../HOC/withDegree';
 
-function EditUnits() {
+function EditUnits({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
 
-  const { degree, degreeFound } = useContext(ExternalApiContext);
   const { degreeName } = useStore();
   const { checkedUnits, setCheckedUnits } = useUnitsStore();
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
@@ -97,7 +96,7 @@ function EditUnits() {
           totalPages={4}
           data={stepperData}
         />
-        <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
+        <h1>{degree ? degree.name.fi : degreeName}</h1>
 
         <button 
           id='finishEditButton'
@@ -147,4 +146,4 @@ function EditUnits() {
   );
 }
 
-export default EditUnits;
+export default WithDegree(EditUnits);

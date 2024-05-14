@@ -1,10 +1,9 @@
 // Import react packages & dependencies
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import useStore from '../../../store/zustand/formStore';
 
 // Import components
@@ -23,8 +22,9 @@ import { Icon } from '@iconify/react';
 // Import criteria modal
 import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import WithDegree from '../../../HOC/withDegree';
 
-function SpecifyTasks() {
+function SpecifyTasks({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -34,9 +34,6 @@ function SpecifyTasks() {
   const [assessments, setAssessments] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
   const [savedDataCriteria, setSavedDataCriteria] = useState([]);
-
-  // Get values from state management
-  const { degree, degreeFound } = useContext(ExternalApiContext);
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
@@ -122,7 +119,7 @@ function SpecifyTasks() {
     <div className='specify-tasks__wrapper'>
       <section className='specify-tasks__container'>
         <Stepper activePage={3} totalPages={4} data={stepperData} />
-        <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
+        <h1>{degree ? degree.name.fi : degreeName}</h1>
         <h3 className='degree-guidance'>Muokkaa tutkinnonosa</h3>
         <Box sx={{ flexGrow: 1, fontWeight: 'bold' }}>
           <Paper
@@ -262,4 +259,4 @@ function SpecifyTasks() {
   );
 }
 
-export default SpecifyTasks;
+export default WithDegree(SpecifyTasks);

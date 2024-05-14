@@ -1,5 +1,5 @@
 // Import react packages
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import libraries
@@ -12,15 +12,12 @@ import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 // Import state management
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import useStore from '../../../store/zustand/formStore';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import WithDegree from '../../../HOC/withDegree';
 
-function DegreeUnits() {
+function DegreeUnits({ degree }) {
   const navigate = useNavigate();
-
-  // Set path & get degree from ExternalApiContext
-  const { degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
 
   // Get degree name from zustand store
@@ -88,7 +85,7 @@ function DegreeUnits() {
           totalPages={4}
           data={stepperData}
         />
-        <h1>{degreeFound ? degree?.name.fi : degreeName}</h1>
+        <h1>{degree ? degree?.name.fi : degreeName}</h1>
         {/* <Searchbar
           handleSearch={handleSearch}
           placeholder={'Etsi tutkinnonosat'}
@@ -128,4 +125,4 @@ function DegreeUnits() {
   );
 }
 
-export default DegreeUnits;
+export default WithDegree(DegreeUnits);
