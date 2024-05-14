@@ -319,7 +319,7 @@ const verifyEmail = async (req: Request, res: Response) => {
     return res
       .clearCookie('verification-token')
       .cookie('change-token', passwordChanegeToken, { httpOnly: true })
-      .json({ redirectURL: `${config.APP_URL}` });
+      .json({ redirectURL: `${config.APP_URL}/set-password` });
     // .redirect(`${url}/reset-password`);
   } catch (err) {
     console.log("AuthController.verifyEmail. Token: {", req.tokens?.verifyEmail, "}", err)
