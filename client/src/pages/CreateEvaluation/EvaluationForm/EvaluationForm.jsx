@@ -279,6 +279,7 @@ function EvaluationForm() {
           handleBack={handleBack}
           handleForward={handleSubmit}
           showForwardButton={true}
+          hideBackButton={true}
         />
       </section>
       <NotificationModal
