@@ -21,7 +21,7 @@ const CheckLength = ({
 
   useEffect(() => {
     setSiteTitle("Lisää työpaikkaa"), setSubHeading(""), setHeading("Työpaikkojen hallinta")
-  },[setHeading, setSiteTitle, setSubHeading])
+  }, [setHeading, setSiteTitle, setSubHeading])
 
   //   const navigate = useNavigate();
   return (
@@ -60,20 +60,36 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   return (
     <div className='addDegree__container--list-pagination'>
       <section className='addDegree__container--list-pagination-nums'>
+        <button
+          // Disable button if current page is the first page
+          disabled={currentPage === 1}
+          onClick={() => handlePageClick(currentPage - 1)}
+          style={{backgroundColor:'white', border:'none'}}
+        >
+          {'< '}
+        </button>
         {/* Render numbered buttons */}
-        {pages.map((pageNum) => (
-          <button
-            key={pageNum}
-            onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
-              }`}
-          >
-            {pageNum}
-          </button>
-        ))}
+      {pages.map((pageNum) => (
+        <button
+          key={pageNum}
+          onClick={() => handlePageClick(pageNum)}
+          className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
+            }`}
+        >
+          {pageNum}
+        </button>
+      ))}
+        <button
+          // Disable button if current page is the last page
+          disabled={currentPage === pageCount}
+          onClick={() => handlePageClick(currentPage + 1)}
+          style={{backgroundColor:'white', border:'none'}}
+        >
+          {' >'}
+        </button>
       </section>
       {/* Render previous and next buttons */}
-      <section className='addDegree__container--list-pagination-arrows'>
+      {/* <section className='addDegree__container--list-pagination-arrows'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
@@ -90,7 +106,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         >
           {'Next >'}
         </button>
-      </section>
+      </section> */}
     </div>
   );
 };

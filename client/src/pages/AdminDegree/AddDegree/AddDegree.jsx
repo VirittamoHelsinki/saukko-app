@@ -1,9 +1,13 @@
 import { useState, useContext, useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
+
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Button from '../../../components/Button/Button';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
+
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({
@@ -56,6 +60,14 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
     <div className='addDegree__container--list-pagination'>
       <section id='numberedButtons' className='addDegree__container--list-pagination-nums'>
         {/* Render numbered buttons */}
+        <button
+          // Disable button if current page is the first page
+          disabled={currentPage === 1}
+          onClick={() => handlePageClick(currentPage - 1)}
+          className='arrow__button'
+        >
+          {'< '}
+        </button>
         {pages.map((pageNum) => (
           <button
             key={pageNum}
@@ -66,9 +78,17 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
             {pageNum}
           </button>
         ))}
+         <button
+          // Disable button if current page is the last page
+          disabled={currentPage === pageCount}
+          onClick={() => handlePageClick(currentPage + 1)}
+          className='arrow__button'
+        >
+          {' >'}
+        </button>
       </section>
       {/* Render previous and next buttons */}
-      <section id='prevNextButtons' className='addDegree__container--list-pagination-arrows'>
+      {/* <section id='prevNextButtons' className='addDegree__container--list-pagination-arrows'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
@@ -85,7 +105,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         >
           {'Next >'}
         </button>
-      </section>
+      </section> */}
     </div>
   );
 };
