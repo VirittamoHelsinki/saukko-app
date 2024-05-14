@@ -44,6 +44,7 @@ const AddCompanyName = React.lazy(() => import('../../pages/AddCompanyName/AddCo
 const EmailVerification = React.lazy(() => import('../../pages/VerifyEmail/VerifyEmail'));
 const CreateUnitsSummary = React.lazy(() => import('../../pages/CreateSummary/CreateUnitsSummary'));
 const SetPassword = React.lazy(() => import('../../pages/setPassword/SetPassword'));
+const RegisterUser = React.lazy(() => import('../../pages/RegisterUser/RegisterUser'))
 
 const Router = () => {
   let location = useLocation();
@@ -97,6 +98,7 @@ const Router = () => {
                 <Route path='/unit-list' element={<UnitList />} />
                 <Route path='/contract-info' element={<ContractInfo />} />
                 <Route path='/userperformance' element={<UserPerformance />} />
+                <Route path='/register-user' element={<RegisterUser />} />
               </>
             )}
 

@@ -15,13 +15,13 @@ const Notification = ({
 }) => {
   const navigate = useNavigate();
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
-  useEffect(()=>{
+  useEffect(() => {
     setSiteTitle(''),
-    setSubHeading(''),
-    setHeading('OsTu')
-  },[setHeading, setSiteTitle, setSubHeading])
+      setSubHeading(''),
+      setHeading('OsTu')
+  }, [setHeading, setSiteTitle, setSubHeading])
   // Redirects after 5 seconds to logged user page
   useEffect(() => {
     const timeout = setTimeout(() => {

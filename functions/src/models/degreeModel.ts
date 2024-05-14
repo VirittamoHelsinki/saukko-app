@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, mongo } from "mongoose";
+import mongoose, { Schema, Document, mongo, Types } from "mongoose";
 
 export interface IDegreeDocument extends IDegree, Document { }
 
