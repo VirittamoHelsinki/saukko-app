@@ -52,20 +52,39 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
     <div className='searchPage__container--list-pagination'>
       <section className='searchPage__container--list-pagination-nums'>
         {/* Render numbered buttons */}
+        <button
+          // Disable button if current page is the first page
+          disabled={currentPage === 1}
+          onClick={() => handlePageClick(currentPage - 1)}
+          style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
+          className='arrow__button__left'
+        >
+          {'< '}
+        </button>
         {pages.map((pageNum) => (
           <button
             key={pageNum}
             onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${
-              pageNum === currentPage ? 'pagination__button--active' : ''
-            }`}
+            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
+              }`}
           >
             {pageNum}
           </button>
         ))}
+         <button
+          // Disable button if current page is the last page
+          disabled={currentPage === pageCount}
+          onClick={() => handlePageClick(currentPage + 1)}
+          style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
+          className='arrow__button__right'
+        >
+          {' >'}
+        </button>
+
+
       </section>
       {/* Render previous and next buttons */}
-      <section className='searchPage__container--list-pagination-arrows'>
+      {/* <section className='searchPage__container--list-pagination-arrows'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
@@ -82,7 +101,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         >
           {'Next >'}
         </button>
-      </section>
+      </section> */}
     </div>
   );
 };

@@ -73,22 +73,18 @@
       width: 100%;
       gap: 12px;
 
-      .pagenation__buttons-container{
-        .pagination__button {
-          background: var(--saukko-main-white);
-          border-radius: 50%;
-          border: none;
-          height: 40px;
-          width: 40px;
-        }
-
-        .pagination__button--active {
-          color: var(--saukko-main-white);
-          background: var(--saukko-main-black);
-        }
+      .pagination__button {
+        background: var(--saukko-main-white);
+        border-radius: 50%;
+        border: none;
+        height: 40px;
+        width: 40px;
       }
 
-
+      .pagination__button--active {
+        color: var(--saukko-main-white);
+        background: var(--saukko-main-black);
+      }
 
       .addDegree__container--list-pagination-arrows {
         display: flex;

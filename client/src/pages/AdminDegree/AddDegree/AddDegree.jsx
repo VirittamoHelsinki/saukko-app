@@ -64,7 +64,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
           // Disable button if current page is the first page
           disabled={currentPage === 1}
           onClick={() => handlePageClick(currentPage - 1)}
-          style={{border:'none', backgroundColor:'white'}}
+          style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
           className='arrow__button__left'
         >
           {'< '}
@@ -83,7 +83,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
           // Disable button if current page is the last page
           disabled={currentPage === pageCount}
           onClick={() => handlePageClick(currentPage + 1)}
-          style={{border:'none', backgroundColor:'white' }}
+          style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
           className='arrow__button__right'
         >
           {' >'}
