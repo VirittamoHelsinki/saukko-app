@@ -15,14 +15,15 @@ import ContentEditable from 'react-contenteditable';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import WithDegree from '../../../HOC/withDegree';
 
-function DegreeInfo() {
+function DegreeInfo({ degree, loading }) {
   const navigate = useNavigate();
   const params = useParams();
 
   // Get values from state management
   const { currentUser } = useAuthContext();
-  const { degree, degreeFound, allDegrees } = useContext(ExternalApiContext);
+  const { allDegrees } = useContext(ExternalApiContext);
   const {
     degreeName,
     setDegreeName,
@@ -86,7 +87,7 @@ function DegreeInfo() {
 
   useEffect(() => {
     setSiteTitle("Tutkintojen hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta");
-    if (degreeFound) {
+    if (degree) {
       setDegreeDescription(degree?.description?.fi);
       setDegreeName(degree?.name?.fi);
       setDiaryNumber(degree?.diaryNumber);
@@ -159,11 +160,15 @@ function DegreeInfo() {
     }
 
     // Navigate to the next page
-    if (degreeFound) {
+    if (degree) {
       navigate(`/degrees/${params.degreeId}/units`)
     } else {
       navigate(`/degrees/${params.degreeId}/edit-units`)
     }
+  }
+
+  if (loading) {
+    return <div>loading...</div>
   }
 
   return (
@@ -175,7 +180,7 @@ function DegreeInfo() {
           data={stepperData}
         />
         <h1 className='degree-title'>
-          {degreeFound ? degree?.name?.fi : degreeName}
+          {degree ? degree?.name?.fi : degreeName}
         </h1>
         <div
           style={{
@@ -220,9 +225,6 @@ function DegreeInfo() {
             ) : (
               <p>Täydennä puuttuvat tiedot</p>
             )}
-
-
-
           </div>
           <div className='degreeInfo__container--info--block dark'>
             <p>Tutkinon nimi</p>
@@ -377,4 +379,4 @@ function DegreeInfo() {
   );
 }
 
-export default DegreeInfo;
+export default WithDegree(DegreeInfo);
