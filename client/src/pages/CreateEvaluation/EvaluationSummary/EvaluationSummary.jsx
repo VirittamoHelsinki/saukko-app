@@ -20,7 +20,6 @@ import { registration } from '../../../api/user';
 import { createEvaluation } from '../../../api/evaluation';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
 
 function EvaluationSummary() {

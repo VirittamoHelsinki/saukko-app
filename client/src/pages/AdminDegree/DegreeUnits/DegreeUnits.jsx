@@ -111,7 +111,8 @@ function DegreeUnits({ degree }) {
           onChange={handlePageChange}
           sx={{
             '& .MuiPaginationItem-root':{
-              position: 'static'
+              position: 'relative',
+              zIndex:'-1',
           }}}
         />
 

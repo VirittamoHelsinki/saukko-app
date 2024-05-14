@@ -23,7 +23,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { createTheme, styled } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 function EvaluationWorkplace() {
   const navigate = useNavigate();
@@ -276,14 +276,14 @@ function EvaluationWorkplace() {
                 count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
                 page={page}
                 onChange={handlePageChange}
-                sx={{
+               /*  sx={{
                   '& .MuiPaginationItem-root':{
                     position: 'static'
                 },
                   '& .Mui-disabled': {
-                    position: 'static'
+                    position: 'relative',
                   }
-              }}
+              }} */
               />
             </div>
           }

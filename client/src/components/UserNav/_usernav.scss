@@ -1,4 +1,4 @@
-.app__wrapper {
+/* .app__wrapper { */
   .userNav__wrapper {
     display: flex;
     justify-content: center;
@@ -45,13 +45,13 @@
   .userNav__icons.teacher {
     background-color: #FFC61E;
   }
-}
+/* } */
 
 
 // hamburger css
-.userNav__wrapper {
+/* .userNav__wrapper {
   position: relative;
-}
+} */
  
 .mobile-menu-button {
   cursor: pointer;
@@ -78,7 +78,7 @@
   justify-content: center;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
-  padding-right: 7vh;
+  padding-right: 18%;
 }
  
 .userNav__menu--open {

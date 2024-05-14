@@ -162,19 +162,15 @@ function EvaluationForm() {
       MuiButtonBase: {
         styleOverrides: {
           root: {
-            position:'static',
             '&.Mui-selected': {
               borderRadius: '0px',
-              position:'static',
             },
             '&:not(.Mui-selected)': {
               borderRadius: '0px',
-              position:'static',
             },
             '&.MuiPickersDay-root:not(.Mui-selected)': {
               borderColor: '#0072C6',
               backgroundColor: 'white',
-              position:'static',
             },
           },
         },
@@ -227,6 +223,12 @@ function EvaluationForm() {
                   format='DD.MM.YYYY'
                   value={startDate}
                   onChange={(date) => setStartDate(date)}
+                  /* sx={{
+                    '.MuiOutlinedInput-root':{
+                      position:'relative',
+                      zIndex:'-1',
+                    }
+                  }} */
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -239,6 +241,12 @@ function EvaluationForm() {
                   value={endDate}
                   onChange={(date) => setEndDate(date)}
                   minDate={startDate} // Set minDate to startDate
+                 /*  sx={{
+                    '.MuiOutlinedInput-root':{
+                      position:'relative',
+                      zIndex:'-1',
+                    }
+                  }} */
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -251,6 +259,12 @@ function EvaluationForm() {
                   disabled={true}
                   format='DD.MM.YYYY'
                   value={'DD.MM.YYYY'}
+                 /*  sx={{
+                    '.MuiOutlinedInput-root':{
+                      position:'relative',
+                      zIndex:'-1',
+                    }
+                  }} */
                 />
               </ThemeProvider>
             </LocalizationProvider>
