@@ -177,7 +177,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                       navigate('/register-user');
                     }}
                   >
-                    Käyttäjän rekisteröinti
+                    Lisää opettaja
                   </Typography>
                 </ListItem>
               </List>

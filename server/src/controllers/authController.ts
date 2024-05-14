@@ -101,7 +101,7 @@ const forgotPassword = async (req: Request, res: Response) => {
   try {
     const resetPasswordLink = existUser.generateResetPasswordLink();
     console.log("resetPasswordLink:", resetPasswordLink)
-    sendResetPasswordEmail({userFirstName: existUser.firstName, userEmail: existUser.email, resetPasswordLink});
+    sendResetPasswordEmail({ userFirstName: existUser.firstName, userEmail: existUser.email, resetPasswordLink });
     res.status(200).json({ message: "Password reset link sent to email" })
   } catch (err) {
     return _responseWithError(res, 400, err)
@@ -186,7 +186,7 @@ const requestPasswordChangeTokenAsUser = async (req: Request, res: Response) => 
       }
       return res.status(401).json({ errorMessage: "Invalid password" });;
     }
-  
+
     throw new Error("Internal")
   } catch (error) {
     console.error("requestPasswordChangeTokenAsUser", error)
@@ -319,7 +319,7 @@ const verifyEmail = async (req: Request, res: Response) => {
     return res
       .clearCookie('verification-token')
       .cookie('change-token', passwordChanegeToken, { httpOnly: true })
-      .json({ redirectURL: `${config.APP_URL}/set-password` });
+      .json({ redirectURL: `${config.APP_URL}` });
     // .redirect(`${url}/reset-password`);
   } catch (err) {
     console.log("AuthController.verifyEmail. Token: {", req.tokens?.verifyEmail, "}", err)
@@ -353,7 +353,7 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
     const verificationLink = user.generateEmailVerificationLink();
 
     // Send verification email
-    sendVerificationEmail({userEmail: user.email, verificationLink});
+    sendVerificationEmail({ userEmail: user.email, verificationLink });
     console.log('user created and verification email sent');
   }
 
