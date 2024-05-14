@@ -1,7 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { registration } from '../../api/user';
 import './_registerUser.scss';
 
+const Notification = ({ success, onTimeout, time = 3 }) => {
+	const [haveTime, setHaveTime] = useState(true)
+
+	useEffect(() => {
+		const id = setTimeout(() => {
+			setHaveTime(false);
+			onTimeout();
+		}, time * 1000);
+		return () => clearTimeout(id);
+	}, []);
+
+	if (!haveTime) {
+		return null
+	}
+
+	return (
+		<div className={`notification ${success ? 'success' : 'error'}`}>
+			{success ? 'Opettaja lisätty onnistuneesti!' : 'Opettajan lisäys epäonnistui. Yritä uudelleen.'}
+		</div>
+	)
+}
 
 const RegisterUser = () => {
 	const [formData, setFormData] = useState({
@@ -9,8 +30,12 @@ const RegisterUser = () => {
 		lastName: '',
 		email: '',
 		password: '',
-		role: ''
+		role: 'teacher'
 	})
+	const [loading, setLoading] = useState(false)
+	const [success, setSuccess] = useState(null)
+
+	const onTimeout = () => setSuccess(null)
 
 	const handleChange = (e) => {
 		const { name, value } = e.target
@@ -19,20 +44,33 @@ const RegisterUser = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true)
 		console.log(formData)
-		await registration(formData)
-		setFormData({
-			firstName: '',
-			lastName: '',
-			email: '',
-			password: '',
-			role: ''
-		})
+		try {
+			await registration(formData)
+			setSuccess(true)
+			setFormData({
+				firstName: '',
+				lastName: '',
+				email: '',
+				password: '',
+				role: 'teacher'
+			})
+
+		} catch (error) {
+			console.error('Error with registration: ', error)
+			setSuccess(false)
+		} finally {
+			setLoading(false)
+		}
 	}
 
 	return (
 		<div className="register-user">
-			<h2>Käyttäjän rekisteröinti</h2>
+			<h2 className="h2">Uuden opettajan rekisteröinti</h2>
+			{(success !== null) && (
+				<Notification onTimeout={onTimeout} success={success} time={5} />
+			)}
 			<form onSubmit={handleSubmit}>
 				<label htmlFor="firstName">Etunimi:</label><br />
 				<input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required /><br />
@@ -44,15 +82,8 @@ const RegisterUser = () => {
 				<input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required /><br />
 				<label htmlFor="password">Salasana:</label><br />
 				<input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required /><br />
-				<label htmlFor="role">Rooli:</label><br />
-				<select id="role" name="role" value={formData.role} onChange={handleChange} required>
-					<option value="">Valitse rooli</option>
-					<option value="teacher">Opettaja</option>
-					<option value="supervisor">TPO</option>
-					<option value="customer">Asiakas</option>
-				</select><br /><br />
-
-				<button type="submit">Rekisteröi käyttäjä</button>
+				<br></br>
+				<button disabled={loading} type="submit">Lisää opettaja</button>
 			</form>
 		</div>
 	);
