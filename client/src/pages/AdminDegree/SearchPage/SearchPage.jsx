@@ -1,32 +1,23 @@
-import { useState, useContext, useEffect, useCallback } from 'react';
+/* eslint-disable no-unused-vars */
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserNav from '../../../components/UserNav/UserNav';
-import WavesHeader from '../../../components/Header/WavesHeader';
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
-import useStore from '../../../store/zustand/formStore';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import Searchbar from '../../../components/Searchbar/Searchbar';
-import withDegrees from '../../../HOC/withDegrees';
+import withPaginatedDegrees from '../../../HOC/withPaginatedDegrees';
+import { CircularProgress } from '@mui/material';
 
-// controls how many degrees are shown at once and renders them
-const CheckLength = ({ filteredList, allDegrees, paginate, currentPage }) => {
-  const startIndex = (currentPage - 1) * paginate;
-  const endIndex = startIndex + paginate;
-  const list = filteredList.length > 0 ? filteredList : allDegrees;
-
+const DegreeList = ({ data }) => {
   const navigate = useNavigate();
-  const { setDegreeId } = useContext(ExternalApiContext);
-
   const handleChooseDegree = async (degreeId) => {
-    await setDegreeId(degreeId)
     navigate(`${degreeId}`)
   }
 
   return (
     <>
-      {list.slice(startIndex, endIndex).map((degree, index) => (
+      {data.map((degree, index) => (
         <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
           <h3>{degree.name.fi}</h3>
-          <div className="searchPage__container--list-item-bottom">
+          <div className='searchPage__container--list-item-bottom'>
             <div>
               <p>Diaari: {degree.diaryNumber}</p>
               <p>Koodi: {degree.eduCodeValue}</p>
@@ -58,114 +49,122 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   }
 
   return (
-    <div className="searchPage__container--list-pagination">
-      <section className="searchPage__container--list-pagination-nums">
+    <div className='searchPage__container--list-pagination'>
+      <section className='searchPage__container--list-pagination-nums'>
         {/* Render numbered buttons */}
+        <button
+          // Disable button if current page is the first page
+          disabled={currentPage === 1}
+          onClick={() => handlePageClick(currentPage - 1)}
+          style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
+          className='arrow__button__left'
+        >
+          {'< '}
+        </button>
         {pages.map((pageNum) => (
           <button
             key={pageNum}
             onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? "pagination__button--active" : ""
+            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
               }`}
           >
             {pageNum}
           </button>
         ))}
+         <button
+          // Disable button if current page is the last page
+          disabled={currentPage === pageCount}
+          onClick={() => handlePageClick(currentPage + 1)}
+          style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
+          className='arrow__button__right'
+        >
+          {' >'}
+        </button>
+
+
       </section>
       {/* Render previous and next buttons */}
-      <section className="searchPage__container--list-pagination-arrows">
+      {/* <section className='searchPage__container--list-pagination-arrows'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
           onClick={() => handlePageClick(currentPage - 1)}
-          className="arrow__button"
+          className='arrow__button'
         >
-          {"< Previous"}
+          {'< Previous'}
         </button>
         <button
           // Disable button if current page is the last page
           disabled={currentPage === pageCount}
           onClick={() => handlePageClick(currentPage + 1)}
-          className="arrow__button"
+          className='arrow__button'
         >
-          {"Next >"}
+          {'Next >'}
         </button>
-      </section>
+      </section> */}
     </div>
   );
 };
 
-const SearchPage = ({ allDegrees }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [paginate] = useState(5);
-  const [filteredList, setFilteredList] = useState([]);
-
-  // Get values and functions from state management
-  const { setDegreeId } = useContext(ExternalApiContext);
-  const { resetDegreeData } = useStore();
+const SearchPage = ({ data, loading, page, setPage, totalPages }) => {
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Clear degree on first render
   useEffect(() => {
-    resetDegreeData()
-    setDegreeId('');
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading(""), setHeading("Tutkintojen hallinta");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Searchbar logic
   const handleSearch = (event) => {
-    setCurrentPage(1) // Reset page when searching
-    setFilteredList(
-      allDegrees.filter((degree) =>
-        degree.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
-      )
-    );
+    setPage(1) // Reset page when searching
   };
-
-  // Pagination logic
-
-  const pageCount = useCallback(() => {
-    if (!allDegrees) return 0;
-
-    return filteredList.length > 0
-      ? Math.ceil(filteredList.length / paginate)
-      : Math.ceil(allDegrees.length / paginate);
-  }, [allDegrees, filteredList.length, paginate])
 
   const handlePageClick = (pageNum) => {
-    setCurrentPage(pageNum);
+    setPage(pageNum);
   };
-  
+
+  if (loading) {
+    return <p>Loading...</p>
+  }
+
   return (
-    <main className="searchPage__wrapper">
-      <WavesHeader title="Saukko" secondTitle="Tutkintojen hallinta" disabled={false} />
-      <UserNav />
-      <section className="searchPage__container">
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
-        {allDegrees ? (
+    <div className='searchPage__wrapper'>
+      <section className='searchPage__container'>
+        <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
+        {data ? (
           <>
             <div className="searchPage__container--list">
-              <CheckLength
-                filteredList={filteredList}
-                allDegrees={allDegrees}
-                paginate={paginate}
-                currentPage={currentPage}
-              />
+              <DegreeList data={data} />
             </div>
             <PageButtons
-              currentPage={currentPage}
-              pageCount={pageCount()}
+              currentPage={page}
+              pageCount={totalPages}
               handlePageClick={handlePageClick}
             />
           </>
-        )
-          : (
-            <div>
-              Loading...
-            </div>
-          )}
+        ) : (
+          <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'fixed', 
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            background: 'rgba(255, 255, 255, 0.5)', /* Semi-transparent background overlay */
+          }}
+        >
+          <div>
+            <CircularProgress />
+          </div>
+        </div>
+        )}
       </section>
-    </main>
+    </div>
   );
 };
 
-export default withDegrees(SearchPage);
+export default withPaginatedDegrees(SearchPage);

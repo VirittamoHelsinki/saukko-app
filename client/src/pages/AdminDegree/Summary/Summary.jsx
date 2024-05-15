@@ -1,23 +1,21 @@
 // Import react packages & dependencies
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import Zustand store and custom context
 import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
-
 import { postDegree } from '../../../api/degree';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import WithDegree from '../../../HOC/withDegree';
 
-function Summary() {
+function Summary({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -31,9 +29,9 @@ function Summary() {
     expiry,
     transitionEnds,
   } = useStore();
-  const { degree, degreeFound } = useContext(ExternalApiContext);
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
   const { checkedUnits } = useUnitsStore();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // NotificationModal
   const [notificationSuccess, setNotificationSuccess] = useState(false)
@@ -45,11 +43,10 @@ function Summary() {
 
   // Remove HTML p tags from degree description
   const regex = /(<([^>]+)>)/gi;
-  const degreeDescriptionCleaned = degreeDescription.replace(regex, '');
+  const degreeDescriptionCleaned = degreeDescription?.replace(regex, '');
 
   function parseDate(dateString) {
     const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
-  
     if (datePattern.test(dateString)) {
       const [day, month, year] = dateString.split('.');
       const date = new Date(year, month - 1, day);
@@ -83,16 +80,16 @@ function Summary() {
     
     const degreeData = {
       diaryNumber: diaryNumber ? diaryNumber : degree.diaryNumber,
-      eduCodeValue: degreeFound ? degree.eduCodeValue : '',
+      eduCodeValue: degree ? degree.eduCodeValue : '',
       name: {
         fi: degreeName ? degreeName : degree.name.fi,
-        sv: degreeFound ? degree.name.sv : '',
-        en: degreeFound ? degree.name.en : '',
+        sv: degree ? degree.name.sv : '',
+        en: degree ? degree.name.en : '',
       },
       description: {
         fi: degreeDescription ? degreeDescriptionCleaned : degree.description.fi,
-        sv: degreeFound ? degree.description.sv : '',
-        en: degreeFound ? degree.description.en : '',
+        sv: degree ? degree.description.sv : '',
+        en: degree ? degree.description.en : '',
       },
       archived: false,
       infoURL: degree.examInfoURL,
@@ -117,16 +114,16 @@ function Summary() {
 
   // Trigger NotificationModal
   useEffect(() => {
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     if (response && allInternalDegrees.some(degree => degree._id === response._id)) {
       setNotificationSuccess(true);
     } else if (response) {
       setNotificationError(true);
     }
-  }, [allInternalDegrees, response]);
+  }, [allInternalDegrees, response, setHeading, setSiteTitle, setSubHeading]);
 
   return (
-    <main className='summary__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
+    <div className='summary__wrapper'>
       <section className='summary__container'>
         <Stepper
           activePage={4}
@@ -169,15 +166,14 @@ function Summary() {
           handleForward={handleSubmit}
           forwardButtonText={'Tallenna tiedot'}
           showForwardButton={true}
-
         />
         <NotificationModal
           type='success'
-          title='Tiedot tallennettu'
-          body='Tutkinto on tallennettu tietokantaan'
+          title='Tiedot tallennettu!'
+          body='Tiedot on tallennettu OsTu-appin tietokantaan.'
           open={notificationSuccess}
           handleClose={closeSuccess}
-          redirectLink='/admin-menu'
+          redirectLink='/degrees/add'
         />
         <NotificationModal
           type='warning'
@@ -186,9 +182,8 @@ function Summary() {
           handleClose={closeError}
         />
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 }
 
-export default Summary;
+export default WithDegree(Summary);

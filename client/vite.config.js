@@ -12,6 +12,9 @@ export default defineConfig({
   define: {
     'process.env': {}
   },
+  build: {
+    manifest: "manifest.json"
+  },
   server: {
     proxy: {
       '/api': {

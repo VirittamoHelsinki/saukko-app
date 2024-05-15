@@ -1,9 +1,7 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';
 import Button from '../../../components/Button/Button';
@@ -11,7 +9,7 @@ import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/T
 
 import { Icon } from '@iconify/react';
 import DialogContent from '@mui/material/DialogContent';
-import TextField from '@mui/material/TextField';
+import { TextField, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -24,6 +22,8 @@ import useEvaluationStore from '../../../store/zustand/evaluationStore';
 // import { updateEvaluationById } from '../../../api/evaluation';
 import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 // import { sendEmails } from '../../../api/performance';
 
 const UserPerformance = () => {
@@ -36,6 +36,7 @@ const UserPerformance = () => {
   const [textAreaValue, setTextareaValue] = useState('');
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const evaluationId = evaluation?._id;
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { allInternalDegrees } = useContext(InternalApiContext);
@@ -62,7 +63,6 @@ const UserPerformance = () => {
   const location = useLocation();
   const [lastLocation, setLastLocation] = useState(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
-  const [destination, setDestination] = useState(null);
   // Modal for showing criteria
   const [criteriaModalContent, setCriteriaModalContent] = useState([]);
   const [customerFirstName, setCustomerFirstName] = useState(null);
@@ -72,7 +72,7 @@ const UserPerformance = () => {
       setCustomerFirstName(`${evaluation?.customerId.firstName}`);
       setCustomerLastName(`${evaluation?.customerId.lastName}`);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerFirstName, customerLastName]);
 
   let unitObject;
@@ -125,32 +125,32 @@ const UserPerformance = () => {
       // Clean-up state on confirmed navigation
       setConfirmedNavigation(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmedNavigation, lastLocation]);
+
+  // const handleNavigation = (destination) => {
+  //   if (hasUnsavedChanges) {
+  //     setShowWarningModal(true);
+  //     setDestination(destination);
+  //   } else {
+  //     console.log('Destination before navigation:', destination);
+  //     navigate(destination);
+  //   }
+  //   console.log('Destination before navigation222:', destination);
+  //   setLastLocation(destination);
 
   useEffect(() => {
     console.log('selectedValues: ', selectedValues);
-  },[selectedValues]);
-
-  const handleNavigation = (destination) => {
-    if (hasUnsavedChanges) {
-      setShowWarningModal(true);
-      setDestination(destination);
-    } else {
-      console.log('Destination before navigation:', destination);
-      navigate(destination);
-    }
-    console.log('Destination before navigation222:', destination);
-    setLastLocation(destination);
-
-    console.log('Destination after navigation:', destination);
-  };
+  }, [selectedValues]);
 
   useEffect(() => {
+    const isLaptop = window.innerWidth >= 1024;
     const buttonStyle = {
-      marginTop: '35px',
-      marginLeft: '20px',
-      width: '88%',
+      // marginTop: '35px',
+      // marginLeft: isLaptop ? '25%' : '20px',
+      // width: isLaptop ? '42%' : '88%',
+      // marginLeft: '20px',
+      // width: '88%',
       color: Object.values(selectedValues).some((value) => value)
         ? 'var(--saukko-main-white)'
         : '#0000BF',
@@ -165,12 +165,12 @@ const UserPerformance = () => {
   }, [selectedValues]);
 
   const [buttonStyle, setButtonStyle] = useState({
-    marginTop: '35px',
-    marginLeft: '20px',
-    width: '88%',
-    color: '#0000BF',
-    border: '#0000BF solid',
-    background: 'var(--saukko-main-white)',
+    // marginTop: '35px',
+    // marginLeft: '20px',
+    // width: '88%',
+    // color: '#0000BF',
+    // border: '#0000BF solid',
+    // background: 'var(--saukko-main-white)',
   });
 
   const { openNotificationModal, setOpenNotificationModal } = useStore();
@@ -218,6 +218,7 @@ const UserPerformance = () => {
         return {
           ...unit,
           assessments: updatedAssessments,
+          feedBack: textAreaValue,
         };
       } else {
         return unit;
@@ -228,15 +229,15 @@ const UserPerformance = () => {
     const updatedData = {
       units: updatedUnits,
       selectedValues: selectedValues,
-      additionalInfo: textAreaValue
+      additionalInfo: textAreaValue,
     };
 
     try {
       const response = await handleUserPerformanceEmails(
         `${evaluationId}`,
-        updatedData,
+        updatedData
       );
-/*      const response = await updateEvaluationById(
+      /*      const response = await updateEvaluationById(
         `${evaluationId}`,
         updatedData
       );*/
@@ -296,24 +297,26 @@ const UserPerformance = () => {
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
   // console.log('unitObject', unitObject);
 
+  useEffect(() => {
+    setSiteTitle('Arviointi'),
+      setSubHeading('Ammaattitaitovaatimusten arviointi');
+    if (
+      currentUser &&
+      (currentUser.role === 'teacher' || currentUser.role === 'supervisor')
+    ) {
+      setHeading(customerFirstName + ' ' + customerLastName);
+    } else {
+      setHeading(`Tervetuloa, ${customerFirstName}`);
+    }
+  });
+
+  const handleEvaluation = () => {
+    navigate('/unit-list');
+    setOpenNotificationModal(false);
+  };
+
   return (
-    <main>
-      <div>
-        {/* <WavesHeader
-          title={customerInformation}
-          secondTitle='Ammaattitaitovaatimusten arviointi'
-          disabled={true}
-        /> */}
-        {currentUser?.role === 'teacher' || currentUser?.role === 'supervisor' ? (
-          <WavesHeader
-            title={customerFirstName + ' ' + customerLastName}
-            secondTitle='Ammaattitaitovaatimusten arviointi'
-            disabled={true}
-          />
-        ) : (
-          <WavesHeader title={`Tervetuloa, ${customerFirstName} `} />
-        )}
-      </div>
+    <div className='perfomance__wrapper'>
       <h2 className='degree-name'>{degreeName?.name.fi}</h2>
       <h4 className='degree-unit-name'> {unitObject?.name.fi}</h4>
       <div>
@@ -456,43 +459,38 @@ const UserPerformance = () => {
       >
         {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
       </h2>
-      <form action=''>
-        <textarea
-          placeholder={
-            currentUser?.role === 'teacher'
-              ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
-              : currentUser?.role === 'supervisor'
-              ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
-              : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
-          }
-          rows={8}
-          cols={38}
-          style={{ width: '87%', padding: '5px' }}
-          className='para-title-style'
-          value={textAreaValue}
-          onChange={(e) => setTextareaValue(e.target.value)}
-          disabled={isPalauteSectionDisabled()}
-        />
-      </form>
 
-      <section>
-        <Button
-          id='submitButton'
-          style={buttonStyle}
-          type='submit'
-          text={getButtonText()}
-          onClick={handleSubmit}
-          // disabled={isPalauteSectionDisabled()}
-        />
-      </section>
-      <div style={{ marginBottom: '90px' }}>
-        <UserNav
-          checkUnsavedChanges={
-            hasUnsavedChanges ? () => setHasUnsavedChanges(true) : null
-          }
-          handleNavigation={handleNavigation}
-          destination={destination}
-        ></UserNav>
+      <div className='buttons-and-form'>
+        <form action='' className='form-wrapper'>
+          <textarea
+            placeholder={
+              currentUser?.role === 'teacher'
+                ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
+                : currentUser?.role === 'supervisor'
+                ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
+                : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
+            }
+            rows={8}
+            cols={38}
+            className='para-title-style'
+            value={textAreaValue}
+            onChange={(e) => setTextareaValue(e.target.value)}
+            disabled={isPalauteSectionDisabled()}
+          />
+        </form>
+        <section className='section-buttons'>
+          <div className='buttons-wrapper'>
+            <PageNavigationButtons handleBack={() => navigate('/unit-list')} />
+            <Button
+              id='submitButton'
+              style={buttonStyle}
+              type='submit'
+              text={getButtonText()}
+              onClick={handleSubmit}
+              // disabled={isPalauteSectionDisabled()}
+            />
+          </div>
+        </section>
       </div>
 
       {/* Warning notification modal */}
@@ -508,8 +506,11 @@ const UserPerformance = () => {
       {/* Modal for showing criteria */}
       <NotificationModal
         type='info'
-        title='Osaamisen kriteerit'
-        style={{ width: '130%' }}
+        title={
+          <Typography sx={{ fontWeight: 'normal', marginRight: '2rem' }}>
+            Osaamisen kriteerit
+          </Typography>
+        }
         body={
           <>
             <IconButton
@@ -524,7 +525,7 @@ const UserPerformance = () => {
             >
               <CloseIcon />
             </IconButton>
-            <DialogContent sx={{ minWidth: '75vw' }}>
+            <DialogContent>
               {criteriaModalContent.map((crit, index) => (
                 <TextField
                   key={index}
@@ -539,10 +540,19 @@ const UserPerformance = () => {
                     readOnly: true, // Make the TextField read-only
                   }}
                   sx={{
+                    '& .MuiInputBase-root': {
+                      fontSize: '12px',
+                      padding: '0',
+                    },
                     '& .MuiOutlinedInput-root': {
                       '& fieldset': {
                         borderStyle: 'none',
+                        padding: '0',
                       },
+                    },
+                    '& .MuiInputBase-input': {
+                      fontSize: '12px',
+                      paddingBottom: '0',
                     },
                   }}
                 ></TextField>
@@ -556,12 +566,12 @@ const UserPerformance = () => {
 
       <NotificationModal
         type='success'
-        title='Lähetetty'
-        body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+        title='Tiedot tallennettu!'
+        body='Tiedot on tallennettu OsTu-appin tietokantaan.'
         open={openNotificationModal}
-        // handleClose={handleNotificationModalClose}
+        handleClose={handleEvaluation}
       />
-    </main>
+    </div>
   );
 };
 

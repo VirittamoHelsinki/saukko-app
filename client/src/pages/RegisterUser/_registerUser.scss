@@ -1,0 +1,28 @@
+.register-user {
+  padding: 20px;
+
+  .h2 {
+    margin-bottom: 10px;
+  }
+ 
+ .notification {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.notification.success {
+    background-color: #4CAF50;
+}
+
+.notification.error {
+    background-color: #f44336;
+}
+
+
+
+  }

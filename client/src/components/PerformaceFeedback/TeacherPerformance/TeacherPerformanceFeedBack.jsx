@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -180,7 +180,7 @@ const TeacherPerformanceFeedBack = ({
   };
 
   return (
-    <main
+    <div
       className='feedback__wrapper'
       style={{ backgroundColor: getBackgroundColor() }}
     >
@@ -253,16 +253,17 @@ const TeacherPerformanceFeedBack = ({
           </div>
         ))}{' '}
         <div
-          className='teacher-comment-button-wrapper'
+          style={{ display: 'flex', justifyContent: 'flex-end' }}
           onClick={handlePenClick}
         >
           <button
-            className='teacher-comment-button'
+            id='teacher-comment-button'
+            className='teacher-comment-button-wrapper'
             style={{ backgroundColor: getBackgroundColor() }}
           >
-            Lisää opettajan kommentti{' '}
+            Lisää opettajan kommentti {/* </button> */}
+            <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem' />
           </button>
-          <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem' />
         </div>
         {/* Teacher comment */}
         <NotificationModal
@@ -385,19 +386,8 @@ const TeacherPerformanceFeedBack = ({
           }
           handleClose={handleCloseCommentModal}
         />
-        {/* <RequirementsAndCriteriaModal
-          open={isCommentModalOpen}
-          onClose={handleCloseCommentModal}
-          title='Lisää opettajan kommentti'
-          hideRequirementsField={true}
-          hideCriteriaField={false}
-          hideCancelButton={false}
-          onSave={(comment) => {
-            console.log('Comment:', comment);
-          }}
-        /> */}
       </div>
-    </main>
+    </div>
   );
 };
 

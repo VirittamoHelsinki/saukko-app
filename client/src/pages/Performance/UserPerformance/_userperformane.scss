@@ -4,30 +4,72 @@
 //     flex-direction: column;
 //     }
 // }
+.perfomance__wrapper {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 
-.para-title-style {
-  margin-left: 18px;
-  margin-bottom: 16px;
-  margin-top: 18px;
-  font-size: 16px;
+  .para-title-style {
+    margin-left: 18px;
+    margin-bottom: 16px;
+    margin-top: 18px;
+    font-size: 16px;
+    width: 100%;
+    padding: 5px;
+  }
+
+  .degree-name {
+    text-align: center;
+    font-size: 18px;
+  }
+
+  .degree-unit-name {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding: 0 5px;
+  }
+
+  .assessments {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 15px 0 0;
+  }
+
+  .buttons-and-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 0 10px;
+    width: 100%;
+
+    .form-wrapper {
+      width: 90%;
+    }
+    .section-buttons {
+      width: 94%;
+
+      .buttons-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .buttons__container-back {
+          padding-top: 0;
+          width: 100%;
+
+          .button__text {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
 }
 
-.degree-name {
-  text-align: center;
-  font-size: 18px;
-  margin-top: 150px;
-}
-
-.degree-unit-name {
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 30px;
-  padding: 0 5px;
-}
-
-.assessments {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 15px 0 0;
+@media (min-width: 768px) {
+  .perfomance__wrapper {
+    padding-top: 1rem;
+  }
 }

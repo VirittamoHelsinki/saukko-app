@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
-import WavesHeader from '../Header/WavesHeader';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
 
 const Notification = ({
-  headerColor,
+  //headerColor,
   bodyColor,
   heading,
   headingColor,
@@ -15,6 +15,13 @@ const Notification = ({
 }) => {
   const navigate = useNavigate();
 
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  useEffect(() => {
+    setSiteTitle(''),
+      setSubHeading(''),
+      setHeading('OsTu')
+  }, [setHeading, setSiteTitle, setSubHeading])
   // Redirects after 5 seconds to logged user page
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -25,14 +32,14 @@ const Notification = ({
   }, [navigate, navigatePage]);
 
   return (
-    <main className='notification__wrapper'>
-      <WavesHeader
+    <div className='notification__wrapper'>
+      {/* <WavesHeader
         title='Saukko'
         fill={headerColor}
         header={headerColor}
 
         disabled='true'
-      />
+      /> */}
       <section
         className='notification__container'
         style={{ background: bodyColor }}
@@ -47,7 +54,7 @@ const Notification = ({
         )}
         {paragraph && <p>{paragraph}</p>}
       </section>
-    </main>
+    </div>
   );
 };
 

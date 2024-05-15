@@ -1,18 +1,5 @@
 import axios from 'axios';
 
-// Fetch all degrees from ePerusteet.
-const fetchDegreesFromEperusteet = async () => {
-  const response = await axios.get(`/api/degrees`);
-  return response;
-};
-
-// Fetch a degree by id from ePerusteet.
-const fetchDegreeByIdFromEperusteet = async (id) => {
-  if (!id) throw new Error("fetchDegreeByIdFromEperusteet, id is undefined")
-  const response = await axios.get(`/api/degree/${id}`);
-  return response;
-};
-
 // Fetch all degrees from internal saukko database.
 const fetchInternalDegrees = async () => {
   const response = await axios.get(`/api/internal/degrees`);
@@ -51,10 +38,6 @@ const updateDegree = async (id, degree) => {
 };
 
 export {
-  // Eperusteet routes:
-  fetchDegreesFromEperusteet,
-  fetchDegreeByIdFromEperusteet,
-  // Internal saukko database routes:
   fetchInternalDegrees,
   fetchInternalDegreeById,
   postDegree,

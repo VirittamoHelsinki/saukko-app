@@ -1,21 +1,20 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import { Icon } from '@iconify/react';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import WithDegree from '../../../HOC/withDegree';
 
-function EditUnits() {
+function EditUnits({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
 
-  const { degree, degreeFound } = useContext(ExternalApiContext);
   const { degreeName } = useStore();
   const { checkedUnits, setCheckedUnits } = useUnitsStore();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
   
   const [editMode, setEditMode] = useState(false)
   const [editedUnits, setEditedUnits] = useState(checkedUnits);
@@ -42,6 +41,7 @@ function EditUnits() {
 
   // If no checkedUnits go straight into edit mode
   useEffect(() => {
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     if (checkedUnits.length === 0) {
       setEditMode(true)
       handleAddUnit()
@@ -89,15 +89,14 @@ function EditUnits() {
  
 
   return (
-    <main className='editDegree__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
+    <div className='editDegree__wrapper'>
       <section className='editDegree__container'>
         <Stepper
           activePage={2}
           totalPages={4}
           data={stepperData}
         />
-        <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
+        <h1>{degree ? degree.name.fi : degreeName}</h1>
 
         <button 
           id='finishEditButton'
@@ -143,9 +142,8 @@ function EditUnits() {
 
         />
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 }
 
-export default EditUnits;
+export default WithDegree(EditUnits);

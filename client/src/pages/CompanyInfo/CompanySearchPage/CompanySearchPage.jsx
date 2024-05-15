@@ -1,10 +1,14 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import WavesHeader from '../../../components/Header/WavesHeader';
-import Searchbar from '../../../components/Searchbar/Searchbar';
-import UserNav from '../../../components/UserNav/UserNav';
-import InternalApiContext from '../../../store/context/InternalApiContext';
+
 import Stepper from '../../../components/Stepper/Stepper';
+import Searchbar from '../../../components/Searchbar/Searchbar';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+
+import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
+
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({ filteredList, allInternalDegrees, paginate, currentPage }) => {
@@ -46,19 +50,37 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
     <div className="searchPage__container--list-pagination">
       <section className="searchPage__container--list-pagination-nums">
         {/* Render numbered buttons */}
+        <button
+          // Disable button if current page is the first page
+          disabled={currentPage === 1}
+          onClick={() => handlePageClick(currentPage - 1)}
+          style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
+          className='arrow__button__left'
+        >
+          {'< '}
+        </button>
         {pages.map((pageNum) => (
           <button
             key={pageNum}
             onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? "pagination__button--active" : ""
+            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
               }`}
           >
             {pageNum}
           </button>
         ))}
+         <button
+          // Disable button if current page is the last page
+          disabled={currentPage === pageCount}
+          onClick={() => handlePageClick(currentPage + 1)}
+          style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
+          className='arrow__button__right'
+        >
+          {' >'}
+        </button>
       </section>
       {/* Render previous and next buttons */}
-      <section className="searchPage__container--list-pagination-arrows">
+      {/* <section className="searchPage__container--list-pagination-arrows">
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
@@ -75,7 +97,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         >
           {"Next >"}
         </button>
-      </section>
+      </section> */}
     </div>
   );
 };
@@ -91,6 +113,11 @@ const CompanySearchPage = () => {
   // Get degrees from InternalApiContext
   const { allInternalDegrees, internalDegree } = useContext(InternalApiContext);
 
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  useEffect(() => {
+    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikka"), setHeading("Työpaikkojen hallinta")
+  })
   // Searchbar logic
   const handleSearch = (event) => {
     setCurrentPage(1) // Reset page when searching
@@ -132,9 +159,7 @@ const CompanySearchPage = () => {
   ];
 
   return (
-    <main className="company__searchPage__wrapper">
-      <WavesHeader title="Koulutukset" secondTitle="Lisää uusi työpaikka" disabled={false} />
-
+    <div className="company__searchPage__wrapper">
       <section className="company__searchPage__container">
         <div className='stepper__container'>
           <Stepper
@@ -144,8 +169,8 @@ const CompanySearchPage = () => {
           />
         </div>
 
-        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
-        <h2>Ammatilliset tutkinnot</h2>
+        <h2>Valitse tutkinto</h2>
+        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
         <div className="searchPage__container--list">
           <CheckLength
             filteredList={filteredList}
@@ -159,9 +184,15 @@ const CompanySearchPage = () => {
           pageCount={pageCount}
           handlePageClick={handlePageClick}
         />
+        <PageNavigationButtons
+          handleBackText={'Takaisin'}
+          handleBack={() => navigate('/company-info')}
+          showForwardButton={false}
+          icon={'mingcute:pencil-line'}
+          style={{ textAlign: 'left' }}
+        />
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 };
 

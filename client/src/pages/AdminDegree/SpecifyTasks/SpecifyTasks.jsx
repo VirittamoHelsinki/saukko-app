@@ -1,15 +1,12 @@
 // Import react packages & dependencies
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import state management
 import useUnitsStore from '../../../store/zustand/unitsStore';
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import useStore from '../../../store/zustand/formStore';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
@@ -24,18 +21,19 @@ import { useTheme } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 // Import criteria modal
 import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import WithDegree from '../../../HOC/withDegree';
 
-function SpecifyTasks() {
+function SpecifyTasks({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
+
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Initialize state
   const [assessments, setAssessments] = useState([]);
   const [activeStep, setActiveStep] = useState(0);
   const [savedDataCriteria, setSavedDataCriteria] = useState([]);
-
-  // Get values from state management
-  const { degree, degreeFound } = useContext(ExternalApiContext);
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
@@ -44,13 +42,14 @@ function SpecifyTasks() {
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   useEffect(() => {
+    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     // Initialize saved data object
     const initialData = {};
     checkedUnits.forEach((unit) => {
       initialData[unit._id] = [];
     });
     setSavedDataCriteria(initialData);
-  }, [checkedUnits]);
+  }, [checkedUnits, setHeading, setSiteTitle, setSubHeading]);
 
   const handleSave = (title, criteria) => {
     const newData = { ...savedDataCriteria };
@@ -117,11 +116,10 @@ function SpecifyTasks() {
   };
 
   return (
-    <main className='specify-tasks__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
+    <div className='specify-tasks__wrapper'>
       <section className='specify-tasks__container'>
         <Stepper activePage={3} totalPages={4} data={stepperData} />
-        <h1>{degreeFound ? degree.name.fi : degreeName}</h1>
+        <h1>{degree ? degree.name.fi : degreeName}</h1>
         <h3 className='degree-guidance'>Muokkaa tutkinnonosa</h3>
         <Box sx={{ flexGrow: 1, fontWeight: 'bold' }}>
           <Paper
@@ -136,11 +134,13 @@ function SpecifyTasks() {
           />
           <Paper square elevation={0}>
             <form>
-              <h3 className='degree-guidance'>
+              {/* <h3 className='degree-guidance'>
                 Lisää ammattitaitovaatimukset ja kriteerit
-              </h3>
+              </h3> */}
               <MobileStepper
-                sx={{ bgcolor: '#f2f2f2', borderBottom: '3px solid #333' }}
+                sx={{ 
+                  bgcolor: '#f2f2f2',
+                }}
                 variant='text'
                 steps={maxSteps}
                 position='static'
@@ -148,7 +148,11 @@ function SpecifyTasks() {
                 nextButton={
                   <Button
                     id='nextButton'
-                    sx={{ fontWeight: 'bold', color: '#000000' }}
+                    sx={{ 
+                      fontWeight: 'bold',
+                      color: '#000000',
+                      position:'static'
+                    }}
                     size='small'
                     onClick={handleNext}
                     disabled={activeStep === maxSteps - 1}
@@ -164,7 +168,11 @@ function SpecifyTasks() {
                 backButton={
                   <Button
                     id='backButton'
-                    sx={{ fontWeight: 'bold', color: '#000000' }}
+                    sx={{ 
+                      fontWeight: 'bold', 
+                      color: '#000000',
+                      position: 'static'
+                     }}
                     size='small'
                     onClick={handleBack}
                     disabled={activeStep === 0}
@@ -178,6 +186,9 @@ function SpecifyTasks() {
                   </Button>
                 }
               />
+              <h4 className='degree-guidance'>
+                Lisää ammattitaitovaatimukset ja kriteerit
+              </h4>
               <h3 className='unit-guidance'>
                 {checkedUnits[activeStep]?.name?.fi}
               </h3>
@@ -224,7 +235,11 @@ function SpecifyTasks() {
                 id='addCriteriaButton'
                 onClick={handleOpenCriteriaModal}
                 className='add-criteria-btn'
-                sx={{ paddingLeft: 0, textTransform: 'none' }}
+                sx={{ 
+                  paddingLeft: 0, 
+                  textTransform: 'none',
+                  position: 'static'
+                 }}
               >
                 + Lisää ammattitaitovaatimukset
               </Button>
@@ -240,9 +255,8 @@ function SpecifyTasks() {
 
         />
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 }
 
-export default SpecifyTasks;
+export default WithDegree(SpecifyTasks);

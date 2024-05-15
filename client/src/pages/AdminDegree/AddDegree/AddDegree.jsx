@@ -1,10 +1,13 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import UserNav from '../../../components/UserNav/UserNav';
-import WavesHeader from '../../../components/Header/WavesHeader';
+
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Button from '../../../components/Button/Button';
+
 
 // controls how many degrees are shown at once and renders them
 const CheckLength = ({
@@ -18,7 +21,7 @@ const CheckLength = ({
   const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
   
   const navigate = useNavigate();
-  
+
   return (
     <>
       {list.slice(startIndex, endIndex).map((degree, index) => (
@@ -57,6 +60,15 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
     <div className='addDegree__container--list-pagination'>
       <section id='numberedButtons' className='addDegree__container--list-pagination-nums'>
         {/* Render numbered buttons */}
+        <button
+          // Disable button if current page is the first page
+          disabled={currentPage === 1}
+          onClick={() => handlePageClick(currentPage - 1)}
+          style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
+          className='arrow__button__left'
+        >
+          {'< '}
+        </button>
         {pages.map((pageNum) => (
           <button
             key={pageNum}
@@ -67,9 +79,18 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
             {pageNum}
           </button>
         ))}
+         <button
+          // Disable button if current page is the last page
+          disabled={currentPage === pageCount}
+          onClick={() => handlePageClick(currentPage + 1)}
+          style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
+          className='arrow__button__right'
+        >
+          {' >'}
+        </button>
       </section>
       {/* Render previous and next buttons */}
-      <section id='prevNextButtons' className='addDegree__container--list-pagination-arrows'>
+      {/* <section id='prevNextButtons' className='addDegree__container--list-pagination-arrows'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
@@ -86,12 +107,13 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         >
           {'Next >'}
         </button>
-      </section>
+      </section> */}
     </div>
   );
 };
 
 const AddDegree = () => {
+  const { setHeading, setSiteTitle, setSubHeading } = useHeadingContext();
   const [currentPage, setCurrentPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [paginate, setPaginate] = useState(5);
@@ -123,14 +145,14 @@ const AddDegree = () => {
     setCurrentPage(pageNum);
   };
 
+  useEffect(() => {
+    setHeading("Tutkintojen hallinta");
+    setSubHeading("");
+    setSiteTitle("Suoritusten hallinnointi")
+  })
+
   return (
-    <main className='addDegree__wrapper'>
-      <WavesHeader
-        title='Saukko'
-        secondTitle='Tutkintojen hallinta'
-        disabled={false}
-      />
-      <UserNav />
+    <div className='addDegree__wrapper'>
       <section className='addDegree__container'>
         <Button
           id='addDegreeButton'
@@ -148,7 +170,7 @@ const AddDegree = () => {
           onClick={() => navigate(`/degrees`)}
         />
 
-        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi koulutus'} />
+        <Searchbar id='searchbarId' handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
 
         <div id='listContainer' className='addDegree__container--list'>
           <CheckLength
@@ -164,7 +186,7 @@ const AddDegree = () => {
           handlePageClick={handlePageClick}
         />
       </section>
-    </main>
+    </div>
   );
 };
 

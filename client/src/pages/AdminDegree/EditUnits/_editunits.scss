@@ -1,16 +1,13 @@
-.app__wrapper {
-
   .editDegree__wrapper {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    min-height: 100vh;
+    padding-top: 3rem;
 
     .editDegree__container {
       display: flex;
       flex-direction: column;
-      margin-top: 200px;
       margin-bottom: 50px;
       flex-grow: 1;
       overflow-y: auto;
@@ -84,4 +81,20 @@
       }
     }
   }
-}
+
+  @media (min-width: 768px) {
+    .editDegree__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .editDegree__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1440px) {
+    .editDegree__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  

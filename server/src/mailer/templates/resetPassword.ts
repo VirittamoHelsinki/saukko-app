@@ -17,7 +17,6 @@ export const sendResetPasswordEmail = (params: ISendResetPasswordEmail) => {
     
     Voit nollata salasanasi alla olevasta linkistä: 
     <a href="${params.resetPasswordLink}">Nollaa salasana</a> 
-    ${params.resetPasswordLink}
     
     Jos et pyytänyt salasanasi nollaamista, voit ohittaa tämän viestin. 
     

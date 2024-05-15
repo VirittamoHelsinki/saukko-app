@@ -1,33 +1,99 @@
 .unitList__wrapper {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 
-  .unitList__notifications {
-    // margin-top: 55%;
-    margin-top: 150px;
-  }
-  
-  .unitList__units {
-    margin-bottom: 80px;
-  }
-  
   h3 {
-    margin-left: 15px;
-    margin-bottom: 20px;
-    font-size: 20px;
+    // margin-left: 15px;
+    // margin-bottom: 20px;
+    padding: 15px;
+    font-size: 18px;
   }
 
   .unitList__button {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 0 16px;
-    
-    .button__icon {
-      font-size: 28px;
+    gap: 6px;
+
+    .unitList__button--back {
+      display: flex;
+      flex-direction: row-reverse;
+      height: 50px;
+      width: 40%;
+      border: 2px solid #0000bf;
+      color: #0000bf;
     }
-    
+
+    .unitList__button--sopimus {
+      color: #0000bf;
+      border: 2px solid #0000bf;
+      width: 60%;
+      height: 50px;
+    }
+
+    .button__container {
+      padding: 0 2px;
+    }
+
+    .button__icon {
+      font-size: 20px;
+    }
+
     .button__text {
-      font-size: 14px;
-      font-weight: bolder;
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+
+  .wrapper-button-pdf {
+    padding: 16px;
+
+    .button__container {
+      padding: 0 2px;
+    }
+
+    .button--pdf {
+      background-color: #0000bf;
+      color: #FFFFFF;
+      border: 2px solid #0000bf;
+      height: 50px;
+      padding: 0 16px;
+
+      .button__text {
+        font-size: 15px;
+        font-weight: 500;
+      }
     }
   }
 }
 
+@media (min-width: 768px) {
+  .unitList__wrapper {
+    padding-top: 1rem;
+    .unitList__button {
+      .button__container {
+        padding: 0 16px;
+      }
+    }
+  }
+}
+@media (min-width: 1024px) {
+  .unitList__wrapper {
+    padding-top: 1rem;
+    .unitList__button {
+      .button__container {
+        padding: 0 16px;
+      }
+    }
+  }
+}
+@media (min-width: 1440px) {
+  .unitList__wrapper {
+    padding-top: 1rem;
+    .unitList__button {
+      .button__container {
+        padding: 0 16px;
+      }
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import evaluationStore from '../../store/zustand/evaluationStore';
 import greenicone from '../../assets/circle-green.svg';
@@ -13,21 +12,21 @@ const UnitStatus = ({ unitId, status, subheader, link }) => {
   let header, backgroundColor, img;
 
   if (status === 3) {
-    img = <img src={greenicone} alt='Icone' />;
+    // img = <img src={greenicone} alt='Icone' />;
     header = 'Valmis';
-    backgroundColor = '#E2F5F3';
+    backgroundColor = '#B0EDD4';
   } else if (status === 2) {
-    img = <img src={yellowicone} alt='Icone' />;
+    // img = <img src={yellowicone} alt='Icone' />;
     header = 'Käsittelyssä';
-    backgroundColor = '#FFF4B4';
+    backgroundColor = '#FFE28C';
   } else if (status === 1) {
-    img = <img src={blueicone} alt='Icone' />;
+    // img = <img src={blueicone} alt='Icone' />;
     header = 'Aloitettu';
-    backgroundColor = '#E5EFF8';
+    backgroundColor = '#B7D9F7';
   } else if (status === 0) {
-    img = <img src={blackicone} alt='Icone' />;
+    // img = <img src={blackicone} alt='Icone' />;
     header = 'Aloittamatta';
-    backgroundColor = '#efeff0';
+    backgroundColor = '#E2E2E2';
   }
 
   const handleClick = () => {
@@ -36,7 +35,7 @@ const UnitStatus = ({ unitId, status, subheader, link }) => {
   }
   
   return (
-    <main
+    <div
       className='unitstatus-wrapper'
       style={{ backgroundColor }}
       onClick={handleClick}
@@ -47,7 +46,7 @@ const UnitStatus = ({ unitId, status, subheader, link }) => {
         <img className='icone-img-style' src={rightAngle} alt='Angle Icone' />
       </div>
       {subheader && <h2>{subheader}</h2>}
-    </main>
+    </div>
   );
 };
 

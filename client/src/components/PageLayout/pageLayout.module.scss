@@ -1,0 +1,83 @@
+$header-height: 115px;
+
+.container {
+  user-select: none;
+  height: 100vh;
+  width: 100vw;
+  // padding-bottom: 3rem;
+}
+
+.container header {
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  height: $header-height;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container header h1 {
+  font-size: 18px;
+  margin-top: 0.5em;
+}
+
+.container header .buttonContainer {
+  position: absolute;
+  left: 10px;
+  font-size: 38px;
+  height: 100%;
+  display: flex;
+  z-index: 999;
+}
+
+.buttonContainer button {
+  background: none;
+  border: none;
+}
+
+.container header div button svg {
+  font-size: 32px;
+}
+
+.container main {
+  min-height: calc(100vh - $header-height);
+  // padding-bottom: 3rem;
+}
+
+.container header .headerBox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+header svg {
+  transform: rotate(180deg);
+}
+
+@media (min-width: 768px) {
+  .container header div button svg {
+    margin-left: 2rem;
+  }
+  .container main {
+    margin: 1rem auto; /* Center content horizontally */
+    max-width: 50%; /* Limit content width for larger screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  .container main {
+    max-width: 40%; /* Adjust max-width for wider screens */
+  }
+}
+
+@media (min-width: 1440px) {
+  .container main {
+    max-width: 30%; /* Adjust max-width for even wider screens */
+  }
+}

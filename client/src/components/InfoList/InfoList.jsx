@@ -1,9 +1,7 @@
-import React from 'react';
-
 const InfoList = ({ title, data }) => (
   <div className='infoList__container'>
-    {/* <h1>{title}</h1> */}
     <ul>
+      <h1>{title}</h1>
       {data.map((row, index) => (
         <li
           key={index}

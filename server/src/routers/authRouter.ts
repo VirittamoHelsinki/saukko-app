@@ -5,13 +5,14 @@ import auth from '../middlewares/middleware.auth'
 const router = Router();
 
 router.post("/forgot-password", authController.forgotPassword);
-router.post("/validate-token", authController.validateToken);                           // POINTLESS 🧨
 router.post("/reset-password", authController.resetPassword);
 router.post("/login", authController.login);
 router.get("/renew-token", authController.renew);
 router.get("/get-current-user", authController.getCurrentUser);
 router.get("/verify-email", authController.verifyEmail);
 router.get("/resend-email-verification", authController.resendEmailVerificationLink)
+
+router.post("/register-user", authController.registerUser)
 
 // Enable auth middleware for specific endpoints
 router.post(["/", "/change-password", "/request-pwd-change-token"], auth);

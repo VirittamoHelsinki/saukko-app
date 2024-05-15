@@ -1,4 +1,4 @@
-.app__wrapper {
+/* .app__wrapper { */
   .userNav__wrapper {
     display: flex;
     justify-content: center;
@@ -6,20 +6,32 @@
     position: fixed;
     height: 50px;
     width: 100%;
-    bottom: 0%;
+    //bottom: 0%;
   }
 
   .userNav__icons {
-    padding: 10px 30px;
+    padding: 50px 5px;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: space-between;
 
+    .helsinki-logo {
+      width:110px;
+      height: 50px;
+    }
+
+    .logo-text {
+      font-size: 32px;
+    }
+
     svg {
       height: 30px;
       width: 30px;
     }
+  }
+  .navListItem {
+    padding: 20px;
   }
 
   .userNav__icons.customer {
@@ -33,13 +45,13 @@
   .userNav__icons.teacher {
     background-color: #FFC61E;
   }
-}
+/* } */
 
 
 // hamburger css
-.userNav__wrapper {
+/* .userNav__wrapper {
   position: relative;
-}
+} */
  
 .mobile-menu-button {
   cursor: pointer;
@@ -61,25 +73,16 @@
   right: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.2);
   align-items: center;
   justify-content: center;
-  transform: translateX(100%);
+  transform: translateX(-100%);
   transition: transform 0.3s ease;
+  padding-right: 18%;
 }
  
 .userNav__menu--open {
   transform: translateX(0);
-}
- 
-.userNav__menu__closeBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  color:white;
-  z-index: 101;
- 
 }
  
 .userNav__icons {
@@ -104,5 +107,10 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
+  }
+
+  .NavText {
+    font-size: 20px;
+    font-weight: 600;
   }
 }

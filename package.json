@@ -1,35 +1,24 @@
 {
   "name": "saukko-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "OsTu - APP",
   "main": "index.js",
+  "author": "Helsingin Kaupunki - Virittämö",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cd client && npm run test",
     "build": "cd server && npm run build",
     "setup": "npm install && npm run install:server && npm run install:client",
     "install:server": "cd server && npm install",
     "install:client": "cd client && npm install",
     "server:dev": "cd server && npm run dev",
     "server:prod": "cd server && npm start",
+    "lint:client": "cd client && npm run lint",
+    "lint:server": "echo \"ERR: not implemented\"",
+    "lint": "npm run lint:client && npm run lint:server",
     "client": "cd client && npm run dev",
     "start:prod": "cd server && npm run start",
     "start:dev": "concurrently -n Server,Client --kill-others-on-fail \" npm run server:dev\" \" npm run client\"",
     "clean-install": "rimraf node_modules/ && rimraf server/node_modules/ && rimraf client/node_modules/ && npm install && cd server && npm install && cd .. && cd client && npm install && cd .."
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@iconify/react": "^4.1.1",
-    "@types/jest": "^29.5.12",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
-    "prettier": "^2.8.8",
-    "ts-jest": "^29.1.2"
-  },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "prettier --write"
-    ]
   },
   "dependencies": {
     "concurrently": "^7.6.0"

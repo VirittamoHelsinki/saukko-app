@@ -1,18 +1,17 @@
 import { sendEmail } from '../configMailer';
 import mailerTemplate from '../mailerHtmlTemplate';
+import {
+  AssessmentStatus,
+  ISendEvaluationFormCustomerReadyMessageSupervisor,
+  ISendEvaluationFormRequestContact,
+  ISendEvaluationFormTeacherReadyMessageCustomer,
+  ISendEvaluationFormTeacherReadyMessageSupervisor,
+  ISendEvaluationFormTeacherRequestContactMessageSupervisor,
+} from '../types';
 
 
 // Asiakas pyytää yhteydenottoa
-
-export interface ISendEvaluationFormCustomerRequestContact {
-  teacherName: string;
-  customerName: string;
-  degreeName: string;
-  unitName: string;
-  supervisorName: string;
-}
-
-export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluationFormCustomerRequestContact, to: string) => {
+export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluationFormRequestContact, to: string) => {
 
   const text =
     `
@@ -38,17 +37,7 @@ export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluation
 
 // Työpaikkaohjaaja pyytää yhteydenottoa
 
-interface ISendEvaluationFormSupervisorRequestContact {
-  teacherName: string;
-  userEmail: string;
-  degreeName: string;
-  unitName: string;
-  supervisorName: string;
-  customerName: string;
-}
-
-
-export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluationFormSupervisorRequestContact, to: string) => {
+export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluationFormRequestContact, to: string) => {
 
   const text =
     `
@@ -74,17 +63,7 @@ export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluati
 
 // Opettaja pyytää yhteydenottoa
 
-interface ISendEvaluationFormCustomerRequestContactMessageTeacher {
-  customerName: string;
-  userEmail: string;
-  degreeName: string;
-  unitName: string;
-  supervisorName: string;
-  teacherName: string;
-}
-
-
-export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: ISendEvaluationFormCustomerRequestContactMessageTeacher, to: string) => {
+export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: ISendEvaluationFormRequestContact , to: string) => {
 
   const text =
     `
@@ -107,15 +86,6 @@ export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: I
 
   sendEmail({ to, subject, html });
 };
-
-interface ISendEvaluationFormTeacherRequestContactMessageSupervisor {
-  supervisorName: string;
-  customerName: string;
-  degreeName: string;
-  unitName: string;
-  teacherName: string;
-  vocationalCompetenceName: string;
-}
 
 export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor, to:string) => {
 
@@ -144,11 +114,6 @@ export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params:
 
 // Arviointilomake: valmis lomake
 // Asiakkaan ja opettajan valmis lomake
-
-export enum AssessmentStatus {
-  READY = 'Valmis',
-  IN_PROGRESS = 'Kesken'
-}
 
 export interface ISendEvaluationFormSupervisorReadyMessageCustomer {
   customerFirstName: string;
@@ -252,16 +217,7 @@ export const sendEvaluationFormCustomerReadyMessageTeacher = (params: ISendEvalu
 
   sendEmail({ to, subject, html });
 };
-interface ISendEvaluationFormCustomerReadyMessageSupervisor {
-  supervisorFirstName: string;
-  customerName: string;
-  supervisorName: string;
-  degreeName: string;
-  unitName: string;
-  customerAssessment: AssessmentStatus;
-  supervisorAssessment: AssessmentStatus;
-  additionalInfo: string;
-}
+
 export const sendEvaluationFormCustomerReadyMessageSupervisor = (params: ISendEvaluationFormCustomerReadyMessageSupervisor, subject: string, to: string) => {
 
   const text =
@@ -289,74 +245,6 @@ export const sendEvaluationFormCustomerReadyMessageSupervisor = (params: ISendEv
   sendEmail({ to, subject, html });
 };
 
-/*export const sendEvaluationFormCustomerReadyMessageSupervisor = (params: ISendEvaluationFormReady, subject: string) => {
-
-  const text =
-    `
-    Hei ${params.userFirstName},
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: ${params.customerName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    Tutkinto: ${params.degreeName} 
-    Tutkinnonosa: ${params.unitName}
-    Asiakkaan arvio: ${params.customerAssessment}
-    Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
-    Lisätiedot: ${params.additionalInfo}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
-    `;
-
-  const html = mailerTemplate(text);
-
-  sendEmail({ to: params.userEmail, subject, html });
-};*/
-
-/*export const sendEvaluationFormCustomerOrSupervisorReady = (params: ISendEvaluationFormReady, subject: string) => {
-
-  const text =
-    `
-    Hei ${params.userFirstName},
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: ${params.customerName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    Tutkinto: ${params.degreeName} 
-    Tutkinnonosa: ${params.unitName}
-    Asiakkaan arvio: ${params.customerAssessment}
-    Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
-    Lisätiedot: ${params.additionalInfo}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
-    `;
-
-  const html = mailerTemplate(text);
-
-  sendEmail({ to: params.userEmail, subject, html });
-};*/
-
-enum EvaluationStatus {
-  ACCEPTED = 'Kyllä',
-  REJECTED = 'Ei'
-}
-
-interface ISendEvaluationFormTeacherReadyMessageCustomer {
-  customerFirstName: string;
-  customerName: string;
-  supervisorName: string;
-  degreeName: string;
-  unitName: string;
-  evaluationAccepted: EvaluationStatus;
-  additionalInfo: string;
-}
 
 // Opettajan valmis lomake
 
@@ -386,15 +274,6 @@ export const sendEvaluationFormTeacherReadyMessageCustomer = (params: ISendEvalu
   sendEmail({ to, subject, html });
 };
 
-interface ISendEvaluationFormTeacherReadyMessageSupervisor {
-  supervisorFirstName: string;
-  customerName: string;
-  supervisorName: string;
-  degreeName: string;
-  unitName: string;
-  evaluationAccepted: EvaluationStatus;
-  additionalInfo: string;
-}
 
 export const sendEvaluationFormTeacherReadyMessageSupervisor = (params: ISendEvaluationFormTeacherReadyMessageSupervisor, subject: string, to: string) => {
 

@@ -1,11 +1,3 @@
-// Import necessary react components
-import { useNavigate } from 'react-router-dom';
-import React from 'react';
-import { Icon } from '@iconify/react';
-
-// Import helsinki logo
-// import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
-// import HelsinkiWhiteLogo from '../../assets/Helsinki_white_logo.png';
 import { useAuthContext } from '../../store/context/authContextProvider';
 
 const Waves = (props) => {
@@ -38,16 +30,7 @@ const Waves = (props) => {
 };
 
 const WavesHeader = (props) => {
-  const navigate = useNavigate();
   const { currentUser } = useAuthContext();
-  // const auth = useContext(AuthContext);
-  // const user = auth.user;
-  // const role = user?.role;
-
-  // Determine which logo to use based on the role
-  // const logoToUse = currentUser.role ? HelsinkiLogo : HelsinkiWhiteLogo;
-  //Determine which color to use
-  const logoColor = !!currentUser?.role ? 'black' : 'white';
 
   const getHeaderColor = () => {
     // Define color based on role
@@ -70,17 +53,11 @@ const WavesHeader = (props) => {
   };
 
   return (
-    <main className='wavesHeader__wrapper' style={wrapperStyle}>
-      {!props.disabled && (
-        <button id='backArrowSVG' onClick={() => navigate(-1)}>
-          <Icon icon='typcn:arrow-left' style={{ color: logoColor }} />
-        </button>
-      )}
-      {/* <img src={logoToUse} alt='' /> */}
+    <div className='wavesHeader__wrapper' style={wrapperStyle}>
       <h1><b>{props.title}</b></h1>
       <p>{props.secondTitle}</p>
       <Waves fill={headerColor}/>
-    </main>
+    </div>
   );
 };
 

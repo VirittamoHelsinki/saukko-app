@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 import { PasswordValidator } from '../utils/password';
 import { passwordValidationOptions } from '../options';
 import { sendVerificationEmail } from '../mailer/templates/newUserVerification';
-import { sendResetPasswordEmail} from '../mailer/templates/resetPassword';
+import { sendResetPasswordEmail } from '../mailer/templates/resetPassword';
 
 const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
   if (err.message) {
@@ -23,6 +23,10 @@ const _responseWithError = (res: Response, statusCode: number, err: any, optiona
 const registerUser = async (req: Request, res: Response) => {
   // Retrieve the request body
   const body = req.body;
+
+  if (req.user && req.user.role !== 'teacher') {
+    return res.status(401).json({ errorMessage: 'Forbidden' });
+  }
 
   // Validation checks if any of the required fields are empty
   if (!body.email || !body.password) {
@@ -62,15 +66,12 @@ const registerUser = async (req: Request, res: Response) => {
     await newUser.save()
 
 
-    if (newUser.role !== 'supervisor') {
-      const verificationLink = newUser.generateEmailVerificationLink();
-      // Send verification email
-      sendVerificationEmail({userEmail: newUser.email, verificationLink});
-      console.log('user created and verification email sent');
-    } else {
-      console.log('user created without verification email (role: supervisor)');
-    }
-    res.status(201).json({ userId: newUser._id, message: "User created. Verification email sent." });
+    const verificationLink = newUser.generateEmailVerificationLink();
+    console.log('verificationLink: ', verificationLink);
+    // Send verification email
+    sendVerificationEmail({ userEmail: newUser.email, verificationLink });
+
+    res.status(201).json({ userId: newUser._id, message: 'User created. Verification email sent.' });
 
   } catch (err) {
     console.error(err);
@@ -100,22 +101,11 @@ const forgotPassword = async (req: Request, res: Response) => {
   try {
     const resetPasswordLink = existUser.generateResetPasswordLink();
     console.log("resetPasswordLink:", resetPasswordLink)
-    sendResetPasswordEmail({userFirstName: existUser.firstName, userEmail: existUser.email, resetPasswordLink});
+    sendResetPasswordEmail({ userFirstName: existUser.firstName, userEmail: existUser.email, resetPasswordLink });
     res.status(200).json({ message: "Password reset link sent to email" })
   } catch (err) {
     return _responseWithError(res, 400, err)
   }
-}
-
-// TODO: this is pointless, frontend dont need if token is valid or not. or what is reason for it?
-const validateToken = async (req: Request, res: Response) => {
-  jwt.verify(req.body.token, config.JWT_SECRET, (err: any, decoded: any) => {
-    if (err) {
-      console.log(err.message)
-      return res.status(401).json({ errorMessage: "Invalid token" })
-    }
-    res.status(200).json({ message: "Token is valid" })
-  })
 }
 
 // TOKEN-BASED PASWORD CHANGE METHOD (changePassword - token)
@@ -196,7 +186,7 @@ const requestPasswordChangeTokenAsUser = async (req: Request, res: Response) => 
       }
       return res.status(401).json({ errorMessage: "Invalid password" });;
     }
-  
+
     throw new Error("Internal")
   } catch (error) {
     console.error("requestPasswordChangeTokenAsUser", error)
@@ -253,16 +243,27 @@ const login = async (req: Request, res: Response) => {
 }
 
 const renewToken = async (req: Request, res: Response) => {
-  const existingUser = req.user;
-  if (!existingUser) {
-    return res.status(401).json({ errorMessage: 'Unauthorized' })
+  console.log("RENEW_TOKEN")
+  try {
+    const existingUser = req.user;
+    if (!existingUser) {
+      console.log("RENEW_TOKEN: FAIL")
+      return res.status(401).json({ errorMessage: 'Unauthorized' })
+    }
+    // Create a tokens for the user
+    const tokens = existingUser.generateJWT();
+    console.log("RENEW_TOKEN: OK")
+    return res
+      .status(200)
+      .cookie("auth_state", tokens.info, { httpOnly: false })
+      .cookie("token", tokens.auth, { httpOnly: true })
+      .send()
+  } catch (error) {
+    console.log("renewToken was catch an error", error);
+    res.status(500).json({
+      errorMessage: 'Internal'
+    })
   }
-  // Create a tokens for the user
-  const tokens = existingUser.generateJWT();
-  return res
-    .status(200)
-    .cookie("auth_state", tokens.info, { httpOnly: false })
-    .cookie("token", tokens.auth, { httpOnly: true })
 }
 
 const logout = async (_req: Request, res: Response) => {
@@ -313,14 +314,12 @@ const verifyEmail = async (req: Request, res: Response) => {
     const passwordChanegeToken = user.generateResetPasswordToken();
 
     // Get Url based of current environment
-    const url = "http://localhost:3000"; // TODO: handle production
 
     // Redirect user to the reset-password page
-    console.log("Returning REDIRECT TO", url)
     return res
       .clearCookie('verification-token')
-      .cookie("change-token", passwordChanegeToken, { httpOnly: true })
-      .json({ redirectURL: `${url}/set-password` });
+      .cookie('change-token', passwordChanegeToken, { httpOnly: true })
+      .json({ redirectURL: `${config.APP_URL}/set-password` });
     // .redirect(`${url}/reset-password`);
   } catch (err) {
     console.log("AuthController.verifyEmail. Token: {", req.tokens?.verifyEmail, "}", err)
@@ -354,7 +353,7 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
     const verificationLink = user.generateEmailVerificationLink();
 
     // Send verification email
-    sendVerificationEmail({userEmail: user.email, verificationLink});
+    sendVerificationEmail({ userEmail: user.email, verificationLink });
     console.log('user created and verification email sent');
   }
 
@@ -384,7 +383,7 @@ const getCurrentUser = (req: Request, res: Response) => {
 export default {
   registerUser,
   forgotPassword,
-  validateToken,
+  // validateToken,
   resetPassword,
   login,
   renew: renewToken,

@@ -50,7 +50,6 @@
  */
 
 
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../store/zustand/formStore';
 import { styled } from '@mui/material/styles';
@@ -113,7 +112,7 @@ export default function CustomizedDialogs(props) {
   } else if (props.type === 'info') {
     icon = 'material-symbols:info';
     bgColor = '#E5F6FD';
-    color = '#0062b9';
+    color = '#0288D1';
   } else if (props.type === 'success') {
     icon = 'material-symbols:check-circle';
     bgColor = '#e2f5f3';
@@ -147,16 +146,19 @@ export default function CustomizedDialogs(props) {
         sx={{
           '& .MuiDialog-paper': {
             background: bgColor,
-            borderLeft: 'solid 10px',
+            borderLeft: 'solid 8px',
             color,
             ...(dialogStyles && dialogStyles.dialogPaper),
           },
           '& .MuiDialogTitle-root': {
             marginLeft: '35px',
-            fontSize: '0.875 rem',
+            fontSize: '18px',
             fontWeight: '700',
             ...(dialogStyles && dialogStyles.dialogTitle),
           },
+          '& .MuiButtonBase-root.MuiIconButton-root': {
+            color: 'black',
+          }
         }}
       >
          {!props.hideIcon && (
@@ -180,8 +182,8 @@ export default function CustomizedDialogs(props) {
           {props.title}
         </BootstrapDialogTitle>
         <DialogContent>
-          <Box sx={{ color: 'black', marginBottom: '1rem'}}>{props.body}</Box>
-          {props.type === 'alert' && (
+          <Box sx={{ color: 'black', marginBottom: '1rem', fontSize: '14px'}}>{props.body}</Box>
+          {props.type === 'alert' && !props.hideButton &&(
             <Button onClick={handleConfirm} color='primary' variant='contained'>
               Kyllä
             </Button>

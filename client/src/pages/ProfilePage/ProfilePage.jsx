@@ -1,12 +1,10 @@
 // Import react packages & dependencies
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 
 // Import components
-import WavesHeader from '../../components/Header/WavesHeader';
 import Button from '../../components/Button/Button';
-import UserNav from '../../components/UserNav/UserNav';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 import PopUpForm from '../../components/PopUpForm/PopUpForm';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
@@ -16,10 +14,12 @@ import {
   resetPassword,
 } from '../../api/user';
 import { useAuthContext } from '../../store/context/authContextProvider';
+import { useHeadingContext } from '../../store/context/headingContectProvider';
 
 function ProfilePage() {
   // User info from AuthContext
-  const { currentUser  } = useAuthContext();
+  const { currentUser } = useAuthContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Logout
   const navigate = useNavigate();
@@ -110,10 +110,13 @@ function ProfilePage() {
         }
       });
   }
+
+  useEffect(() => {
+    setSiteTitle("Profiili"), setSubHeading(""), setHeading("Oma profiili")
+  }, [setHeading, setSiteTitle, setSubHeading])
   
   return (
-    <main className='profile__wrapper'>
-      <WavesHeader title='Oma profiili' disabled={true} />
+    <div className='profile__wrapper'>
       <section className='profile__container'>
         <div className='profile__container--row name'>
           <p className='profile__container--row-value'>
@@ -212,8 +215,7 @@ function ProfilePage() {
           icon={'grommet-icons:logout'}
         />
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 }
 

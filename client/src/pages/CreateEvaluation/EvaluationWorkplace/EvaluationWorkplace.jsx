@@ -1,16 +1,15 @@
 // Import react packages
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import local files & components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Stepper from '../../../components/Stepper/Stepper';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // Import libraries
 import { Icon } from '@iconify/react';
@@ -31,6 +30,8 @@ function EvaluationWorkplace() {
 
   // Fetch workplaces & save to state
   const { workplaces } = useContext(InternalApiContext);
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
   const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
 
   // Setter functions from evaluationStore
@@ -50,6 +51,11 @@ function EvaluationWorkplace() {
   const closeSupervisorNotification = () => setSupervisorNotification(false)
   const closeRedirectNotification = () => setRedirectNotification(false)
 
+  useEffect(() => {
+    setSiteTitle('Suorituksetn aktivoiminen'),
+      setSubHeading('Lisää uusi asiakas'),
+      setHeading('Asiakkuudet')
+  }, [setHeading, setSiteTitle, setSubHeading])
   // Workplace selection
   const toggleWorkplace = (event) => {
     clearWorkplace();
@@ -66,7 +72,7 @@ function EvaluationWorkplace() {
       setDepartment(findDepartmentById);
     } else {
       setDepartmentNotification(true);
-    };
+    }
   };
   console.log('Department from store:', departmentFromStore)
 
@@ -83,7 +89,7 @@ function EvaluationWorkplace() {
     }
   };
   console.log('Supervisor from store:', supervisorFromStore)
-  
+
   // Pagination
   const [page, setPage] = useState(1);
   const [needsPagination, setNeedsPagination] = useState(false);
@@ -94,11 +100,11 @@ function EvaluationWorkplace() {
     const viewportHeight = window.innerHeight;
     setNeedsPagination(contentHeight > 1.3 * viewportHeight);
   }, []);
-  
+
   const handlePageChange = (event, value) => {
     setPage(value);
   };
-  
+
   const indexOfLastWorkplace = page * workplacesPerPage;
   const indexOfFirstWorkplace = indexOfLastWorkplace - workplacesPerPage;
   const paginatedWorkplaces = filteredWorkplaces?.slice(indexOfFirstWorkplace, indexOfLastWorkplace);
@@ -109,10 +115,10 @@ function EvaluationWorkplace() {
     setPage(1);
     setFilteredWorkplaces(
       workplaces.filter((workplace) =>
-      workplace.name.toLowerCase().includes(event.target.value.toLowerCase())
+        workplace.name.toLowerCase().includes(event.target.value.toLowerCase())
       )
     );
-  };  
+  };
 
   // Validate data and redirect
   const validationHandler = () => {
@@ -144,37 +150,39 @@ function EvaluationWorkplace() {
   ];
 
   return (
-    <main className='evaluationWorkplace__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' />
+    <div className='evaluationWorkplace__wrapper'>
+      {/* <WavesHeader title='Saukko' secondTitle='Suorituksen aktivoiminen' /> */}
       <section className='evaluationWorkplace__container'>
         <Stepper
-            activePage={2}
-            totalPages={4}
-            data={stepperData}
+          activePage={2}
+          totalPages={4}
+          data={stepperData}
         />
         <h1>Valitse työpaikka ja ohjaaja</h1>
-        <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'}/>
+        <Searchbar handleSearch={handleSearch} placeholder={'Etsi työpaikka'} />
 
         {/* Workplaces list */}
         <div>
-          { workplacesToMap ? 
+          {workplacesToMap ?
             workplacesToMap.map((workplace) => (
-              <Accordion 
+              <Accordion
                 className={`workplaces-accordion ${workplaceFromStore === workplace ? 'selected' : ''}`}
-                key={workplace._id} 
-                disableGutters 
+                key={workplace._id}
+                disableGutters
                 square
+                sx={{position:'static'}}
               >
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <AccordionSummary sx={{position:'static'}} expandIcon={<ExpandMoreIcon />}>
                   <FormControlLabel
+                    sx={{ position:'static'}}
                     value={workplace.name}
                     control=
-                      {<Radio 
-                        checked={workplaceFromStore === workplace}
-                        onChange={toggleWorkplace}
-                        value={workplace._id}
-                        theme={createTheme({palette: {primary: {main: '#0000BF'}}})}
-                      />}
+                    {<Radio
+                      checked={workplaceFromStore === workplace}
+                      onChange={toggleWorkplace}
+                      value={workplace._id}
+                      theme={createTheme({ palette: { primary: { main: '#0000BF' } } })}
+                    />}
                     label={
                       <div className='radio__label'>
                         <p className={`radio__label-name ${workplaceFromStore === workplace ? 'selected' : ''}`}>
@@ -192,18 +200,18 @@ function EvaluationWorkplace() {
                   {/* Departments */}
                   {workplace.departments.length > 0 && (
                     <>
-                      <Typography className="accordion-title"> Valitse yksikkö * </Typography>
+                      <Typography sx={{position:'static'}} className="accordion-title"> Valitse yksikkö * </Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionSummary sx={{position:'static'}} expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
                           {workplace.departments.map((department, index) => (
-                            <div 
-                            className='accordion__wrapper-details'
-                            key={index} 
-                            onClick={toggleDepartment(department.id)}
+                            <div
+                              className='accordion__wrapper-details'
+                              key={index}
+                              onClick={toggleDepartment(department.id)}
                             >
                               <Typography>{department.name}</Typography>
-                              {departmentFromStore && (department.id === departmentFromStore.id) && <Icon icon="mdi:tick"/>}
+                              {departmentFromStore && (department.id === departmentFromStore.id) && <Icon icon="mdi:tick" />}
                             </div>
                           ))}
                         </AccordionDetails>
@@ -216,20 +224,20 @@ function EvaluationWorkplace() {
                     <>
                       <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionSummary sx={{position:'static'}} expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
-                        {workplace.supervisors.map((supervisor) => (
-                          <div 
-                            className='accordion__wrapper-details'
-                            key={supervisor._id} 
-                            onClick={toggleSupervisor(supervisor._id)}
-                          >
-                            <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
-                            {supervisorFromStore && (supervisor._id === supervisorFromStore._id) && <Icon icon="mdi:tick"/>}
-                          </div>
-                        ))}
+                          {workplace.supervisors.map((supervisor) => (
+                            <div
+                              className='accordion__wrapper-details'
+                              key={supervisor._id}
+                              onClick={toggleSupervisor(supervisor._id)}
+                            >
+                              <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
+                              {supervisorFromStore && (supervisor._id === supervisorFromStore._id) && <Icon icon="mdi:tick" />}
+                            </div>
+                          ))}
                         </AccordionDetails>
-                      </Accordion> 
+                      </Accordion>
                     </>
                   )}
 
@@ -237,47 +245,57 @@ function EvaluationWorkplace() {
                     <>
                       <Typography className='accordion-title'>Valitse työpaikkaohjaaja *</Typography>
                       <Accordion disableGutters square className='accordion__wrapper'>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
+                        <AccordionSummary sx={{position:'static'}} expandIcon={<ExpandMoreIcon />}>Valitse</AccordionSummary>
                         <AccordionDetails>
                           {departmentFromStore.supervisors.map((supervisor) => (
-                            <div 
+                            <div
                               className='accordion__wrapper-details'
-                              key={supervisor._id} 
+                              key={supervisor._id}
                               onClick={toggleSupervisor(supervisor._id)}
                             >
                               <Typography>{supervisor.firstName} {supervisor.lastName}</Typography>
-                              {supervisorFromStore && (supervisor._id === supervisorFromStore._id) && <Icon icon="mdi:tick"/>}
+                              {supervisorFromStore && (supervisor._id === supervisorFromStore._id) && <Icon icon="mdi:tick" />}
                             </div>
                           ))}
                         </AccordionDetails>
-                      </Accordion> 
+                      </Accordion>
                     </>
                   )}
-                 
+
                 </AccordionDetails>
               </Accordion>
             ))
-          : 'ei dataa APIsta'}
+            : 'ei dataa APIsta'}
         </div>
 
         {/* Pagination */}
-        {needsPagination && 
-          <Pagination
-            count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
-            page={page}
-            onChange={handlePageChange}
-          />
-        }
+        <div className='pagination_evaluation_workplace'>
+          {needsPagination &&
+            <div className='evaluation_workplace_pagenavigate'>
+              <Pagination
+                count={filteredWorkplaces && Math.ceil(filteredWorkplaces.length / workplacesPerPage)}
+                page={page}
+                onChange={handlePageChange}
+               /*  sx={{
+                  '& .MuiPaginationItem-root':{
+                    position: 'static'
+                },
+                  '& .Mui-disabled': {
+                    position: 'relative',
+                  }
+              }} */
+              />
+            </div>
+          }
+        </div>
 
         {/* Back and forward buttons */}
-        <PageNavigationButtons 
-          handleBack={() => navigate(`/evaluation-form`)} 
+        <PageNavigationButtons
+          handleBack={() => navigate(`/evaluation-form`)}
           handleForward={validationHandler}
           showForwardButton={true}
-
         />
       </section>
-      <UserNav />
       <NotificationModal
         type='warning'
         title='Yksikön valinta epäonnistui'
@@ -299,7 +317,7 @@ function EvaluationWorkplace() {
         open={redirectNotification}
         handleClose={closeRedirectNotification}
       />
-    </main>
+    </div>
   );
 }
 

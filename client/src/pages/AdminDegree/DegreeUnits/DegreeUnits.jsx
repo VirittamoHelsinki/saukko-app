@@ -1,37 +1,35 @@
 // Import react packages
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import libraries
 import Pagination from '@mui/material/Pagination';
 
 // Import components
-import WavesHeader from '../../../components/Header/WavesHeader';
-import UserNav from '../../../components/UserNav/UserNav';
 import Stepper from '../../../components/Stepper/Stepper';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 // import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 // Import state management
-import ExternalApiContext from '../../../store/context/ExternalApiContext';
 import useStore from '../../../store/zustand/formStore';
+import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import WithDegree from '../../../HOC/withDegree';
 
-function DegreeUnits() {
+function DegreeUnits({ degree }) {
   const navigate = useNavigate();
-
-  // Set path & get degree from ExternalApiContext
-  const { degree, degreeFound } = useContext(ExternalApiContext);
   const params = useParams();
 
   // Get degree name from zustand store
   const { degreeName } = useStore();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Save degree units to state once degree is fetched
   const degreeUnits = degree.units;
   const [filteredUnits, setFilteredUnits] = useState(degreeUnits);
 
   useEffect(() => {
+    setSiteTitle("Suoritusten hallinnoi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     setFilteredUnits(degreeUnits);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);
@@ -80,15 +78,14 @@ function DegreeUnits() {
   ];
 
   return (
-    <main className='degreeUnits__wrapper'>
-      <WavesHeader title='Saukko' secondTitle='Tutkintojen hallinta' />
+    <div className='degreeUnits__wrapper'>
       <section className='degreeUnits__container'>
         <Stepper
           activePage={2}
           totalPages={4}
           data={stepperData}
         />
-        <h1>{degreeFound ? degree?.name.fi : degreeName}</h1>
+        <h1>{degree ? degree?.name.fi : degreeName}</h1>
         {/* <Searchbar
           handleSearch={handleSearch}
           placeholder={'Etsi tutkinnonosat'}
@@ -112,6 +109,11 @@ function DegreeUnits() {
           }
           page={page}
           onChange={handlePageChange}
+          /* sx={{
+            '& .MuiPaginationItem-root':{
+              position: 'relative',
+              zIndex:'-1',
+          }}} */
         />
 
         <PageNavigationButtons
@@ -120,9 +122,8 @@ function DegreeUnits() {
           showForwardButton={true}
         />
       </section>
-      <UserNav />
-    </main>
+    </div>
   );
 }
 
-export default DegreeUnits;
+export default WithDegree(DegreeUnits);

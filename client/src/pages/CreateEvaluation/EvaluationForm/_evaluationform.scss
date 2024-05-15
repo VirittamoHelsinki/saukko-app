@@ -1,15 +1,16 @@
-.app__wrapper {
+
   .evaluationForm__wrapper {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
+    padding-top: 3rem;
 
     .evaluationForm__container {
       flex-direction: column;
-      margin-top: 200px;
-      margin-bottom: 50px;
+      // margin-top: 3rem;
+      margin-bottom: 3rem;
       flex-grow: 1;
       overflow-y: auto;
       width: 100%;
@@ -17,7 +18,6 @@
       h1 {
         margin-top: 32px;
         text-align: center;
-        text-decoration: underline;
         font-size: var(--base-font-size);
       }
 
@@ -32,9 +32,8 @@
           flex-direction: column;
           gap: 7px;
 
-          label {
+          .form_text {
             font-size: 14px;
-            font-weight: 600;
           }
 
           .disabled {
@@ -60,10 +59,12 @@
           .MuiTextField-root {
             flex-direction: row;
             flex-wrap: nowrap;
+            //display: static;
 
             fieldset {
               input::placeholder {
                 color: black;
+                //position: static;
               }
             }
           }
@@ -76,21 +77,25 @@
             align-items: flex-end;
             border: 2px solid black;
             border-radius: 0%;
+           // position: static;
           }
 
           .Mui-focused {
             fieldset {
               border: none;
+              //position: static;
             }
           }
 
           .MuiOutlinedInput-input::placeholder {
             opacity: 1;
+            position: static;
           }
 
           .Mui-error {
             fieldset {
               border: none;
+              //position: static;
             }
           }
 
@@ -98,22 +103,45 @@
           .MuiInputAdornment-root {
             margin-top: 7px;
             align-self: flex-start;
+            //position: static;
 
             svg {
               color: black;
+              //position: static;
             }
           }
 
           /* Disabled date picker style */
           .Mui-disabled {
             border-color: #999898;
+            //position: static;
 
             svg {
               color: #999898;
+              //position: static;
             }
           }
         }
       }
+      .buttons__container {
+        justify-content: end;
+        padding: 10px;
+      }
     }
   }
-}
+
+  @media (min-width: 768px) {
+    .evaluationForm__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .evaluationForm__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1440px) {
+    .evaluationForm__wrapper {
+      padding-top: 1rem;
+    }
+  }

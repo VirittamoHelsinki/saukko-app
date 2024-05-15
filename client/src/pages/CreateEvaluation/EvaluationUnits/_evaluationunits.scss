@@ -1,4 +1,4 @@
-.app__wrapper {
+
   .evaluationUnits__wrapper {
     display: flex;
     flex-direction: column;
@@ -6,23 +6,40 @@
     width: 100%;
     background: var(--saukko-main-white);
     text-align: left;
+    padding-top: 3rem;
 
     .evaluationUnits__container {
       display: flex;
       flex-direction: column;
-      margin-top: 200px;
-      margin-bottom: 50px;
+      // margin-top: 3rem;
+      margin-bottom: 3rem;
       flex-grow: 1;
       overflow-y: auto;
       width: 100%;
+      cursor: pointer;
 
       h1 {
         margin-top: 32px;
         margin-bottom: 32px;
         text-align: center;
-        text-decoration: underline;
         font-size: var(--base-font-size);
       }
     }
   }
-}
+
+  @media (min-width: 768px) {
+    .evaluationUnits__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .evaluationUnits__wrapper {
+      padding-top: 1rem;
+    }
+  }
+  @media (min-width: 1440px) {
+    .evaluationUnits__wrapper{
+      padding-top: 1rem;
+    }
+  }
+
