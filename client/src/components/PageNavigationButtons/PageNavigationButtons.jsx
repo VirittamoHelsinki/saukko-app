@@ -20,6 +20,7 @@ function PageNavigationButtons(props) {
   const [editMode, setEditMode ] = useState(false);
   return (
     <section className='buttons__container' id="pageNavigationButtonsContainer">
+      {!props.hideBackButton && ( 
       <div className='buttons__container-back'>
         <Button
           text='Takaisin'
@@ -27,6 +28,7 @@ function PageNavigationButtons(props) {
           icon={'formkit:arrowleft'}
         />
       </div>
+       )}
       {props.showForwardButton && ( 
       <div className='buttons__container-forward'>
         <Button

@@ -86,13 +86,15 @@ const UnitList = () => {
               />
             </div>
           ))}
-        <div className='unitList__button'>
-          <Button
-            text='Takaisin'
-            icon='bx:arrow-back'
-            onClick={() => navigate('/')}
-            className='unitList__button--back'
-          />
+        <div className='unitList__button' style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          {currentUser?.role !== 'customer' && (
+            <Button
+              text='Takaisin'
+              icon='bx:arrow-back'
+              onClick={() => navigate('/')} 
+              className='unitList__button--back'
+            />
+          )}
           <Button
             className='unitList__button--sopimus'
             text='Tarkastele sopimusta'
@@ -102,11 +104,13 @@ const UnitList = () => {
           />
         </div>
         <div className='wrapper-button-pdf'>
-          <Button
-          text='Tee PDF-yhteenveto osaamisesta'
-          className='button--pdf'
-          icon='bx:file'
-           />
+          {currentUser?.role === 'teacher' && (
+            <Button
+              text='Tee PDF-yhteenveto osaamisesta'
+              className='button--pdf'
+              icon='bx:file'
+            />
+          )}{' '}
         </div>
       </div>
     </div>

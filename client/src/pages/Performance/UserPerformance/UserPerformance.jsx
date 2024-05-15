@@ -23,6 +23,7 @@ import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 // import { sendEmails } from '../../../api/performance';
 
 const UserPerformance = () => {
@@ -145,11 +146,11 @@ const UserPerformance = () => {
   useEffect(() => {
     const isLaptop = window.innerWidth >= 1024;
     const buttonStyle = {
-      marginTop: '35px',
-      marginLeft: isLaptop ? '25%' : '20px',
-      width: isLaptop ? '42%' : '88%',
-      marginLeft: '20px',
-      width: '88%',
+      // marginTop: '35px',
+      // marginLeft: isLaptop ? '25%' : '20px',
+      // width: isLaptop ? '42%' : '88%',
+      // marginLeft: '20px',
+      // width: '88%',
       color: Object.values(selectedValues).some((value) => value)
         ? 'var(--saukko-main-white)'
         : '#0000BF',
@@ -217,7 +218,7 @@ const UserPerformance = () => {
         return {
           ...unit,
           assessments: updatedAssessments,
-          feedBack: textAreaValue
+          feedBack: textAreaValue,
         };
       } else {
         return unit;
@@ -312,7 +313,7 @@ const UserPerformance = () => {
   const handleEvaluation = () => {
     navigate('/unit-list');
     setOpenNotificationModal(false);
-  } 
+  };
 
   return (
     <div className='perfomance__wrapper'>
@@ -458,35 +459,39 @@ const UserPerformance = () => {
       >
         {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
       </h2>
-      <form action=''>
-        <textarea
-          placeholder={
-            currentUser?.role === 'teacher'
-              ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
-              : currentUser?.role === 'supervisor'
-              ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
-              : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
-          }
-          rows={8}
-          cols={38}
-          style={{ width: '87%', padding: '5px' }}
-          className='para-title-style'
-          value={textAreaValue}
-          onChange={(e) => setTextareaValue(e.target.value)}
-          disabled={isPalauteSectionDisabled()}
-        />
-      </form>
 
-      <section>
-        <Button
-          id='submitButton'
-          style={buttonStyle}
-          type='submit'
-          text={getButtonText()}
-          onClick={handleSubmit}
-          // disabled={isPalauteSectionDisabled()}
-        />
-      </section>
+      <div className='buttons-and-form'>
+        <form action='' className='form-wrapper'>
+          <textarea
+            placeholder={
+              currentUser?.role === 'teacher'
+                ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
+                : currentUser?.role === 'supervisor'
+                ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
+                : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
+            }
+            rows={8}
+            cols={38}
+            className='para-title-style'
+            value={textAreaValue}
+            onChange={(e) => setTextareaValue(e.target.value)}
+            disabled={isPalauteSectionDisabled()}
+          />
+        </form>
+        <section className='section-buttons'>
+          <div className='buttons-wrapper'>
+            <PageNavigationButtons handleBack={() => navigate('/unit-list')} />
+            <Button
+              id='submitButton'
+              style={buttonStyle}
+              type='submit'
+              text={getButtonText()}
+              onClick={handleSubmit}
+              // disabled={isPalauteSectionDisabled()}
+            />
+          </div>
+        </section>
+      </div>
 
       {/* Warning notification modal */}
       <NotificationModal
@@ -564,7 +569,8 @@ const UserPerformance = () => {
         title='Tiedot tallennettu!'
         body='Tiedot on tallennettu OsTu-appin tietokantaan.'
         open={openNotificationModal}
-        handleClose={handleEvaluation} />
+        handleClose={handleEvaluation}
+      />
     </div>
   );
 };
