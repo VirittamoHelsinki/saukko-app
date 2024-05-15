@@ -93,8 +93,7 @@ function CompanyDegreeUnits() {
           totalPages={4}
           data={stepperData}
         />
-        <h2>Valitse tutkinnon osat</h2>
-        {/* <h2>{degreeFound && internalDegree && internalDegree.name && internalDegree.name.fi} </h2> */}
+        <h2>{degreeFound && internalDegree && internalDegree.name && internalDegree.name.fi} </h2>
         <Searchbar
           id='searchbarTutkinnonosat'
           handleSearch={handleSearch}
@@ -118,8 +117,15 @@ function CompanyDegreeUnits() {
           page={page}
           onChange={handlePageChange}
           sx={{
+            '& .MuiPaginationItem-root': {
+              zIndex:'-1',
+            },
             '& .Mui-selected':{
-              position:'static'
+              position:'static',
+            },
+            '& .Mui-disabled': {
+              position:'relative',
+              zIndex:'-1',
             }
           }}
         />
