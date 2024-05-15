@@ -54,9 +54,6 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
   return (
     <div className='userNav__wrapper'>
       {/* for hamburger menu*/}
-      {/* <div className='mobile-menu-button' onClick={toggleMenu}>
-        <Icon icon='ci:menu-alt-05' />
-      </div> */}
       <div
         className={`userNav__menu ${menuIsOpen ? 'userNav__menu--open' : ''}`}
       >
@@ -169,7 +166,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                     Profiili
                   </Typography>
                 </ListItem>
-                <ListItem className='navListItem'>
+                {/* <ListItem className='navListItem'>
                   <Typography
                     className='NavText'
                     onClick={() => {
@@ -179,7 +176,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                   >
                     Lisää opettaja
                   </Typography>
-                </ListItem>
+                </ListItem> */}
               </List>
             </div>
           </Box>

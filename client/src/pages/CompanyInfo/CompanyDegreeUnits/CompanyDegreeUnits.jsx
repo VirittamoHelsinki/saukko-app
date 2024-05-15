@@ -117,16 +117,18 @@ function CompanyDegreeUnits() {
           page={page}
           onChange={handlePageChange}
           sx={{
-            '& .MuiPaginationItem-root': {
-              zIndex:'-1',
-            },
-            '& .Mui-selected':{
-              position:'static',
-            },
-            '& .Mui-disabled': {
+            /* '& .MuiPaginationItem-root': {
               position:'relative',
               zIndex:'-1',
-            }
+            },  */
+            '& .Mui-selected':{
+              position:'relative',
+              zIndex:'-1'
+            },
+            /* '& .Mui-disabled': {
+              position:'relative',
+              zIndex:'-1',
+            } */
           }}
         />
         <PageNavigationButtons

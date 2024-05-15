@@ -109,11 +109,11 @@ function DegreeUnits({ degree }) {
           }
           page={page}
           onChange={handlePageChange}
-          sx={{
+          /* sx={{
             '& .MuiPaginationItem-root':{
               position: 'relative',
               zIndex:'-1',
-          }}}
+          }}} */
         />
 
         <PageNavigationButtons
