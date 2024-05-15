@@ -43,12 +43,12 @@ const forgotPassword = async (email) => {
   return response
 }
 
-const tokenValidation = async (token) => {
-  const response = await axios.post('/auth/validate-token', {
-    token: token,
-  })
-  return response
-}
+// const tokenValidation = async (token) => {
+//   const response = await axios.post('/auth/validate-token', {
+//     token: token,
+//   })
+//   return response
+// }
 
 const resetPassword = async (newPassword, token) => {
   const response = await axios.post('/auth/reset-password', {
@@ -108,7 +108,7 @@ export {
   fetchCurrentUser,
   logoutUser,
   loginUser,
-  tokenValidation,
+  // tokenValidation,
   resetPassword,
   registration,
   verifyEmail,

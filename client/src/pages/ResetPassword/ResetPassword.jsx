@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Button from "../../components/Button/Button";
 import Notification from "../../components/Notification/Notification";
-import { tokenValidation, resetPassword } from '../../api/user';
+import { resetPassword } from '../../api/user';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -16,40 +16,40 @@ const ResetPassword = () => {
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const { token } = useParams();
-  const [validToken, setValidToken] = useState(false);
-  const [message, setMessage] = useState("")
+  // const [validToken, setValidToken] = useState(false);
+  // const [message, setMessage] = useState("")
   const color = "#00005E";
 
-  const checkValidToken = async () => {
-    if (validToken) {
-      console.log('valid token');
-      console.log(validToken);
-    }
-  };
+  // const checkValidToken = async () => {
+  //   if (validToken) {
+  //     console.log('valid token');
+  //     console.log(validToken);
+  //   }
+  // };
 
-  useEffect(() => {
-    const validateToken = async () => {
-      try {
-        const response = await tokenValidation(token);
-        console.log(response);
-        if (response.status === 200) {
-          setValidToken(true);
-        }
-      } catch (error) {
-        console.log(error);
-        setMessage(error.response.data.errorMessage)
-        setValidToken(false);
-      }
-    };
+  // useEffect(() => {
+  //   const validateToken = async () => {
+  //     try {
+  //       const response = await tokenValidation(token);
+  //       console.log(response);
+  //       if (response.status === 200) {
+  //         setValidToken(true);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //       setMessage(error.response.data.errorMessage)
+  //       setValidToken(false);
+  //     }
+  //   };
 
-    validateToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   validateToken();
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-  useEffect(() => {
-    checkValidToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   checkValidToken();
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     const updateButtonDisabled = async () => {
@@ -103,16 +103,16 @@ const ResetPassword = () => {
     background: "var(--saukko-main-black)"
   };
 
-  if (!validToken) {
-    return (
+  // if (!validToken) {
+  //   return (
 
-      <Notification
-        heading={message}
-        icon="emojione:angry-face"
+  //     <Notification
+  //       heading={message}
+  //       icon="emojione:angry-face"
 
-      />
-    )
-  }
+  //     />
+  //   )
+  // }
 
   return (
     <div className="resetPassword__wrapper">
