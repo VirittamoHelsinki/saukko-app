@@ -31,8 +31,9 @@ const create = async (req: Request, res: Response) => {
     const newDegreeData = { ...req.body };
     delete newDegreeData._id;
 
-    const newDegree = new degreeModel(newDegreeData);
-    await newDegree.save();
+    const newDegree = await degreeModel.create(newDegreeData)
+    // const newDegree = new degreeModel(newDegreeData);
+    // await newDegree.save();
 
     res.status(201).json(newDegree);
   } catch (error) {
