@@ -20,7 +20,6 @@ const handleSearch = (event) => {
 <Searchbar handleSearch={handleSearch} placeholder={'Search...'}/>
 */
 
-import React from 'react';
 import { Icon } from '@iconify/react';
 
 function Searchbar(props) {

@@ -14,7 +14,6 @@
 
 */
 
-import React from 'react';
 import { Icon } from '@iconify/react';
 import Button from '../Button/Button';
 
