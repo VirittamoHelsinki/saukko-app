@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Typography,
   IconButton,
@@ -19,7 +18,6 @@ const ATVAndCriteriaModal = ({
   isAssessmentModalOpen,
   unit,
   saveATVAndCriteria,
-    handleDeleteClick,
 }) => {
 //   console.log("🚀 ~ isAssessmentModalOpen:", isAssessmentModalOpen)
   return (

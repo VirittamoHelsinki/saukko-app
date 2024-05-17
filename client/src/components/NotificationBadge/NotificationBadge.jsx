@@ -1,5 +1,4 @@
 import icone from '../../assets/Internallink.svg';
-import React from 'react';
 import { useAuthContext } from '../../store/context/authContextProvider';
 
 const NotificationBadge = (props) => {

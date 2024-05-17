@@ -144,7 +144,7 @@ const UserPerformance = () => {
   }, [selectedValues]);
 
   useEffect(() => {
-    const isLaptop = window.innerWidth >= 1024;
+    // const isLaptop = window.innerWidth >= 1024;
     const buttonStyle = {
       // marginTop: '35px',
       // marginLeft: isLaptop ? '25%' : '20px',

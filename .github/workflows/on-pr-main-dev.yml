@@ -1,0 +1,29 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'  # Voit muuttaa Node.js version tarpeen mukaan
+
+    - name: Install dependencies
+      run: npm run setup
+
+    - name: Run linters
+      run: npm run lint
+
+    - name: Run tests
+      run: npm test

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography, Box } from '@mui/material';
 import NotificationModal from '../NotificationModal/NotificationModal';
 import Button from '../Button/Button';

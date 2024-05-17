@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import evaluationStore from '../../store/zustand/evaluationStore';
-import greenicone from '../../assets/circle-green.svg';
-import yellowicone from '../../assets/circle-yellow.svg';
-import blueicone from '../../assets/circle-blue.svg';
-import blackicone from '../../assets/circle-black.svg';
+// import greenicone from '../../assets/circle-green.svg';
+// import yellowicone from '../../assets/circle-yellow.svg';
+// import blueicone from '../../assets/circle-blue.svg';
+// import blackicone from '../../assets/circle-black.svg';
 import rightAngle from '../../assets/angle-right.svg';
 
 const UnitStatus = ({ unitId, status, subheader, link }) => {
