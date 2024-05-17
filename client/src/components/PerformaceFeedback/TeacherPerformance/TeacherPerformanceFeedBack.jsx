@@ -130,6 +130,7 @@ const TeacherPerformanceFeedBack = ({
   useEffect(() => {
     setSelectedUnitId(unit._id);
     setSelectedAssessmentId(assessment._id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unit, assessment]);
 
   const saveTeacherComment = async () => {
