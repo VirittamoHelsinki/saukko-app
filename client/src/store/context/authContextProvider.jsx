@@ -5,7 +5,6 @@ import { jwtDecode } from 'jwt-decode';
 
 const Ctx = createContext(null);
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
   const ctx = useContext(Ctx);
 
