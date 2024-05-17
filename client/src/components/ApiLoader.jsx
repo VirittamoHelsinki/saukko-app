@@ -31,6 +31,7 @@ const ApiLoader = () => {
         .then(data => setWorkplaces(data))
         .catch(err => console.log(err));
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loggedIn]);
 
     // Console logs that show what was actually saved into the store.
