@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Error as MongooseError } from 'mongoose';
 import degreeModel from '../models/degreeModel';
 
 const getAll = async (req: Request, res: Response) => {
@@ -21,17 +22,26 @@ const getById = async (req: Request, res: Response) => {
   }
 }
 
+const haveErrorCode = (error: any) => {
+  return error && typeof error === 'object' && 'code' in error
+}
+
 const create = async (req: Request, res: Response) => {
   try {
-    const newDegreeData = req.body;
+    const newDegreeData = { ...req.body };
+    delete newDegreeData._id;
 
     const newDegree = new degreeModel(newDegreeData);
     await newDegree.save();
 
     res.status(201).json(newDegree);
   } catch (error) {
-    console.error('Error creating a new degree:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (haveErrorCode(error) && (error as any).code === 1100 ) {
+      res.status(400).json({ error: 'Duplicate key error: degree with this ID or unique field already exists' });
+    } else {
+      console.error('Error creating a new degree:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
 }
 
