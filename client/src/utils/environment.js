@@ -17,7 +17,8 @@ const environments = {
   development: {
     showTestEnvironmentWarning: false,
     appInsightsInstrumentationKey: undefined,
-    environentName: 'DEVELOPMENT'
+    environentName: 'DEVELOPMENT',
+    eperusteetDataUrl: import.meta.env.VITE_EPERUSTEET_DATA_URL
   },
   staging: {
     showTestEnvironmentWarning: true,
