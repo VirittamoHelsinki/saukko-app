@@ -1,8 +1,8 @@
-import { app, InvocationContext, Timer } from "@azure/functions";
+import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import axios from "axios";
 import Degree, { IDegree, IDegreeDocument } from "../models/degreeModel";
 import mongo from "../utils/mongo";
-import config from '../utils/config';
+import config from '../utils/config'
 
 const eperusteetApiUrl = "https://eperusteet.opintopolku.fi/eperusteet-service/api/external";
 const perusteetEndpoint = "perusteet";
@@ -11,8 +11,10 @@ const koulutusTyypit = ["koulutustyyppi_1"];
 const sivukoko = "5000";
 const degreeMinYear = 2018;
 
-export async function ePerusteetTimedQuery(myTimer: Timer, context: InvocationContext): Promise<void> {
-  context.log(`[${config.environment}] Timer function processed request.`);
+export async function manualUpdateEperusteet(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  context.log(`[${config.environment}] Http function processed request for url "${request.url}"`);
+
+  console.log('configs:',JSON.stringify(config))
 
   const startTime = Date.now();
   await mongo.openConnection();
@@ -78,9 +80,11 @@ export async function ePerusteetTimedQuery(myTimer: Timer, context: InvocationCo
   await mongo.closeConnection();
   const dataSavedTime = Date.now();
 
-}
+  return { body: 'OK' };
+};
 
-app.timer('ePerusteetTimedQuery', {
-  schedule: '0 0 0 * * *',
-  handler: ePerusteetTimedQuery
+app.http('manualUpdateEperusteet', {
+  methods: ['GET', 'POST'],
+  authLevel: 'anonymous',
+  handler: manualUpdateEperusteet
 });

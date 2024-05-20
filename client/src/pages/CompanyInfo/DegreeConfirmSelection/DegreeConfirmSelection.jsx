@@ -157,7 +157,7 @@ function DegreeConfirmSelection() {
 
       setIsLoading(false);
 
-      if (response.status === 201 || 200) {
+      if (response.status === 201 || response.status === 200) {
         const updatedWorkplaces = await fetchAllInternalWorkplaces();
         console.log(
           '🚀 ~ handleVahvistaClick ~ updatedWorkplaces:',
