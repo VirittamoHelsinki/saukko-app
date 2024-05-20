@@ -3,11 +3,12 @@ import Degree, { IDegree } from "../models/degreeModel";
 import mongoManager from "../utils/mongo";
 import sp from "../utils/searchParams";
 import { fetchUnits } from "../utils/fetchUnits";
+import config from '../utils/config';
 
 const pageSizeDefault = 10;
 
 export async function getDegrees(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-  context.log(`Http function processed request for url "${request.url}"`);
+  context.log(`[${config.environment}] Http function processed request for url "${request.url}"`);
 
   const startTime = Date.now();
   await mongoManager.openConnection();
@@ -18,7 +19,6 @@ export async function getDegrees(request: HttpRequest, context: InvocationContex
   const searchQuery = request.query.get('s') || '';
 
   context.log("searchQuery:", searchQuery)
-
 
   const startIndex = (pageNumber - 1) * pageSize;
 

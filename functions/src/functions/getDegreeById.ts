@@ -3,10 +3,11 @@ import mongoManager from "../utils/mongo";
 import Degree, { IDegree } from "../models/degreeModel";
 import { fetchUnits } from "../utils/fetchUnits";
 import mongoose, { isValidObjectId } from "mongoose";
+import config from '../utils/config';
 
 export async function getDegreeById(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   const degreeId = request.query.get('degreeId');
-  context.log(`Http function processed request for url "${request.url}" usind degreeId: "${degreeId}"`);
+  context.log(`[${config.environment}] Http function processed request for url "${request.url}" usind degreeId: "${degreeId}"`);
 
   const startTime = Date.now();
   await mongoManager.openConnection();

@@ -12,6 +12,10 @@ on:
       - 'server/**'
   workflow_dispatch:
 
+env:
+  VITE_EPERUSTEET_DATA_URL: ${{ secrets.EPERUSTEET_DATA_URL_DEV }}
+    
+
 jobs:
   build:
     runs-on: ubuntu-latest
