@@ -4,7 +4,7 @@ $header-height: 115px;
   user-select: none;
   height: 100vh;
   width: 100vw;
-  // padding-bottom: 3rem;
+  position: relative; 
 }
 
 .container header {
@@ -16,6 +16,7 @@ $header-height: 115px;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  z-index: 10; 
 }
 
 .container header h1 {
@@ -43,7 +44,8 @@ $header-height: 115px;
 
 .container main {
   min-height: calc(100vh - $header-height);
-  // padding-bottom: 3rem;
+  z-index: 1;
+  position: relative; 
 }
 
 .container header .headerBox {
@@ -65,19 +67,19 @@ header svg {
     margin-left: 2rem;
   }
   .container main {
-    margin: 1rem auto; /* Center content horizontally */
-    max-width: 50%; /* Limit content width for larger screens */
+    margin: 1rem auto; 
+    max-width: 50%; 
   }
 }
 
 @media (min-width: 1024px) {
   .container main {
-    max-width: 40%; /* Adjust max-width for wider screens */
+    max-width: 40%; 
   }
 }
 
 @media (min-width: 1440px) {
   .container main {
-    max-width: 30%; /* Adjust max-width for even wider screens */
+    max-width: 30%; 
   }
 }
