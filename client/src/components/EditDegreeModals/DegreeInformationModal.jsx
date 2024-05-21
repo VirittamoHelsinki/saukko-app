@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Typography,
   IconButton,
@@ -15,7 +14,6 @@ const DegreeInformationModal = ({
   isDegreeInformationModalOpen,
   degreeDetails,
   setDegreeDetails,
-  saveDegreeInformation,
 }) => {
   
   return (

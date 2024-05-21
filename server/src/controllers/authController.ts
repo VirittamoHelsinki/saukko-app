@@ -7,7 +7,7 @@ import config from '../utils/config';
 import bcrypt from 'bcrypt';
 import { PasswordValidator } from '../utils/password';
 import { passwordValidationOptions } from '../options';
-import { sendVerificationEmail } from '../mailer/templates/newUserVerification';
+import { sendVerificationEmail, sendVerificationDoneEmail } from '../mailer/templates/newUserVerification';
 import { sendResetPasswordEmail } from '../mailer/templates/resetPassword';
 
 const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
@@ -308,7 +308,7 @@ const verifyEmail = async (req: Request, res: Response) => {
     user.modified = Math.floor(Date.now() / 1000);
     await user.save();
     console.log("Email successfully activated");
-
+    sendVerificationDoneEmail({ userEmail: user.email })
     // Create password change token
     // can use only once, if user is modified after the token is created, then the token should be useless
     const passwordChanegeToken = user.generateResetPasswordToken();

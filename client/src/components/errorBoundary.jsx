@@ -45,7 +45,6 @@ export class ErrorBoundary extends React.Component {
     if (hasError) {
       return (
         <div
-          test-id="errorboundary"
           style={{
             display: 'flex',
             alignItems: 'center',

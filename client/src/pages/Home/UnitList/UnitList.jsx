@@ -21,14 +21,13 @@ const UnitList = () => {
     evaluations,
     setInternalEvaluations,
     setInternalEvaluation,
-    allInternalDegrees,
   } = useContext(InternalApiContext);
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
-  const degreeName =
-    allInternalDegrees &&
-    allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
+  // const degreeName =
+  //   allInternalDegrees &&
+  //   allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
   // console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   // Set evaluation automatically when role is customer

@@ -11,6 +11,7 @@ const Notification = ({ success, onTimeout, time = 3 }) => {
 			onTimeout();
 		}, time * 1000);
 		return () => clearTimeout(id);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (!haveTime) {

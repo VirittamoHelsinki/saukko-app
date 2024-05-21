@@ -31,8 +31,9 @@ const create = async (req: Request, res: Response) => {
     const newDegreeData = { ...req.body };
     delete newDegreeData._id;
 
-    const newDegree = new degreeModel(newDegreeData);
-    await newDegree.save();
+    console.info(JSON.stringify(newDegreeData))
+
+    const newDegree = await degreeModel.create(newDegreeData)
 
     res.status(201).json(newDegree);
   } catch (error) {
@@ -40,6 +41,7 @@ const create = async (req: Request, res: Response) => {
       res.status(400).json({ error: 'Duplicate key error: degree with this ID or unique field already exists' });
     } else {
       console.error('Error creating a new degree:', error);
+      console.info("code:", (error as any)?.code)
       res.status(500).json({ error: 'Internal server error' });
     }
   }
