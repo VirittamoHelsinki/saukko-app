@@ -1,9 +1,9 @@
 import axios from 'axios';
+import environment from '../utils/environment';
 
-const eperusteetApiUrl = "https://saukko-dev-fn-cf2pynvwyijf4.azurewebsites.net/api";
-
-const getPaginatedDegrees = async (page, resultsPerPage) => {
-  const url = `${eperusteetApiUrl}/getDegrees?pageNumber=${page}&pageSize=${resultsPerPage}`;
+const getPaginatedDegrees = async (page, resultsPerPage, searchParam) => {
+  const search = searchParam ? `&s=${searchParam}` : '';
+  const url = `${environment.eperusteetDataUrl}/getDegrees?pageNumber=${page}&pageSize=${resultsPerPage}${search}`;
   console.log(url)
   try {
     const response = (await axios.get(url)).data;
@@ -22,7 +22,7 @@ const getPaginatedDegrees = async (page, resultsPerPage) => {
 }
 
 const getDegreeById = async (id) => {
-  const url = `${eperusteetApiUrl}/getDegreeById?degreeId=${id}`;
+  const url = `${environment.eperusteetDataUrl}/getDegreeById?degreeId=${id}`;
   console.log(url);
   try {
     const response = (await axios.get(url)).data;
