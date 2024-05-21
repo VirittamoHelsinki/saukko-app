@@ -80,33 +80,12 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         >
           {' >'}
         </button>
-
-
       </section>
-      {/* Render previous and next buttons */}
-      {/* <section className='searchPage__container--list-pagination-arrows'>
-        <button
-          // Disable button if current page is the first page
-          disabled={currentPage === 1}
-          onClick={() => handlePageClick(currentPage - 1)}
-          className='arrow__button'
-        >
-          {'< Previous'}
-        </button>
-        <button
-          // Disable button if current page is the last page
-          disabled={currentPage === pageCount}
-          onClick={() => handlePageClick(currentPage + 1)}
-          className='arrow__button'
-        >
-          {'Next >'}
-        </button>
-      </section> */}
     </div>
   );
 };
 
-const SearchPage = ({ data, loading, page, setPage, totalPages }) => {
+const SearchPage = ({ data, loading, page, setPage, totalPages, setSearchParam }) => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Clear degree on first render
@@ -118,21 +97,18 @@ const SearchPage = ({ data, loading, page, setPage, totalPages }) => {
   // Searchbar logic
   const handleSearch = (event) => {
     setPage(1) // Reset page when searching
+    setSearchParam(event.target.value)
   };
 
   const handlePageClick = (pageNum) => {
     setPage(pageNum);
   };
 
-  if (loading) {
-    return <p>Loading...</p>
-  }
-
   return (
     <div className='searchPage__wrapper'>
       <section className='searchPage__container'>
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
-        {data ? (
+        {(data && !loading) ? (
           <>
             <div className="searchPage__container--list">
               <DegreeList data={data} />

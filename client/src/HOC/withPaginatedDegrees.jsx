@@ -13,9 +13,11 @@ const withPaginatedDegrees = (Component) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const [searchParam, setSearchParam] = useState("")
+
     const result = useCallback(() => {
       setLoading(true);
-      eperusteet.getPaginatedDegrees(page, pageSize)
+      eperusteet.getPaginatedDegrees(page, pageSize, searchParam)
         .then(x => {
           x.data.map(y => console.log(y._id))
           setData(x.data);
@@ -28,7 +30,7 @@ const withPaginatedDegrees = (Component) => {
         .finally(() => setLoading(false));
       return Date.now();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page])
+    }, [page, searchParam])
 
     useEffect(() => {
       console.log(result())
@@ -48,6 +50,7 @@ const withPaginatedDegrees = (Component) => {
         pageSize={pageSize}
         totalPages={totalPages}
         totalResults={totalResults}
+        setSearchParam={setSearchParam}
       />
     )
   }

@@ -1,8 +1,9 @@
 import axios from 'axios';
 import environment from '../utils/environment';
 
-const getPaginatedDegrees = async (page, resultsPerPage) => {
-  const url = `${environment.eperusteetDataUrl}/getDegrees?pageNumber=${page}&pageSize=${resultsPerPage}`;
+const getPaginatedDegrees = async (page, resultsPerPage, searchParam) => {
+  const search = searchParam ? `&s=${searchParam}` : '';
+  const url = `${environment.eperusteetDataUrl}/getDegrees?pageNumber=${page}&pageSize=${resultsPerPage}${search}`;
   console.log(url)
   try {
     const response = (await axios.get(url)).data;
