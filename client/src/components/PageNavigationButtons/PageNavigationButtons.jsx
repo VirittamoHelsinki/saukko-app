@@ -13,31 +13,30 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import { useState } from 'react';
 import Button from '../../components/Button/Button';
 
-
 function PageNavigationButtons(props) {
-  
   // eslint-disable-next-line no-unused-vars
-  const [editMode, setEditMode ] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   return (
-    <section className='buttons__container' id="pageNavigationButtonsContainer">
-      {!props.hideBackButton && ( 
-      <div className='buttons__container-back'>
-        <Button
-          text='Takaisin'
-          onClick={props.handleBack}
-          icon={'formkit:arrowleft'}
-        />
-      </div>
-       )}
-      {props.showForwardButton && ( 
-      <div className='buttons__container-forward'>
-        <Button
-          text={props.forwardButtonText || 'Seuraava'}
-          onClick={props.handleForward}
-          icon={'formkit:arrowright'}
-        />
-      </div>
-       )}
+    <section className='buttons__container' id='pageNavigationButtonsContainer'>
+      {!props.hideBackButton && (
+        <div className='buttons__container-back'>
+          <Button
+            text='Takaisin'
+            onClick={props.handleBack}
+            icon={'formkit:arrowleft'}
+          />
+        </div>
+      )}
+      {props.showForwardButton && (
+        <div className='buttons__container-forward'>
+          <Button
+            text={props.forwardButtonText || 'Seuraava'}
+            onClick={props.handleForward}
+            icon={props.icon || 'formkit:arrowright'}
+            style={props.style}
+          />
+        </div>
+      )}
       {/* <div className='buttons__container-forward-summary'>
         <Button
           text={props.forwardButtonText || 'Muokkaa tietoja'}

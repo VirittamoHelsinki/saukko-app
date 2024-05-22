@@ -44,7 +44,8 @@ const AddCompanyName = React.lazy(() => import('../../pages/AddCompanyName/AddCo
 const EmailVerification = React.lazy(() => import('../../pages/VerifyEmail/VerifyEmail'));
 const CreateUnitsSummary = React.lazy(() => import('../../pages/CreateSummary/CreateUnitsSummary'));
 const SetPassword = React.lazy(() => import('../../pages/setPassword/SetPassword'));
-const RegisterUser = React.lazy(() => import('../../pages/RegisterUser/RegisterUser'))
+const RegisterUser = React.lazy(() => import('../../pages/RegisterUser/RegisterUser'));
+const CompanySummary = React.lazy(() => import('../../pages/CompanyInfo/CompanySummary/CompanySummary'));
 
 const Router = () => {
   let location = useLocation();
@@ -126,6 +127,7 @@ const Router = () => {
 
                 {/* Workplace flow */}
                 <Route path='/add/companyname' element={<AddCompanyName />} />
+                <Route path='/add/companyname/:companyId' element={<CompanySummary />} />
                 <Route path='/company-info' element={<CompanyInfo />} />
                 <Route path='/internal/degrees' element={<CompanySearchPage />} />
                 <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />
