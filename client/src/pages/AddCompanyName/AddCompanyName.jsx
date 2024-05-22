@@ -23,14 +23,15 @@ const CheckLength = ({
     setSiteTitle("Lisää työpaikkaa"), setSubHeading(""), setHeading("Työpaikkojen hallinta")
   }, [setHeading, setSiteTitle, setSubHeading])
 
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
   return (
     <>
       {list.slice(startIndex, endIndex).map((company, index) => (
         <div
           key={index}
           className='addDegree__container--list-item'
-        //   onClick={() => navigate(`${degree._id}`)}
+          style={{cursor:'pointer'}}
+          onClick={() => navigate(`${company._id}`)}
         >
           <p>{company.name}</p>
         </div>
