@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import alert from '../../assets/circle-red.svg'
 import Button from '../../components/Button/Button';
 import { loginUser } from '../../api/user';
@@ -13,7 +13,7 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
-  const processLogin = async (e) => {
+  const processLogin = useCallback(async (e) => {
     e.preventDefault();
     console.log('loging in');
 
@@ -30,7 +30,7 @@ const LoginPage = () => {
         console.error(err);
       }
     }
-  };
+  },[email, password]);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -50,7 +50,7 @@ const LoginPage = () => {
     return () => {
       document.removeEventListener('keypress', handleKeyPress);
     };
-  }, [buttonDisabled]);
+  }, [buttonDisabled, processLogin]);
 
   
   const togglePasswordVisibility = () => {
