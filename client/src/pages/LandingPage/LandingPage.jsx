@@ -1,11 +1,10 @@
-// importing react packages
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
-// import helsinki logo
+import { useNavigate } from 'react-router-dom';
+import Button from '../../components/Button/Button';
+
 import HelsinkiLogo from '../../assets/Helsinki_white_logo.png';
 
-// importing components
-import Button from '../../components/Button/Button';
 
 const LandingPage = () => {
   // button styling/CSS
@@ -15,6 +14,19 @@ const LandingPage = () => {
   };
 
   const navigate = useNavigate();
+
+  useEffect(()=> {
+    const handleKeyPress = (e)=>{
+      if (e.key === 'Enter') {
+        navigate('/login');
+      }
+    };
+
+    document.addEventListener('keypress', handleKeyPress);
+    return () => {
+      document.removeEventListener('keypress', handleKeyPress);
+    };
+  },[navigate]);
 
   return (
     <div className='landingPage__wrapper'>
