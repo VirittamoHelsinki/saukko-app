@@ -15,6 +15,7 @@ const LoginPage = () => {
 
   const processLogin = async (e) => {
     e.preventDefault();
+    console.log('loging in');
 
     try {
       const loginData = {
@@ -30,6 +31,27 @@ const LoginPage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        if (!buttonDisabled) {
+          processLogin(e);
+        } else {
+          console.log('button disabled');
+        }
+      }
+    };
+
+    // Adding event listener to the whole document for simplicity
+    document.addEventListener('keypress', handleKeyPress);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener('keypress', handleKeyPress);
+    };
+  }, [buttonDisabled]);
+
   
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
