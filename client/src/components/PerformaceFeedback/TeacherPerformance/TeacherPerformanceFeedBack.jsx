@@ -158,6 +158,7 @@ const TeacherPerformanceFeedBack = ({
       // Update the evaluation state with the new assessments
       await updateEvaluationById(evaluationId, {
         units: updatedAssessments,
+        selectedValues: {}
       });
 
       setEvaluation((prevEvaluation) => ({
