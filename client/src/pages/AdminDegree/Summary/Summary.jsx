@@ -30,7 +30,7 @@ function Summary({ degree }) {
     transitionEnds,
   } = useStore();
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
-  const { checkedUnits } = useUnitsStore();
+  const { checkedUnits, clearCheckedUnits } = useUnitsStore();
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // NotificationModal
@@ -55,7 +55,7 @@ function Summary({ degree }) {
       return null;
     }
   }
-  
+
   // Labels and urls for stepper
   const stepperData = [
     {
@@ -77,7 +77,7 @@ function Summary({ degree }) {
   ];
 
   const handleSubmit = async () => {
-    
+
     const degreeData = {
       diaryNumber: diaryNumber ? diaryNumber : degree.diaryNumber,
       eduCodeValue: degree ? degree.eduCodeValue : '',
@@ -109,6 +109,7 @@ function Summary({ degree }) {
 
     // Save degree to context
     setAllInternalDegrees([...allInternalDegrees, response])
+    clearCheckedUnits()
 
   };
 
@@ -130,14 +131,14 @@ function Summary({ degree }) {
           totalPages={4}
           data={stepperData}
         />
-        <h1 className='degree-title'>{degreeName ? degreeName: degree.name?.fi}</h1>
+        <h1 className='degree-title'>{degreeName ? degreeName : degree.name?.fi}</h1>
         <div className='section-title'>Tutkinnonosat ja tehtävät </div>
         <div className='summary__container--box'>
           {checkedUnits.map((unit, index) => (
             <div key={index} className='unit-container'>
               <strong>{unit.name.fi}</strong>
               {unit.assessments && unit.assessments.map((assessment, index) => (
-                <p key={index}>{index+1}. {assessment.name.fi}</p>
+                <p key={index}>{index + 1}. {assessment.name.fi}</p>
               ))}
             </div>
           ))}
@@ -162,7 +163,7 @@ function Summary({ degree }) {
         </ul>
 
         <PageNavigationButtons
-          handleBack={() =>navigate(`/degrees/${params.degreeId}/units/tasks`)}
+          handleBack={() => navigate(`/degrees/${params.degreeId}/units/tasks`)}
           handleForward={handleSubmit}
           forwardButtonText={'Tallenna tiedot'}
           showForwardButton={true}

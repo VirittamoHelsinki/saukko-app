@@ -7,6 +7,7 @@ import { InternalApiContextProvider } from "./store/context/InternalApiContext";
 // importing page routing
 import Router from "./components/Router/Router";
 import { ErrorBoundary } from './components/errorBoundary';
+import RouterGuard from './components/Router/RouteGuard';
 import AuthContextProvider from './store/context/authContextProvider';
 import HeadingContextProvider from './store/context/headingContectProvider';
 
@@ -21,7 +22,9 @@ const App = () => {
           <HeadingContextProvider>
             <InternalApiContextProvider>
               <ExternalApiContextProvider>
-                <Router />
+                <RouterGuard>
+                  <Router />
+                </RouterGuard>
               </ExternalApiContextProvider>
             </InternalApiContextProvider>
           </HeadingContextProvider>
