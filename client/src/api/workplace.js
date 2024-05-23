@@ -32,7 +32,7 @@ const fetchInternalWorkplaceById = async id => {
 // Post a workplace to internal saukko database.
 const postWorkplace = async workplace => {
   const response = await axios.post(`/api/workplace`, workplace)
-  return response.data
+  return response
 }
 
 // Update a workplace in internal saukko database.

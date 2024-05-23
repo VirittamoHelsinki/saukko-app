@@ -52,7 +52,7 @@ resource NodeJS_AppService 'Microsoft.Web/sites@2023-01-01' = {
     siteConfig: {
       numberOfWorkers: 1
       functionAppScaleLimit: 0
-      minimumElasticInstanceCount: 0
+      minimumElasticInstanceCount: 1
       linuxFxVersion: 'NODE|20-lts'
       appSettings: [
         {
