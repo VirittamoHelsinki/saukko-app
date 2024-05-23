@@ -141,11 +141,6 @@ az deployment group create --resource-group saukko-prod --template-file .bicep
         * TODO: Tässä linkki ohjeeseen kuinka voit saada `APP_INSIGHTS_INSTRUMENTATION_KEY_*` arvon eri ympäristöissä
         * TODO: Tässä linkki ohjeeseen kuinka voit saada `EPERUSTEET_DATA_URL_*` arvon eri ympäristöissä
 
-
-    
-
-
-
 # DOKKARI - TODO
 
 1. Azure "AZ" komentorivi
