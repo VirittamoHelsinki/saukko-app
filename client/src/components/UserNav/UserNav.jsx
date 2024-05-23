@@ -7,7 +7,7 @@ import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import { logoutUser } from '../../api/user';
 
-const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsOpen }) => {
+const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsOpen, userNavRef }) => {
   const { currentUser } = useAuthContext();
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const navigate = useNavigate();
@@ -52,11 +52,14 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
 
 
   return (
-    <div className='userNav__wrapper'>
+    <div
+      className='userNav__wrapper'>
       <div
         className={`userNav__menu ${menuIsOpen ? 'userNav__menu--open' : ''}`}
       >
-        <div className={`userNav__icons ${currentUser?.role}`}>
+        <div
+          ref={userNavRef}
+          className={`userNav__icons ${currentUser?.role}`}>
           <Box sx={{ height: '20vh', marginTop: '50px', textAlign: 'center' }}>
             <img className='helsinki-logo' src={HelsinkiLogo} alt='' />
             <h1 className='logo-text'>OsTu</h1>
