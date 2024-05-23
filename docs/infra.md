@@ -139,7 +139,7 @@ az deployment group create --resource-group saukko-prod --template-file .bicep
             * APP_INSIGHTS_INSTRUMENTATION_KEY_DEV
         * Huomaa että et voi katsella muuttujien arvoja, voit ainoastaan päivittää tai poistaa KO. muuttujan arvon.
         * TODO: Tässä linkki ohjeeseen kuinka voit saada `APP_INSIGHTS_INSTRUMENTATION_KEY_*` arvon eri ympäristöissä
-        * TODO: Tässä linkki ohjeeseen kuinka voit saada `EPERUSTEET_DATA_URLö_*` arvon eri ympäristöissä
+        * TODO: Tässä linkki ohjeeseen kuinka voit saada `EPERUSTEET_DATA_URL_*` arvon eri ympäristöissä
 
 
     
