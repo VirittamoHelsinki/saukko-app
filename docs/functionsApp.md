@@ -34,11 +34,19 @@ ePerusteet REST API on ajoittain hidas, ja joskus tietyt rajapinnat eivät ole k
 * **Kuvaus:** Palauttaa paginoidun sivun tutkintojen dataa sekä tietoa sivutuksesta.
 * **Endpoint:** `/api/getDegrees`
 * **URL Search Params**
+  * `pageNumber`: Sivunumero (oketus: 1)
+  * `pageSize`: Sivun koko (oletus: 10)
+  * `s`: hakusana tutkinnon nimelle (vapaaehtoinen)
+  * `propName`: projektioparametri (vapaaehtoinen, useita arvoja)
+* **Esimerkkikutsu:** `curl "https://<function-app-name>.azurewebsites.net/api/getDegrees?pageNumber=1&pageSize=20&s=hammastekn&propName=name"`, tämä esimerkki palauttaa ainoastaan tuloksia joiden nimi sisältää osan "hammastekn", jokaisesta tuloksesta palautetaan vain name property sillä "propName=name" on määritetty. tuloksia sivulle annetaan max 20 kpl ja esitetty sivu on 1.
 
 ### getDegreeById
 * **Trigger:** HTTP
 * **Kuvaus:** Palauttaa yksittäisen tutkinnon tiedot.
 * **Endpoint:** `/api/getDegreeById/{id}` TODO: Check the path
+* **URL Search Params**
+  * `degreeId`: Tutkinnon Mongo documentin ID
+* **Esimerkkikutsu:** `curl "https://<function-app-name>.azurewebsites.net/api/getDegreeById?degreeId=12345"`
 
 ## Käyttöönotto
 1. Kloonaa repository
