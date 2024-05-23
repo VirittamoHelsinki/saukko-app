@@ -5,7 +5,7 @@ Kuva Projektin infrastruktuurista on luotu käyttäen bicep visualisointityökal
 
 ## Sisällysluettelo
 * Resurssit
-  * [Azure Resurssien yleiskuvaus]()
+  * [Azure Resurssien yleiskuvaus](#azure-resurssien-kuvaus)
   * [ApplicationInsights](applicationInsights.md)
   * [App Service](appService.md)
   * [Cosmos DB](cosmos.md)
@@ -14,6 +14,8 @@ Kuva Projektin infrastruktuurista on luotu käyttäen bicep visualisointityökal
   * [CORS](cors.md)
 * Oppaat
   * [Käyttöönotto](infra.md)
+  * [GitHub Repositoryn Konfigurointi](github.md)
+  * [työkalut](tools.md)
 
 ## Azure-resurssien kuvaus
 ### 1. Azure App Service
