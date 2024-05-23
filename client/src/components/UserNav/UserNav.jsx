@@ -53,12 +53,9 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
 
   return (
     <div className='userNav__wrapper'>
-      {/* for hamburger menu*/}
       <div
         className={`userNav__menu ${menuIsOpen ? 'userNav__menu--open' : ''}`}
       >
-        {/* Hamburger  Menu Items */}
-        {/* set background color user's role */}
         <div className={`userNav__icons ${currentUser?.role}`}>
           <Box sx={{ height: '20vh', marginTop: '50px', textAlign: 'center' }}>
             <img className='helsinki-logo' src={HelsinkiLogo} alt='' />

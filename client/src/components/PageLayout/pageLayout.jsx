@@ -96,8 +96,7 @@ const PageLayout = () => {
               </button>
             )}
             <div className={styles.buttonContainer}>
-              <button onClick={() => setMenuIsOpen(!menuIsOpen)}>
-                {/* <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:menu-alt-05'} /> */}
+              <button onClick={() => setMenuIsOpen(!menuIsOpen)} style={{marginBottom: '0.3rem'}}>
                 <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'} />
               </button>
             </div>
