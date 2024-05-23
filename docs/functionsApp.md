@@ -68,6 +68,19 @@ npm run start
 ## CORS
 Tämä on tärkeä osio sovelluksen toiminnan sekä resurssi-turvallisuuden kannalta. Käy tämä osio huolellisesti läpi tästä linkinstä [CORS-DOCS](cors.md)
 
+# API URL Löytäminen Azuresta (EPERUSTEET_DATA_URL)
+1. **Kirjaudu Azure-portaliin:**
+    * Mene [Azure-portaliin](https://portal.azure.com/) ja kirjaudu sisään.
+2. **Navigoi haluamaasi resurssiryhmään**
+    * Kirjoita hakukenttään `resource groups` ja valitse Resource groups
+    * Etsi ja valitse haluamasi resurssiryhmä listalta
+3. **Etsi ja Valitse listalta Functions App resurssi**
+    * Resurssin nimi on muotoa `saukko-<env>-fn-<uniq-str>`
+    * Tämä vie sinut Functions sovelluksen yleisnäkymään
+4. Paikanna URL
+    * URL sijaitsee functions sovelluksen yleisnäkymän `essentials` osiossa, sivun yläosassa
+5. Kun tallennat tämän URL -osoitteen ympäristömuuttujaksi clientille, tai GitHub repository secretiksi, lisää URL osoitteeseen polku `/api`. Osoitteen tulisi näyttää suurinpiirtein tältä: `https://saukko-<env>-fn-<uniq-str>.azurewebsites.net/api`
+
 ## Huomioita
 * Varmista, että Azure Function App -palvelu on käynnissä ja oikein konfiguroitu.
 * Tarkista ympäristömuuttujien oikeellisuus ennen käyttöönottoa.
