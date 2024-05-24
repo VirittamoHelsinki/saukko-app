@@ -11,28 +11,6 @@ const RouteGuard = ({ children }) => {
 
   const regex = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$/;
 
-
-  useEffect(() => {
-    previousLocation.current = location;
-
-    const handleBeforeUnload = (event) => {
-      event.preventDefault();
-      event.returnValue = 'Are you sure you want to leave?';
-      console.log('handleBeforeUnload')
-
-/*      if (regex.test(previousLocation.current.pathname) && !regex.test(location.pathname)) {
-        event.preventDefault();
-        event.returnValue = "Are you sure you want to leave?";
-      }*/
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [location]);
-
   useEffect(() => {
     const currentPath = location.pathname;
     const prevPath = previousLocation.current.pathname;
@@ -59,15 +37,6 @@ const RouteGuard = ({ children }) => {
   return (
     <>
       {children}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert onClose={handleSnackbarClose} severity="warning" sx={{ width: '100%' }}>
-          Varoitus: Valitut yksiköt katoavat, jos lähdet pois sivulta.
-        </Alert>
-      </Snackbar>
     </>
   );
 };

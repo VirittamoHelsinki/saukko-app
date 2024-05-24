@@ -4,7 +4,12 @@ import { useAuthContext } from '../../store/context/authContextProvider';
 import styles from './pageLayout.module.scss';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import UserNav from '../UserNav/UserNav';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Alert, DialogActions, Snackbar } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import Button from '@mui/material/Button';
 
 const Waves = ({ fill }) => {
   return (
@@ -57,19 +62,20 @@ const PageLayout = () => {
   const navigationType = useNavigationType();
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [headingIsDisabled, setHeadingIsDisabled] = useState(false);
-
+  const [showWarning, setShowWarning] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const headerColor = getHeaderColor(currentUser?.role);
   const wrapperStyle = {
     backgroundColor: headerColor,
     marginBottom: '-1rem',
   };
-
   const logoColor = currentUser?.role ? '#000' : '#fff';
 
   const showBackButton = navigationType !== 'POP' && location.key !== 'default';
 
   const renderHeader = currentUser && currentUser.role;
 
+  const regex = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$/;
 
   useEffect(() => {
     // Add pages in array below, where the waves header should not render
@@ -84,6 +90,25 @@ const PageLayout = () => {
     document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
   }, [siteTitle]);
 
+  const handleMenuToggle = () => {
+    console.log('path: ', location.pathname)
+    if (!menuIsOpen && regex.test(location.pathname)) {
+      setShowWarning(true);
+    } else {
+      setMenuIsOpen(!menuIsOpen);
+    }
+  };
+
+  const handleWarningClose = () => {
+    setShowWarning(false);
+  };
+
+  const handleProceed = () => {
+    setShowWarning(false);
+    setMenuIsOpen(true);
+  };
+
+
   return (
     <>
       <UserNav setMenuIsOpen={setMenuIsOpen} menuIsOpen={menuIsOpen} />
@@ -96,7 +121,7 @@ const PageLayout = () => {
               </button>
             )}
             <div className={styles.buttonContainer}>
-              <button onClick={() => setMenuIsOpen(!menuIsOpen)}>
+              <button onClick={() => handleMenuToggle()}>
                 <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:menu-alt-05'} />
               </button>
             </div>
@@ -110,6 +135,27 @@ const PageLayout = () => {
         <main className={styles.main}>
           <Outlet />
         </main>
+        <Dialog
+          open={showWarning}
+          onClose={handleWarningClose}
+          aria-labelledby="warning-dialog-title"
+          aria-describedby="warning-dialog-description"
+        >
+          <DialogTitle id="warning-dialog-title">Varoitus</DialogTitle>
+          <DialogContent>
+            <p id="warning-dialog-description">
+              Jos poistut tutkinnon luonnista, valitut tutkinnon osat eivät tallennu. Haluatko jatkaa?
+            </p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleWarningClose} color="primary">
+              Peruuta
+            </Button>
+            <Button onClick={handleProceed} color="primary" autoFocus>
+              Jatka
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </>
   )
