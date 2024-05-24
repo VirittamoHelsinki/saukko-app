@@ -4,7 +4,7 @@ import { useAuthContext } from '../../store/context/authContextProvider';
 import styles from './pageLayout.module.scss';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import UserNav from '../UserNav/UserNav';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const Waves = ({ fill }) => {
   return (
@@ -64,6 +64,9 @@ const PageLayout = () => {
     marginBottom: '-1rem',
   };
 
+  const menuRef = useRef(null);
+  const userNavRef = useRef(null);
+
   const logoColor = currentUser?.role ? '#000' : '#fff';
 
   const showBackButton = navigationType !== 'POP' && location.key !== 'default';
@@ -84,9 +87,21 @@ const PageLayout = () => {
     document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
   }, [siteTitle]);
 
+  useEffect(()=>{
+    function handleClickOutside(event){
+      if(menuRef.current && !menuRef.current.contains(event.target) && userNavRef.current !== event.target) {
+        setMenuIsOpen(false);
+      }
+    }
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    }
+  },[menuRef])
+
   return (
     <>
-      <UserNav setMenuIsOpen={setMenuIsOpen} menuIsOpen={menuIsOpen} />
+      <UserNav setMenuIsOpen={setMenuIsOpen} menuIsOpen={menuIsOpen} userNavRef={userNavRef} />
       <div className={styles.container}>
         {renderHeader && !headingIsDisabled && (
           <header>
@@ -95,9 +110,8 @@ const PageLayout = () => {
                 <Icon icon="typcn:arrow-left" style={{ color: logoColor }} />
               </button>
             )}
-            <div className={styles.buttonContainer}>
-              <button onClick={() => setMenuIsOpen(!menuIsOpen)}>
-                {/* <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:menu-alt-05'} /> */}
+            <div className={styles.buttonContainer} ref={menuRef}>
+              <button onClick={() => setMenuIsOpen(!menuIsOpen)} style={{marginBottom: '0.3rem'}}>
                 <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'} />
               </button>
             </div>
