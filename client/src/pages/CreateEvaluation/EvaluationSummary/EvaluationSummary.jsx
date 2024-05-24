@@ -221,7 +221,7 @@ function EvaluationSummary() {
         }
         body={
           <Typography style={{ fontSize: '14px', marginRight: '2rem' }}>
-            Asiakkaan tiedot tallennettu OsTu-appin tietokantaan.
+            Sopimukseen liitetyille henkilöille on lähetetty kirjautumiskutsut.
           </Typography>
         }
         open={successNotification}
@@ -230,8 +230,24 @@ function EvaluationSummary() {
       />
       <NotificationModal
         type='warning'
-        title='Suorituksen aktivoiminen epäonnistui'
-        body='Tarkista että kaikki kentät on täytetty'
+        title={
+          <Typography
+            style={{
+              fontSize: '18px',
+              fontWeight: 'bold',
+              marginRight: '25px',
+            }}
+          >
+            Suorituksen aktivoiminen epäonnistui
+          </Typography>
+        }
+        body={
+          <div style={{ padding: '10px' }}>
+            <Typography style={{ fontSize: '14px' }}>
+              Tarkista että kaikki kentät on täytetty.
+            </Typography>
+          </div>
+        }
         open={errorNotification}
         handleClose={closeErrorNotification}
       />
