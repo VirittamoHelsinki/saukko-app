@@ -90,6 +90,10 @@
       background-color: var(--accordion-background-grey);
     }
 
+    .accordion__wrapper-details.selected {
+      background-color: #e2f5f3;
+    }
+
     .pagination_evaluation_workplace {
       align-self: center;
     }
