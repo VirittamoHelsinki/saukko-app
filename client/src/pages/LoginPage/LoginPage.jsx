@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import alert from '../../assets/circle-red.svg'
 import Button from '../../components/Button/Button';
 import { loginUser } from '../../api/user';
@@ -13,7 +13,7 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
-  const processLogin = async (e) => {
+  const processLogin = useCallback(async (e) => {
     e.preventDefault();
 
     try {
@@ -29,7 +29,28 @@ const LoginPage = () => {
         console.error(err);
       }
     }
-  };
+  },[email, password]);
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        if (!buttonDisabled) {
+          processLogin(e);
+        } else {
+          console.log('button disabled');
+        }
+      }
+    };
+
+    // Adding event listener to the whole document for simplicity
+    document.addEventListener('keypress', handleKeyPress);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener('keypress', handleKeyPress);
+    };
+  }, [buttonDisabled, processLogin]);
+
   
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
