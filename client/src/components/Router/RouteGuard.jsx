@@ -19,7 +19,7 @@ const RouteGuard = ({ children }) => {
     }
 
     previousLocation.current = location;
-  }, [location, clearCheckedUnits]);
+  }, [location, clearCheckedUnits, regex]);
 
 
   return (
