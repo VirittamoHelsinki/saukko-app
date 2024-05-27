@@ -52,7 +52,7 @@ resource NodeJS_AppService 'Microsoft.Web/sites@2023-01-01' = {
     siteConfig: {
       numberOfWorkers: 1
       functionAppScaleLimit: 0
-      minimumElasticInstanceCount: 0
+      minimumElasticInstanceCount: 1
       linuxFxVersion: 'NODE|20-lts'
       appSettings: [
         {
@@ -188,7 +188,7 @@ resource Functions_App 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'MONGODB_URI'
-          value: Cosmos_Mongo.listConnectionStrings().connectionStrings[0].connectionString
+          value: replace(Cosmos_Mongo.listConnectionStrings().connectionStrings[0].connectionString, '?', 'eperusteet?')
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'

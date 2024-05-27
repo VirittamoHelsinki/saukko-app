@@ -299,7 +299,7 @@ const UserPerformance = () => {
 
   useEffect(() => {
     setSiteTitle('Arviointi'),
-      setSubHeading('Ammaattitaitovaatimusten arviointi');
+      setSubHeading('Ammattitaitovaatimusten arviointi');
     if (
       currentUser &&
       (currentUser.role === 'teacher' || currentUser.role === 'supervisor')
