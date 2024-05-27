@@ -63,7 +63,6 @@ const PageLayout = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [headingIsDisabled, setHeadingIsDisabled] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
   const headerColor = getHeaderColor(currentUser?.role);
   const wrapperStyle = {
     backgroundColor: headerColor,
