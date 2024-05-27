@@ -30,8 +30,13 @@ const AuthContextProvider = ({ children }) => {
       const c = cookies.get("auth_state");
       if (c) {
         setCookieAuthState(true);
-        const decoded = jwtDecode(c);
-        setAuthTokenExpiry(new Date(decoded.exp * 1000))
+
+        try {
+          const decoded = jwtDecode(c);
+          setAuthTokenExpiry(new Date(decoded.exp * 1000))
+        } catch (error) {
+          cookies.remove("auth_state");
+        }
       }
       return;
     }
@@ -99,7 +104,7 @@ const AuthContextProvider = ({ children }) => {
       setCurrentUser(response.data);
       setLoggedIn(true);
     } catch (error) {
-      console.error("Failed to fetch & set the data for currentUser in 'AuthContextProvider'");
+      console.error("Failed to fetch & set the data for currentUser in 'AuthContextProvider'", error);
     }
   }, [])
 
