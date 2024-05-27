@@ -14,6 +14,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -57,8 +58,10 @@ function EvaluationForm() {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
-    setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
-  }, [setHeading, setSiteTitle, setSubHeading])
+    setSiteTitle('Suorituksen aktiivoiminen'),
+      setSubHeading('Lisää uusi asiakas'),
+      setHeading('Asiakkuudet');
+  }, [setHeading, setSiteTitle, setSubHeading]);
 
   const handleBack = () => {
     // Display a warning modal before navigating to '/admin-menu'
@@ -216,7 +219,7 @@ function EvaluationForm() {
           </div>
           <div className='form__startDate'>
             <label className='form_text'>Asiakkuuden aloituspäivä *</label>
-            <LocalizationProvider dateAdapter={AdapterDayjs}> 
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <ThemeProvider theme={theme}>
                 <DesktopDatePicker
                   id='startDate'
@@ -241,7 +244,7 @@ function EvaluationForm() {
                   value={endDate}
                   onChange={(date) => setEndDate(date)}
                   minDate={startDate} // Set minDate to startDate
-                 /*  sx={{
+                  /*  sx={{
                     '.MuiOutlinedInput-root':{
                       position:'relative',
                       zIndex:'-1',
@@ -259,7 +262,7 @@ function EvaluationForm() {
                   disabled={true}
                   format='DD.MM.YYYY'
                   value={'DD.MM.YYYY'}
-                 /*  sx={{
+                  /*  sx={{
                     '.MuiOutlinedInput-root':{
                       position:'relative',
                       zIndex:'-1',
@@ -296,17 +299,53 @@ function EvaluationForm() {
           hideBackButton={true}
         />
       </section>
+      <div>
+        <div>
+          <NotificationModal
+            type='warning'
+            title={
+              <Typography
+                style={{
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  marginRight: '25px',
+                }}
+              >
+                Lomakkeen lähetys epäonnistui{' '}
+              </Typography>
+            }
+            body={
+              <div style={{ padding: '10px' }}>
+                <Typography style={{ fontSize: '14px' }}>
+                  Täytä kaikki vaaditut kentät ja tarkasta valinnat.
+                </Typography>
+              </div>
+            }
+            open={openNotificationModalAllFields}
+            handleClose={handleCloseAllFields}
+          />
+        </div>
+      </div>
       <NotificationModal
         type='warning'
-        title='Lomakkeen lähetys epäonnistui'
-        body='Täytä kaikki lomakkeen kentät'
-        open={openNotificationModalAllFields}
-        handleClose={handleCloseAllFields}
-      />
-      <NotificationModal
-        type='warning'
-        title='Lomakkeen lähetys epäonnistui'
-        body='Tarkista sähköposti kenttä'
+        title={
+          <Typography
+            style={{
+              fontSize: '18px',
+              fontWeight: 'bold',
+              marginRight: '25px',
+            }}
+          >
+            Lomakkeen lähetys epäonnistui{' '}
+          </Typography>
+        }
+        body={
+          <div style={{ padding: '10px' }}>
+            <Typography style={{ fontSize: '14px' }}>
+              Tarkista seuraavat kentät: sähköposti.
+            </Typography>
+          </div>
+        }
         open={openNotificationModalEmail}
         handleClose={handleCloseEmail}
       />
