@@ -72,7 +72,7 @@ function EvaluationWorkplace() {
     setSupervisor(null);
     if (workplaceFromStore && workplaceFromStore.departments.length > 0) {
       const findDepartmentById = workplaceFromStore.departments.find(
-        (department) => department.id === departmentId
+        (department) => department._id === departmentId
       );
       setDepartment(findDepartmentById);
     } else {
@@ -253,13 +253,19 @@ function EvaluationWorkplace() {
                           <AccordionDetails>
                             {workplace.departments.map((department, index) => (
                               <div
-                                className='accordion__wrapper-details'
+                                className={`accordion__wrapper-details ${
+                                  departmentFromStore &&
+                                  departmentFromStore._id === department._id
+                                    ? 'selected'
+                                    : ''
+                                }`}
                                 key={index}
-                                onClick={toggleDepartment(department.id)}
+                                onClick={toggleDepartment(department._id)}
                               >
                                 <Typography>{department.name}</Typography>
                                 {departmentFromStore &&
-                                  department.id === departmentFromStore.id && (
+                                  department._id ===
+                                    departmentFromStore._id && (
                                     <Icon icon='mdi:tick' />
                                   )}
                               </div>
@@ -289,7 +295,12 @@ function EvaluationWorkplace() {
                           <AccordionDetails>
                             {workplace.supervisors.map((supervisor) => (
                               <div
-                                className='accordion__wrapper-details'
+                                className={`accordion__wrapper-details ${
+                                  supervisorFromStore &&
+                                  supervisorFromStore._id === supervisor._id
+                                    ? 'selected'
+                                    : ''
+                                }`}
                                 key={supervisor._id}
                                 onClick={toggleSupervisor(supervisor._id)}
                               >
@@ -326,10 +337,15 @@ function EvaluationWorkplace() {
                               Valitse
                             </AccordionSummary>
                             <AccordionDetails>
-                              {departmentFromStore.supervisors.map(
-                                (supervisor) => (
+                              {workplace.departments.map((department) =>
+                                department.supervisors.map((supervisor) => (
                                   <div
-                                    className='accordion__wrapper-details'
+                                    className={`accordion__wrapper-details ${
+                                      supervisorFromStore &&
+                                      supervisorFromStore._id === supervisor._id
+                                        ? 'selected'
+                                        : ''
+                                    }`}
                                     key={supervisor._id}
                                     onClick={toggleSupervisor(supervisor._id)}
                                   >
@@ -343,9 +359,9 @@ function EvaluationWorkplace() {
                                         <Icon icon='mdi:tick' />
                                       )}
                                   </div>
-                                )
+                                ))
                               )}
-                            </AccordionDetails>
+                            </AccordionDetails>{' '}
                           </Accordion>
                         </>
                       )}
@@ -404,7 +420,7 @@ function EvaluationWorkplace() {
         type='warning'
         title='Työpaikan valinta epäonnistui'
         body={
-          <div style={{padding: '10px'}}>
+          <div style={{ padding: '10px' }}>
             <Typography style={{ fontSize: '14px' }}>
               Valitse ensin työpaikka, yksikkö ja työpaikkaohjaaja.
             </Typography>
