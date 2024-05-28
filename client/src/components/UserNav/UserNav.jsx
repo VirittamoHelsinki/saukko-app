@@ -66,7 +66,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
           </Box>
           <Box
             alignItems='left'
-            style={{ maxHeight: '100%', overflowY: 'auto', marginLeft: '-30px' }}
+            style={{ maxHeight: '100%', marginLeft: '-30px' }}
             sx={{
               marginTop: '12px',
               width: '45%',
@@ -186,7 +186,8 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                 onClick={LogOut}
                 sx={{ marginRight: '20px', marginBottom: '20px', cursor: 'pointer' }}
               >
-                <Typography sx={{ fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
+                <Typography
+                  sx={{ fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
                   Kirjaudu ulos
                 </Typography>
                 <Icon
