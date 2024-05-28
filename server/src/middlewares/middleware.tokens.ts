@@ -41,7 +41,13 @@ const tokensMiddleware = async (req: Request, res: Response, next: NextFunction)
 
     next();
   } catch (error) {
-    console.log("Error happened while trying to set cookies in tokensMiddleware");
+    console.log("Error happened while trying to set cookies in tokensMiddleware", JSON.stringify(error));
+    if ((error as any)?.name === "JsonWebTokenError") {
+      return res.status(401)
+      .clearCookie("auth_state")
+      .clearCookie("token", { httpOnly: true })
+      .send();
+    }
     res.status(500).json({ errorMessage: "Internal" })
   }
 }
