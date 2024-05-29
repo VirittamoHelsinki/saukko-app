@@ -13,6 +13,7 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 import { postWorkplace } from '../../../api/workplace';
 import { registration } from '../../../api/user';
 import { fetchAllInternalWorkplaces } from '../../../api/workplace';
+import { Typography } from '@mui/material';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
@@ -35,14 +36,15 @@ function DegreeConfirmSelection() {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
-    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikka"), setHeading("Työpaikkojen hallinta")
+    setSiteTitle('Lisää työpaikka'),
+      setSubHeading('Lisää uusi työpaikka'),
+      setHeading('Työpaikkojen hallinta');
   }, [setSiteTitle, setSubHeading, setHeading]);
-
 
   useEffect(() => {
     setinternalDegreeId(params?.degreeId);
     // console.log('internal degree-------------', params.degreeId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.degreeId]);
 
   const checkedUnits = useUnitsStore((state) => state?.checkedUnits);
@@ -56,7 +58,6 @@ function DegreeConfirmSelection() {
 
   const { openNotificationModal, setOpenNotificationModal } = useStore();
 
-  
   // eslint-disable-next-line no-unused-vars
   const handleNotificationModalOpen = () => {
     setOpenNotificationModal(true);
@@ -183,7 +184,7 @@ function DegreeConfirmSelection() {
     } else if (isFailure) {
       setOpenNotificationModal(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isFailure]);
 
   return (
@@ -241,7 +242,6 @@ function DegreeConfirmSelection() {
           handleForward={handleVahvistaClick}
           forwardButtonText={'Vahvista'}
           showForwardButton={true}
-
         />
       </section>
       {isSuccess && (
@@ -257,8 +257,30 @@ function DegreeConfirmSelection() {
       {isFailure && (
         <NotificationModal
           type='warning'
-          title='Uusi työpaikka ei onnistunut'
-          body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+          title={
+            <div>
+              <Typography
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: '18px',
+                  marginRight: '25px',
+                }}
+              >
+                Tietojen tallentaminen ei onnistunut
+              </Typography>
+            </div>
+          }
+          body={
+            <div style={{ padding: '10px' }}>
+              <Typography style={{ fontSize: '14px' }}>
+                Tietojen tallentaminen tietokantaan ei onnistunut.
+              </Typography>
+              <Typography style={{ fontSize: '14px' }}>
+                Virhekoodi: [virhekoodi UIDV4]
+              </Typography>
+            </div>
+          }
+          sx={{ marginLeft: '1rem' }}
           open={openNotificationModal}
           redirectLink='/company-info'
         />
