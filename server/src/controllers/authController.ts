@@ -69,7 +69,8 @@ const registerUser = async (req: Request, res: Response) => {
     const verificationLink = newUser.generateEmailVerificationLink();
     console.log('verificationLink: ', verificationLink);
     // Send verification email
-    sendVerificationEmail({ userEmail: newUser.email, verificationLink });
+
+    sendVerificationEmail({ userEmail: newUser.email, verificationLink, recipentUserId: newUser._id });
 
     res.status(201).json({ userId: newUser._id, message: 'User created. Verification email sent.' });
 
@@ -238,6 +239,7 @@ const login = async (req: Request, res: Response) => {
       .cookie("token", tokens.auth, { httpOnly: true })
       .json({ message: "User is signed in" })
   } catch (err) {
+    console.error(err)
     _responseWithError(res, 500, err, "Internal server error");
   }
 }
@@ -353,7 +355,7 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
     const verificationLink = user.generateEmailVerificationLink();
 
     // Send verification email
-    sendVerificationEmail({ userEmail: user.email, verificationLink });
+    sendVerificationEmail({ userEmail: user.email, verificationLink, recipentUserId: user._id });
     console.log('user created and verification email sent');
   }
 
