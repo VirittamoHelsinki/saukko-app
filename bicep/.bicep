@@ -25,6 +25,8 @@ var functionsAppName = '${app_name}-fn-${uniqueString(resourceGroup().id)}'
 var appServicePlanName = '${app_name}-asp'
 var webjobsStorageName = 'webjobs${uniqueString(resourceGroup().id)}'
 var cosmosDbName = '${app_name}-cosmos'
+var communicationServicesName = '${app_name}-com-${uniqueString(resourceGroup().id)}'
+var emailServiceName = '${app_name}-es-${uniqueString(resourceGroup().id)}'
 
 // App Service plan for the APP
 resource ASP_NodeJS_AppService 'Microsoft.Web/serverfarms@2023-01-01' = {
@@ -66,6 +68,14 @@ resource NodeJS_AppService 'Microsoft.Web/sites@2023-01-01' = {
         {
           name: 'MONGODB_URI'
           value: Cosmos_Mongo.listConnectionStrings().connectionStrings[0].connectionString
+        }
+        {
+          name: 'EMAIL_FROM_SENDER_DOMAIN'
+          value: AzureManagedDomain.properties.mailFromSenderDomain
+        }
+        {
+          name: 'EMAIL_SERVICE_CONNECTION_STRING'
+          value: Communication_Services.listKeys().primaryConnectionString
         }
         {
           name: 'APP_URL'
@@ -286,5 +296,39 @@ resource Cosmos_Mongo 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-preview'
   }
   identity: {
     type: 'None'
+  }
+}
+
+
+resource Communication_Services 'Microsoft.Communication/communicationServices@2023-06-01-preview' = {
+  name: communicationServicesName
+  location: 'global'
+  tags: {}
+  properties: {
+    dataLocation: 'Europe'
+    linkedDomains: [
+      AzureManagedDomain.id
+    ]
+  }
+}
+
+
+resource Email_Service 'Microsoft.Communication/emailServices@2023-06-01-preview' = {
+  name: emailServiceName
+  location: 'global'
+  tags: {}
+  properties: {
+    dataLocation: 'Europe'
+  }
+}
+
+
+resource AzureManagedDomain 'Microsoft.Communication/emailServices/domains@2023-06-01-preview' = {
+  name: 'AzureManagedDomain'
+  location: 'global'
+  parent: Email_Service
+  properties: {
+    domainManagement: 'AzureManaged'
+    userEngagementTracking: 'Disabled'
   }
 }
