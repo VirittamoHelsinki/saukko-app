@@ -165,7 +165,7 @@ function ProfilePage() {
             handleClose={handleCloseEmailNotification}
             type='success'
             title='Sähköposti vaihdettu!'
-            body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+            body='Voit seuraavalla kerralla kirjautua sisään uusia kirjautumistietoja käyttäen.'
           />
         </div>
         <div className='profile__container---change-password'>
@@ -203,8 +203,8 @@ function ProfilePage() {
             open={openPasswordNotification}
             handleClose={handleClosePasswordNotification}
             type='success'
-            title='Salasana vaihdettu!'
-            body='Lorem ipsum, dolor sit amet consectetur adipisicing elit'
+            title='Tiedot päivitetty!'
+            body='Voit seuraavalla kerralla kirjautua sisään uusia kirjautumistietoja käyttäen.'
           />
         </div>
       </section>

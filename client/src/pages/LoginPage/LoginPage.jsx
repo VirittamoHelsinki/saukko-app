@@ -15,7 +15,6 @@ const LoginPage = () => {
 
   const processLogin = useCallback(async (e) => {
     e.preventDefault();
-    console.log('loging in');
 
     try {
       const loginData = {

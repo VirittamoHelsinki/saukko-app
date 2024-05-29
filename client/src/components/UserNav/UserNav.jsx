@@ -7,7 +7,7 @@ import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import { logoutUser } from '../../api/user';
 
-const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsOpen }) => {
+const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsOpen, userNavRef }) => {
   const { currentUser } = useAuthContext();
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const navigate = useNavigate();
@@ -52,21 +52,21 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
 
 
   return (
-    <div className='userNav__wrapper'>
-      {/* for hamburger menu*/}
+    <div
+      className='userNav__wrapper'>
       <div
         className={`userNav__menu ${menuIsOpen ? 'userNav__menu--open' : ''}`}
       >
-        {/* Hamburger  Menu Items */}
-        {/* set background color user's role */}
-        <div className={`userNav__icons ${currentUser?.role}`}>
+        <div
+          ref={userNavRef}
+          className={`userNav__icons ${currentUser?.role}`}>
           <Box sx={{ height: '20vh', marginTop: '50px', textAlign: 'center' }}>
             <img className='helsinki-logo' src={HelsinkiLogo} alt='' />
             <h1 className='logo-text'>OsTu</h1>
           </Box>
           <Box
             alignItems='left'
-            style={{ maxHeight: '100%', overflowY: 'auto', marginLeft: '-30px' }}
+            style={{ maxHeight: '100%', marginLeft: '-30px' }}
             sx={{
               marginTop: '12px',
               width: '45%',
@@ -186,7 +186,8 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
                 onClick={LogOut}
                 sx={{ marginRight: '20px', marginBottom: '20px', cursor: 'pointer' }}
               >
-                <Typography sx={{ fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
+                <Typography
+                  sx={{ fontWeight: '600', fontSize: '14px', cursor: 'pointer' }}>
                   Kirjaudu ulos
                 </Typography>
                 <Icon

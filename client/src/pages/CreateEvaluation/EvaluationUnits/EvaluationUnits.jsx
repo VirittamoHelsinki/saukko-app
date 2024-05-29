@@ -10,6 +10,7 @@ import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import { Typography } from '@mui/material';
 
 function EvaluationUnits() {
   const navigate = useNavigate();
@@ -84,8 +85,19 @@ function EvaluationUnits() {
       </section>
       <NotificationModal
         type='warning'
-        title='Valitse tutkinnonosat'
-        body='Valitse ainakin yksi tutkinnonosa'
+        title=
+        {
+          <Typography style={{ fontSize: '18px', fontWeight: 'bold', marginRight: '25px', }}>
+            Valitse tutkinnonosat
+          </Typography>
+        }
+        body={
+          <div style={{padding: '10px'}}>
+          <Typography style={{ fontSize: '14px' }}>
+            Valitse ainakin yksi tutkinnonosa.
+          </Typography>
+          </div>
+        }
         open={openNotificationModal}
       />
     </div>

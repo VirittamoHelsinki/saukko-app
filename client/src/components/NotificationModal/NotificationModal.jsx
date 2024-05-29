@@ -118,7 +118,7 @@ export default function CustomizedDialogs(props) {
     bgColor = '#e2f5f3';
     color = '#007a64';
   } else if (props.type === 'warning') {
-    icon = 'material-symbols:warning';
+    icon = 'material-symbols:error-outline';
     bgColor = '#f6e2e6';
     color = '#b01038';
   } else if (props.type === 'iconInfo') {
