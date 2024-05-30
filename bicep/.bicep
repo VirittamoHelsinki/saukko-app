@@ -28,6 +28,10 @@ var cosmosDbName = '${app_name}-cosmos'
 var communicationServicesName = '${app_name}-com-${uniqueString(resourceGroup().id)}'
 var emailServiceName = '${app_name}-es-${uniqueString(resourceGroup().id)}'
 
+// var sanitizedAppName = replace(toLower(app_name), '-', '')
+var queueStorageName = 'queue${uniqueString(resourceGroup().id)}'
+var mailerQueueName = 'mailer'
+
 // App Service plan for the APP
 resource ASP_NodeJS_AppService 'Microsoft.Web/serverfarms@2023-01-01' = {
   name: appServicePlanName
@@ -76,6 +80,14 @@ resource NodeJS_AppService 'Microsoft.Web/sites@2023-01-01' = {
         {
           name: 'EMAIL_SERVICE_CONNECTION_STRING'
           value: Communication_Services.listKeys().primaryConnectionString
+        }
+        {
+          name: 'MAILER_QUEUE_ENDPOINT'
+          value: '${QueueStorage.properties.primaryEndpoints.queue}/${mailerQueueName}'
+        }
+        {
+          name: 'QUEUE_STORAGE_CONNECTION_STRING'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${queueStorageName};AccountKey=${QueueStorage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
         }
         {
           name: 'APP_URL'
@@ -199,6 +211,22 @@ resource Functions_App 'Microsoft.Web/sites@2023-01-01' = {
         {
           name: 'MONGODB_URI'
           value: replace(Cosmos_Mongo.listConnectionStrings().connectionStrings[0].connectionString, '?', 'eperusteet?')
+        }
+        {
+          name: 'MAILER_QUEUE_ENDPOINT'
+          value: '${QueueStorage.properties.primaryEndpoints.queue}/${mailerQueueName}'
+        }
+        {
+          name: 'QUEUE_STORAGE_CONNECTION_STRING'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${queueStorageName};AccountKey=${QueueStorage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+        }
+        {
+          name: 'EMAIL_SERVICE_CONNECTION_STRING'
+          value: Communication_Services.listKeys().primaryConnectionString
+        }
+        {
+          name: 'EMAIL_FROM_SENDER_DOMAIN'
+          value: AzureManagedDomain.properties.mailFromSenderDomain
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
@@ -331,4 +359,66 @@ resource AzureManagedDomain 'Microsoft.Communication/emailServices/domains@2023-
     domainManagement: 'AzureManaged'
     userEngagementTracking: 'Disabled'
   }
+}
+
+resource QueueStorage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  name: queueStorageName
+  location: location
+  tags: {}
+  properties: {
+    dnsEndpointType: 'Standard'
+    defaultToOAuthAuthentication: false
+    publicNetworkAccess: 'Enabled'
+    allowCrossTenantReplication: false
+    minimumTlsVersion: 'TLS1_2'
+    allowBlobPublicAccess: false
+    allowSharedKeyAccess: true
+    largeFileSharesState: 'Enabled'
+    networkAcls: {
+      bypass: 'AzureServices'
+      virtualNetworkRules: []
+      ipRules: []
+      defaultAction: 'Allow'
+    }
+    supportsHttpsTrafficOnly: true
+    encryption: {
+      requireInfrastructureEncryption: false
+      services: {
+        file: {
+          keyType: 'Account'
+          enabled: true
+        }
+        blob: {
+          keyType: 'Account'
+          enabled: true
+        }
+      }
+      keySource: 'Microsoft.Storage'
+    }
+    accessTier: 'Hot'
+    // primaryEndpoints: {
+    //   dfs: 'https://queuestoragesaukkotest.dfs.core.windows.net/'
+    //   web: 'https://queuestoragesaukkotest.z16.web.core.windows.net/'
+    //   blob: 'https://queuestoragesaukkotest.blob.core.windows.net/'
+    //   queue: 'https://queuestoragesaukkotest.queue.core.windows.net/'
+    //   table: 'https://queuestoragesaukkotest.table.core.windows.net/'
+    //   file: 'https://queuestoragesaukkotest.file.core.windows.net/'
+    // }
+  }
+}
+
+resource queueService 'Microsoft.Storage/storageAccounts/queueServices@2023-01-01' = {
+  parent: QueueStorage
+  name: 'default'
+  properties: {}
+}
+
+resource mailerQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2023-01-01' = {
+  parent: queueService
+  name: mailerQueueName
+  properties: {}
 }
