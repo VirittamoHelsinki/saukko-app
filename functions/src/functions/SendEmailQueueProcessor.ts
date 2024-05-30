@@ -19,7 +19,7 @@ export async function SendEmailQueueProcessor(queueItem: unknown, context: Invoc
 
     try {
       // Tulkitaan jonosta saatu viesti
-      const emailData: IEmailObj = JSON.parse(queueItem as string);
+      const emailData: IEmailObj = (JSON.parse(JSON.stringify(queueItem)));
 
       // Lähetetään sähköposti
       const success = await sendEmail(emailData);
