@@ -1,15 +1,15 @@
 // Import react packages & dependencies
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { Icon } from '@iconify/react';
 
 // Import components
-import Button from '../../components/Button/Button';
+//import Button from '../../components/Button/Button';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 import PopUpForm from '../../components/PopUpForm/PopUpForm';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import {
-  logoutUser,
+  /* logoutUser, */
   requestPasswordChangeTokenAsUser,
   resetPassword,
 } from '../../api/user';
@@ -22,7 +22,7 @@ function ProfilePage() {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Logout
-  const navigate = useNavigate();
+/*   const navigate = useNavigate();
 
   const LogOut = async () => {
     try {
@@ -33,7 +33,9 @@ function ProfilePage() {
     }
   };
 
-  const [invalidPasswordError, setInvalidPasswordError] = useState(false);
+ */ 
+
+const [invalidPasswordError, setInvalidPasswordError] = useState(false);
   
   // State for opening & closing email pop up
   const [openEmailPopUp, setOpenEmailPopUp] = useState(false);
@@ -208,13 +210,13 @@ function ProfilePage() {
           />
         </div>
       </section>
-      <section className='profile__logout'>
+      {/* <section className='profile__logout'>
         <Button
           text='Kirjaudu Ulos'
           onClick={LogOut}
           icon={'grommet-icons:logout'}
         />
-      </section>
+      </section> */}
     </div>
   );
 }

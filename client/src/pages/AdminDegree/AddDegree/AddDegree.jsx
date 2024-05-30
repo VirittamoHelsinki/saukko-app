@@ -89,25 +89,6 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
           {' >'}
         </button>
       </section>
-      {/* Render previous and next buttons */}
-      {/* <section id='prevNextButtons' className='addDegree__container--list-pagination-arrows'>
-        <button
-          // Disable button if current page is the first page
-          disabled={currentPage === 1}
-          onClick={() => handlePageClick(currentPage - 1)}
-          className='arrow__button'
-        >
-          {'< Previous'}
-        </button>
-        <button
-          // Disable button if current page is the last page
-          disabled={currentPage === pageCount}
-          onClick={() => handlePageClick(currentPage + 1)}
-          className='arrow__button'
-        >
-          {'Next >'}
-        </button>
-      </section> */}
     </div>
   );
 };

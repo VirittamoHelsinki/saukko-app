@@ -199,14 +199,14 @@ const CompanyInfo = () => {
             backgroundColor: '#F2F2F2',
             paddingTop: '17px',
             paddingBottom: '20px',
-            position: 'static'
+            //position: 'static'
           }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
-            sx={{position: 'static'}}
+            //sx={{position: 'static'}}
           >
             <Typography 
               sx={{ fontSize: '22px' }}>
@@ -285,7 +285,7 @@ const CompanyInfo = () => {
             backgroundColor: '#F2F2F2',
             paddingTop: '17px',
             paddingBottom: '20px',
-            position: 'static'
+            //position: 'static'
           }}
         >
           <AccordionSummary

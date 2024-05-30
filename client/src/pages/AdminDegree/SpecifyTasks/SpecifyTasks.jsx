@@ -171,7 +171,7 @@ function SpecifyTasks({ degree }) {
                     sx={{ 
                       fontWeight: 'bold', 
                       color: '#000000',
-                      position: 'static'
+                      //position: 'static'
                      }}
                     size='small'
                     onClick={handleBack}
@@ -238,7 +238,7 @@ function SpecifyTasks({ degree }) {
                 sx={{ 
                   paddingLeft: 0, 
                   textTransform: 'none',
-                  position: 'static'
+                  //position: 'static'
                  }}
               >
                 + Lisää ammattitaitovaatimukset
