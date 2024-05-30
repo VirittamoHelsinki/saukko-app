@@ -9,7 +9,6 @@ const container = database.container('emaildocuments');
 export async function cosmosTest(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     context.log(`Http function processed request for url "${request.url}"`);
     let success: boolean = false;
-
     try {
       const { resource: dbInfo } = await database.read();
       console.log(`Connected to database: ${dbInfo.id}`);
