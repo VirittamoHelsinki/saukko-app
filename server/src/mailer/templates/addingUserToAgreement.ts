@@ -1,4 +1,5 @@
 import { sendEmail } from "../configMailer";
+import mailPoller, { EmailObj } from "../azureEmailService"
 import mailerTemplate from "../mailerHtmlTemplate";
 
 export interface ISendNewCustomerAddedEmail {
@@ -10,33 +11,41 @@ export interface ISendNewCustomerAddedEmail {
 }
 
 export const sendNewCustomerAddedEmail = (params: ISendNewCustomerAddedEmail) => {
+  const text = `
+    Tervetuloa OsTu-appin käyttäjäksi! 
 
-  const text =
-  `
-  Tervetuloa OsTu-appin käyttäjäksi! 
-
-  Sinut on liitetty osaamisen tunnistamisen toteutukseen. 
-  
-  
-  Tutkinto: ${params.degreeName}
-  Työpaikkaohjaaja: ${params.supervisorName}
-  Opettaja: ${params.teacherName}
-  
-  
-  Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
-  
-  Linkki vanhenee kahden tunnin kuluttua.
-   
-  
-  Ystävällisin terveisin,
-  Ylläpito
-  
+    Sinut on liitetty osaamisen tunnistamisen toteutukseen. 
+    
+    
+    Tutkinto: ${params.degreeName}
+    Työpaikkaohjaaja: ${params.supervisorName}
+    Opettaja: ${params.teacherName}
+    
+    
+    Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
+    
+    Linkki vanhenee kahden tunnin kuluttua.
+    
+    
+    Ystävällisin terveisin,
+    Ylläpito
   `;
 
-  const subject = 'Uuden asiakkaan lisääminen suoritukseen';
-  const html = mailerTemplate(text);
+  const mail: EmailObj = {
+    content: {
+      subject: 'Uuden asiakkaan lisääminen suoritukseen',
+      plainText: text,
+      html: mailerTemplate(text),
+    },
+    recipients:
+    {
+      to: [
+        { address: params.userEmail }
+      ] 
+    }
+  }
 
-  sendEmail({ to: params.userEmail, subject, html });
+  mailPoller(mail);
 };
 
 export interface ISendNewCustomerVerfiedEmail {
@@ -46,25 +55,35 @@ export interface ISendNewCustomerVerfiedEmail {
 
 export const sendNewCustomerVerifiedEmail = (params: ISendNewCustomerVerfiedEmail) => {
 
-  const text =
-  `
-  Hei ${params.userFirstName}.
+  const text = `
+    Hei ${params.userFirstName}.
 
-  Salasanasi on nyt vaihdettu ja tilisi aktivoitu. Sinulla on nyt käyttäjätili OsTu-appiin!
-  
-  Löydät asiakkuuteesi liittyvät tiedot omalta tililtäsi, jossa voit myös päivittää omia tietojasi.
-  
-  Tervetuloa mukaan!
-  
-  
-  Ystävällisin terveisin,
-  Ylläpito
+    Salasanasi on nyt vaihdettu ja tilisi aktivoitu. Sinulla on nyt käyttäjätili OsTu-appiin!
+    
+    Löydät asiakkuuteesi liittyvät tiedot omalta tililtäsi, jossa voit myös päivittää omia tietojasi.
+    
+    Tervetuloa mukaan!
+    
+    
+    Ystävällisin terveisin,
+    Ylläpito
   `;
- 
-  const subject = 'Uusi asiakas liitetty suoritukseen';
-  const html = mailerTemplate(text);
 
-  sendEmail({ to: params.userEmail, subject, html });
+  const mail: EmailObj = {
+    content: {
+      subject: 'Uusi asiakas liitetty suoritukseen',
+      plainText: text,
+      html: mailerTemplate(text),
+    },
+    recipients:
+    {
+      to: [
+        { address: params.userEmail }
+      ] 
+    }
+  }
+
+  mailPoller(mail);
 };
 
 
@@ -78,8 +97,7 @@ export interface ISendNewSupervisorAddedEmail {
 
 export const sendNewSupervisorAddedEmail = (params: ISendNewSupervisorAddedEmail) => {
 
-    const text =
-    `
+  const text = `
     Tervetuloa OsTu-appin käyttäjäksi! 
   
     Sinut on liitetty henkilön ${params.customerName} osaamisen tunnistamisen toteutukseen. 
@@ -97,44 +115,65 @@ export const sendNewSupervisorAddedEmail = (params: ISendNewSupervisorAddedEmail
     
     Ystävällisin terveisin, 
     Ylläpito 
-    `;
-  
-    const subject = 'Uusi työpaikkaohjaaja liitetty suoritukseen';
-    const html = mailerTemplate(text);
-  
-    sendEmail({ to: params.userEmail, subject, html });
-  };
+  `;
 
-  export interface ISendOldSupervisorAddedEmail {
-    userFirstName: string;
-    userEmail: string;
-    customerName: string;
-    degreeName: string;
-    teacherName: string;
+  const mail: EmailObj = {
+    content: {
+      subject: 'Uusi työpaikkaohjaaja liitetty suoritukseen',
+      plainText: text,
+      html: mailerTemplate(text),
+    },
+    recipients:
+    {
+      to: [
+        { address: params.userEmail }
+      ] 
+    }
   }
 
-  
-  export const sendOldSupervisorAddedEmail = (params: ISendOldSupervisorAddedEmail) => {
+  mailPoller(mail);
+};
 
-    const text =
+export interface ISendOldSupervisorAddedEmail {
+  userFirstName: string;
+  userEmail: string;
+  customerName: string;
+  degreeName: string;
+  teacherName: string;
+}
+
+
+export const sendOldSupervisorAddedEmail = (params: ISendOldSupervisorAddedEmail) => {
+
+  const text =
     `
-    Hei ${params.userFirstName}.
-  
-    Sinut on liitetty henkilön ${params.customerName} osaamisen tunnistamisen toteutukseen.
+      Hei ${params.userFirstName}.
     
-    
-    Asiakas: ${params.customerName} 
-    Tutkinto: ${params.degreeName} 
-    Opettaja: ${params.teacherName} 
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
-  
+      Sinut on liitetty henkilön ${params.customerName} osaamisen tunnistamisen toteutukseen.
+      
+      
+      Asiakas: ${params.customerName} 
+      Tutkinto: ${params.degreeName} 
+      Opettaja: ${params.teacherName} 
+      
+      
+      Ystävällisin terveisin,
+      Ylläpito
     `;
+
+    const mail: EmailObj = {
+      content: {
+        subject: 'Vanha työpaikkaohjaaja liitetty suoritukseen',
+        plainText: text,
+        html: mailerTemplate(text),
+      },
+      recipients:
+      {
+        to: [
+          { address: params.userEmail }
+        ] 
+      }
+    }
   
-    const subject = 'Vanha työpaikkaohjaaja liitetty suoritukseen';
-    const html = mailerTemplate(text);
-  
-    sendEmail({ to: params.userEmail, subject, html });
-  };
+    mailPoller(mail)
+};

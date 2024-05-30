@@ -1,14 +1,16 @@
 import { sendEmail } from "../configMailer";
+import createNewEmail from "../createNewMail";
 import mailerTemplate from "../mailerHtmlTemplate";
 
 interface IsendVerificationEmail {
   userEmail: string;
   verificationLink: string;
+  recipentUserId: string;
 }
 
 export const sendVerificationEmail = (params: IsendVerificationEmail) => {
   
-    const text =
+    const plainText =
       `
     Tervetuloa OsTu-appin käyttäjäksi!
 
@@ -22,9 +24,21 @@ export const sendVerificationEmail = (params: IsendVerificationEmail) => {
     `;
   
     const subject = 'Vahvista sähköpostiosoitteesi';
-    const html = mailerTemplate(text);
+    const html = mailerTemplate(plainText);
   
-    sendEmail({ to: params.userEmail, subject, html });
+    // sendEmail({ to: params.userEmail, subject, html });
+
+    createNewEmail({
+      msg: {
+        content: {
+          subject,
+          html,
+          plainText
+        },
+        recipients: { to: [{ address: params.userEmail }] }
+      },
+      recipentUserId: params.recipentUserId,
+    });
   };
 
   interface IsendVerificationDoneEmail {
