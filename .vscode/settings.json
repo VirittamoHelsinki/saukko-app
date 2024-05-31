@@ -10,5 +10,8 @@
   "debug.internalConsoleOptions": "neverOpen",
   "azureFunctions.projectLanguageModel": 4,
   "azureFunctions.preDeployTask": "npm prune (functions)",
-  "eslint.workingDirectories": ["./client", "./server"]
+  "eslint.workingDirectories": [
+    "./client",
+    "./server"
+  ]
 }

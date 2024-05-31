@@ -93,7 +93,7 @@ const create = async (req: Request, res: Response) => {
           const supervisor = await UserModel.findById(supervisorId);
           if (supervisor) {
             const verificationLink = _generateVerificationLink(supervisor);
-            sendVerificationEmail({ userEmail: supervisor.email, verificationLink });
+            sendVerificationEmail({ userEmail: supervisor.email, verificationLink, recipentUserId: supervisor._id });
           }
         } catch (userError) {
           console.error('Error fetching supervisor for notification: ', userError);
@@ -118,7 +118,7 @@ const getAll = async (req: Request, res: Response) => {
       .populate('customerId', 'firstName lastName email')
       .populate('teacherId', 'firstName lastName')
       .populate('supervisorIds', 'firstName lastName email')
-      .populate('workplaceId'); 
+      .populate('workplaceId');
 
     res.send(evaluations);
   } catch (error) {
@@ -255,7 +255,7 @@ const update = async (req: Request, res: Response) => {
 
       for (const supervisor of newSupervisorDetails) {
         const verificationLink = _generateVerificationLink(supervisor);
-        sendVerificationEmail({userEmail: supervisor.email, verificationLink});
+        sendVerificationEmail({ userEmail: supervisor.email, verificationLink, recipentUserId: supervisor._id });
       }
 
       // Notify existing supervisors, the customer, and possibly the teacher about new additions
@@ -400,182 +400,181 @@ const sendEmailToTeacher = async (req: Request, res: Response) => {
 };
 
 const handeUserPerformanceEmails = async (req: Request, res: Response) => {
-    try {
-      const evaluation = await EvaluationModel.findById(req.params.id)
-        .populate({
-          path: 'degreeId',
-          select: 'name.fi',
-        })
-        .populate('customerId')
-        .populate('teacherId')
-        .populate('supervisorIds')
-        .populate('units');
+  try {
+    const evaluation = await EvaluationModel.findById(req.params.id)
+      .populate({
+        path: 'degreeId',
+        select: 'name.fi',
+      })
+      .populate('customerId')
+      .populate('teacherId')
+      .populate('supervisorIds')
+      .populate('units');
 
 
-      if (!evaluation) {
-        return res.status(404).send({ message: 'Evaluation not found' });
-      }
+    if (!evaluation) {
+      return res.status(404).send({ message: 'Evaluation not found' });
+    }
 
-      const user = req.user as User;
+    const user = req.user as User;
 
-      interface IFormIsReadyParams {
-        degreeName: string;
-        unitName: string;
-        supervisorName: string;
-        customerName: string;
-        additionalInfo: string;
-      }
+    interface IFormIsReadyParams {
+      degreeName: string;
+      unitName: string;
+      supervisorName: string;
+      customerName: string;
+      additionalInfo: string;
+    }
 
-      const formIsReadyParams: IFormIsReadyParams = {
-        degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
-        unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
-        supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-        customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-        additionalInfo: req.body.additionalInfo,
-      };
+    const formIsReadyParams: IFormIsReadyParams = {
+      degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
+      unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
+      supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+      customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+      additionalInfo: req.body.additionalInfo,
+    };
 
-      const customerEmail: string = evaluation.customerId?.email || 'Unknown Customer Email';
-      const teacherEmail: string = evaluation.teacherId?.email || 'Unknown Teacher Email';
-      const supervisorEmail: string = evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email';
+    const customerEmail: string = evaluation.customerId?.email || 'Unknown Customer Email';
+    const teacherEmail: string = evaluation.teacherId?.email || 'Unknown Teacher Email';
+    const supervisorEmail: string = evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email';
 
-      const selectedValues = req.body.selectedValues;
+    const selectedValues = req.body.selectedValues;
 
-      if (selectedValues.suoritusValmis) {
-        // suoritus valmis
-        switch (user.role) {
-          case 'supervisor':
-            sendEvaluationFormSupervisorReadyMessageCustomer(
-              {
-                ...formIsReadyParams,
-                customerFirstName: evaluation.customerId?.firstName || 'Unknown Customer First Name',
-                customerAssessment: AssessmentStatus.READY,
-                supervisorAssessment: AssessmentStatus.READY,
-              },
-              'TPO:n valmis lomake', customerEmail);
-            sendEvaluationFormSupervisorReadyMessageTeacher(
-              {
-                ...formIsReadyParams,
-                teacherFirstName: evaluation.teacherId?.firstName || 'Unknown Customer First Name',
-                customerAssessment: AssessmentStatus.READY,
-                supervisorAssessment: AssessmentStatus.READY,
-              },
-              'TPO:n valmis lomake', teacherEmail);
-            break;
-          case 'customer':
-            sendEvaluationFormCustomerReadyMessageSupervisor({
+    if (selectedValues.suoritusValmis) {
+      // suoritus valmis
+      switch (user.role) {
+        case 'supervisor':
+          sendEvaluationFormSupervisorReadyMessageCustomer(
+            {
               ...formIsReadyParams,
-              supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+              customerFirstName: evaluation.customerId?.firstName || 'Unknown Customer First Name',
               customerAssessment: AssessmentStatus.READY,
               supervisorAssessment: AssessmentStatus.READY,
-            }, 'Asiakkaan valmis lomake', supervisorEmail);
-            sendEvaluationFormCustomerReadyMessageTeacher({
+            },
+            'TPO:n valmis lomake', customerEmail);
+          sendEvaluationFormSupervisorReadyMessageTeacher(
+            {
               ...formIsReadyParams,
-              teacherFirstName: evaluation.teacherId?.firstName,
+              teacherFirstName: evaluation.teacherId?.firstName || 'Unknown Customer First Name',
               customerAssessment: AssessmentStatus.READY,
               supervisorAssessment: AssessmentStatus.READY,
+            },
+            'TPO:n valmis lomake', teacherEmail);
+          break;
+        case 'customer':
+          sendEvaluationFormCustomerReadyMessageSupervisor({
+            ...formIsReadyParams,
+            supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+            customerAssessment: AssessmentStatus.READY,
+            supervisorAssessment: AssessmentStatus.READY,
+          }, 'Asiakkaan valmis lomake', supervisorEmail);
+          sendEvaluationFormCustomerReadyMessageTeacher({
+            ...formIsReadyParams,
+            teacherFirstName: evaluation.teacherId?.firstName,
+            customerAssessment: AssessmentStatus.READY,
+            supervisorAssessment: AssessmentStatus.READY,
 
-            }, 'Asiakkaan valmis lomake', supervisorEmail);
-            break;
-          case 'teacher':
-            sendEvaluationFormTeacherReadyMessageSupervisor({
-              ...formIsReadyParams,
-              supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
-              evaluationAccepted: EvaluationStatus.ACCEPTED,
+          }, 'Asiakkaan valmis lomake', supervisorEmail);
+          break;
+        case 'teacher':
+          sendEvaluationFormTeacherReadyMessageSupervisor({
+            ...formIsReadyParams,
+            supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+            evaluationAccepted: EvaluationStatus.ACCEPTED,
 
-            }, 'opettajan valmis lomake', supervisorEmail);
-            sendEvaluationFormTeacherReadyMessageCustomer({
-              ...formIsReadyParams,
-              customerFirstName: evaluation.customerId?.firstName,
-              evaluationAccepted: EvaluationStatus.ACCEPTED,
+          }, 'opettajan valmis lomake', supervisorEmail);
+          sendEvaluationFormTeacherReadyMessageCustomer({
+            ...formIsReadyParams,
+            customerFirstName: evaluation.customerId?.firstName,
+            evaluationAccepted: EvaluationStatus.ACCEPTED,
 
-            }, 'opettajan valmis lomake', customerEmail);
-            break;
+          }, 'opettajan valmis lomake', customerEmail);
+          break;
+      }
+    }
+    const requestContactParams: ISendEvaluationFormRequestContact = {
+      degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
+      unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
+      teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
+      customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
+      supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
+    };
+
+    // yhteydenottopyynnöt
+    if (selectedValues.pyydetaanYhteydenottoaOpettajalta && user.role === 'customer') {
+      sendEvaluationFormCustomerRequestContact({
+        ...requestContactParams,
+      }, teacherEmail);
+    }
+
+    if (selectedValues.pyydetaanYhteydenottoaOpettajalta && user.role === 'supervisor') {
+      sendEvaluationFormSupervisorRequestContact({
+        ...requestContactParams,
+      }, teacherEmail);
+    }
+
+    if (selectedValues.pyydetaanYhteydenottoaAsiakkaalta && user.role === 'teacher') {
+      sendEvaluationFormTeacherRequestContactMessageCustomer({
+        ...requestContactParams,
+      }, customerEmail);
+    }
+    if (selectedValues.pyydetaanYhteydenottoaOhjaajalta && user.role === 'teacher') {
+      sendEvaluationFormTeacherRequestContactMessageSupervisor({
+        ...requestContactParams,
+        vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
+      }, supervisorEmail);
+    }
+
+    evaluation.units = req.body.units.map((unit: any) => {
+      let allAssessmentsCompleted = true;
+      let anyAssessmentInProgress = false;
+
+      // Check if any assessment is in progress or all assessments are completed and ready is true
+      unit.assessments.forEach((assessment: any) => {
+        const { answer, answerTeacher, answerSupervisor } = assessment;
+        if (
+          [answer, answerTeacher, answerSupervisor].some(
+            (ans) => ans === 1 || ans === 2,
+          )
+        ) {
+          anyAssessmentInProgress = true;
         }
-      }
-      const requestContactParams: ISendEvaluationFormRequestContact = {
-        degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
-        unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
-        teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
-        customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-        supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
-      };
-
-      // yhteydenottopyynnöt
-      if (selectedValues.pyydetaanYhteydenottoaOpettajalta && user.role === 'customer') {
-        sendEvaluationFormCustomerRequestContact({
-          ...requestContactParams,
-        }, teacherEmail);
-      }
-
-      if (selectedValues.pyydetaanYhteydenottoaOpettajalta && user.role === 'supervisor') {
-        sendEvaluationFormSupervisorRequestContact({
-          ...requestContactParams,
-        }, teacherEmail);
-      }
-
-      if (selectedValues.pyydetaanYhteydenottoaAsiakkaalta && user.role === 'teacher') {
-        sendEvaluationFormTeacherRequestContactMessageCustomer({
-          ...requestContactParams,
-        }, customerEmail);
-      }
-      if (selectedValues.pyydetaanYhteydenottoaOhjaajalta && user.role === 'teacher') {
-        sendEvaluationFormTeacherRequestContactMessageSupervisor({
-          ...requestContactParams,
-          vocationalCompetenceName: evaluation.units[0].assessments[0].name.fi,
-        }, supervisorEmail);
-      }
-
-      evaluation.units = req.body.units.map((unit: any) => {
-        let allAssessmentsCompleted = true;
-        let anyAssessmentInProgress = false;
-
-        // Check if any assessment is in progress or all assessments are completed and ready is true
-        unit.assessments.forEach((assessment: any) => {
-          const { answer, answerTeacher, answerSupervisor } = assessment;
-          if (
-            [answer, answerTeacher, answerSupervisor].some(
-              (ans) => ans === 1 || ans === 2,
-            )
-          ) {
-            anyAssessmentInProgress = true;
-          }
-          if (
-            [answer, answerTeacher, answerSupervisor].some((ans) => ans === 0)
-          ) {
-            allAssessmentsCompleted = false;
-          }
-        });
-
-        if ((allAssessmentsCompleted && unit.ready) || unit.ready) {
-          unit.status = 2;
-        } else if (anyAssessmentInProgress) {
-          unit.status = 1;
+        if (
+          [answer, answerTeacher, answerSupervisor].some((ans) => ans === 0)
+        ) {
+          allAssessmentsCompleted = false;
         }
-
-        return unit;
       });
 
-      // Update other fields of the evaluation as needed or add new in future
-      evaluation.workTasks = req.body.workTasks || evaluation.workTasks;
-      evaluation.workGoals = req.body.workGoals || evaluation.workGoals;
-      evaluation.completed =
-        req.body.completed !== undefined
-          ? req.body.completed
-          : evaluation.completed;
-      evaluation.startDate = req.body.startDate || evaluation.startDate;
-      evaluation.endDate = req.body.endDate || evaluation.endDate;
-      evaluation.units = req.body.units || evaluation.units;
+      if ((allAssessmentsCompleted && unit.ready) || unit.ready) {
+        unit.status = 2;
+      } else if (anyAssessmentInProgress) {
+        unit.status = 1;
+      }
 
-      await evaluation.save();
-      res.send(evaluation);
-      // res.status(200).send({ message: 'Emails handled successfully' });
-    } catch
-      (error) {
-      console.log(error);
-      res.status(500).send({ message: 'Internal server error' });
-    }
+      return unit;
+    });
+
+    // Update other fields of the evaluation as needed or add new in future
+    evaluation.workTasks = req.body.workTasks || evaluation.workTasks;
+    evaluation.workGoals = req.body.workGoals || evaluation.workGoals;
+    evaluation.completed =
+      req.body.completed !== undefined
+        ? req.body.completed
+        : evaluation.completed;
+    evaluation.startDate = req.body.startDate || evaluation.startDate;
+    evaluation.endDate = req.body.endDate || evaluation.endDate;
+    evaluation.units = req.body.units || evaluation.units;
+
+    await evaluation.save();
+    res.send(evaluation);
+    // res.status(200).send({ message: 'Emails handled successfully' });
+  } catch
+  (error) {
+    console.log(error);
+    res.status(500).send({ message: 'Internal server error' });
   }
-;
+};
 
 export default {
   create,
