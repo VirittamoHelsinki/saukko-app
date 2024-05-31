@@ -11,6 +11,8 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
+    "@azure/communication-email": "^1.0.0",
+    "@azure/cosmos": "^4.0.0",
     "@azure/functions": "^4.0.0",
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
