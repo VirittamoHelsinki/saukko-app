@@ -292,7 +292,7 @@ const CompanyInfo = () => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
-            sx={{position: 'static'}}
+            //sx={{position: 'static'}}
           >
             <Typography sx={{ fontSize: '22px' }}>
               2. Työpaikkaohjaajan tiedot

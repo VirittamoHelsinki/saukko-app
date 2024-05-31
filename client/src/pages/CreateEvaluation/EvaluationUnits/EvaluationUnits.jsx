@@ -22,6 +22,9 @@ function EvaluationUnits() {
   console.log("🚀 ~ EvaluationUnits ~ workplace:", workplace)
   const { openNotificationModal, setOpenNotificationModal } = useStore();
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  console.log('workplace.degreeId:',workplace.degreeId);
+
+  
 
   useEffect(()=>{
     setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
@@ -60,6 +63,7 @@ function EvaluationUnits() {
       <section className='evaluationUnits__container'>
         <Stepper activePage={3} totalPages={4} data={stepperData} />
         <h1>
+        {/* Tähän pitäisi tulla degree.name eli tutkinnon nimi, ei workplace.name */}
           {workplace && workplace.name
             ? workplace.name
             : 'Ei dataa tietokannasta'}
