@@ -30,17 +30,23 @@ const TeacherPerformanceFeedBack = ({
   evaluationId,
 }) => {
   const assessmentId = assessment._id;
-  const [selectedRadio, setSelectedRadio] = useState({});
   const { currentUser } = useAuthContext();
   // eslint-disable-next-line no-unused-vars
   const [hasChanged, setHasChanged] = useState(false);
-  //Fetch evaluation and units from store
-  /*   const { evaluation, setEvaluation } = useContext(InternalApiContext); */
   const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
   const [comment, setComment] = useState(assessment.comment.text);
+  const [radioAnswers, setRadioAnswers] = useState([]);
 
+  const [selectedRadio, setSelectedRadio] = useState({});
   // Modal for teacher comment
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+
+  const valueMapping = {
+    1: 'Osaa ohjatusti',
+    2: 'Osaa itsenäisesti',
+    'Osaa ohjatusti': 1,
+    'Osaa itsenäisesti': 2,
+  };
 
   const cancelTeacherComment = () => {
     setComment(assessment.comment.text);
@@ -53,42 +59,18 @@ const TeacherPerformanceFeedBack = ({
     setIsCommentModalOpen(true);
   };
 
-  const handleRadioChange = (e, unit, info, value) => {
+  const handleRadioChange = (info, value) => {
     setSelectedRadio((prevValues) => ({
       ...prevValues,
-      [info]: prevValues[info] === value ? '' : value,
+      [info]: valueMapping[value],
     }));
-    setHasChanged(true);
-    if (unit._id) {
-      setSelectedUnitId(unit._id); // This is the unit id
-      setSelectedAssessmentId(assessment._id);
-      setHasUnsavedChanges(true);
-    } else {
-      setHasUnsavedChanges(false);
-    }
-    if (e.target) {
-      if (selectedRadio === e.target.value) {
-        e.target.checked = false;
-        setSelectedRadio('');
-        setSelectedValues(0);
-        setHasChanged(false);
-        setHasUnsavedChanges(false);
-      } else {
-        setSelectedRadio(e.target.value);
-        if (e.target.value === 'Osaa ohjatusti') {
-          setSelectedValues(1);
-        } else if (e.target.value === 'Osaa itsenäisesti') {
-          setSelectedValues(2);
-        }
-      }
-      console.log(e.target.value);
-    }
   };
+
 
   const getBackgroundColor = () => {
     if (
-      selectedRadio === 'Osaa ohjatusti' ||
-      selectedRadio === 'Osaa itsenäisesti'
+      selectedRadio['Opettajan merkintä'] === 1 ||
+      selectedRadio['Opettajan merkintä'] === 2
     ) {
       if (currentUser?.role === 'teacher') {
         return '#FFF4B4';
@@ -130,6 +112,28 @@ const TeacherPerformanceFeedBack = ({
   );
 
   useEffect(() => {
+    console.log(
+      infodataForSelectedAssessment
+    )
+  }, []);
+
+  useEffect(() => {
+    // Initialize selectedRadio state based on radioAnswers
+    const initialSelectedRadio = infodataForSelectedAssessment.reduce((acc, item) => {
+      if (item.info === 'Opettajan merkintä') {
+        acc[item.info] = item.answerTeacher || '';
+      }
+      return acc;
+    }, {});
+    console.log('init: ', initialSelectedRadio)
+    setSelectedRadio(initialSelectedRadio);
+  }, [radioAnswers]);
+
+  useEffect(() => {
+    console.log('selected radio: ', selectedRadio);
+  }, [selectedRadio]);
+
+  useEffect(() => {
     setSelectedUnitId(unit._id);
     setSelectedAssessmentId(assessment._id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -160,7 +164,7 @@ const TeacherPerformanceFeedBack = ({
       // Update the evaluation state with the new assessments
       await updateEvaluationById(evaluationId, {
         units: updatedAssessments,
-        selectedValues: {}
+        selectedValues: {},
       });
 
       setEvaluation((prevEvaluation) => ({
@@ -207,7 +211,7 @@ const TeacherPerformanceFeedBack = ({
                   name={item.info}
                   value={selectedRadio[item.info] || ''}
                   unit={unit}
-                  onClick={(e) => handleRadioChange(item.info, e, unit)}
+                  onChange={(e) => handleRadioChange(item.info, e.target.value)}
                 >
                   <FormControlLabel
                     value='Osaa ohjatusti'
@@ -219,16 +223,10 @@ const TeacherPerformanceFeedBack = ({
                     control={
                       <Radio
                         disabled={item.info !== 'Opettajan merkintä'}
-                        onChange={(e) => handleRadioChange(e, unit, item.info)}
-                        checked={
-                          (item.info === 'Opettajan merkintä' &&
-                            selectedRadio === 'Osaa ohjatusti') ||
-                          item.answer === 1 ||
-                          item.answerSupervisor === 1 ||
-                          item.answerTeacher === 1
-                        }
                       />
                     }
+                    checked={selectedRadio[item.info] === 1}
+                    label=""
                   />
                   <FormControlLabel
                     value='Osaa itsenäisesti'
@@ -240,17 +238,12 @@ const TeacherPerformanceFeedBack = ({
                     control={
                       <Radio
                         disabled={item.info !== 'Opettajan merkintä'}
-                        onChange={(e) => handleRadioChange(e, unit, item.info)}
-                        checked={
-                          (item.info === 'Opettajan merkintä' &&
-                            selectedRadio === 'Osaa itsenäisesti') ||
-                          item.answer === 2 ||
-                          item.answerSupervisor === 2 ||
-                          item.answerTeacher === 2
-                        }
                       />
                     }
+                    checked={selectedRadio[item.info] === 2}
+                    label=""
                   />
+
                 </RadioGroup>
               </FormControl>
             </div>
@@ -396,3 +389,4 @@ const TeacherPerformanceFeedBack = ({
 };
 
 export default TeacherPerformanceFeedBack;
+

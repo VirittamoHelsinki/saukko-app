@@ -321,7 +321,7 @@ const UserPerformance = () => {
   });
 
   const handleEvaluation = () => {
-    navigate('/unit-list');
+    navigate(-1);
     setOpenNotificationModal(false);
   };
 
