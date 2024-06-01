@@ -1,6 +1,6 @@
 // Import React
 import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // Import components
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
@@ -18,6 +18,7 @@ const UnitList = () => {
   const navigate = useNavigate();
   // Data from store management
   const { currentUser } = useAuthContext();
+  const { evaluationId } = useParams();
   const {
     evaluation,
     //evaluations,
@@ -31,6 +32,7 @@ const UnitList = () => {
 
   useEffect(() => {
     console.log('evaluations: ', evaluations);
+    console.log('evaluationId', evaluationId);
   }, [evaluations]);
 
 

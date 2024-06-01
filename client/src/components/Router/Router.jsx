@@ -96,7 +96,7 @@ const Router = () => {
             {loggedIn && (
               <>
                 <Route path='/profile' element={<ProfilePage />} />
-                <Route path='/unit-list' element={<UnitList />} />
+                <Route path='/unit-list/:evaluationId' element={<UnitList />} />
                 <Route path='/contract-info' element={<ContractInfo />} />
                 <Route path='/userperformance' element={<UserPerformance />} />
                 <Route path='/register-user' element={<RegisterUser />} />
