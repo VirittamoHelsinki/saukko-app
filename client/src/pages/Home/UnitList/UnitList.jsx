@@ -6,11 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UnitStatus from '../../../components/UnitStatus/UnitStatus';
 import Button from '../../../components/Button/Button';
+import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 // Import state management
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
+
 
 const UnitList = () => {
   const navigate = useNavigate();
@@ -18,12 +20,19 @@ const UnitList = () => {
   const { currentUser } = useAuthContext();
   const {
     evaluation,
-    evaluations,
+    //evaluations,
     setInternalEvaluations,
     setInternalEvaluation,
   } = useContext(InternalApiContext);
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  const { evaluations, isLoading, error } = useEvaluations();
+
+  useEffect(() => {
+    console.log('evaluations: ', evaluations);
+  }, [evaluations]);
+
 
   // const degreeName =
   //   allInternalDegrees &&
@@ -90,7 +99,7 @@ const UnitList = () => {
             <Button
               text='Takaisin'
               icon='bx:arrow-back'
-              onClick={() => navigate('/')} 
+              onClick={() => navigate('/')}
               className='unitList__button--back'
             />
           )}
