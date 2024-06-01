@@ -34,9 +34,9 @@ const App = () => {
               <InternalApiContextProvider>
                 <ExternalApiContextProvider>
                   <EvaluationsProvider>
-                  <RouterGuard>
-                    <Router />
-                  </RouterGuard>
+                    <RouterGuard>
+                      <Router />
+                    </RouterGuard>
                   </EvaluationsProvider>
                 </ExternalApiContextProvider>
               </InternalApiContextProvider>

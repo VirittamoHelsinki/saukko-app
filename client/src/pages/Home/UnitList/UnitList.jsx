@@ -1,5 +1,4 @@
-// Import React
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import components
@@ -13,102 +12,65 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
-
 const UnitList = () => {
   const navigate = useNavigate();
-  // Data from store management
   const { currentUser } = useAuthContext();
   const { evaluationId } = useParams();
-  const [evaluation, setEvaluation] = useState();
-
-  const {
-    //evaluation,
-    //evaluations,
-    //setInternalEvaluations,
-    setInternalEvaluation,
-  } = useContext(InternalApiContext);
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-
-  const { evaluations, isLoading } = useEvaluations();
-
-  useEffect(() => {
-    if (!isLoading) {
-      setSiteTitle('Suoritukset'), setSubHeading('Suoritukset');
-      const ev = evaluations.find((ev) => ev._id === evaluationId)
-      setEvaluation(ev)
-      if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
-        setHeading(
-          `${ev?.customerId.firstName} ${ev?.customerId.lastName}`
-        );
-      } else {
-        setHeading(`Tervetuloa, ${ev?.customerId.firstName} `);
-      }
-
-    }
-  }, [evaluations, currentUser]);
-
-
-  // const degreeName =
-  //   allInternalDegrees &&
-  //   allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
-  // console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
-
-  // Set evaluation automatically when role is customer
-  /*   useEffect(() => {
-      setSiteTitle('Suoritukset'), setSubHeading('Suoritukset');
-      if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
-        setHeading(
-          `${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`
-        );
-      } else {
-        setHeading(`Tervetuloa, ${evaluation?.customerId.firstName} `);
-      }
-      if (currentUser.role === 'customer') {
-        setInternalEvaluations();
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentUser]); */
+  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
 
   useEffect(() => {
-    if (
-      currentUser.role === 'customer' &&
-      evaluations &&
-      evaluations.length > 0
-    ) {
-      setInternalEvaluation(evaluations[0]._id);
+    if (!isLoading && evaluations.length > 0) {
+      setSiteTitle('Suoritukset');
+      setSubHeading('Suoritukset');
+
+      const ev = evaluations.find((ev) => ev._id === evaluationId);
+      if (ev) {
+        setEvaluation(ev);
+
+        if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
+          setHeading(`${ev.customerId.firstName} ${ev.customerId.lastName}`);
+        } else {
+          setHeading(`Tervetuloa, ${ev.customerId.firstName}`);
+        }
+      } else {
+        console.log('No evaluation found with id:', evaluationId);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [evaluations]);
+  }, [isLoading, evaluations, evaluationId, currentUser]);
+
+  if (isLoading || evaluations.length === 0) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className='unitList__wrapper'>
       <div className='unitList__notifications'>
-        <h3> Ilmoitukset </h3>
+        <h3>Ilmoitukset</h3>
         <NotificationBadge number1={10} number2={5} />
       </div>
       <div className='unitList__units'>
         {currentUser.role === 'customer' ? (
           <>
             <h3>Tutkinnon nimi</h3>
-            <h3> Omat suoritukset </h3>
+            <h3>Omat suoritukset</h3>
           </>
         ) : (
-          <h3> Asiakkaan suoritukset </h3>
+          <h3>Asiakkaan suoritukset</h3>
         )}
 
-        {evaluation &&
-          evaluation.units.map((unit) => (
-            <div style={{ cursor: 'pointer' }} key={unit._id}>
-              <UnitStatus
-                key={unit._id}
-                unitId={unit._id}
-                status={unit.status}
-                subheader={unit.name.fi}
-                link={`/userperformance/${evaluationId}`}
-              />
-            </div>
-          ))}
+        {evaluation && evaluation.units && evaluation.units.map((unit) => (
+          <div style={{ cursor: 'pointer' }} key={unit._id}>
+            <UnitStatus
+              key={unit._id}
+              unitId={unit._id}
+              status={unit.status}
+              subheader={unit.name.fi}
+              link={`/userperformance/${unit._id}`}
+            />
+          </div>
+        ))}
         <div className='unitList__button' style={{ display: 'flex', justifyContent: 'flex-end' }}>
           {currentUser?.role !== 'customer' && (
             <Button
@@ -133,7 +95,7 @@ const UnitList = () => {
               className='button--pdf'
               icon='bx:file'
             />
-          )}{' '}
+          )}
         </div>
       </div>
     </div>

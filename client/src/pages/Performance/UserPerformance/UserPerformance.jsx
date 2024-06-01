@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';
@@ -24,6 +24,7 @@ import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 // import { sendEmails } from '../../../api/performance';
 
 const UserPerformance = () => {
@@ -34,7 +35,9 @@ const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
-  const { evaluation, setEvaluation } = useContext(InternalApiContext);
+  /*  const { evaluation, setEvaluation } = useContext(InternalApiContext); */
+  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
+
   const evaluationId = evaluation?._id;
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
@@ -67,6 +70,13 @@ const UserPerformance = () => {
   const [criteriaModalContent, setCriteriaModalContent] = useState([]);
   const [customerFirstName, setCustomerFirstName] = useState(null);
   const [customerLastName, setCustomerLastName] = useState(null);
+
+  const { unitId } = useParams();
+
+  useEffect(() => {
+    console.log('test for internal evaluation: ', evaluation)
+  }, [evaluation])
+
   useEffect(() => {
     if (evaluation && evaluation.customerId) {
       setCustomerFirstName(`${evaluation?.customerId.firstName}`);
@@ -467,8 +477,8 @@ const UserPerformance = () => {
               currentUser?.role === 'teacher'
                 ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
                 : currentUser?.role === 'supervisor'
-                ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
-                : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
+                  ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
+                  : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
             }
             rows={8}
             cols={38}
@@ -487,7 +497,7 @@ const UserPerformance = () => {
               type='submit'
               text={getButtonText()}
               onClick={handleSubmit}
-              // disabled={isPalauteSectionDisabled()}
+            // disabled={isPalauteSectionDisabled()}
             />
           </div>
         </section>

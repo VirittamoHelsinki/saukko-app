@@ -5,6 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { Icon } from '@iconify/react';
 import InternalApiContext from '../../../store/context/InternalApiContext';
+import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import NotificationModal from '../../NotificationModal/NotificationModal';
 import {
@@ -34,7 +35,8 @@ const TeacherPerformanceFeedBack = ({
   // eslint-disable-next-line no-unused-vars
   const [hasChanged, setHasChanged] = useState(false);
   //Fetch evaluation and units from store
-  const { evaluation, setEvaluation } = useContext(InternalApiContext);
+  /*   const { evaluation, setEvaluation } = useContext(InternalApiContext); */
+  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
   const [comment, setComment] = useState(assessment.comment.text);
 
   // Modal for teacher comment
