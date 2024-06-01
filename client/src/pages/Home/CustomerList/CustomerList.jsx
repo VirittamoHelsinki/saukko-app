@@ -69,7 +69,7 @@ export default function CustomerList() {
     setHeading(`Tervetuloa ${currentUser?.firstName}`)
     setSiteTitle("Etusivu")
     setInternalEvaluations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Find evaluations in progress
@@ -105,7 +105,7 @@ export default function CustomerList() {
 
   const handleChooseEvaluation = (evaluationId) => {
     setInternalEvaluation(evaluationId);
-    navigate('/unit-list');
+    navigate(`/unit-list/${evaluationId}`);
   };
 
   return (

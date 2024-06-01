@@ -1,5 +1,5 @@
 // Import React
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import components
@@ -19,6 +19,7 @@ const UnitList = () => {
   // Data from store management
   const { currentUser } = useAuthContext();
   const { evaluationId } = useParams();
+  const [evaluationx, setEvaluationx] = useState({})
   const {
     evaluation,
     //evaluations,
@@ -29,11 +30,14 @@ const UnitList = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   const { evaluations, isLoading, error } = useEvaluations();
-
+  //TODO: change evaluationx to evaluation
   useEffect(() => {
-    console.log('evaluations: ', evaluations);
-    console.log('evaluationId', evaluationId);
-  }, [evaluations]);
+    if (!isLoading) {
+      const ev = evaluations.find((ev) => ev._id === evaluationId)
+      setEvaluationx(ev)
+      console.log('evaluation: ', evaluationx)
+    }
+  }, [evaluations, evaluationx]);
 
 
   // const degreeName =
