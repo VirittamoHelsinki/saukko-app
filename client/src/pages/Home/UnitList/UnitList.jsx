@@ -19,25 +19,34 @@ const UnitList = () => {
   // Data from store management
   const { currentUser } = useAuthContext();
   const { evaluationId } = useParams();
-  const [evaluationx, setEvaluationx] = useState({})
+  const [evaluation, setEvaluation] = useState();
+
   const {
-    evaluation,
+    //evaluation,
     //evaluations,
-    setInternalEvaluations,
+    //setInternalEvaluations,
     setInternalEvaluation,
   } = useContext(InternalApiContext);
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
-  const { evaluations, isLoading, error } = useEvaluations();
-  //TODO: change evaluationx to evaluation
+  const { evaluations, isLoading } = useEvaluations();
+
   useEffect(() => {
     if (!isLoading) {
+      setSiteTitle('Suoritukset'), setSubHeading('Suoritukset');
       const ev = evaluations.find((ev) => ev._id === evaluationId)
-      setEvaluationx(ev)
-      console.log('evaluation: ', evaluationx)
+      setEvaluation(ev)
+      if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
+        setHeading(
+          `${ev?.customerId.firstName} ${ev?.customerId.lastName}`
+        );
+      } else {
+        setHeading(`Tervetuloa, ${ev?.customerId.firstName} `);
+      }
+
     }
-  }, [evaluations, evaluationx]);
+  }, [evaluations, currentUser]);
 
 
   // const degreeName =
@@ -46,20 +55,20 @@ const UnitList = () => {
   // console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   // Set evaluation automatically when role is customer
-  useEffect(() => {
-    setSiteTitle('Suoritukset'), setSubHeading('Suoritukset');
-    if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
-      setHeading(
-        `${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`
-      );
-    } else {
-      setHeading(`Tervetuloa, ${evaluation?.customerId.firstName} `);
-    }
-    if (currentUser.role === 'customer') {
-      setInternalEvaluations();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  /*   useEffect(() => {
+      setSiteTitle('Suoritukset'), setSubHeading('Suoritukset');
+      if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
+        setHeading(
+          `${evaluation?.customerId.firstName} ${evaluation?.customerId.lastName}`
+        );
+      } else {
+        setHeading(`Tervetuloa, ${evaluation?.customerId.firstName} `);
+      }
+      if (currentUser.role === 'customer') {
+        setInternalEvaluations();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentUser]); */
 
   useEffect(() => {
     if (
@@ -96,7 +105,7 @@ const UnitList = () => {
                 unitId={unit._id}
                 status={unit.status}
                 subheader={unit.name.fi}
-                link='/userperformance'
+                link={`/userperformance/${evaluationId}`}
               />
             </div>
           ))}
