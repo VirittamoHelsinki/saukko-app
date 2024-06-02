@@ -41,6 +41,7 @@ const TeacherPerformanceFeedBack = ({
   // Modal for teacher comment
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
+
   const valueMapping = {
     1: 'Osaa ohjatusti',
     2: 'Osaa itsenäisesti',
@@ -111,11 +112,6 @@ const TeacherPerformanceFeedBack = ({
     (data) => data.assessmentId === assessment._id
   );
 
-  useEffect(() => {
-    console.log(
-      infodataForSelectedAssessment
-    )
-  }, []);
 
   useEffect(() => {
     // Initialize selectedRadio state based on radioAnswers
@@ -125,13 +121,8 @@ const TeacherPerformanceFeedBack = ({
       }
       return acc;
     }, {});
-    console.log('init: ', initialSelectedRadio)
     setSelectedRadio(initialSelectedRadio);
   }, []);
-
-  useEffect(() => {
-    console.log('selected radio: ', selectedRadio);
-  }, [selectedRadio]);
 
   useEffect(() => {
     setSelectedUnitId(unit._id);

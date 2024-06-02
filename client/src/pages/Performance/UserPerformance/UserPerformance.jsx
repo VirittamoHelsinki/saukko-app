@@ -48,7 +48,6 @@ const UserPerformance = () => {
     allInternalDegrees.find((degree) => degree._id === evaluation?.degreeId);
   // console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
-  const { chosenUnitId } = useEvaluationStore();
   const [selectedValues, setSelectedValues] = useState({});
   const [selectedUnitId, setSelectedUnitId] = useState(null);
   const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
@@ -73,11 +72,8 @@ const UserPerformance = () => {
 
   const { unitId } = useParams();
   const [selectedRadio, setSelectedRadio] = useState({});
+  const [unitObject, setUnitObject] = useState(null)
 
-
-  useEffect(() => {
-    console.log('test for internal evaluation: ', evaluation)
-  }, [evaluation])
 
   useEffect(() => {
     if (evaluation && evaluation.customerId) {
@@ -87,26 +83,21 @@ const UserPerformance = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [customerFirstName, customerLastName]);
 
-  let unitObject;
-  if (evaluation && evaluation.units) {
-    // Use find() to search for the unit with matching _id
-    unitObject = evaluation.units.find((unit) => unit._id === chosenUnitId);
-
-    if (unitObject) {
-      // Unit with matching _id found
-      // console.log('Unit object found:', unitObject);
+  useEffect(() => {
+    if (evaluation) {
+      const foundUnit = evaluation.units.find(unit => unit._id === Number(unitId));
+      if (foundUnit) {
+        setUnitObject(foundUnit);
+        console.log('Unit object found:', foundUnit);
+      } else {
+        console.log('Unit with ID', unitId, 'not found in the evaluation.units');
+      }
     } else {
-      // Unit with matching _id not found
-      console.log(
-        'Unit with ID',
-        chosenUnitId,
-        'not found in the evaluation.units'
-      );
+      console.log('Evaluation object or units array is undefined.');
     }
-  } else {
-    // Handle cases where evaluation or evaluation.units is undefined
-    console.log('Evaluation object or units array is undefined.');
-  }
+  }, [evaluation, unitId, evaluations]);
+
+
 
   const handleOpenCriteriaModal = (criteria) => {
     setCriteriaModalContent(criteria);
@@ -150,10 +141,6 @@ const UserPerformance = () => {
   //   }
   //   console.log('Destination before navigation222:', destination);
   //   setLastLocation(destination);
-
-  useEffect(() => {
-    console.log('selectedValues: ', selectedValues);
-  }, [selectedValues]);
 
   useEffect(() => {
     // const isLaptop = window.innerWidth >= 1024;

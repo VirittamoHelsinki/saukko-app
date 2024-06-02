@@ -25,17 +25,22 @@ const UnitList = () => {
       setSiteTitle('Suoritukset');
       setSubHeading('Suoritukset');
 
-      const ev = evaluations.find((ev) => ev._id === evaluationId);
-      if (ev) {
-        setEvaluation(ev);
+      if (!evaluation || !evaluation._id) {
 
-        if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
-          setHeading(`${ev.customerId.firstName} ${ev.customerId.lastName}`);
+        const ev = evaluations.find((ev) => ev._id === evaluationId);
+        if (ev) {
+          console.log('setting evaluation again in user list')
+          setEvaluation(ev);
+
+          if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
+            setHeading(`${ev.customerId.firstName} ${ev.customerId.lastName}`);
+          } else {
+            setHeading(`Tervetuloa, ${ev.customerId.firstName}`);
+          }
         } else {
-          setHeading(`Tervetuloa, ${ev.customerId.firstName}`);
+          console.log('No evaluation found with id:', evaluationId);
         }
-      } else {
-        console.log('No evaluation found with id:', evaluationId);
+
       }
     }
   }, [isLoading, evaluations, evaluationId, currentUser]);
