@@ -28,6 +28,8 @@ const TeacherPerformanceFeedBack = ({
   assessment,
   setSelectedAssessmentId,
   evaluationId,
+  selectedRadio,
+  setSelectedRadio
 }) => {
   const assessmentId = assessment._id;
   const { currentUser } = useAuthContext();
@@ -35,9 +37,7 @@ const TeacherPerformanceFeedBack = ({
   const [hasChanged, setHasChanged] = useState(false);
   const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
   const [comment, setComment] = useState(assessment.comment.text);
-  const [radioAnswers, setRadioAnswers] = useState([]);
 
-  const [selectedRadio, setSelectedRadio] = useState({});
   // Modal for teacher comment
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
@@ -127,7 +127,7 @@ const TeacherPerformanceFeedBack = ({
     }, {});
     console.log('init: ', initialSelectedRadio)
     setSelectedRadio(initialSelectedRadio);
-  }, [radioAnswers]);
+  }, []);
 
   useEffect(() => {
     console.log('selected radio: ', selectedRadio);

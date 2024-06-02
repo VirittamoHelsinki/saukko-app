@@ -72,6 +72,8 @@ const UserPerformance = () => {
   const [customerLastName, setCustomerLastName] = useState(null);
 
   const { unitId } = useParams();
+  const [selectedRadio, setSelectedRadio] = useState({});
+
 
   useEffect(() => {
     console.log('test for internal evaluation: ', evaluation)
@@ -213,7 +215,7 @@ const UserPerformance = () => {
             } else if (currentUser?.role === 'supervisor') {
               answerSupervisor = selectedValues === 1 ? 1 : 2;
             } else if (currentUser?.role === 'teacher') {
-              answerTeacher = selectedValues === 1 ? 1 : 2;
+              answerTeacher = selectedRadio['Opettajan merkintä'];
             }
             return {
               ...assessment,
@@ -234,8 +236,7 @@ const UserPerformance = () => {
         return unit;
       }
     });
-    // TODO: contactRequests currently for testing
-    // TODO: additional info for testing
+
     const updatedData = {
       units: updatedUnits,
       selectedValues: selectedValues,
@@ -365,6 +366,8 @@ const UserPerformance = () => {
                     hasUnsavedChanges={hasUnsavedChanges}
                     setHasUnsavedChanges={setHasUnsavedChanges}
                     evaluationId={evaluationId}
+                    setSelectedRadio={setSelectedRadio}
+                    selectedRadio={selectedRadio}
                   />
                 ) : (
                   <PerformancesFeedback
