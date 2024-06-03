@@ -22,6 +22,9 @@ function EvaluationUnits() {
   console.log("🚀 ~ EvaluationUnits ~ workplace:", workplace)
   const { openNotificationModal, setOpenNotificationModal } = useStore();
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  console.log('workplace.degreeId:',workplace.degreeId);
+
+  
 
   useEffect(()=>{
     setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")

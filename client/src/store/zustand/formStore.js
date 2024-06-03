@@ -99,7 +99,7 @@ const useStore = create((set) => {
     }),
 
     resetWorkplaceData: () => set({
-      businessID: [],
+      businessId: '',
       businessIDError: '',
       editedCompanyName: null,
       name: null,
