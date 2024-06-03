@@ -295,7 +295,6 @@ const UserPerformance = () => {
   };
 
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
-  // console.log('unitObject', unitObject);
 
   useEffect(() => {
     setSiteTitle('Arviointi'),
@@ -467,8 +466,8 @@ const UserPerformance = () => {
               currentUser?.role === 'teacher'
                 ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
                 : currentUser?.role === 'supervisor'
-                ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
-                : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
+                  ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
+                  : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
             }
             rows={8}
             cols={38}
@@ -487,7 +486,7 @@ const UserPerformance = () => {
               type='submit'
               text={getButtonText()}
               onClick={handleSubmit}
-              // disabled={isPalauteSectionDisabled()}
+            // disabled={isPalauteSectionDisabled()}
             />
           </div>
         </section>
