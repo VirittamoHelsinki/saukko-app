@@ -30,7 +30,7 @@ function EvaluationSummary() {
   const { customer, evaluation, resetFormData } = useEvaluationFormStore(); // Include resetFormData
   const { checkedUnits } = useUnitsStore();
   const { currentUser } = useAuthContext();
-  const { setInternalEvaluations } = useContext(InternalApiContext);
+  const { setInternalEvaluations,degreeFound, internalDegree } = useContext(InternalApiContext);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // NotificationModal
@@ -82,6 +82,14 @@ function EvaluationSummary() {
         ? `${supervisor.firstName} ${supervisor.lastName}`
         : '',
     },
+    {
+      title: 'Työtehtäväsi', //workTasks
+      content:evaluation ? evaluation.workTasks : '',
+    },
+    {
+      title: 'Omat tavoitteesi', //workGoals
+      content:evaluation ? evaluation.workGoals : '',
+    }
   ];
 
   // Remove department from summaryData if there is no department
@@ -182,16 +190,17 @@ function EvaluationSummary() {
     },
   ];
 
+  console.log('internal degree: ',internalDegree)
+
   return (
     <div className='summary__wrapper'>
       <section className='summary__container'>
         <Stepper activePage={4} totalPages={4} data={stepperData} />
         <InfoList title={'Yhteenveto'} data={summaryData} />
         <h1>
-          {workplace && workplace.name
-            ? workplace.name
-            : 'Ei dataa tietokannasta'}
-        </h1>
+          {degreeFound && internalDegree?.name?.fi}
+          Tänne tutkinnon nimi
+         </h1>
         {checkedUnits?.map((unit) => (
           <SelectUnit
             key={unit._id}
