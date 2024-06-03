@@ -63,7 +63,6 @@ function EvaluationUnits() {
       <section className='evaluationUnits__container'>
         <Stepper activePage={3} totalPages={4} data={stepperData} />
         <h1>
-        {/* Tähän pitäisi tulla degree.name eli tutkinnon nimi, ei workplace.name */}
           {workplace && workplace.name
             ? workplace.name
             : 'Ei dataa tietokannasta'}

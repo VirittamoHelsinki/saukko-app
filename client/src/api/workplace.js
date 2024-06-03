@@ -7,7 +7,6 @@ const fetchExternalCompanyData = async (businessId) => {
 
   try {
     const response = await axios.get(`/api/business/${businessId}`);
-    // console.log('data ----->', response.data);
 
     return response.data;
   } catch (error) {

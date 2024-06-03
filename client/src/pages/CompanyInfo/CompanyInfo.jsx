@@ -233,12 +233,12 @@ const CompanyInfo = () => {
                   onChange={handleBusinessId}
                 />
                 <RxCrossCircled
-                  className='cross-icone-style'
+                  className='cross-icon-style'
                   aria-hidden='true'
                   onClick={handleClearBusinessId}
                 />
                 <CiSearch
-                  className='search-icone-style'
+                  className='search-icon-style'
                   aria-hidden='true'
                   onClick={handleSearchClick}
                 />
@@ -420,6 +420,7 @@ const CompanyInfo = () => {
                   color: 'white',
                   marginTop: '25px',
                   width: '65%',
+                  border: 'none',
                 }}
                 icon={'ic:baseline-plus'}
                 onClick={addSupervisors}
