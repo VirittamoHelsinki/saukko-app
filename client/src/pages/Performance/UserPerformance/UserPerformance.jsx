@@ -85,6 +85,7 @@ const UserPerformance = () => {
 
   useEffect(() => {
     if (evaluation) {
+      console.log('testing evaluation: ')
       const foundUnit = evaluation.units.find(unit => unit._id === Number(unitId));
       if (foundUnit) {
         setUnitObject(foundUnit);
@@ -480,7 +481,7 @@ const UserPerformance = () => {
         </form>
         <section className='section-buttons'>
           <div className='buttons-wrapper'>
-            <PageNavigationButtons handleBack={() => navigate('/unit-list')} />
+            <PageNavigationButtons handleBack={() => navigate(-1)} />
             <Button
               id='submitButton'
               style={buttonStyle}
