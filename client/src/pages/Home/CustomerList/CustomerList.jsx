@@ -103,9 +103,9 @@ export default function CustomerList() {
     evaluations &&
     evaluations.filter((evaluation) => evaluation.completed === true);
 
-  const handleChooseEvaluation = (evaluationId) => {
-    setInternalEvaluation(evaluationId);
-    navigate(`/unit-list/${evaluationId}`);
+  const handleChooseEvaluation = (customer) => {
+    console.log('customerId xxxx: ', customer)
+    navigate(`/unit-list/${customer._id}`);
   };
 
   return (
@@ -152,7 +152,7 @@ export default function CustomerList() {
                     key={index}
                     className='customerList__accordion__inProgress'
                   >
-                    <p onClick={() => handleChooseEvaluation(evaluation._id)}>
+                    <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
                       {evaluation.customerId.firstName}{' '}
                       {evaluation.customerId.lastName}
                     </p>

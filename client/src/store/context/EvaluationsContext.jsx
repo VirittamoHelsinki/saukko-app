@@ -19,25 +19,29 @@ export const EvaluationsProvider = ({ children }) => {
   });
 
   const [evaluation, setEvaluation] = useState({})
-  // const [evaluation, setEvaluation] = useState(() => {
-  //   // Retrieve the initial evaluation state from localStorage if it exists
-  //   const savedEvaluation = localStorage.getItem('evaluation');
-  //   return savedEvaluation ? JSON.parse(savedEvaluation) : {};
-  // });
-  //
-  // // Save evaluation to localStorage whenever it changes
-  // useEffect(() => {
-  //   if (evaluation && Object.keys(evaluation).length > 0) {
-  //     localStorage.setItem('evaluation', JSON.stringify(evaluation));
-  //   }
-  // }, [evaluation]);
-  //
+  const [evaluationLS, setEvaluationLS] = useState(() => {
+    // Retrieve the initial evaluation state from localStorage if it exists
+    const savedEvaluation = localStorage.getItem('evaluationLS');
+    return savedEvaluation ? JSON.parse(savedEvaluation) : {};
+  });
+
+  // Save evaluation to localStorage whenever it changes
+  useEffect(() => {
+    if (evaluationLS && Object.keys(evaluationLS).length > 0) {
+      localStorage.setItem('evaluation', JSON.stringify(evaluationLS));
+    }
+  }, [evaluationLS]);
+
+  useEffect(() => {
+    console.log('evaluationLS context: ', evaluationLS)
+  }, [evaluationLS]);
+
   useEffect(() => {
     console.log('evaluation context: ', evaluation);
   }, [evaluation]);
 
   return (
-    <EvaluationsContext.Provider value={{ evaluations, isLoading, error, evaluation, setEvaluation }}>
+    <EvaluationsContext.Provider value={{ evaluations, isLoading, error, evaluation, setEvaluation, evaluationLS, setEvaluationLS }}>
       {children}
     </EvaluationsContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import components
@@ -15,39 +15,32 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 const UnitList = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
-  const { evaluationId } = useParams();
+  const { customerId } = useParams();
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
   const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
 
   useEffect(() => {
-    if (!isLoading && evaluations.length > 0) {
-      setSiteTitle('Suoritukset');
-      setSubHeading('Suoritukset');
 
-      if (!evaluation || !evaluation._id) {
+    setSiteTitle('Suoritukset');
+    setSubHeading('Suoritukset');
 
-        const ev = evaluations.find((ev) => ev._id === evaluationId);
-        if (ev) {
-          console.log('setting evaluation again in user list')
-          setEvaluation(ev);
-
-          if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
-            setHeading(`${ev.customerId.firstName} ${ev.customerId.lastName}`);
-          } else {
-            setHeading(`Tervetuloa, ${ev.customerId.firstName}`);
-          }
+    if (!isLoading) {
+      const ev = evaluations.find((ev) => ev.customerId._id === customerId)
+      const customer = ev.customerId
+      if (ev) {
+        console.log('setting evaluation in userlist')
+        setEvaluation(ev)
+        if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
+          setHeading(`${customer.firstName} ${customer.lastName}`);
         } else {
-          console.log('No evaluation found with id:', evaluationId);
+          setHeading(`Tervetuloa, ${customer.firstName}`);
         }
-
+      } else {
+        console.log('evaluation not found')
       }
     }
-  }, [isLoading, evaluations, evaluationId, currentUser]);
-
-  if (isLoading || evaluations.length === 0) {
-    return <div>Loading...</div>;
-  }
+  }, [isLoading])
 
   return (
     <div className='unitList__wrapper'>
