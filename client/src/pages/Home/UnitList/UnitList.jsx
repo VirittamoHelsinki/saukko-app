@@ -25,7 +25,7 @@ const UnitList = () => {
     setSiteTitle('Suoritukset');
     setSubHeading('Suoritukset');
 
-    if (!isLoading) {
+    if (!isLoading && !evaluation) {
       const ev = evaluations.find((ev) => ev.customerId._id === customerId)
       const customer = ev.customerId
       if (ev) {

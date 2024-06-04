@@ -96,7 +96,7 @@ const UserPerformance = () => {
     } else {
       console.log('Evaluation object or units array is undefined.');
     }
-  }, [evaluation, unitId, evaluations]);
+  }, [evaluation, unitId, evaluations, isLoading]);
 
 
 
