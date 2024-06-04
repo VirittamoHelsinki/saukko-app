@@ -18,30 +18,31 @@ export const EvaluationsProvider = ({ children }) => {
     queryFn: fetchAllEvaluations,
   });
 
-  const [evaluation, setEvaluation] = useState({})
-  const [evaluationLS, setEvaluationLS] = useState(() => {
+  /*   const [evaluation, setEvaluation] = useState({}) */
+  const [evaluation, setEvaluation] = useState(() => {
     // Retrieve the initial evaluation state from localStorage if it exists
-    const savedEvaluation = localStorage.getItem('evaluationLS');
+    const savedEvaluation = localStorage.getItem('evaluation');
     return savedEvaluation ? JSON.parse(savedEvaluation) : {};
   });
+  //TODO: Update when customer id changes
 
   // Save evaluation to localStorage whenever it changes
   useEffect(() => {
-    if (evaluationLS && Object.keys(evaluationLS).length > 0) {
-      localStorage.setItem('evaluation', JSON.stringify(evaluationLS));
+    if (evaluation && Object.keys(evaluation).length > 0) {
+      localStorage.setItem('evaluation', JSON.stringify(evaluation));
     }
-  }, [evaluationLS]);
+  }, [evaluation]);
 
   useEffect(() => {
-    console.log('evaluationLS context: ', evaluationLS)
-  }, [evaluationLS]);
+    console.log('evaluation context: ', evaluation)
+  }, [evaluation]);
 
   useEffect(() => {
     console.log('evaluation context: ', evaluation);
   }, [evaluation]);
 
   return (
-    <EvaluationsContext.Provider value={{ evaluations, isLoading, error, evaluation, setEvaluation, evaluationLS, setEvaluationLS }}>
+    <EvaluationsContext.Provider value={{ evaluations, isLoading, error, evaluation, setEvaluation }}>
       {children}
     </EvaluationsContext.Provider>
   );
