@@ -166,7 +166,7 @@ function DegreeConfirmSelection() {
 
         setWorkplaces(updatedWorkplaces);
         resetWorkplaceData();
-        clearCheckedUnits()
+        clearCheckedUnits();
         setIsSuccess(true);
       } else {
         setIsFailure(true);
