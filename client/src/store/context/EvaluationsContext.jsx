@@ -43,7 +43,7 @@ export const EvaluationsProvider = ({ children }) => {
     const matchesUnitList = /^\/unit-list\/[a-fA-F0-9]{24}$/.test(prevPath);
     const matchesUserPerformance = /^\/userperformance\/\d+$/.test(currentPath);
 
-    if (matchesUnitList && (!matchesUserPerformance || (/^\/unit-list\/[a-fA-F0-9]{24}$/.test(currentPath)))) {
+    if (matchesUnitList && !matchesUserPerformance && !(/^\/unit-list\/[a-fA-F0-9]{24}$/.test(currentPath))) {
       localStorage.removeItem('evaluation');
       setEvaluation(null);
       console.log('remove evaluation')

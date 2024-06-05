@@ -25,10 +25,6 @@ const UnitList = () => {
     setSiteTitle('Suoritukset');
     setSubHeading('Suoritukset');
 
-    console.log('is loading: ', isLoading)
-    console.log('is evaluation: ', evaluation)
-    console.log('evaluations: ', evaluations)
-
     if (!isLoading && !evaluation) {
       const ev = evaluations.find((ev) => ev.customerId._id === customerId)
       const customer = ev.customerId
@@ -44,7 +40,7 @@ const UnitList = () => {
         console.log('evaluation not found')
       }
     }
-  }, [isLoading])
+  }, [])
 
   return (
     <div className='unitList__wrapper'>
