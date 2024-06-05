@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 // Import components
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InfoList from '../../../components/InfoList/InfoList';
-import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
@@ -30,7 +29,7 @@ function EvaluationSummary() {
   const { customer, evaluation, resetFormData } = useEvaluationFormStore(); // Include resetFormData
   const { checkedUnits } = useUnitsStore();
   const { currentUser } = useAuthContext();
-  const { setInternalEvaluations,degreeFound, internalDegree } = useContext(InternalApiContext);
+  const { setInternalEvaluations } = useContext(InternalApiContext);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // NotificationModal
@@ -83,11 +82,11 @@ function EvaluationSummary() {
         : '',
     },
     {
-      title: 'Työtehtäväsi', //workTasks
+      title: 'Työtehtäväsi',
       content:evaluation ? evaluation.workTasks : '',
     },
     {
-      title: 'Omat tavoitteesi', //workGoals
+      title: 'Omat tavoitteesi',
       content:evaluation ? evaluation.workGoals : '',
     }
   ];
@@ -101,6 +100,15 @@ function EvaluationSummary() {
       summaryData.splice(indexToRemove, 1);
     }
   }
+
+  const nameOfUnits = checkedUnits.map((unit) => unit.name.fi)
+
+  const unitsNameByOne = nameOfUnits.map((name) =>({
+    title: name,
+  }))
+
+  console.log('each units name:',unitsNameByOne);
+  
 
   const handleUserPostReq = async () => {
     // Format data
@@ -190,7 +198,6 @@ function EvaluationSummary() {
     },
   ];
 
-  console.log('internal degree: ',internalDegree)
 
   return (
     <div className='summary__wrapper'>
@@ -198,16 +205,9 @@ function EvaluationSummary() {
         <Stepper activePage={4} totalPages={4} data={stepperData} />
         <InfoList title={'Yhteenveto'} data={summaryData} />
         <h1>
-          {degreeFound && internalDegree?.name?.fi}
-          Tänne tutkinnon nimi
-         </h1>
-        {checkedUnits?.map((unit) => (
-          <SelectUnit
-            key={unit._id}
-            unit={unit}
-            allUnits={checkedUnits && checkedUnits}
-          />
-        ))}
+          Tänne tutkinnon nimi: degrees.name.fi
+        </h1>
+        <InfoList data={unitsNameByOne} />
         <PageNavigationButtons
           handleBack={() => navigate(`/evaluation-units`)}
           handleForward={handleUserPostReq}
