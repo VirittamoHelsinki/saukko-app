@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 // Import components
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InfoList from '../../../components/InfoList/InfoList';
-import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
@@ -82,6 +81,14 @@ function EvaluationSummary() {
         ? `${supervisor.firstName} ${supervisor.lastName}`
         : '',
     },
+    {
+      title: 'Työtehtäväsi',
+      content:evaluation ? evaluation.workTasks : '',
+    },
+    {
+      title: 'Omat tavoitteesi',
+      content:evaluation ? evaluation.workGoals : '',
+    }
   ];
 
   // Remove department from summaryData if there is no department
@@ -93,6 +100,15 @@ function EvaluationSummary() {
       summaryData.splice(indexToRemove, 1);
     }
   }
+
+  const nameOfUnits = checkedUnits.map((unit) => unit.name.fi)
+
+  const unitsNameByOne = nameOfUnits.map((name) =>({
+    title: name,
+  }))
+
+  console.log('each units name:',unitsNameByOne);
+  
 
   const handleUserPostReq = async () => {
     // Format data
@@ -182,23 +198,16 @@ function EvaluationSummary() {
     },
   ];
 
+
   return (
     <div className='summary__wrapper'>
       <section className='summary__container'>
         <Stepper activePage={4} totalPages={4} data={stepperData} />
         <InfoList title={'Yhteenveto'} data={summaryData} />
         <h1>
-          {workplace && workplace.name
-            ? workplace.name
-            : 'Ei dataa tietokannasta'}
+          Tänne tutkinnon nimi: degrees.name.fi
         </h1>
-        {checkedUnits?.map((unit) => (
-          <SelectUnit
-            key={unit._id}
-            unit={unit}
-            allUnits={checkedUnits && checkedUnits}
-          />
-        ))}
+        <InfoList data={unitsNameByOne} />
         <PageNavigationButtons
           handleBack={() => navigate(`/evaluation-units`)}
           handleForward={handleUserPostReq}

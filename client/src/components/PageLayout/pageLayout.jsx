@@ -121,7 +121,7 @@ const PageLayout = () => {
             )}
             <div className={styles.buttonContainer}>
               <button onClick={() => handleMenuToggle()}>
-                <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:menu-alt-05'} />
+                <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'} />
               </button>
             </div>
             {!menuIsOpen && <div className={styles.headerBox} style={wrapperStyle}>

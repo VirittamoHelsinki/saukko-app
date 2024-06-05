@@ -25,8 +25,6 @@ function DegreeConfirmSelection() {
     departments,
     resetWorkplaceData,
   } = useStore();
-  // console.log(supervisors);
-  // console.log('depatments----------', departments);
 
   const { setinternalDegreeId, internalDegree, degreeFound, setWorkplaces } =
     useContext(InternalApiContext);
@@ -47,7 +45,9 @@ function DegreeConfirmSelection() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.degreeId]);
 
-  const checkedUnits = useUnitsStore((state) => state?.checkedUnits);
+
+  const { checkedUnits, clearCheckedUnits } = useUnitsStore();
+  //const checkedUnits = useUnitsStore((state) => state?.checkedUnits);
 
   console.log('checkedunits.........', checkedUnits);
 
@@ -95,7 +95,6 @@ function DegreeConfirmSelection() {
           password: '12341234',
           role: 'supervisor',
         };
-        // console.log('UserDataf for registration---------------------------------', userData)
 
         // Register the supervisor and get the userId
         const userResponse = await registration(userData);
@@ -126,7 +125,7 @@ function DegreeConfirmSelection() {
 
       const workplaceData = {
         supervisors: supervisorIds,
-        businessId,
+        businessId: businessId,
         name: name ? name.name : editedCompanyName,
         departments: departmentData ? departmentData : '',
         degreeId: params.degreeId,
@@ -167,17 +166,19 @@ function DegreeConfirmSelection() {
 
         setWorkplaces(updatedWorkplaces);
         resetWorkplaceData();
+        clearCheckedUnits();
         setIsSuccess(true);
       } else {
         setIsFailure(true);
       }
     } catch (error) {
-      console.log(error);
+      console.error('Error while submitting workplace data:',error);
       setIsLoading(false);
       setIsFailure(true);
       setIsSuccess(false);
     }
   };
+
   useEffect(() => {
     if (isSuccess) {
       setOpenNotificationModal(true);
