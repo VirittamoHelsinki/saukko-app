@@ -110,7 +110,6 @@ function Summary({ degree }) {
     // Save degree to context
     setAllInternalDegrees([...allInternalDegrees, response])
     clearCheckedUnits()
-
   };
 
   // Trigger NotificationModal
