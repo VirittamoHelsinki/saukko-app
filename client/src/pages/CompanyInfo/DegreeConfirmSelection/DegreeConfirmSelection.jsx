@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import InternalApiContext from '../../../store/context/InternalApiContext';
@@ -14,6 +13,7 @@ import { postWorkplace } from '../../../api/workplace';
 import { registration } from '../../../api/user';
 import { fetchAllInternalWorkplaces } from '../../../api/workplace';
 import { Typography } from '@mui/material';
+import InfoList from '../../../components/InfoList/InfoList';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
@@ -81,6 +81,11 @@ function DegreeConfirmSelection() {
       url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`,
     },
   ];
+
+  const nameOfUnits = checkedUnits.map((unit) => unit.name.fi)
+
+  const unitsNameByOne = nameOfUnits.map((name)=>({ content:name }))
+  console.log('each unit name:',unitsNameByOne)
 
   const handleVahvistaClick = async () => {
     try {
@@ -227,15 +232,7 @@ function DegreeConfirmSelection() {
         <h1 className='Degree__confirmSelection__container--secondtitle'>
           {degreeFound && internalDegree?.name?.fi}
         </h1>
-        <div className='confirmSelection__container--units'>
-          {checkedUnits?.map((unit) => (
-            <SelectUnit
-              key={unit?._id}
-              unit={unit}
-              allUnits={degreeFound && internalDegree?.units}
-            />
-          ))}
-        </div>
+        <InfoList data={unitsNameByOne} />
         <PageNavigationButtons
           handleBack={() =>
             navigate(`../internal/degrees/${internalDegree?._id}/units`)

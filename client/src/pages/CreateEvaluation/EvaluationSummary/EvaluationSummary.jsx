@@ -5,21 +5,19 @@ import { useNavigate } from 'react-router-dom';
 // Import components
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InfoList from '../../../components/InfoList/InfoList';
-import useEvaluationStore from '../../../store/zustand/evaluationStore';
-import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import Stepper from '../../../components/Stepper/Stepper';
+import { Typography } from '@mui/material';
 
 // Import state management
+import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
+import { createEvaluation } from '../../../api/evaluation';
+import { registration } from '../../../api/user';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
-
-// Import API call functions
-import { registration } from '../../../api/user';
-import { createEvaluation } from '../../../api/evaluation';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { Typography } from '@mui/material';
+import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -27,7 +25,7 @@ function EvaluationSummary() {
   // Get data from store management
   const { workplace, department, supervisor } = useEvaluationStore();
   const { customer, evaluation, resetFormData } = useEvaluationFormStore(); // Include resetFormData
-  const { checkedUnits } = useUnitsStore();
+  const { checkedUnits, clearCheckedUnits } = useUnitsStore();
   const { currentUser } = useAuthContext();
   const { setInternalEvaluations } = useContext(InternalApiContext);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
@@ -104,11 +102,10 @@ function EvaluationSummary() {
   const nameOfUnits = checkedUnits.map((unit) => unit.name.fi)
 
   const unitsNameByOne = nameOfUnits.map((name) =>({
-    title: name,
+    content : name,
   }))
 
   console.log('each units name:',unitsNameByOne);
-  
 
   const handleUserPostReq = async () => {
     // Format data
@@ -133,6 +130,7 @@ function EvaluationSummary() {
 
       // Reset form data after successful submission
       resetFormData();
+      clearCheckedUnits();
     } else {
       setErrorNotification(true);
     }
@@ -207,6 +205,9 @@ function EvaluationSummary() {
         <h1>
           Tänne tutkinnon nimi: degrees.name.fi
         </h1>
+        {/* <h1 className='degree-title'>
+          {degree ? degree?.name?.fi : degreeName}
+        </h1> */}
         <InfoList data={unitsNameByOne} />
         <PageNavigationButtons
           handleBack={() => navigate(`/evaluation-units`)}
