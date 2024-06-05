@@ -1,12 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllEvaluations } from '../../api/evaluation';
+import { useLocation } from 'react-router-dom';
 
 // Create the context
 const EvaluationsContext = createContext({
   evaluations: [],
   evaluation: {},
-  setEvaluation: () => { },
+  setEvaluation: () => null,
   isLoading: false,
   error: null,
 });
@@ -18,13 +19,14 @@ export const EvaluationsProvider = ({ children }) => {
     queryFn: fetchAllEvaluations,
   });
 
-  /*   const [evaluation, setEvaluation] = useState({}) */
   const [evaluation, setEvaluation] = useState(() => {
     // Retrieve the initial evaluation state from localStorage if it exists
     const savedEvaluation = localStorage.getItem('evaluation');
-    return savedEvaluation ? JSON.parse(savedEvaluation) : {};
+    return savedEvaluation ? JSON.parse(savedEvaluation) : null;
   });
-  //TODO: Update when customer id changes
+
+  const location = useLocation();
+  const previousLocation = useRef(location);
 
   // Save evaluation to localStorage whenever it changes
   useEffect(() => {
@@ -33,9 +35,23 @@ export const EvaluationsProvider = ({ children }) => {
     }
   }, [evaluation]);
 
+  // Monitor route changes and clear localStorage if needed
   useEffect(() => {
-    console.log('evaluation context: ', evaluation)
-  }, [evaluation]);
+    const currentPath = location.pathname;
+    const prevPath = previousLocation.current.pathname;
+
+    const matchesUnitList = /^\/unit-list\/[a-fA-F0-9]{24}$/.test(prevPath);
+    const matchesUserPerformance = /^\/userperformance\/\d+$/.test(currentPath);
+
+    if (matchesUnitList && (!matchesUserPerformance || (/^\/unit-list\/[a-fA-F0-9]{24}$/.test(currentPath)))) {
+      localStorage.removeItem('evaluation');
+      setEvaluation(null);
+      console.log('remove evaluation')
+    }
+
+    // Update previousLocation ref to current location after check
+    previousLocation.current = location;
+  }, [location]);
 
   useEffect(() => {
     console.log('evaluation context: ', evaluation);
@@ -52,4 +68,3 @@ export const EvaluationsProvider = ({ children }) => {
 export const useEvaluations = () => {
   return useContext(EvaluationsContext);
 };
-
