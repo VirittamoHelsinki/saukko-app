@@ -1,4 +1,5 @@
-import { sendEmail } from "../configMailer";
+/* import { sendEmail } from "../configMailer"; */
+import sendEmail from "../azureEmailService"
 import mailerTemplate from "../mailerHtmlTemplate";
 
 
@@ -28,7 +29,20 @@ export const sendResetPasswordEmail = (params: ISendResetPasswordEmail) => {
   const subject = 'Salasanan vaihto';
   const html = mailerTemplate(text);
 
-  sendEmail({ to: params.userEmail, subject, html });
+  const emailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: params.userEmail
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
 };
 
 interface ISendResetPasswordSuccessEmail {
@@ -55,7 +69,20 @@ export const sendResetPasswordSuccessEmail = (params: ISendResetPasswordSuccessE
   const subject = 'Salasanan vaihto onnistunut';
   const html = mailerTemplate(text);
 
-  sendEmail({ to: params.userEmail, subject, html });
+  const emailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: params.userEmail
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
 };
 
 

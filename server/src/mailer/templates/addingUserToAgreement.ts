@@ -1,4 +1,3 @@
-import { sendEmail } from "../configMailer";
 import mailPoller, { EmailObj } from "../azureEmailService"
 import mailerTemplate from "../mailerHtmlTemplate";
 
@@ -41,7 +40,7 @@ export const sendNewCustomerAddedEmail = (params: ISendNewCustomerAddedEmail) =>
     {
       to: [
         { address: params.userEmail }
-      ] 
+      ]
     }
   }
 
@@ -79,7 +78,7 @@ export const sendNewCustomerVerifiedEmail = (params: ISendNewCustomerVerfiedEmai
     {
       to: [
         { address: params.userEmail }
-      ] 
+      ]
     }
   }
 
@@ -127,7 +126,7 @@ export const sendNewSupervisorAddedEmail = (params: ISendNewSupervisorAddedEmail
     {
       to: [
         { address: params.userEmail }
-      ] 
+      ]
     }
   }
 
@@ -161,19 +160,19 @@ export const sendOldSupervisorAddedEmail = (params: ISendOldSupervisorAddedEmail
       Ylläpito
     `;
 
-    const mail: EmailObj = {
-      content: {
-        subject: 'Vanha työpaikkaohjaaja liitetty suoritukseen',
-        plainText: text,
-        html: mailerTemplate(text),
-      },
-      recipients:
-      {
-        to: [
-          { address: params.userEmail }
-        ] 
-      }
+  const mail: EmailObj = {
+    content: {
+      subject: 'Vanha työpaikkaohjaaja liitetty suoritukseen',
+      plainText: text,
+      html: mailerTemplate(text),
+    },
+    recipients:
+    {
+      to: [
+        { address: params.userEmail }
+      ]
     }
-  
-    mailPoller(mail)
+  }
+
+  mailPoller(mail)
 };

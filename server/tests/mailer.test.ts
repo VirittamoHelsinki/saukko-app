@@ -11,17 +11,17 @@ interface IUser {
   email: string;
 }
 
-describe('test sending emails with resend', () => {
-  it('test mail', async () => {
-    const mockUser: IUser = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'example@example.com',
-    }
-    const mockVerificationLink = 'https://example.com/verification-link';
-    sendVerificationEmail({ userEmail: mockUser.email, verificationLink: mockVerificationLink });
-  });
-});
+// describe('test sending emails with resend', () => {
+//   it('test mail', async () => {
+//     const mockUser: IUser = {
+//       firstName: 'Matti',
+//       lastName: 'Meikäläinen',
+//       email: 'example@example.com',
+//     }
+//     const mockVerificationLink = 'https://example.com/verification-link';
+//     sendVerificationEmail({ userEmail: mockUser.email, verificationLink: mockVerificationLink });
+//   });
+// });
 
 /*describe.skip('test sending emails', () => {
   it('verifikaatiolinkki', async () => {
