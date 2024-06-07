@@ -1,6 +1,6 @@
 /* import { sendEmail } from "../configMailer"; */
 import sendEmail from "../azureEmailService"
-/* import createNewEmail from "../createNewMail"; */
+import createNewEmail from "../createNewMail";
 import mailerTemplate from "../mailerHtmlTemplate";
 
 interface IsendVerificationEmail {
@@ -27,6 +27,8 @@ export const sendVerificationEmail = (params: IsendVerificationEmail) => {
   const subject = 'Vahvista sähköpostiosoitteesi';
   const html = mailerTemplate(plainText);
 
+  // sendEmail({ to: params.userEmail, subject, html });
+
   const emailObj = {
     content: {
       subject: subject,
@@ -41,7 +43,6 @@ export const sendVerificationEmail = (params: IsendVerificationEmail) => {
   }
 
   sendEmail(emailObj);
-  // sendEmail({ to: params.userEmail, subject, html });
 
   // createNewEmail({
   //   msg: {
