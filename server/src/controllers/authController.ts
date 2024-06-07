@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 import { PasswordValidator } from '../utils/password';
 import { passwordValidationOptions } from '../options';
 import { sendVerificationEmail, sendVerificationDoneEmail } from '../mailer/templates/newUserVerification';
-import { sendResetPasswordEmail } from '../mailer/templates/resetPassword';
+import { sendResetPasswordEmail, sendResetPasswordSuccessEmail } from '../mailer/templates/resetPassword';
 
 const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
   if (err.message) {
@@ -155,6 +155,8 @@ const resetPassword = async (req: Request, res: Response) => {
     user.setPassword(password);
     user.modified = Math.floor(Date.now() / 1000);
     user.save();
+    const technicalSupportLink = config.APP_URL
+    sendResetPasswordSuccessEmail({ userFirstName: user.firstName, userEmail: user.email, technicalSupportLink })
     console.log("Password successfully changed");
 
     return res
