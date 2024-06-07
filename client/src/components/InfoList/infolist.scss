@@ -6,9 +6,11 @@
   width: 100%;
 
   ul li {
-    height: auto;
+    //height: auto;
     padding: 8px 20px;
     line-height: 20px;
     font-size: 16px;
+    min-height: 45px;
+    align-content: center;
   }
 }
