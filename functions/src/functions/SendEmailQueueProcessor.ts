@@ -1,3 +1,17 @@
+import * as appInsights from 'applicationinsights';
+
+// Application Insights konfigurointi
+appInsights.setup(config.instrumentationKey)
+  .setAutoCollectRequests(true)
+  .setAutoCollectPerformance(true, true)
+  .setAutoCollectExceptions(true)
+  .setAutoCollectDependencies(true)
+  .setAutoDependencyCorrelation(true)
+  .setUseDiskRetryCaching(true)
+  .start();
+
+const appInsightsClient = appInsights.defaultClient;
+
 import { app, InvocationContext } from "@azure/functions";
 import { IEmailObj } from '../models/emailDocumentModel'
 import { EmailClient } from "@azure/communication-email";
@@ -18,8 +32,6 @@ export async function SendEmailQueueProcessor(queueItem: unknown, context: Invoc
   context.log('Storage queue function processed work item:', queueItem);
 
   try {
-    // TODO: fixaa tämä
-    //
     // Tulkitaan jonosta saatu viesti
 
     const emailData: IEmailObj = queueItem as IEmailObj;
@@ -36,6 +48,7 @@ export async function SendEmailQueueProcessor(queueItem: unknown, context: Invoc
     }
   } catch (error) {
     context.error("Virhe käsittelyssä:", error);
+    appInsightsClient.trackException({ exception: error });
     throw error;
   }
 }

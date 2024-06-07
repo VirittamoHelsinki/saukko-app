@@ -12,4 +12,6 @@ export default {
   emailServiceConnectionString: process.env.EMAIL_SERVICE_CONNECTION_STRING,
   emailFromSenderDomain: process.env.EMAIL_FROM_SENDER_DOMAIN,
   environment,
+  instrumentationKey: (isDev ? process.env.APPINSIGHTS_INSTRUMENTATIONKEY_DEV :
+    process.env.APPINSIGHTS_INSTRUMENTATIONKEY_PROD)
 }
