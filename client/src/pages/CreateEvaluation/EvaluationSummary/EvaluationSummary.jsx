@@ -30,6 +30,8 @@ function EvaluationSummary() {
   const { setInternalEvaluations } = useContext(InternalApiContext);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
+  const { allInternalDegrees } = useContext(InternalApiContext);
+
   // NotificationModal
   const [successNotification, setSuccessNotification] = useState(false);
   const [errorNotification, setErrorNotification] = useState(false);
@@ -105,8 +107,6 @@ function EvaluationSummary() {
     content : name,
   }))
 
-  console.log('each units name:',unitsNameByOne);
-
   const handleUserPostReq = async () => {
     // Format data
     const userRequestData = {
@@ -176,6 +176,13 @@ function EvaluationSummary() {
     }
   };
 
+  const matchingDegree = allInternalDegrees.find((degree)=> degree._id === workplace.degreeId);
+
+  let customerDegreeName = "No matching degree found";
+  if (matchingDegree) {
+    customerDegreeName = matchingDegree.name.fi;
+  }
+
   // Stepper labels & urls
   const stepperData = [
     {
@@ -202,13 +209,10 @@ function EvaluationSummary() {
       <section className='summary__container'>
         <Stepper activePage={4} totalPages={4} data={stepperData} />
         <InfoList title={'Yhteenveto'} data={summaryData} />
-        <h1>
-          Tänne tutkinnon nimi: degrees.name.fi
-        </h1>
-        {/* <h1 className='degree-title'>
-          {degree ? degree?.name?.fi : degreeName}
-        </h1> */}
-        <InfoList data={unitsNameByOne} />
+        <h2 className='evaluation-summary-degreeName'>
+          {customerDegreeName}
+        </h2>
+        <InfoList className="evaluation-summary-degreeName-infoList" data={unitsNameByOne} />
         <PageNavigationButtons
           handleBack={() => navigate(`/evaluation-units`)}
           handleForward={handleUserPostReq}
