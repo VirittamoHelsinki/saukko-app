@@ -4,7 +4,7 @@ import { useAuthContext } from '../../store/context/authContextProvider';
 import styles from './pageLayout.module.scss';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import UserNav from '../UserNav/UserNav';
-import {useEffect, useState } from 'react';
+import {useEffect, useState, useRef } from 'react';
 import { DialogActions } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -68,6 +68,11 @@ const PageLayout = () => {
     backgroundColor: headerColor,
     marginBottom: '-1rem',
   };
+
+  // close hamburgermenu when user click outside, except Box componet
+  const menuRef = useRef(null);
+  const userNavRef = useRef(null);
+
   const logoColor = currentUser?.role ? '#000' : '#fff';
 
   const showBackButton = navigationType !== 'POP' && location.key !== 'default';
@@ -88,6 +93,19 @@ const PageLayout = () => {
   useEffect(() => {
     document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
   }, [siteTitle]);
+
+  // Close menu when user click outside of hamburgermenu
+  useEffect(()=>{
+    function handleClickOutside(event){
+      if(menuRef.current && !menuRef.current.contains(event.target) && userNavRef.current !== event.target){
+        setMenuIsOpen(false);
+      }
+    }
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    }
+  },[menuRef])
 
   const handleMenuToggle = () => {
     console.log('path: ', location.pathname)
@@ -119,8 +137,8 @@ const PageLayout = () => {
                 <Icon icon="typcn:arrow-left" style={{ color: logoColor }} />
               </button>
             )}
-            <div className={styles.buttonContainer}>
-              <button onClick={() => handleMenuToggle()}>
+            <div className={styles.buttonContainer} ref={menuRef}>
+              <button onClick={() => handleMenuToggle()} style={{marginBottom: '0.3rem'}}>
                 <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'} />
               </button>
             </div>
