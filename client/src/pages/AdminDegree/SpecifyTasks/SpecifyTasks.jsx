@@ -250,7 +250,7 @@ function SpecifyTasks({ degree }) {
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
           handleForward={handleSubmit}
-          forwardButtonText={'Tallenna ja jatka'}
+          forwardButtonText={'Vahvista valinnat'}
           showForwardButton={true}
 
         />
