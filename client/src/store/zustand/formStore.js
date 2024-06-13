@@ -25,7 +25,7 @@ const useStore = create((set) => {
     openNotificationModal: false,
 
     // Workplace data
-    businessID: [],
+    businessId: '',
     businessIDError: '',
     editedCompanyName: null,
     name: null,
@@ -99,7 +99,7 @@ const useStore = create((set) => {
     }),
 
     resetWorkplaceData: () => set({
-      businessID: [],
+      businessId: '',
       businessIDError: '',
       editedCompanyName: null,
       name: null,

@@ -1,6 +1,6 @@
 import path from "path";
 import express from 'express';
-import mongoose from "mongoose";
+import mongo from "./utils/mongo";
 import cookieParser from 'cookie-parser';
 import config from "./utils/config";
 import cors, { CorsOptions } from 'cors';
@@ -16,11 +16,7 @@ import evaluationRouter from "./routers/evaluationRouter";
 import eReqRouter from "./routers/eReqRouter"
 import tokensMiddleware from "./middlewares/middleware.tokens";
 
-// import swaggerDocument from "./swaggerDoc.json"
-
 const app = express();
-
-// Import routes
 
 // Middleware setup
 app.use(express.json());
@@ -44,14 +40,7 @@ if (config.ENVIRONMENT === 'development') {
 
 app.use(cors(corsOptions))
 
-// Connect to the database
-mongoose.set("strictQuery", true);
-if (!config.MONGODB_URI) throw new Error("Check the .env")
-mongoose.connect(config.MONGODB_URI)
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'MongoDB connection error'));
-db.once('open', () => console.log('Connected to MongoDB'));
+mongo.openConnection();
 
 const staticPath = path.join(__dirname, 'static');
 app.use(express.static(staticPath));
@@ -65,6 +54,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/env', (_req, res) => res.json({ env: config.ENVIRONMENT }))
 
 // Routes
+// app.use("/test", testRouter)
 app.use("/auth", authRouter);
 app.use("/api", degreeRouter);
 app.use("/api", workplaceRouter);
@@ -73,9 +63,10 @@ app.use("/api", eReqRouter);
 
 
 app.use('/api/status', (_req, res) => {
+  const isConnected = !!mongo.getConnection()
   res.json({
     message: 'API is working',
-    mongoDbConnection: db.readyState === 1 ? 'connected' : 'disconnected',
+    mongoDbConnection: isConnected,
   });
 });
 

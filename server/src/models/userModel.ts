@@ -26,7 +26,7 @@ export type User = (Document<unknown, {}, IUser & Document<any, any, any>> & IUs
   _id: Types.ObjectId;
 });
 
-const userSchema = new Schema<IUser>({
+export const userSchema = new Schema<IUser>({
   firstName: {
     type: String,
   },

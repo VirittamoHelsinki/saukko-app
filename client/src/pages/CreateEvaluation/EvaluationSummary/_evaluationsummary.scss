@@ -26,9 +26,12 @@
         font-size: var(--base-font-size);
       }
 
-      .selectUnit__container--units-unit {
-        flex-shrink: 0;
+      h2 {
+        margin-top: 1.9rem;
+        text-align: center;
+        font-size: var(--base-font-size);
       }
+
     }
   }
 

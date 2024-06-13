@@ -5,22 +5,19 @@ import { useNavigate } from 'react-router-dom';
 // Import components
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import InfoList from '../../../components/InfoList/InfoList';
-import SelectUnit from '../../../components/SelectUnit/SelectUnit';
-import useEvaluationStore from '../../../store/zustand/evaluationStore';
-import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import Stepper from '../../../components/Stepper/Stepper';
+import { Typography } from '@mui/material';
 
 // Import state management
+import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
+import { createEvaluation } from '../../../api/evaluation';
+import { registration } from '../../../api/user';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
-
-// Import API call functions
-import { registration } from '../../../api/user';
-import { createEvaluation } from '../../../api/evaluation';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { Typography } from '@mui/material';
+import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -28,10 +25,12 @@ function EvaluationSummary() {
   // Get data from store management
   const { workplace, department, supervisor } = useEvaluationStore();
   const { customer, evaluation, resetFormData } = useEvaluationFormStore(); // Include resetFormData
-  const { checkedUnits } = useUnitsStore();
+  const { checkedUnits, clearCheckedUnits } = useUnitsStore();
   const { currentUser } = useAuthContext();
   const { setInternalEvaluations } = useContext(InternalApiContext);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  const { allInternalDegrees } = useContext(InternalApiContext);
 
   // NotificationModal
   const [successNotification, setSuccessNotification] = useState(false);
@@ -82,6 +81,14 @@ function EvaluationSummary() {
         ? `${supervisor.firstName} ${supervisor.lastName}`
         : '',
     },
+    {
+      title: 'Työtehtäväsi',
+      content:evaluation ? evaluation.workTasks : '',
+    },
+    {
+      title: 'Omat tavoitteesi',
+      content:evaluation ? evaluation.workGoals : '',
+    }
   ];
 
   // Remove department from summaryData if there is no department
@@ -93,6 +100,12 @@ function EvaluationSummary() {
       summaryData.splice(indexToRemove, 1);
     }
   }
+
+  const nameOfUnits = checkedUnits.map((unit) => unit.name.fi)
+
+  const unitsNameByOne = nameOfUnits.map((name) =>({
+    content : name,
+  }))
 
   const handleUserPostReq = async () => {
     // Format data
@@ -117,6 +130,7 @@ function EvaluationSummary() {
 
       // Reset form data after successful submission
       resetFormData();
+      clearCheckedUnits();
     } else {
       setErrorNotification(true);
     }
@@ -162,6 +176,13 @@ function EvaluationSummary() {
     }
   };
 
+  const matchingDegree = allInternalDegrees.find((degree)=> degree._id === workplace.degreeId);
+
+  let customerDegreeName = "No matching degree found";
+  if (matchingDegree) {
+    customerDegreeName = matchingDegree.name.fi;
+  }
+
   // Stepper labels & urls
   const stepperData = [
     {
@@ -182,23 +203,16 @@ function EvaluationSummary() {
     },
   ];
 
+
   return (
     <div className='summary__wrapper'>
       <section className='summary__container'>
         <Stepper activePage={4} totalPages={4} data={stepperData} />
         <InfoList title={'Yhteenveto'} data={summaryData} />
-        <h1>
-          {workplace && workplace.name
-            ? workplace.name
-            : 'Ei dataa tietokannasta'}
-        </h1>
-        {checkedUnits?.map((unit) => (
-          <SelectUnit
-            key={unit._id}
-            unit={unit}
-            allUnits={checkedUnits && checkedUnits}
-          />
-        ))}
+        <h2 className='evaluation-summary-degreeName'>
+          {customerDegreeName}
+        </h2>
+        <InfoList className="evaluation-summary-degreeName-infoList" data={unitsNameByOne} />
         <PageNavigationButtons
           handleBack={() => navigate(`/evaluation-units`)}
           handleForward={handleUserPostReq}
