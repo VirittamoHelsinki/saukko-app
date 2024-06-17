@@ -64,7 +64,7 @@ const SetPassword = () => {
         <form onSubmit={setThePassword}>
           <section className="resetPassword__container--form-text">
             {/* Password input */}
-            <label htmlFor="password">Salasana *</label>
+            <label htmlFor="password">Luo uusi salasana *</label>
             <div className="password__container">
               <input
                 type={showPassword ? "text" : "password"}
