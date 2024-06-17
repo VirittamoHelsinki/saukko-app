@@ -60,7 +60,8 @@ const DegreeDescriptionModal = ({
                                         : ''
                                 }
                                 id='outlined-multiline-static'
-                                multiline={degreeDetails.description.fi && degreeDetails.description.fi > 5}
+                                //multiline={degreeDetails.description.fi && degreeDetails.description.fi > 10}
+                                multiline
                                 onChange={(event) => {
                                     setDegreeDetails((prevState) => ({
                                         ...prevState,
@@ -75,14 +76,23 @@ const DegreeDescriptionModal = ({
                                         '& fieldset': {
                                             borderRadius: '0',
                                             borderColor: 'black',
-                                            borderWidth: '1px',
+                                            borderWidth: '2px,',
+                                        },
+                                        '&Mui-focused fieldset':{
+                                            borderColor: 'black',
                                         },
                                     },
+                                    borderRadius: '0',
+                                    borderColor: 'black',
                                     width: '100%',
                                     backgroundColor: 'white',
                                     marginTop: '8px',
                                     overflow: 'auto',
-                                    height: '200px',
+                                    //minHeight: '330px',
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderWidth: '2px',
+                                        borderColor: 'black',
+                                      }
                                 }}
                             >
                             </TextField>
