@@ -26,6 +26,7 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
 };
 
 const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: any) => {
+
   switch (userRole) {
     case 'supervisor':
       sendEvaluationFormSupervisorReadyMessageCustomer(
@@ -112,6 +113,7 @@ const sendContactRequestEmails = (selectedValues: any, userRole: string, request
 };
 
 const handeUserPerformanceEmails = async (req: Request, res: Response) => {
+
   try {
     const evaluation = await fetchEvaluationWithDetails(req.params.id);
 
@@ -127,6 +129,9 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
       customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
       additionalInfo: req.body.additionalInfo,
+      supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+      customerFirstName: evaluation.customerId?.firstName,
+      teacherFirstName: evaluation.teacherId?.firstName
     };
 
     const emails = {
@@ -137,7 +142,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
 
     const selectedValues = req.body.selectedValues;
 
-    if (selectedValues.suoritusValmis) {
+    if (selectedValues.suoritusValmis || selectedValues.valmisLahetettavaksi) {
       sendReadyEmails(user.role, formIsReadyParams, emails);
     }
 

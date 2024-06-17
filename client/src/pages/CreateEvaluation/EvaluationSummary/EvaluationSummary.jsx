@@ -212,11 +212,14 @@ function EvaluationSummary() {
         <h2 className='evaluation-summary-degreeName'>
           {customerDegreeName}
         </h2>
-        <InfoList className="evaluation-summary-degreeName-infoList" data={unitsNameByOne} />
+        <InfoList 
+          className="evaluation-summary-degreeName-infoList" 
+          data={unitsNameByOne}
+           />
         <PageNavigationButtons
           handleBack={() => navigate(`/evaluation-units`)}
           handleForward={handleUserPostReq}
-          forwardButtonText={'Tallenna'}
+          forwardButtonText={'Lähetä kutsut'}
           showForwardButton={true}
         />
       </section>
