@@ -14,6 +14,8 @@ import {
 // Asiakas pyytää yhteydenottoa
 export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluationFormRequestContact, to: string) => {
 
+  console.log('params-evaluationForm ', params)
+
   const text =
     `
     Hei ${params.teacherName},
@@ -53,6 +55,7 @@ export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluation
 
 export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluationFormRequestContact, to: string) => {
 
+  console.log('params-evaluationForm ', params)
   const text =
     `
     Hei ${params.teacherName},
@@ -91,6 +94,7 @@ export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluati
 // Opettaja pyytää yhteydenottoa
 
 export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: ISendEvaluationFormRequestContact, to: string) => {
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
@@ -128,6 +132,8 @@ export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: I
 };
 
 export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor, to: string) => {
+
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
@@ -192,6 +198,8 @@ export interface ISendEvaluationFormSupervisorReadyMessageTeacher {
 
 export const sendEvaluationFormSupervisorReadyMessageCustomer = (params: ISendEvaluationFormSupervisorReadyMessageCustomer, subject: string, to: string) => {
 
+  console.log('params-evaluationForm ', params)
+
   const text =
     `
     Hei ${params.customerFirstName},
@@ -232,6 +240,8 @@ export const sendEvaluationFormSupervisorReadyMessageCustomer = (params: ISendEv
 
 export const sendEvaluationFormSupervisorReadyMessageTeacher = (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string) => {
 
+  console.log('params-evaluationForm ', params)
+
   const text =
     `
     Hei ${params.teacherFirstName},
@@ -271,6 +281,8 @@ export const sendEvaluationFormSupervisorReadyMessageTeacher = (params: ISendEva
 
 export const sendEvaluationFormCustomerReadyMessageTeacher = (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string) => {
 
+  console.log('params-evaluationForm ', params)
+
   const text =
     `
     Hei ${params.teacherFirstName},
@@ -309,6 +321,8 @@ export const sendEvaluationFormCustomerReadyMessageTeacher = (params: ISendEvalu
 };
 
 export const sendEvaluationFormCustomerReadyMessageSupervisor = (params: ISendEvaluationFormCustomerReadyMessageSupervisor, subject: string, to: string) => {
+
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
@@ -352,6 +366,8 @@ export const sendEvaluationFormCustomerReadyMessageSupervisor = (params: ISendEv
 
 export const sendEvaluationFormTeacherReadyMessageCustomer = (params: ISendEvaluationFormTeacherReadyMessageCustomer, subject: string, to: string) => {
 
+  console.log('params-evaluationForm ', params)
+
   const text =
     `
     Hei ${params.customerFirstName}, 
@@ -390,6 +406,8 @@ export const sendEvaluationFormTeacherReadyMessageCustomer = (params: ISendEvalu
 
 
 export const sendEvaluationFormTeacherReadyMessageSupervisor = (params: ISendEvaluationFormTeacherReadyMessageSupervisor, subject: string, to: string) => {
+
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
