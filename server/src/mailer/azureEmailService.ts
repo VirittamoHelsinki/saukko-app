@@ -16,7 +16,6 @@ export type EmailObj = {
 }
 
 const sendEmail = async (messageParams: EmailObj) => {
-  console.log('emailObj: ', messageParams)
   const poller = await client.beginSend({
     senderAddress: `${sender}@${config.EMAIL_FROM_SENDER_DOMAIN}`,
     ...messageParams
