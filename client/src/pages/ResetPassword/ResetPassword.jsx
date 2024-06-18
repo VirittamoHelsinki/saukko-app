@@ -122,7 +122,7 @@ const ResetPassword = () => {
           <h2>Vaihda salasana</h2>
           <form onSubmit={processResetPassword}>
             <section className="resetPassword__container--form-text">
-              <label htmlFor="password">Salasana *</label>
+              <label htmlFor="password">Luo uusi salasana *</label>
               <div className="password__container">
                 <input
                   ref={passwordRef}
