@@ -134,9 +134,6 @@ function SpecifyTasks({ degree }) {
           />
           <Paper square elevation={0}>
             <form>
-              {/* <h3 className='degree-guidance'>
-                Lisää ammattitaitovaatimukset ja kriteerit
-              </h3> */}
               <MobileStepper
                 sx={{ 
                   bgcolor: '#f2f2f2',
@@ -238,7 +235,6 @@ function SpecifyTasks({ degree }) {
                 sx={{ 
                   paddingLeft: 0, 
                   textTransform: 'none',
-                  //position: 'static'
                  }}
               >
                 + Lisää ammattitaitovaatimukset
