@@ -79,7 +79,7 @@ const PageLayout = () => {
 
   const renderHeader = currentUser && currentUser.role;
 
-  const regex = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$/;
+  const regex = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$|^\/company-info$|^\/internal\/degrees(\/[a-zA-Z0-9]+\/units(\/confirm-selection)?)?$|^\/(evaluation-form|evaluation-workplace|evaluation-units|evaluation-summary)$/;
 
   useEffect(() => {
     // Add pages in array below, where the waves header should not render
