@@ -1,5 +1,120 @@
 import sendEmail, { EmailObj } from '../src/mailer/azureEmailService';
+import sendingMailToQueue from '../src/mailer/createNewMail'
 import mailTemplate from '../src/mailer/mailerHtmlTemplate';
+import { IEmailObj } from '../src/models/emailDocumentModel';
+import { sendVerificationEmail } from '../src/mailer/templates/newUserVerification'
+import mailerTemplate from '../src/mailer/mailerHtmlTemplate'
+
+
+describe.skip('Sending verification email', () => {
+
+  interface ISendVerificationEmail {
+    userEmail: string;
+    verificationLink: string;
+    recipentUserId: string;
+  }
+
+  const params: ISendVerificationEmail = {
+    userEmail: 'straightapricot@navalcadets.com',
+    verificationLink: 'test',
+    recipentUserId: 'joku112'
+  }
+
+  it('should send verification email successfully', async () => {
+    try {
+      await sendVerificationEmail(params);
+      // Optionally add assertions or expect statements here
+    } catch (error) {
+      // Handle errors or fail the test if necessary
+      fail(`Sending verification email failed: ${error}`);
+    }
+  });
+})
+
+
+describe.skip('Testing create email queue', () => {
+
+  const createNewMailParams: IEmailObj = {
+    msg: {
+      content: {
+        subject: 'hello',
+        plainText: 'this is the plain text',
+        html: '<p>This is a test email.</p>'
+      },
+      recipients: {
+        to: [{ address: 'straightapricot@navalcadets.com' }]
+      }
+    },
+    recipentUserId: 'joku55'
+  };
+
+  interface ISendVerificationEmail {
+    userEmail: string;
+    verificationLink: string;
+    recipentUserId: string;
+  }
+
+  const params: ISendVerificationEmail = {
+    userEmail: 'straightapricot@navalcadets.com',
+    verificationLink: 'test',
+    recipentUserId: 'joku112'
+  }
+
+  it('should send email data to the queue successfully', async () => {
+    await sendingMailToQueue(createNewMailParams);
+  });
+
+  it('should work when sending this function', async () => {
+    const plainText =
+      `
+    Tervetuloa OsTu-appin käyttäjäksi!
+
+    Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
+
+    Linkki vanhenee kahden tunnin kuluttua.
+
+    
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+
+    const subject = 'Vahvista sähköpostiosoitteesi';
+    const html = mailTemplate(plainText)
+
+    const createNewMailParams2: IEmailObj = {
+      msg: {
+        content: {
+          subject: subject,
+          plainText: plainText,
+          html: html
+        },
+        recipients: {
+          to: [{ address: 'straightapricot@navalcadets.com' }]
+        }
+      },
+      recipentUserId: 'joku55'
+    };
+
+    console.log('html: ', html)
+    await sendingMailToQueue(createNewMailParams2);
+
+  })
+
+  it('should send verification email successfully', () => {
+    try {
+      sendVerificationEmail(params);
+      // Optionally add assertions or expect statements here
+    } catch (error) {
+      // Handle errors or fail the test if necessary
+      fail(`Sending verification email failed: ${error}`);
+    }
+  });
+
+});
+
+
+// Test sendEmail
+
 
 const exampleParams = {
   teacherName: 'John Doe',
