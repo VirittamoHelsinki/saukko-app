@@ -78,9 +78,8 @@ const DegreeNameModal = ({
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
                       borderRadius: '0',
-                      // border: 'black 2px solid',
                       borderColor: 'black',
-                      borderWidth: '1px',
+                      borderWidth: '2px',
                     },
                   },
                   width: '100%',

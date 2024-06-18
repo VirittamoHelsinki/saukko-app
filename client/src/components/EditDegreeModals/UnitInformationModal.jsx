@@ -99,9 +99,8 @@ const UnitInformationModal = ({
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {
                       borderRadius: '0',
-                      // border: 'black 2px solid',
                       borderColor: 'black',
-                      borderWidth: '1px',
+                      borderWidth: '2px',
                     },
                   },
                   width: '100%',
@@ -203,7 +202,7 @@ const UnitInformationModal = ({
 
                 <Box
                   style={{
-                    marginTop: '-18px',
+                    //marginTop: '-18px',
                     display: 'flex',
                     justifyContent: 'center',
                   }}
