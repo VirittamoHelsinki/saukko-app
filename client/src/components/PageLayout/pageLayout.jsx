@@ -96,8 +96,12 @@ const PageLayout = () => {
 
   // Close menu when user click outside of hamburgermenu
   useEffect(() => {
+
+
+    const regexInside = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$/;
+
     function handleClickOutside(event) {
-      if (!regex.test(location.pathname) && menuRef.current && !menuRef.current.contains(event.target) && userNavRef.current !== event.target) {
+      if (!regexInside.test(location.pathname) && menuRef.current && !menuRef.current.contains(event.target) && userNavRef.current !== event.target) {
         setMenuIsOpen(false);
       }
     }
@@ -105,7 +109,7 @@ const PageLayout = () => {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     }
-  }, [menuRef, location.pathname, regex])
+  }, [menuRef, location.pathname])
 
   const handleMenuToggle = () => {
     if (!menuIsOpen && regex.test(location.pathname)) {
