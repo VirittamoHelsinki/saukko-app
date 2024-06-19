@@ -4,7 +4,7 @@ import { useAuthContext } from '../../store/context/authContextProvider';
 import styles from './pageLayout.module.scss';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import UserNav from '../UserNav/UserNav';
-import {useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { DialogActions } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -95,9 +95,9 @@ const PageLayout = () => {
   }, [siteTitle]);
 
   // Close menu when user click outside of hamburgermenu
-  useEffect(()=>{
-    function handleClickOutside(event){
-      if(menuRef.current && !menuRef.current.contains(event.target) && userNavRef.current !== event.target){
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (!regex.test(location.pathname) && menuRef.current && !menuRef.current.contains(event.target) && userNavRef.current !== event.target) {
         setMenuIsOpen(false);
       }
     }
@@ -105,10 +105,9 @@ const PageLayout = () => {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     }
-  },[menuRef])
+  }, [menuRef])
 
   const handleMenuToggle = () => {
-    console.log('path: ', location.pathname)
     if (!menuIsOpen && regex.test(location.pathname)) {
       setShowWarning(true);
     } else {
@@ -138,7 +137,7 @@ const PageLayout = () => {
               </button>
             )}
             <div className={styles.buttonContainer} ref={menuRef}>
-              <button onClick={() => handleMenuToggle()} style={{marginBottom: '0.3rem'}}>
+              <button onClick={() => handleMenuToggle()} style={{ marginBottom: '0.3rem' }}>
                 <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'} />
               </button>
             </div>
