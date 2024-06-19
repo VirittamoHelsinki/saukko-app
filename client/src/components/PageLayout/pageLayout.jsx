@@ -105,7 +105,7 @@ const PageLayout = () => {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     }
-  }, [menuRef])
+  }, [menuRef, location.pathname, regex])
 
   const handleMenuToggle = () => {
     if (!menuIsOpen && regex.test(location.pathname)) {
