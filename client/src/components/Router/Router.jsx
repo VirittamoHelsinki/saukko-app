@@ -63,7 +63,7 @@ const Router = () => {
       if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
         navigate('/');
       } else if (currentUser.role === 'customer') {
-        navigate('/unit-list');
+        navigate(`/unit-list/${currentUser.id}`);
       }
     }
   }, [currentUser, loggedIn, navigate, path]);
