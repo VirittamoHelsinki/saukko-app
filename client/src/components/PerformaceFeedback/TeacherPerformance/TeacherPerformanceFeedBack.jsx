@@ -81,7 +81,7 @@ const TeacherPerformanceFeedBack = ({
   };
 
   // Get data from db
-  const infodata = evaluation.units.flatMap((unit) => {
+  const infodata = evaluation ? evaluation.units.flatMap((unit) => {
     return unit.assessments.flatMap((assessment) => [
       {
         info: 'Itsearviointi',
@@ -106,7 +106,11 @@ const TeacherPerformanceFeedBack = ({
         comment: assessment.comment,
       },
     ]);
-  });
+  }) : [
+    { info: 'Itsearviointi', disabled: true, answer: '' },
+    { info: 'TPO:n havainto', disabled: true, answerSupervisor: '' },
+    { info: 'Opettajan merkintä', disabled: false, answerTeacher: '', comment: { text: '' } }
+  ];
 
   const infodataForSelectedAssessment = infodata.filter(
     (data) => data.assessmentId === assessment._id
@@ -114,13 +118,28 @@ const TeacherPerformanceFeedBack = ({
 
 
   useEffect(() => {
-    // Initialize selectedRadio state based on radioAnswers
+    // Initialize selectedRadio state based on radioAnswers or with default empty values
     const initialSelectedRadio = infodataForSelectedAssessment.reduce((acc, item) => {
       if (item.info === 'Opettajan merkintä') {
         acc[item.info] = item.answerTeacher || '';
       }
+      if (item.info === 'Itsearviointi') {
+        acc[item.info] = item.answer || '';
+      }
+      if (item.info === 'TPO:n havainto') {
+        acc[item.info] = item.answerSupervisor || ''
+      }
       return acc;
     }, {});
+
+    // Ensure all radio buttons are present with default empty values if they don't have answers
+    const defaultRadioValues = ['Itsearviointi', 'TPO:n havainto', 'Opettajan merkintä'];
+    defaultRadioValues.forEach((info) => {
+      if (!initialSelectedRadio.hasOwnProperty(info)) {
+        initialSelectedRadio[info] = '';
+      }
+    });
+
     setSelectedRadio(initialSelectedRadio);
   }, []);
 

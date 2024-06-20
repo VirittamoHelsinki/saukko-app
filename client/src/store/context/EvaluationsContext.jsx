@@ -8,13 +8,14 @@ const EvaluationsContext = createContext({
   evaluations: [],
   evaluation: {},
   setEvaluation: () => null,
+  refetchEvaluations: () => null,
   isLoading: false,
   error: null,
 });
 
 // Create a provider component
 export const EvaluationsProvider = ({ children }) => {
-  const { data: evaluations, isLoading, error } = useQuery({
+  const { data: evaluations, isLoading, error, refetch } = useQuery({
     queryKey: ['evaluations'],
     queryFn: fetchAllEvaluations,
   });
@@ -40,16 +41,14 @@ export const EvaluationsProvider = ({ children }) => {
     const currentPath = location.pathname;
     const prevPath = previousLocation.current.pathname;
 
-    console.log('currentPath: ', currentPath)
-    console.log('prevPath: ', prevPath)
-
     const matchesUnitListPrev = /^\/unit-list\/[a-fA-F0-9]{24}$/.test(prevPath);
     const matchesUnitListCurrent = /^\/unit-list\/[a-fA-F0-9]{24}$/.test(currentPath)
     const matchesUserPerformance = /^\/userperformance\/\d+$/.test(currentPath);
     const matchesContractInfoCurrent = /^\/contract-info\/[a-fA-F0-9]{24}$/.test(currentPath);
     const matchesContractInfoPrev = /^\/contract-info\/[a-fA-F0-9]{24}$/.test(prevPath);
 
-    if (matchesUnitListPrev && !matchesUserPerformance && !matchesUnitListCurrent && !matchesContractInfoCurrent || matchesContractInfoPrev && (/^\/$/).test(currentPath)) {
+    if (matchesUnitListPrev && !matchesUserPerformance && !matchesUnitListCurrent && !matchesContractInfoCurrent
+      || matchesContractInfoPrev && (/^\/$/).test(currentPath)) {
       localStorage.removeItem('evaluation');
       setEvaluation(null);
       console.log('remove evaluation')
@@ -64,7 +63,7 @@ export const EvaluationsProvider = ({ children }) => {
   }, [evaluation]);
 
   return (
-    <EvaluationsContext.Provider value={{ evaluations, isLoading, error, evaluation, setEvaluation }}>
+    <EvaluationsContext.Provider value={{ evaluations, isLoading, error, evaluation, setEvaluation, refetchEvaluations: refetch }}>
       {children}
     </EvaluationsContext.Provider>
   );
