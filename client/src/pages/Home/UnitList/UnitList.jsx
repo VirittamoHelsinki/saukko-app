@@ -88,7 +88,7 @@ const UnitList = () => {
             text='Tarkastele sopimusta'
             color='info'
             icon='bx:file'
-            onClick={() => navigate('/contract-info')}
+            onClick={() => navigate(`/contract-info/${evaluation.customerId._id}`)}
           />
         </div>
         <div className='wrapper-button-pdf'>

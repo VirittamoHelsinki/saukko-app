@@ -40,10 +40,16 @@ export const EvaluationsProvider = ({ children }) => {
     const currentPath = location.pathname;
     const prevPath = previousLocation.current.pathname;
 
-    const matchesUnitList = /^\/unit-list\/[a-fA-F0-9]{24}$/.test(prevPath);
-    const matchesUserPerformance = /^\/userperformance\/\d+$/.test(currentPath);
+    console.log('currentPath: ', currentPath)
+    console.log('prevPath: ', prevPath)
 
-    if (matchesUnitList && !matchesUserPerformance && !(/^\/unit-list\/[a-fA-F0-9]{24}$/.test(currentPath))) {
+    const matchesUnitListPrev = /^\/unit-list\/[a-fA-F0-9]{24}$/.test(prevPath);
+    const matchesUnitListCurrent = /^\/unit-list\/[a-fA-F0-9]{24}$/.test(currentPath)
+    const matchesUserPerformance = /^\/userperformance\/\d+$/.test(currentPath);
+    const matchesContractInfoCurrent = /^\/contract-info\/[a-fA-F0-9]{24}$/.test(currentPath);
+    const matchesContractInfoPrev = /^\/contract-info\/[a-fA-F0-9]{24}$/.test(prevPath);
+
+    if (matchesUnitListPrev && !matchesUserPerformance && !matchesUnitListCurrent && !matchesContractInfoCurrent || matchesContractInfoPrev && (/^\/$/).test(currentPath)) {
       localStorage.removeItem('evaluation');
       setEvaluation(null);
       console.log('remove evaluation')
