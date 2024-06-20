@@ -21,21 +21,26 @@ const UnitList = () => {
   const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
 
   useEffect(() => {
+    if (evaluation && currentUser) {
+      const customer = evaluation.customerId;
+      if (currentUser.role === 'customer') {
+        setHeading(`Tervetuloa, ${customer.firstName}`);
+      } else {
+        setHeading(`${customer.firstName} ${customer.lastName}`);
+      }
+    }
+  }, [evaluation])
+
+  useEffect(() => {
 
     setSiteTitle('Suoritukset');
     setSubHeading('Suoritukset');
 
     if (!isLoading && !evaluation) {
       const ev = evaluations.find((ev) => ev.customerId._id === customerId)
-      const customer = ev.customerId
       if (ev) {
         console.log('setting evaluation in userlist')
         setEvaluation(ev)
-        if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
-          setHeading(`${customer.firstName} ${customer.lastName}`);
-        } else {
-          setHeading(`Tervetuloa, ${customer.firstName}`);
-        }
       } else {
         console.log('evaluation not found')
       }
