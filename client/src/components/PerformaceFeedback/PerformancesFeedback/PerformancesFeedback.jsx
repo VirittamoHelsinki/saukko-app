@@ -5,6 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 const PerformancesFeedback = ({
   setSelectedValues,
@@ -19,7 +20,8 @@ const PerformancesFeedback = ({
   // eslint-disable-next-line no-unused-vars
   const [hasChanged, setHasChanged] = useState(false);
   const { currentUser } = useAuthContext();
-  const { evaluation } = useContext(InternalApiContext);
+  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
+
 
   // Uncheck the radio button
   const handleRadioUncheck = (event) => {
@@ -117,7 +119,7 @@ const PerformancesFeedback = ({
               name={item.info}
               value={selectedRadio[item.info] || ''}
               unit={unit}
-              //onClick={(event) => handleRadioChange(item.info, event, unit)}
+            //onClick={(event) => handleRadioChange(item.info, event, unit)}
             >
               <FormControlLabel
                 value='Osaa ohjatusti'
