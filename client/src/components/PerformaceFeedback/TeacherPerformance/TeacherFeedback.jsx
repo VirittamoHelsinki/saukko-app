@@ -1,11 +1,12 @@
-import { useContext, useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import TeacherComment from './TeacherComment';
 
 const TeacherPerformanceFeedBack = ({
-  evaluation, assessment, unit, selectedRadio, handleRadioChange
+  evaluation, setEvaluation, assessment, unit, selectedRadio, handleRadioChange, selectedUnitId
 }) => {
 
 
@@ -15,8 +16,6 @@ const TeacherPerformanceFeedBack = ({
     'Osaa ohjatusti': 1,
     'Osaa itsenäisesti': 2,
   };
-
-
 
   const infodata = evaluation ? evaluation.units.flatMap((unit) => {
     return unit.assessments.flatMap((assessment) => [
@@ -55,8 +54,7 @@ const TeacherPerformanceFeedBack = ({
 
   useEffect(() => {
     // Initialize selectedRadio state based on radioAnswers or with default empty values
-    const initialObj = {}
-    const initialSelectedRadio = infodataForSelectedAssessment.reduce((acc, item) => {
+    infodataForSelectedAssessment.reduce((acc, item) => {
       if (item.info === 'Opettajan merkintä') {
         acc[item.info] = item.answerTeacher || '';
         handleRadioChange([item.info], acc[item.info], assessment._id)
@@ -148,6 +146,15 @@ const TeacherPerformanceFeedBack = ({
             </div>
           </div>
         ))}{' '}
+        <TeacherComment
+          assessmentId={assessment._id}
+          selectedUnitId={selectedUnitId}
+          assessment={assessment}
+          evaluationId={evaluation._id}
+          evaluation={evaluation}
+          setEvaluation={setEvaluation}
+          getBackgroundColor={getBackgroundColor}
+        />
       </div>
     </div>
   );

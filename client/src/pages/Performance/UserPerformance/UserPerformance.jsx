@@ -322,10 +322,12 @@ const UserPerformance = () => {
                 {currentUser?.role === 'teacher' ? (
                   <TeacherPerformanceFeedBack
                     evaluation={evaluation}
+                    setEvaluation={setEvaluation}
                     assessment={assess}
                     unit={unitObject}
                     selectedRadio={selectedRadio[assess._id] || {}}
                     handleRadioChange={handleRadioChange}
+                    selectedUnitId={selectedUnitId}
                   />
                 ) : (
                   <PerformancesFeedback
