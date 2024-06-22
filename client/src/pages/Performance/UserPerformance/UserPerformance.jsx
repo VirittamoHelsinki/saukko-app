@@ -5,7 +5,8 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';
 import Button from '../../../components/Button/Button';
-import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
+/* import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack'; */
+import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherFeedback.jsx';
 
 import { Icon } from '@iconify/react';
 import DialogContent from '@mui/material/DialogContent';
@@ -132,25 +133,9 @@ const UserPerformance = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmedNavigation, lastLocation]);
 
-  // const handleNavigation = (destination) => {
-  //   if (hasUnsavedChanges) {
-  //     setShowWarningModal(true);
-  //     setDestination(destination);
-  //   } else {
-  //     console.log('Destination before navigation:', destination);
-  //     navigate(destination);
-  //   }
-  //   console.log('Destination before navigation222:', destination);
-  //   setLastLocation(destination);
-
   useEffect(() => {
     // const isLaptop = window.innerWidth >= 1024;
     const buttonStyle = {
-      // marginTop: '35px',
-      // marginLeft: isLaptop ? '25%' : '20px',
-      // width: isLaptop ? '42%' : '88%',
-      // marginLeft: '20px',
-      // width: '88%',
       color: Object.values(selectedValues).some((value) => value)
         ? 'var(--saukko-main-white)'
         : '#0000BF',
@@ -165,12 +150,7 @@ const UserPerformance = () => {
   }, [selectedValues]);
 
   const [buttonStyle, setButtonStyle] = useState({
-    // marginTop: '35px',
-    // marginLeft: '20px',
-    // width: '88%',
-    // color: '#0000BF',
-    // border: '#0000BF solid',
-    // background: 'var(--saukko-main-white)',
+
   });
 
   const { openNotificationModal, setOpenNotificationModal } = useStore();
@@ -179,50 +159,40 @@ const UserPerformance = () => {
     setOpenNotificationModal(true);
   };
 
-  // const handleNotificationModalClose = useCallback(() => {
-  //   // Navigate to 'unit-list' route
-  //   if (user?.role === 'customer') {
-  //     navigate('/unit-list');
-  //   } else {
-  //     navigate('/customer-list');
-  //   }
-  //   // Reload the page
-  //   // window.location.reload();
-  // }, [navigate]);
 
   const handleSubmit = async () => {
+    console.log('selected raaadio: ', selectedRadio)
     const updatedUnits = evaluation.units.map((unit) => {
-      if (unit._id === selectedUnitId) {
-        const updatedAssessments = unit.assessments.map((assessment) => {
-          if (assessment._id === selectedAssessmentId) {
-            let answer = assessment.answer;
-            let answerSupervisor = assessment.answerSupervisor;
-            let answerTeacher = assessment.answerTeacher;
-            if (currentUser?.role === 'customer') {
-              answer = selectedValues === 1 ? 1 : 2;
-            } else if (currentUser?.role === 'supervisor') {
-              answerSupervisor = selectedValues === 1 ? 1 : 2;
-            } else if (currentUser?.role === 'teacher') {
-              answerTeacher = selectedRadio['Opettajan merkintä'];
-            }
-            return {
-              ...assessment,
-              answer,
-              answerSupervisor,
-              answerTeacher,
-            };
-          } else {
-            return assessment;
+      const updatedAssessments = unit.assessments.map((assessment) => {
+        const assessmentRadio = selectedRadio[assessment._id];
+        let answer = assessment.answer;
+        let answerSupervisor = assessment.answerSupervisor;
+        let answerTeacher = assessment.answerTeacher;
+
+        if (assessmentRadio) {
+
+          if (currentUser?.role === 'customer') {
+            answer = selectedValues === 1 ? 1 : 2;
+          } else if (currentUser?.role === 'supervisor') {
+            answerSupervisor = selectedValues === 1 ? 1 : 2;
+          } else if (currentUser?.role === 'teacher') {
+            answerTeacher = selectedRadio[assessment._id]?.['Opettajan merkintä'];
           }
-        });
+        }
+
         return {
-          ...unit,
-          assessments: updatedAssessments,
-          feedBack: textAreaValue,
+          ...assessment,
+          answer,
+          answerSupervisor,
+          answerTeacher,
         };
-      } else {
-        return unit;
-      }
+      });
+
+      return {
+        ...unit,
+        assessments: updatedAssessments,
+        feedBack: textAreaValue,
+      };
     });
 
     const updatedData = {
@@ -237,10 +207,7 @@ const UserPerformance = () => {
         `${evaluationId}`,
         updatedData
       );
-      /*      const response = await updateEvaluationById(
-        `${evaluationId}`,
-        updatedData
-      );*/
+
 
       // set response to the store
       setEvaluation(response);
@@ -315,6 +282,16 @@ const UserPerformance = () => {
     setOpenNotificationModal(false);
   };
 
+  const handleRadioChange = (info, value, assessmentId) => {
+    setSelectedRadio((prevValues) => ({
+      ...prevValues,
+      [assessmentId]: {
+        ...prevValues[assessmentId],
+        [info]: value,
+      },
+    }));
+  };
+
   return (
     <div className='perfomance__wrapper'>
       <h2 className='degree-name'>{degreeName?.name.fi}</h2>
@@ -344,19 +321,11 @@ const UserPerformance = () => {
                 </div>
                 {currentUser?.role === 'teacher' ? (
                   <TeacherPerformanceFeedBack
-                    selectedValues={selectedValues}
-                    setSelectedValues={setSelectedValues}
-                    unit={unitObject}
-                    setSelectedUnitId={setSelectedUnitId}
+                    evaluation={evaluation}
                     assessment={assess}
-                    selectedUnitId={selectedUnitId}
-                    setSelectedAssessmentId={setSelectedAssessmentId}
-                    selectedAssessmentId={selectedAssessmentId}
-                    hasUnsavedChanges={hasUnsavedChanges}
-                    setHasUnsavedChanges={setHasUnsavedChanges}
-                    evaluationId={evaluationId}
-                    setSelectedRadio={setSelectedRadio}
-                    selectedRadio={selectedRadio}
+                    unit={unitObject}
+                    selectedRadio={selectedRadio[assess._id] || {}}
+                    handleRadioChange={handleRadioChange}
                   />
                 ) : (
                   <PerformancesFeedback
