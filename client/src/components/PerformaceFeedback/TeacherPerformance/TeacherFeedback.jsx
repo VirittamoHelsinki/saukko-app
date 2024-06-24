@@ -75,14 +75,14 @@ const TeacherPerformanceFeedBack = ({
   }, [assessment._id, handleRadioChange, infodataForSelectedAssessment]);
 
   const getBackgroundColor = () => {
-    if (
-      selectedRadio === 'Osaa ohjatusti' ||
-      selectedRadio === 'Osaa itsenäisesti'
-    ) {
-      if (currentUser?.role === 'teacher') {
-        return '#FFF4B4';
-      }
+    // if (
+    //   selectedRadio === 'Osaa ohjatusti' ||
+    //   selectedRadio === 'Osaa itsenäisesti'
+    // ) {
+    if (currentUser?.role === 'teacher') {
+      return '#FFF4B4';
     }
+    /*     } */
     return assessment.answerTeacher !== 0 ? '#FFF4B4' : '#F2F2F2';
   };
 
