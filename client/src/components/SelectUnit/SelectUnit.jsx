@@ -11,7 +11,6 @@ function SelectUnit({ unit, allUnits }) {
 
   // Get all checked units from store
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
-  // console.log('Checked units from store:', checkedUnits);
 
   // Number units
   const getUnitNumber = (id) => {
@@ -38,10 +37,6 @@ function SelectUnit({ unit, allUnits }) {
       <p>
         <b>{getUnitNumber(unit._id)}.</b> {unit.name.fi}
       </p>
-      {/*<Icon
-        icon='iconamoon:arrow-right-2-light'
-        className='selectUnit__container--units-unit-arrow'
-      />*/}
     </div>
   );
 }

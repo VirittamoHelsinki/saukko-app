@@ -262,7 +262,6 @@ const UserPerformance = () => {
   };
 
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
-  // console.log('unitObject', unitObject);
 
   useEffect(() => {
     setSiteTitle('Arviointi'),

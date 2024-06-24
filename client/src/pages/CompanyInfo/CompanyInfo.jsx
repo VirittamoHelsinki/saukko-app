@@ -184,11 +184,6 @@ const CompanyInfo = () => {
 
   return (
     <div className='companyInfo__wrapper'>
-      {/* <WavesHeader
-        title='Saukko'
-        fill='#9fc9eb'
-        secondTitle='Lisää uusi työpaikka'
-      /> */}
       <div className='info__stepper__container'>
         <Stepper activePage={1} totalPages={4} data={stepperData} />
       </div>
@@ -199,14 +194,12 @@ const CompanyInfo = () => {
             backgroundColor: '#F2F2F2',
             paddingTop: '17px',
             paddingBottom: '20px',
-            position: 'static'
           }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
-            sx={{position: 'static'}}
           >
             <Typography 
               sx={{ fontSize: '22px' }}>
@@ -233,12 +226,12 @@ const CompanyInfo = () => {
                   onChange={handleBusinessId}
                 />
                 <RxCrossCircled
-                  className='cross-icone-style'
+                  className='cross-icon-style'
                   aria-hidden='true'
                   onClick={handleClearBusinessId}
                 />
                 <CiSearch
-                  className='search-icone-style'
+                  className='search-icon-style'
                   aria-hidden='true'
                   onClick={handleSearchClick}
                 />
@@ -285,14 +278,12 @@ const CompanyInfo = () => {
             backgroundColor: '#F2F2F2',
             paddingTop: '17px',
             paddingBottom: '20px',
-            position: 'static'
           }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls='panel1a-content'
             id='panel1a-header'
-            sx={{position: 'static'}}
           >
             <Typography sx={{ fontSize: '22px' }}>
               2. Työpaikkaohjaajan tiedot
@@ -420,6 +411,7 @@ const CompanyInfo = () => {
                   color: 'white',
                   marginTop: '25px',
                   width: '65%',
+                  border: 'none',
                 }}
                 icon={'ic:baseline-plus'}
                 onClick={addSupervisors}

@@ -1,4 +1,5 @@
-import { sendEmail } from '../configMailer';
+/* import { sendEmail } from '../configMailer'; */
+import sendEmail, { EmailObj } from '../azureEmailService';
 import mailerTemplate from '../mailerHtmlTemplate';
 import {
   AssessmentStatus,
@@ -12,6 +13,8 @@ import {
 
 // Asiakas pyytää yhteydenottoa
 export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluationFormRequestContact, to: string) => {
+
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
@@ -32,13 +35,27 @@ export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluation
   const subject = 'Arviointilomake: asiakkaan yhteydenottopyyntö';
   const html = mailerTemplate(text);
 
-  sendEmail({ to, subject, html });
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
 };
 
 // Työpaikkaohjaaja pyytää yhteydenottoa
 
 export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluationFormRequestContact, to: string) => {
 
+  console.log('params-evaluationForm ', params)
   const text =
     `
     Hei ${params.teacherName},
@@ -58,12 +75,26 @@ export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluati
   const subject = 'Arviointilomake: työpaikkaohjaajan yhteydenottopyyntö';
   const html = mailerTemplate(text);
 
-  sendEmail({ to, subject, html });
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
 };
 
 // Opettaja pyytää yhteydenottoa
 
-export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: ISendEvaluationFormRequestContact , to: string) => {
+export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: ISendEvaluationFormRequestContact, to: string) => {
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
@@ -84,10 +115,25 @@ export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: I
   const subject = 'Arviointilomake: opettajan yhteydenottopyyntö';
   const html = mailerTemplate(text);
 
-  sendEmail({ to, subject, html });
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
 };
 
-export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor, to:string) => {
+export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor, to: string) => {
+
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
@@ -109,7 +155,20 @@ export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params:
   const subject = 'Arviointilomake: opettajan yhteydenottopyyntö';
   const html = mailerTemplate(text);
 
-  sendEmail({ to, subject, html });
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
 };
 
 // Arviointilomake: valmis lomake
@@ -139,6 +198,8 @@ export interface ISendEvaluationFormSupervisorReadyMessageTeacher {
 
 export const sendEvaluationFormSupervisorReadyMessageCustomer = (params: ISendEvaluationFormSupervisorReadyMessageCustomer, subject: string, to: string) => {
 
+  console.log('params-evaluationForm ', params)
+
   const text =
     `
     Hei ${params.customerFirstName},
@@ -161,11 +222,26 @@ export const sendEvaluationFormSupervisorReadyMessageCustomer = (params: ISendEv
 
   const html = mailerTemplate(text);
 
-  sendEmail({ to, subject, html });
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
 };
 
 export const sendEvaluationFormSupervisorReadyMessageTeacher = (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string) => {
 
+  console.log('params-evaluationForm ', params)
+
   const text =
     `
     Hei ${params.teacherFirstName},
@@ -187,12 +263,26 @@ export const sendEvaluationFormSupervisorReadyMessageTeacher = (params: ISendEva
     `;
 
   const html = mailerTemplate(text);
+  const emailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
 
-  sendEmail({ to, subject, html });
+  sendEmail(emailObj);
 };
 
 export const sendEvaluationFormCustomerReadyMessageTeacher = (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string) => {
 
+  console.log('params-evaluationForm ', params)
+
   const text =
     `
     Hei ${params.teacherFirstName},
@@ -214,11 +304,25 @@ export const sendEvaluationFormCustomerReadyMessageTeacher = (params: ISendEvalu
     `;
 
   const html = mailerTemplate(text);
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
 
-  sendEmail({ to, subject, html });
+  sendEmail(emailObj);
 };
 
 export const sendEvaluationFormCustomerReadyMessageSupervisor = (params: ISendEvaluationFormCustomerReadyMessageSupervisor, subject: string, to: string) => {
+
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
@@ -241,14 +345,28 @@ export const sendEvaluationFormCustomerReadyMessageSupervisor = (params: ISendEv
     `;
 
   const html = mailerTemplate(text);
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
 
-  sendEmail({ to, subject, html });
+  sendEmail(emailObj);
 };
 
 
 // Opettajan valmis lomake
 
 export const sendEvaluationFormTeacherReadyMessageCustomer = (params: ISendEvaluationFormTeacherReadyMessageCustomer, subject: string, to: string) => {
+
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
@@ -270,12 +388,26 @@ export const sendEvaluationFormTeacherReadyMessageCustomer = (params: ISendEvalu
     `;
 
   const html = mailerTemplate(text);
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
 
-  sendEmail({ to, subject, html });
+  sendEmail(emailObj);
 };
 
 
 export const sendEvaluationFormTeacherReadyMessageSupervisor = (params: ISendEvaluationFormTeacherReadyMessageSupervisor, subject: string, to: string) => {
+
+  console.log('params-evaluationForm ', params)
 
   const text =
     `
@@ -297,6 +429,18 @@ export const sendEvaluationFormTeacherReadyMessageSupervisor = (params: ISendEva
     `;
 
   const html = mailerTemplate(text);
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
 
-  sendEmail({ to, subject, html });
+  sendEmail(emailObj);
 };

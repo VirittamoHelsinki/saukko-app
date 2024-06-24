@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import InternalApiContext from '../../../store/context/InternalApiContext';
@@ -14,6 +13,7 @@ import { postWorkplace } from '../../../api/workplace';
 import { registration } from '../../../api/user';
 import { fetchAllInternalWorkplaces } from '../../../api/workplace';
 import { Typography } from '@mui/material';
+import InfoList from '../../../components/InfoList/InfoList';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
@@ -25,8 +25,6 @@ function DegreeConfirmSelection() {
     departments,
     resetWorkplaceData,
   } = useStore();
-  // console.log(supervisors);
-  // console.log('depatments----------', departments);
 
   const { setinternalDegreeId, internalDegree, degreeFound, setWorkplaces } =
     useContext(InternalApiContext);
@@ -47,7 +45,9 @@ function DegreeConfirmSelection() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.degreeId]);
 
-  const checkedUnits = useUnitsStore((state) => state?.checkedUnits);
+
+  const { checkedUnits, clearCheckedUnits } = useUnitsStore();
+  //const checkedUnits = useUnitsStore((state) => state?.checkedUnits);
 
   console.log('checkedunits.........', checkedUnits);
 
@@ -82,6 +82,11 @@ function DegreeConfirmSelection() {
     },
   ];
 
+  const nameOfUnits = checkedUnits.map((unit) => unit.name.fi)
+
+  const unitsNameByOne = nameOfUnits.map((name)=>({ content:name }))
+  console.log('each unit name:',unitsNameByOne)
+
   const handleVahvistaClick = async () => {
     try {
       setIsLoading(true);
@@ -95,7 +100,6 @@ function DegreeConfirmSelection() {
           password: '12341234',
           role: 'supervisor',
         };
-        // console.log('UserDataf for registration---------------------------------', userData)
 
         // Register the supervisor and get the userId
         const userResponse = await registration(userData);
@@ -126,7 +130,7 @@ function DegreeConfirmSelection() {
 
       const workplaceData = {
         supervisors: supervisorIds,
-        businessId,
+        businessId: businessId,
         name: name ? name.name : editedCompanyName,
         departments: departmentData ? departmentData : '',
         degreeId: params.degreeId,
@@ -167,17 +171,19 @@ function DegreeConfirmSelection() {
 
         setWorkplaces(updatedWorkplaces);
         resetWorkplaceData();
+        clearCheckedUnits();
         setIsSuccess(true);
       } else {
         setIsFailure(true);
       }
     } catch (error) {
-      console.log(error);
+      console.error('Error while submitting workplace data:',error);
       setIsLoading(false);
       setIsFailure(true);
       setIsSuccess(false);
     }
   };
+
   useEffect(() => {
     if (isSuccess) {
       setOpenNotificationModal(true);
@@ -226,15 +232,7 @@ function DegreeConfirmSelection() {
         <h1 className='Degree__confirmSelection__container--secondtitle'>
           {degreeFound && internalDegree?.name?.fi}
         </h1>
-        <div className='confirmSelection__container--units'>
-          {checkedUnits?.map((unit) => (
-            <SelectUnit
-              key={unit?._id}
-              unit={unit}
-              allUnits={degreeFound && internalDegree?.units}
-            />
-          ))}
-        </div>
+        <InfoList data={unitsNameByOne} />
         <PageNavigationButtons
           handleBack={() =>
             navigate(`../internal/degrees/${internalDegree?._id}/units`)

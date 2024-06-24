@@ -134,9 +134,6 @@ function SpecifyTasks({ degree }) {
           />
           <Paper square elevation={0}>
             <form>
-              {/* <h3 className='degree-guidance'>
-                Lisää ammattitaitovaatimukset ja kriteerit
-              </h3> */}
               <MobileStepper
                 sx={{ 
                   bgcolor: '#f2f2f2',
@@ -171,7 +168,7 @@ function SpecifyTasks({ degree }) {
                     sx={{ 
                       fontWeight: 'bold', 
                       color: '#000000',
-                      position: 'static'
+                      //position: 'static'
                      }}
                     size='small'
                     onClick={handleBack}
@@ -238,7 +235,6 @@ function SpecifyTasks({ degree }) {
                 sx={{ 
                   paddingLeft: 0, 
                   textTransform: 'none',
-                  position: 'static'
                  }}
               >
                 + Lisää ammattitaitovaatimukset
@@ -250,7 +246,7 @@ function SpecifyTasks({ degree }) {
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
           handleForward={handleSubmit}
-          forwardButtonText={'Tallenna ja jatka'}
+          forwardButtonText={'Vahvista valinnat'}
           showForwardButton={true}
 
         />

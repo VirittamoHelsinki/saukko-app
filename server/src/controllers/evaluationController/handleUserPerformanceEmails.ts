@@ -26,6 +26,7 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
 };
 
 const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: any) => {
+
   switch (userRole) {
     case 'supervisor':
       sendEvaluationFormSupervisorReadyMessageCustomer(
@@ -127,6 +128,9 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
       customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
       additionalInfo: req.body.additionalInfo,
+      supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+      customerFirstName: evaluation.customerId?.firstName,
+      teacherFirstName: evaluation.teacherId?.firstName
     };
 
     const emails = {
@@ -137,7 +141,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
 
     const selectedValues = req.body.selectedValues;
 
-    if (selectedValues.suoritusValmis) {
+    if (selectedValues.suoritusValmis || selectedValues.valmisLahetettavaksi) {
       sendReadyEmails(user.role, formIsReadyParams, emails);
     }
 
@@ -161,8 +165,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       endDate: req.body.endDate || evaluation.endDate,
       units: req.body.units || evaluation.units,
     });
-    console.log('saving evaluation: ', evaluation.units[0])
-    console.log('testing saving evaluation: ', evaluation.units[0].assessments[0])
+
     await evaluation.save();
     res.send(evaluation);
   } catch
