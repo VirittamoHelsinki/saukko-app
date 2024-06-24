@@ -28,7 +28,7 @@ const UnitList = () => {
         setHeading(`${customer.firstName} ${customer.lastName}`);
       }
     }
-  }, [evaluation])
+  }, [evaluation, currentUser, setHeading])
 
   useEffect(() => {
 
@@ -44,7 +44,7 @@ const UnitList = () => {
         console.log('evaluation not found')
       }
     }
-  }, [])
+  }, [customerId, evaluation, evaluations, isLoading, setEvaluation, setSiteTitle, setSubHeading])
 
   return (
     <div className='unitList__wrapper'>

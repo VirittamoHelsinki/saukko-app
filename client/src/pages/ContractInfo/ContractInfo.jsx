@@ -8,34 +8,14 @@ import InfoList from '../../components/InfoList/InfoList';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ContractInfo = () => {
-  /* const { evaluation } = useContext(InternalApiContext); */
   const navigate = useNavigate();
   const [degreeDetails, setDegreeDetails] = useState(null);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-  const { customerId } = useParams();
 
-  const { isLoading, evaluations, evaluation } = useEvaluations();
-
-  useEffect(() => {
-
-    console.log('evaluation zxzxzx: ', evaluation)
-    console.log('evaluations: ', evaluations)
-  }, [isLoading])
-
-  useEffect(() => {
-
-    if (!isLoading && !evaluation) {
-      const ev = evaluations.find((ev) => ev.customerId._id === customerId)
-      if (ev) {
-        console.log('ev: ')
-      } else {
-        console.log('evaluation not found')
-      }
-    }
-  }, [])
+  const { evaluation } = useEvaluations();
 
   useEffect(() => {
     setSiteTitle("Sopimus"), setSubHeading(evaluation?.customerId?.firstName + ' ' + evaluation?.customerId?.lastName), setHeading("Sopimus")
