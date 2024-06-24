@@ -1,8 +1,7 @@
 // Import react packages & dependencies
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useEvaluations } from '../../store/context/EvaluationsContext.jsx';
 // Import components
-import InternalApiContext from '../../store/context/InternalApiContext';
 import { fetchInternalDegreeById } from '../../api/degree';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import InfoList from '../../components/InfoList/InfoList';

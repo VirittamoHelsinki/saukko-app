@@ -17,7 +17,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import useStore from '../../../store/zustand/formStore';
 // Fetch evaluation and units from store
 import InternalApiContext from '../../../store/context/InternalApiContext';
-import useEvaluationStore from '../../../store/zustand/evaluationStore';
 
 // Fetch evaluation by id from api
 // import { updateEvaluationById } from '../../../api/evaluation';
@@ -326,6 +325,7 @@ const UserPerformance = () => {
                     selectedRadio={selectedRadio[assess._id] || {}}
                     handleRadioChange={handleRadioChange}
                     selectedUnitId={selectedUnitId}
+                    currentUser={currentUser}
                   />
                 ) : (
                   <PerformancesFeedback

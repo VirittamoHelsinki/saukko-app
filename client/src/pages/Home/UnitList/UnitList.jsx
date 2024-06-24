@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Import components
@@ -8,7 +8,6 @@ import Button from '../../../components/Button/Button';
 import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 // Import state management
-import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 

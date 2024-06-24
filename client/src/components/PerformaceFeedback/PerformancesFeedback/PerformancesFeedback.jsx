@@ -1,9 +1,8 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
@@ -17,10 +16,9 @@ const PerformancesFeedback = ({
 }) => {
   console.log('🚀 ~ assessment:', assessment._id);
   const [selectedRadio, setSelectedRadio] = useState('');
-  // eslint-disable-next-line no-unused-vars
-  const [hasChanged, setHasChanged] = useState(false);
+  const [setHasChanged] = useState(false);
   const { currentUser } = useAuthContext();
-  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
+  const { evaluation } = useEvaluations();
 
 
   // Uncheck the radio button

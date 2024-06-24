@@ -1,5 +1,5 @@
 // Import React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import components
@@ -30,7 +30,7 @@ import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 export default function CustomerList() {
   const navigate = useNavigate();
-  const { evaluations, isLoading, evaluation, setEvaluation, refetchEvaluations } = useEvaluations();
+  const { evaluations, refetchEvaluations } = useEvaluations();
 
   // Data from store management
   const { currentUser } = useAuthContext();
@@ -72,7 +72,6 @@ export default function CustomerList() {
     setSiteTitle("Etusivu")
     refetchEvaluations();
     /* setInternalEvaluations(); */
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setHeading, setSiteTitle, currentUser, refetchEvaluations]);
 
   // Find evaluations in progress
