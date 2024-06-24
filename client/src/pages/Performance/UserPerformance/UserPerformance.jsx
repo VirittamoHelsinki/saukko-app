@@ -325,6 +325,7 @@ const UserPerformance = () => {
                     setEvaluation={setEvaluation}
                     assessment={assess}
                     unit={unitObject}
+                    unitId={unitId}
                     selectedRadio={selectedRadio[assess._id] || {}}
                     handleRadioChange={handleRadioChange}
                     selectedUnitId={selectedUnitId}

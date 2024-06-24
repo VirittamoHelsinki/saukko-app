@@ -161,6 +161,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       endDate: req.body.endDate || evaluation.endDate,
       units: req.body.units || evaluation.units,
     });
+    console.log('saving evaluation: ', evaluation.units[0])
     console.log('testing saving evaluation: ', evaluation.units[0].assessments[0])
     await evaluation.save();
     res.send(evaluation);

@@ -39,9 +39,10 @@ const TeacherComment = ({
     setIsCommentModalOpen(true);
   };
   const saveTeacherComment = async () => {
+
     try {
       const updatedAssessments = evaluation.units.map((unit) => {
-        if (unit._id === selectedUnitId) {
+        if (unit._id === Number(selectedUnitId)) {
           return {
             ...unit,
             assessments: unit.assessments.map((assessment) => {
@@ -59,6 +60,8 @@ const TeacherComment = ({
         }
         return unit;
       });
+
+      console.log('updated assessments: ', updatedAssessments)
 
       // Update the evaluation state with the new assessments
       await updateEvaluationById(evaluationId, {

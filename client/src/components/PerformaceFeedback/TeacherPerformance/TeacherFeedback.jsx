@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import TeacherComment from './TeacherComment';
 
 const TeacherPerformanceFeedBack = ({
-  evaluation, setEvaluation, assessment, unit, selectedRadio, handleRadioChange, selectedUnitId
+  evaluation, setEvaluation, assessment, unit, selectedRadio, handleRadioChange, selectedUnitId, unitId
 }) => {
 
 
@@ -148,7 +148,7 @@ const TeacherPerformanceFeedBack = ({
         ))}{' '}
         <TeacherComment
           assessmentId={assessment._id}
-          selectedUnitId={selectedUnitId}
+          selectedUnitId={unitId}
           assessment={assessment}
           evaluationId={evaluation._id}
           evaluation={evaluation}
