@@ -112,8 +112,7 @@ const sendContactRequestEmails = (selectedValues: any, userRole: string, request
   }
 };
 
-const handeUserPerformanceEmails = async (req: Request, res: Response) => {
-
+const handleUserPerformanceEmails = async (req: Request, res: Response) => {
   try {
     const evaluation = await fetchEvaluationWithDetails(req.params.id);
 
@@ -176,4 +175,4 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
   }
 };
 
-export default handeUserPerformanceEmails;
+export default handleUserPerformanceEmails;

@@ -1,10 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
+import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 const PerformancesFeedback = ({
   setSelectedValues,
@@ -16,10 +16,10 @@ const PerformancesFeedback = ({
 }) => {
   console.log('🚀 ~ assessment:', assessment._id);
   const [selectedRadio, setSelectedRadio] = useState('');
-  // eslint-disable-next-line no-unused-vars
   const [hasChanged, setHasChanged] = useState(false);
   const { currentUser } = useAuthContext();
-  const { evaluation } = useContext(InternalApiContext);
+  const { evaluation } = useEvaluations();
+
 
   // Uncheck the radio button
   const handleRadioUncheck = (event) => {
@@ -62,6 +62,7 @@ const PerformancesFeedback = ({
       }
       console.log(e.target.value);
       console.log('selectedRadio', selectedRadio);
+      console.log('hasChanged: ', hasChanged)
     }
   };
 
@@ -117,7 +118,7 @@ const PerformancesFeedback = ({
               name={item.info}
               value={selectedRadio[item.info] || ''}
               unit={unit}
-              //onClick={(event) => handleRadioChange(item.info, event, unit)}
+            //onClick={(event) => handleRadioChange(item.info, event, unit)}
             >
               <FormControlLabel
                 value='Osaa ohjatusti'

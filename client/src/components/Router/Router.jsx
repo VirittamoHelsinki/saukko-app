@@ -63,7 +63,7 @@ const Router = () => {
       if (currentUser.role === 'teacher' || currentUser.role === 'supervisor') {
         navigate('/');
       } else if (currentUser.role === 'customer') {
-        navigate('/unit-list');
+        navigate(`/unit-list/${currentUser.id}`);
       }
     }
   }, [currentUser, loggedIn, navigate, path]);
@@ -96,9 +96,9 @@ const Router = () => {
             {loggedIn && (
               <>
                 <Route path='/profile' element={<ProfilePage />} />
-                <Route path='/unit-list' element={<UnitList />} />
-                <Route path='/contract-info' element={<ContractInfo />} />
-                <Route path='/userperformance' element={<UserPerformance />} />
+                <Route path='/unit-list/:customerId' element={<UnitList />} />
+                <Route path='/contract-info/:customerId' element={<ContractInfo />} />
+                <Route path='/userperformance/:unitId' element={<UserPerformance />} />
                 <Route path='/register-user' element={<RegisterUser />} />
               </>
             )}

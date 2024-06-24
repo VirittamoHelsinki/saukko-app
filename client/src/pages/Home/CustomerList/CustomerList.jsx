@@ -1,5 +1,5 @@
 // Import React
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Import components
@@ -16,9 +16,10 @@ import { Typography } from '@mui/material';
 import { Box } from '@mui/material';
 
 // Import state management
-import InternalApiContext from '../../../store/context/InternalApiContext';
+/* import InternalApiContext from '../../../store/context/InternalApiContext'; */
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 // Import MUI
 // import Accordion from '@mui/material/Accordion';
@@ -29,12 +30,13 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 
 export default function CustomerList() {
   const navigate = useNavigate();
+  const { evaluations, refetchEvaluations } = useEvaluations();
 
   // Data from store management
   const { currentUser } = useAuthContext();
   const { setHeading, setSiteTitle } = useHeadingContext();
-  const { evaluations, setInternalEvaluations, setInternalEvaluation } =
-    useContext(InternalApiContext);
+  /*   const { evaluations, setInternalEvaluations, setInternalEvaluation } = */
+  /*   useContext(InternalApiContext); */
 
   const [isInfoButtonOpen, setIsInfoButtonOpen] = useState(false);
 
@@ -68,9 +70,9 @@ export default function CustomerList() {
   useEffect(() => {
     setHeading(`Tervetuloa ${currentUser?.firstName}`)
     setSiteTitle("Etusivu")
-    setInternalEvaluations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    refetchEvaluations();
+    /* setInternalEvaluations(); */
+  }, [setHeading, setSiteTitle, currentUser, refetchEvaluations]);
 
   // Find evaluations in progress
   const inProgress =
@@ -103,9 +105,8 @@ export default function CustomerList() {
     evaluations &&
     evaluations.filter((evaluation) => evaluation.completed === true);
 
-  const handleChooseEvaluation = (evaluationId) => {
-    setInternalEvaluation(evaluationId);
-    navigate('/unit-list');
+  const handleChooseEvaluation = (customer) => {
+    navigate(`/unit-list/${customer._id}`);
   };
 
   return (
@@ -152,7 +153,7 @@ export default function CustomerList() {
                     key={index}
                     className='customerList__accordion__inProgress'
                   >
-                    <p onClick={() => handleChooseEvaluation(evaluation._id)}>
+                    <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
                       {evaluation.customerId.firstName}{' '}
                       {evaluation.customerId.lastName}
                     </p>
@@ -169,7 +170,7 @@ export default function CustomerList() {
                     key={index}
                     className='customerList__accordion__waitForProcessing'
                   >
-                    <p onClick={() => handleChooseEvaluation(evaluation._id)}>
+                    <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
                       {evaluation.customerId.firstName}{' '}
                       {evaluation.customerId.lastName}
                     </p>
@@ -198,7 +199,7 @@ export default function CustomerList() {
               <div key={index} className='customerList__accordion__notStarted'>
                 <p
                   key={evaluation._id}
-                  onClick={() => handleChooseEvaluation(evaluation._id)}
+                  onClick={() => handleChooseEvaluation(evaluation.customerId)}
                 >
                   {evaluation.customerId.firstName}{' '}
                   {evaluation.customerId.lastName}
