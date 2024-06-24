@@ -16,7 +16,7 @@ const PerformancesFeedback = ({
 }) => {
   console.log('🚀 ~ assessment:', assessment._id);
   const [selectedRadio, setSelectedRadio] = useState('');
-  const [setHasChanged] = useState(false);
+  const [hasChanged, setHasChanged] = useState(false);
   const { currentUser } = useAuthContext();
   const { evaluation } = useEvaluations();
 
@@ -62,6 +62,7 @@ const PerformancesFeedback = ({
       }
       console.log(e.target.value);
       console.log('selectedRadio', selectedRadio);
+      console.log('hasChanged: ', hasChanged)
     }
   };
 
