@@ -160,7 +160,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
     evaluation.set({
       workTasks: req.body.workTasks || evaluation.workTasks,
       workGoals: req.body.workGoals || evaluation.workGoals,
-      completed: req.body.completed !== undefined ? req.body.completed : evaluation.completed,
+      completed: selectedValues.suoritusValmis !== undefined ? selectedValues.suoritusValmis : evaluation.completed,
       startDate: req.body.startDate || evaluation.startDate,
       endDate: req.body.endDate || evaluation.endDate,
       units: req.body.units || evaluation.units,

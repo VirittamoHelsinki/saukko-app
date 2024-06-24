@@ -6,7 +6,7 @@ import NotificationModal from '../../../components/NotificationModal/Notificatio
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';
 import Button from '../../../components/Button/Button';
 /* import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack'; */
-import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherFeedback.jsx';
+import TeacherPerformanceFeedBack from '../../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedback';
 
 import { Icon } from '@iconify/react';
 import DialogContent from '@mui/material/DialogContent';
