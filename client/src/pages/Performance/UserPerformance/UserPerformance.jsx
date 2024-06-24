@@ -86,7 +86,6 @@ const UserPerformance = () => {
 
   useEffect(() => {
     if (evaluation) {
-      console.log('testing evaluation: ')
       const foundUnit = evaluation.units.find(unit => unit._id === Number(unitId));
       if (foundUnit) {
         setUnitObject(foundUnit);
@@ -161,7 +160,6 @@ const UserPerformance = () => {
 
 
   const handleSubmit = async () => {
-    console.log('selected raaadio: ', selectedRadio)
     const updatedUnits = evaluation.units.map((unit) => {
       const updatedAssessments = unit.assessments.map((assessment) => {
         const assessmentRadio = selectedRadio[assessment._id];
