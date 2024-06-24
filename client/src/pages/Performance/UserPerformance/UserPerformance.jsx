@@ -278,7 +278,7 @@ const UserPerformance = () => {
     setOpenNotificationModal(false);
   };
 
-  const handleRadioChange = (info, value, assessmentId) => {
+  const handleRadioChange = useCallback((info, value, assessmentId) => {
     setSelectedRadio((prevValues) => ({
       ...prevValues,
       [assessmentId]: {
@@ -286,7 +286,7 @@ const UserPerformance = () => {
         [info]: value,
       },
     }));
-  };
+  }, []);
 
   return (
     <div className='perfomance__wrapper'>

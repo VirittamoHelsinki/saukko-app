@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -17,40 +17,42 @@ const TeacherPerformanceFeedBack = ({
     'Osaa itsenäisesti': 2,
   };
 
-  const infodata = evaluation ? evaluation.units.flatMap((unit) => {
-    return unit.assessments.flatMap((assessment) => [
-      {
-        info: 'Itsearviointi',
-        disabled: true,
-        unitId: unit._id,
-        assessmentId: assessment._id,
-        answer: assessment.answer,
-      },
-      {
-        info: 'TPO:n havainto',
-        disabled: true,
-        unitId: unit._id,
-        assessmentId: assessment._id,
-        answerSupervisor: assessment.answerSupervisor,
-      },
-      {
-        info: 'Opettajan merkintä',
-        disabled: false,
-        unitId: unit._id,
-        assessmentId: assessment._id,
-        answerTeacher: assessment.answerTeacher,
-        comment: assessment.comment,
-      },
-    ]);
-  }) : [
-    { info: 'Itsearviointi', disabled: true, answer: '' },
-    { info: 'TPO:n havainto', disabled: true, answerSupervisor: '' },
-    { info: 'Opettajan merkintä', disabled: false, answerTeacher: '', comment: { text: '' } }
-  ];
+  const infodata = useMemo(() => {
+    return evaluation ? evaluation.units.flatMap((unit) => {
+      return unit.assessments.flatMap((assessment) => [
+        {
+          info: 'Itsearviointi',
+          disabled: true,
+          unitId: unit._id,
+          assessmentId: assessment._id,
+          answer: assessment.answer,
+        },
+        {
+          info: 'TPO:n havainto',
+          disabled: true,
+          unitId: unit._id,
+          assessmentId: assessment._id,
+          answerSupervisor: assessment.answerSupervisor,
+        },
+        {
+          info: 'Opettajan merkintä',
+          disabled: false,
+          unitId: unit._id,
+          assessmentId: assessment._id,
+          answerTeacher: assessment.answerTeacher,
+          comment: assessment.comment,
+        },
+      ]);
+    }) : [
+      { info: 'Itsearviointi', disabled: true, answer: '' },
+      { info: 'TPO:n havainto', disabled: true, answerSupervisor: '' },
+      { info: 'Opettajan merkintä', disabled: false, answerTeacher: '', comment: { text: '' } }
+    ];
+  }, [evaluation]);
 
-  const infodataForSelectedAssessment = infodata.filter(
-    (data) => data.assessmentId === assessment._id
-  );
+  const infodataForSelectedAssessment = useMemo(() => {
+    return infodata.filter(data => data.assessmentId === assessment._id);
+  }, [infodata, assessment._id]);
 
   useEffect(() => {
     // Initialize selectedRadio state based on radioAnswers or with default empty values
@@ -70,7 +72,7 @@ const TeacherPerformanceFeedBack = ({
       return acc;
     }, {});
 
-  }, []);
+  }, [assessment._id, handleRadioChange, infodataForSelectedAssessment]);
 
   const getBackgroundColor = () => {
     if (
