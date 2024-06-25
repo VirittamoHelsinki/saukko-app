@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
 
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import PerformancesFeedback from '../../../components/PerformaceFeedback/PerformancesFeedback/PerformancesFeedback';
@@ -28,11 +28,9 @@ import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 // import { sendEmails } from '../../../api/performance';
 
 const UserPerformance = () => {
-  // eslint-disable-next-line no-unused-vars
   const { currentUser } = useAuthContext();
 
   // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
-  // eslint-disable-next-line no-unused-vars
   const [setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
   /*  const { evaluation, setEvaluation } = useContext(InternalApiContext); */
@@ -54,12 +52,10 @@ const UserPerformance = () => {
   //   '🚀 ~ UserPerformance ~ selectedAssessmentId:',
   //   selectedAssessmentId
   // );
-  // eslint-disable-next-line no-unused-vars
   const [error] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
   const [lastLocation, setLastLocation] = useState(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
   // Modal for showing criteria
