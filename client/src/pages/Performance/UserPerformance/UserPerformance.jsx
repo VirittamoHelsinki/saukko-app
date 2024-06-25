@@ -29,11 +29,11 @@ import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
-  const { loggedIn, currentUser } = useAuthContext();
+  const { currentUser } = useAuthContext();
 
   // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
   // eslint-disable-next-line no-unused-vars
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const [setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
   /*  const { evaluation, setEvaluation } = useContext(InternalApiContext); */
   const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
@@ -49,20 +49,17 @@ const UserPerformance = () => {
   // console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   const [selectedValues, setSelectedValues] = useState({});
-  const [selectedUnitId, setSelectedUnitId] = useState(null);
-  const [selectedAssessmentId, setSelectedAssessmentId] = useState(null);
+  const [selectedUnitId] = useState(null);
   // console.log(
   //   '🚀 ~ UserPerformance ~ selectedAssessmentId:',
   //   selectedAssessmentId
   // );
   // eslint-disable-next-line no-unused-vars
-  const [error, setError] = useState(null);
+  const [error] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const navigate = useNavigate();
   // eslint-disable-next-line no-unused-vars
-  const location = useLocation();
   const [lastLocation, setLastLocation] = useState(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
   // Modal for showing criteria
@@ -159,7 +156,6 @@ const UserPerformance = () => {
 
 
   const handleSubmit = async () => {
-    console.log('selected radio: ', selectedRadio)
     const updatedUnits = evaluation.units.map((unit) => {
       const updatedAssessments = unit.assessments.map((assessment) => {
         const assessmentRadio = selectedRadio[assessment._id];

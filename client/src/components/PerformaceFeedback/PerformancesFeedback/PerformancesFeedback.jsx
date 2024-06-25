@@ -57,7 +57,7 @@ const PerformancesFeedback = ({
       info: currentUser.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
       disabled: false,
     }]
-  }, [evaluation])
+  }, [evaluation, currentUser.role])
 
   const infodataForSelectedAssessment = useMemo(() => {
     return infodata.filter(
