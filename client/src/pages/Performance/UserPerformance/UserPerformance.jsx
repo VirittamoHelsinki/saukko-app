@@ -31,7 +31,9 @@ const UserPerformance = () => {
   const { currentUser } = useAuthContext();
 
   // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
-  const [setIsButtonEnabled] = useState(false);
+
+  // eslint-disable-next-line no-unused-vars
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
   /*  const { evaluation, setEvaluation } = useContext(InternalApiContext); */
   const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
@@ -47,12 +49,15 @@ const UserPerformance = () => {
   // console.log('🚀 ~ UserPerformance ~degree name:', degreeName);
 
   const [selectedValues, setSelectedValues] = useState({});
-  const [selectedUnitId] = useState(null);
+
+  // eslint-disable-next-line no-unused-vars
+  const [selectedUnitId, setSelectedUnitId] = useState(null);
   // console.log(
   //   '🚀 ~ UserPerformance ~ selectedAssessmentId:',
   //   selectedAssessmentId
   // );
-  const [error] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   const navigate = useNavigate();
