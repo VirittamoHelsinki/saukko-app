@@ -160,6 +160,11 @@ const UserPerformance = () => {
 
   const handleSubmit = async () => {
     const updatedUnits = evaluation.units.map((unit) => {
+
+      if (unit._id !== Number(unitId)) {
+        return unit;
+      }
+
       const updatedAssessments = unit.assessments.map((assessment) => {
         const assessmentRadio = selectedRadio[assessment._id];
         let answer = assessment.answer;
@@ -174,6 +179,7 @@ const UserPerformance = () => {
             answerSupervisor = selectedValues === 1 ? 1 : 2;
           } else if (currentUser?.role === 'teacher') {
             answerTeacher = selectedRadio[assessment._id]?.['Opettajan merkintä'];
+
           }
         }
 
@@ -185,10 +191,21 @@ const UserPerformance = () => {
         };
       });
 
+      console.log('unit in userperformance: ', unit)
+      let isTeacherReady = false
+
+      console.log('selected values: ', selectedValues)
+
+      if (selectedValues.suoritusValmis) {
+        console.log('suoritus valmis')
+        isTeacherReady = true
+      }
+
       return {
         ...unit,
         assessments: updatedAssessments,
         feedBack: textAreaValue,
+        teacherReady: isTeacherReady
       };
     });
 
@@ -197,6 +214,8 @@ const UserPerformance = () => {
       selectedValues: selectedValues,
       additionalInfo: textAreaValue,
     };
+
+    console.log('updated data: ', updatedData)
 
 
     try {
@@ -366,12 +385,14 @@ const UserPerformance = () => {
             <input
               type='checkbox'
               name='yhteydenottoAsiakkaalta'
-              onChange={() =>
+              onChange={() => {
+
                 setSelectedValues({
                   ...selectedValues,
                   pyydetaanYhteydenottoaAsiakkaalta:
                     !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
                 })
+              }
               }
             />
             <label> Pyydetään yhteydenottoa asiakkaalta</label>

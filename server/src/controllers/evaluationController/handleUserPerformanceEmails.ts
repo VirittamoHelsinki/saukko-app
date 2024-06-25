@@ -84,15 +84,26 @@ const updateUnitStatus = (units: any) => {
       }
     });
 
-    if ((allAssessmentsCompleted && unit.ready) || unit.ready) {
+
+    if (unit.teacherReady) {
+      unit.status = 3;
+      console.log('set status to 3')
+    } else if ((allAssessmentsCompleted && unit.customerReady) || unit.customerReady) {
+      console.log('set status to 2')
       unit.status = 2;
     } else if (anyAssessmentInProgress) {
+      console.log('set status to 1')
       unit.status = 1;
     }
 
     return unit;
   });
 };
+
+export const evaluationCompleted = (evaluation: any): boolean => {
+  console.log('evaluationCompleted:  ', evaluation.units)
+  return (evaluation.units?.length > 0 ? evaluation.units.every((unit: any) => unit.teacherReady === true) : false)
+}
 
 const sendContactRequestEmails = (selectedValues: any, userRole: string, requestContactParams: ISendEvaluationFormRequestContact, emails: any) => {
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'customer') {
@@ -160,11 +171,13 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
     evaluation.set({
       workTasks: req.body.workTasks || evaluation.workTasks,
       workGoals: req.body.workGoals || evaluation.workGoals,
-      completed: selectedValues.suoritusValmis !== undefined ? selectedValues.suoritusValmis : evaluation.completed,
+      completed: evaluationCompleted(evaluation),
       startDate: req.body.startDate || evaluation.startDate,
       endDate: req.body.endDate || evaluation.endDate,
       units: req.body.units || evaluation.units,
     });
+
+    console.log('evaluation in handleUserPerformanceEmail: ', evaluation);
 
     await evaluation.save();
     res.send(evaluation);
