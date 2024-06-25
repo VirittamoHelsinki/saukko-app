@@ -1,69 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 const PerformancesFeedback = ({
-  setSelectedValues,
-  unit,
-  setSelectedUnitId,
-  setHasUnsavedChanges,
+  evaluation,
   assessment,
-  setSelectedAssessmentId,
+  unit,
+  selectedRadio,
+  handleRadioChange,
+  currentUser
+
 }) => {
-  console.log('🚀 ~ assessment:', assessment._id);
-  const [selectedRadio, setSelectedRadio] = useState('');
-  const [hasChanged, setHasChanged] = useState(false);
-  const { currentUser } = useAuthContext();
-  const { evaluation } = useEvaluations();
 
-
-  // Uncheck the radio button
-  const handleRadioUncheck = (event) => {
-    if (selectedRadio === event.target.value) {
-      setSelectedRadio('');
-      setSelectedValues(0);
-      setSelectedUnitId(null);
-      setHasChanged(false);
-      setHasUnsavedChanges(false);
-    }
-  };
-
-  const handleRadioChange = (e, unit, info, value) => {
-    setSelectedRadio((prevValues) => ({
-      ...prevValues,
-      [info]: prevValues[info] === value ? '' : value,
-    }));
-    setHasChanged(true);
-    if (unit._id) {
-      setSelectedUnitId(unit._id); // This is the unit id
-      setSelectedAssessmentId(assessment._id);
-      setHasUnsavedChanges(true);
-    } else {
-      setHasUnsavedChanges(false);
-    }
-    if (e.target) {
-      if (selectedRadio === e.target.value) {
-        e.target.checked = false;
-        setSelectedRadio('');
-        setSelectedValues(0);
-        setHasChanged(false);
-        setHasUnsavedChanges(false);
-      } else {
-        setSelectedRadio(e.target.value);
-        if (e.target.value === 'Osaa ohjatusti') {
-          setSelectedValues(1);
-        } else if (e.target.value === 'Osaa itsenäisesti') {
-          setSelectedValues(2);
-        }
-      }
-      console.log(e.target.value);
-      console.log('selectedRadio', selectedRadio);
-      console.log('hasChanged: ', hasChanged)
-    }
+  const valueMapping = {
+    1: 'Osaa ohjatusti',
+    2: 'Osaa itsenäisesti',
+    'Osaa ohjatusti': 1,
+    'Osaa itsenäisesti': 2,
   };
 
   const getBackgroundColor = () => {
@@ -86,22 +41,45 @@ const PerformancesFeedback = ({
     return '#F2F2F2';
   };
 
-  const infodata = evaluation.units.flatMap((unit) => {
-    return unit.assessments.flatMap((assessment) => [
-      {
-        info: currentUser.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
-        disabled: false,
-        unitId: unit._id,
-        assessmentId: assessment._id,
-        answer: assessment.answer,
-        answerSupervisor: assessment.answerSupervisor,
-      },
-    ]);
-  });
+  const infodata = useMemo(() => {
+    return evaluation ? evaluation.units.flatMap((unit) => {
+      return unit.assessments.flatMap((assessment) => [
+        {
+          info: currentUser.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
+          disabled: false,
+          unitId: unit._id,
+          assessmentId: assessment._id,
+          answer: assessment.answer,
+          answerSupervisor: assessment.answerSupervisor,
+        },
+      ]);
+    }) : [{
+      info: currentUser.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
+      disabled: false,
+    }]
+  }, [evaluation])
 
-  const infodataForSelectedAssessment = infodata.filter(
-    (data) => data.assessmentId === assessment._id
-  );
+  const infodataForSelectedAssessment = useMemo(() => {
+    return infodata.filter(
+      (data) => data.assessmentId === assessment._id
+    )
+  }, [infodata, assessment._id]);
+
+  useEffect(() => {
+    // Initialize selectedRadio state based on radioAnswers or with default empty values
+    infodataForSelectedAssessment.reduce((acc, item) => {
+      if (item.info === 'Itsearviointi') {
+        acc[item.info] = item.answer || '';
+        handleRadioChange([item.info], acc[item.info], assessment._id)
+      }
+      if (item.info === 'TPO havainto') {
+        acc[item.info] = item.answerSupervisor || ''
+        handleRadioChange([item.info], acc[item.info], assessment._id)
+      }
+      return acc;
+    }, {});
+
+  }, [assessment._id, handleRadioChange, infodataForSelectedAssessment]);
 
   return (
     <div
@@ -114,45 +92,27 @@ const PerformancesFeedback = ({
             <RadioGroup
               row
               aria-labelledby='demo-form-control-label-placement'
-              //name='position'
               name={item.info}
               value={selectedRadio[item.info] || ''}
               unit={unit}
-            //onClick={(event) => handleRadioChange(item.info, event, unit)}
+              onChange={(e) => handleRadioChange(item.info,
+                valueMapping[e.target.value], assessment._id)}
             >
               <FormControlLabel
                 value='Osaa ohjatusti'
-                //value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
                 control={
-                  <Radio
-                    onClick={(event) => handleRadioUncheck(event)}
-                    onChange={(event) => handleRadioChange(event, unit)}
-                    checked={
-                      selectedRadio === 'Osaa ohjatusti' ||
-                      (currentUser.role === 'supervisor' &&
-                        item.answerSupervisor === 1) ||
-                      (currentUser.role === 'customer' && item.answer === 1)
-                    }
-                  />
+                  <Radio />
                 }
+                checked={selectedRadio[item.info] === 1}
                 label='Osaa ohjatusti'
                 labelPlacement='top'
               />
               <FormControlLabel
                 value='Osaa itsenäisesti'
-                //value={user?.role ==='supervisor'? assessment.answerSupervisor : assessment.answer}
                 control={
-                  <Radio
-                    onClick={(event) => handleRadioUncheck(event)}
-                    onChange={(event) => handleRadioChange(event, unit)}
-                    checked={
-                      selectedRadio === 'Osaa itsenäisesti' ||
-                      (currentUser.role === 'supervisor' &&
-                        item.answerSupervisor === 2) ||
-                      (currentUser.role === 'customer' && item.answer === 2)
-                    }
-                  />
+                  <Radio />
                 }
+                checked={selectedRadio[item.info] === 2}
                 label='Osaa itsenäisesti'
                 labelPlacement='top'
               />

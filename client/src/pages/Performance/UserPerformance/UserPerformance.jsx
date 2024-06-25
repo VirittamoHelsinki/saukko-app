@@ -159,12 +159,8 @@ const UserPerformance = () => {
 
 
   const handleSubmit = async () => {
+    console.log('selected radio: ', selectedRadio)
     const updatedUnits = evaluation.units.map((unit) => {
-
-      if (unit._id !== Number(unitId)) {
-        return unit;
-      }
-
       const updatedAssessments = unit.assessments.map((assessment) => {
         const assessmentRadio = selectedRadio[assessment._id];
         let answer = assessment.answer;
@@ -176,10 +172,9 @@ const UserPerformance = () => {
           if (currentUser?.role === 'customer') {
             answer = selectedValues === 1 ? 1 : 2;
           } else if (currentUser?.role === 'supervisor') {
-            answerSupervisor = selectedValues === 1 ? 1 : 2;
+            answerSupervisor = selectedRadio[assessment._id]?.['TPO havainto'];
           } else if (currentUser?.role === 'teacher') {
             answerTeacher = selectedRadio[assessment._id]?.['Opettajan merkintä'];
-
           }
         }
 
@@ -191,21 +186,10 @@ const UserPerformance = () => {
         };
       });
 
-      console.log('unit in userperformance: ', unit)
-      let isTeacherReady = false
-
-      console.log('selected values: ', selectedValues)
-
-      if (selectedValues.suoritusValmis) {
-        console.log('suoritus valmis')
-        isTeacherReady = true
-      }
-
       return {
         ...unit,
         assessments: updatedAssessments,
         feedBack: textAreaValue,
-        teacherReady: isTeacherReady
       };
     });
 
@@ -214,8 +198,6 @@ const UserPerformance = () => {
       selectedValues: selectedValues,
       additionalInfo: textAreaValue,
     };
-
-    console.log('updated data: ', updatedData)
 
 
     try {
@@ -313,16 +295,12 @@ const UserPerformance = () => {
       <h4 className='degree-unit-name'> {unitObject?.name.fi}</h4>
       <div>
         <ul>
-          {/* Evaluation */}
           {unitObject &&
             unitObject.assessments.map((assess) => (
               <li key={assess._id}>
                 <div className='assessments'>
                   <div key={unitObject._id}>
                     <p className='para-title-style'>{assess.name.fi}</p>
-                    {/* <p>{assess.answer}</p>
-                    <p>{assess.answerSupervisor}</p>
-                    <p>{assess.answerTeacher}</p> */}
                   </div>
                   <div>
                     <Icon
@@ -348,16 +326,12 @@ const UserPerformance = () => {
                   />
                 ) : (
                   <PerformancesFeedback
-                    selectedValues={selectedValues}
-                    setSelectedValues={setSelectedValues}
-                    unit={unitObject}
-                    setSelectedUnitId={setSelectedUnitId}
+                    evaluation={evaluation}
                     assessment={assess}
-                    selectedUnitId={selectedUnitId}
-                    setSelectedAssessmentId={setSelectedAssessmentId}
-                    selectedAssessmentId={selectedAssessmentId}
-                    hasUnsavedChanges={hasUnsavedChanges}
-                    setHasUnsavedChanges={setHasUnsavedChanges}
+                    unit={unitObject}
+                    selectedRadio={selectedRadio[assess._id] || {}}
+                    handleRadioChange={handleRadioChange}
+                    currentUser={currentUser}
                   />
                 )}
               </li>
@@ -385,14 +359,12 @@ const UserPerformance = () => {
             <input
               type='checkbox'
               name='yhteydenottoAsiakkaalta'
-              onChange={() => {
-
+              onChange={() =>
                 setSelectedValues({
                   ...selectedValues,
                   pyydetaanYhteydenottoaAsiakkaalta:
                     !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
                 })
-              }
               }
             />
             <label> Pyydetään yhteydenottoa asiakkaalta</label>
