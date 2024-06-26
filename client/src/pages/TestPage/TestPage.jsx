@@ -6,7 +6,7 @@ import useStore from '../../store/zustand/formStore';
 import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 import InfoList from '../../components/InfoList/InfoList';
-import TeacherPerformanceFeedBack from '../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedBack';
+import TeacherPerformanceFeedBack from '../../components/PerformaceFeedback/TeacherPerformance/TeacherPerformanceFeedback';
 
 // Importing saukko database
 import { fetchAllInternalWorkplaces } from '../../api/workplace';

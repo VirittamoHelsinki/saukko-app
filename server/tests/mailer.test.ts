@@ -1,165 +1,387 @@
-import * as mailer from '../src/mailer/configMailer';
-import { sendVerificationEmail, sendVerificationDoneEmail } from '../src/mailer/templates/newUserVerification';
-import { sendResetPasswordEmail, sendResetPasswordSuccessEmail } from '../src/mailer/templates/resetPassword';
-import { sendNewCustomerAddedEmail } from '../src/mailer/templates/addingUserToAgreement';
-// import { AssessmentStatus, ISendEvaluationFormReady, sendEvaluationFormCustomerRequestContact, sendEvaluationFormCustomerOrSupervisorReady } from '../src/mailer/templates/EvaluationForm';
+import sendEmail, { EmailObj } from '../src/mailer/azureEmailService';
+import sendingMailToQueue from '../src/mailer/createNewMail'
+import mailTemplate from '../src/mailer/mailerHtmlTemplate';
+import { IEmailObj } from '../src/models/emailDocumentModel';
+import { sendVerificationEmail } from '../src/mailer/templates/newUserVerification'
+import mailerTemplate from '../src/mailer/mailerHtmlTemplate'
 
 
-interface IUser {
-  firstName: string;
-  lastName: string;
-  email: string;
-}
+describe.skip('Sending verification email', () => {
 
-// describe('test sending emails with resend', () => {
-//   it('test mail', async () => {
-//     const mockUser: IUser = {
-//       firstName: 'Matti',
-//       lastName: 'Meikäläinen',
-//       email: 'example@example.com',
-//     }
-//     const mockVerificationLink = 'https://example.com/verification-link';
-//     sendVerificationEmail({ userEmail: mockUser.email, verificationLink: mockVerificationLink });
-//   });
-// });
+  interface ISendVerificationEmail {
+    userEmail: string;
+    verificationLink: string;
+    recipentUserId: string;
+  }
 
-/*describe.skip('test sending emails', () => {
-  it('verifikaatiolinkki', async () => {
-    const mockUser: IUser = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
+  const params: ISendVerificationEmail = {
+    userEmail: 'straightapricot@navalcadets.com',
+    verificationLink: 'test',
+    recipentUserId: 'joku112'
+  }
 
-    const mockVerificationLink = 'https://example.com/verification-link';
-
-    sendVerificationEmail({userEmail: mockUser.email, verificationLink: mockVerificationLink});
-
+  it('should send verification email successfully', async () => {
+    try {
+      await sendVerificationEmail(params);
+      // Optionally add assertions or expect statements here
+    } catch (error) {
+      // Handle errors or fail the test if necessary
+      fail(`Sending verification email failed: ${error}`);
+    }
   });
-  it('verifiointi tehty', async () => {
-    const mockUser: IUser = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
+})
 
-    sendVerificationDoneEmail({userEmail: mockUser.email});
 
-  });
+describe.skip('Testing create email queue', () => {
 
-  it('salasanan vaihto', async () => {
-    const mockUser: IUser = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
+  const createNewMailParams: IEmailObj = {
+    msg: {
+      content: {
+        subject: 'hello',
+        plainText: 'this is the plain text',
+        html: '<p>This is a test email.</p>'
+      },
+      recipients: {
+        to: [{ address: 'straightapricot@navalcadets.com' }]
+      }
+    },
+    recipentUserId: 'joku55'
+  };
 
-    const mockVerificationLink = 'https://example.com/verification-link';
+  interface ISendVerificationEmail {
+    userEmail: string;
+    verificationLink: string;
+    recipentUserId: string;
+  }
 
-    sendResetPasswordEmail({userFirstName: mockUser.firstName, userEmail: mockUser.email, resetPasswordLink: mockVerificationLink});
+  const params: ISendVerificationEmail = {
+    userEmail: 'straightapricot@navalcadets.com',
+    verificationLink: 'test',
+    recipentUserId: 'joku112'
+  }
 
-  });
-
-  it('salasanan vaihto onnistui', async () => {
-    const mockUser: IUser= {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
-
-    sendResetPasswordSuccessEmail({userFirstName: mockUser.firstName, userEmail: mockUser.email, technicalSupportLink: 'https://example.com/verification-link'});
+  it('should send email data to the queue successfully', async () => {
+    await sendingMailToQueue(createNewMailParams);
   });
 
-  it('Uusi asiakas liitetään suoritukseen', async () => {
-    const mockUser: IUser = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
+  it('should work when sending this function', async () => {
+    const plainText =
+      `
+    Tervetuloa OsTu-appin käyttäjäksi!
+
+    Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
+
+    Linkki vanhenee kahden tunnin kuluttua.
+
+    
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+
+    const subject = 'Vahvista sähköpostiosoitteesi';
+    const html = mailTemplate(plainText)
+
+    const createNewMailParams2: IEmailObj = {
+      msg: {
+        content: {
+          subject: subject,
+          plainText: plainText,
+          html: html
+        },
+        recipients: {
+          to: [{ address: 'straightapricot@navalcadets.com' }]
+        }
+      },
+      recipentUserId: 'joku55'
     };
 
-    sendNewCustomerAddedEmail({userEmail: mockUser.email, teacherName: 'Pentti', degreeName: 'Testi', supervisorName: 'Testi', verificationLink: 'https://example.com/verification-link'});
+    console.log('html: ', html)
+    await sendingMailToQueue(createNewMailParams2);
+
+  })
+
+  it('should send verification email successfully', () => {
+    try {
+      sendVerificationEmail(params);
+      // Optionally add assertions or expect statements here
+    } catch (error) {
+      // Handle errors or fail the test if necessary
+      fail(`Sending verification email failed: ${error}`);
+    }
   });
-
-  it('Arviointilomake: ', async () => {
-    const mockUser: IUser= {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
-
-    sendEvaluationFormCustomerRequestContact({userName: (mockUser.firstName + ' ' + mockUser.lastName), userEmail: mockUser.email, degreeName: 'Testi', unitName: 'Testi', supervisorName: 'Testi'});
-  });
-
-  it('Arviointilomake: ', async () => {
-    const mockUser: IUser= {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
-    };
-
-    sendEvaluationFormCustomerRequestContact({userName: (mockUser.firstName + ' ' + mockUser.lastName), userEmail: mockUser.email, degreeName: 'Testi', unitName: 'Testi', supervisorName: 'Testi'});
-  });
-
-
-  it('Arviointilomake: ', async () => {
-    const mockForm: ISendEvaluationFormReady= {
-      userFirstName: 'Matti',
-      customerName: 'Meikäläinen',
-      supervisorName: 'Pentti Papukaija',
-      degreeName: 'Testi',
-      unitName: 'Testi',
-      customerAssessment: AssessmentStatus.READY,
-      supervisorAssessment: AssessmentStatus.READY,
-      additionalInfo: 'Testi lksdkafalsdkjöalksdj öalk jöslkfjsaölkfjasödlfkj öalskdfjöaslkfjsöldkjf asölkasjdlfö sadflkajsdölfkasjdlök akföalsdjföalskd',
-      userEmail: 'test@test.com'
-    };
-
-    const subject = 'hyvää päivää!'
-
-    sendEvaluationFormCustomerOrSupervisorReady(mockForm, subject);
 
 });
 
-});
 
-describe.skip('sendEmail', () => {
-  it('should send an email', async () => {
-    const mockEmail = {
-      to: 'test@example.com',
-      subject: 'Hello',
-      html: '<p>This is a test email</p>',
+// Test sendEmail
+
+
+const exampleParams = {
+  teacherName: 'John Doe',
+  supervisorName: 'Jane Smith',
+  customerName: 'Customer Name',
+  degreeName: 'Degree Name',
+  unitName: 'Unit Name',
+  vocationalCompetenceName: 'Vocational Competence',
+  customerAssessment: 'Accepted',
+  supervisorAssessment: 'Pending',
+  additionalInfo: 'Additional Information',
+  evaluationAccepted: 'Yes',
+  customerFirstName: 'Customer First Name',
+  teacherFirstName: 'Teacher First Name',
+  supervisorFirstName: 'Supervisor First Name',
+};
+
+describe.skip('Email Sending Functions', () => {
+  it('should send an evaluation form for customer request contact', async () => {
+    const text = `
+    Hei ${exampleParams.customerName},
+
+    Asiakas ${exampleParams.customerName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: asiakkaan yhteydenottopyyntö';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
     };
 
-    const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
-
-    mailer.sendEmail(mockEmail);
-
-    expect(sendEmailMock).toHaveBeenCalledWith(mockEmail);
-
+    await sendEmail(emailObj);
   });
-});
 
-describe.skip('new user verification emails', () => {
+  it('should send an evaluation form supervisor request contact', async () => {
+    const text = `
+    Hei ${exampleParams.teacherName},
 
-  it('should send a verification email', async () => {
-    const mockUser: IUser = {
-      firstName: 'Matti',
-      lastName: 'Meikäläinen',
-      email: 'test@example.com',
+    Työpaikkaohjaaja ${exampleParams.supervisorName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+
+    Asiakas: ${exampleParams.customerName}
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: työpaikkaohjaajan yhteydenottopyyntö';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
     };
 
-    const mockVerificationLink = 'https://example.com/verification-link';
-
-    const sendEmailMock = jest.spyOn(mailer, 'sendEmail').mockImplementation(() => Promise.resolve());
-
-    sendVerificationEmail({userEmail: mockUser.email, verificationLink: mockVerificationLink});
-
-    expect(sendEmailMock).toHaveBeenCalledWith({
-      to: mockUser.email,
-      subject: 'Vahvista sähköpostiosoitteesi',
-      html: expect.stringContaining(mockVerificationLink),
-    });
+    await sendEmail(emailObj);
   });
 
-});*/
+  it('should send an evaluation form teacher request contact message customer', async () => {
+    const text = `
+    Hei ${exampleParams.customerName},
 
+    Opettaja ${exampleParams.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: opettajan yhteydenottopyyntö';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
+    };
+
+    await sendEmail(emailObj);
+  });
+
+  it('should send an evaluation form teacher request contact message supervisor', async () => {
+    const text = `
+    Hei ${exampleParams.supervisorName},
+
+    Opettaja ${exampleParams.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+
+    Asiakas: ${exampleParams.customerName}
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+    Ammattitaitovaatimus: ${exampleParams.vocationalCompetenceName}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: opettajan yhteydenottopyyntö';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
+    };
+
+    await sendEmail(emailObj);
+  });
+
+  it('should send an evaluation form supervisor ready message customer', async () => {
+    const text = `
+    Hei ${exampleParams.customerFirstName},
+
+    Tutkinnonosa on valmis tarkistettavaksi.
+
+    Asiakas: ${exampleParams.customerName}
+    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+    Asiakkaan arvio: ${exampleParams.customerAssessment}
+    Työpaikkaohjaajan arvio: ${exampleParams.supervisorAssessment}
+    Lisätiedot: ${exampleParams.additionalInfo}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: valmis lomake';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
+    };
+
+    await sendEmail(emailObj);
+  });
+
+  it('should send an evaluation form supervisor ready message teacher', async () => {
+    const text = `
+    Hei ${exampleParams.teacherFirstName},
+
+    Tutkinnonosa on valmis tarkistettavaksi.
+
+    Asiakas: ${exampleParams.customerName}
+    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+    Asiakkaan arvio: ${exampleParams.customerAssessment}
+    Työpaikkaohjaajan arvio: ${exampleParams.supervisorAssessment}
+    Lisätiedot: ${exampleParams.additionalInfo}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: valmis lomake';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
+    };
+
+    await sendEmail(emailObj);
+  });
+
+  it('should send an evaluation form customer ready message teacher', async () => {
+    const text = `
+    Hei ${exampleParams.teacherFirstName},
+
+    Tutkinnonosa on valmis tarkistettavaksi.
+
+    Asiakas: ${exampleParams.customerName}
+    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+    Asiakkaan arvio: ${exampleParams.customerAssessment}
+    Työpaikkaohjaajan arvio: ${exampleParams.supervisorAssessment}
+    Lisätiedot: ${exampleParams.additionalInfo}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: valmis lomake';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
+    };
+
+    await sendEmail(emailObj);
+  });
+
+  it('should send an evaluation form customer ready message supervisor', async () => {
+    const text = `
+    Hei ${exampleParams.supervisorFirstName},
+
+    Tutkinnonosa on valmis tarkistettavaksi.
+
+    Asiakas: ${exampleParams.customerName}
+    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+    Asiakkaan arvio: ${exampleParams.customerAssessment}
+    Työpaikkaohjaajan arvio: ${exampleParams.supervisorAssessment}
+    Lisätiedot: ${exampleParams.additionalInfo}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: valmis lomake';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
+    };
+
+    await sendEmail(emailObj);
+  });
+
+  it('should send an evaluation form teacher ready message customer', async () => {
+    const text = `
+    Hei ${exampleParams.customerFirstName},
+
+    Uusi suoritus on valmis.
+
+    Asiakas: ${exampleParams.customerName}
+    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+    Suoritus hyväksytty: ${exampleParams.evaluationAccepted}
+    Lisätiedot: ${exampleParams.additionalInfo}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: valmis lomake';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
+    };
+
+    await sendEmail(emailObj);
+  });
+
+  it('should send an evaluation form teacher ready message supervisor', async () => {
+    const text = `
+    Hei ${exampleParams.supervisorFirstName},
+
+    Uusi suoritus on valmis.
+
+    Asiakas: ${exampleParams.customerName}
+    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Tutkinto: ${exampleParams.degreeName}
+    Tutkinnonosa: ${exampleParams.unitName}
+    Suoritus hyväksytty: ${exampleParams.evaluationAccepted}
+    Lisätiedot: ${exampleParams.additionalInfo}
+
+    Ystävällisin terveisin,
+    Ylläpito
+    `;
+    const subject = 'Arviointilomake: valmis lomake';
+    const html = mailTemplate(text.trim());
+    const emailObj: EmailObj = {
+      content: { subject, plainText: text.trim(), html },
+      recipients: { to: [{ address: 'straightapricot@navalcadets.com' }] }
+    };
+
+    await sendEmail(emailObj);
+  });
+});

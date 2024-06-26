@@ -26,6 +26,7 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
 };
 
 const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: any) => {
+
   switch (userRole) {
     case 'supervisor':
       sendEvaluationFormSupervisorReadyMessageCustomer(
@@ -83,15 +84,26 @@ const updateUnitStatus = (units: any) => {
       }
     });
 
-    if ((allAssessmentsCompleted && unit.ready) || unit.ready) {
+
+    if (unit.teacherReady) {
+      unit.status = 3;
+      console.log('set status to 3')
+    } else if ((allAssessmentsCompleted && unit.customerReady) || unit.customerReady) {
+      console.log('set status to 2')
       unit.status = 2;
     } else if (anyAssessmentInProgress) {
+      console.log('set status to 1')
       unit.status = 1;
     }
 
     return unit;
   });
 };
+
+export const evaluationCompleted = (evaluation: any): boolean => {
+  console.log('evaluationCompleted:  ', evaluation.units)
+  return (evaluation.units?.length > 0 ? evaluation.units.every((unit: any) => unit.teacherReady === true) : false)
+}
 
 const sendContactRequestEmails = (selectedValues: any, userRole: string, requestContactParams: ISendEvaluationFormRequestContact, emails: any) => {
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'customer') {
@@ -111,7 +123,7 @@ const sendContactRequestEmails = (selectedValues: any, userRole: string, request
   }
 };
 
-const handeUserPerformanceEmails = async (req: Request, res: Response) => {
+const handleUserPerformanceEmails = async (req: Request, res: Response) => {
   try {
     const evaluation = await fetchEvaluationWithDetails(req.params.id);
 
@@ -127,6 +139,9 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
       customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
       additionalInfo: req.body.additionalInfo,
+      supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
+      customerFirstName: evaluation.customerId?.firstName,
+      teacherFirstName: evaluation.teacherId?.firstName
     };
 
     const emails = {
@@ -137,7 +152,7 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
 
     const selectedValues = req.body.selectedValues;
 
-    if (selectedValues.suoritusValmis) {
+    if (selectedValues.suoritusValmis || selectedValues.valmisLahetettavaksi) {
       sendReadyEmails(user.role, formIsReadyParams, emails);
     }
 
@@ -156,11 +171,13 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
     evaluation.set({
       workTasks: req.body.workTasks || evaluation.workTasks,
       workGoals: req.body.workGoals || evaluation.workGoals,
-      completed: req.body.completed !== undefined ? req.body.completed : evaluation.completed,
+      completed: evaluationCompleted(evaluation),
       startDate: req.body.startDate || evaluation.startDate,
       endDate: req.body.endDate || evaluation.endDate,
       units: req.body.units || evaluation.units,
     });
+
+    console.log('evaluation in handleUserPerformanceEmail: ', evaluation);
 
     await evaluation.save();
     res.send(evaluation);
@@ -171,4 +188,4 @@ const handeUserPerformanceEmails = async (req: Request, res: Response) => {
   }
 };
 
-export default handeUserPerformanceEmails;
+export default handleUserPerformanceEmails;

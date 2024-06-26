@@ -3,7 +3,7 @@ import deleteById from "./deleteById";
 import getAll from "./getAll";
 import getAllForCurrentUser from "./getAllForCurrentUser";
 import getById from "./getById";
-import handeUserPerformanceEmails from "./handeUserPerformanceEmails";
+import handleUserPerformanceEmails from "./handleUserPerformanceEmails";
 import sendEmailToTeacher from "./sendEmailToTeacher";
 import update from "./update";
 
@@ -15,5 +15,5 @@ export default {
   update,
   deleteById,
   sendEmailToTeacher,
-  handeUserPerformanceEmails,
+  handleUserPerformanceEmails,
 };

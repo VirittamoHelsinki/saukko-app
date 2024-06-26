@@ -399,7 +399,7 @@ const sendEmailToTeacher = async (req: Request, res: Response) => {
   }
 };
 
-const handeUserPerformanceEmails = async (req: Request, res: Response) => {
+const handleUserPerformanceEmails = async (req: Request, res: Response) => {
   try {
     const evaluation = await EvaluationModel.findById(req.params.id)
       .populate({
@@ -584,5 +584,5 @@ export default {
   update,
   deleteById,
   sendEmailToTeacher,
-  handeUserPerformanceEmails,
+  handleUserPerformanceEmails,
 };

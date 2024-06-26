@@ -8,7 +8,6 @@ import Pagination from '@mui/material/Pagination';
 // Import components
 import Stepper from '../../../components/Stepper/Stepper';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
-// import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 // Import state management
@@ -33,17 +32,6 @@ function DegreeUnits({ degree }) {
     setFilteredUnits(degreeUnits);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);
-
-  // Searchbar logic
-  // eslint-disable-next-line no-unused-vars
-  const handleSearch = (event) => {
-    setPage(1); // Reset to the first page
-    setFilteredUnits(
-      degree.units.filter((unit) =>
-        unit.name.fi.toLowerCase().includes(event.target.value.toLowerCase())
-      )
-    );
-  };
 
   // Pagination logic
   const [page, setPage] = useState(1);
@@ -86,10 +74,6 @@ function DegreeUnits({ degree }) {
           data={stepperData}
         />
         <h1>{degree ? degree?.name.fi : degreeName}</h1>
-        {/* <Searchbar
-          handleSearch={handleSearch}
-          placeholder={'Etsi tutkinnonosat'}
-        /> */}
 
         <div className='degreeUnits__container--units'>
           {currentUnits
@@ -109,11 +93,6 @@ function DegreeUnits({ degree }) {
           }
           page={page}
           onChange={handlePageChange}
-          /* sx={{
-            '& .MuiPaginationItem-root':{
-              position: 'relative',
-              zIndex:'-1',
-          }}} */
         />
 
         <PageNavigationButtons

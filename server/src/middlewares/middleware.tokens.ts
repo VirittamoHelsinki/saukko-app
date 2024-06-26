@@ -48,6 +48,14 @@ const tokensMiddleware = async (req: Request, res: Response, next: NextFunction)
       .clearCookie("token", { httpOnly: true })
       .send();
     }
+
+    if ((error as any)?.name === "TokenExpiredError") {
+      return res.status(401)
+        .clearCookie("auth_state")
+        .clearCookie("token", { httpOnly: true })
+        .send();
+    }
+    
     res.status(500).json({ errorMessage: "Internal" })
   }
 }

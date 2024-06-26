@@ -75,24 +75,17 @@ export const InternalApiContextProvider = (props) => {
   };
 
   // Fetch single evaluation by id
-  const setInternalEvaluation = async (evaluationId) => {
-    try {
-      if (!evaluations) {
-        await setInternalEvaluations()
-      }
-      setEvaluation(evaluations.find(x => x._id === evaluationId));
-    } catch (err) {
-      console.log(err);
-    } /* finally {
-      setLoading(false)
-    } */
+  const setInternalEvaluation = (evaluation) => {
+    console.log('setting evaluation ')
+    setEvaluation(evaluation);
+    console.log('evaluation here ', evaluation)
   };
 
-   // Debug log when evaluation state is updated
-   useEffect(() => {
+  // Debug log when evaluation state is updated
+  useEffect(() => {
     console.log('InternalApiContext: Evaluation:', evaluation);
   }, [evaluation]);
-  
+
   // Clear evaluation from state at logout
   useEffect(() => {
     if (!loggedIn) {
@@ -129,7 +122,7 @@ export const InternalApiContextProvider = (props) => {
   useEffect(() => {
     clearCheckedUnits();
     setInternalDegree({});
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [internalDegreeId]);
 
   if (loading) {

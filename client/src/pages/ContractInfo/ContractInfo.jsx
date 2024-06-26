@@ -1,21 +1,21 @@
 // Import react packages & dependencies
-import { useContext, useEffect, useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { useEvaluations } from '../../store/context/EvaluationsContext.jsx';
 // Import components
-import InternalApiContext from '../../store/context/InternalApiContext';
 import { fetchInternalDegreeById } from '../../api/degree';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import InfoList from '../../components/InfoList/InfoList';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 
+
 import { useNavigate } from 'react-router-dom';
 
 const ContractInfo = () => {
-  const { evaluation } = useContext(InternalApiContext);
   const navigate = useNavigate();
-  console.log('🚀 ~ ContractInfo ~ evaluation:', evaluation);
   const [degreeDetails, setDegreeDetails] = useState(null);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  const { evaluation } = useEvaluations();
 
   useEffect(() => {
     setSiteTitle("Sopimus"), setSubHeading(evaluation?.customerId?.firstName + ' ' + evaluation?.customerId?.lastName), setHeading("Sopimus")
@@ -196,7 +196,10 @@ const ContractInfo = () => {
       <PageNavigationButtons
         handleBackText={'Takaisin'}
         //handleBack={() => navigate(`/degrees/add`)}
-        handleBack={() => navigate('/')}
+        handleBack={() => {
+          setSubHeading('')
+          navigate('/')
+        }}
         showForwardButton={false}
         icon={'mingcute:pencil-line'}
         style={{ textAlign: 'left' }}

@@ -9,10 +9,12 @@ import InternalApiContext from '../../store/context/InternalApiContext';
 import DegreeInformationModal from '../../components/EditDegreeModals/DegreeInformationModal';
 import DegreeNameModal from '../../components/EditDegreeModals/DegreeNameModal';
 import UnitInformationModal from '../../components/EditDegreeModals/UnitInformationModal';
+import DegreeDescriptionModal from '../../components/EditDegreeModals/DegreeDescriptionModal';
 import DeleteDataModal from '../../components/EditDegreeModals/DeleteDataModal';
 import styles from './createUnitSummary.module.scss'
 import classNames from 'classnames';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
+import { LinearProgress, Box } from '@mui/material';
 
 const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const [response, setResponse] = useState(null);
   const [responseUnit, setResponseUnit] = useState(null);
   const [responseATVAndCriteria, setResponseATVAndCriteria] = useState(null);
+  const [responseDegreeDescription, setResponseDegreeDescription] = useState(null);
   const [responseDegreeInformation, setResponseDegreeInformation] =
     useState(null);
   const { setAllInternalDegrees } = useContext(InternalApiContext);
@@ -41,6 +44,10 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const [isDeleteDataModalOpen, setIsDeleteDataModalOpen] = useState(false);
   const [isDegreeInformationModalOpen, setIsDegreeInformationModalOpen] =
     useState(false);
+  const [isDegreeDescriptionModalOpen, setIsDegreeDescriptionModalOpen] = useState(false);
+
+  // linear progress with label
+  const [progress, setProgress] = useState(0);
 
   const handleUnitClick = (unitId) => {
     console.log('Clicked unit ID:', unitId);
@@ -68,6 +75,10 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     setIsDeleteDataModalOpen(false);
   };
 
+  const handleCloseDegreeDescriptionModal = () => {
+    setIsDegreeDescriptionModalOpen(false);
+  }
+
   const handleCloseDegreeInformationModal = () => {
     setIsDegreeInformationModalOpen(false);
   };
@@ -82,6 +93,9 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         break;
       case 'atv':
         setIsAssessmentModalOpen(true);
+        break;
+      case 'degreeDescription':
+        setIsDegreeDescriptionModalOpen(true);
         break;
       case 'degreeInformation':
         setIsDegreeInformationModalOpen(true);
@@ -263,6 +277,44 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     ]);
   };
 
+  // Save the updated degree.description.fi to the database
+  const saveDegreeDescription = async () => {
+    const saveDegreeDescriptionData = {
+      ...degreeDetails,
+      description: {
+        fi: degreeDetails.description.fi,
+      },
+    };
+
+    console.log('Data for put request:', saveDegreeDescriptionData);
+
+    const responseDegreeDescription = await updateDegree(`${degreeId}`, saveDegreeDescriptionData);
+    console.log('response', responseDegreeDescription);
+
+    // Save response to state
+    setResponseDegreeDescription(responseDegreeDescription);
+    setIsDegreeDescriptionModalOpen(false);
+
+    //Update the degree's description.fi field in the local state
+    const updatedDegreeDescription = {
+      ...degreeDetails,
+      description: {
+        ...degreeDetails.description.fi,
+        fi: degreeDetails.description.fi,
+      },
+    };
+    console.log('saveDegreeDescription:', degreeDetails.description.fi);
+
+    setAllInternalDegrees([
+      ...allInternalDegrees.filter(
+        (d) => d._id.toString() !== degreeDetails._id.toString()
+      ),
+      updatedDegreeDescription,
+    ])
+
+  };
+
+
   // Save degree's general information to the database
   const saveDegreeInformation = async () => {
     // Extract only the necessary fields to update
@@ -308,6 +360,30 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
     ]);
   };
 
+  //useEffect notification modal duration
+  useEffect(() => {
+    let timer;
+    let internal;
+
+    if (notificationSuccess) {
+      setProgress(0);
+      timer = setTimeout(() => {
+        closeSuccess();
+      }, 10000);
+
+      const startTime = Date.now();
+      internal = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        setProgress((elapsed / 10000) * 100);
+      }, 100);
+
+      return () => {
+        clearTimeout(timer);
+        clearInterval(internal);
+      };
+    }
+  }, [notificationSuccess]);
+
   // Trigger NotificationModal for successful update the degree name
   useEffect(() => {
     if (
@@ -348,6 +424,19 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
       console.log('Error updating unit name:', responseATVAndCriteria);
     }
   }, [allInternalDegrees, responseATVAndCriteria]);
+
+  // Trigger NotificationModal for successful update the degree.description.fi
+  useEffect(() => {
+    if (
+      responseDegreeDescription && allInternalDegrees.some((degree) =>
+        degree._id === responseDegreeDescription._id)
+    ) {
+      setNotificationSuccess(true);
+    } else if (responseDegreeDescription) {
+      setNotificationError(true);
+      console.log('Error updating degree information:', responseDegreeDescription);
+    }
+  }, [allInternalDegrees, responseDegreeDescription])
 
   // Trigger NotificationModal for successful update the degree information
   useEffect(() => {
@@ -487,7 +576,9 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         <div>
           <div className={styles.circleWrapIcon}>
             <Icon
-              onClick={handlePenClick}
+              onClick={() => {
+                handlePenClick('degreeDescription');
+              }}
               icon='uil:pen'
               color='#0000bf'
               height='18'
@@ -543,6 +634,14 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
         isDegreeInformationModalOpen={isDegreeInformationModalOpen}
       />
 
+      {/* Modal for updating degree's description*/}
+      <DegreeDescriptionModal
+        handleCloseDegreeDescriptionModal={handleCloseDegreeDescriptionModal}
+        degreeDetails={degreeDetails}
+        setDegreeDetails={setDegreeDetails}
+        saveDegreeDescription={saveDegreeDescription}
+        isDegreeDescriptionModalOpen={isDegreeDescriptionModalOpen}
+      />
       {/* Modal to delete the data */}
       <DeleteDataModal
         isDeleteDataModalOpen={isDeleteDataModalOpen}
@@ -553,10 +652,15 @@ const CreateUnitesSummary = ({ allInternalDegrees }) => {
       <NotificationModal
         type='success'
         title='Tiedot tallennettu'
-        body='Tutkinto on tallennettu tietokantaan'
+        body='Tutkinto on tallennettu OsTu-appin tietokantaan'
         open={notificationSuccess}
         handleClose={closeSuccess}
       />
+      {notificationSuccess && (
+        <Box sx={{ width: '100%' }}>
+          <LinearProgress value={progress} />
+        </Box>
+      )}
 
       {/* Notification error */}
       <NotificationModal
