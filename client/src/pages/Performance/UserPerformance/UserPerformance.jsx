@@ -167,11 +167,11 @@ const UserPerformance = () => {
         if (assessmentRadio) {
 
           if (currentUser?.role === 'customer') {
-            answer = selectedValues === 1 ? 1 : 2;
+            answer = selectedRadio[assessment._id]?.['Itsearviointi'] ? selectedRadio[assessment._id]?.['Itsearviointi'] : 0;
           } else if (currentUser?.role === 'supervisor') {
-            answerSupervisor = selectedRadio[assessment._id]?.['TPO havainto'];
+            answerSupervisor = selectedRadio[assessment._id]?.['TPO havainto'] ? selectedRadio[assessment._id]?.['TPO havainto'] : 0;
           } else if (currentUser?.role === 'teacher') {
-            answerTeacher = selectedRadio[assessment._id]?.['Opettajan merkintä'];
+            answerTeacher = selectedRadio[assessment._id]?.['Opettajan merkintä'] ? selectedRadio[assessment._id]?.['Opettajan merkintä'] : 0;
           }
         }
 
@@ -319,7 +319,6 @@ const UserPerformance = () => {
                     selectedRadio={selectedRadio[assess._id] || {}}
                     handleRadioChange={handleRadioChange}
                     selectedUnitId={selectedUnitId}
-                    currentUser={currentUser}
                   />
                 ) : (
                   <PerformancesFeedback
