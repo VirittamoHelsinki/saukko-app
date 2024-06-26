@@ -321,7 +321,6 @@ const UserPerformance = () => {
                     selectedRadio={selectedRadio[assess._id] || {}}
                     handleRadioChange={handleRadioChange}
                     selectedUnitId={selectedUnitId}
-                    currentUser={currentUser}
                   />
                 ) : (
                   <PerformancesFeedback
