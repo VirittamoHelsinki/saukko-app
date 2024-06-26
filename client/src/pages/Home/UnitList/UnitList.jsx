@@ -61,7 +61,7 @@ const UnitList = () => {
         ) : (
           <h3>Asiakkaan suoritukset</h3>
         )}
-
+        {console.log('evaluation: ', evaluation)}
         {evaluation && evaluation.units && evaluation.units.map((unit) => (
           <div style={{ cursor: 'pointer' }} key={unit._id}>
             <UnitStatus
