@@ -164,12 +164,10 @@ const UserPerformance = () => {
         let answerSupervisor = assessment.answerSupervisor;
         let answerTeacher = assessment.answerTeacher;
 
-
-
         if (assessmentRadio) {
 
           if (currentUser?.role === 'customer') {
-            answer = selectedValues === selectedRadio[assessment._id]?.['Itsearviointi'] ? selectedRadio[assessment._id]?.['Itsearviointi'] : 0;
+            answer = selectedRadio[assessment._id]?.['Itsearviointi'] ? selectedRadio[assessment._id]?.['Itsearviointi'] : 0;
           } else if (currentUser?.role === 'supervisor') {
             answerSupervisor = selectedRadio[assessment._id]?.['TPO havainto'] ? selectedRadio[assessment._id]?.['TPO havainto'] : 0;
           } else if (currentUser?.role === 'teacher') {
