@@ -36,7 +36,9 @@ interface IUser {
 interface IUnit {
   _id: number;
   status: number;
-  ready: boolean;
+  teacherReady: boolean;
+  supervisorReady: boolean;
+  customerReady: boolean;
   feedBack: string;
   name: {
     fi: string;
@@ -66,8 +68,8 @@ interface ICriteria {
 }
 
 export type Evaluation = (Document<unknown, {}, IEvaluation & Document<any, any, any>> & IEvaluation & Document<any, any, any> & {
-    _id: Types.ObjectId;
-  });
+  _id: Types.ObjectId;
+});
 
 const evaluationSchema = new Schema<IEvaluation>({
   degreeId: {
@@ -145,7 +147,15 @@ const evaluationSchema = new Schema<IEvaluation>({
         default: 0,
         enum: [0, 1, 2, 3],
       },
-      ready: {
+      teacherReady: {
+        type: Boolean,
+        default: false,
+      },
+      supervisorReady: {
+        type: Boolean,
+        default: false,
+      },
+      customerReady: {
         type: Boolean,
         default: false,
       },
