@@ -323,6 +323,8 @@ const verifyEmail = async (req: Request, res: Response) => {
     return res
       .clearCookie('verification-token')
       .cookie('change-token', passwordChanegeToken, { httpOnly: true })
+      .clearCookie('token') // Clear the token and auth_state cookies in case a user is still logged in on a different account
+      .clearCookie('auth_state')
       .json({ redirectURL: `${config.APP_URL}/set-password` });
     // .redirect(`${url}/reset-password`);
   } catch (err) {
