@@ -25,7 +25,9 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
     .populate('units');
 };
 
-export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: any) => {
+export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: any): Array<String> => {
+
+  const emailsSendTo: Array<string> = []
 
   switch (userRole) {
     case 'supervisor':
@@ -39,6 +41,9 @@ export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails
         'TPO:n valmis lomake',
         emails.teacherEmail
       );
+
+      emailsSendTo.push(emails.customerEmail)
+      emailsSendTo.push(emails.teacherEmail)
       break;
     case 'customer':
       sendEvaluationFormCustomerReadyMessageSupervisor(
@@ -51,6 +56,8 @@ export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails
         'Asiakkaan valmis lomake',
         emails.teacherEmail
       );
+      emailsSendTo.push(emails.supervisorEmail)
+      emailsSendTo.push(emails.teacherEmail)
       break;
     case 'teacher':
       sendEvaluationFormTeacherReadyMessageSupervisor(
@@ -63,10 +70,13 @@ export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails
         'Opettajan valmis lomake',
         emails.customerEmail
       );
+      emailsSendTo.push(emails.supervisorEmail)
+      emailsSendTo.push(emails.customerEmail)
       break;
     default:
       console.error(`Unknown role: ${userRole}`);
   }
+  return emailsSendTo
 };
 
 const updateUnitStatus = (units: any) => {
