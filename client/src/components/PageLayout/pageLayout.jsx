@@ -95,6 +95,7 @@ const PageLayout = () => {
   }, [siteTitle]);
 
   // Close menu when user click outside of hamburgermenu
+  /*
   useEffect(() => {
 
 
@@ -110,6 +111,7 @@ const PageLayout = () => {
       document.removeEventListener('click', handleClickOutside);
     }
   }, [menuRef, location.pathname])
+  */
 
   const handleMenuToggle = () => {
     if (!menuIsOpen && regex.test(location.pathname)) {
