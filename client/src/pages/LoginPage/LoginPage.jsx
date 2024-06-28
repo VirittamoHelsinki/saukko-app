@@ -90,6 +90,7 @@ const LoginPage = () => {
             <input
               type='email'
               id='email'
+              className={`email-input ${errorMessage ? 'error' : ''}`}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
