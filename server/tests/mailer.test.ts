@@ -3,8 +3,39 @@ import sendingMailToQueue from '../src/mailer/createNewMail'
 import mailTemplate from '../src/mailer/mailerHtmlTemplate';
 import { IEmailObj } from '../src/models/emailDocumentModel';
 import { sendVerificationEmail } from '../src/mailer/templates/newUserVerification'
-import mailerTemplate from '../src/mailer/mailerHtmlTemplate'
+/* import mailerTemplate from '../src/mailer/mailerHtmlTemplate' */
+import { sendReadyEmails, sendContactRequestEmails } from '../src/controllers/evaluationController/handleUserPerformanceEmails'
 
+describe('All emails should be send to correct users client page', () => {
+  it('should send email to supervisor and teacher when client ready', async () => {
+    sendReadyEmails()
+
+  })
+  it('should send email to teacher when requested contact', async () => {
+    sendContactRequestEmails()
+  })
+})
+
+describe('All emails should be send to correct users supervisor page', () => {
+  it('should send email to teacher and customer when supervisor ready', async () => {
+    sendReadyEmails()
+  })
+  it('should send email to teacher when requested contact', async () => {
+    sendContactRequestEmails()
+  })
+})
+
+describe('All emails should be send to correct users teacher page', () => {
+  it('should send email to supervisor and customer when teacher ready', async () => {
+    sendReadyEmails()
+  })
+  it('should send email to customer when requested contact', async () => {
+    sendContactRequestEmails()
+  })
+  it('should send email to supervisor when requested contact', async () => {
+    sendContactRequestEmails()
+  })
+})
 
 describe.skip('Sending verification email', () => {
 

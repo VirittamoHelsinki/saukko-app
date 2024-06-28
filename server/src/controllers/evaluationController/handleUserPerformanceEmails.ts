@@ -25,7 +25,7 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
     .populate('units');
 };
 
-const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: any) => {
+export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: any) => {
 
   switch (userRole) {
     case 'supervisor':
@@ -105,7 +105,7 @@ export const evaluationCompleted = (evaluation: any): boolean => {
   return (evaluation.units?.length > 0 ? evaluation.units.every((unit: any) => unit.teacherReady === true) : false)
 }
 
-const sendContactRequestEmails = (selectedValues: any, userRole: string, requestContactParams: ISendEvaluationFormRequestContact, emails: any) => {
+export const sendContactRequestEmails = (selectedValues: any, userRole: string, requestContactParams: ISendEvaluationFormRequestContact, emails: any) => {
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'customer') {
     sendEvaluationFormCustomerRequestContact(requestContactParams, emails.teacherEmail);
   }
