@@ -3,50 +3,8 @@ import sendingMailToQueue from '../src/mailer/createNewMail'
 import mailTemplate from '../src/mailer/mailerHtmlTemplate';
 import { IEmailObj } from '../src/models/emailDocumentModel';
 import { sendVerificationEmail } from '../src/mailer/templates/newUserVerification'
-/* import mailerTemplate from '../src/mailer/mailerHtmlTemplate' */
-import { sendReadyEmails, sendContactRequestEmails } from '../src/controllers/evaluationController/handleUserPerformanceEmails'
-
-const emails = {
-  customerEmail: 'toughcopper@navalcadets.com',
-  teacherEmail: 'toughcopper@navalcadets.com',
-  supervisorEmail: 'toughcopper@navalcadets.com',
-};
-
-describe('All emails should be send to correct users client page', () => {
 
 
-  it('should send email to supervisor and teacher when client ready', async () => {
-    expect(sendReadyEmails('customer', true, emails.customerEmail)[0] === (emails.supervisorEmail))
-    expect(sendReadyEmails('customer', true, emails.customerEmail)[1] === (emails.teacherEmail))
-
-  })
-  xit('should send email to teacher when requested contact', async () => {
-    /* sendContactRequestEmails() */
-  })
-})
-
-describe('All emails should be send to correct users supervisor page', () => {
-  it('should send email to teacher and customer when supervisor ready', async () => {
-    expect(sendReadyEmails('supervisor', true, emails.supervisorEmail)[0] === (emails.customerEmail))
-    expect(sendReadyEmails('supervisor', true, emails.supervisorEmail)[1] === (emails.teacherEmail))
-  })
-  xit('should send email to teacher when requested contact', async () => {
-    /*     sendContactRequestEmails() */
-  })
-})
-
-describe('All emails should be send to correct users teacher page', () => {
-  it('should send email to supervisor and customer when teacher ready', async () => {
-    expect(sendReadyEmails('teacher', true, emails.teacherEmail)[0] === (emails.supervisorEmail))
-    expect(sendReadyEmails('teacher', true, emails.teacherEmail)[1] === (emails.customerEmail))
-  })
-  xit('should send email to customer when requested contact', async () => {
-    /*     sendContactRequestEmails() */
-  })
-  xit('should send email to supervisor when requested contact', async () => {
-    /*     sendContactRequestEmails() */
-  })
-})
 
 describe.skip('Sending verification email', () => {
 

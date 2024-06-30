@@ -76,6 +76,7 @@ export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails
     default:
       console.error(`Unknown role: ${userRole}`);
   }
+  console.log('emails send to: ', emailsSendTo)
   return emailsSendTo
 };
 
