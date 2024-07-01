@@ -71,7 +71,6 @@ const PageLayout = () => {
 
   // close hamburgermenu when user click outside, except Box componet
   const menuRef = useRef(null);
-  const userNavRef = useRef(null);
 
   const logoColor = currentUser?.role ? '#000' : '#fff';
 
