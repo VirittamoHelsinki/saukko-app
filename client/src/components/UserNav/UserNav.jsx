@@ -39,6 +39,7 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
   };
 
   const toggleMenu = () => setMenuIsOpen(!menuIsOpen);
+  const closeMenu = () => setMenuIsOpen(false);
 
   const LogOut = async () => {
     try {
@@ -54,6 +55,10 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
   return (
     <div
       className='userNav__wrapper'>
+      <div
+        className={`userNav__shadow ${menuIsOpen ? '' : 'hidden'}`} 
+        onClick={closeMenu}
+      ></div>
       <div
         className={`userNav__menu ${menuIsOpen ? 'userNav__menu--open' : ''}`}
       >
