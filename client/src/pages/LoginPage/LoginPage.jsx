@@ -24,7 +24,7 @@ const LoginPage = () => {
       await loginUser(loginData);
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        setErrorMessage('Salasana väärin');
+        setErrorMessage('Sähköposti tai salasana on väärin. Yritä uudelleen.');
       } else {
         console.error(err);
       }
@@ -90,6 +90,7 @@ const LoginPage = () => {
             <input
               type='email'
               id='email'
+              className={`email-input ${errorMessage ? 'error' : ''}`}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
@@ -100,7 +101,7 @@ const LoginPage = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 id='password'
-                className="password-input"
+                className={`password-input ${errorMessage ? 'error' : ''}`}
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}

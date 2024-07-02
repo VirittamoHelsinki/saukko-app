@@ -82,6 +82,10 @@
       padding: 7px;
       border: 1px solid var(--saukko-main-black);
     }
+
+    input.error {
+      border: 2px solid #b01038 !important; /* Something is overriding this 😟 */
+    }
   }
 
   .loginPage__form--bottom {
