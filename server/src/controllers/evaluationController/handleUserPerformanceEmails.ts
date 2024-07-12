@@ -14,7 +14,8 @@ import {
   sendEvaluationFormTeacherRequestContactMessageCustomer,
   sendEvaluationFormTeacherRequestContactMessageSupervisor,
 } from '../../mailer/templates/EvaluationForm';
-import { AssessmentStatus, EvaluationStatus, ISendEvaluationFormRequestContact } from '../../mailer/types';
+import { AssessmentStatus, EvaluationStatus, ISendEvaluationFormRequestContact, ISelectedValues, IEmails, UserRole } from '../../mailer/types';
+import { getUserRole } from '../../mailer/utils';
 
 const fetchEvaluationWithDetails = async (evaluationId: string) => {
   return await EvaluationModel.findById(evaluationId)
@@ -25,7 +26,11 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
     .populate('units');
 };
 
-export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: any): Array<String> => {
+export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: IEmails): Array<String> => {
+
+
+  console.log('userRole: ', userRole)
+  console.log('formIsReadyParams: ', formIsReadyParams)
 
   const emailsSendTo: Array<string> = []
 
@@ -76,7 +81,6 @@ export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails
     default:
       console.error(`Unknown role: ${userRole}`);
   }
-  console.log('emails send to: ', emailsSendTo)
   return emailsSendTo
 };
 
@@ -112,26 +116,37 @@ const updateUnitStatus = (units: any) => {
 };
 
 export const evaluationCompleted = (evaluation: any): boolean => {
-  console.log('evaluationCompleted:  ', evaluation.units)
   return (evaluation.units?.length > 0 ? evaluation.units.every((unit: any) => unit.teacherReady === true) : false)
 }
 
-export const sendContactRequestEmails = (selectedValues: any, userRole: string, requestContactParams: ISendEvaluationFormRequestContact, emails: any) => {
+export const sendContactRequestEmails = (selectedValues: ISelectedValues, userRole: UserRole, requestContactParams: ISendEvaluationFormRequestContact, emails: IEmails) => {
+
+  console.log('selectedValues: ', selectedValues)
+  console.log('userRole: ', userRole)
+  console.log('requestContactParams: ', requestContactParams)
+
+  const emailsSendTo: Array<string> = []
+
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'customer') {
     sendEvaluationFormCustomerRequestContact(requestContactParams, emails.teacherEmail);
+    emailsSendTo.push(emails.teacherEmail)
   }
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'supervisor') {
     sendEvaluationFormSupervisorRequestContact(requestContactParams, emails.teacherEmail);
+    emailsSendTo.push(emails.teacherEmail)
   }
   if (selectedValues.pyydetaanYhteydenottoaAsiakkaalta && userRole === 'teacher') {
     sendEvaluationFormTeacherRequestContactMessageCustomer(requestContactParams, emails.customerEmail);
+    emailsSendTo.push(emails.customerEmail)
   }
   if (selectedValues.pyydetaanYhteydenottoaOhjaajalta && userRole === 'teacher') {
     sendEvaluationFormTeacherRequestContactMessageSupervisor({
       ...requestContactParams,
       vocationalCompetenceName: requestContactParams.unitName,
     }, emails.supervisorEmail);
+    emailsSendTo.push(emails.supervisorEmail)
   }
+  return emailsSendTo
 };
 
 const handleUserPerformanceEmails = async (req: Request, res: Response) => {
@@ -155,7 +170,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       teacherFirstName: evaluation.teacherId?.firstName
     };
 
-    const emails = {
+    const emails: IEmails = {
       customerEmail: evaluation.customerId?.email || 'Unknown Customer Email',
       teacherEmail: evaluation.teacherId?.email || 'Unknown Teacher Email',
       supervisorEmail: evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email',
@@ -175,7 +190,10 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
     };
 
-    sendContactRequestEmails(selectedValues, user.role, requestContactParams, emails);
+
+    const userRole: UserRole = getUserRole(user.role)
+
+    sendContactRequestEmails(selectedValues, userRole, requestContactParams, emails);
 
     evaluation.units = updateUnitStatus(req.body.units);
 
@@ -187,8 +205,6 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       endDate: req.body.endDate || evaluation.endDate,
       units: req.body.units || evaluation.units,
     });
-
-    console.log('evaluation in handleUserPerformanceEmail: ', evaluation);
 
     await evaluation.save();
     res.send(evaluation);
