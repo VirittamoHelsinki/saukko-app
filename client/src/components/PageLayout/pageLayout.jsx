@@ -71,7 +71,6 @@ const PageLayout = () => {
 
   // close hamburgermenu when user click outside, except Box componet
   const menuRef = useRef(null);
-  const userNavRef = useRef(null);
 
   const logoColor = currentUser?.role ? '#000' : '#fff';
 
@@ -95,6 +94,7 @@ const PageLayout = () => {
   }, [siteTitle]);
 
   // Close menu when user click outside of hamburgermenu
+  /*
   useEffect(() => {
 
 
@@ -110,6 +110,7 @@ const PageLayout = () => {
       document.removeEventListener('click', handleClickOutside);
     }
   }, [menuRef, location.pathname])
+  */
 
   const handleMenuToggle = () => {
     if (!menuIsOpen && regex.test(location.pathname)) {
