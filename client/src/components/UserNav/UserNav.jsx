@@ -55,11 +55,11 @@ const UserNav = ({ setMenuIsOpen, menuIsOpen }) => {
       to: "/404",
       label: "Opettajat",
     },
-  ]
+  ];
 
   const handleNavigationLinkClick = (to) => {
-    toggleMenu()
-    navigate(to)
+    toggleMenu();
+    navigate(to);
   }
 
   const toggleMenu = () => setMenuIsOpen(!menuIsOpen);
