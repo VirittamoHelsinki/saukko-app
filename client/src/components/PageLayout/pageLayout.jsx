@@ -150,10 +150,10 @@ const PageLayout = () => {
                 />
               </button>
             </div>
-            {!menuIsOpen && <div className={styles.headerBox} style={wrapperStyle}>
+            <div className={styles.headerBox} style={wrapperStyle}>
               {<h1>{heading}</h1>}
               {<p>{subHeading}</p>}
-            </div>}
+            </div>
             <Waves fill={headerColor} />
           </header>
         )}
