@@ -115,9 +115,10 @@ const PageLayout = () => {
   const handleMenuToggle = () => {
     if (!menuIsOpen && regex.test(location.pathname)) {
       setShowWarning(true);
-    } else {
-      setMenuIsOpen(!menuIsOpen);
+      return;
     }
+    
+    setMenuIsOpen((oldValue) => !oldValue);
   };
 
   const handleWarningClose = () => {
@@ -143,7 +144,10 @@ const PageLayout = () => {
             )}
             <div className={styles.buttonContainer} ref={menuRef}>
               <button onClick={() => handleMenuToggle()} style={{ marginBottom: '0.3rem' }}>
-                <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'} />
+                <Icon
+                  icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'}
+                  style={{ pointerEvents: "none" }} // Disable pointer events on icon
+                />
               </button>
             </div>
             {!menuIsOpen && <div className={styles.headerBox} style={wrapperStyle}>
