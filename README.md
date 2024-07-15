@@ -30,7 +30,37 @@ With Saukko, users have the freedom to learn and progress at their own pace, fit
 5. User-Friendly Interface: Saukko offers an intuitive and easy-to-use interface, ensuring a seamless experience for users to navigate, submit work, and interact with the platform.
 
 Saukko revolutionizes the traditional approach to earning degrees by offering working professionals a flexible and efficient pathway to complete their education while advancing their careers. It empowers individuals to take control of their learning journey, achieve their academic goals, and unlock new opportunities for personal and professional growth.
-<br><br>
+
+## **Data**
+1. [ePerusteet](https://eperusteet.opintopolku.fi/eperusteet-service)
+   Interface description of the national criteria
+
+## **Technologies**
+* UI
+  - [ React ](https://react.dev/)
+  - [ MUI ](https://mui.com/)
+  - [ Zustand ](https://zustand-demo.pmnd.rs/)
+  - [ iconify ](https://iconify.design/)
+  - [ uuid ](https://www.npmjs.com/package/uuid)
+  - [ axios ](https://axios-http.com/docs/intro)
+  - [ react-router-dom ](https://reactrouter.com/en/main)
+
+* Prototype
+  - [ Figma ](https://www.figma.com/)
+  - [ Miro ](https://miro.com)
+
+* Backend
+  - [ Node.js ](https://nodejs.org/en)
+  - [ Express.js ](https://expressjs.com/)
+  - [ Mongoose ](https://www.npmjs.com/package/mongoose)
+  - [ JWT ](https://jwt.io/)
+  - [ MongoDB ](https://www.mongodb.com/)
+
+* Infrastructure
+  - [ OsTu App infrastructure ](https://virittamohelsinki.github.io/saukko-app/)
+
+
+
 
 ## **Initital Setup**
 
@@ -46,7 +76,7 @@ npm run setup
 npm run start:dev
 ```
 
-When running on a local machine, open **[http://localhost:3000](http://localhost:3000)** in your browser to view the app.
+When running on a local machine, open **[http://localhost:5173](http://localhost:5173)** in your browser to view the app.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
