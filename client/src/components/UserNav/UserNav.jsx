@@ -33,6 +33,37 @@ const UserNav = ({ checkUnsavedChanges, handleNavigation, setMenuIsOpen, menuIsO
     }
   }, [location.pathname, evaluation, currentUser, setEvaluation]);
 
+  const navigationLinkData = [
+    {
+      to: "/",
+      label: "Etusivu",
+    },
+    {
+      to: "/degrees/add",
+      label: "Tutkinnot",
+    },
+    {
+      to: "add/companyname",
+      label: "Työpaikat",
+    },
+    {
+      to: "/evaluation-form",
+      label: "+ Luo uusi sopimus",
+    },
+    {
+      to: "/404",
+      label: "Asiakkuudet",
+    },
+    {
+      to: "/404",
+      label: "Opettajat",
+    },
+    {
+      to: "profile",
+      label: "Profiili",
+    },
+  ]
+
   const handleIconClick = (destination) => {
     checkUnsavedChanges();
     handleNavigation(destination);
