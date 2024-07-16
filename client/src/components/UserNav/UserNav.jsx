@@ -2,8 +2,7 @@ import { useContext, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import InternalApiContext from '../../store/context/InternalApiContext';
 import { Icon } from '@iconify/react';
-import { Box, Button, Grid, Typography, List, ListItem } from '@mui/material';
-import HelsinkiLogo from '../../assets/HELSINKI_Tunnus_MUSTA_90x41.webp';
+import { Button, Grid, Typography } from '@mui/material';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import { logoutUser } from '../../api/user';
 
