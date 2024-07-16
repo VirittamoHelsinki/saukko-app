@@ -124,6 +124,7 @@ const PageLayout = () => {
               </button>
             )}
             <div className={styles.buttonContainer} ref={menuRef}>
+              {/* HAMBURGER MENU TOGGLE */}
               <button onClick={() => handleMenuToggle()} style={{ marginBottom: '0.3rem' }}>
                 <Icon
                   icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'}
