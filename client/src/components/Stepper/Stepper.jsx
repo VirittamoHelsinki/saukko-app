@@ -69,8 +69,9 @@ const Stepper = ({ activePage, totalPages, data }) => {
           {data.map((step, index) => (
             <span
               key={index}
-              className={`page-text ${activePage >= index + 1 ? 'active' : ''}`}
-              onClick={() => navigate(step.url)}
+              className={`page-text ${activePage === index + 1 ? 'active' : ''}`}
+              // Navigating using this makes no sense
+              //onClick={() => navigate(step.url)}
             >
               {step.label}
             </span>
