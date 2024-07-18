@@ -15,7 +15,10 @@ import useStore from '../../../store/zustand/formStore';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
 
+import useUnitsStore from '../../../store/zustand/unitsStore';
+
 function DegreeUnits({ degree }) {
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -98,7 +101,7 @@ function DegreeUnits({ degree }) {
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${params.degreeId}`)}
           handleForward={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
-          showForwardButton={true}
+          showForwardButton={checkedUnits.length > 0}
         />
       </section>
     </div>
