@@ -32,7 +32,7 @@ function SpecifyTasks({ degree }) {
 
   // Initialize state
   const [assessments, setAssessments] = useState([]);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(0); // Index of the selected unit
   const [savedDataCriteria, setSavedDataCriteria] = useState([]);
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
@@ -53,7 +53,7 @@ function SpecifyTasks({ degree }) {
 
   const handleSave = (title, criteria) => {
     const newData = { ...savedDataCriteria };
-    newData[checkedUnits[activeStep]._id].push({ title, criteria });
+    newData[checkedUnits[activeStep]._id].push({ title, criteria }); // Error
     setSavedDataCriteria(newData);
   };
 
@@ -148,7 +148,7 @@ function SpecifyTasks({ degree }) {
                     sx={{ 
                       fontWeight: 'bold',
                       color: '#000000',
-                      position:'static'
+                      //position:'static'
                     }}
                     size='small'
                     onClick={handleNext}
@@ -169,7 +169,7 @@ function SpecifyTasks({ degree }) {
                       fontWeight: 'bold', 
                       color: '#000000',
                       //position: 'static'
-                     }}
+                    }}
                     size='small'
                     onClick={handleBack}
                     disabled={activeStep === 0}
@@ -198,10 +198,15 @@ function SpecifyTasks({ degree }) {
                 criteria='Kriteerit'
                 hideCancelButton={true}
                 onSave={(title, criteria) => {
+                  // Check if user actually has checked units
+                  if (!checkedUnits[activeStep]) {
+                    return;
+                  }
+
                   setAssessments((prevAssessments) => [
                     ...prevAssessments,
                     {
-                      unitId: checkedUnits[activeStep]._id,
+                      unitId: checkedUnits[activeStep]._id, // error
                       name: title,
                       criteria: criteria,
                     },
@@ -235,7 +240,7 @@ function SpecifyTasks({ degree }) {
                 sx={{ 
                   paddingLeft: 0, 
                   textTransform: 'none',
-                 }}
+                }}
               >
                 + Lisää ammattitaitovaatimukset
               </Button>
