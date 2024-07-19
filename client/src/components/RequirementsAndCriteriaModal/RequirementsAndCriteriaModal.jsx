@@ -258,6 +258,7 @@ export default function RequirementsAndCriteriaModal(props) {
                 onChange={(e) => handleInputChange(e, 2)}
                 onKeyDown={handleKeyDown}
                 onPaste={onPaste}
+                onClick={handleClick}
                 id='outlined-multiline-static'
                 rows={8}
                 cols={25}
