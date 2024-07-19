@@ -51,28 +51,13 @@ export default function RequirementsAndCriteriaModal(props) {
   const [inputValueTitle, setInputValueTitle] = useState('');
   const [inputValueCriteria, setInputValueCriteria] = useState('');
 
-  const format = (str) => {
-    const lineStart = "• "
-
-    return str
-    .split("\n")
-    .map((line) => {
-      if (line.startsWith(lineStart)) {
-        return line
-      }
-
-      return lineStart + line
-    })
-    .join("\n")
-  }
-
   const handleInputChange = (event, inputField) => {
     const value = event.target.value;
 
     if (inputField === 1) {
       setInputValueTitle(value);
     } else if (inputField === 2) {
-      setInputValueCriteria(format(value));
+      setInputValueCriteria(value);
     }
   };
 
@@ -92,13 +77,21 @@ export default function RequirementsAndCriteriaModal(props) {
 
   const handleKeyDown = (event) => {
     const key = event.key
-
     
     if (key === "Enter") {
       event.preventDefault()
       const { selectionStart, selectionEnd } = event.target
-      setInputValueCriteria((oldValue => `${oldValue}\n• `))
-      event.target.setSelectionRange(selectionStart, selectionEnd)
+      
+      setInputValueCriteria((oldValue => {
+        const start = oldValue.slice(0, selectionStart)
+        const end = oldValue.slice(selectionEnd)
+
+        return `${start}\n• ${end}`
+      }))
+
+      setTimeout(() => { 
+        event.target.setSelectionRange(selectionStart + 3, selectionStart + 3)
+      }, 0)
 
       return
     }
@@ -236,8 +229,7 @@ export default function RequirementsAndCriteriaModal(props) {
               <TextField
                 value={inputValueCriteria}
                 onChange={(e) => handleInputChange(e, 2)}
-/*                 onClick={handleClick}
-                onKeyDown={handleKeyDown} */
+                onKeyDown={handleKeyDown}
                 id='outlined-multiline-static'
                 rows={8}
                 cols={25}
