@@ -187,7 +187,6 @@ export default function RequirementsAndCriteriaModal(props) {
                 value={inputValueTitle}
                 onChange={(e) => handleInputChange(e, 1)}
                 id='outlined-multiline-static'
-                backgroundColor='#FFFFFF'
                 border='black 2px solid'
                 fontSize='10px'
                 multiline
