@@ -101,6 +101,34 @@ export default function RequirementsAndCriteriaModal(props) {
     }
   }
 
+  const onPaste = (event) => {
+    event.preventDefault()
+    const { selectionStart, selectionEnd } = event.target
+
+    // Get pasted data via clipboard API
+    const clipboardData = event.clipboardData || window.clipboardData;
+    const pastedData = clipboardData.getData('Text');
+
+
+  
+    setInputValueCriteria((oldValue => {
+      const start = oldValue.slice(0, selectionStart)
+      const end = oldValue.slice(selectionEnd)
+
+      const formattedData = `${start}${pastedData}${end}`
+        .split("\n")
+        .map((line) => line.startsWith("• ") ? line : `• ${line}`)
+        .join("\n")
+
+      return formattedData
+    }))
+
+    setTimeout(() => { 
+      event.target.setSelectionRange(selectionStart, selectionStart)
+    }, 0)
+
+  }
+
   const handleClose = () => {
     props.onClose();
   };
@@ -229,6 +257,7 @@ export default function RequirementsAndCriteriaModal(props) {
                 value={inputValueCriteria}
                 onChange={(e) => handleInputChange(e, 2)}
                 onKeyDown={handleKeyDown}
+                onPaste={onPaste}
                 id='outlined-multiline-static'
                 rows={8}
                 cols={25}
