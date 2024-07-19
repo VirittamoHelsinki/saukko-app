@@ -51,13 +51,28 @@ export default function RequirementsAndCriteriaModal(props) {
   const [inputValueTitle, setInputValueTitle] = useState('');
   const [inputValueCriteria, setInputValueCriteria] = useState('');
 
+  const format = (str) => {
+    const lineStart = "• "
+
+    return str
+    .split("\n")
+    .map((line) => {
+      if (line.startsWith(lineStart)) {
+        return line
+      }
+
+      return lineStart + line
+    })
+    .join("\n")
+  }
+
   const handleInputChange = (event, inputField) => {
     const value = event.target.value;
 
     if (inputField === 1) {
       setInputValueTitle(value);
     } else if (inputField === 2) {
-      setInputValueCriteria(value);
+      setInputValueCriteria(format(value));
     }
   };
 
@@ -68,12 +83,30 @@ export default function RequirementsAndCriteriaModal(props) {
     }
   };
 
-  const handleKeyDown = (e) => {
+/*   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       setInputValueCriteria((prevValue) => prevValue + '\n• ');
     }
-  };
+  }; */
+
+  const handleKeyDown = (event) => {
+    const key = event.key
+
+    
+    if (key === "Enter") {
+      event.preventDefault()
+      const { selectionStart, selectionEnd } = event.target
+      setInputValueCriteria((oldValue => `${oldValue}\n• `))
+      event.target.setSelectionRange(selectionStart, selectionEnd)
+
+      return
+    }
+
+    if (key === "Backspace") {
+      return
+    }
+  }
 
   const handleClose = () => {
     props.onClose();
@@ -203,8 +236,8 @@ export default function RequirementsAndCriteriaModal(props) {
               <TextField
                 value={inputValueCriteria}
                 onChange={(e) => handleInputChange(e, 2)}
-                onClick={handleClick}
-                onKeyDown={handleKeyDown}
+/*                 onClick={handleClick}
+                onKeyDown={handleKeyDown} */
                 id='outlined-multiline-static'
                 rows={8}
                 cols={25}
