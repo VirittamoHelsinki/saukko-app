@@ -223,10 +223,11 @@ function EvaluationForm() {
             <input
               id='email'
               type='email'
-              className='form-input'
+              className={`form-input ${emailIsAvailable ? "" : "error"}`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            { !emailIsAvailable && <label className="error">Sähköposti on jo käytössä.</label>}
           </div>
           <div className='form__startDate'>
             <label className='form_text'>Asiakkuuden aloituspäivä *</label>
