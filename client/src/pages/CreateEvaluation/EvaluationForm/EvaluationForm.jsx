@@ -15,6 +15,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Typography } from '@mui/material';
+import useCheckEmailAvailability from '../../../hooks/useEmailAvailable';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -38,6 +39,10 @@ function EvaluationForm() {
     setEvaluation, // Include the new setters
     // ... add other state variables and setters as needed
   } = useEvaluationFormStore();
+
+
+  const emailIsAvailable = useCheckEmailAvailability(email)
+  console.log({ emailIsAvailable });
 
   // Get user from AuthContext
   const { currentUser } = useAuthContext();

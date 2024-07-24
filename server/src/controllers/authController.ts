@@ -20,10 +20,15 @@ const _responseWithError = (res: Response, statusCode: number, err: any, optiona
 }
 
 const isEmailAvailable = async (req: Request, res: Response) => {
-  const body = req.body
+  const { email } = req.query
 
-  const existingUser = await userModel.findOne({ email: body.email });
-  return res.status(200).json({ userExists: !!existingUser });
+  try {
+    const existingUser = await userModel.findOne({ email });
+    console.log(email, existingUser)
+    return res.status(200).json({ userExists: !existingUser });
+  } catch (e) {
+    return res.status(200).json({ userExists: false });
+  }
 }
 
 // TODO: FIX THE LINK
