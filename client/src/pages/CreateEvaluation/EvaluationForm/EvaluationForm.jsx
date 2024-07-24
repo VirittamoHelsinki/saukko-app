@@ -42,7 +42,6 @@ function EvaluationForm() {
 
 
   const emailIsAvailable = useCheckEmailAvailability(email)
-  console.log({ emailIsAvailable });
 
   // Get user from AuthContext
   const { currentUser } = useAuthContext();
@@ -104,9 +103,16 @@ function EvaluationForm() {
     // Form validation: Regex for email format
     const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
     if (!emailPattern.test(email)) {
-      setOpenNotificationModalEmail(true);
+      setOpenNotificationModalEmail("Tarkista seuraavat kentät: sähköposti.");
       return;
     }
+
+    if (!emailIsAvailable) {
+      setOpenNotificationModalEmail("Sähköposti on jo käytössä.");
+      return
+    }
+
+    
 
     // Form validation: startDate and endDate are Date objects
     if (typeof startDate === 'string' || typeof endDate === 'string') {
@@ -347,11 +353,11 @@ function EvaluationForm() {
         body={
           <div style={{ padding: '10px' }}>
             <Typography style={{ fontSize: '14px' }}>
-              Tarkista seuraavat kentät: sähköposti.
+              { openNotificationModalEmail }
             </Typography>
           </div>
         }
-        open={openNotificationModalEmail}
+        open={!!openNotificationModalEmail}
         handleClose={handleCloseEmail}
       />
       <NotificationModal
