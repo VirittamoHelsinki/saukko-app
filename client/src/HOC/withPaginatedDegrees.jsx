@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import eperusteet from '../api/eperusteet';
 import { useExternalApiContext } from "../store/context/ExternalApiContext";
 
@@ -13,13 +13,14 @@ const withPaginatedDegrees = (Component) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const [searchParam, setSearchParam] = useState("")
+    const [searchParam, setSearchParam] = useState("");
+    const initialDataFetched = useRef(false);
 
     const fetchPaginatedDegrees = async () => {
       try {
         setLoading(true);
         const data = await eperusteet.getPaginatedDegrees(page, pageSize, searchParam);
-        data.data.map(y => console.log(y._id));
+        // data.data.map(y => console.log(y._id));
   
         setData(data.data);
         setAllDegrees(data.degrees);
@@ -28,20 +29,38 @@ const withPaginatedDegrees = (Component) => {
         setTotalResults(data.totalResults);
 
         setLoading(false);
+        initialDataFetched.current = true;
       } catch(e) {
         setError(e);
       }
     }
 
+    // Only run on first render
+    useEffect(() => {
+      if (initialDataFetched.current === false) {
+        fetchPaginatedDegrees();
+      }
+    }, []);
+
     // Separate effects for page change and searchParams change
     // Must add throttling to search param
     useEffect(() => {
-      fetchPaginatedDegrees()
-    }, [ page ])
+      if (initialDataFetched.current) {
+        fetchPaginatedDegrees();
+      }
+    }, [ page ]);
 
     useEffect(() => {
-      fetchPaginatedDegrees()
-    }, [ searchParam ])
+      let timer;
+
+      if (initialDataFetched.current) {
+        timer = setTimeout(() => {
+          fetchPaginatedDegrees();
+        }, 500);
+      }
+
+      return () => clearTimeout(timer)
+    }, [ searchParam ]);
 
     if (error) {
       throw error;
