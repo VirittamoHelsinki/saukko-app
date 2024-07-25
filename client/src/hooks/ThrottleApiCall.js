@@ -1,0 +1,44 @@
+import { useState, useEffect, useCallback } from "react";
+
+/*
+
+    state: <"loading"|"done"|"error">
+
+*/
+
+const useThrottleApiCallHook = (apiFn, parameters, delay = 500) => {
+  const [ results, setResults ] = useState(null);
+  const [ state, setState ] = useState(null);
+
+  useEffect(() => {
+    let ignore = false;
+    let timer;
+
+    const callApiFn = async () => {
+      setState("loading")
+
+      try {
+        const results = await apiFn(...parameters);
+        if (!ignore) {
+          setState("done")
+          setResults(results.data);
+        }
+      } catch (e) {
+        setState("error")
+      }
+    }
+
+    timer = setTimeout(() => {
+      callApiFn();
+    }, delay);
+
+    return () => {
+      clearTimeout(timer);
+      ignore = true;
+    }
+  }, [ ...parameters ]);
+
+  return [ results, state ];
+}
+
+export default useThrottleApiCallHook;
