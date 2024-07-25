@@ -22,7 +22,7 @@ const useThrottleApiCall = (apiFn, delay = 500) => {
       clearTimeout(timer);
       ignore = true;
     }
-  }, [ email ]);
+  }, [ apiFn, delay ]);
 
   return results;
 }
