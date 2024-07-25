@@ -1,28 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const useThrottleApiCall = (apiFn, delay = 500) => {
   const [ results, setResults ] = useState(null);
+  const cachedApiFn = useCallback(apiFn)
 
   useEffect(() => {
     let ignore = false;
     let timer;
 
-    const callAsyncApiFn = async () => {
-      const results = await apiFn();
+    const callApiFn = async () => {
+      const results = await cachedApiFn();
       if (!ignore) {
         setResults(results.data);
       }
     }
 
     timer = setTimeout(() => {
-      callAsyncApiFn();
+      callApiFn();
     }, delay);
 
     return () => {
       clearTimeout(timer);
       ignore = true;
     }
-  }, [ apiFn, delay ]);
+  }, [ cachedApiFn, delay ]);
 
   return results;
 }
