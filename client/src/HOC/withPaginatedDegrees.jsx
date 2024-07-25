@@ -15,26 +15,33 @@ const withPaginatedDegrees = (Component) => {
 
     const [searchParam, setSearchParam] = useState("")
 
-    const result = useCallback(() => {
-      setLoading(true);
-      eperusteet.getPaginatedDegrees(page, pageSize, searchParam)
-        .then(x => {
-          x.data.map(y => console.log(y._id))
-          setData(x.data);
-          setAllDegrees(x.data)
-          setPage(x.sivu);
-          setTotalPages(x.sivuja);
-          setTotalResults(x.kokonaismäärä);
-        })
-        .catch(setError)
-        .finally(() => setLoading(false));
-      return Date.now();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, searchParam])
+    const fetchPaginatedDegrees = async () => {
+      try {
+        setLoading(true);
+        const data = await eperusteet.getPaginatedDegrees(page, pageSize, searchParam);
+        data.data.map(y => console.log(y._id));
+  
+        setData(data.data);
+        setAllDegrees(data.degrees);
+        setPage(data.currentPage);
+        setTotalPages(data.pageCount);
+        setTotalResults(data.totalResults);
+
+        setLoading(false);
+      } catch(e) {
+        setError(e);
+      }
+    }
+
+    // Separate effects for page change and searchParams change
+    // Must add throttling to search param
+    useEffect(() => {
+      fetchPaginatedDegrees()
+    }, [ page ])
 
     useEffect(() => {
-      console.log(result())
-    }, [result])
+      fetchPaginatedDegrees()
+    }, [ searchParam ])
 
     if (error) {
       throw error;

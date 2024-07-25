@@ -14,7 +14,7 @@ const getPaginatedDegrees = async (page, resultsPerPage, searchParam) => {
       currentPage: data.pagination.pageNumber,
       isEmpty: data.data.length === 0,
       pageCount: data.pagination.totalPages,
-      pageSize: data.pagination.pageSize,
+      pageSize: data.pagination.totalResults,
       totalResults: data.pagination.totalResults,
     }
   } catch (error) {
