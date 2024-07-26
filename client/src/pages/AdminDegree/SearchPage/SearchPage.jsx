@@ -57,6 +57,8 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
     pageNumbers.push(i)
   }
 
+  console.log(pageNumbers);
+
   return (
     <div className='pagination' style={{ marginTop: "50px", }}>
         {/* Render numbered buttons */}
@@ -99,21 +101,25 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
 
       { pageNumbers[pageNumbers.length - 1] < pageCount - 1 && <p>...</p> }
 
+      {
+        pageCount > 1 && (
+          <button
+            key={pageCount}
+            onClick={() => handlePageClick(pageCount)}
+            className={`pagination__button ${pageCount === currentPage ? 'active' : ''}`}
+          >
+            {pageCount}
+          </button>
+        )
+      }
+
+
       <button
-        key={pageCount}
-        onClick={() => handlePageClick(pageCount)}
-        className={`pagination__button ${pageCount === currentPage ? 'active' : ''}`}
+        // Disable button if current page is the last page
+        disabled={currentPage === pageCount}
+        onClick={() => handlePageClick(currentPage + 1)}
+        className='pagination__button'
       >
-        {pageCount}
-      </button>
-
-
-        <button
-          // Disable button if current page is the last page
-          disabled={currentPage === pageCount}
-          onClick={() => handlePageClick(currentPage + 1)}
-          className='pagination__button'
-        >
         <ChevronRightIcon />
       </button>
     </div>
