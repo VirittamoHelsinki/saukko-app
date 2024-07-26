@@ -58,7 +58,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   }
 
   return (
-    <div className='pagination'>
+    <div className='pagination' style={{ marginTop: "50px", }}>
         {/* Render numbered buttons */}
       <button
         // Disable button if current page is the first page
