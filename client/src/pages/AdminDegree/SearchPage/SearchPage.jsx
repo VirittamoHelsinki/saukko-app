@@ -5,6 +5,8 @@ import Searchbar from '../../../components/Searchbar/Searchbar';
 import withPaginatedDegrees from '../../../HOC/withPaginatedDegrees';
 import { CircularProgress } from '@mui/material';
 
+import "./_pagination.scss"
+
 const ChevronRightIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14" fill="none">
     <path d="M6.00241 7L0.816406 2L2.37241 0.5L9.11641 7L2.37241 13.5L0.816406 12L6.00241 7Z" fill="black"/>
@@ -40,54 +42,85 @@ const DegreeList = ({ degrees }) => {
 const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   // Maximum number of numbered buttons to show at a time
   const maxButtons = 5;
+  
+  const a = {}
+  a[1] = 1
+  a[pageCount] = 1
 
-  // Start position of numbered buttons to show
-  const start = currentPage - Math.floor(maxButtons / 2);
+  const start = Math.max(1, Math.min(pageCount - maxButtons + 1, currentPage - Math.floor(maxButtons / 2)))
+  const end = start + maxButtons
 
-  // End position of numbered buttons to show
-  const end = start + maxButtons;
 
-  let pages = [];
-  // Create an array of pages to show based on the start and end position
+
+
+
+  const pageNumbers = []
   for (let i = start; i < end; i++) {
-    if (i >= 1 && i <= pageCount) {
-      pages.push(i);
-    }
+    pageNumbers.push(i)
   }
+  console.log(pageNumbers)
 
   return (
-    <div className='searchPage__container--list-pagination'>
-      <section className='searchPage__container--list-pagination-nums'>
+    <div className='pagination'>
         {/* Render numbered buttons */}
+      <button
+        // Disable button if current page is the first page
+        disabled={currentPage === 1}
+        onClick={() => handlePageClick(currentPage - 1)}
+        style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
+        className='arrow__button__left'
+      >
+        {'< '}
+      </button>
+
+
+      <button
+        key={1}
+        onClick={() => handlePageClick(1)}
+        className={`pagination__button ${1 === currentPage ? 'pagination__button--active' : ''}`}
+      >
+        1
+      </button>
+
+      { pageNumbers[0] > 2 && <p>...</p> }
+
+      {
+        pageNumbers.map((pageNumber) => {
+          if (pageNumber === 1) return
+          if (pageNumber === pageCount) return
+
+          return (
+            <button
+              key={pageNumber}
+              onClick={() => handlePageClick(pageNumber)}
+              className={`pagination__button ${pageNumber === currentPage ? 'pagination__button--active' : ''}`}
+            >
+              { pageNumber }
+            </button>
+          )
+        })
+      }
+
+      { pageNumbers[pageNumbers.length - 1] < pageCount - 1 && <p>...</p> }
+
+      <button
+        key={pageCount}
+        onClick={() => handlePageClick(pageCount)}
+        className={`pagination__button ${pageCount === currentPage ? 'pagination__button--active' : ''}`}
+      >
+        {pageCount}
+      </button>
+
+
         <button
-          // Disable button if current page is the first page
-          disabled={currentPage === 1}
-          onClick={() => handlePageClick(currentPage - 1)}
-          style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
-          className='arrow__button__left'
-        >
-          {'< '}
-        </button>
-        {pages.map((pageNum) => (
-          <button
-            key={pageNum}
-            onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
-              }`}
-          >
-            {pageNum}
-          </button>
-        ))}
-         <button
-          // Disable button if current page is the last page
-          disabled={currentPage === pageCount}
-          onClick={() => handlePageClick(currentPage + 1)}
-          style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
-          className='arrow__button__right'
-        >
-          {' >'}
-        </button>
-      </section>
+        // Disable button if current page is the last page
+        disabled={currentPage === pageCount}
+        onClick={() => handlePageClick(currentPage + 1)}
+        style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
+        className='arrow__button__right'
+      >
+        {' >'}
+      </button>
     </div>
   );
 };
