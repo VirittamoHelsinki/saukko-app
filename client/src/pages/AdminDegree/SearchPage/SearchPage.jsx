@@ -5,27 +5,35 @@ import Searchbar from '../../../components/Searchbar/Searchbar';
 import withPaginatedDegrees from '../../../HOC/withPaginatedDegrees';
 import { CircularProgress } from '@mui/material';
 
-const DegreeList = ({ data }) => {
+const ChevronRightIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14" fill="none">
+    <path d="M6.00241 7L0.816406 2L2.37241 0.5L9.11641 7L2.37241 13.5L0.816406 12L6.00241 7Z" fill="black"/>
+  </svg>
+)
+
+const DegreeList = ({ degrees }) => {
   const navigate = useNavigate();
   const handleChooseDegree = async (degreeId) => {
     navigate(`${degreeId}`)
   }
 
   return (
-    <>
-      {data.map((degree, index) => (
-        <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
-          <h3>{degree.name.fi}</h3>
-          <div className='searchPage__container--list-item-bottom'>
-            <div>
+    <div className="searchPage__container--list">
+      {
+        degrees.map((degree, index) => (
+          <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
+            <h3>{degree.name.fi}</h3>
+            <div className='searchPage__container--list-item-bottom'>
               <p>Diaari: {degree.diaryNumber}</p>
+              <div className="space-fill"></div>
               <p>Koodi: {degree.eduCodeValue}</p>
+              <ChevronRightIcon />
             </div>
-            <li>&#8250;</li>
           </div>
-        </div>
-      ))}
-    </>
+        ))
+      }
+    
+    </div>
   );
 };
 
@@ -109,9 +117,7 @@ const SearchPage = ({ data, loading, page, setPage, totalPages, setSearchParam }
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
         {(data && !loading) ? (
           <>
-            <div className="searchPage__container--list">
-              <DegreeList data={data} />
-            </div>
+            <DegreeList degrees={data} />
             <PageButtons
               currentPage={page}
               pageCount={totalPages}
