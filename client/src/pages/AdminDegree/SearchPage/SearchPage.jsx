@@ -42,23 +42,14 @@ const DegreeList = ({ degrees }) => {
 const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   // Maximum number of numbered buttons to show at a time
   const maxButtons = 5;
-  
-  const a = {}
-  a[1] = 1
-  a[pageCount] = 1
 
   const start = Math.max(1, Math.min(pageCount - maxButtons + 1, currentPage - Math.floor(maxButtons / 2)))
   const end = start + maxButtons
-
-
-
-
 
   const pageNumbers = []
   for (let i = start; i < end; i++) {
     pageNumbers.push(i)
   }
-  console.log(pageNumbers)
 
   return (
     <div className='pagination'>
