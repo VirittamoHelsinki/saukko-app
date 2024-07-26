@@ -13,6 +13,12 @@ const ChevronRightIcon = () => (
   </svg>
 )
 
+const ChevronLeftIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M10.5 12L15.5 17L14 18.5L7.5 12L14 5.5L15.5 7L10.5 12Z" fill="#B3B3B3"/>
+  </svg>
+)
+
 const DegreeList = ({ degrees }) => {
   const navigate = useNavigate();
   const handleChooseDegree = async (degreeId) => {
@@ -58,17 +64,16 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         // Disable button if current page is the first page
         disabled={currentPage === 1}
         onClick={() => handlePageClick(currentPage - 1)}
-        style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
-        className='arrow__button__left'
+        className='pagination__button'
       >
-        {'< '}
+        <ChevronLeftIcon />
       </button>
 
 
       <button
         key={1}
         onClick={() => handlePageClick(1)}
-        className={`pagination__button ${1 === currentPage ? 'pagination__button--active' : ''}`}
+        className={`pagination__button ${1 === currentPage ? 'active' : ''}`}
       >
         1
       </button>
@@ -84,7 +89,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
             <button
               key={pageNumber}
               onClick={() => handlePageClick(pageNumber)}
-              className={`pagination__button ${pageNumber === currentPage ? 'pagination__button--active' : ''}`}
+              className={`pagination__button ${pageNumber === currentPage ? 'active' : ''}`}
             >
               { pageNumber }
             </button>
@@ -97,7 +102,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
       <button
         key={pageCount}
         onClick={() => handlePageClick(pageCount)}
-        className={`pagination__button ${pageCount === currentPage ? 'pagination__button--active' : ''}`}
+        className={`pagination__button ${pageCount === currentPage ? 'active' : ''}`}
       >
         {pageCount}
       </button>
@@ -107,10 +112,9 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         // Disable button if current page is the last page
         disabled={currentPage === pageCount}
         onClick={() => handlePageClick(currentPage + 1)}
-        style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
-        className='arrow__button__right'
+        className='pagination__button'
       >
-        {' >'}
+        <ChevronRightIcon />
       </button>
     </div>
   );

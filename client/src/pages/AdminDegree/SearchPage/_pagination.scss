@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
 
+
   width: 100%;
   gap: 12px;
 
@@ -13,23 +14,20 @@
     border: none;
     height: 40px;
     width: 40px;
-  }
+    font-weight: bold;
 
-  .pagination__button--active {
-    color: var(--saukko-main-white);
-    background: var(--saukko-main-black);
-  }
+    &.active {
+      color: var(--saukko-main-white);
+      background: var(--saukko-main-black);
+    }
 
-  .searchPage__container--list-pagination-arrows {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+    &:disabled {
+      cursor: not-allowed;
+    }
 
-    .arrow__button {
-      font-weight: 600;
-      background: none;
-      border: none;
+    &:not(:disabled):not(.active):hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      cursor: pointer;
     }
   }
 }
