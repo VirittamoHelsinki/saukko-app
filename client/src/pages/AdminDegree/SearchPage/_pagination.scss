@@ -1,0 +1,35 @@
+.pagination {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  gap: 12px;
+
+  .pagination__button {
+    background: var(--saukko-main-white);
+    border-radius: 50%;
+    border: none;
+    height: 40px;
+    width: 40px;
+  }
+
+  .pagination__button--active {
+    color: var(--saukko-main-white);
+    background: var(--saukko-main-black);
+  }
+
+  .searchPage__container--list-pagination-arrows {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .arrow__button {
+      font-weight: 600;
+      background: none;
+      border: none;
+    }
+  }
+}
