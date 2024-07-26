@@ -29,10 +29,9 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        max-height: 125px;
-        height: 125px;
-        padding: 12px;
+        gap: 1.3rem;
         cursor: pointer;
+        padding: 1.3rem;
 
         h3 {
           font-size: 16px;
@@ -40,22 +39,16 @@
 
         .searchPage__container--list-item-bottom {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
+          align-items: center;
           gap: 12px;
 
-          div {
-            display: flex;
-            justify-content: space-between;
+          .space-fill {
+            flex-grow: 2;
           }
 
           p {
             font-size: 12px;
-          }
-
-          li {
-            font-size: 18px;
-            font-weight: 600;
-            text-align: end;
           }
         }
 
