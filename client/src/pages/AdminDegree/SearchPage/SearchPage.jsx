@@ -9,13 +9,13 @@ import "./_pagination.scss"
 
 const ChevronRightIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14" fill="none">
-    <path d="M6.00241 7L0.816406 2L2.37241 0.5L9.11641 7L2.37241 13.5L0.816406 12L6.00241 7Z" fill="black"/>
+    <path d="M6.00241 7L0.816406 2L2.37241 0.5L9.11641 7L2.37241 13.5L0.816406 12L6.00241 7Z" fill="currentColor"/>
   </svg>
 )
 
 const ChevronLeftIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M10.5 12L15.5 17L14 18.5L7.5 12L14 5.5L15.5 7L10.5 12Z" fill="#B3B3B3"/>
+    <path d="M10.5 12L15.5 17L14 18.5L7.5 12L14 5.5L15.5 7L10.5 12Z" fill="currentColor"/>
   </svg>
 )
 
@@ -109,11 +109,11 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
 
 
         <button
-        // Disable button if current page is the last page
-        disabled={currentPage === pageCount}
-        onClick={() => handlePageClick(currentPage + 1)}
-        className='pagination__button'
-      >
+          // Disable button if current page is the last page
+          disabled={currentPage === pageCount}
+          onClick={() => handlePageClick(currentPage + 1)}
+          className='pagination__button'
+        >
         <ChevronRightIcon />
       </button>
     </div>
