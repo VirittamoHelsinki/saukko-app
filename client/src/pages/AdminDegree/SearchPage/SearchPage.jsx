@@ -50,7 +50,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   const maxButtons = 5;
 
   const start = Math.max(1, Math.min(pageCount - maxButtons + 1, currentPage - Math.floor(maxButtons / 2)))
-  const end = Math.max(start + maxButtons, pageCount)
+  const end = Math.min(start + maxButtons, pageCount)
 
   const pageNumbers = []
   for (let i = start; i < end; i++) {
