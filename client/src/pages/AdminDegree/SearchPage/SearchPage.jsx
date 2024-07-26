@@ -57,71 +57,79 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
     pageNumbers.push(i)
   }
 
-  console.log(pageNumbers);
-
+  
   return (
     <div className='pagination' style={{ marginTop: "50px", }}>
         {/* Render numbered buttons */}
-      <button
-        // Disable button if current page is the first page
-        disabled={currentPage === 1}
-        onClick={() => handlePageClick(currentPage - 1)}
-        className='pagination__button'
-      >
-        <ChevronLeftIcon />
-      </button>
 
-
-      <button
-        key={1}
-        onClick={() => handlePageClick(1)}
-        className={`pagination__button ${1 === currentPage ? 'active' : ''}`}
-      >
-        1
-      </button>
-
-      { pageNumbers[0] > 2 && <p>...</p> }
 
       {
-        pageNumbers.map((pageNumber) => {
-          if (pageNumber === 1) return
-          if (pageNumber === pageCount) return
-
-          return (
+        // If end == 0, there are no results
+        end > 0 ? (
+          <>
             <button
-              key={pageNumber}
-              onClick={() => handlePageClick(pageNumber)}
-              className={`pagination__button ${pageNumber === currentPage ? 'active' : ''}`}
+              // Disable button if current page is the first page
+              disabled={currentPage === 1}
+              onClick={() => handlePageClick(currentPage - 1)}
+              className='pagination__button'
             >
-              { pageNumber }
+              <ChevronLeftIcon />
             </button>
-          )
-        })
-      }
-
-      { pageNumbers[pageNumbers.length - 1] < pageCount - 1 && <p>...</p> }
-
-      {
-        pageCount > 1 && (
-          <button
-            key={pageCount}
-            onClick={() => handlePageClick(pageCount)}
-            className={`pagination__button ${pageCount === currentPage ? 'active' : ''}`}
-          >
-            {pageCount}
-          </button>
+            <button
+              key={1}
+              onClick={() => handlePageClick(1)}
+              className={`pagination__button ${1 === currentPage ? 'active' : ''}`}
+            >
+              1
+            </button>
+      
+            { pageNumbers[0] > 2 && <p>...</p> }
+      
+            {
+              pageNumbers.map((pageNumber) => {
+                if (pageNumber === 1) return
+                if (pageNumber === pageCount) return
+      
+                return (
+                  <button
+                    key={pageNumber}
+                    onClick={() => handlePageClick(pageNumber)}
+                    className={`pagination__button ${pageNumber === currentPage ? 'active' : ''}`}
+                  >
+                    { pageNumber }
+                  </button>
+                )
+              })
+            }
+      
+            { pageNumbers[pageNumbers.length - 1] < pageCount - 1 && <p>...</p> }
+      
+            {
+              pageCount > 1 && (
+                <button
+                  key={pageCount}
+                  onClick={() => handlePageClick(pageCount)}
+                  className={`pagination__button ${pageCount === currentPage ? 'active' : ''}`}
+                >
+                  {pageCount}
+                </button>
+              )
+            }
+            <button
+              // Disable button if current page is the last page
+              disabled={currentPage === pageCount}
+              onClick={() => handlePageClick(currentPage + 1)}
+              className='pagination__button'
+            >
+              <ChevronRightIcon />
+            </button>
+          </>
+        ) : (
+          <p>ei tuloksia</p>
         )
       }
 
 
-      <button
-        // Disable button if current page is the last page
-        disabled={currentPage === pageCount}
-        onClick={() => handlePageClick(currentPage + 1)}
-        className='pagination__button'
-      >
-        <ChevronRightIcon />
-      </button>
     </div>
   );
 };
