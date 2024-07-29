@@ -25,6 +25,8 @@ import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
 
 const Stepper = ({ activePage, totalPages, data }) => {
+  console.log(activePage, totalPages, data);
+
   const createSteppers = () => {
     const steppers = [];
 
@@ -58,22 +60,59 @@ const Stepper = ({ activePage, totalPages, data }) => {
     return steppers;
   };
 
+
+  const labels = [ "Tutkintotiedot", "Valitse tutkinnonosat", "Määritä tehtävät", "Yhteenveto" ]
+
+
+
   return (
-    <div className='stepper__wrapper'>
-      <div className='stepper__wrapper--numbers'>{createSteppers()}</div>
-      <div>
-        <div className='stepper__wrapper--text'>
-          {data.map((step, index) => (
-            <span
-              key={index}
-              className={`page-text ${activePage === index + 1 ? 'active' : ''}`}
-            >
-              {step.label}
-            </span>
-          ))}
+
+    <div clasName="new-stepper">
+      <div className="steps" style={{ gridTemplateColumns: 'repeat(4, 1fr)'}}>
+
+        <div className="step-container">
+          <div className="circle done">
+            <Icon icon="zondicons:checkmark" color="white"/>
+            {/* <span className="number">{ 1 }</span> */}
+          </div>
+          <span>Tutkintotiedot</span>
         </div>
+
+        <div className="step-container">
+          <div className="circle active">
+{/*             <Icon icon="zondicons:checkmark" color="white"/> */}
+            <span className="number active">{ 2 }</span>
+          </div>
+          <span>Valitse tutkinnonosat</span>
+        </div>
+
+        <div className="step-container">
+          <div className="circle">
+{/*             <Icon icon="zondicons:checkmark" color="white"/> */}
+            <span className="number">{ 3 }</span>
+          </div>
+          <span>Määritä tehtävät</span>
+        </div>
+        
+        <div className="step-container">
+          <div className="circle">
+{/*             <Icon icon="zondicons:checkmark" color="white"/> */}
+            <span className="number">{ 4 }</span>
+          </div>
+          <span>Yhteenveto</span>
+        </div>
+
+
       </div>
+
+ {/*      <div className="text" style={{ gridTemplateColumns: `0.5fr auto 1fr auto 1fr auto 1fr auto 0.5fr` }}>
+        {
+          labels.map((text, i) => <span style={{ gridColumn: `${i * 2 + 2}` }}>{ "hi" }</span>)
+        }
+      </div> */}
+
     </div>
+
   );
 };
 
