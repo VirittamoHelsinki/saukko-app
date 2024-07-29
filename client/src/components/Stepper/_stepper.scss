@@ -1,7 +1,9 @@
 .steps {
   display: grid;
   place-items: center;
+  gap: 6px;
   margin: 0 20px;
+  z-index: 2;
 
   .step-container {
     width: 100%;
@@ -12,7 +14,13 @@
     align-items: center;
     gap: 10px;
     text-align: center;
-    position: relative;  
+    position: relative;
+
+    & > span {
+      font-weight: 500;
+      word-break: break-word;
+      hyphens: auto;
+    }
     
     &:not(:last-child) {
 
@@ -22,12 +30,12 @@
         height: 2px;
         width: 100%;
         left: 50%;
-        background-color: var(--saukko-light-grey);
+        background-color: var(--saukko-light-grey) !important;
         z-index: -1;
       }
 
       .circle.done::before {
-        background-color: var(--link-blue);
+        background-color: var(--link-blue) !important;
       }
     }
 
@@ -35,13 +43,11 @@
       display: grid;
       place-items: center;
 
-
       background-color: white;
       width: 32px;
       height: 32px;
       border-radius: 9999px;
       border: 2px solid var(--saukko-light-grey);
-      
       
       &.active {
         border: 4px solid var(--link-blue);
@@ -67,24 +73,5 @@
         }
       }
     }
-  }
-  
-  .line {
-    height: 2px;
-    width: 100%;
-    background-color: var(--saukko-light-grey);
-
-    &.active {
-      background-color: var(--link-blue);
-    }
-  }
-}
-
-.text {
-  display: grid;
-
-  span {
-    border: 1px solid red;
-    width: 64px;
   }
 }
