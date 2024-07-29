@@ -38,7 +38,7 @@ function DegreeUnits({ degree }) {
 
   // Pagination logic
   const [page, setPage] = useState(1);
-  const unitsPerPage = 4;
+  const unitsPerPage = 5;
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -76,18 +76,23 @@ function DegreeUnits({ degree }) {
           totalPages={4}
           data={stepperData}
         />
+
         <h1>{degree ? degree?.name.fi : degreeName}</h1>
 
         <div className='degreeUnits__container--units'>
-          {currentUnits
-            ? currentUnits.map((unit) => (
-              <SelectUnit
-                key={unit._id}
-                unit={unit}
-                allUnits={degree.units}
-              />
-            ))
-            : 'ei dataa APIsta'}
+          {
+            currentUnits
+            ? (
+              currentUnits.map((unit) => (
+                <SelectUnit
+                  key={unit._id}
+                  unit={unit}
+                  allUnits={degree.units}
+                />
+              ))
+            )
+            : 'ei dataa APIsta'
+          }
         </div>
 
         <Pagination

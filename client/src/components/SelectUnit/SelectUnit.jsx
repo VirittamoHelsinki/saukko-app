@@ -23,13 +23,11 @@ function SelectUnit({ unit, allUnits }) {
   return (
     <div
       key={unit._id}
-      className={`selectUnit__container--units-unit ${checkedUnits.includes(unit) && 'checked'
-        }`}
-        onClick={handleCheckboxChange}
+      className={`selectUnit__container--units-unit ${checkedUnits.includes(unit) ? 'checked' : ''}`}
+      onClick={handleCheckboxChange}
     >
       <div
-        className={`selectUnit__container--units-unit-checkbox ${checkedUnits.includes(unit) && 'checked'
-          }`}
+        className={`selectUnit__container--units-unit-checkbox ${checkedUnits.includes(unit) ? 'checked' : ''}`}
         // onClick={handleCheckboxChange}
       >
         {checkedUnits.includes(unit) && <Icon icon='mdi:tick' color='white' />}
