@@ -45,7 +45,7 @@ const DegreeList = ({ degrees }) => {
   );
 };
 
-const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
+const PaginationButtons = ({ currentPage, pageCount, handlePageClick }) => {
   // Maximum number of numbered buttons to show at a time
   const maxButtons = 5;
 
@@ -160,7 +160,7 @@ const SearchPage = ({ data, loading, page, setPage, totalPages, setSearchParam }
         {(data && !loading) ? (
           <>
             <DegreeList degrees={data} />
-            <PageButtons
+            <PaginationButtons
               currentPage={page}
               pageCount={totalPages}
               handlePageClick={handlePageClick}
