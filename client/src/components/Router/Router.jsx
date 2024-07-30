@@ -47,6 +47,8 @@ const SetPassword = React.lazy(() => import('../../pages/setPassword/SetPassword
 const RegisterUser = React.lazy(() => import('../../pages/RegisterUser/RegisterUser'));
 const CompanySummary = React.lazy(() => import('../../pages/CompanyInfo/CompanySummary/CompanySummary'));
 
+import AddDegreeFlowPage from '../../pages/AdminDegree/AddDegreeFlow/AddDegreeFlowPage';
+
 const Router = () => {
   let location = useLocation();
   const path = location.pathname;
@@ -78,6 +80,7 @@ const Router = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes key={location.pathname} location={location}>
           <Route path='/' element={<PageLayout />}>
+          
             {/* Placeholders for development */}
             <Route path='/test-page' element={<TestPage />} />
             <Route path="/verify-email/:token" element={<EmailVerification />} />
@@ -114,6 +117,9 @@ const Router = () => {
             {loggedIn && currentUser.role === 'teacher' && (
               <>
                 <Route path='/admin-menu' element={<AdminMenu />} />
+
+                {/* New Degree Flow */}
+                <Route path="/deg" element={<AddDegreeFlowPage />} />
 
                 {/* Degree flow */}
                 <Route path='/degrees/add' element={<AddDegree />} />

@@ -98,5 +98,3 @@ const SearchPage = ({ data, loading, page, setPage, totalPages, setSearchParam }
 };
 
 export default withPaginatedDegrees(SearchPage);
-
-s
