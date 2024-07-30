@@ -23,7 +23,6 @@
     }
     
     &:not(:last-child) {
-
       .circle::before {
         content: '';
         position: absolute;
