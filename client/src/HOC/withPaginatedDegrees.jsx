@@ -40,6 +40,7 @@ const withPaginatedDegrees = (Component) => {
       if (initialDataFetched.current === false) {
         fetchPaginatedDegrees();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Separate effects for page change and searchParams change
@@ -48,6 +49,7 @@ const withPaginatedDegrees = (Component) => {
       if (initialDataFetched.current) {
         fetchPaginatedDegrees();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ page ]);
 
     useEffect(() => {
@@ -60,6 +62,7 @@ const withPaginatedDegrees = (Component) => {
       }
 
       return () => clearTimeout(timer)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ searchParam ]);
 
     if (error) {

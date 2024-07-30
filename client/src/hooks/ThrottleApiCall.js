@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 /*
-
+    currently not used
     state: <"loading"|"done"|"error">
 
 */
@@ -36,6 +36,7 @@ const useThrottleApiCallHook = (apiFn, parameters, delay = 500) => {
       clearTimeout(timer);
       ignore = true;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ...parameters ]);
 
   return [ results, state ];
