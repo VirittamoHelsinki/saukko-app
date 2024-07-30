@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import eperusteet from '../api/eperusteet';
 import { useExternalApiContext } from "../store/context/ExternalApiContext";
 
