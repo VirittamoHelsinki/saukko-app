@@ -7,6 +7,7 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Button from '../../../components/Button/Button';
+import PaginationButtons from '../../../components/PaginationButtons';
 
 
 // controls how many degrees are shown at once and renders them
@@ -79,7 +80,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
             {pageNum}
           </button>
         ))}
-         <button
+        <button
           // Disable button if current page is the last page
           disabled={currentPage === pageCount}
           onClick={() => handlePageClick(currentPage + 1)}
@@ -161,7 +162,7 @@ const AddDegree = () => {
             currentPage={currentPage}
           />
         </div>
-        <PageButtons
+        <PaginationButtons
           currentPage={currentPage}
           pageCount={pageCount}
           handlePageClick={handlePageClick}

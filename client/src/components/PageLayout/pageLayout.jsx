@@ -120,7 +120,7 @@ const PageLayout = () => {
           <header>
             {showBackButton && (
               <button onClick={() => navigate(-1)}>
-                <Icon icon="typcn:arrow-left" style={{ color: logoColor }} />
+                <Icon icon="typcn:arrow-left" style={{ color: logoColor }} /> WHAT IS THIS
               </button>
             )}
             <div className={styles.buttonContainer} ref={menuRef}>
