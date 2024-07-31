@@ -13,6 +13,7 @@ const ChevronLeftIcon = () => (
 )
 
 const PaginationButtons = ({ currentPage, pageCount, handlePageClick }) => {
+  console.log("pagination buttons");
   // Maximum number of numbered buttons to show at a time
   const maxButtons = 5;
 
