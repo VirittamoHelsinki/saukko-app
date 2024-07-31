@@ -80,6 +80,11 @@ function EditUnits({ degree }) {
     // Add the new unit to the editedUnits array
     setEditedUnits((prevEditedUnits) => [...prevEditedUnits, newUnit]);
   };
+
+  const handleDeleteUnit = (id) => {
+    // Filter our the specified id
+    setEditedUnits((prevEditedUnits) => prevEditedUnits.filter((unit) => unit._id !== id));
+  }
   
   const handleSubmit = () => {
     // Filter out units with an empty 'name.fi'
@@ -88,6 +93,7 @@ function EditUnits({ degree }) {
     navigate(`/degrees/${params.degreeId}/units/tasks`)
   };
  
+  console.log(editedUnits);
 
   return (
     <div className='editDegree__wrapper'>
@@ -117,6 +123,12 @@ function EditUnits({ degree }) {
           </div>
         )}
 
+        {
+          !editMode && editedUnits.length === 0 && (
+            <p>Ei valittuja tutkinnonosia</p>
+          )
+        }
+
         {/* Edit mode */}
         {editMode && (
           <div id='unitsEditable' className='units-editable'>
@@ -129,7 +141,10 @@ function EditUnits({ degree }) {
                     onChange={(e) => handleInputChange(unit._id, e)}
                   >
                   </input>
-                  <Icon icon="lucide:circle-x" />
+                  <Icon
+                    icon="lucide:circle-x"
+                    onClick={() => handleDeleteUnit(unit._id)}
+                  />
                 </div>
               ))
             }
