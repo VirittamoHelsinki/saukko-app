@@ -8,6 +8,7 @@ import { Icon } from '@iconify/react';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
 
+
 function EditUnits({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -121,11 +122,15 @@ function EditUnits({ degree }) {
           <div id='unitsEditable' className='units-editable'>
             {editedUnits.length > 0 &&
               editedUnits.map(unit => (
-                <input 
-                  key={unit._id} 
-                  defaultValue={unit.name.fi}
-                  onChange={(e) => handleInputChange(unit._id, e)}
-                />
+                <div className="input-wrapper">
+                  <input 
+                    key={unit._id} 
+                    defaultValue={unit.name.fi}
+                    onChange={(e) => handleInputChange(unit._id, e)}
+                  >
+                  </input>
+                  <Icon icon="lucide:circle-x" />
+                </div>
               ))
             }
             <button id='addUnitButton' className='add-unit-button' onClick={handleAddUnit}>+ Lisää tutkinnonosa</button>
