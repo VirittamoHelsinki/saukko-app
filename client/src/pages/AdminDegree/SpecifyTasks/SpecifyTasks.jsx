@@ -99,7 +99,7 @@ function SpecifyTasks({ degree }) {
     setIsCriteriaModalOpen(false);
   };
 
-  const handlePenClick = () => {
+  const handleEditButtonClick = () => {
     setIsCriteriaModalOpen(true);
   };
 
@@ -221,14 +221,11 @@ function SpecifyTasks({ degree }) {
                       <span className='title'>
                         {index + 1}. {field.title}{' '}
                       </span>
-                      <span
-                        onClick={() =>
-                          handlePenClick(checkedUnits[activeStep]._id)
-                        }
-                      >
-                        {' '}
-                        <Icon icon='uil:pen' color='#0000bf' />
-                      </span>
+                      <Icon
+                        icon='uil:pen'
+                        color='#0000bf'
+                        onClick={() => handleEditButtonClick(checkedUnits[activeStep]._id)}
+                      />
                     </li>
                   )
                 )}
