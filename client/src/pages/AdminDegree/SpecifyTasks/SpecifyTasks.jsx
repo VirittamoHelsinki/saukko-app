@@ -31,6 +31,7 @@ function SpecifyTasks({ degree }) {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Initialize state
+  const [isEditing, setIsEditing] = useState(false);
   const [assessments, setAssessments] = useState([]);
   const [activeStep, setActiveStep] = useState(0); // Index of the selected unit
   const [savedDataCriteria, setSavedDataCriteria] = useState([]);
@@ -96,10 +97,12 @@ function SpecifyTasks({ degree }) {
   };
 
   const handleCloseCriteriaModal = () => {
+    setIsEditing(false)
     setIsCriteriaModalOpen(false);
   };
 
   const handleEditButtonClick = () => {
+    setIsEditing(true)
     setIsCriteriaModalOpen(true);
   };
 
@@ -131,6 +134,8 @@ function SpecifyTasks({ degree }) {
 
     navigate(`/degrees/${params.degreeId}/summary`);
   };
+
+  console.log(savedDataCriteria);
 
   return (
     <div className='specify-tasks__wrapper'>
@@ -207,16 +212,31 @@ function SpecifyTasks({ degree }) {
                 {checkedUnits[activeStep]?.name?.fi}
               </h3>
               
-              <RequirementsAndCriteriaModal
-                open={isCriteriaModalOpen}
-                onClose={handleCloseCriteriaModal}
-                title='Ammattitaitovaatimuksen tiedot'
-                modalUnitName={checkedUnits[activeStep]?.name.fi}
-                requirementsTitle='Ammattitaitovaatimuksen nimi'
-                criteria='Kriteerit'
-                hideCancelButton
-                onSave={modalHandleSave}
-              />
+              {
+                isEditing ? (
+                  <RequirementsAndCriteriaModal
+                    open={isCriteriaModalOpen}
+                    onClose={handleCloseCriteriaModal}
+                    title='Ammattitaitovaatimuksen tiedot'
+                    modalUnitName={checkedUnits[activeStep]?.name.fi}
+                    requirementsTitle='Ammattitaitovaatimuksen nimi'
+                    criteria='Kriteerit'
+                    onSave={modalHandleSave}
+                    hideCancelButton
+                  />
+                ) : (
+                  <RequirementsAndCriteriaModal
+                    open={isCriteriaModalOpen}
+                    onClose={handleCloseCriteriaModal}
+                    title='Ammattitaitovaatimuksen tiedot'
+                    modalUnitName={checkedUnits[activeStep]?.name.fi}
+                    requirementsTitle='Ammattitaitovaatimuksen nimi'
+                    criteria='Kriteerit'
+                    onSave={modalHandleSave}
+                    hideCancelButton
+                  />
+                )
+              }
 
               <div>
                 {savedDataCriteria[checkedUnits[activeStep]?._id]?.map(
@@ -228,7 +248,7 @@ function SpecifyTasks({ degree }) {
                       <Icon
                         icon='uil:pen'
                         color='#0000bf'
-                        onClick={() => handleEditButtonClick(checkedUnits[activeStep]._id)}
+                        onClick={() => handleEditButtonClick(true)}
                       />
                     </li>
                   )
