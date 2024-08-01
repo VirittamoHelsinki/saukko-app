@@ -121,10 +121,6 @@ export const evaluationCompleted = (evaluation: any): boolean => {
 
 export const sendContactRequestEmails = (selectedValues: ISelectedValues, userRole: UserRole, requestContactParams: ISendEvaluationFormRequestContact, emails: IEmails) => {
 
-  console.log('selectedValues: ', selectedValues)
-  console.log('userRole: ', userRole)
-  console.log('requestContactParams: ', requestContactParams)
-
   const emailsSendTo: Array<string> = []
 
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'customer') {
