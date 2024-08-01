@@ -214,7 +214,7 @@ function SpecifyTasks({ degree }) {
                 modalUnitName={checkedUnits[activeStep]?.name.fi}
                 requirementsTitle='Ammattitaitovaatimuksen nimi'
                 criteria='Kriteerit'
-                hideCancelButton={true}
+                hideCancelButton
                 onSave={modalHandleSave}
               />
 
@@ -223,7 +223,7 @@ function SpecifyTasks({ degree }) {
                   (field, index) => (
                     <li key={index} className='list_group_skills_titles'>
                       <span className='title'>
-                        {index + 1}. {field.title}{' '}
+                        {index + 1}. {field.title}                
                       </span>
                       <Icon
                         icon='uil:pen'

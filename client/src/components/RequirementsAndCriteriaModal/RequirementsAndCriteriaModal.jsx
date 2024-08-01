@@ -140,10 +140,10 @@ export default function RequirementsAndCriteriaModal({
   };
 
   const handleSubmitCancelButton = () => {
-    onSave(inputValueTitle, inputValueCriteria);
+    /* onSave(inputValueTitle, inputValueCriteria); */
     setInputValueTitle('');
     setInputValueCriteria('');
-    // handleClose();
+    handleClose();
   };
   const handleSubmit = () => {
     console.log('Submitted Title:', inputValueTitle);
