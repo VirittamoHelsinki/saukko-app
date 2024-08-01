@@ -43,7 +43,10 @@ function SpecifyTasks({ degree }) {
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   useEffect(() => {
-    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
+    setSiteTitle("Suoritusten hallinnointi")
+    setSubHeading("Lisää uusi tutkinto")
+    setHeading("Tutkintojen hallinta")
+    
     // Initialize saved data object
     const initialData = {};
     checkedUnits.forEach((unit) => {
@@ -135,7 +138,6 @@ function SpecifyTasks({ degree }) {
     navigate(`/degrees/${params.degreeId}/summary`);
   };
 
-  console.log(savedDataCriteria);
 
   return (
     <div className='specify-tasks__wrapper'>
