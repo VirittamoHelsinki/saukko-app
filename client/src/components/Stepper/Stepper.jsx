@@ -40,8 +40,6 @@ const Stepper = ({ activePage, totalPages, data }) => {
             (isDone ? "done" : ""),
           ].join(" ")
 
-          console.log(page, isActive, isDone, circleClassName);
-
           return (
             <div className="step-container">
               <div className={`circle ${ circleClassName }`}>
