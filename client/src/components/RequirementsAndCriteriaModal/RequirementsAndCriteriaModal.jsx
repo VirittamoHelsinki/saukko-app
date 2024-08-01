@@ -68,12 +68,66 @@ export default function RequirementsAndCriteriaModal(props) {
     }
   };
 
-  const handleKeyDown = (e) => {
+/*   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       setInputValueCriteria((prevValue) => prevValue + '\n• ');
     }
-  };
+  }; */
+
+  const handleKeyDown = (event) => {
+    const key = event.key
+    
+    if (key === "Enter") {
+      event.preventDefault()
+      const { selectionStart, selectionEnd } = event.target
+      
+      setInputValueCriteria((oldValue => {
+        const start = oldValue.slice(0, selectionStart)
+        const end = oldValue.slice(selectionEnd)
+
+        return `${start}\n• ${end}`
+      }))
+
+      setTimeout(() => { 
+        event.target.setSelectionRange(selectionStart + 3, selectionStart + 3)
+      }, 0)
+
+      return
+    }
+
+    if (key === "Backspace") {
+      return
+    }
+  }
+
+  const onPaste = (event) => {
+    event.preventDefault()
+    const { selectionStart, selectionEnd } = event.target
+
+    // Get pasted data via clipboard API
+    const clipboardData = event.clipboardData || window.clipboardData;
+    const pastedData = clipboardData.getData('Text');
+
+
+  
+    setInputValueCriteria((oldValue => {
+      const start = oldValue.slice(0, selectionStart)
+      const end = oldValue.slice(selectionEnd)
+
+      const formattedData = `${start}${pastedData}${end}`
+        .split("\n")
+        .map((line) => line.startsWith("• ") ? line : `• ${line}`)
+        .join("\n")
+
+      return formattedData
+    }))
+
+    setTimeout(() => { 
+      event.target.setSelectionRange(selectionStart, selectionStart)
+    }, 0)
+
+  }
 
   const handleClose = () => {
     props.onClose();
@@ -161,7 +215,6 @@ export default function RequirementsAndCriteriaModal(props) {
                 value={inputValueTitle}
                 onChange={(e) => handleInputChange(e, 1)}
                 id='outlined-multiline-static'
-                backgroundColor='#FFFFFF'
                 border='black 2px solid'
                 fontSize='10px'
                 multiline
@@ -203,8 +256,9 @@ export default function RequirementsAndCriteriaModal(props) {
               <TextField
                 value={inputValueCriteria}
                 onChange={(e) => handleInputChange(e, 2)}
-                onClick={handleClick}
                 onKeyDown={handleKeyDown}
+                onPaste={onPaste}
+                onClick={handleClick}
                 id='outlined-multiline-static'
                 rows={8}
                 cols={25}

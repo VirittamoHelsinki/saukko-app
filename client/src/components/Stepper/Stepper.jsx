@@ -21,13 +21,10 @@
   />
 */
 
-import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
 
 const Stepper = ({ activePage, totalPages, data }) => {
-  const navigate = useNavigate();
-
   const createSteppers = () => {
     const steppers = [];
 
@@ -69,8 +66,7 @@ const Stepper = ({ activePage, totalPages, data }) => {
           {data.map((step, index) => (
             <span
               key={index}
-              className={`page-text ${activePage >= index + 1 ? 'active' : ''}`}
-              onClick={() => navigate(step.url)}
+              className={`page-text ${activePage === index + 1 ? 'active' : ''}`}
             >
               {step.label}
             </span>
