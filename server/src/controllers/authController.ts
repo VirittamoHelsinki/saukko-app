@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { Request } from '../types/requestType';
 import userModel from '../models/userModel';
+import evaluationModel from '../models/evaluatuionModel'
 import { IJwtPayload, useCase } from '../types/jwtPayload';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
@@ -386,6 +387,23 @@ const getCurrentUser = (req: Request, res: Response) => {
   res.status(401).json({ errorMessage: 'Unauthorized' })
 }
 
+
+const deleteUserById = async (req: Request, res: Response) => {
+  try {
+    if (req.params.role === 'customer') {
+      //TODO: find evaluation by customerId
+      const evaluation = await evaluatuionModel.findById(req.params.id);
+      const user = await userModel.findByIdAndDelete(req.params.id);
+      if (!user) {
+        return res.status(404).send();
+      }
+      res.send(user);
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
 export default {
   registerUser,
   forgotPassword,
@@ -398,4 +416,5 @@ export default {
   resendEmailVerificationLink,
   getCurrentUser,
   requestPasswordChangeTokenAsUser,
+  deleteUserById,
 }

@@ -12,6 +12,8 @@ router.get("/get-current-user", authController.getCurrentUser);
 router.get("/verify-email", authController.verifyEmail);
 router.get("/resend-email-verification", authController.resendEmailVerificationLink)
 
+router.delete("/user/:id", authController.deleteUserById);
+
 router.post("/register-user", authController.registerUser)
 
 // Enable auth middleware for specific endpoints
