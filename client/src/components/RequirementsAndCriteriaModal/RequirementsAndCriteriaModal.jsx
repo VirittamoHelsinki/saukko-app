@@ -44,10 +44,23 @@ function CustomDialogTitle(props) {
   );
 }
 
-export default function RequirementsAndCriteriaModal(props) {
-  // let bgColor = '#E5F6FD';
-  let bgColor = '#E5F6FD';
-  let color = '#0288D1';
+export default function RequirementsAndCriteriaModal({
+  open,
+  onClose,
+  title,
+  modalUnitName,
+  requirementsTitle,
+  criteria,
+  hideCancelButton,
+  onSave,
+  body,
+  hideRequirementsField,
+  hideCriteriaField,
+  hideSaveButton,
+}) {
+  const bgColor = '#E5F6FD';
+  const color = '#0288D1';
+  
   const [inputValueTitle, setInputValueTitle] = useState('');
   const [inputValueCriteria, setInputValueCriteria] = useState('');
 
@@ -67,13 +80,6 @@ export default function RequirementsAndCriteriaModal(props) {
       setInputValueCriteria('• '); // Insert a bullet point
     }
   };
-
-/*   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      setInputValueCriteria((prevValue) => prevValue + '\n• ');
-    }
-  }; */
 
   const handleKeyDown = (event) => {
     const key = event.key
@@ -130,11 +136,11 @@ export default function RequirementsAndCriteriaModal(props) {
   }
 
   const handleClose = () => {
-    props.onClose();
+    onClose();
   };
 
   const handleSubmitCancelButton = () => {
-    props.onSave(inputValueTitle, inputValueCriteria);
+    onSave(inputValueTitle, inputValueCriteria);
     setInputValueTitle('');
     setInputValueCriteria('');
     // handleClose();
@@ -142,7 +148,7 @@ export default function RequirementsAndCriteriaModal(props) {
   const handleSubmit = () => {
     console.log('Submitted Title:', inputValueTitle);
     console.log('Submitted criteria:', inputValueCriteria);
-    props.onSave(inputValueTitle, inputValueCriteria);
+    onSave(inputValueTitle, inputValueCriteria);
     setInputValueTitle('');
     setInputValueCriteria('');
     handleClose();
@@ -150,7 +156,7 @@ export default function RequirementsAndCriteriaModal(props) {
 
   return (
     <CustomDialog
-      open={props.open}
+      open={open}
       onClose={handleClose}
       aria-labelledby='customized-dialog-title'
       fullWidth
@@ -185,11 +191,11 @@ export default function RequirementsAndCriteriaModal(props) {
         <CancelOutlinedIcon />
       </IconButton>
       <CustomDialogTitle id='customized-dialog-title'>
-        {props.title}
+        {title}
       </CustomDialogTitle>
       <DialogContent>
         <Box sx={{ color: 'black' }}>
-          {props.body}
+          {body}
           <Typography
             gutterBottom
             sx={{
@@ -197,9 +203,9 @@ export default function RequirementsAndCriteriaModal(props) {
               fontWeight: 'bold',
             }}
           >
-            {props.modalUnitName}
+            {modalUnitName}
           </Typography>
-          {!props.hideRequirementsField && (
+          {!hideRequirementsField && (
             <>
               <Typography
                 gutterBottom
@@ -209,7 +215,7 @@ export default function RequirementsAndCriteriaModal(props) {
                   marginTop: '10px',
                 }}
               >
-                {props.requirementsTitle}
+                {requirementsTitle}
               </Typography>
               <TextField
                 value={inputValueTitle}
@@ -241,7 +247,7 @@ export default function RequirementsAndCriteriaModal(props) {
               ></TextField>
             </>
           )}
-          {!props.hideCriteriaField && (
+          {!hideCriteriaField && (
             <>
               <Typography
                 gutterBottom
@@ -251,7 +257,7 @@ export default function RequirementsAndCriteriaModal(props) {
                   marginTop: '10px',
                 }}
               >
-                {props.criteria}
+                {criteria}
               </Typography>
               <TextField
                 value={inputValueCriteria}
@@ -303,7 +309,7 @@ export default function RequirementsAndCriteriaModal(props) {
               // marginBottom: '20px',
             }}
           >
-            {!props.hideCancelButton && (
+            {!hideCancelButton && (
               <Button
                 onClick={handleSubmitCancelButton}
                 sx={{
@@ -320,7 +326,7 @@ export default function RequirementsAndCriteriaModal(props) {
                 Peruuta
               </Button>
             )}
-            {!props.hideSaveButton && (
+            {!hideSaveButton && (
               <Button
                 onClick={handleSubmit}
                 sx={{

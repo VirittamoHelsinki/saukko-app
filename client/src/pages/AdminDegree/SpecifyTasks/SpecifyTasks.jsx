@@ -103,6 +103,23 @@ function SpecifyTasks({ degree }) {
     setIsCriteriaModalOpen(true);
   };
 
+  const modalHandleSave = (title, criteria) => {
+    // Check if user actually has checked units
+    if (!checkedUnits[activeStep]) {
+      return;
+    }
+
+    setAssessments((prevAssessments) => [
+      ...prevAssessments,
+      {
+        unitId: checkedUnits[activeStep]._id, // error
+        name: title,
+        criteria: criteria,
+      },
+    ]);
+    handleSave(title, criteria);
+  }
+
   // Form submission handler
   const handleSubmit = () => {
     const flattenedAssessments = assessments.flat();
@@ -189,6 +206,7 @@ function SpecifyTasks({ degree }) {
               <h3 className='unit-guidance'>
                 {checkedUnits[activeStep]?.name?.fi}
               </h3>
+              
               <RequirementsAndCriteriaModal
                 open={isCriteriaModalOpen}
                 onClose={handleCloseCriteriaModal}
@@ -197,23 +215,9 @@ function SpecifyTasks({ degree }) {
                 requirementsTitle='Ammattitaitovaatimuksen nimi'
                 criteria='Kriteerit'
                 hideCancelButton={true}
-                onSave={(title, criteria) => {
-                  // Check if user actually has checked units
-                  if (!checkedUnits[activeStep]) {
-                    return;
-                  }
-
-                  setAssessments((prevAssessments) => [
-                    ...prevAssessments,
-                    {
-                      unitId: checkedUnits[activeStep]._id, // error
-                      name: title,
-                      criteria: criteria,
-                    },
-                  ]);
-                  handleSave(title, criteria);
-                }}
+                onSave={modalHandleSave}
               />
+
               <div>
                 {savedDataCriteria[checkedUnits[activeStep]?._id]?.map(
                   (field, index) => (
