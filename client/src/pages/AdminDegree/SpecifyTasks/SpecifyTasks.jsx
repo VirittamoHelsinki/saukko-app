@@ -34,7 +34,6 @@ function SpecifyTasks({ degree }) {
   const [isEditing, setIsEditing] = useState(false);
   const [assessments, setAssessments] = useState([]);
   const [activeStep, setActiveStep] = useState(0); // Index of the selected unit
-  const [savedDataCriteria, setSavedDataCriteria] = useState([]);
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
@@ -46,20 +45,7 @@ function SpecifyTasks({ degree }) {
     setSiteTitle("Suoritusten hallinnointi")
     setSubHeading("Lisää uusi tutkinto")
     setHeading("Tutkintojen hallinta")
-    
-    // Initialize saved data object
-    const initialData = {};
-    checkedUnits.forEach((unit) => {
-      initialData[unit._id] = [];
-    });
-    setSavedDataCriteria(initialData);
   }, [checkedUnits, setHeading, setSiteTitle, setSubHeading]);
-
-  const handleSave = (title, criteria) => {
-    const newData = { ...savedDataCriteria };
-    newData[checkedUnits[activeStep]._id].push({ title, criteria }); // Error
-    setSavedDataCriteria(newData);
-  };
 
   // Labels and urls for stepper
   const stepperData = [
@@ -123,7 +109,6 @@ function SpecifyTasks({ degree }) {
         criteria: criteria,
       },
     ]);
-    handleSave(title, criteria);
   }
 
   // Form submission handler
@@ -241,20 +226,23 @@ function SpecifyTasks({ degree }) {
               }
 
               <div>
-                {savedDataCriteria[checkedUnits[activeStep]?._id]?.map(
-                  (field, index) => (
-                    <li key={index} className='list_group_skills_titles'>
-                      <span className='title'>
-                        {index + 1}. {field.title}                
-                      </span>
-                      <Icon
-                        icon='uil:pen'
-                        color='#0000bf'
-                        onClick={() => handleEditButtonClick(true)}
-                      />
-                    </li>
+                {
+                  assessments
+                    .filter((assessment) => assessment.unitId === checkedUnits[activeStep]?._id)
+                    .map((field, index) => (
+                      <li key={index} className='list_group_skills_titles'>
+                        <span className='title'>
+                          {index + 1}. {field.name}                
+                        </span>
+                        <Icon
+                          icon='uil:pen'
+                          color='#0000bf'
+                          onClick={() => handleEditButtonClick(true)}
+                        />
+                      </li>
+                    )
                   )
-                )}
+                }
               </div>
               <Button
                 id='addCriteriaButton'
