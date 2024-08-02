@@ -244,10 +244,10 @@ function SpecifyTasks({ degree }) {
                 {
                   assessments
                     .filter((assessment) => assessment.unitId === checkedUnits[activeStep]?._id)
-                    .map((field, index) => (
+                    .map((assessment, index) => (
                       <li key={index} className='list_group_skills_titles'>
                         <span className='title'>
-                          {index + 1}. {field.name}                
+                          {index + 1}. {assessment.name}                
                         </span>
                         <Icon
                           icon='uil:pen'
