@@ -293,8 +293,6 @@ const CompanyInfo = () => {
           <form onSubmit={handleForward}>
             <div className='ohjaajat-info'>
               {supervisors
-                .slice()
-                .reverse()
                 .map((ohjaaja, index) => (
                   <div
                     key={index}
@@ -359,7 +357,9 @@ const CompanyInfo = () => {
                   </div>
                 ))}
             </div>
-            <div className='ohjaja'>
+
+
+            <div>
               <label
                 className='workplace-form-label'
                 htmlFor='first-name-input'
@@ -418,6 +418,8 @@ const CompanyInfo = () => {
                 onClick={addSupervisors}
               />
             </div>
+
+
           </form>
         </Accordion>
       </div>
