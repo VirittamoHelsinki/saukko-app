@@ -16,6 +16,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -354,6 +355,18 @@ const CompanyInfo = () => {
                         readOnly
                       />
                     </div>
+
+                    <div className="delete-edit-buttons">
+                      <button className="button--secondary" onClick={() => {}}>
+                        <Icon icon={'lucide:trash'} color="red" />
+                        <span>Poista</span>
+                      </button>
+                      <button className="button--primary" onClick={() => {}}>
+                        <Icon icon={'lucide:plus'} />
+                        <span>Muokkaa</span>
+                      </button>
+                    </div>
+
                   </div>
                 ))}
             </div>
