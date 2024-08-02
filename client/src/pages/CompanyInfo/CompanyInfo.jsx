@@ -45,7 +45,9 @@ const CompanyInfo = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
-    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikka"), setHeading("Työpaikkojen hallinta")
+    setSiteTitle("Lisää työpaikka")
+    setSubHeading("Lisää uusi työpaikka")
+    setHeading("Työpaikkojen hallinta")
   }, [setSiteTitle, setSubHeading, setHeading]);
 
   const stepperData = [
@@ -254,8 +256,7 @@ const CompanyInfo = () => {
                 ></input>
               </div>
               <label htmlFor='department' className='workplace-form-label'>
-                {' '}
-                Yksikkö (ei pakollinen){' '}
+                Yksikkö (ei pakollinen)
               </label>
               <div className='text_input businessInformation'>
                 <input
