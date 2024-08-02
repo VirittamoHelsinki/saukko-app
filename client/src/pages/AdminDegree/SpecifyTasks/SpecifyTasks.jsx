@@ -23,6 +23,7 @@ import { Icon } from '@iconify/react';
 import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
+import RequirementsAndCriteriaEditingModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaEditingModal';
 
 function SpecifyTasks({ degree }) {
   const navigate = useNavigate();
@@ -111,18 +112,33 @@ function SpecifyTasks({ degree }) {
     ]);
   }
 
+  const editModalHandleSave = (title, criteria) => {
+    // Check if user actually has checked units
+    if (!checkedUnits[activeStep]) {
+      return;
+    }
+
+    setAssessments((prevAssessments) => [
+      ...prevAssessments,
+      {
+        unitId: checkedUnits[activeStep]._id, // error
+        name: title,
+        criteria: criteria,
+      },
+    ]);
+  }
+
   // Form submission handler
   const handleSubmit = () => {
     const flattenedAssessments = assessments.flat();
 
     flattenedAssessments.forEach((assessment) => {
       const { unitId, name, criteria } = assessment;
-      addAssessment(unitId, name, criteria);
+      addAssessment(unitId, name, criteria); // Add assessments to global state
     });
 
-    navigate(`/degrees/${params.degreeId}/summary`);
+    navigate(`/degrees/${params.degreeId}/summary`); // Navigate to the next page
   };
-
 
   return (
     <div className='specify-tasks__wrapper'>
@@ -201,15 +217,14 @@ function SpecifyTasks({ degree }) {
               
               {
                 isEditing ? (
-                  <RequirementsAndCriteriaModal
+                  <RequirementsAndCriteriaEditingModal
                     open={isCriteriaModalOpen}
                     onClose={handleCloseCriteriaModal}
                     title='Ammattitaitovaatimuksen tiedot'
                     modalUnitName={checkedUnits[activeStep]?.name.fi}
                     requirementsTitle='Ammattitaitovaatimuksen nimi'
                     criteria='Kriteerit'
-                    onSave={modalHandleSave}
-                    hideCancelButton
+                    onSave={editModalHandleSave}
                   />
                 ) : (
                   <RequirementsAndCriteriaModal

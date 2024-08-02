@@ -57,12 +57,14 @@ export default function RequirementsAndCriteriaEditingModal({
   hideRequirementsField,
   hideCriteriaField,
   hideSaveButton,
+  defaultTitle,
+  defaultCriteria,
 }) {
   const bgColor = '#E5F6FD';
   const color = '#0288D1';
   
-  const [inputValueTitle, setInputValueTitle] = useState('');
-  const [inputValueCriteria, setInputValueCriteria] = useState('');
+  const [inputValueTitle, setInputValueTitle] = useState(defaultTitle || '');
+  const [inputValueCriteria, setInputValueCriteria] = useState(defaultCriteria || '');
 
   const handleInputChange = (event, inputField) => {
     const value = event.target.value;
@@ -226,7 +228,7 @@ export default function RequirementsAndCriteriaEditingModal({
                 multiline
                 variant='outlined'
                 sx={{
-                  width: '95%',
+                  width: '100%',
                   borderColor: 'black',
                   borderRadius: '0',
                   backgroundColor: 'white',
@@ -271,7 +273,7 @@ export default function RequirementsAndCriteriaEditingModal({
                 multiline
                 variant='outlined'
                 sx={{
-                  width: '95%',
+                  width: '100%',
                   borderColor: 'black',
                   borderRadius: '0',
                   backgroundColor: 'white',
@@ -300,12 +302,13 @@ export default function RequirementsAndCriteriaEditingModal({
 
           <Box
             sx={{
-              // display: 'flex',
-              // justifyContent: 'space-between',
+              display: 'flex',
+              justifyContent: 'space-between',
               // width: '100%',
               // padding: '16px 16px 16px 0',
               marginTop: '10px',
               textAlign: 'center',
+              gap: '10px',
               // marginBottom: '20px',
             }}
           >
@@ -321,6 +324,7 @@ export default function RequirementsAndCriteriaEditingModal({
                   color: '#0000BF',
                   borderRadius: '0',
                   fontWeight: 'bold',
+                  flexGrow: 1,
                 }}
               >
                 Peruuta
@@ -338,6 +342,7 @@ export default function RequirementsAndCriteriaEditingModal({
                   borderRadius: '0',
                   // fontWeight: 'bold',
                   fontSize: '16px',
+                  flexGrow: 1,
                   '&:hover': {  // Styles for hover state
                     backgroundColor: '#0000BF',  // Same as default
                     color: '#FFFFFF',  // Same as default
