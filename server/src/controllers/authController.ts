@@ -387,20 +387,52 @@ const getCurrentUser = (req: Request, res: Response) => {
   res.status(401).json({ errorMessage: 'Unauthorized' })
 }
 
-
 const deleteUserById = async (req: Request, res: Response) => {
   try {
-    if (req.params.role === 'customer') {
-      //TODO: find evaluation by customerId
-      const evaluation = await evaluatuionModel.findById(req.params.id);
-      const user = await userModel.findByIdAndDelete(req.params.id);
-      if (!user) {
-        return res.status(404).send();
-      }
-      res.send(user);
+    const userId = req.params.userId;
+
+    // Delete evaluations associated with the user
+    const evaluationResult = await evaluationModel.deleteMany({
+      $or: [
+        { customerId: userId },
+        { teacherId: userId },
+        { supervisorIds: userId },
+      ],
+    });
+
+    // Delete the user from the users collection
+    const userResult = await userModel.deleteOne({ _id: userId });
+
+    const responseMessage = {
+      evaluationsDeleted: evaluationResult.deletedCount,
+      userDeleted: userResult.deletedCount,
+    };
+
+    // Respond based on the results
+    if (evaluationResult.deletedCount > 0 || userResult.deletedCount > 0) {
+      res.status(200).json({
+        message: 'User and associated evaluations deleted successfully.',
+        details: responseMessage,
+      });
+    } else {
+      res.status(404).json({
+        message: 'No evaluations or user found to delete.',
+        details: responseMessage,
+      });
     }
   } catch (error) {
-    res.status(500).send(error);
+    console.error('Error deleting user or evaluations:', error);
+
+    if (error instanceof Error) {
+      res.status(500).json({
+        message: 'An error occurred while deleting user or evaluations.',
+        error: error.message,
+      });
+    } else {
+      res.status(500).json({
+        message: 'An unexpected error occurred.',
+      });
+    }
   }
 };
 
