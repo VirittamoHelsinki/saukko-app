@@ -146,10 +146,15 @@ export default function RequirementsAndCriteriaEditingModal({
     setInputValueCriteria('');
     handleClose();
   };
+
   const handleSubmit = () => {
     console.log('Submitted Title:', inputValueTitle);
     console.log('Submitted criteria:', inputValueCriteria);
-    onSave(inputValueTitle, inputValueCriteria);
+    onSave({
+      unitId: assessmentToEdit.unitId,
+      name: inputValueTitle,
+      criteria: inputValueCriteria,
+    });
     setInputValueTitle('');
     setInputValueCriteria('');
     handleClose();

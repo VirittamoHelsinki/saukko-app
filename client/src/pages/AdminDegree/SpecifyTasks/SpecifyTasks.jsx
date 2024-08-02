@@ -114,20 +114,23 @@ function SpecifyTasks({ degree }) {
     ]);
   }
 
-  const editModalHandleSave = (title, criteria) => {
+  const editModalHandleSave = (newAssessment) => {
     // Check if user actually has checked units
     if (!checkedUnits[activeStep]) {
       return;
     }
 
-    setAssessments((prevAssessments) => [
-      ...prevAssessments,
-      {
-        unitId: checkedUnits[activeStep]._id, // error
-        name: title,
-        criteria: criteria,
-      },
-    ]);
+    console.log({ newAssessment });
+
+    setAssessments((prevAssessments) => {
+      const filteredAssessments = prevAssessments
+        .filter((oldAssessment => oldAssessment.unitId !== newAssessment.unitId));
+        
+      return [
+        ...filteredAssessments,
+        newAssessment,
+      ]
+    });
   }
 
   // Form submission handler
