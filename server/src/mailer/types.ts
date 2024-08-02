@@ -1,4 +1,4 @@
-export interface ISendEvaluationFormRequestContact{
+export interface ISendEvaluationFormRequestContact {
   customerName: string;
   degreeName: string;
   unitName: string;
@@ -25,6 +25,29 @@ export interface ISendEvaluationFormCustomerReadyMessageSupervisor {
   additionalInfo: string;
 }
 
+export type IEvaluation = {
+  degreeId?: {
+    name?: {
+      fi?: string;
+    };
+  };
+  supervisorIds?: Array<{
+    firstName: string;
+    lastName: string;
+    email: string;
+  }>;
+  customerId?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  teacherId?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+};
+
 export enum EvaluationStatus {
   ACCEPTED = 'Kyllä',
   REJECTED = 'Ei'
@@ -49,3 +72,32 @@ export interface ISendEvaluationFormTeacherReadyMessageSupervisor {
   evaluationAccepted: EvaluationStatus;
   additionalInfo: string;
 }
+
+export interface ISelectedValues {
+  pyydetaanYhteydenottoaOpettajalta: boolean,
+  pyydetaanYhteydenottoaOhjaajalta: boolean,
+  pyydetaanYhteydenottoaAsiakkaalta: boolean
+  suoritusValmis: boolean
+  valmisLahetettavaksi: boolean
+}
+
+export interface IEmails {
+  customerEmail: string,
+  teacherEmail: string,
+  supervisorEmail: string
+}
+
+
+export enum UserRoleEnum {
+  customer = 'customer',
+  teacher = 'teacher',
+  supervisor = 'supervisor'
+}
+
+export type UserRole = UserRoleEnum | null
+
+export const isUserRole = (user: string): user is UserRoleEnum => {
+  return Object.values(UserRoleEnum).map(u => u.toString()).includes(user)
+}
+
+
