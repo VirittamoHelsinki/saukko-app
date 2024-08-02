@@ -41,7 +41,7 @@ const Stepper = ({ activePage, totalPages, data }) => {
           ].join(" ")
 
           return (
-            <div className="step-container">
+            <div className="step-container" key={`${label}-${page}`}>
               <div className={`circle ${ circleClassName }`}>
                 {
                   isDone

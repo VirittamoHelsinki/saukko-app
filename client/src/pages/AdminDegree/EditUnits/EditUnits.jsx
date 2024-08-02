@@ -134,7 +134,7 @@ function EditUnits({ degree }) {
           <div id='unitsEditable' className='units-editable'>
             {editedUnits.length > 0 &&
               editedUnits.map(unit => (
-                <div className="input-wrapper">
+                <div className="input-wrapper" key={unit._id}>
                   <input 
                     key={unit._id} 
                     defaultValue={unit.name.fi}
