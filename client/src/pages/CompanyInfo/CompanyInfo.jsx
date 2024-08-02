@@ -125,6 +125,10 @@ const CompanyInfo = () => {
     }
   };
 
+  const deleteSupervisor = (index) => {
+    setSupervisors(supervisors.filter((_, i) => i !== index))
+  }
+
   // Function to create a new supervisor object
   const createSupervisor = (firstName, lastName, työpaikkaohjaajaEmail) => {
     return {
@@ -184,6 +188,8 @@ const CompanyInfo = () => {
     // Navigate to next page
     navigate(`../internal/degrees`);
   };
+
+  console.log("wtf", supervisors);
 
   return (
     <div className='companyInfo__wrapper'>
@@ -357,7 +363,7 @@ const CompanyInfo = () => {
                     </div>
 
                     <div className="delete-edit-buttons">
-                      <button className="button--secondary" onClick={() => {}}>
+                      <button className="button--secondary" onClick={() => deleteSupervisor(index)}>
                         <Icon icon={'lucide:trash'} color="red" />
                         <span>Poista</span>
                       </button>
