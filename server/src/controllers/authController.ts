@@ -388,79 +388,91 @@ const getCurrentUser = (req: Request, res: Response) => {
   res.status(401).json({ errorMessage: 'Unauthorized' })
 }
 
-const deleteUserById = async (req: Request, res: Response) => {
+// Helper function to delete evaluations
+const deleteEvaluations = async (userId: string) => {
+  const evaluations = await evaluationModel.find({
+    $or: [
+      { customerId: userId },
+      { teacherId: userId },
+      { supervisorIds: userId },
+    ],
+  }).exec();
 
+  let evaluationsDeletedCount = 0;
+
+  for (const evaluation of evaluations) {
+    if (
+      (evaluation as any).supervisorIds.includes(userId) &&
+      (evaluation as any).supervisorIds.length > 1
+    ) {
+      await evaluationModel.updateOne(
+        { _id: evaluation._id },
+        { $pull: { supervisorIds: userId } }
+      );
+    } else {
+      await evaluationModel.deleteOne({ _id: evaluation._id });
+      evaluationsDeletedCount++;
+    }
+  }
+
+  return evaluationsDeletedCount;
+};
+
+// Helper function to update workplaces
+const updateWorkplaces = async (userId: string) => {
+  const workplaces = await workplaceModel.find({
+    $or: [
+      { supervisors: userId },
+      { 'departments.supervisors': userId },
+    ],
+  }).exec();
+
+  let workplacesUpdatedCount = 0;
+
+  for (const workplace of workplaces) {
+    if (workplace.supervisors.length > 1) {
+      await workplaceModel.updateOne(
+        { _id: workplace._id },
+        { $pull: { supervisors: userId } }
+      );
+    } else {
+      await workplaceModel.deleteOne({ _id: workplace._id });
+      workplacesUpdatedCount++;
+      continue;
+    }
+
+    await workplaceModel.updateMany(
+      { _id: workplace._id },
+      { $pull: { 'departments.$[elem].supervisors': userId } },
+      { arrayFilters: [{ 'elem.supervisors': userId }] }
+    );
+  }
+
+  return workplacesUpdatedCount;
+};
+
+// Helper function to delete user
+const deleteUser = async (userId: string) => {
+  const userResult = await userModel.deleteOne({ _id: userId });
+  return userResult.deletedCount;
+};
+
+// Main controller function
+const deleteUserById = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
 
-    const evaluations = await evaluationModel.find({
-      $or: [
-        { customerId: userId },
-        { teacherId: userId },
-        { supervisorIds: userId },
-      ],
-    }).exec();
-
-    let evaluationsDeletedCount = 0;
-    for (const evaluation of evaluations) {
-      if (
-        (evaluation as any).supervisorIds.includes(userId) &&
-        (evaluation as any).supervisorIds.length > 1
-      ) {
-        // Remove the supervisorId from the array
-        await evaluationModel.updateOne(
-          { _id: evaluation._id },
-          { $pull: { supervisorIds: userId } }
-        );
-      } else {
-        // Delete the evaluation document
-        await evaluationModel.deleteOne({ _id: evaluation._id });
-        evaluationsDeletedCount++;
-      }
-    }
-
-    const workplaces = await workplaceModel.find({
-      $or: [
-        { supervisors: userId },
-        { 'departments.supervisors': userId },
-      ],
-    }).exec();
-
-    let workplacesUpdatedCount = 0;
-
-    for (const workplace of workplaces) {
-      // Remove the supervisorId from the supervisors array if more than one
-      if (workplace.supervisors.length > 1) {
-        await workplaceModel.updateOne(
-          { _id: workplace._id },
-          { $pull: { supervisors: userId } }
-        );
-      } else {
-        // Delete the entire workplace document if the supervisor is the only one
-        await workplaceModel.deleteOne({ _id: workplace._id });
-        workplacesUpdatedCount++;
-        continue; // Skip to the next workplace
-      }
-
-      // Remove the supervisorId from each department's supervisors array
-      await workplaceModel.updateMany(
-        { _id: workplace._id },
-        { $pull: { 'departments.$[elem].supervisors': userId } },
-        { arrayFilters: [{ 'elem.supervisors': userId }] }
-      );
-    }
-
-    // Delete the user from the users collection
-    const userResult = await userModel.deleteOne({ _id: userId });
+    const evaluationsDeletedCount = await deleteEvaluations(userId);
+    const workplacesUpdatedCount = await updateWorkplaces(userId);
+    const userDeletedCount = await deleteUser(userId);
 
     const responseMessage = {
       evaluationsDeleted: evaluationsDeletedCount,
       workplacesUpdated: workplacesUpdatedCount,
-      userDeleted: userResult.deletedCount,
+      userDeleted: userDeletedCount,
     };
 
-    // Respond based on the results
-    if (evaluationsDeletedCount > 0 || userResult.deletedCount > 0) {
+    if (evaluationsDeletedCount > 0 || userDeletedCount > 0) {
       res.status(200).json({
         message: 'User and associated evaluations deleted successfully.',
         details: responseMessage,
@@ -486,7 +498,6 @@ const deleteUserById = async (req: Request, res: Response) => {
     }
   }
 };
-
 
 export default {
   registerUser,
