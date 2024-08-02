@@ -33,6 +33,7 @@ function SpecifyTasks({ degree }) {
 
   // Initialize state
   const [isEditing, setIsEditing] = useState(false);
+  const [assessmentToEdit, setAssessmenetToEdit] = useState(null)
   const [assessments, setAssessments] = useState([]);
   const [activeStep, setActiveStep] = useState(0); // Index of the selected unit
   const { degreeName } = useStore();
@@ -91,7 +92,8 @@ function SpecifyTasks({ degree }) {
     setIsCriteriaModalOpen(false);
   };
 
-  const handleEditButtonClick = () => {
+  const handleEditButtonClick = (assessmentToEdit) => {
+    setAssessmenetToEdit(assessmentToEdit)
     setIsEditing(true)
     setIsCriteriaModalOpen(true);
   };
@@ -225,6 +227,8 @@ function SpecifyTasks({ degree }) {
                     requirementsTitle='Ammattitaitovaatimuksen nimi'
                     criteria='Kriteerit'
                     onSave={editModalHandleSave}
+                    assessmentToEdit={assessmentToEdit}
+                    hideCancelButton
                   />
                 ) : (
                   <RequirementsAndCriteriaModal
@@ -252,7 +256,7 @@ function SpecifyTasks({ degree }) {
                         <Icon
                           icon='uil:pen'
                           color='#0000bf'
-                          onClick={() => handleEditButtonClick(true)}
+                          onClick={() => handleEditButtonClick(assessment)}
                         />
                       </li>
                     )

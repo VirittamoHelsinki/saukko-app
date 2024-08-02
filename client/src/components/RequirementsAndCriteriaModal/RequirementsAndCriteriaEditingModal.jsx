@@ -57,14 +57,13 @@ export default function RequirementsAndCriteriaEditingModal({
   hideRequirementsField,
   hideCriteriaField,
   hideSaveButton,
-  defaultTitle,
-  defaultCriteria,
+  assessmentToEdit,
 }) {
   const bgColor = '#E5F6FD';
   const color = '#0288D1';
   
-  const [inputValueTitle, setInputValueTitle] = useState(defaultTitle || '');
-  const [inputValueCriteria, setInputValueCriteria] = useState(defaultCriteria || '');
+  const [inputValueTitle, setInputValueTitle] = useState(assessmentToEdit?.name || '');
+  const [inputValueCriteria, setInputValueCriteria] = useState(assessmentToEdit?.criteria || '');
 
   const handleInputChange = (event, inputField) => {
     const value = event.target.value;
@@ -302,8 +301,8 @@ export default function RequirementsAndCriteriaEditingModal({
 
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
+              // display: 'flex',
+              // justifyContent: 'space-between',
               // width: '100%',
               // padding: '16px 16px 16px 0',
               marginTop: '10px',
@@ -336,7 +335,7 @@ export default function RequirementsAndCriteriaEditingModal({
                 sx={{
                   textTransform: 'none',
                   backgroundColor: '#0000BF',
-                  width: '99px',
+                  width: '153px',
                   height: '56px',
                   color: '#FFFFFF',
                   borderRadius: '0',
