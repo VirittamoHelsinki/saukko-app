@@ -13,6 +13,8 @@ router.get("/verify-email", authController.verifyEmail);
 router.get("/resend-email-verification", authController.resendEmailVerificationLink)
 router.get("/email-available", authController.isEmailAvailable)
 
+router.delete("/users/:id", authController.deleteUserById);
+
 router.post("/register-user", authController.registerUser)
 
 // Enable auth middleware for specific endpoints

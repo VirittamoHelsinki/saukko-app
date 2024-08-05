@@ -1,6 +1,8 @@
 import { Response } from 'express';
 import { Request } from '../types/requestType';
 import userModel from '../models/userModel';
+import evaluationModel from '../models/evaluatuionModel'
+import workplaceModel from '../models/workplaceModel';
 import { IJwtPayload, useCase } from '../types/jwtPayload';
 import jwt from 'jsonwebtoken';
 import config from '../utils/config';
@@ -398,6 +400,117 @@ const getCurrentUser = (req: Request, res: Response) => {
   res.status(401).json({ errorMessage: 'Unauthorized' })
 }
 
+// Helper function to delete evaluations
+const deleteEvaluations = async (userId: string) => {
+  const evaluations = await evaluationModel.find({
+    $or: [
+      { customerId: userId },
+      { teacherId: userId },
+      { supervisorIds: userId },
+    ],
+  }).exec();
+
+  let evaluationsDeletedCount = 0;
+
+  for (const evaluation of evaluations) {
+    if (
+      (evaluation as any).supervisorIds.includes(userId) &&
+      (evaluation as any).supervisorIds.length > 1
+    ) {
+      await evaluationModel.updateOne(
+        { _id: evaluation._id },
+        { $pull: { supervisorIds: userId } }
+      );
+    } else {
+      await evaluationModel.deleteOne({ _id: evaluation._id });
+      evaluationsDeletedCount++;
+    }
+  }
+
+  return evaluationsDeletedCount;
+};
+
+// Helper function to update workplaces
+const updateWorkplaces = async (userId: string) => {
+  const workplaces = await workplaceModel.find({
+    $or: [
+      { supervisors: userId },
+      { 'departments.supervisors': userId },
+    ],
+  }).exec();
+
+  let workplacesUpdatedCount = 0;
+
+  for (const workplace of workplaces) {
+    if (workplace.supervisors.length > 1) {
+      await workplaceModel.updateOne(
+        { _id: workplace._id },
+        { $pull: { supervisors: userId } }
+      );
+    } else {
+      await workplaceModel.deleteOne({ _id: workplace._id });
+      workplacesUpdatedCount++;
+      continue;
+    }
+
+    await workplaceModel.updateMany(
+      { _id: workplace._id },
+      { $pull: { 'departments.$[elem].supervisors': userId } },
+      { arrayFilters: [{ 'elem.supervisors': userId }] }
+    );
+  }
+
+  return workplacesUpdatedCount;
+};
+
+// Helper function to delete user
+const deleteUser = async (userId: string) => {
+  const userResult = await userModel.deleteOne({ _id: userId });
+  return userResult.deletedCount;
+};
+
+// Main controller function
+const deleteUserById = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+
+    const evaluationsDeletedCount = await deleteEvaluations(userId);
+    const workplacesUpdatedCount = await updateWorkplaces(userId);
+    const userDeletedCount = await deleteUser(userId);
+
+    const responseMessage = {
+      evaluationsDeleted: evaluationsDeletedCount,
+      workplacesUpdated: workplacesUpdatedCount,
+      userDeleted: userDeletedCount,
+    };
+
+    if (evaluationsDeletedCount > 0 || userDeletedCount > 0) {
+      res.status(200).json({
+        message: 'User and associated evaluations deleted successfully.',
+        details: responseMessage,
+      });
+    } else {
+      res.status(404).json({
+        message: 'No evaluations or user found to delete.',
+        details: responseMessage,
+      });
+    }
+  } catch (error) {
+    console.error('Error deleting user or evaluations:', error);
+
+    if (error instanceof Error) {
+      res.status(500).json({
+        message: 'An error occurred while deleting user or evaluations.',
+        error: error.message,
+      });
+    } else {
+      res.status(500).json({
+        message: 'An unexpected error occurred.',
+      });
+    }
+  }
+};
+
 export default {
   registerUser,
   forgotPassword,
@@ -410,5 +523,6 @@ export default {
   resendEmailVerificationLink,
   getCurrentUser,
   requestPasswordChangeTokenAsUser,
+  deleteUserById,
   isEmailAvailable,
 }
