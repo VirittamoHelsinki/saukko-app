@@ -332,7 +332,7 @@ const CompanyInfo = () => {
                       <Icon icon={'lucide:trash'} color="red" />
                       <span>Poista</span>
                     </button>
-                    <button className="button--primary" onClick={() => {}}>
+                    <button className="button--primary" onClick={() => {}} disabled>
                       <Icon icon={'lucide:plus'} />
                       <span>Muokkaa</span>
                     </button>
