@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import eperusteet from '../api/eperusteet';
 import { useExternalApiContext } from "../store/context/ExternalApiContext";
 
@@ -13,28 +13,57 @@ const withPaginatedDegrees = (Component) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const [searchParam, setSearchParam] = useState("")
+    const [searchParam, setSearchParam] = useState("");
+    const initialDataFetched = useRef(false);
 
-    const result = useCallback(() => {
-      setLoading(true);
-      eperusteet.getPaginatedDegrees(page, pageSize, searchParam)
-        .then(x => {
-          x.data.map(y => console.log(y._id))
-          setData(x.data);
-          setAllDegrees(x.data)
-          setPage(x.sivu);
-          setTotalPages(x.sivuja);
-          setTotalResults(x.kokonaismäärä);
-        })
-        .catch(setError)
-        .finally(() => setLoading(false));
-      return Date.now();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, searchParam])
+    const fetchPaginatedDegrees = async () => {
+      try {
+        setLoading(true);
+        const data = await eperusteet.getPaginatedDegrees(page, pageSize, searchParam);
+        // data.data.map(y => console.log(y._id));
+  
+        setData(data.data);
+        setAllDegrees(data.degrees);
+        setPage(data.currentPage);
+        setTotalPages(data.pageCount);
+        setTotalResults(data.totalResults);
+
+        setLoading(false);
+        initialDataFetched.current = true;
+      } catch(e) {
+        setError(e);
+      }
+    }
+
+    // Only run on first render
+    useEffect(() => {
+      if (initialDataFetched.current === false) {
+        fetchPaginatedDegrees();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Separate effects for page change and searchParams change
+    // Must add throttling to search param
+    useEffect(() => {
+      if (initialDataFetched.current) {
+        fetchPaginatedDegrees();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ page ]);
 
     useEffect(() => {
-      console.log(result())
-    }, [result])
+      let timer;
+
+      if (initialDataFetched.current) {
+        timer = setTimeout(() => {
+          fetchPaginatedDegrees();
+        }, 500);
+      }
+
+      return () => clearTimeout(timer)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ searchParam ]);
 
     if (error) {
       throw error;
