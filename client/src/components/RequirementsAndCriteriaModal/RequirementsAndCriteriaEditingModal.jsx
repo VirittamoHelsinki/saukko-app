@@ -44,7 +44,7 @@ function CustomDialogTitle(props) {
   );
 }
 
-export default function RequirementsAndCriteriaModal({
+export default function RequirementsAndCriteriaEditingModal({
   open,
   onClose,
   title,
@@ -57,12 +57,13 @@ export default function RequirementsAndCriteriaModal({
   hideRequirementsField,
   hideCriteriaField,
   hideSaveButton,
+  assessmentToEdit,
 }) {
   const bgColor = '#E5F6FD';
   const color = '#0288D1';
   
-  const [inputValueTitle, setInputValueTitle] = useState('');
-  const [inputValueCriteria, setInputValueCriteria] = useState('');
+  const [inputValueTitle, setInputValueTitle] = useState(assessmentToEdit?.name || '');
+  const [inputValueCriteria, setInputValueCriteria] = useState(assessmentToEdit?.criteria || '');
 
   const handleInputChange = (event, inputField) => {
     const value = event.target.value;
@@ -145,10 +146,15 @@ export default function RequirementsAndCriteriaModal({
     setInputValueCriteria('');
     handleClose();
   };
+
   const handleSubmit = () => {
     console.log('Submitted Title:', inputValueTitle);
     console.log('Submitted criteria:', inputValueCriteria);
-    onSave(inputValueTitle, inputValueCriteria);
+    onSave({
+      unitId: assessmentToEdit.unitId,
+      name: inputValueTitle,
+      criteria: inputValueCriteria,
+    });
     setInputValueTitle('');
     setInputValueCriteria('');
     handleClose();
@@ -226,7 +232,7 @@ export default function RequirementsAndCriteriaModal({
                 multiline
                 variant='outlined'
                 sx={{
-                  width: '95%',
+                  width: '100%',
                   borderColor: 'black',
                   borderRadius: '0',
                   backgroundColor: 'white',
@@ -271,7 +277,7 @@ export default function RequirementsAndCriteriaModal({
                 multiline
                 variant='outlined'
                 sx={{
-                  width: '95%',
+                  width: '100%',
                   borderColor: 'black',
                   borderRadius: '0',
                   backgroundColor: 'white',
@@ -306,6 +312,7 @@ export default function RequirementsAndCriteriaModal({
               // padding: '16px 16px 16px 0',
               marginTop: '10px',
               textAlign: 'center',
+              gap: '10px',
               // marginBottom: '20px',
             }}
           >
@@ -321,6 +328,7 @@ export default function RequirementsAndCriteriaModal({
                   color: '#0000BF',
                   borderRadius: '0',
                   fontWeight: 'bold',
+                  flexGrow: 1,
                 }}
               >
                 Peruuta
@@ -332,12 +340,13 @@ export default function RequirementsAndCriteriaModal({
                 sx={{
                   textTransform: 'none',
                   backgroundColor: '#0000BF',
-                  width: '99px',
+                  width: '153px',
                   height: '56px',
                   color: '#FFFFFF',
                   borderRadius: '0',
                   // fontWeight: 'bold',
                   fontSize: '16px',
+                  flexGrow: 1,
                   '&:hover': {  // Styles for hover state
                     backgroundColor: '#0000BF',  // Same as default
                     color: '#FFFFFF',  // Same as default

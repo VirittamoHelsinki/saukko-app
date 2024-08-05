@@ -2,20 +2,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-// Import libraries
-import Pagination from '@mui/material/Pagination';
-
 // Import components
 import Stepper from '../../../components/Stepper/Stepper';
 import SelectUnit from '../../../components/SelectUnit/SelectUnit';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+import PaginationButtons from '../../../components/PaginationButtons';
 
 // Import state management
 import useStore from '../../../store/zustand/formStore';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
 
-import useUnitsStore from '../../../store/zustand/unitsStore';
+import useUnitsStore from '../../../store/zustand/unitsStore'
 
 function DegreeUnits({ degree }) {
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
@@ -38,9 +36,9 @@ function DegreeUnits({ degree }) {
 
   // Pagination logic
   const [page, setPage] = useState(1);
-  const unitsPerPage = 4;
+  const unitsPerPage = 5;
 
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (value) => {
     setPage(value);
   };
 
@@ -76,32 +74,36 @@ function DegreeUnits({ degree }) {
           totalPages={4}
           data={stepperData}
         />
+
         <h1>{degree ? degree?.name.fi : degreeName}</h1>
 
         <div className='degreeUnits__container--units'>
-          {currentUnits
-            ? currentUnits.map((unit) => (
-              <SelectUnit
-                key={unit._id}
-                unit={unit}
-                allUnits={degree.units}
-              />
-            ))
-            : 'ei dataa APIsta'}
-        </div>
-
-        <Pagination
-          count={
-            filteredUnits && Math.ceil(filteredUnits.length / unitsPerPage)
+          {
+            currentUnits
+            ? (
+              currentUnits.map((unit) => (
+                <SelectUnit
+                  key={unit._id}
+                  unit={unit}
+                  allUnits={degree.units}
+                />
+              ))
+            )
+            : 'ei dataa APIsta'
           }
-          page={page}
-          onChange={handlePageChange}
+        </div>
+        
+        <PaginationButtons
+          currentPage={page}
+          pageCount={filteredUnits && Math.ceil(filteredUnits.length / unitsPerPage)}
+          handlePageClick={handlePageChange}
         />
 
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${params.degreeId}`)}
           handleForward={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
-          showForwardButton={checkedUnits.length > 0}
+          showForwardButton={true}
+          disabled={checkedUnits.length === 0}
         />
       </section>
     </div>

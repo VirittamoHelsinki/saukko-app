@@ -1,41 +1,27 @@
-.buttons__container {
-  margin: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
+.page-nav {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 10px;
 
-  .button__container {                  
-    .button__icon{
-      width: 25px;
-      flex-shrink: 0;
-    }
+  margin: 50px 15px 0 15px;
 
-    .button__text {
-      font-size: 15px;
-    }
+  & > .button--back {
+    border: 2px solid var(--link-blue);
+    color: var(--link-blue);
+    flex-direction: row-reverse;
   }
 
-  .buttons__container-back {
-    width: 40%;
-    padding-top: 8px;
-
-    .button__container {
-      flex-direction: row-reverse;
-      color: var(--link-blue);
-      background: var(--saukko-main-white);
-      border: 2px solid var(--link-blue);
-    }
+  & > .button--forward {
+    border: 2px solid var(--link-blue);
+    background-color: var(--link-blue);
+    color: white;
   }
 
-  .buttons__container-forward {
-    width: 60%;
-    padding-top: 8px;
-
-    .button__container {
-      background: var(--link-blue);
-      color: var(--saukko-main-white);
-      border: 2px solid var(--link-blue);
-    }
+  & > .page-nav__button:disabled {
+    cursor: not-allowed;
+    
+    border: 2px solid rgb(240, 240, 240);
+    background-color: rgb(240, 240, 240);
+    color: rgb(200, 200, 200);
   }
 }

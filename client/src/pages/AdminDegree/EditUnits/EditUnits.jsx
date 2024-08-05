@@ -8,6 +8,7 @@ import { Icon } from '@iconify/react';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
 
+
 function EditUnits({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -79,6 +80,11 @@ function EditUnits({ degree }) {
     // Add the new unit to the editedUnits array
     setEditedUnits((prevEditedUnits) => [...prevEditedUnits, newUnit]);
   };
+
+  const handleDeleteUnit = (id) => {
+    // Filter our the specified id
+    setEditedUnits((prevEditedUnits) => prevEditedUnits.filter((unit) => unit._id !== id));
+  }
   
   const handleSubmit = () => {
     // Filter out units with an empty 'name.fi'
@@ -87,6 +93,7 @@ function EditUnits({ degree }) {
     navigate(`/degrees/${params.degreeId}/units/tasks`)
   };
  
+  console.log(editedUnits);
 
   return (
     <div className='editDegree__wrapper'>
@@ -116,16 +123,29 @@ function EditUnits({ degree }) {
           </div>
         )}
 
+        {
+          !editMode && editedUnits.length === 0 && (
+            <p>Ei valittuja tutkinnonosia</p>
+          )
+        }
+
         {/* Edit mode */}
         {editMode && (
           <div id='unitsEditable' className='units-editable'>
             {editedUnits.length > 0 &&
               editedUnits.map(unit => (
-                <input 
-                  key={unit._id} 
-                  defaultValue={unit.name.fi}
-                  onChange={(e) => handleInputChange(unit._id, e)}
-                />
+                <div className="input-wrapper" key={unit._id}>
+                  <input 
+                    key={unit._id} 
+                    defaultValue={unit.name.fi}
+                    onChange={(e) => handleInputChange(unit._id, e)}
+                  >
+                  </input>
+                  <Icon
+                    icon="lucide:circle-x"
+                    onClick={() => handleDeleteUnit(unit._id)}
+                  />
+                </div>
               ))
             }
             <button id='addUnitButton' className='add-unit-button' onClick={handleAddUnit}>+ Lisää tutkinnonosa</button>
