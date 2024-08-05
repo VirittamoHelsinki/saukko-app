@@ -3,7 +3,7 @@ import sendingMailToQueue from '../src/mailer/createNewMail'
 import mailTemplate from '../src/mailer/mailerHtmlTemplate';
 import { IEmailObj } from '../src/models/emailDocumentModel';
 import { sendVerificationEmail } from '../src/mailer/templates/newUserVerification'
-import mailerTemplate from '../src/mailer/mailerHtmlTemplate'
+
 
 
 describe.skip('Sending verification email', () => {

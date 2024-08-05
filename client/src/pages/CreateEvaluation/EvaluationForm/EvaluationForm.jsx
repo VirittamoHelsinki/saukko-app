@@ -15,6 +15,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Typography } from '@mui/material';
+import useCheckEmailAvailability from '../../../hooks/useEmailAvailable';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -38,6 +39,9 @@ function EvaluationForm() {
     setEvaluation, // Include the new setters
     // ... add other state variables and setters as needed
   } = useEvaluationFormStore();
+
+
+  const emailIsAvailable = useCheckEmailAvailability(email)
 
   // Get user from AuthContext
   const { currentUser } = useAuthContext();
@@ -99,9 +103,16 @@ function EvaluationForm() {
     // Form validation: Regex for email format
     const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
     if (!emailPattern.test(email)) {
-      setOpenNotificationModalEmail(true);
+      setOpenNotificationModalEmail("Tarkista seuraavat kentät: sähköposti.");
       return;
     }
+
+    if (!emailIsAvailable) {
+      setOpenNotificationModalEmail("Sähköposti on jo käytössä.");
+      return
+    }
+
+    
 
     // Form validation: startDate and endDate are Date objects
     if (typeof startDate === 'string' || typeof endDate === 'string') {
@@ -212,10 +223,11 @@ function EvaluationForm() {
             <input
               id='email'
               type='email'
-              className='form-input'
+              className={`form-input ${emailIsAvailable ? "" : "error"}`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            { !emailIsAvailable && <label className="error">Sähköposti on jo käytössä.</label>}
           </div>
           <div className='form__startDate'>
             <label className='form_text'>Asiakkuuden aloituspäivä *</label>
@@ -342,11 +354,11 @@ function EvaluationForm() {
         body={
           <div style={{ padding: '10px' }}>
             <Typography style={{ fontSize: '14px' }}>
-              Tarkista seuraavat kentät: sähköposti.
+              { openNotificationModalEmail }
             </Typography>
           </div>
         }
-        open={openNotificationModalEmail}
+        open={!!openNotificationModalEmail}
         handleClose={handleCloseEmail}
       />
       <NotificationModal

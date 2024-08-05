@@ -78,6 +78,7 @@ const Router = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes key={location.pathname} location={location}>
           <Route path='/' element={<PageLayout />}>
+          
             {/* Placeholders for development */}
             <Route path='/test-page' element={<TestPage />} />
             <Route path="/verify-email/:token" element={<EmailVerification />} />

@@ -11,6 +11,9 @@ router.get("/renew-token", authController.renew);
 router.get("/get-current-user", authController.getCurrentUser);
 router.get("/verify-email", authController.verifyEmail);
 router.get("/resend-email-verification", authController.resendEmailVerificationLink)
+router.get("/email-available", authController.isEmailAvailable)
+
+router.delete("/users/:id", authController.deleteUserById);
 
 router.post("/register-user", authController.registerUser)
 
