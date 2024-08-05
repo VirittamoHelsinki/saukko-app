@@ -307,59 +307,25 @@ const CompanyInfo = () => {
                       borderBottom: '4px solid white',
                       marginTop: '9px',
                       marginBottom: '9px',
+                      padding: '20px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '20px',
                     }}
                   >
-                    <label
-                      className='workplace-form-label'
-                      htmlFor={`first-name-input-${index}`}
-                    >
-                      Etunimi *
-                    </label>
-                    <div className='text_input supervisorInformation'>
-                      <input
-                        className='text_input_supervisorInformation'
-                        id={`first-name-input-${index}`}
-                        name='Etunimi'
-                        required
-                        value={ohjaaja.firstName}
-                        readOnly
-                      />
-                    </div>
-                    <label
-                      className='workplace-form-label'
-                      htmlFor={`last-name-input-${index}`}
-                    >
-                      Sukunimi *
-                    </label>
-                    <div className='text_input supervisorInformation'>
-                      <input
-                        className='text_input_supervisorInformation'
-                        id={`last-name-input-${index}`}
-                        name='Sukunimi'
-                        required
-                        value={ohjaaja.lastName}
-                        readOnly
-                      />
-                    </div>
-                    <label
-                      className='workplace-form-label'
-                      htmlFor={`email-input-${index}`}
-                    >
-                      Sähköposti *
-                    </label>
-                    <div
-                      className='text_input businessInformation'
-                      style={{ marginBottom: '2rem' }}
-                    >
-                      <input
-                        className='text_input_businessInformation'
-                        id={`email-input-${index}`}
-                        name='Sähköposti'
-                        type='email'
-                        required
-                        value={ohjaaja.email}
-                        readOnly
-                      />
+                    <div className='supervisor-information'>
+                      <div className='field'>
+                        <p className='field-name'>Etunimi:</p>
+                        <p className='field-value'>{ohjaaja.firstName}</p>
+                      </div>
+                      <div className='field'>
+                        <p className='field-name'>Sukunimi:</p>
+                        <p className='field-value'>{ohjaaja.lastName}</p>
+                      </div>
+                      <div className='field'>
+                        <p className='field-name'>Sähköposti:</p>
+                        <p className='field-value'>{ohjaaja.email}</p>
+                      </div>
                     </div>
 
                     <div className="delete-edit-buttons">
@@ -423,7 +389,7 @@ const CompanyInfo = () => {
                 />
               </div>
               <Button
-                text='Lisää toinen ohjaaja'
+                text='Lisää ohjaaja'
                 style={{
                   marginLeft: '17%',
                   marginBottom: '30px',
