@@ -16,7 +16,7 @@ import evaluationRouter from "./routers/evaluationRouter";
 import eReqRouter from "./routers/eReqRouter"
 import tokensMiddleware from "./middlewares/middleware.tokens";
 
-const app = express();
+export const app = express();
 
 // Middleware setup
 app.use(express.json());
@@ -80,6 +80,12 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(staticPath, 'index.html'));
 });
 
-app.listen(config.PORT, () => {
-  console.log(`Server is running on port ${config.PORT}`);
-})
+// app.listen(config.PORT, () => {
+//   console.log(`Server is running on port ${config.PORT}`);
+// })
+
+const PORT = process.env.PORT || config.PORT;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
