@@ -79,13 +79,17 @@
       display: flex;
       align-items: center;
       background-color: #ffffff;
-      margin: 8px 0;
-      padding: 10px;
+      min-height: 45px;
+      padding: 0 15px;
     }
 
     .title {
       flex: 1;
       font-weight: 200;
+    }
+
+    svg {
+      cursor: pointer;
     }
   }
 }
