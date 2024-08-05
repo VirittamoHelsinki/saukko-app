@@ -141,6 +141,12 @@ const CompanyInfo = () => {
   //Adding the supervisors
   const addSupervisors = () => {
     if (firstName && lastName && työpaikkaohjaajaEmail) {
+
+      const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+      if (!emailPattern.test(työpaikkaohjaajaEmail)) {
+        return;
+      }
+
       const newSupervisor = createSupervisor(
         firstName,
         lastName,
@@ -160,36 +166,15 @@ const CompanyInfo = () => {
     if (
       !businessId ||
       (!name && !editedCompanyName) ||
-      !firstName ||
-      !lastName ||
-      !työpaikkaohjaajaEmail
+      supervisors.length === 0
     ) {
       alert('Please fill in all required fields.');
       return;
     }
 
-    // Form validation: Regex for email format
-    const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-    if (!emailPattern.test(työpaikkaohjaajaEmail)) {
-      alert('Please enter a valid email address.');
-      return;
-    }
-
-    // Create supervisor & save to temporary storage
-    if (firstName && lastName && työpaikkaohjaajaEmail) {
-      const newSupervisor = createSupervisor(
-        firstName,
-        lastName,
-        työpaikkaohjaajaEmail
-      );
-      addSupervisors(newSupervisor);
-    }
-
     // Navigate to next page
     navigate(`../internal/degrees`);
   };
-
-  console.log("wtf", supervisors);
 
   return (
     <div className='companyInfo__wrapper'>
@@ -403,15 +388,15 @@ const CompanyInfo = () => {
                 onClick={addSupervisors}
               />
             </div>
-
-
           </form>
         </Accordion>
       </div>
+      
       <PageNavigationButtons
         handleBack={() => navigate('/add/companyname')}
         handleForward={handleForward}
         showForwardButton={true}
+        disabled={supervisors.length === 0}
       />
     </div>
   );
