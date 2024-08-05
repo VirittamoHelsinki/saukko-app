@@ -297,53 +297,53 @@ const CompanyInfo = () => {
               2. Työpaikkaohjaajan tiedot
             </Typography>
           </AccordionSummary>
-          <form onSubmit={handleForward}>
-            <div className='ohjaajat-info'>
-              {supervisors
-                .map((ohjaaja, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      borderBottom: '4px solid white',
-                      marginTop: '9px',
-                      marginBottom: '9px',
-                      padding: '20px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '20px',
-                    }}
-                  >
-                    <div className='supervisor-information'>
-                      <div className='field'>
-                        <p className='field-name'>Etunimi:</p>
-                        <p className='field-value'>{ohjaaja.firstName}</p>
-                      </div>
-                      <div className='field'>
-                        <p className='field-name'>Sukunimi:</p>
-                        <p className='field-value'>{ohjaaja.lastName}</p>
-                      </div>
-                      <div className='field'>
-                        <p className='field-name'>Sähköposti:</p>
-                        <p className='field-value'>{ohjaaja.email}</p>
-                      </div>
+          <div className='ohjaajat-info'>
+            {supervisors
+              .map((ohjaaja, index) => (
+                <div
+                  key={index}
+                  style={{
+                    borderBottom: '4px solid white',
+                    marginTop: '9px',
+                    marginBottom: '9px',
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '20px',
+                  }}
+                >
+                  <div className='supervisor-information'>
+                    <div className='field'>
+                      <p className='field-name'>Etunimi:</p>
+                      <p className='field-value'>{ohjaaja.firstName}</p>
                     </div>
-
-                    <div className="delete-edit-buttons">
-                      <button className="button--secondary" onClick={() => deleteSupervisor(index)}>
-                        <Icon icon={'lucide:trash'} color="red" />
-                        <span>Poista</span>
-                      </button>
-                      <button className="button--primary" onClick={() => {}}>
-                        <Icon icon={'lucide:plus'} />
-                        <span>Muokkaa</span>
-                      </button>
+                    <div className='field'>
+                      <p className='field-name'>Sukunimi:</p>
+                      <p className='field-value'>{ohjaaja.lastName}</p>
                     </div>
-
+                    <div className='field'>
+                      <p className='field-name'>Sähköposti:</p>
+                      <p className='field-value'>{ohjaaja.email}</p>
+                    </div>
                   </div>
-                ))}
-            </div>
+
+                  <div className="delete-edit-buttons">
+                    <button className="button--secondary" onClick={() => deleteSupervisor(index)}>
+                      <Icon icon={'lucide:trash'} color="red" />
+                      <span>Poista</span>
+                    </button>
+                    <button className="button--primary" onClick={() => {}}>
+                      <Icon icon={'lucide:plus'} />
+                      <span>Muokkaa</span>
+                    </button>
+                  </div>
+
+                </div>
+              ))}
+          </div>
 
 
+          <form onSubmit={handleForward}>
             <div>
               <label
                 className='workplace-form-label'
