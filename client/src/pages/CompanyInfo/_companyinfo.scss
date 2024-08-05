@@ -71,10 +71,6 @@
     }
   }
 
-  .lalala {
-    position: static;
-  }
-
   .supervisorInformation {
     justify-content: flex-start;
 
@@ -126,4 +122,64 @@
   .companyInfo__wrapper {
     padding-top: 1rem;
   }
+}
+
+.delete-edit-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  button {
+    border: 2px solid var(--link-blue);
+    height: 60px;
+    background-color: white;
+    font-size: 16px;
+    font-weight: 600;
+
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &.button--primary {
+      background-color: var(--link-blue);
+      color: white;
+    }
+
+    &.button--secondary {
+      background-color: white;
+      color: var(--link-blue);
+    }
+  }
+}
+
+.supervisor-information {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px 15px;
+  background: #F9F9F9;
+
+  & > .field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    & > .field-name {
+  
+    }
+  
+    & > .field-value {
+      font-size: 18px;
+      font-weight: 700;
+      margin-left: 11px;
+    }
+  }
+
 }

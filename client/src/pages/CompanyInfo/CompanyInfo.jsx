@@ -16,6 +16,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -45,7 +46,9 @@ const CompanyInfo = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   useEffect(() => {
-    setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikka"), setHeading("Työpaikkojen hallinta")
+    setSiteTitle("Lisää työpaikka")
+    setSubHeading("Lisää uusi työpaikka")
+    setHeading("Työpaikkojen hallinta")
   }, [setSiteTitle, setSubHeading, setHeading]);
 
   const stepperData = [
@@ -122,6 +125,10 @@ const CompanyInfo = () => {
     }
   };
 
+  const deleteSupervisor = (index) => {
+    setSupervisors(supervisors.filter((_, i) => i !== index))
+  }
+
   // Function to create a new supervisor object
   const createSupervisor = (firstName, lastName, työpaikkaohjaajaEmail) => {
     return {
@@ -134,6 +141,12 @@ const CompanyInfo = () => {
   //Adding the supervisors
   const addSupervisors = () => {
     if (firstName && lastName && työpaikkaohjaajaEmail) {
+
+      const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+      if (!emailPattern.test(työpaikkaohjaajaEmail)) {
+        return;
+      }
+
       const newSupervisor = createSupervisor(
         firstName,
         lastName,
@@ -153,29 +166,10 @@ const CompanyInfo = () => {
     if (
       !businessId ||
       (!name && !editedCompanyName) ||
-      !firstName ||
-      !lastName ||
-      !työpaikkaohjaajaEmail
+      supervisors.length === 0
     ) {
       alert('Please fill in all required fields.');
       return;
-    }
-
-    // Form validation: Regex for email format
-    const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-    if (!emailPattern.test(työpaikkaohjaajaEmail)) {
-      alert('Please enter a valid email address.');
-      return;
-    }
-
-    // Create supervisor & save to temporary storage
-    if (firstName && lastName && työpaikkaohjaajaEmail) {
-      const newSupervisor = createSupervisor(
-        firstName,
-        lastName,
-        työpaikkaohjaajaEmail
-      );
-      addSupervisors(newSupervisor);
     }
 
     // Navigate to next page
@@ -254,8 +248,7 @@ const CompanyInfo = () => {
                 ></input>
               </div>
               <label htmlFor='department' className='workplace-form-label'>
-                {' '}
-                Yksikkö (ei pakollinen){' '}
+                Yksikkö (ei pakollinen)
               </label>
               <div className='text_input businessInformation'>
                 <input
@@ -289,76 +282,54 @@ const CompanyInfo = () => {
               2. Työpaikkaohjaajan tiedot
             </Typography>
           </AccordionSummary>
-          <form onSubmit={handleForward}>
-            <div className='ohjaajat-info'>
-              {supervisors
-                .slice()
-                .reverse()
-                .map((ohjaaja, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      borderBottom: '4px solid white',
-                      marginTop: '9px',
-                      marginBottom: '9px',
-                    }}
-                  >
-                    <label
-                      className='workplace-form-label'
-                      htmlFor={`first-name-input-${index}`}
-                    >
-                      Etunimi *
-                    </label>
-                    <div className='text_input supervisorInformation'>
-                      <input
-                        className='text_input_supervisorInformation'
-                        id={`first-name-input-${index}`}
-                        name='Etunimi'
-                        required
-                        value={ohjaaja.firstName}
-                        readOnly
-                      />
+          <div className='ohjaajat-info'>
+            {supervisors
+              .map((ohjaaja, index) => (
+                <div
+                  key={index}
+                  style={{
+                    borderBottom: '4px solid white',
+                    marginTop: '9px',
+                    marginBottom: '9px',
+                    padding: '20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '20px',
+                  }}
+                >
+                  <div className='supervisor-information'>
+                    <div className='field'>
+                      <p className='field-name'>Etunimi:</p>
+                      <p className='field-value'>{ohjaaja.firstName}</p>
                     </div>
-                    <label
-                      className='workplace-form-label'
-                      htmlFor={`last-name-input-${index}`}
-                    >
-                      Sukunimi *
-                    </label>
-                    <div className='text_input supervisorInformation'>
-                      <input
-                        className='text_input_supervisorInformation'
-                        id={`last-name-input-${index}`}
-                        name='Sukunimi'
-                        required
-                        value={ohjaaja.lastName}
-                        readOnly
-                      />
+                    <div className='field'>
+                      <p className='field-name'>Sukunimi:</p>
+                      <p className='field-value'>{ohjaaja.lastName}</p>
                     </div>
-                    <label
-                      className='workplace-form-label'
-                      htmlFor={`email-input-${index}`}
-                    >
-                      Sähköposti *
-                    </label>
-                    <div
-                      className='text_input businessInformation'
-                      style={{ marginBottom: '2rem' }}
-                    >
-                      <input
-                        className='text_input_businessInformation'
-                        id={`email-input-${index}`}
-                        name='Sähköposti'
-                        type='email'
-                        required
-                        value={ohjaaja.email}
-                        readOnly
-                      />
+                    <div className='field'>
+                      <p className='field-name'>Sähköposti:</p>
+                      <p className='field-value'>{ohjaaja.email}</p>
                     </div>
                   </div>
-                ))}
-            </div>
-            <div className='ohjaja'>
+
+                  <div className="delete-edit-buttons">
+                    <button className="button--secondary" onClick={() => deleteSupervisor(index)}>
+                      <Icon icon={'lucide:trash'} color="red" />
+                      <span>Poista</span>
+                    </button>
+                    <button className="button--primary" onClick={() => {}} disabled>
+                      <Icon icon={'lucide:plus'} />
+                      <span>Muokkaa</span>
+                    </button>
+                  </div>
+
+                </div>
+              ))}
+          </div>
+
+
+          <form onSubmit={handleForward}>
+            <div>
               <label
                 className='workplace-form-label'
                 htmlFor='first-name-input'
@@ -403,7 +374,7 @@ const CompanyInfo = () => {
                 />
               </div>
               <Button
-                text='Lisää toinen ohjaaja'
+                text='Lisää ohjaaja'
                 style={{
                   marginLeft: '17%',
                   marginBottom: '30px',
@@ -420,10 +391,12 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
+      
       <PageNavigationButtons
         handleBack={() => navigate('/add/companyname')}
         handleForward={handleForward}
         showForwardButton={true}
+        disabled={supervisors.length === 0}
       />
     </div>
   );
