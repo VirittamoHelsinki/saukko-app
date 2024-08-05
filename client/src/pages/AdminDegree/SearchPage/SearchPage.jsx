@@ -5,84 +5,41 @@ import Searchbar from '../../../components/Searchbar/Searchbar';
 import withPaginatedDegrees from '../../../HOC/withPaginatedDegrees';
 import { CircularProgress } from '@mui/material';
 
-const DegreeList = ({ data }) => {
+import PaginationButtons from '../../../components/PaginationButtons';
+
+const ChevronRightIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="14" viewBox="0 0 10 14" fill="none">
+    <path d="M6.00241 7L0.816406 2L2.37241 0.5L9.11641 7L2.37241 13.5L0.816406 12L6.00241 7Z" fill="currentColor"/>
+  </svg>
+)
+
+const DegreeList = ({ degrees }) => {
   const navigate = useNavigate();
   const handleChooseDegree = async (degreeId) => {
     navigate(`${degreeId}`)
   }
 
   return (
-    <>
-      {data.map((degree, index) => (
-        <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
-          <h3>{degree.name.fi}</h3>
-          <div className='searchPage__container--list-item-bottom'>
-            <div>
+    <div className="searchPage__container--list">
+      {
+        degrees.map((degree, index) => (
+          <div key={index} className="searchPage__container--list-item" onClick={() => handleChooseDegree(degree._id)}>
+            <h3>{degree.name.fi}</h3>
+            <div className='searchPage__container--list-item-bottom'>
               <p>Diaari: {degree.diaryNumber}</p>
+              <div className="space-fill"></div>
               <p>Koodi: {degree.eduCodeValue}</p>
+              <ChevronRightIcon />
             </div>
-            <li>&#8250;</li>
           </div>
-        </div>
-      ))}
-    </>
-  );
-};
-
-const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
-  // Maximum number of numbered buttons to show at a time
-  const maxButtons = 5;
-
-  // Start position of numbered buttons to show
-  const start = currentPage - Math.floor(maxButtons / 2);
-
-  // End position of numbered buttons to show
-  const end = start + maxButtons;
-
-  let pages = [];
-  // Create an array of pages to show based on the start and end position
-  for (let i = start; i < end; i++) {
-    if (i >= 1 && i <= pageCount) {
-      pages.push(i);
-    }
-  }
-
-  return (
-    <div className='searchPage__container--list-pagination'>
-      <section className='searchPage__container--list-pagination-nums'>
-        {/* Render numbered buttons */}
-        <button
-          // Disable button if current page is the first page
-          disabled={currentPage === 1}
-          onClick={() => handlePageClick(currentPage - 1)}
-          style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
-          className='arrow__button__left'
-        >
-          {'< '}
-        </button>
-        {pages.map((pageNum) => (
-          <button
-            key={pageNum}
-            onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
-              }`}
-          >
-            {pageNum}
-          </button>
-        ))}
-         <button
-          // Disable button if current page is the last page
-          disabled={currentPage === pageCount}
-          onClick={() => handlePageClick(currentPage + 1)}
-          style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
-          className='arrow__button__right'
-        >
-          {' >'}
-        </button>
-      </section>
+        ))
+      }
+    
     </div>
   );
 };
+
+
 
 const SearchPage = ({ data, loading, page, setPage, totalPages, setSearchParam }) => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
@@ -109,10 +66,8 @@ const SearchPage = ({ data, loading, page, setPage, totalPages, setSearchParam }
         <Searchbar handleSearch={handleSearch} placeholder={'Etsi tutkinto'} />
         {(data && !loading) ? (
           <>
-            <div className="searchPage__container--list">
-              <DegreeList data={data} />
-            </div>
-            <PageButtons
+            <DegreeList degrees={data} />
+            <PaginationButtons
               currentPage={page}
               pageCount={totalPages}
               handlePageClick={handlePageClick}

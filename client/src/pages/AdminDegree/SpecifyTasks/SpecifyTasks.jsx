@@ -23,6 +23,7 @@ import { Icon } from '@iconify/react';
 import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
+import RequirementsAndCriteriaEditingModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaEditingModal';
 
 function SpecifyTasks({ degree }) {
   const navigate = useNavigate();
@@ -31,9 +32,10 @@ function SpecifyTasks({ degree }) {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
 
   // Initialize state
+  const [isEditing, setIsEditing] = useState(false);
+  const [assessmentToEdit, setAssessmenetToEdit] = useState(null)
   const [assessments, setAssessments] = useState([]);
   const [activeStep, setActiveStep] = useState(0); // Index of the selected unit
-  const [savedDataCriteria, setSavedDataCriteria] = useState([]);
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
@@ -42,20 +44,10 @@ function SpecifyTasks({ degree }) {
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   useEffect(() => {
-    setSiteTitle("Suoritusten hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
-    // Initialize saved data object
-    const initialData = {};
-    checkedUnits.forEach((unit) => {
-      initialData[unit._id] = [];
-    });
-    setSavedDataCriteria(initialData);
+    setSiteTitle("Suoritusten hallinnointi")
+    setSubHeading("Lisää uusi tutkinto")
+    setHeading("Tutkintojen hallinta")
   }, [checkedUnits, setHeading, setSiteTitle, setSubHeading]);
-
-  const handleSave = (title, criteria) => {
-    const newData = { ...savedDataCriteria };
-    newData[checkedUnits[activeStep]._id].push({ title, criteria }); // Error
-    setSavedDataCriteria(newData);
-  };
 
   // Labels and urls for stepper
   const stepperData = [
@@ -96,12 +88,50 @@ function SpecifyTasks({ degree }) {
   };
 
   const handleCloseCriteriaModal = () => {
+    setIsEditing(false)
     setIsCriteriaModalOpen(false);
   };
 
-  const handlePenClick = () => {
+  const handleEditButtonClick = (assessmentToEdit) => {
+    setAssessmenetToEdit(assessmentToEdit)
+    setIsEditing(true)
     setIsCriteriaModalOpen(true);
   };
+
+  const modalHandleSave = (title, criteria) => {
+    // Check if user actually has checked units
+    if (!checkedUnits[activeStep]) {
+      return;
+    }
+
+    setAssessments((prevAssessments) => [
+      ...prevAssessments,
+      {
+        unitId: checkedUnits[activeStep]._id, // error
+        name: title,
+        criteria: criteria,
+      },
+    ]);
+  }
+
+  const editModalHandleSave = (newAssessment) => {
+    // Check if user actually has checked units
+    if (!checkedUnits[activeStep]) {
+      return;
+    }
+
+    console.log({ newAssessment });
+
+    setAssessments((prevAssessments) => {
+      const filteredAssessments = prevAssessments
+        .filter((oldAssessment => oldAssessment.unitId !== newAssessment.unitId));
+        
+      return [
+        ...filteredAssessments,
+        newAssessment,
+      ]
+    });
+  }
 
   // Form submission handler
   const handleSubmit = () => {
@@ -109,10 +139,10 @@ function SpecifyTasks({ degree }) {
 
     flattenedAssessments.forEach((assessment) => {
       const { unitId, name, criteria } = assessment;
-      addAssessment(unitId, name, criteria);
+      addAssessment(unitId, name, criteria); // Add assessments to global state
     });
 
-    navigate(`/degrees/${params.degreeId}/summary`);
+    navigate(`/degrees/${params.degreeId}/summary`); // Navigate to the next page
   };
 
   return (
@@ -189,49 +219,52 @@ function SpecifyTasks({ degree }) {
               <h3 className='unit-guidance'>
                 {checkedUnits[activeStep]?.name?.fi}
               </h3>
-              <RequirementsAndCriteriaModal
-                open={isCriteriaModalOpen}
-                onClose={handleCloseCriteriaModal}
-                title='Ammattitaitovaatimuksen tiedot'
-                modalUnitName={checkedUnits[activeStep]?.name.fi}
-                requirementsTitle='Ammattitaitovaatimuksen nimi'
-                criteria='Kriteerit'
-                hideCancelButton={true}
-                onSave={(title, criteria) => {
-                  // Check if user actually has checked units
-                  if (!checkedUnits[activeStep]) {
-                    return;
-                  }
+              
+              {
+                isEditing ? (
+                  <RequirementsAndCriteriaEditingModal
+                    open={isCriteriaModalOpen}
+                    onClose={handleCloseCriteriaModal}
+                    title='Ammattitaitovaatimuksen tiedot'
+                    modalUnitName={checkedUnits[activeStep]?.name.fi}
+                    requirementsTitle='Ammattitaitovaatimuksen nimi'
+                    criteria='Kriteerit'
+                    onSave={editModalHandleSave}
+                    assessmentToEdit={assessmentToEdit}
+                    hideCancelButton
+                  />
+                ) : (
+                  <RequirementsAndCriteriaModal
+                    open={isCriteriaModalOpen}
+                    onClose={handleCloseCriteriaModal}
+                    title='Ammattitaitovaatimuksen tiedot'
+                    modalUnitName={checkedUnits[activeStep]?.name.fi}
+                    requirementsTitle='Ammattitaitovaatimuksen nimi'
+                    criteria='Kriteerit'
+                    onSave={modalHandleSave}
+                    hideCancelButton
+                  />
+                )
+              }
 
-                  setAssessments((prevAssessments) => [
-                    ...prevAssessments,
-                    {
-                      unitId: checkedUnits[activeStep]._id, // error
-                      name: title,
-                      criteria: criteria,
-                    },
-                  ]);
-                  handleSave(title, criteria);
-                }}
-              />
               <div>
-                {savedDataCriteria[checkedUnits[activeStep]?._id]?.map(
-                  (field, index) => (
-                    <li key={index} className='list_group_skills_titles'>
-                      <span className='title'>
-                        {index + 1}. {field.title}{' '}
-                      </span>
-                      <span
-                        onClick={() =>
-                          handlePenClick(checkedUnits[activeStep]._id)
-                        }
-                      >
-                        {' '}
-                        <Icon icon='uil:pen' color='#0000bf' />
-                      </span>
-                    </li>
+                {
+                  assessments
+                    .filter((assessment) => assessment.unitId === checkedUnits[activeStep]?._id)
+                    .map((assessment, index) => (
+                      <li key={index} className='list_group_skills_titles'>
+                        <span className='title'>
+                          {index + 1}. {assessment.name}                
+                        </span>
+                        <Icon
+                          icon='uil:pen'
+                          color='#0000bf'
+                          onClick={() => handleEditButtonClick(assessment)}
+                        />
+                      </li>
+                    )
                   )
-                )}
+                }
               </div>
               <Button
                 id='addCriteriaButton'
