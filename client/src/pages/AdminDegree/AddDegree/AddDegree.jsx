@@ -7,6 +7,7 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Button from '../../../components/Button/Button';
+import PaginationButtons from '../../../components/PaginationButtons';
 
 
 // controls how many degrees are shown at once and renders them
@@ -35,61 +36,6 @@ const CheckLength = ({
         </div>
       ))}
     </>
-  );
-};
-
-const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
-  // Maximum number of numbered buttons to show at a time
-  const maxButtons = 5;
-
-  // Start position of numbered buttons to show
-  const start = currentPage - Math.floor(maxButtons / 2);
-
-  // End position of numbered buttons to show
-  const end = start + maxButtons;
-
-  let pages = [];
-  // Create an array of pages to show based on the start and end position
-  for (let i = start; i < end; i++) {
-    if (i >= 1 && i <= pageCount) {
-      pages.push(i);
-    }
-  }
-
-  return (
-    <div className='addDegree__container--list-pagination'>
-      <section id='numberedButtons' className='addDegree__container--list-pagination-nums'>
-        {/* Render numbered buttons */}
-        <button
-          // Disable button if current page is the first page
-          disabled={currentPage === 1}
-          onClick={() => handlePageClick(currentPage - 1)}
-          style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
-          className='arrow__button__left'
-        >
-          {'< '}
-        </button>
-        {pages.map((pageNum) => (
-          <button
-            key={pageNum}
-            onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
-              }`}
-          >
-            {pageNum}
-          </button>
-        ))}
-         <button
-          // Disable button if current page is the last page
-          disabled={currentPage === pageCount}
-          onClick={() => handlePageClick(currentPage + 1)}
-          style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
-          className='arrow__button__right'
-        >
-          {' >'}
-        </button>
-      </section>
-    </div>
   );
 };
 
@@ -161,7 +107,7 @@ const AddDegree = () => {
             currentPage={currentPage}
           />
         </div>
-        <PageButtons
+        <PaginationButtons
           currentPage={currentPage}
           pageCount={pageCount}
           handlePageClick={handlePageClick}
