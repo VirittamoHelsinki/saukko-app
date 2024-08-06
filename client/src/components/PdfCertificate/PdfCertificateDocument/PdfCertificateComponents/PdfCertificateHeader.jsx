@@ -1,6 +1,9 @@
-import { Document, Page, View, StyleSheet, Text, Font } from "@react-pdf/renderer";
-
-
+import {
+  View,
+  StyleSheet,
+  Text,
+  Font,
+} from "@react-pdf/renderer";
 
 const PdfCertificateHeader = () => {
   // Bubblegum fix for font weights, fix later?
@@ -38,9 +41,7 @@ const PdfCertificateHeader = () => {
       textAlign: 'right',
       fontWeight: 600,
     }
-  })
-
-
+  });
 
   return (
     <View style={styles.header} fixed>
@@ -56,7 +57,7 @@ const PdfCertificateHeader = () => {
         <Text style={styles.text}>OsTu-app</Text>
       </View>
     </View>
-  )
+  );
 }
 
 export default PdfCertificateHeader;
