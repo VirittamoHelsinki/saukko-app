@@ -3,9 +3,9 @@ import PdfCertificate from './PdfCertificateDocument/PdfCertificate';
 
 const PdfExportButton = () => {
   return (
-      <PDFDownloadLink document={<PdfCertificate />} fileName='somename.pdf'>
-        Lataa PDF-yhteenveto
-      </PDFDownloadLink>
+    <PDFDownloadLink document={PdfCertificate()} fileName='somename.pdf'>
+      Lataa PDF-yhteenveto
+    </PDFDownloadLink>
   );
 };
 

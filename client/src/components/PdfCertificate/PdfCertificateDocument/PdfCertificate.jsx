@@ -5,22 +5,25 @@ import PdfCertificateWorkplaceInfo from "./PdfCertificateComponents/PdfCertifica
 import PdfCertificateDegreeParts from "./PdfCertificateComponents/PdfCertificateDegreeParts";
 import PdfCertificateDivider from "./PdfCertificateComponents/PdfCertificateDivider";
 
-const PdfCertificate = () => {
-    const styles = StyleSheet.create({
-        page: {
-            margin: '20px 40px',
-        },
-      });
 
-    return (
-      <Document style={styles.page}>
-          <PdfCertificateHeader fixed />
-          <PdfCertificateClientInfo />
-          <PdfCertificateWorkplaceInfo />
-          <PdfCertificateDegreeParts />
-          <PdfCertificateDivider />
-      </Document>
-    );
+const PdfCertificate = () => {
+  const styles = StyleSheet.create({
+    page: {
+      margin: '20px 40px',
+    },
+  });
+
+  return (
+    <Document style={styles.page}>
+      <Page>
+        <PdfCertificateHeader fixed />
+        <PdfCertificateClientInfo />
+        <PdfCertificateWorkplaceInfo />
+        <PdfCertificateDegreeParts />
+        <PdfCertificateDivider />
+      </Page>
+    </Document>
+  );
 };
 
 export default PdfCertificate;

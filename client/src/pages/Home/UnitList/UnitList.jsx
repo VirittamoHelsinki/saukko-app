@@ -111,7 +111,8 @@ const UnitList = () => {
         </div>
         <div className='wrapper-button-pdf'>
           {currentUser?.role === 'teacher' && (
-              <PdfCertificate />
+             /*  <PdfCertificate /> */
+             <PdfExportButton />
           )}
         </div>
       </div>
