@@ -4,6 +4,7 @@ import PdfCertificateClientInfo from "./PdfCertificateComponents/PdfCertificateC
 import PdfCertificateWorkplaceInfo from "./PdfCertificateComponents/PdfCertificateWorkplaceInfo";
 import PdfCertificateDegreeParts from "./PdfCertificateComponents/PdfCertificateDegreeParts";
 import PdfCertificateDivider from "./PdfCertificateComponents/PdfCertificateDivider";
+import PdfCertificateUnit from "./PdfCertificateComponents/PdfCertificateUnit"
 
 
 const PdfCertificate = () => {
@@ -31,6 +32,7 @@ const PdfCertificate = () => {
         <PdfCertificateWorkplaceInfo />
         <PdfCertificateDegreeParts />
         <PdfCertificateDivider />
+        <PdfCertificateUnit />
       </Page>
     </Document>
   );
