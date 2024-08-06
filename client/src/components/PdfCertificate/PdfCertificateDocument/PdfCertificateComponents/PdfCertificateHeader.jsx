@@ -20,7 +20,7 @@ const PdfCertificateHeader = () => {
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
-      marginBottom: '30px',
+      marginBottom: 50,
     },
     block: {
       display: "flex",

@@ -1,26 +1,16 @@
 import {
-  Document,
-  Page,
   View,
   StyleSheet,
   Text,
-  Font,
 } from '@react-pdf/renderer';
 
 const PdfCertificateClientInfo = () => {
   const styles = StyleSheet.create({
-    customerInfo: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 10,
-    },
-    block: {
+    clientInfo: {
       display: 'flex',
       flexDirection: 'column',
-      marginBottom: 10,
-      marginTop: 25,
+      gap: 20,
+      marginBottom: 20,
     },
     text: {
       fontSize: 16,
@@ -28,17 +18,11 @@ const PdfCertificateClientInfo = () => {
       fontStyle: 'bold',
     },
   });
+
   return (
     <View style={styles.clientInfo}>
-      <View style={styles.block}>
-        <Text style={styles.text}>
-          [Asiakkaan etunimi] [Asiakkaan sukunimi]
-        </Text>
-      </View>
-      <View style={styles.block}>
-        <Text style={styles.text}>[Tutkinto]</Text>
-      </View>
-      <View style={styles.block}></View>
+      <Text style={styles.text}>[Asiakkaan etunimi] [Asiakkaan sukunimi]</Text>
+      <Text style={styles.text}>[Tutkinto]</Text>
     </View>
   );
 };
