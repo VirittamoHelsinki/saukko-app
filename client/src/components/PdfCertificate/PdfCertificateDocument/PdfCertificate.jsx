@@ -1,4 +1,4 @@
-import { Document, Page, View, StyleSheet, Text } from "@react-pdf/renderer";
+import { Document, Page, View, StyleSheet, Text, Font } from "@react-pdf/renderer";
 import PdfCertificateHeader from "./PdfCertificateComponents/PdfCertificateHeader";
 import PdfCertificateClientInfo from "./PdfCertificateComponents/PdfCertificateClientInfo";
 import PdfCertificateWorkplaceInfo from "./PdfCertificateComponents/PdfCertificateWorkplaceInfo";
@@ -7,6 +7,16 @@ import PdfCertificateDivider from "./PdfCertificateComponents/PdfCertificateDivi
 
 
 const PdfCertificate = () => {
+
+  // Bubblegum fix for font weights, fix later?
+/*   Font.register({
+    family: 'Roboto',
+    fonts: [
+      { src: 'http://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf' },
+    ]
+  });
+ */
+
   const styles = StyleSheet.create({
     page: {
       padding: '30px 60px',
