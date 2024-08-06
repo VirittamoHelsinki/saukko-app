@@ -9,14 +9,14 @@ import PdfCertificateDivider from "./PdfCertificateComponents/PdfCertificateDivi
 const PdfCertificate = () => {
   const styles = StyleSheet.create({
     page: {
-      margin: '20px 40px',
+      padding: '30px 60px',
     },
   });
 
   return (
     <Document style={styles.page}>
-      <Page>
-        <PdfCertificateHeader fixed />
+      <Page style={styles.page}>
+        <PdfCertificateHeader />
         <PdfCertificateClientInfo />
         <PdfCertificateWorkplaceInfo />
         <PdfCertificateDegreeParts />

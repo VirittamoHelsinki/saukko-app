@@ -14,6 +14,7 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 // Import PDF Certificate Export
 import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
 import PdfCertificate from '../../../components/PdfCertificate/PdfCertificateDocument/PdfCertificate.jsx';
+import { PDFViewer } from '@react-pdf/renderer';
 
 const UnitList = () => {
   const navigate = useNavigate();
@@ -110,10 +111,19 @@ const UnitList = () => {
           />
         </div>
         <div className='wrapper-button-pdf'>
-          {currentUser?.role === 'teacher' && (
-             /*  <PdfCertificate /> */
+{/*           {currentUser?.role === 'teacher' && (
              <PdfExportButton />
-          )}
+          )} */}
+
+          <PDFViewer style={{ 
+            position: 'absolute',
+            top: 0,
+            left: '-50%',
+            width: '200%',
+            height: '100%'
+          }}>
+            <PdfCertificate/>
+          </PDFViewer>
         </div>
       </div>
     </div>
