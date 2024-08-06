@@ -7,17 +7,20 @@ const PdfCertificateWorkplaceInfo = () => {
     workplaceInfoWrapper: {
       display: 'flex',
       flexDirection: 'row',
-      width: '75%',
+      width: '100%',
+      marginBottom: 15,
     },
     workplaceInfoStatic: {
       display: 'flex',
       flexDirection: 'column',
-      width: '50%',
+      gap: 5,
+      width: '35%',
       fontStyle: 'bold',
     },
     workplaceInfoDynamic: {
       display: 'flex',
       flexDirection: 'column',
+      gap: 5,
       width: '50%',
     },
     text: {

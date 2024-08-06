@@ -5,21 +5,17 @@ const PdfCertificateDegreeParts = () => {
     degreePartsWrapper: {
       display: 'flex',
       flexDirection: 'column',
-    },
-    degreePartsStatic: {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '50%',
+      gap: 10,
     },
     degreePartsDynamic: {
       display: 'flex',
-      alignItems: 'flex-end',
       flexDirection: 'column',
       width: '50%',
+      left: '35%',
+      gap: 5,
     },
     text: {
       fontSize: 12,
-      marginBottom: 5,
     },
   });
 
@@ -32,6 +28,9 @@ const PdfCertificateDegreeParts = () => {
       </View>
       <View style={styles.degreePartsDynamic}>
         <Text style={styles.text}>[Tutkinnonosa 1]</Text>
+        <Text style={styles.text}>[Tutkinnonosa 2]</Text>
+        <Text style={styles.text}>[Tutkinnonosa 3]</Text>
+        <Text style={styles.text}>[Tutkinnonosa 4]</Text>
       </View>
     </View>
   );
