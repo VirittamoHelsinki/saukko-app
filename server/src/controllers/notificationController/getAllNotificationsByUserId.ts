@@ -8,7 +8,7 @@ const getAllNotificationsByUserId = async (req: Request, res: Response) => {
 
     const userId = req.user?._id;
 
-    const notifications = await NotificationModel.find({ recipientUserId: userId }).exec();
+    const notifications = await NotificationModel.find({ recipientUserId: userId })
 
     res.status(200).json(notifications)
 
