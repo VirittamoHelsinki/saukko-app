@@ -28,8 +28,8 @@ const PdfCertificateDegreeParts = ({ unitNames }) => {
       </View>
       <View style={styles.degreePartsDynamic}>
         {
-          unitNames.map((unitName) =>
-            <CustomText fontSize={12}>{unitName}</CustomText>
+          unitNames.map((unitName, index) =>
+            <CustomText key={`${index}-${unitName}`} fontSize={12}>{unitName}</CustomText>
           )
         }
       </View>

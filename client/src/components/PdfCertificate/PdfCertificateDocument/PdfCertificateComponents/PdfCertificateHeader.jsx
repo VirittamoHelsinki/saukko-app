@@ -21,7 +21,6 @@ const PdfCertificateHeader = ({ degreeName }) => {
       fontSize: 9,
       color: "gray",
       textAlign: 'right',
-      textAlign: 'center'
     },
     boldText: {
       fontSize: 9,

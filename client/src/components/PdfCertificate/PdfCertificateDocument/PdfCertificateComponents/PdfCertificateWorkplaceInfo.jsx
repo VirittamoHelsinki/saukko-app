@@ -1,6 +1,4 @@
-import { Document, Page, View, StyleSheet, Text } from '@react-pdf/renderer';
-import { useEffect } from 'react';
-import useEvaluationStore from '../../../../store/zustand/evaluationStore'
+import { View, StyleSheet } from '@react-pdf/renderer';
 import CustomText from './CustomText';
 
 const PdfCertificateWorkplaceInfo = ({
