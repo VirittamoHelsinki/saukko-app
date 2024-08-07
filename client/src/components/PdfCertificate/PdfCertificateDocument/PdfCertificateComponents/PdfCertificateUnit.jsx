@@ -62,8 +62,7 @@ const PdfCertificateUnit = ({ units }) => {
     <View>
 
       {
-        units.map((unit) => {
-
+        units.filter((unit) => unit.status === 3).map((unit) => {
           const unitName = unit.name.fi
 
           return (

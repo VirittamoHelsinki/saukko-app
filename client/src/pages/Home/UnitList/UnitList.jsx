@@ -113,11 +113,11 @@ const UnitList = () => {
           />
         </div>
         <div className='wrapper-button-pdf'>
-{/*           {currentUser?.role === 'teacher' && (
-             <PdfExportButton />
-          )} */}
+          {currentUser?.role === 'teacher' && (
+             <PdfExportButton data={evaluation}/>
+          )}
 
-          {
+          {/* {
             evaluation && (
               <PDFViewer style={{ 
                 position: 'absolute',
@@ -129,7 +129,7 @@ const UnitList = () => {
                 <PdfCertificate data={evaluation}/>
               </PDFViewer>
             )
-          }
+          } */}
 
         </div>
       </div>

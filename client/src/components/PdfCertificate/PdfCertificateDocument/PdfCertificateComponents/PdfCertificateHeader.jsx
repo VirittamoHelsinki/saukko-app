@@ -5,7 +5,7 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
-const PdfCertificateHeader = () => {
+const PdfCertificateHeader = ({ degreeName }) => {
   const styles = StyleSheet.create({
     header: {
       display: "flex",
@@ -36,10 +36,10 @@ const PdfCertificateHeader = () => {
     <View style={styles.header} fixed>
       <View style={styles.block}>
         <Text style={styles.boldText}>Osaamistodistus</Text>
-        <Text style={styles.text}>Tallenettu {new Date().toLocaleDateString()}</Text>
+        <Text style={styles.text}>Tallennettu {new Date().toLocaleDateString()}</Text>
       </View>
       <View style={styles.block}>
-        <Text style={styles.text}>[Tutkinnon nimi]</Text>
+        <Text style={styles.text}>{degreeName}</Text>
       </View>
       <View style={styles.block}>
         <Text style={styles.text}>Helsingin Kaupunki</Text>

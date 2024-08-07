@@ -9,13 +9,15 @@ import PdfCertificateUnit from "./PdfCertificateComponents/PdfCertificateUnit"
 
 
 const PdfCertificate = ({ data }) => {
-  console.log("CERTIFICATE", data);
+  console.log("CERTIFICATE", data); 
 
+  const degree = data.degreeId
   const customer = data.customerId
   const teacher = data.teacherId
   const supervisor = data.supervisorIds[0]
   const workplace = data.workplaceId
 
+  const degreeName = degree.name.fi
   const clientName = `${customer.firstName} ${customer.lastName}`
   const teacherName = `${teacher.firstName} ${teacher.lastName}`
   const supervisorName = `${supervisor.firstName} ${supervisor.lastName}`
@@ -51,10 +53,10 @@ const PdfCertificate = ({ data }) => {
   return (
     <Document style={styles.page}>
       <Page style={styles.page}>
-        <PdfCertificateHeader />
+        <PdfCertificateHeader degreeName={degreeName} />
         <PdfCertificateClientInfo
           clientName={clientName}
-          degreeName={"!!!Degree Name!!!"}
+          degreeName={degreeName}
         />
         <PdfCertificateWorkplaceInfo
           teacherName={teacherName}

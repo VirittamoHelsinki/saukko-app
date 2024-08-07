@@ -1,9 +1,9 @@
 import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer';
 import PdfCertificate from './PdfCertificateDocument/PdfCertificate';
 
-const PdfExportButton = () => {
+const PdfExportButton = ({ data }) => {
   return (
-    <PDFDownloadLink document={PdfCertificate()} fileName='somename.pdf'>
+    <PDFDownloadLink document={PdfCertificate({ data })} fileName='yhteenveto.pdf'>
       Lataa PDF-yhteenveto
     </PDFDownloadLink>
   );
