@@ -1,6 +1,9 @@
 import { sendReadyEmails, sendContactRequestEmails } from '../src/controllers/evaluationController/handleUserPerformanceEmails'
 import { ISendEvaluationFormRequestContact, ISelectedValues, UserRoleEnum } from '../src/mailer/types';
 
+//TODO: Change id's to real ones
+// Create test notifications for test users
+
 type Email = {
   customerEmail: string;
   teacherEmail: string;
@@ -114,6 +117,10 @@ const selectedValues: ISelectedValues = {
   valmisLahetettavaksi: false
 }
 
+const customerId = '667aa13407426f3e28ee0458' // Alli Kuusi
+const supervisorId = '664adaf5db05e2fd8e9225b0' // Muumi Peikko
+const teacherId = '664adb84db05e2fd8e9225c4' // Muumi Pappa
+
 
 describe('All emails should be send to correct users client page', () => {
 
@@ -128,17 +135,17 @@ describe('All emails should be send to correct users client page', () => {
   }
 
   it('should send email to SUPERVISOR and TEACHER when client ready', async () => {
-    expect(sendReadyEmails(UserRoleEnum.customer, formIsReadyParams, emails)[0]).toBe(emails.supervisorEmail)
-    expect(sendReadyEmails(UserRoleEnum.customer, formIsReadyParams, emails)[1]).toBe(emails.teacherEmail)
+    expect(sendReadyEmails(UserRoleEnum.customer, formIsReadyParams, emails, customerId)[0]).toBe(emails.supervisorEmail)
+    expect(sendReadyEmails(UserRoleEnum.customer, formIsReadyParams, emails, customerId)[1]).toBe(emails.teacherEmail)
 
   })
   it('should send email to TEACHER when requested contact', async () => {
-    expect(sendContactRequestEmails(selectedValuesTest1, UserRoleEnum.customer, requestContactParams, emails).length).toBeGreaterThan(0)
-    expect(sendContactRequestEmails(selectedValuesTest1, UserRoleEnum.customer, requestContactParams, emails)[0]).toBe(emails.teacherEmail)
+    expect(sendContactRequestEmails(selectedValuesTest1, UserRoleEnum.customer, requestContactParams, emails, customerId).length).toBeGreaterThan(0)
+    expect(sendContactRequestEmails(selectedValuesTest1, UserRoleEnum.customer, requestContactParams, emails, customerId)[0]).toBe(emails.teacherEmail)
   })
   it('should NOT send email to TEACHER when not requested contact', async () => {
-    expect(sendContactRequestEmails(selectedValuesTest2, UserRoleEnum.customer, requestContactParams, emails)[0]).not.toBe(emails.teacherEmail)
-    expect(sendContactRequestEmails(selectedValuesTest2, UserRoleEnum.customer, requestContactParams, emails).length).toBe(0)
+    expect(sendContactRequestEmails(selectedValuesTest2, UserRoleEnum.customer, requestContactParams, emails, customerId)[0]).not.toBe(emails.teacherEmail)
+    expect(sendContactRequestEmails(selectedValuesTest2, UserRoleEnum.customer, requestContactParams, emails, customerId).length).toBe(0)
   })
 })
 
@@ -150,11 +157,11 @@ describe('All emails should be send to correct users supervisor page', () => {
   }
 
   it('should send email to TEACHER and CUSTOMER when supervisor ready', async () => {
-    expect(sendReadyEmails(UserRoleEnum.supervisor, formIsReadyParams, emails)[0]).toBe(emails.customerEmail)
-    expect(sendReadyEmails(UserRoleEnum.supervisor, formIsReadyParams, emails)[1]).toBe(emails.teacherEmail)
+    expect(sendReadyEmails(UserRoleEnum.supervisor, formIsReadyParams, emails, supervisorId)[0]).toBe(emails.customerEmail)
+    expect(sendReadyEmails(UserRoleEnum.supervisor, formIsReadyParams, emails, supervisorId)[1]).toBe(emails.teacherEmail)
   })
   it('should send email to TEACHER when requested contact', async () => {
-    expect(sendContactRequestEmails(selectedValuesTest1, UserRoleEnum.supervisor, requestContactParams, emails)[0]).toBe(emails.teacherEmail)
+    expect(sendContactRequestEmails(selectedValuesTest1, UserRoleEnum.supervisor, requestContactParams, emails, supervisorId)[0]).toBe(emails.teacherEmail)
   })
 })
 
@@ -171,15 +178,15 @@ describe('All emails should be send to correct users teacher page', () => {
   }
 
   it('should send email to SUPERVISOR and CUSTOMER when teacher ready', async () => {
-    expect(sendReadyEmails(UserRoleEnum.teacher, formIsReadyParams, emails)[0]).toBe(emails.supervisorEmail)
-    expect(sendReadyEmails(UserRoleEnum.teacher, formIsReadyParams, emails)[1]).toBe(emails.customerEmail)
+    expect(sendReadyEmails(UserRoleEnum.teacher, formIsReadyParams, emails, teacherId)[0]).toBe(emails.supervisorEmail)
+    expect(sendReadyEmails(UserRoleEnum.teacher, formIsReadyParams, emails, teacherId)[1]).toBe(emails.customerEmail)
   })
   it('should send email to CUSTOMER when requested contact', async () => {
-    expect(sendContactRequestEmails(selectedValuesTest1, UserRoleEnum.teacher, requestContactParams, emails)[0]).toBe(emails.customerEmail)
+    expect(sendContactRequestEmails(selectedValuesTest1, UserRoleEnum.teacher, requestContactParams, emails, teacherId)[0]).toBe(emails.customerEmail)
 
   })
   it('should send email to SUPERVISOR when requested contact', async () => {
-    expect(sendContactRequestEmails(selectedValuesTest2, UserRoleEnum.teacher, requestContactParams, emails)[0]).toBe(emails.supervisorEmail)
+    expect(sendContactRequestEmails(selectedValuesTest2, UserRoleEnum.teacher, requestContactParams, emails, teacherId)[0]).toBe(emails.supervisorEmail)
 
   })
 })

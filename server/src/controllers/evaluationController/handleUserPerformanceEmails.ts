@@ -26,11 +26,7 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
     .populate('units');
 };
 
-export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: IEmails): Array<String> => {
-
-
-  console.log('userRole: ', userRole)
-  console.log('formIsReadyParams: ', formIsReadyParams)
+export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails: IEmails, userId: string): Array<String> => {
 
   const emailsSendTo: Array<string> = []
 
@@ -39,12 +35,14 @@ export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails
       sendEvaluationFormSupervisorReadyMessageCustomer(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
         'TPO:n valmis lomake',
-        emails.customerEmail
+        emails.customerEmail,
+        userId
       );
       sendEvaluationFormSupervisorReadyMessageTeacher(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
         'TPO:n valmis lomake',
-        emails.teacherEmail
+        emails.teacherEmail,
+        userId
       );
 
       emailsSendTo.push(emails.customerEmail)
@@ -54,12 +52,14 @@ export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails
       sendEvaluationFormCustomerReadyMessageSupervisor(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
         'Asiakkaan valmis lomake',
-        emails.supervisorEmail
+        emails.supervisorEmail,
+        userId
       );
       sendEvaluationFormCustomerReadyMessageTeacher(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
         'Asiakkaan valmis lomake',
-        emails.teacherEmail
+        emails.teacherEmail,
+        userId
       );
       emailsSendTo.push(emails.supervisorEmail)
       emailsSendTo.push(emails.teacherEmail)
@@ -68,12 +68,14 @@ export const sendReadyEmails = (userRole: string, formIsReadyParams: any, emails
       sendEvaluationFormTeacherReadyMessageSupervisor(
         { ...formIsReadyParams, evaluationAccepted: EvaluationStatus.ACCEPTED },
         'Opettajan valmis lomake',
-        emails.supervisorEmail
+        emails.supervisorEmail,
+        userId
       );
       sendEvaluationFormTeacherReadyMessageCustomer(
         { ...formIsReadyParams, evaluationAccepted: EvaluationStatus.ACCEPTED },
         'Opettajan valmis lomake',
-        emails.customerEmail
+        emails.customerEmail,
+        userId
       );
       emailsSendTo.push(emails.supervisorEmail)
       emailsSendTo.push(emails.customerEmail)
@@ -119,27 +121,27 @@ export const evaluationCompleted = (evaluation: any): boolean => {
   return (evaluation.units?.length > 0 ? evaluation.units.every((unit: any) => unit.teacherReady === true) : false)
 }
 
-export const sendContactRequestEmails = (selectedValues: ISelectedValues, userRole: UserRole, requestContactParams: ISendEvaluationFormRequestContact, emails: IEmails) => {
+export const sendContactRequestEmails = (selectedValues: ISelectedValues, userRole: UserRole, requestContactParams: ISendEvaluationFormRequestContact, emails: IEmails, userId: string) => {
 
   const emailsSendTo: Array<string> = []
 
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'customer') {
-    sendEvaluationFormCustomerRequestContact(requestContactParams, emails.teacherEmail);
+    sendEvaluationFormCustomerRequestContact(requestContactParams, emails.teacherEmail, userId);
     emailsSendTo.push(emails.teacherEmail)
   }
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'supervisor') {
-    sendEvaluationFormSupervisorRequestContact(requestContactParams, emails.teacherEmail);
+    sendEvaluationFormSupervisorRequestContact(requestContactParams, emails.teacherEmail, userId);
     emailsSendTo.push(emails.teacherEmail)
   }
   if (selectedValues.pyydetaanYhteydenottoaAsiakkaalta && userRole === 'teacher') {
-    sendEvaluationFormTeacherRequestContactMessageCustomer(requestContactParams, emails.customerEmail);
+    sendEvaluationFormTeacherRequestContactMessageCustomer(requestContactParams, emails.customerEmail, userId);
     emailsSendTo.push(emails.customerEmail)
   }
   if (selectedValues.pyydetaanYhteydenottoaOhjaajalta && userRole === 'teacher') {
     sendEvaluationFormTeacherRequestContactMessageSupervisor({
       ...requestContactParams,
       vocationalCompetenceName: requestContactParams.unitName,
-    }, emails.supervisorEmail);
+    }, emails.supervisorEmail, userId);
     emailsSendTo.push(emails.supervisorEmail)
   }
   return emailsSendTo
@@ -175,7 +177,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
     const selectedValues = req.body.selectedValues;
 
     if (selectedValues.suoritusValmis || selectedValues.valmisLahetettavaksi) {
-      sendReadyEmails(user.role, formIsReadyParams, emails);
+      sendReadyEmails(user.role, formIsReadyParams, emails, user._id);
     }
 
     const requestContactParams: ISendEvaluationFormRequestContact = {
@@ -189,7 +191,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
 
     const userRole: UserRole = getUserRole(user.role)
 
-    sendContactRequestEmails(selectedValues, userRole, requestContactParams, emails);
+    sendContactRequestEmails(selectedValues, userRole, requestContactParams, emails, user._id);
 
     evaluation.units = updateUnitStatus(req.body.units);
 

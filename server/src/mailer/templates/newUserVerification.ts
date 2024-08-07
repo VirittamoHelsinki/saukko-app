@@ -14,15 +14,15 @@ export const sendVerificationEmail = (params: IsendVerificationEmail) => {
 
   const plainText =
     `
-    Tervetuloa OsTu-appin käyttäjäksi!
+Tervetuloa OsTu-appin käyttäjäksi!
 
-    Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
+Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
 
-    Linkki vanhenee kahden tunnin kuluttua.
+Linkki vanhenee kahden tunnin kuluttua.
 
-    
-    Ystävällisin terveisin,
-    Ylläpito
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const subject = 'Vahvista sähköpostiosoitteesi';
@@ -65,15 +65,15 @@ export const sendVerificationDoneEmail = (params: IsendVerificationDoneEmail) =>
 
   const text =
     `
-    Sinulla on nyt käyttäjätili OsTu –appiin.
-  
-    Löydät asiakkuuteesi liittyvät tiedot omalta tililtäsi, jossa voit myös päivittää omia tietojasi. 
-    
-    Tervetuloa mukaan! 
-    
-  
-    Ystävällisin terveisin, 
-    Ylläpito
+Sinulla on nyt käyttäjätili OsTu –appiin.
+
+Löydät asiakkuuteesi liittyvät tiedot omalta tililtäsi, jossa voit myös päivittää omia tietojasi. 
+
+Tervetuloa mukaan! 
+
+
+Ystävällisin terveisin, 
+Ylläpito
     `;
 
   const subject = 'Sähköpostiosoitteesi on vahvistettu';
