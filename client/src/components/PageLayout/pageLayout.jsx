@@ -71,7 +71,6 @@ const PageLayout = () => {
 
   // close hamburgermenu when user click outside, except Box componet
   const menuRef = useRef(null);
-  const userNavRef = useRef(null);
 
   const logoColor = currentUser?.role ? '#000' : '#fff';
 
@@ -94,29 +93,13 @@ const PageLayout = () => {
     document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
   }, [siteTitle]);
 
-  // Close menu when user click outside of hamburgermenu
-  useEffect(() => {
-
-
-    const regexInside = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$/;
-
-    function handleClickOutside(event) {
-      if (!regexInside.test(location.pathname) && menuRef.current && !menuRef.current.contains(event.target) && userNavRef.current !== event.target) {
-        setMenuIsOpen(false);
-      }
-    }
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    }
-  }, [menuRef, location.pathname])
-
   const handleMenuToggle = () => {
     if (!menuIsOpen && regex.test(location.pathname)) {
       setShowWarning(true);
-    } else {
-      setMenuIsOpen(!menuIsOpen);
+      return;
     }
+    
+    setMenuIsOpen((oldValue) => !oldValue);
   };
 
   const handleWarningClose = () => {
@@ -141,14 +124,18 @@ const PageLayout = () => {
               </button>
             )}
             <div className={styles.buttonContainer} ref={menuRef}>
+              {/* HAMBURGER MENU TOGGLE */}
               <button onClick={() => handleMenuToggle()} style={{ marginBottom: '0.3rem' }}>
-                <Icon icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'} />
+                <Icon
+                  icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'}
+                  style={{ pointerEvents: "none" }} // Disable pointer events on icon
+                />
               </button>
             </div>
-            {!menuIsOpen && <div className={styles.headerBox} style={wrapperStyle}>
+            <div className={styles.headerBox} style={wrapperStyle}>
               {<h1>{heading}</h1>}
               {<p>{subHeading}</p>}
-            </div>}
+            </div>
             <Waves fill={headerColor} />
           </header>
         )}
