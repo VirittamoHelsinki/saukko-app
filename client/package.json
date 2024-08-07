@@ -20,6 +20,8 @@
     "@mui/lab": "^5.0.0-alpha.133",
     "@mui/material": "^5.14.1",
     "@mui/x-date-pickers": "^6.10.1",
+    "@react-pdf/renderer": "^3.4.4",
+    "@tanstack/react-query": "^5.51.21",
     "axios": "^1.6.8",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",

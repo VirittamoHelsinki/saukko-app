@@ -21,6 +21,7 @@
     "clean-install": "rimraf node_modules/ && rimraf server/node_modules/ && rimraf client/node_modules/ && npm install && cd server && npm install && cd .. && cd client && npm install && cd .."
   },
   "dependencies": {
+    "@react-pdf/renderer": "^3.4.4",
     "@tanstack/react-query": "^5.40.0",
     "concurrently": "^7.6.0"
   }

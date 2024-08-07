@@ -25,7 +25,11 @@ const getAllForCurrentUser = async (req: Request, res: Response) => {
       .populate('customerId', 'firstName lastName email')
       .populate('teacherId', 'firstName lastName')
       .populate('supervisorIds', 'firstName lastName email')
+      .populate("degreeId")
       .populate('workplaceId');
+
+    console.log(evaluations)
+    
 
     res.send(evaluations);
   } catch (error) {

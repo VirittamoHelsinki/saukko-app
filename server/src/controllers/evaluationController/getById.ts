@@ -10,6 +10,7 @@ const getById = async (req: Request, res: Response) => {
       .populate('customerId', 'firstName lastName')
       .populate('teacherId', 'firstName lastName')
       .populate('supervisorIds', 'firstName lastName')
+      .populate("degreeId")
       .populate('workplaceId');
 
     if (!evaluation) {

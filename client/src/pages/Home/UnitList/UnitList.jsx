@@ -11,13 +11,17 @@ import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
+// Import PDF Certificate Export
+import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
+
 const UnitList = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
   const { customerId } = useParams();
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
+  const { evaluations, isLoading, evaluation, setEvaluation } =
+    useEvaluations();
 
   useEffect(() => {
     if (evaluation && currentUser) {
@@ -28,23 +32,32 @@ const UnitList = () => {
         setHeading(`${customer.firstName} ${customer.lastName}`);
       }
     }
-  }, [evaluation, currentUser, setHeading])
+  }, [evaluation, currentUser, setHeading]);
 
   useEffect(() => {
-
     setSiteTitle('Suoritukset');
     setSubHeading('Suoritukset');
 
     if (!isLoading && !evaluation) {
-      const ev = evaluations.find((ev) => ev.customerId._id === customerId)
+      const ev = evaluations.find((ev) => ev.customerId._id === customerId);
+      console.log("WHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHAT", ev);
+      
       if (ev) {
-        console.log('setting evaluation in userlist')
-        setEvaluation(ev)
+        console.log('setting evaluation in userlist');
+        setEvaluation(ev);
       } else {
-        console.log('evaluation not found')
+        console.log('evaluation not found');
       }
     }
-  }, [customerId, evaluation, evaluations, isLoading, setEvaluation, setSiteTitle, setSubHeading])
+  }, [
+    customerId,
+    evaluation,
+    evaluations,
+    isLoading,
+    setEvaluation,
+    setSiteTitle,
+    setSubHeading,
+  ]);
 
   return (
     <div className='unitList__wrapper'>
@@ -62,18 +75,23 @@ const UnitList = () => {
           <h3>Asiakkaan suoritukset</h3>
         )}
         {console.log('evaluation: ', evaluation)}
-        {evaluation && evaluation.units && evaluation.units.map((unit) => (
-          <div style={{ cursor: 'pointer' }} key={unit._id}>
-            <UnitStatus
-              key={unit._id}
-              unitId={unit._id}
-              status={unit.status}
-              subheader={unit.name.fi}
-              link={`/userperformance/${unit._id}`}
-            />
-          </div>
-        ))}
-        <div className='unitList__button' style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        {evaluation &&
+          evaluation.units &&
+          evaluation.units.map((unit) => (
+            <div style={{ cursor: 'pointer' }} key={unit._id}>
+              <UnitStatus
+                key={unit._id}
+                unitId={unit._id}
+                status={unit.status}
+                subheader={unit.name.fi}
+                link={`/userperformance/${unit._id}`}
+              />
+            </div>
+          ))}
+        <div
+          className='unitList__button'
+          style={{ display: 'flex', justifyContent: 'flex-end' }}
+        >
           {currentUser?.role !== 'customer' && (
             <Button
               text='Takaisin'
@@ -87,17 +105,30 @@ const UnitList = () => {
             text='Tarkastele sopimusta'
             color='info'
             icon='bx:file'
-            onClick={() => navigate(`/contract-info/${evaluation.customerId._id}`)}
+            onClick={() =>
+              navigate(`/contract-info/${evaluation.customerId._id}`)
+            }
           />
         </div>
         <div className='wrapper-button-pdf'>
           {currentUser?.role === 'teacher' && (
-            <Button
-              text='Tee PDF-yhteenveto osaamisesta'
-              className='button--pdf'
-              icon='bx:file'
-            />
+             <PdfExportButton data={evaluation}/>
           )}
+
+          {/* {
+            evaluation && (
+              <PDFViewer style={{ 
+                position: 'absolute',
+                top: 0,
+                left: '-50%',
+                width: '200%',
+                height: '100%'
+              }}>
+                <PdfCertificate data={evaluation}/>
+              </PDFViewer>
+            )
+          } */}
+
         </div>
       </div>
     </div>

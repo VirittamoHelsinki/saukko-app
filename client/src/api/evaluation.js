@@ -21,6 +21,8 @@ const createEvaluation = async (evaluation) => {
 const fetchAllEvaluations = async () => {
   try {
     const response = await axios.get(`/api/evaluation/`);
+    console.log("RESPONSE", response.data);
+    
     return response.data;
   } catch (error) {
     console.log('Error fetching all evaluations:', error);
