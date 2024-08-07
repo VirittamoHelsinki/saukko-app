@@ -6,21 +6,26 @@ import config from "../utils/config";
 const client = new EmailClient(config.emailServiceConnectionString!);
 const sender = "DoNotReply";
 
-const sendEmail = async (messageParams: IEmailObj) => {
-  const poller = await client.beginSend({
-    senderAddress: `${sender}@${config.emailFromSenderDomain}`,
-    ...messageParams.msg
-  });
-  return await poller.pollUntilDone();
+const sendEmail = async (messageParams: IEmailObj): Promise<boolean> => {
+  try {
+    const poller = await client.beginSend({
+      senderAddress: `${sender}@${config.emailFromSenderDomain}`,
+      ...messageParams.msg
+    });
+    await poller.pollUntilDone();
+    return true;
+  } catch (error) {
+    console.error("Error sending email", error)
+    return false;
+  }
 }
 
 export async function SendEmailQueueProcessor(queueItem: unknown, context: InvocationContext): Promise<void> {
   context.log('Storage queue function processed work item:', queueItem);
 
+  // Tulkitaan jonosta saatu viesti
+
   try {
-    // TODO: fixaa tämä
-    //
-    // Tulkitaan jonosta saatu viesti
 
     const emailData: IEmailObj = queueItem as IEmailObj;
     /*  const emailData: IEmailObj = (JSON.parse(JSON.stringify(queueItem))); */
