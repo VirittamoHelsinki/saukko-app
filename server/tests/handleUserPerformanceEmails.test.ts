@@ -1,9 +1,6 @@
 import { sendReadyEmails, sendContactRequestEmails } from '../src/controllers/evaluationController/handleUserPerformanceEmails'
 import { ISendEvaluationFormRequestContact, ISelectedValues, UserRoleEnum } from '../src/mailer/types';
 
-//TODO: Change id's to real ones
-// Create test notifications for test users
-
 type Email = {
   customerEmail: string;
   teacherEmail: string;
