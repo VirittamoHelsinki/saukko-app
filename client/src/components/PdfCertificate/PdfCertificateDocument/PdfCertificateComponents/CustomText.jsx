@@ -1,11 +1,14 @@
-import { Text, StyleSheet } from "@react-pdf/renderer";
+import { Text, StyleSheet, Font } from "@react-pdf/renderer";
 
-const CustomText = ({ bold = false, fontSize = 10, children }) => {
+const CustomText = ({ bold = false, fontSize = 10, style = {}, children }) => {
+
+
   const styles = StyleSheet.create({
     text: {
-      fontFamily: "Open Sans",
-      fontWeight: bold ? 600 : 400,
+      //fontFamily: "Open Sans",
       fontSize: fontSize,
+      fontWeight: bold ? 600 : 400,
+      ...style,
     },
   });
 

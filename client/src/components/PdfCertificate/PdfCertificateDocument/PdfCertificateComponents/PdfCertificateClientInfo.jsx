@@ -1,7 +1,6 @@
 import {
   View,
   StyleSheet,
-  Text,
 } from '@react-pdf/renderer';
 import CustomText from './CustomText';
 
@@ -12,11 +11,6 @@ const PdfCertificateClientInfo = () => {
       flexDirection: 'column',
       gap: 20,
       marginBottom: 20,
-    },
-    text: {
-      fontSize: 16,
-      marginBottom: 5,
-      fontStyle: 'bold',
     },
   });
 
