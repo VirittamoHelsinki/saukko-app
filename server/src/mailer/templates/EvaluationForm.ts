@@ -1,6 +1,6 @@
-/* import { sendEmail } from '../configMailer'; */
 import sendEmail, { EmailObj } from '../azureEmailService';
 import mailerTemplate from '../mailerHtmlTemplate';
+import NotificationModel from '../../models/notificationModel';
 import {
   AssessmentStatus,
   ISendEvaluationFormCustomerReadyMessageSupervisor,
@@ -11,25 +11,39 @@ import {
 } from '../types';
 
 
-// Asiakas pyytää yhteydenottoa
-export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluationFormRequestContact, to: string) => {
+// Helper function to save notification
+const saveNotification = async (userId: string, subject: string, body: string) => {
+  const notification = new NotificationModel({
+    recipientUserId: userId,
+    isRead: false,
+    isSeen: false,
+    msg: {
+      content: {
+        title: subject,
+        body: body,
+      },
+    },
+  });
+  await notification.save();
+};
 
-  console.log('params-evaluationForm ', params)
+// Asiakas pyytää yhteydenottoa
+export const sendEvaluationFormCustomerRequestContact = async (params: ISendEvaluationFormRequestContact, to: string, userId: string) => {
 
   const text =
     `
-    Hei ${params.teacherName},
+Hei ${params.teacherName},
   
-    Asiakas ${params.customerName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
-    
-    
-    Tutkinto: ${params.degreeName}
-    Tutkinnonosa: ${params.unitName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
+Asiakas ${params.customerName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+ 
+ 
+Tutkinto: ${params.degreeName}
+Tutkinnonosa: ${params.unitName}
+Työpaikkaohjaaja: ${params.supervisorName}
+
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const subject = 'Arviointilomake: asiakkaan yhteydenottopyyntö';
@@ -49,27 +63,27 @@ export const sendEvaluationFormCustomerRequestContact = (params: ISendEvaluation
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
 };
 
 // Työpaikkaohjaaja pyytää yhteydenottoa
 
-export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluationFormRequestContact, to: string) => {
+export const sendEvaluationFormSupervisorRequestContact = async (params: ISendEvaluationFormRequestContact, to: string, userId: string) => {
 
-  console.log('params-evaluationForm ', params)
   const text =
     `
-    Hei ${params.teacherName},
+Hei ${params.teacherName},
 
-    Työpaikkaohjaaja ${params.supervisorName} pyytää yhteydenottoa liittyen seuraavaan 	suoritukseen:
-        
-        
-    Asiakas: ${params.customerName}
-    Tutkinto: ${params.degreeName} 
-    Tutkinnonosa: ${params.unitName}
-        
-        
-    Ystävällisin terveisin,
-    Ylläpito
+Työpaikkaohjaaja ${params.supervisorName} pyytää yhteydenottoa liittyen seuraavaan 	suoritukseen:
+    
+    
+Asiakas: ${params.customerName}
+Tutkinto: ${params.degreeName} 
+Tutkinnonosa: ${params.unitName}
+    
+    
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const subject = 'Arviointilomake: työpaikkaohjaajan yhteydenottopyyntö';
@@ -89,27 +103,28 @@ export const sendEvaluationFormSupervisorRequestContact = (params: ISendEvaluati
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
+
 };
 
 // Opettaja pyytää yhteydenottoa
 
-export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: ISendEvaluationFormRequestContact, to: string) => {
-  console.log('params-evaluationForm ', params)
+export const sendEvaluationFormTeacherRequestContactMessageCustomer = async (params: ISendEvaluationFormRequestContact, to: string, userId: string) => {
 
   const text =
     `
-    Hei ${params.customerName},
-  
-    Opettaja ${params.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
-    
-    
-    Tutkinto: ${params.degreeName}
-    Tutkinnonosa: ${params.unitName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
+Hei ${params.customerName},
+
+Opettaja ${params.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+
+
+Tutkinto: ${params.degreeName}
+Tutkinnonosa: ${params.unitName}
+Työpaikkaohjaaja: ${params.supervisorName}
+
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const subject = 'Arviointilomake: opettajan yhteydenottopyyntö';
@@ -129,27 +144,26 @@ export const sendEvaluationFormTeacherRequestContactMessageCustomer = (params: I
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
 };
 
-export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor, to: string) => {
-
-  console.log('params-evaluationForm ', params)
+export const sendEvaluationFormTeacherRequestContactMessageSupervisor = async (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor, to: string, userId: string) => {
 
   const text =
     `
-    Hei ${params.supervisorName},
-  
-    Opettaja ${params.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
-    
-    
-    Asiakas: ${params.customerName}
-    Tutkinto: ${params.degreeName}
-    Tutkinnonosa: ${params.unitName}
-    Ammattitaitovaatimus: ${params.vocationalCompetenceName}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
+Hei ${params.supervisorName},
+
+Opettaja ${params.teacherName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+
+
+Asiakas: ${params.customerName}
+Tutkinto: ${params.degreeName}
+Tutkinnonosa: ${params.unitName}
+Ammattitaitovaatimus: ${params.vocationalCompetenceName}
+
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const subject = 'Arviointilomake: opettajan yhteydenottopyyntö';
@@ -169,6 +183,7 @@ export const sendEvaluationFormTeacherRequestContactMessageSupervisor = (params:
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
 };
 
 // Arviointilomake: valmis lomake
@@ -196,28 +211,26 @@ export interface ISendEvaluationFormSupervisorReadyMessageTeacher {
   additionalInfo: string;
 }
 
-export const sendEvaluationFormSupervisorReadyMessageCustomer = (params: ISendEvaluationFormSupervisorReadyMessageCustomer, subject: string, to: string) => {
-
-  console.log('params-evaluationForm ', params)
+export const sendEvaluationFormSupervisorReadyMessageCustomer = async (params: ISendEvaluationFormSupervisorReadyMessageCustomer, subject: string, to: string, userId: string) => {
 
   const text =
     `
-    Hei ${params.customerFirstName},
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: ${params.customerName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    Tutkinto: ${params.degreeName} 
-    Tutkinnonosa: ${params.unitName}
-    Asiakkaan arvio: ${params.customerAssessment}
-    Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
-    Lisätiedot: ${params.additionalInfo}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
+Hei ${params.customerFirstName},
+
+Tutkinnonosa on valmis tarkistettavaksi.
+
+
+Asiakas: ${params.customerName}
+Työpaikkaohjaaja: ${params.supervisorName}
+Tutkinto: ${params.degreeName} 
+Tutkinnonosa: ${params.unitName}
+Asiakkaan arvio: ${params.customerAssessment}
+Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
+Lisätiedot: ${params.additionalInfo}
+
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const html = mailerTemplate(text);
@@ -236,30 +249,29 @@ export const sendEvaluationFormSupervisorReadyMessageCustomer = (params: ISendEv
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
 };
 
-export const sendEvaluationFormSupervisorReadyMessageTeacher = (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string) => {
-
-  console.log('params-evaluationForm ', params)
+export const sendEvaluationFormSupervisorReadyMessageTeacher = async (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string, userId: string) => {
 
   const text =
     `
-    Hei ${params.teacherFirstName},
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: ${params.customerName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    Tutkinto: ${params.degreeName} 
-    Tutkinnonosa: ${params.unitName}
-    Asiakkaan arvio: ${params.customerAssessment}
-    Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
-    Lisätiedot: ${params.additionalInfo}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
+Hei ${params.teacherFirstName},
+
+Tutkinnonosa on valmis tarkistettavaksi.
+
+
+Asiakas: ${params.customerName}
+Työpaikkaohjaaja: ${params.supervisorName}
+Tutkinto: ${params.degreeName} 
+Tutkinnonosa: ${params.unitName}
+Asiakkaan arvio: ${params.customerAssessment}
+Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
+Lisätiedot: ${params.additionalInfo}
+
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const html = mailerTemplate(text);
@@ -277,30 +289,29 @@ export const sendEvaluationFormSupervisorReadyMessageTeacher = (params: ISendEva
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
 };
 
-export const sendEvaluationFormCustomerReadyMessageTeacher = (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string) => {
-
-  console.log('params-evaluationForm ', params)
+export const sendEvaluationFormCustomerReadyMessageTeacher = async (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string, userId: string) => {
 
   const text =
     `
-    Hei ${params.teacherFirstName},
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: ${params.customerName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    Tutkinto: ${params.degreeName} 
-    Tutkinnonosa: ${params.unitName}
-    Asiakkaan arvio: ${params.customerAssessment}
-    Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
-    Lisätiedot: ${params.additionalInfo}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
+Hei ${params.teacherFirstName},
+
+Tutkinnonosa on valmis tarkistettavaksi.
+
+
+Asiakas: ${params.customerName}
+Työpaikkaohjaaja: ${params.supervisorName}
+Tutkinto: ${params.degreeName} 
+Tutkinnonosa: ${params.unitName}
+Asiakkaan arvio: ${params.customerAssessment}
+Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
+Lisätiedot: ${params.additionalInfo}
+
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const html = mailerTemplate(text);
@@ -318,30 +329,29 @@ export const sendEvaluationFormCustomerReadyMessageTeacher = (params: ISendEvalu
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
 };
 
-export const sendEvaluationFormCustomerReadyMessageSupervisor = (params: ISendEvaluationFormCustomerReadyMessageSupervisor, subject: string, to: string) => {
-
-  console.log('params-evaluationForm ', params)
+export const sendEvaluationFormCustomerReadyMessageSupervisor = async (params: ISendEvaluationFormCustomerReadyMessageSupervisor, subject: string, to: string, userId: string) => {
 
   const text =
     `
-    Hei ${params.supervisorFirstName},
-  
-    Tutkinnonosa on valmis tarkistettavaksi.
-    
-    
-    Asiakas: ${params.customerName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    Tutkinto: ${params.degreeName} 
-    Tutkinnonosa: ${params.unitName}
-    Asiakkaan arvio: ${params.customerAssessment}
-    Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
-    Lisätiedot: ${params.additionalInfo}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
+Hei ${params.supervisorFirstName},
+
+Tutkinnonosa on valmis tarkistettavaksi.
+
+
+Asiakas: ${params.customerName}
+Työpaikkaohjaaja: ${params.supervisorName}
+Tutkinto: ${params.degreeName} 
+Tutkinnonosa: ${params.unitName}
+Asiakkaan arvio: ${params.customerAssessment}
+Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
+Lisätiedot: ${params.additionalInfo}
+
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const html = mailerTemplate(text);
@@ -359,32 +369,31 @@ export const sendEvaluationFormCustomerReadyMessageSupervisor = (params: ISendEv
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
 };
 
 
 // Opettajan valmis lomake
 
-export const sendEvaluationFormTeacherReadyMessageCustomer = (params: ISendEvaluationFormTeacherReadyMessageCustomer, subject: string, to: string) => {
-
-  console.log('params-evaluationForm ', params)
+export const sendEvaluationFormTeacherReadyMessageCustomer = async (params: ISendEvaluationFormTeacherReadyMessageCustomer, subject: string, to: string, userId: string) => {
 
   const text =
     `
-    Hei ${params.customerFirstName}, 
-  
-    Uusi suoritus on valmis.
-    
-    
-    Asiakas: ${params.customerName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    Tutkinto: ${params.degreeName}
-    Tutkinnonosa: ${params.unitName}
-    Suoritus hyväksytty: ${params.evaluationAccepted}
-    Lisätiedot: ${params.additionalInfo}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
+Hei ${params.customerFirstName}, 
+
+Uusi suoritus on valmis.
+
+
+Asiakas: ${params.customerName}
+Työpaikkaohjaaja: ${params.supervisorName}
+Tutkinto: ${params.degreeName}
+Tutkinnonosa: ${params.unitName}
+Suoritus hyväksytty: ${params.evaluationAccepted}
+Lisätiedot: ${params.additionalInfo}
+
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const html = mailerTemplate(text);
@@ -402,30 +411,30 @@ export const sendEvaluationFormTeacherReadyMessageCustomer = (params: ISendEvalu
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
 };
 
 
-export const sendEvaluationFormTeacherReadyMessageSupervisor = (params: ISendEvaluationFormTeacherReadyMessageSupervisor, subject: string, to: string) => {
+export const sendEvaluationFormTeacherReadyMessageSupervisor = async (params: ISendEvaluationFormTeacherReadyMessageSupervisor, subject: string, to: string, userId: string) => {
 
-  console.log('params-evaluationForm ', params)
 
   const text =
     `
-    Hei ${params.supervisorFirstName}, 
-  
-    Uusi suoritus on valmis.
-    
-    
-    Asiakas: ${params.customerName}
-    Työpaikkaohjaaja: ${params.supervisorName}
-    Tutkinto: ${params.degreeName}
-    Tutkinnonosa: ${params.unitName}
-    Suoritus hyväksytty: ${params.evaluationAccepted}
-    Lisätiedot: ${params.additionalInfo}
-    
-    
-    Ystävällisin terveisin,
-    Ylläpito
+Hei ${params.supervisorFirstName}, 
+
+Uusi suoritus on valmis.
+
+
+Asiakas: ${params.customerName}
+Työpaikkaohjaaja: ${params.supervisorName}
+Tutkinto: ${params.degreeName}
+Tutkinnonosa: ${params.unitName}
+Suoritus hyväksytty: ${params.evaluationAccepted}
+Lisätiedot: ${params.additionalInfo}
+
+
+Ystävällisin terveisin,
+Ylläpito
     `;
 
   const html = mailerTemplate(text);
@@ -443,4 +452,5 @@ export const sendEvaluationFormTeacherReadyMessageSupervisor = (params: ISendEva
   }
 
   sendEmail(emailObj);
+  await saveNotification(userId, subject, text);
 };

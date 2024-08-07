@@ -76,7 +76,7 @@ const UnitInformationModal = ({
                 key={unit._id}
                 value={unit._id === unitId ? unit.name.fi : ''}
                 id='outlined-multiline-static'
-                multiline={unit.name.fi.length > 5}
+                multiline={true}
                 onChange={(event) => {
                   // Modify unit name TextField value changes
                   setDegreeDetails((prevState) => ({

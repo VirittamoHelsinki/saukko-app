@@ -8,7 +8,8 @@ const getAll = async (req: Request, res: Response) => {
       .populate('customerId', 'firstName lastName email')
       .populate('teacherId', 'firstName lastName')
       .populate('supervisorIds', 'firstName lastName email')
-      .populate('workplaceId');
+      .populate("degreeId")
+      .populate('workplaceId');   
 
     res.send(evaluations);
   } catch (error) {
