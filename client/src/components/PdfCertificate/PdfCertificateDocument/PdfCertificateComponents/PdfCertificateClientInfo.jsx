@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
 } from '@react-pdf/renderer';
+import CustomText from './CustomText';
 
 const PdfCertificateClientInfo = () => {
   const styles = StyleSheet.create({
@@ -21,8 +22,8 @@ const PdfCertificateClientInfo = () => {
 
   return (
     <View style={styles.clientInfo}>
-      <Text style={styles.text}>[Asiakkaan etunimi] [Asiakkaan sukunimi]</Text>
-      <Text style={styles.text}>[Tutkinto]</Text>
+      <CustomText bold fontSize={16}>[Asiakkaan etunimi] [Asiakkaan sukunimi]</CustomText>
+      <CustomText bold fontSize={16}>[Tutkinto]</CustomText>
     </View>
   );
 };

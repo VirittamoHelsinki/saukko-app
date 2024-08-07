@@ -10,13 +10,18 @@ import PdfCertificateUnit from "./PdfCertificateComponents/PdfCertificateUnit"
 const PdfCertificate = () => {
 
   // Bubblegum fix for font weights, fix later?
-/*   Font.register({
-    family: 'Roboto',
+  Font.register({
+    family: 'Open Sans',
     fonts: [
-      { src: 'http://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf' },
+      {
+        src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf',
+      },
+      {
+        src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf',
+        fontWeight: 600
+      },
     ]
   });
- */
 
   const styles = StyleSheet.create({
     page: {

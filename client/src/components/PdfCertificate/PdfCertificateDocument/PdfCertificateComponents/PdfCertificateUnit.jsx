@@ -68,11 +68,15 @@ const PdfCertificateUnit = () => {
         <Text style={styles.unitHeader}>Ammattitaitovaatimus: [Ammattitaitovaatimus 1.2]</Text>
 
         <View style={styles.container}>
-          <Text style={styles.textBold}>Osaaminen:</Text>
-          <Text style={styles.text}>[Osaa ohjatusti/Osaa itsenäisesti]</Text>
+          <View style={styles.textGroup}>
+            <Text style={styles.textBold}>Osaaminen:</Text>
+            <Text style={styles.text}>[Osaa ohjatusti/Osaa itsenäisesti]</Text>
+          </View>
 
-          <Text style={styles.textBold}>Opettajan kommentti:</Text>
-          <Text style={styles.text}>[Opettajan muistiinpano]</Text>
+          <View style={styles.textGroup}>
+            <Text style={styles.textBold}>Opettajan kommentti:</Text>
+            <Text style={styles.text}>[Opettajan muistiinpano]</Text>
+          </View>
         </View>
       </View>
     </View>
