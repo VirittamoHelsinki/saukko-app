@@ -1,4 +1,5 @@
 import { View, StyleSheet, Text } from '@react-pdf/renderer';
+import CustomText from "./CustomText"
 
 const PdfCertificateDivider = () => {
   const styles = StyleSheet.create({
@@ -14,18 +15,14 @@ const PdfCertificateDivider = () => {
       marginTop: 20,
       marginBottom: 10,
     },
-
-    text: {
-      fontSize: 10,
-    },
   });
 
   return (
     <View style={styles.dividerContainer}>
       <View style={styles.divider}></View>
-      <Text style={styles.text}>
+      <CustomText fontSize={10}>
         Huom! Lomakkeelle tallentuu vain valmiiksi merkityt ammattitaitovaatimukset.
-      </Text>
+      </CustomText>
     </View>
   );
 };
