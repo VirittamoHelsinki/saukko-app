@@ -25,10 +25,7 @@ const PdfCertificate = ({ data }) => {
   const endDate = new Date(data.endDate)
   const contractDuration = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()} - ${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}` ;
   
-  const unitNames = data.units.map((unit) => unit.name.fi)
-  console.log(unitNames);
-  
-  
+  const unitNames = data.units.map((unit) => unit.name.fi) 
 
   // Font.register doesn't really register???
   Font.register({
@@ -67,7 +64,7 @@ const PdfCertificate = ({ data }) => {
         />
         <PdfCertificateDegreeParts unitNames={unitNames}/>
         <PdfCertificateDivider />
-        <PdfCertificateUnit />
+        <PdfCertificateUnit units={data.units} />
       </Page>
     </Document>
   );

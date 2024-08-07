@@ -25,8 +25,6 @@ const UnitList = () => {
   const { evaluations, isLoading, evaluation, setEvaluation } =
     useEvaluations();
 
-  console.log(evaluations, evaluation)
-
   useEffect(() => {
     if (evaluation && currentUser) {
       const customer = evaluation.customerId;
@@ -119,15 +117,20 @@ const UnitList = () => {
              <PdfExportButton />
           )} */}
 
-          <PDFViewer style={{ 
-            position: 'absolute',
-            top: 0,
-            left: '-50%',
-            width: '200%',
-            height: '100%'
-          }}>
-            <PdfCertificate data={evaluation}/>
-          </PDFViewer>
+          {
+            evaluation && (
+              <PDFViewer style={{ 
+                position: 'absolute',
+                top: 0,
+                left: '-50%',
+                width: '200%',
+                height: '100%'
+              }}>
+                <PdfCertificate data={evaluation}/>
+              </PDFViewer>
+            )
+          }
+
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import {
 } from "@react-pdf/renderer";
 import CustomText from "./CustomText";
 
-const PdfCertificateUnit = () => {
+const PdfCertificateUnit = ({ units }) => {
   const styles = StyleSheet.create({
     header: {
       display: "flex",
@@ -27,7 +27,16 @@ const PdfCertificateUnit = () => {
 
       display: 'flex',
       flexDirection: 'column',
-      gap: 0,
+      gap: 20,
+    },
+
+    textGroupContainer: {
+
+      marginLeft: 40,
+      marginBottom: 20,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 20,
     },
 
     textGroup: {
@@ -46,41 +55,55 @@ const PdfCertificateUnit = () => {
     }
   });
 
+  console.log(units);
+  
+
   return (
     <View>
-      <CustomText fontSize={12} bold>Tutkinnonosa: [Tutkinnonosa 1]</CustomText>
 
-      <View style={styles.container}>
-        <CustomText fontSize={12} bold>Ammattitaitovaatimus: [Ammattitaitovaatimus 1.1]</CustomText>
+      {
+        units.map((unit) => {
 
-        <View style={styles.container}>
-          <View style={styles.textGroup}>
-            <Text style={styles.textBold}>Osaaminen:</Text>
-            <Text style={styles.text}>[Osaa ohjatusti/Osaa itsenäisesti]</Text>
-          </View>
+          const unitName = unit.name.fi
 
-          <View style={styles.textGroup}>
-            <Text style={styles.textBold}>Opettajan kommentti:</Text>
-            <Text style={styles.text}>[Opettajan muistiinpano]</Text>
-          </View>
-        </View>
-      </View>
+          return (
+            <>
+              <CustomText fontSize={12} bold>Tutkinnonosa: {unitName}</CustomText>
 
-      <View style={styles.container}>
-        <CustomText fontSize={12} bold>Ammattitaitovaatimus: [Ammattitaitovaatimus 1.2]</CustomText>
+              <View style={styles.container}>
+                {
+                  unit.assessments.map((assessment) => {
+                    const assessmentName = assessment.name.fi
+                    const criteria = assessment.criteria[0].fi
+                    const comment = assessment.comment.text                  
 
-        <View style={styles.container}>
-          <View style={styles.textGroup}>
-            <CustomText fontSize={10} bold>Osaaminen:</CustomText>
-            <CustomText fontSize={10}>[Osaa ohjatusti/Osaa itsenäisesti]</CustomText>
-          </View>
+                    return (
+                      <>
+                        <CustomText fontSize={12} bold>Ammattitaitovaatimus: {assessmentName}</CustomText>
 
-          <View style={styles.textGroup}>
-            <CustomText fontSize={10} bold>Opettajan kommentti:</CustomText>
-            <CustomText fontSize={10}>[Opeetajan muistiinpano]</CustomText>
-          </View>
-        </View>
-      </View>
+                        <View style={styles.textGroupContainer}>
+                          <View style={styles.textGroup}>
+                            <Text style={styles.textBold}>Osaaminen:</Text>
+                            <Text style={styles.text}>{criteria}</Text>
+                          </View>
+
+                          <View style={styles.textGroup}>
+                            <Text style={styles.textBold}>Opettajan kommentti:</Text>
+                            <Text style={styles.text}>{comment}</Text>
+                          </View>
+                        </View>
+                      </>
+                    )
+                  })
+                }
+              </View>
+            </>
+          )
+        })
+      }
+
+
+
     </View>
   );
 }
