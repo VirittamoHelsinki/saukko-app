@@ -1,119 +1,122 @@
-$userNav-z-index: 10;
+$userNav-z-index: 20;
 .userNav__wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
-  //height: 50px;
   width: 100%;
-  //bottom: 0%;
   z-index: $userNav-z-index;
 }
 
-.userNav__icons {
-  padding: 50px 5px;
+.userNav__shadow {
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: space-between;
+  z-index: 0;
+  
+  transition: background-color 0.3s ease;
+  pointer-events: all;
 
-  .helsinki-logo {
-    width: 110px;
-    height: 50px;
-  }
-
-  .logo-text {
-    font-size: 32px;
-  }
-
-  svg {
-    height: 30px;
-    width: 30px;
-  }
-}
-.navListItem {
-  padding: 20px;
-}
-
-.userNav__icons.customer {
-  background-color: #9fc9eb;
-}
-
-.userNav__icons.supervisor {
-  background-color: #f5a3c7;
-}
-
-.userNav__icons.teacher {
-  background-color: #ffc61e;
-}
-
-.mobile-menu-button {
   cursor: pointer;
-  position: fixed;
-  right: 20px;
-  top: 20px;
-  z-index: 100;
-  svg {
-    width: 30px;
-    height: 30px;
+  
+  &.hidden {
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0);
   }
 }
 
 .userNav__menu {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
   position: fixed;
   top: 0;
-  right: 0;
-  width: 100%;
+  left: -100%;
+
+  width: 330px;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.2);
-  align-items: center;
-  justify-content: center;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  padding-right: 18%;
-}
 
-.userNav__menu--open {
-  transform: translateX(0);
-}
+  transition: left 0.3s ease;
 
-.userNav__icons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  &.userNav__menu--open {
+    top: 0;
+    left: 0;
+  }
+  
+  // Default background color just in case the role is missing
+  background-color: whitesmoke;
 
   &.customer {
+    background-color: #9fc9eb;
     color: #9fc9eb;
   }
-
+  
   &.supervisor {
+    background-color: #f5a3c7;
     color: #f5a3c7;
   }
-
+  
   &.teacher {
+    background-color: #ffc61e;
     color: #ffc61e;
   }
 
-  svg {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-  }
+  .logo {
+    width: 100%;
+    margin-top: 75px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 
-  .NavText {
-    font-size: 20px;
-    font-weight: 600;
-  }
-
-  /* @media (min-width: 375px) */
-  @media only screen and (max-width: 375px){
-    .userNav__icons{
-      padding: 20px 5px;
-      gap:0;
+    .helsinki-logo {
+      width: 150px;
+      height: auto;
     }
+  
+    .logo-text {
+      font-size: 32px;
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+
+    .navListItem {
+      padding: 20px;
+      border-radius: 10px;
+      
+      &:hover {
+        cursor: pointer;
+        background-color: #e5b21b;
+      }
+
+      .NavText {
+        font-size: 20px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  svg {
+    height: 30px;
+    width: 30px;
+  }
+}
+
+
+@media only screen and (max-width: 375px){
+  .logo {
+    padding: 20px 5px;
+    gap:0;
+
     .logo-text {
       font-size: 28px;
     }

@@ -13,17 +13,17 @@ export const sendResetPasswordEmail = (params: ISendResetPasswordEmail) => {
 
   const text =
     `
-    Hei ${params.userFirstName}. 
-    Olet pyytänyt salasanasi nollaamista.  
-    
-    Voit nollata salasanasi alla olevasta linkistä: 
-    <a href="${params.resetPasswordLink}">Nollaa salasana</a> 
-    
-    Jos et pyytänyt salasanasi nollaamista, voit ohittaa tämän viestin. 
-    
+Hei ${params.userFirstName}. 
+Olet pyytänyt salasanasi nollaamista.  
 
-    Ystävällisin terveisin, 
-    Ylläpito 
+Voit nollata salasanasi alla olevasta linkistä: 
+<a href="${params.resetPasswordLink}">Nollaa salasana</a> 
+
+Jos et pyytänyt salasanasi nollaamista, voit ohittaa tämän viestin. 
+
+
+Ystävällisin terveisin, 
+Ylläpito 
     `.trim();
 
   const subject = 'Salasanan vaihto';
@@ -55,15 +55,15 @@ export const sendResetPasswordSuccessEmail = (params: ISendResetPasswordSuccessE
 
   const text =
     `
-    Hei ${params.userFirstName}.
-    
-    Salasanasi on nyt vaihdettu.  
-  
-    Jos et ole itse vaihtanut salasanaasi, ota yhteys Saukon tekniseen tukeen <a href=${params.technicalSupportLink}>tästä</a>. 
-  
+Hei ${params.userFirstName}.
 
-    Ystävällisin terveisin, 
-    Ylläpito 
+Salasanasi on nyt vaihdettu.  
+
+Jos et ole itse vaihtanut salasanaasi, ota yhteys Saukon tekniseen tukeen <a href=${params.technicalSupportLink}>tästä</a>. 
+
+
+Ystävällisin terveisin, 
+Ylläpito 
     `;
 
   const subject = 'Salasanan vaihto onnistunut';
