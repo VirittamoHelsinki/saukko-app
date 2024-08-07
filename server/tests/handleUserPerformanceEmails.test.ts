@@ -117,9 +117,9 @@ const selectedValues: ISelectedValues = {
   valmisLahetettavaksi: false
 }
 
-const customerId = '12345'
-const supervisorId = '123456'
-const teacherId = '1234567'
+const customerId = '667aa13407426f3e28ee0458' // Alli Kuusi
+const supervisorId = '664adaf5db05e2fd8e9225b0' // Muumi Peikko
+const teacherId = '664adb84db05e2fd8e9225c4' // Muumi Pappa
 
 
 describe('All emails should be send to correct users client page', () => {
