@@ -1,4 +1,4 @@
-import { Document, Page, View, StyleSheet, Text, Font } from "@react-pdf/renderer";
+import { Document, Page, StyleSheet, Font } from "@react-pdf/renderer";
 import PdfCertificateHeader from "./PdfCertificateComponents/PdfCertificateHeader";
 import PdfCertificateClientInfo from "./PdfCertificateComponents/PdfCertificateClientInfo";
 import PdfCertificateWorkplaceInfo from "./PdfCertificateComponents/PdfCertificateWorkplaceInfo";
@@ -8,7 +8,6 @@ import PdfCertificateUnit from "./PdfCertificateComponents/PdfCertificateUnit"
 
 
 const PdfCertificate = () => {
-
   // Bubblegum fix for font weights, fix later?
   Font.register({
     family: 'Open Sans',
@@ -16,6 +15,10 @@ const PdfCertificate = () => {
       {
         src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf',
         fontWeight: 400,
+      },
+      {
+        src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf',
+        fontWeight: 600,
       },
     ]
   });

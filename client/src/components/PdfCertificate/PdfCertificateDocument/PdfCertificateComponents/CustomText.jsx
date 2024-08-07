@@ -1,8 +1,6 @@
 import { Text, StyleSheet, Font } from "@react-pdf/renderer";
 
 const CustomText = ({ bold = false, fontSize = 10, style = {}, children }) => {
-
-
   const styles = StyleSheet.create({
     text: {
       //fontFamily: "Open Sans",

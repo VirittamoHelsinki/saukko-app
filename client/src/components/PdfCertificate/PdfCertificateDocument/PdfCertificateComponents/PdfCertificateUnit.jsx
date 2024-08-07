@@ -18,6 +18,7 @@ const PdfCertificateUnit = () => {
     unitHeader: {
       fontSize: 12,
       fontWeight: 600,
+      border: "1px solid red",
     },
 
     container: {
@@ -26,7 +27,7 @@ const PdfCertificateUnit = () => {
 
       display: 'flex',
       flexDirection: 'column',
-      gap: 20,
+      gap: 0,
     },
 
     textGroup: {
