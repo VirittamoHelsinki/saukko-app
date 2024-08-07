@@ -111,9 +111,11 @@ const UnitList = () => {
           />
         </div>
         <div className='wrapper-button-pdf'>
-          {currentUser?.role === 'teacher' && (
-             <PdfExportButton data={evaluation}/>
-          )}
+          {
+            currentUser?.role === 'teacher' && evaluation && (
+              <PdfExportButton data={evaluation}/>
+            )
+          }
 
           {/* {
             evaluation && (
