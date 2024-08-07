@@ -2,7 +2,6 @@ import {
   View,
   StyleSheet,
   Text,
-  Font,
 } from "@react-pdf/renderer";
 import CustomText from "./CustomText";
 

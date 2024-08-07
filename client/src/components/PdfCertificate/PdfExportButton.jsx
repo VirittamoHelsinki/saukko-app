@@ -1,4 +1,4 @@
-import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import PdfCertificate from './PdfCertificateDocument/PdfCertificate';
 
 const PdfExportButton = ({ data }) => {

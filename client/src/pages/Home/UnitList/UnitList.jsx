@@ -13,8 +13,6 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 
 // Import PDF Certificate Export
 import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
-import PdfCertificate from '../../../components/PdfCertificate/PdfCertificateDocument/PdfCertificate.jsx';
-import { PDFViewer } from '@react-pdf/renderer';
 
 const UnitList = () => {
   const navigate = useNavigate();
