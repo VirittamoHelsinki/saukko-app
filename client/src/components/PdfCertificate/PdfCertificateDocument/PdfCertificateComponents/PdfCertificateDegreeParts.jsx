@@ -1,7 +1,7 @@
 import { Document, Page, View, StyleSheet, Text } from '@react-pdf/renderer';
 import CustomText from './CustomText';
 
-const PdfCertificateDegreeParts = () => {
+const PdfCertificateDegreeParts = ({ unitNames }) => {
   const styles = StyleSheet.create({
     degreePartsWrapper: {
       display: 'flex',
@@ -27,10 +27,11 @@ const PdfCertificateDegreeParts = () => {
         <CustomText fontSize={12}>Tutkinnonosat ja ammattitaitovaatimukset:</CustomText>
       </View>
       <View style={styles.degreePartsDynamic}>
-        <CustomText fontSize={12}>[Tutkinnonosa 1]</CustomText>
-        <CustomText fontSize={12}>[Tutkinnonosa 2]</CustomText>
-        <CustomText fontSize={12}>[Tutkinnonosa 3]</CustomText>
-        <CustomText fontSize={12}>[Tutkinnonosa 4]</CustomText>
+        {
+          unitNames.map((unitName) =>
+            <CustomText fontSize={12}>{unitName}</CustomText>
+          )
+        }
       </View>
     </View>
   );

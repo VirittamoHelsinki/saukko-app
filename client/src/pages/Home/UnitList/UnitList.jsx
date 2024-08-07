@@ -25,6 +25,8 @@ const UnitList = () => {
   const { evaluations, isLoading, evaluation, setEvaluation } =
     useEvaluations();
 
+  console.log(evaluations, evaluation)
+
   useEffect(() => {
     if (evaluation && currentUser) {
       const customer = evaluation.customerId;
@@ -42,6 +44,8 @@ const UnitList = () => {
 
     if (!isLoading && !evaluation) {
       const ev = evaluations.find((ev) => ev.customerId._id === customerId);
+      console.log("WHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHAT", ev);
+      
       if (ev) {
         console.log('setting evaluation in userlist');
         setEvaluation(ev);
@@ -122,7 +126,7 @@ const UnitList = () => {
             width: '200%',
             height: '100%'
           }}>
-            <PdfCertificate/>
+            <PdfCertificate data={evaluation}/>
           </PDFViewer>
         </div>
       </div>

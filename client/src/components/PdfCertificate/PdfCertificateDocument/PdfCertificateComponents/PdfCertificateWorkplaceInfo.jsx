@@ -3,7 +3,12 @@ import { useEffect } from 'react';
 import useEvaluationStore from '../../../../store/zustand/evaluationStore'
 import CustomText from './CustomText';
 
-const PdfCertificateWorkplaceInfo = () => {
+const PdfCertificateWorkplaceInfo = ({
+  teacherName,
+  supervisorName,
+  workplaceName,
+  contractDuration,
+}) => {
   const styles = StyleSheet.create({
     workplaceInfoWrapper: {
       display: 'flex',
@@ -38,10 +43,10 @@ const PdfCertificateWorkplaceInfo = () => {
         <CustomText style={styles.text} fontSize={12}>Sopimusaika:</CustomText>
       </View>
       <View style={styles.workplaceInfoDynamic}>
-        <CustomText style={styles.text} fontSize={12}>[Opettajan nimi]</CustomText>
-        <CustomText style={styles.text} fontSize={12}>[Työpaikkaohjaajan nimi]</CustomText>
-        <CustomText style={styles.text} fontSize={12}>[Työpaikan nimi]</CustomText>
-        <CustomText style={styles.text} fontSize={12}>[Sopimusaika]</CustomText>
+        <CustomText style={styles.text} fontSize={12}>{teacherName}</CustomText>
+        <CustomText style={styles.text} fontSize={12}>{supervisorName}</CustomText>
+        <CustomText style={styles.text} fontSize={12}>{workplaceName}</CustomText>
+        <CustomText style={styles.text} fontSize={12}>{contractDuration}</CustomText>
       </View>
     </View>
   );

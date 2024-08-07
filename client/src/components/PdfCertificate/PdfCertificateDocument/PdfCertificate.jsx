@@ -7,8 +7,30 @@ import PdfCertificateDivider from "./PdfCertificateComponents/PdfCertificateDivi
 import PdfCertificateUnit from "./PdfCertificateComponents/PdfCertificateUnit"
 
 
-const PdfCertificate = () => {
-  // Bubblegum fix for font weights, fix later?
+
+const PdfCertificate = ({ data }) => {
+  console.log("CERTIFICATE", data);
+
+  const customer = data.customerId
+  const teacher = data.teacherId
+  const supervisor = data.supervisorIds[0]
+  const workplace = data.workplaceId
+
+  const clientName = `${customer.firstName} ${customer.lastName}`
+  const teacherName = `${teacher.firstName} ${teacher.lastName}`
+  const supervisorName = `${supervisor.firstName} ${supervisor.lastName}`
+  const workplaceName = workplace.name
+
+  const startDate = new Date(data.startDate)
+  const endDate = new Date(data.endDate)
+  const contractDuration = `${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()} - ${endDate.getDate()}/${endDate.getMonth() + 1}/${endDate.getFullYear()}` ;
+  
+  const unitNames = data.units.map((unit) => unit.name.fi)
+  console.log(unitNames);
+  
+  
+
+  // Font.register doesn't really register???
   Font.register({
     family: 'Open Sans',
     fonts: [
@@ -33,9 +55,17 @@ const PdfCertificate = () => {
     <Document style={styles.page}>
       <Page style={styles.page}>
         <PdfCertificateHeader />
-        <PdfCertificateClientInfo />
-        <PdfCertificateWorkplaceInfo />
-        <PdfCertificateDegreeParts />
+        <PdfCertificateClientInfo
+          clientName={clientName}
+          degreeName={"!!!Degree Name!!!"}
+        />
+        <PdfCertificateWorkplaceInfo
+          teacherName={teacherName}
+          supervisorName={supervisorName}
+          workplaceName={workplaceName}
+          contractDuration={contractDuration}
+        />
+        <PdfCertificateDegreeParts unitNames={unitNames}/>
         <PdfCertificateDivider />
         <PdfCertificateUnit />
       </Page>
