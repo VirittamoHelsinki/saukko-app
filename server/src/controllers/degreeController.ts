@@ -76,12 +76,16 @@ const deleteById = async (req: Request, res: Response) => {
   try {
     // Find and delete evaluations and associated users
     const evaluations = await evaluationModel.find({ degreeId });
+    const evaluationCount = evaluations.length;
+
     const evaluationDeletionPromises = evaluations.map(evaluation =>
       deleteEvaluationById(evaluation._id)
     );
 
     // Find and delete workplaces and associated users
     const workplaces = await workplaceModel.find({ degreeId });
+    const workplaceCount = workplaces.length;
+
     const workplaceDeletionPromises = workplaces.map(workplace =>
       deleteWorkPlaceById(workplace._id)
     );
@@ -90,7 +94,14 @@ const deleteById = async (req: Request, res: Response) => {
     await Promise.all([...evaluationDeletionPromises, ...workplaceDeletionPromises]);
 
     // Finally, delete the degree itself
-    await degreeModel.findByIdAndDelete(degreeId);
+    const degreeDeletionResult = await degreeModel.findByIdAndDelete(degreeId);
+    if (!degreeDeletionResult) {
+      console.log(`Degree with ID ${degreeId} not found or already deleted.`);
+    } else {
+      console.log(`Degree with ID ${degreeId} deleted.`);
+    }
+
+    console.log(`Deleted ${evaluationCount} evaluations and ${workplaceCount} workplaces associated with degree ID ${degreeId}.`);
 
     res.status(200).json({ message: 'Degree and associated data deleted successfully' });
 
@@ -105,7 +116,12 @@ const deleteEvaluationById = async (evaluationId: string) => {
     // Delete users associated with the evaluation
     await deleteUsersAssociatedWithEvaluation(evaluationId);
     // Delete the evaluation
-    await evaluationModel.findByIdAndDelete(evaluationId);
+    const evaluationDeletionResult = await evaluationModel.findByIdAndDelete(evaluationId);
+    if (!evaluationDeletionResult) {
+      console.log(`Evaluation with ID ${evaluationId} not found or already deleted.`);
+    } else {
+      console.log(`Evaluation with ID ${evaluationId} deleted.`);
+    }
   } catch (error) {
     console.error('Error deleting evaluation:', error);
   }
@@ -114,7 +130,8 @@ const deleteEvaluationById = async (evaluationId: string) => {
 const deleteUsersAssociatedWithEvaluation = async (evaluationId: string) => {
   try {
     // Implement the logic to delete users associated with the evaluation
-    await userModel.deleteMany({ evaluationId });
+    const result = await userModel.deleteMany({ evaluationId });
+    console.log(`Deleted ${result.deletedCount} users associated with evaluation ID ${evaluationId}.`);
   } catch (error) {
     console.error('Error deleting users associated with evaluation:', error);
   }
@@ -125,7 +142,12 @@ const deleteWorkPlaceById = async (workplaceId: string) => {
     // Delete users associated with the workplace
     await deleteUsersAssociatedWithWorkplace(workplaceId);
     // Delete the workplace
-    await workplaceModel.findByIdAndDelete(workplaceId);
+    const workplaceDeletionResult = await workplaceModel.findByIdAndDelete(workplaceId);
+    if (!workplaceDeletionResult) {
+      console.log(`Workplace with ID ${workplaceId} not found or already deleted.`);
+    } else {
+      console.log(`Workplace with ID ${workplaceId} deleted.`);
+    }
   } catch (error) {
     console.error('Error deleting workplace:', error);
   }
@@ -134,12 +156,12 @@ const deleteWorkPlaceById = async (workplaceId: string) => {
 const deleteUsersAssociatedWithWorkplace = async (workplaceId: string) => {
   try {
     // Implement the logic to delete users associated with the workplace
-    await userModel.deleteMany({ workplaceId });
+    const result = await userModel.deleteMany({ workplaceId });
+    console.log(`Deleted ${result.deletedCount} users associated with workplace ID ${workplaceId}.`);
   } catch (error) {
     console.error('Error deleting users associated with workplace:', error);
   }
 };
-
 
 export default {
   create,
