@@ -84,8 +84,8 @@ function DegreeConfirmSelection() {
 
   const nameOfUnits = checkedUnits.map((unit) => unit.name.fi)
 
-  const unitsNameByOne = nameOfUnits.map((name)=>({ content:name }))
-  console.log('each unit name:',unitsNameByOne)
+  const unitsNameByOne = nameOfUnits.map((name) => ({ content: name }))
+  console.log('each unit name:', unitsNameByOne)
 
   const handleVahvistaClick = async () => {
     try {
@@ -99,6 +99,8 @@ function DegreeConfirmSelection() {
           email: supervisor.email,
           password: '12341234',
           role: 'supervisor',
+          workplaceId: internalDegree._id,
+          evaluationId: null
         };
 
         // Register the supervisor and get the userId
@@ -177,7 +179,7 @@ function DegreeConfirmSelection() {
         setIsFailure(true);
       }
     } catch (error) {
-      console.error('Error while submitting workplace data:',error);
+      console.error('Error while submitting workplace data:', error);
       setIsLoading(false);
       setIsFailure(true);
       setIsSuccess(false);

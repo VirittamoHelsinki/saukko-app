@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { Request } from '../types/requestType';
 import userModel from '../models/userModel';
-import evaluationModel from '../models/evaluatuionModel'
+import evaluationModel from '../models/evaluationModel'
 import workplaceModel from '../models/workplaceModel';
 import { IJwtPayload, useCase } from '../types/jwtPayload';
 import jwt from 'jsonwebtoken';

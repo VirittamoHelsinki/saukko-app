@@ -1,10 +1,18 @@
-import axios from 'axios'
-import Uvc from 'universal-cookie'
+import axios from 'axios';
+import Uvc from 'universal-cookie';
 
 const fetchCurrentUser = async () => axios.get('/auth/get-current-user');
 
 const registration = async (registrationData) => {
-  const { firstName, lastName, email, password, role } = registrationData;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    workplaceId,
+    evaluationId,
+  } = registrationData;
   try {
     const response = await axios.post('/auth/register-user', {
       firstName,
@@ -12,7 +20,8 @@ const registration = async (registrationData) => {
       email,
       password,
       role,
-
+      workplaceId,
+      evaluationId,
     });
     console.log('Registration response:', response.data);
     return response;
@@ -24,24 +33,24 @@ const registration = async (registrationData) => {
 
 const logoutUser = async () => {
   await axios.get('/auth/logout');
-}
+};
 
 const loginUser = async (loginData) => {
-  const response = await axios.post('/auth/login', loginData)
-  return response
-}
+  const response = await axios.post('/auth/login', loginData);
+  return response;
+};
 
 const refreshAuthToken = async () => {
   const response = await axios.get('/auth/renew-token');
   return response;
-}
+};
 
 const forgotPassword = async (email) => {
   const response = await axios.post('/auth/forgot-password', {
     email: email,
-  })
-  return response
-}
+  });
+  return response;
+};
 
 // const tokenValidation = async (token) => {
 //   const response = await axios.post('/auth/validate-token', {
@@ -54,51 +63,51 @@ const resetPassword = async (newPassword, token) => {
   const response = await axios.post('/auth/reset-password', {
     newPassword,
     headers: {
-      "change-token": token
+      'change-token': token,
     },
-    withCredentials: true
+    withCredentials: true,
   });
   return response;
-}
+};
 
 const requestPasswordChangeTokenAsUser = async (password) =>
   await axios.post('/auth/request-pwd-change-token', {
     password,
-    withCredentials: true
+    withCredentials: true,
   });
 
 const requestEmailVerificationLinkAsync = async () => {
   // Because the client cannot access to http-only cookies, this is the "case" when we cannot use these
   // Cookie is send as header and handled in backend cookie-middleware.
   const uvc = new Uvc();
-  const verificationToken = uvc.get("verification-token");
+  const verificationToken = uvc.get('verification-token');
 
   const response = await axios.get('/auth/resend-email-verification', {
     headers: {
-      "verification-token": verificationToken,
+      'verification-token': verificationToken,
     },
-    withCredentials: true
+    withCredentials: true,
   });
 
   return response;
-}
+};
 
 const verifyEmail = async () => {
   // Because the client cannot access to http-only cookies, this is the "case" when we cannot use these
   // Cookie is send as header and handled in backend cookie-middleware.
   const uvc = new Uvc();
-  const verificationToken = uvc.get("verification-token");
+  const verificationToken = uvc.get('verification-token');
 
   if (!verificationToken) {
-    throw new Error("verification-token missing.")
+    throw new Error('verification-token missing.');
   }
 
   const response = await axios.get('/auth/verify-email', {
     headers: {
-      "verification-token": verificationToken,
+      'verification-token': verificationToken,
     },
     withCredentials: true,
-  })
+  });
 
   return response;
 };
@@ -117,4 +126,4 @@ export {
   requestEmailVerificationLinkAsync,
   // The user must request a password reset token before the user can change the password
   requestPasswordChangeTokenAsUser,
-}
+};

@@ -136,6 +136,7 @@ const CompanyInfo = () => {
       lastName,
       email: työpaikkaohjaajaEmail,
       role: 'supervisor',
+      workplaceId: businessId
     };
   };
   //Adding the supervisors
@@ -195,7 +196,7 @@ const CompanyInfo = () => {
             aria-controls='panel1a-content'
             id='panel1a-header'
           >
-            <Typography 
+            <Typography
               sx={{ fontSize: '22px' }}>
               1. Työpaikka tiedot
             </Typography>
@@ -317,7 +318,7 @@ const CompanyInfo = () => {
                       <Icon icon={'lucide:trash'} color="red" />
                       <span>Poista</span>
                     </button>
-                    <button className="button--primary" onClick={() => {}} disabled>
+                    <button className="button--primary" onClick={() => { }} disabled>
                       <Icon icon={'lucide:plus'} />
                       <span>Muokkaa</span>
                     </button>
@@ -391,7 +392,7 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
-      
+
       <PageNavigationButtons
         handleBack={() => navigate('/add/companyname')}
         handleForward={handleForward}

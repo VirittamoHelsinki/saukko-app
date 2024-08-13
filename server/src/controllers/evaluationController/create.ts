@@ -1,5 +1,5 @@
 import UserModel from '../../models/userModel';
-import EvaluationModel from '../../models/evaluatuionModel'; // TODO: Typo in filename
+import EvaluationModel from '../../models/evaluationModel'; // TODO: Typo in filename
 import { Response } from 'express';
 import { Request } from '../../types/requestType';
 import { sendVerificationEmail } from '../../mailer/templates/newUserVerification';

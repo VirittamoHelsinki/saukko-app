@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Error as MongooseError } from 'mongoose';
 import degreeModel from '../models/degreeModel';
-import evaluationModel from '../models/evaluatuionModel';
+import evaluationModel from '../models/evaluationModel';
 import workplaceModel from '../models/workplaceModel';
 import userModel from '../models/userModel';
 import { IEvaluation } from '../mailer/types';
