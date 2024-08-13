@@ -69,6 +69,8 @@ const registerUser = async (req: Request, res: Response) => {
       email: body.email,
       role: body.role,
       modified: Math.floor(Date.now() / 1000),
+      evaluationId: body.evaluationId,
+      workplaceId: body.workplaceId
     }
 
     const newUser = new userModel(newUserObject);
