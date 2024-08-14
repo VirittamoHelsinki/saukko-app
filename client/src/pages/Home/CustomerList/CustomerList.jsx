@@ -134,9 +134,9 @@ export default function CustomerList() {
 
         <div className='customerList__accordion'>
           {
-            inProgress && inProgress.map((evaluation, index) => evaluation.customerId && (
+            inProgress && inProgress.map((evaluation) => evaluation.customerId && (
                 <div
-                  key={index}
+                  key={`in-progress-${evaluation._id}`}
                   className='customerList__element in-progress'
                 >
                   <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
@@ -149,9 +149,9 @@ export default function CustomerList() {
           }
 
           {
-            waitForProcessing && waitForProcessing.map((evaluation, index) => evaluation.customerId && (
+            waitForProcessing && waitForProcessing.map((evaluation) => evaluation.customerId && (
               <div
-                key={index}
+                key={`wait-for-processing-${evaluation._id}`}
                 className='customerList__element waiting-for-processing'
               >
                 <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
@@ -163,12 +163,12 @@ export default function CustomerList() {
           }
 
           {
-            notStarted && notStarted.map((evaluation, index) => evaluation.customerId && (
-              <div key={index} className='customerList__element not-started'>
-                <p
-                  key={evaluation._id}
-                  onClick={() => handleChooseEvaluation(evaluation.customerId)}
-                >
+            notStarted && notStarted.map((evaluation) => evaluation.customerId && (
+              <div
+                key={`wait-for-processing-${evaluation._id}`}
+                className='customerList__element not-started'
+              >
+                <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
                   {evaluation.customerId.firstName}{' '}
                   {evaluation.customerId.lastName}
                 </p>
@@ -177,9 +177,9 @@ export default function CustomerList() {
           }
 
           {
-            completed && completed.map((evaluation, index) => evaluation.customerId && (
+            completed && completed.map((evaluation) => evaluation.customerId && (
               <div
-                key={index}
+                key={`completed-${evaluation._id}`}
                 className='customerList__element completed'
               >
                 <p
