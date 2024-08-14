@@ -6,20 +6,15 @@ import { Button, Grid, Typography } from '@mui/material';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import { logoutUser } from '../../api/user';
 
-
-import { DialogActions } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
+import { DialogActions, Dialog, DialogTitle, DialogContent } from '@mui/material';
 
 const UserNav = ({}) => {
   const { currentUser } = useAuthContext();
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
-
+  const [ menuIsOpen, setMenuIsOpen ] = useState(false);
+  const [ showWarning, setShowWarning ] = useState(false);
 
   const handleWarningClose = () => {
     setShowWarning(false);
