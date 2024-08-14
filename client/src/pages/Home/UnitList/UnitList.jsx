@@ -40,8 +40,7 @@ const UnitList = () => {
 
     if (!isLoading && !evaluation) {
       const ev = evaluations.find((ev) => ev.customerId._id === customerId);
-      console.log("WHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHAT", ev);
-      
+
       if (ev) {
         console.log('setting evaluation in userlist');
         setEvaluation(ev);

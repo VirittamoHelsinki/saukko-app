@@ -1,36 +1,41 @@
 .notificationbadge-container{
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
-  margin: 15px;
-  // gap: 14px;
-}
-.text{
-  font-size: 14px;
-  padding-left: 10px;
-}
-.bottom-container{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-.icone-style{
-  width: 44px;
-  height: 44px;
-  font-size: bold;
-  color: black;
-  margin: 10px 5px 10px 0;
+  margin: 0px 15px 30px 15px;
 
-}
-.numberstyle{
-  // display: flex;
-  // align-items: center;
-  font-size: 40px;
-  font-weight: 700;
-  padding-left: 10px;
-  margin: 10px 0 10px 5px;
-  
+  .badge {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    &.teacher {
+      background-color: #FFC61E;
+    }
+
+    &.supervisor {
+      background-color: #f5a3c7;
+    }
+
+    &.customer {
+      background-color: #9FC9EB;
+    }
+
+    .text{
+      font-size: 14px;
+      margin-right: auto;
+    }
+
+    .icon {
+      width: 44px;
+      height: 44px;
+      font-size: bold;
+      color: black;
+    }
+
+    .numberstyle{
+      font-size: 40px;
+      font-weight: 700;
+    }
   }
+}
 
- 
