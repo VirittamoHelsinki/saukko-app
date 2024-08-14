@@ -86,6 +86,10 @@ export const InternalApiContextProvider = (props) => {
     console.log('InternalApiContext: Evaluation:', evaluation);
   }, [evaluation]);
 
+  useEffect(() => {
+    console.log('InternalApiConext: Workplace:', workplace);
+  }, [workplace])
+
   // Clear evaluation from state at logout
   useEffect(() => {
     if (!loggedIn) {

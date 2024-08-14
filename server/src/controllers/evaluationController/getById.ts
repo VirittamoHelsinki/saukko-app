@@ -1,4 +1,4 @@
-import EvaluationModel from '../../models/evaluatuionModel';
+import EvaluationModel from '../../models/evaluationModel';
 import { Request } from '../../types/requestType';
 import { fetchDegree, mapCriteria, responseWithError } from './helper';
 import { Response } from 'express';

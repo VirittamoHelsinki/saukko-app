@@ -84,66 +84,34 @@ function DegreeConfirmSelection() {
 
   const nameOfUnits = checkedUnits.map((unit) => unit.name.fi)
 
-  const unitsNameByOne = nameOfUnits.map((name)=>({ content:name }))
-  console.log('each unit name:',unitsNameByOne)
+  const unitsNameByOne = nameOfUnits.map((name) => ({ content: name }))
+  console.log('each unit name:', unitsNameByOne)
 
   const handleVahvistaClick = async () => {
     try {
       setIsLoading(true);
 
-      const supervisorData = supervisors.map(async (supervisor) => {
-        // Creating user data for the supervisor
-        const userData = {
-          firstName: supervisor.firstName,
-          lastName: supervisor.lastName,
-          email: supervisor.email,
-          password: '12341234',
-          role: 'supervisor',
-        };
-
-        // Register the supervisor and get the userId
-        const userResponse = await registration(userData);
-        const userId = userResponse.data.userId;
-        return userId;
-      });
-
-      //This  gives  an array of supervisor userIds.
-      const supervisorIds = await Promise.all(supervisorData);
-      // console.log('Supervisor IDs:', supervisorIds);
-
-      let departmentData = [];
-
-      departmentData = Object.keys(departments).map((key) => {
+      // Prepare workplace data
+      const departmentData = Object.keys(departments).map((key) => {
         const department = { name: departments[key] };
-        const departmentSupervisor = supervisorIds;
         // Check if the department exists in Zustand
         if (departments[key].length > 0) {
-          // If the department exists, save supervisors to department.supervisors
-          department.supervisors = departmentSupervisor;
-        } else {
-          // If the department does not exist, save supervisors to the main supervisors array
-          supervisors.push(...supervisorIds);
+          department.supervisors = []; // Supervisors will be added later
         }
-
         return department;
       });
 
       const workplaceData = {
-        supervisors: supervisorIds,
         businessId: businessId,
         name: name ? name.name : editedCompanyName,
-        departments: departmentData ? departmentData : '',
+        departments: departmentData,
         degreeId: params.degreeId,
         units: checkedUnits.map((unit) => ({
           _id: unit._id,
-          name: {
-            fi: unit.name.fi,
-          },
+          name: { fi: unit.name.fi },
           assessments: unit.assessments.map((assessment) => ({
             _id: assessment._id,
-            name: {
-              fi: assessment.name.fi,
-            },
+            name: { fi: assessment.name.fi },
             criteria: assessment.criteria.map((criterion) => ({
               _id: criterion._id,
               fi: criterion.fi,
@@ -151,23 +119,50 @@ function DegreeConfirmSelection() {
           })),
         })),
       };
-      console.log('🚀 ~ handleVahvistaClick ~ workplaceData:', workplaceData);
 
       console.log('Sending workplace Data:', workplaceData);
-      //  The supervisors field contains an array of valid ObjectId values.
 
+      // Create the workplace first
       const response = await postWorkplace(workplaceData);
+      const createdWorkplace = response.data; // Assuming the API returns the created workplace object with its ID
 
-      console.log('API Response------:', response);
-
-      setIsLoading(false);
+      console.log('API Response:', createdWorkplace);
 
       if (response.status === 201 || response.status === 200) {
+        // Now that the workplace is created, register supervisors with the workplaceId
+        const supervisorData = supervisors.map(async (supervisor) => {
+          const userData = {
+            firstName: supervisor.firstName,
+            lastName: supervisor.lastName,
+            email: supervisor.email,
+            password: '12341234',
+            role: 'supervisor',
+            workplaceId: createdWorkplace._id, // Use the newly created workplace ID
+            evaluationId: null
+          };
+
+          // Register the supervisor and get the userId
+          const userResponse = await registration(userData);
+          const userId = userResponse.data.userId;
+          return userId;
+        });
+
+        // This gives an array of supervisor userIds.
+        const supervisorIds = await Promise.all(supervisorData);
+
+        // Update the workplace with supervisor IDs
+        const updatedWorkplaceData = {
+          supervisors: supervisorIds,
+          departments: departmentData.map(dept => ({
+            ...dept,
+            supervisors: supervisorIds // Add supervisors to departments
+          }))
+        };
+
+        await postWorkplace({ ...createdWorkplace, ...updatedWorkplaceData });
+
         const updatedWorkplaces = await fetchAllInternalWorkplaces();
-        console.log(
-          '🚀 ~ handleVahvistaClick ~ updatedWorkplaces:',
-          updatedWorkplaces
-        );
+        console.log('Updated Workplaces:', updatedWorkplaces);
 
         setWorkplaces(updatedWorkplaces);
         resetWorkplaceData();
@@ -177,7 +172,7 @@ function DegreeConfirmSelection() {
         setIsFailure(true);
       }
     } catch (error) {
-      console.error('Error while submitting workplace data:',error);
+      console.error('Error while submitting workplace data:', error);
       setIsLoading(false);
       setIsFailure(true);
       setIsSuccess(false);

@@ -1,7 +1,7 @@
 import UserModel, { User } from '../../models/userModel';
 import { Request } from '../../types/requestType';
 import { Response } from 'express';
-import EvaluationModel from '../../models/evaluatuionModel';
+import EvaluationModel from '../../models/evaluationModel';
 import { responseWithError } from './helper';
 
 const getAllForCurrentUser = async (req: Request, res: Response) => {
@@ -29,7 +29,7 @@ const getAllForCurrentUser = async (req: Request, res: Response) => {
       .populate('workplaceId');
 
     console.log(evaluations)
-    
+
 
     res.send(evaluations);
   } catch (error) {
