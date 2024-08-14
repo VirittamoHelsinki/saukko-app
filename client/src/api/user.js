@@ -112,6 +112,15 @@ const verifyEmail = async () => {
   return response;
 };
 
+const updateUser = async (userId, updatedData) => {
+  try {
+    const response = await axios.put(`/auth/users/${userId}`, updatedData);
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching single evaluation:', error);
+  }
+};
+
 export {
   forgotPassword,
   fetchCurrentUser,
@@ -122,6 +131,7 @@ export {
   registration,
   verifyEmail,
   refreshAuthToken,
+  updateUser,
   // This is medicine if email-verification-link are expired
   requestEmailVerificationLinkAsync,
   // The user must request a password reset token before the user can change the password

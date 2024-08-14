@@ -513,6 +513,23 @@ const deleteUserById = async (req: Request, res: Response) => {
   }
 };
 
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+    const updatedData = req.body;
+
+    const updateUser = await userModel.findByIdAndUpdate(userId, updatedData, { new: true })
+
+    res.status(200).send(updateUser);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error updating user', error
+    })
+  }
+}
+
+
+
 export default {
   registerUser,
   forgotPassword,
@@ -527,4 +544,5 @@ export default {
   requestPasswordChangeTokenAsUser,
   deleteUserById,
   isEmailAvailable,
+  updateUser
 }
