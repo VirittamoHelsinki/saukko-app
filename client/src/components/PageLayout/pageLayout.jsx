@@ -5,11 +5,6 @@ import styles from './pageLayout.module.scss';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import UserNav from '../UserNav/UserNav';
 import { useEffect, useState, useRef } from 'react';
-import { DialogActions } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import Button from '@mui/material/Button';
 
 const Waves = ({ fill }) => {
   return (
@@ -60,9 +55,7 @@ const PageLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const navigationType = useNavigationType();
-  const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [headingIsDisabled, setHeadingIsDisabled] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
   const headerColor = getHeaderColor(currentUser?.role);
   const wrapperStyle = {
     backgroundColor: headerColor,
@@ -93,28 +86,14 @@ const PageLayout = () => {
     document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
   }, [siteTitle]);
 
-  const handleMenuToggle = () => {
-    if (!menuIsOpen && regex.test(location.pathname)) {
-      setShowWarning(true);
-      return;
-    }
-    
-    setMenuIsOpen((oldValue) => !oldValue);
-  };
+  
 
-  const handleWarningClose = () => {
-    setShowWarning(false);
-  };
 
-  const handleProceed = () => {
-    setShowWarning(false);
-    setMenuIsOpen(true);
-  };
 
 
   return (
     <>
-      <UserNav setMenuIsOpen={setMenuIsOpen} menuIsOpen={menuIsOpen} />
+      <UserNav />
       <div className={styles.container}>
         {renderHeader && !headingIsDisabled && (
           <header>
@@ -123,15 +102,7 @@ const PageLayout = () => {
                 <Icon icon="typcn:arrow-left" style={{ color: logoColor }} />
               </button>
             )}
-            <div className={styles.buttonContainer} ref={menuRef}>
-              {/* HAMBURGER MENU TOGGLE */}
-              <button onClick={() => handleMenuToggle()} style={{ marginBottom: '0.3rem' }}>
-                <Icon
-                  icon={menuIsOpen ? 'material-symbols:close' : 'ci:hamburger-md'}
-                  style={{ pointerEvents: "none" }} // Disable pointer events on icon
-                />
-              </button>
-            </div>
+
             <div className={styles.headerBox} style={wrapperStyle}>
               {<h1>{heading}</h1>}
               {<p>{subHeading}</p>}
@@ -142,27 +113,7 @@ const PageLayout = () => {
         <main className={styles.main}>
           <Outlet />
         </main>
-        <Dialog
-          open={showWarning}
-          onClose={handleWarningClose}
-          aria-labelledby="warning-dialog-title"
-          aria-describedby="warning-dialog-description"
-        >
-          <DialogTitle id="warning-dialog-title">Varoitus</DialogTitle>
-          <DialogContent>
-            <p id="warning-dialog-description">
-              Jos poistut tutkinnon luonnista, valitut tutkinnon osat eivät tallennu. Haluatko jatkaa?
-            </p>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleWarningClose} color="primary">
-              Peruuta
-            </Button>
-            <Button onClick={handleProceed} color="primary" autoFocus>
-              Jatka
-            </Button>
-          </DialogActions>
-        </Dialog>
+
       </div>
     </>
   )
