@@ -16,12 +16,12 @@ $userNav-z-index: 20;
   width: 100%;
   height: 100%;
   z-index: 0;
-  
+
   transition: background-color 0.3s ease;
   pointer-events: all;
 
   cursor: pointer;
-  
+
   &.hidden {
     pointer-events: none;
     background-color: rgba(0, 0, 0, 0);
@@ -47,7 +47,7 @@ $userNav-z-index: 20;
     top: 0;
     left: 0;
   }
-  
+
   // Default background color just in case the role is missing
   background-color: whitesmoke;
 
@@ -55,12 +55,12 @@ $userNav-z-index: 20;
     background-color: #9fc9eb;
     color: #9fc9eb;
   }
-  
+
   &.supervisor {
     background-color: #f5a3c7;
     color: #f5a3c7;
   }
-  
+
   &.teacher {
     background-color: #ffc61e;
     color: #ffc61e;
@@ -79,7 +79,7 @@ $userNav-z-index: 20;
       width: 150px;
       height: auto;
     }
-  
+
     .logo-text {
       font-size: 32px;
     }
@@ -92,10 +92,10 @@ $userNav-z-index: 20;
     .navListItem {
       padding: 20px;
       border-radius: 10px;
-      
+
       &:hover {
         cursor: pointer;
-        background-color: #e5b21b;
+        background-color: rgba(0, 0, 0, 0.08);
       }
 
       .NavText {
