@@ -145,8 +145,12 @@ function EvaluationSummary() {
       const evaluationId = await handleEvaluationPostReq(userId);
 
       if (evaluationId) {
-        // Update the user with the evaluationId
+        // Update the customer with the evaluationId
         await updateUserWithEvaluationId(userId, evaluationId);
+        // Update teacher with the evaluationId 
+        await updateUserWithEvaluationId(currentUser.id, evaluationId)
+        // Update supervisor wit the evaluationId
+        await updateUserWithEvaluationId(supervisor._id, evaluationId)
 
         // Show success notification and reset form
         setSuccessNotification(true);
