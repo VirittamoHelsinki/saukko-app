@@ -9,10 +9,36 @@ import FormControl from "@mui/material/FormControl"
 
 const Notification = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-  const [ value, setValue ] = useState("a")
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  // Fetch info for these in the future
+  const [ filterUser, setFilterUser ] = useState(null);
+  const [ filterType, setFilterType ] = useState(null);
+
+  const userMockData = [
+    {
+      _id: 1,
+      name: "Motsarella",
+      surname: "Pitsa",
+    },
+    {
+      _id: 2,
+      name: "Expresso",
+      surname: "Joninen",
+    },
+    {
+      _id: 3,
+      name: "Oswald",
+      surname: "Niinistö",
+    }
+  ]
+  
+
+  const handleFilterUserChange = (event) => {
+    setFilterUser(event.target.value);
+  }
+
+  const handleFilterTypeChange = (event) => {
+    setFilterType(event.target.value);
   }
 
   useEffect(() => {
@@ -32,25 +58,33 @@ const Notification = () => {
       <div className="notifications-filter">
         <Select
           sx={{ borderRadius: 0, height: "40px" }}
-          value={value}
+          value={filterUser}
           displayEmpty
-          onChange={handleChange}
-          placeholder='Valitse asiakas'
-          >
-          <MenuItem value={"a"}>Osteri Ossi</MenuItem>
-          <MenuItem value={"c"}>Nakke Nakuttaja</MenuItem>
-          <MenuItem value={"d"}>Nalle Puh</MenuItem>
+          onChange={handleFilterUserChange}
+          renderValue={(user) => {
+            if (!user) {
+              return <p className="placeholder">Valitse asiakas</p>
+            }
+
+            return `${user.name} ${user.surname}`
+          }}
+        >
+          {
+            userMockData.map((user) => (
+              <MenuItem value={user}>{user.name} {user.surname}</MenuItem>
+            ))
+          }
         </Select>
         <Select
           sx={{ borderRadius: 0, height: "40px" }}
-          value={value}
+          value={filterType}
           displayEmpty
-          onChange={handleChange}
+          onChange={handleFilterTypeChange}
           placeholder='Valitse asiakas'
-          >
-          <MenuItem value={"a"}>Osteri Ossi</MenuItem>
-          <MenuItem value={"c"}>Nakke Nakuttaja</MenuItem>
-          <MenuItem value={"d"}>Nalle Puh</MenuItem>
+        >
+          <MenuItem value={"a"}>Rikos</MenuItem>
+          <MenuItem value={"c"}>Rekisteröinti</MenuItem>
+          <MenuItem value={"d"}>Syntymäpäivät</MenuItem>
         </Select>
 
       </div>
