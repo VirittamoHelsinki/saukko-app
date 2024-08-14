@@ -9,7 +9,11 @@ const Notification = () => {
     setHeading('Ilmoitukset');
     setSiteTitle('Ilmoitukset');
     setSubHeading('Ilmoitukset');
-  }, [ ]);
+  }, [
+    setHeading,
+    setSiteTitle,
+    setSubHeading,
+  ]);
 
   return (
     <div className='notification__wrapper'>
