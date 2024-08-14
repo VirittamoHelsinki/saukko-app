@@ -26,7 +26,7 @@ function DegreeConfirmSelection() {
     resetWorkplaceData,
   } = useStore();
 
-  const { setinternalDegreeId, internalDegree, degreeFound, setWorkplaces, workplace } =
+  const { setinternalDegreeId, internalDegree, degreeFound, setWorkplaces } =
     useContext(InternalApiContext);
 
   const params = useParams();
