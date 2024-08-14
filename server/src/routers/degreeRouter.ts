@@ -10,5 +10,6 @@ router.get("/internal/degrees", degreeController.getAll);
 router.get("/internal/degree/:id", degreeController.getById);
 router.post("/internal/degrees", degreeController.create);
 router.put("/internal/degree/:id", degreeController.update);
+router.delete("/internal/degree/:id", degreeController.deleteById);
 
 export default router;

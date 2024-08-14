@@ -1,4 +1,4 @@
-import EvaluationModel from '../../models/evaluatuionModel';
+import EvaluationModel from '../../models/evaluationModel';
 import { Response } from 'express';
 import { responseWithError } from './helper';
 
@@ -9,7 +9,7 @@ const getAll = async (req: Request, res: Response) => {
       .populate('teacherId', 'firstName lastName')
       .populate('supervisorIds', 'firstName lastName email')
       .populate("degreeId")
-      .populate('workplaceId');   
+      .populate('workplaceId');
 
     res.send(evaluations);
   } catch (error) {

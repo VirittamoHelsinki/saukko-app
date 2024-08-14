@@ -1,4 +1,4 @@
-import EvaluationModel from '../../models/evaluatuionModel';
+import EvaluationModel from '../../models/evaluationModel';
 import { Response } from 'express';
 import { Request } from '../../types/requestType';
 import { responseWithError } from './helper';

@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { Request } from '../types/requestType';
 import userModel from '../models/userModel';
-import evaluationModel from '../models/evaluatuionModel'
+import evaluationModel from '../models/evaluationModel'
 import workplaceModel from '../models/workplaceModel';
 import { IJwtPayload, useCase } from '../types/jwtPayload';
 import jwt from 'jsonwebtoken';
@@ -69,6 +69,8 @@ const registerUser = async (req: Request, res: Response) => {
       email: body.email,
       role: body.role,
       modified: Math.floor(Date.now() / 1000),
+      evaluationId: body.evaluationId,
+      workplaceId: body.workplaceId
     }
 
     const newUser = new userModel(newUserObject);
@@ -511,6 +513,23 @@ const deleteUserById = async (req: Request, res: Response) => {
   }
 };
 
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+    const updatedData = req.body;
+
+    const updateUser = await userModel.findByIdAndUpdate(userId, updatedData, { new: true })
+
+    res.status(200).send(updateUser);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error updating user', error
+    })
+  }
+}
+
+
+
 export default {
   registerUser,
   forgotPassword,
@@ -525,4 +544,5 @@ export default {
   requestPasswordChangeTokenAsUser,
   deleteUserById,
   isEmailAvailable,
+  updateUser
 }
