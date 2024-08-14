@@ -8,7 +8,7 @@ import { logoutUser } from '../../api/user';
 
 import { DialogActions, Dialog, DialogTitle, DialogContent } from '@mui/material';
 
-const UserNav = ({}) => {
+const UserNav = () => {
   const { currentUser } = useAuthContext();
   const { evaluation, setEvaluation } = useContext(InternalApiContext);
   const navigate = useNavigate();

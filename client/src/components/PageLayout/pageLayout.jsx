@@ -4,7 +4,7 @@ import { useAuthContext } from '../../store/context/authContextProvider';
 import styles from './pageLayout.module.scss';
 import { useHeadingContext } from '../../store/context/headingContectProvider';
 import UserNav from '../UserNav/UserNav';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 const Waves = ({ fill }) => {
   return (
@@ -62,17 +62,9 @@ const PageLayout = () => {
     marginBottom: '-1rem',
   };
 
-  // close hamburgermenu when user click outside, except Box componet
-  const menuRef = useRef(null);
-
   const logoColor = currentUser?.role ? '#000' : '#fff';
-
   const showBackButton = navigationType !== 'POP' && location.key !== 'default';
-
   const renderHeader = currentUser && currentUser.role;
-
-  const regex = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$|^\/company-info$|^\/internal\/degrees(\/[a-zA-Z0-9]+\/units(\/confirm-selection)?)?$|^\/(evaluation-form|evaluation-workplace|evaluation-units|evaluation-summary)$/;
-
   useEffect(() => {
     // Add pages in array below, where the waves header should not render
     const wavesHeadingDisabledPaths = ["verify-email",]
@@ -85,11 +77,6 @@ const PageLayout = () => {
   useEffect(() => {
     document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
   }, [siteTitle]);
-
-  
-
-
-
 
   return (
     <>
