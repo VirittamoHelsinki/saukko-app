@@ -68,4 +68,5 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C0A7EAA029284471A6599E3BF2582776 }}
+          continue-on-error: false  # Fails if Azure deploy fails
           
