@@ -112,6 +112,28 @@ const Notification = () => {
 
       </div>
 
+      <h3>Ilmoitukset</h3>
+
+      <div className="notification-list">
+        {
+          notifications.map((notification) => (
+            <div className="notification">
+              <div className="notification__accent"></div>
+              <div className="notification__body">
+                <div className="notification__content">
+                  <h3 className="notification__title">{notification.msg.content.title}</h3>
+                  <p className="notification__recipient">Asiakas: Nemo Kalanen</p>
+                </div>
+
+                <div className="notification__badge">
+                  <span>uusi</span>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
     </div>
   );
 };
