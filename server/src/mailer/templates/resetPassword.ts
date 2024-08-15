@@ -59,7 +59,7 @@ Hei ${params.userFirstName}.
 
 Salasanasi on nyt vaihdettu.  
 
-Jos et ole itse vaihtanut salasanaasi, ota yhteys Saukon tekniseen tukeen <a href=${params.technicalSupportLink}>tästä</a>. 
+Jos et ole itse vaihtanut salasanaasi, ota yhteyttä Ostu-appin tekniseen tukeen <a href=${params.technicalSupportLink}>tästä</a>. 
 
 
 Ystävällisin terveisin, 
