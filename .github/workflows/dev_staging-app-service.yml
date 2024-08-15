@@ -69,4 +69,12 @@ jobs:
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C0A7EAA029284471A6599E3BF2582776 }}
           continue-on-error: false  # Fails if Azure deploy fails
-          
+
+  rollback:
+    if: failure()  # Only runs if the previous jobs fail
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revert last commit
+        run: |
+          git revert HEAD
+          git push origin dev         
