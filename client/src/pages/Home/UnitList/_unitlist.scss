@@ -48,21 +48,27 @@
   .wrapper-button-pdf {
     padding: 16px;
 
-    .button__container {
-      padding: 0 2px;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+
+    span {
+      font-size: 16px;
     }
 
     .button--pdf {
       background-color: #0000bf;
       color: #FFFFFF;
-      border: 2px solid #0000bf;
       height: 50px;
-      padding: 0 16px;
+      padding: 16px 16px 16px 32px;
+      width: 100%;
 
-      .button__text {
-        font-size: 15px;
-        font-weight: 500;
-      }
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      text-decoration: none;
     }
   }
 }

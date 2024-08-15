@@ -13,6 +13,7 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 
 // Import PDF Certificate Export
 import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const UnitList = () => {
   const navigate = useNavigate();
@@ -109,28 +110,13 @@ const UnitList = () => {
             }
           />
         </div>
-        <div className='wrapper-button-pdf'>
-          {
-            currentUser?.role === 'teacher' && evaluation && (
+        {
+          currentUser?.role === 'teacher' && evaluation && (
+            <div className='wrapper-button-pdf'>
               <PdfExportButton data={evaluation}/>
-            )
-          }
-
-          {/* {
-            evaluation && (
-              <PDFViewer style={{ 
-                position: 'absolute',
-                top: 0,
-                left: '-50%',
-                width: '200%',
-                height: '100%'
-              }}>
-                <PdfCertificate data={evaluation}/>
-              </PDFViewer>
-            )
-          } */}
-
-        </div>
+            </div>
+          )
+        }
       </div>
     </div>
   );
