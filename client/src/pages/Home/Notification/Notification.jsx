@@ -4,8 +4,6 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 
 import Select from "@mui/material/select"
 import { MenuItem } from '@mui/material';
-import FormControl from "@mui/material/FormControl"
-
 
 const Notification = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
@@ -76,7 +74,7 @@ const Notification = () => {
         >
           {
             userMockData.map((user) => (
-              <MenuItem value={user}>{user.name} {user.surname}</MenuItem>
+              <MenuItem key={user._id} value={user}>{user.name} {user.surname}</MenuItem>
             ))
           }
         </Select>
@@ -95,7 +93,7 @@ const Notification = () => {
         >
           {
             typeMockData.map((type) => (
-              <MenuItem value={type}>{type}</MenuItem>
+              <MenuItem key={type} value={type}>{type}</MenuItem>
             ))
           }
         </Select>
