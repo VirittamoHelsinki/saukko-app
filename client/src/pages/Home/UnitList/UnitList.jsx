@@ -13,7 +13,6 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 
 // Import PDF Certificate Export
 import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
-import { Icon } from '@iconify/react/dist/iconify.js';
 
 const UnitList = () => {
   const navigate = useNavigate();
