@@ -2,12 +2,27 @@ import { useEffect, useState } from 'react';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import { MenuItem, Select } from '@mui/material';
 
+import { fetchAllNotifications } from '../../../api/notification';
+
 const Notification = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+
+  const [ notifications, setNotifications ] = useState([]);
 
   // Fetch info for these in the future
   const [ filterUser, setFilterUser ] = useState(null);
   const [ filterType, setFilterType ] = useState(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const fetchedNotifications = await fetchAllNotifications();
+      console.log(fetchedNotifications);
+      
+      setNotifications(fetchedNotifications);
+    }
+
+    fetch();
+  }, [ ])
 
   const userMockData = [
     {
