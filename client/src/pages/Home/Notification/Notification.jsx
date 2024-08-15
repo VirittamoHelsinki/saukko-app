@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
-
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
-
-import Select from "@mui/material/select"
-import { MenuItem } from '@mui/material';
+import { MenuItem, Select } from '@mui/material';
 
 const Notification = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
