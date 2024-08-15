@@ -403,7 +403,7 @@ const UserPerformance = () => {
                 })
               }
             />
-            <label> Pyydään yhteydenottoa opettajalta</label>
+            <label> Pyydetään yhteydenottoa opettajalta</label>
           </>
         )}
       </div>
