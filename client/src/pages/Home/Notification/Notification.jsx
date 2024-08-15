@@ -117,12 +117,16 @@ const Notification = () => {
       <div className="notification-list">
         {
           notifications.map((notification) => {
+            // Bandaid fix for getting customer name until 
             const customerRegex = /Asiakas: (?<customerName>.+)\n/gi;
             const regexResults = customerRegex.exec(notification.msg.content.body);
             const customerName = regexResults.groups.customerName
 
+            console.log(notification);
+            
+
             return (
-              <div className="notification">
+              <div className="notification" key={notification._id}>
                 <div className="notification__accent"></div>
                 <div className="notification__body">
                   <div className="notification__content">
