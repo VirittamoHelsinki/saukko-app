@@ -31,7 +31,12 @@ const Notification = () => {
       surname: "Niinistö",
     }
   ]
-  
+
+  const typeMockData = [
+    "Syntymäpäivä",
+    "Kuolinilmoitus",
+    "Uusi suoritus",
+  ];
 
   const handleFilterUserChange = (event) => {
     setFilterUser(event.target.value);
@@ -80,11 +85,19 @@ const Notification = () => {
           value={filterType}
           displayEmpty
           onChange={handleFilterTypeChange}
-          placeholder='Valitse asiakas'
+          renderValue={(value) => {
+            if (!value) {
+              return <p className="placeholder">Valitse ilmoitus</p>
+            }
+
+            return value
+          }}
         >
-          <MenuItem value={"a"}>Rikos</MenuItem>
-          <MenuItem value={"c"}>Rekisteröinti</MenuItem>
-          <MenuItem value={"d"}>Syntymäpäivät</MenuItem>
+          {
+            typeMockData.map((type) => (
+              <MenuItem value={type}>{type}</MenuItem>
+            ))
+          }
         </Select>
 
       </div>
