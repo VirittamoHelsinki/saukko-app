@@ -11,7 +11,7 @@ export interface IMessage {
 
 export interface INotificationObj {
   msg: IMessage;
-  recipientUserId: string;
+  recipientUserId: Types.ObjectId;
   isRead: boolean;
   isSeen: boolean;
 }
@@ -19,7 +19,11 @@ export interface INotificationObj {
 export interface INotificationObjDocument extends INotificationObj, Document { }
 
 export const notificationObjSchema = new Schema<INotificationObjDocument>({
-  recipientUserId: Types.ObjectId,
+  recipientUserId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null,
+  },
   isRead: {
     type: Boolean,
     required: true,
