@@ -17,7 +17,7 @@ const Notification = () => {
     const fetch = async () => {
       const fetchedNotifications = await fetchAllNotifications();
       console.log(fetchedNotifications);
-      
+
       setNotifications(fetchedNotifications);
     }
 
@@ -116,21 +116,27 @@ const Notification = () => {
 
       <div className="notification-list">
         {
-          notifications.map((notification) => (
-            <div className="notification">
-              <div className="notification__accent"></div>
-              <div className="notification__body">
-                <div className="notification__content">
-                  <h3 className="notification__title">{notification.msg.content.title}</h3>
-                  <p className="notification__recipient">Asiakas: Nemo Kalanen</p>
-                </div>
+          notifications.map((notification) => {
+            const customerRegex = /Asiakas: (?<customerName>.+)\n/gi;
+            const regexResults = customerRegex.exec(notification.msg.content.body);
+            const customerName = regexResults.groups.customerName
 
-                <div className="notification__badge">
-                  <span>uusi</span>
+            return (
+              <div className="notification">
+                <div className="notification__accent"></div>
+                <div className="notification__body">
+                  <div className="notification__content">
+                    <h3 className="notification__title">{notification.msg.content.title}</h3>
+                    <p className="notification__recipient">Asiakas: {customerName}</p>
+                  </div>
+
+                  <div className="notification__badge">
+                    <span>uusi</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            )
+          })
         }
       </div>
 
