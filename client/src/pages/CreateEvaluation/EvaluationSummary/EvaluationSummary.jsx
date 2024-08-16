@@ -14,10 +14,10 @@ import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import { createEvaluation } from '../../../api/evaluation';
 import { registration, updateUser } from '../../../api/user';
 import useUnitsStore from '../../../store/zustand/unitsStore';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function EvaluationSummary() {
   const { checkedUnits, clearCheckedUnits } = useUnitsStore();
   const { currentUser } = useAuthContext();
   const { setInternalEvaluations } = useContext(InternalApiContext);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const { allInternalDegrees } = useContext(InternalApiContext);
 

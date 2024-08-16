@@ -6,7 +6,7 @@ import useEvaluationStore from '../../store/zustand/evaluationStore';
 import useUnitsStore from '../../store/zustand/unitsStore';
 import ExternalApiContext from '../../store/context/ExternalApiContext';
 import InternalApiContext from '../../store/context/InternalApiContext';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 function AdminMenu() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function AdminMenu() {
   const { resetDegreeData } = useStore();
   const { clearWorkplace, clearEvaluationFromStore } = useEvaluationStore();
   const { clearCheckedUnits } = useUnitsStore();
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   useEffect(() => {
     setSiteTitle("Hallinnointi"), setSubHeading(""), setHeading("Hallinnointi")
@@ -27,7 +27,7 @@ function AdminMenu() {
     clearEvaluationFromStore()
     clearWorkplace()
     clearCheckedUnits()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

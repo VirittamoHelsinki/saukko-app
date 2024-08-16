@@ -14,8 +14,8 @@ import Button from '../../../components/Button/Button';
 import ContentEditable from 'react-contenteditable';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 function DegreeInfo({ degree, loading }) {
   const navigate = useNavigate();
@@ -83,7 +83,7 @@ function DegreeInfo({ degree, loading }) {
     }
   }
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   useEffect(() => {
     setSiteTitle("Tutkintojen hallinnointi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta");
@@ -118,7 +118,7 @@ function DegreeInfo({ degree, loading }) {
         }
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);
 
   // Toggle text editable mode

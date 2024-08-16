@@ -21,15 +21,15 @@ import { useTheme } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 // Import criteria modal
 import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
 import RequirementsAndCriteriaEditingModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaEditingModal';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 function SpecifyTasks({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // Initialize state
   const [isEditing, setIsEditing] = useState(false);
@@ -125,7 +125,7 @@ function SpecifyTasks({ degree }) {
     setAssessments((prevAssessments) => {
       const filteredAssessments = prevAssessments
         .filter((oldAssessment => oldAssessment.unitId !== newAssessment.unitId));
-        
+
       return [
         ...filteredAssessments,
         newAssessment,
@@ -165,7 +165,7 @@ function SpecifyTasks({ degree }) {
           <Paper square elevation={0}>
             <form>
               <MobileStepper
-                sx={{ 
+                sx={{
                   bgcolor: '#f2f2f2',
                 }}
                 variant='text'
@@ -175,7 +175,7 @@ function SpecifyTasks({ degree }) {
                 nextButton={
                   <Button
                     id='nextButton'
-                    sx={{ 
+                    sx={{
                       fontWeight: 'bold',
                       color: '#000000',
                       //position:'static'
@@ -195,8 +195,8 @@ function SpecifyTasks({ degree }) {
                 backButton={
                   <Button
                     id='backButton'
-                    sx={{ 
-                      fontWeight: 'bold', 
+                    sx={{
+                      fontWeight: 'bold',
                       color: '#000000',
                       //position: 'static'
                     }}
@@ -219,7 +219,7 @@ function SpecifyTasks({ degree }) {
               <h3 className='unit-guidance'>
                 {checkedUnits[activeStep]?.name?.fi}
               </h3>
-              
+
               {
                 isEditing ? (
                   <RequirementsAndCriteriaEditingModal
@@ -254,7 +254,7 @@ function SpecifyTasks({ degree }) {
                     .map((assessment, index) => (
                       <li key={index} className='list_group_skills_titles'>
                         <span className='title'>
-                          {index + 1}. {assessment.name}                
+                          {index + 1}. {assessment.name}
                         </span>
                         <Icon
                           icon='uil:pen'
@@ -263,15 +263,15 @@ function SpecifyTasks({ degree }) {
                         />
                       </li>
                     )
-                  )
+                    )
                 }
               </div>
               <Button
                 id='addCriteriaButton'
                 onClick={handleOpenCriteriaModal}
                 className='add-criteria-btn'
-                sx={{ 
-                  paddingLeft: 0, 
+                sx={{
+                  paddingLeft: 0,
                   textTransform: 'none',
                 }}
               >

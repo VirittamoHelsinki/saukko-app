@@ -18,8 +18,8 @@ import { Box } from '@mui/material';
 // Import state management
 /* import InternalApiContext from '../../../store/context/InternalApiContext'; */
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
+import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
 
 
 // Import MUI
@@ -35,7 +35,7 @@ export default function CustomerList() {
 
   // Data from store management
   const { currentUser } = useAuthContext();
-  const { setHeading, setSiteTitle } = useHeadingContext();
+  const { setHeading, setSiteTitle } = useHeadingStore();
   /*   const { evaluations, setInternalEvaluations, setInternalEvaluation } = */
   /*   useContext(InternalApiContext); */
 
@@ -135,16 +135,16 @@ export default function CustomerList() {
         <div className='customerList__accordion'>
           {
             inProgress && inProgress.map((evaluation) => evaluation.customerId && (
-                <div
-                  key={`in-progress-${evaluation._id}`}
-                  className='customerList__element in-progress'
-                >
-                  <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
-                    {evaluation.customerId.firstName}{' '}
-                    {evaluation.customerId.lastName}
-                  </p>
-                </div>
-              )
+              <div
+                key={`in-progress-${evaluation._id}`}
+                className='customerList__element in-progress'
+              >
+                <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
+                  {evaluation.customerId.firstName}{' '}
+                  {evaluation.customerId.lastName}
+                </p>
+              </div>
+            )
             )
           }
 

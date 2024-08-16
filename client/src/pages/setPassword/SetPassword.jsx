@@ -4,7 +4,7 @@ import Button from "../../components/Button/Button";
 //import WavesHeader from "../../components/Header/WavesHeader";
 import Notification from "../../components/Notification/Notification";
 import { resetPassword } from "../../api/user";
-import { useHeadingContext } from "../../store/context/headingContectProvider";
+import useHeadingStore from "../../store/zustand/useHeadingStore";
 
 /**
  * 
@@ -18,7 +18,7 @@ const SetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [notificationVisible, setNotificationVisible] = useState(false);
   const [busy, setBusy] = useState(false);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -29,9 +29,9 @@ const SetPassword = () => {
   };
 
 
-  useEffect(()=>{
+  useEffect(() => {
     setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
-  },[setHeading, setSiteTitle, setSubHeading])
+  }, [setHeading, setSiteTitle, setSubHeading])
 
 
 

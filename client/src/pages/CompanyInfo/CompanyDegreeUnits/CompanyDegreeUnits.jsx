@@ -10,7 +10,7 @@ import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 import InternalApiContext from '../../../store/context/InternalApiContext';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 function CompanyDegreeUnits() {
   const navigate = useNavigate();
@@ -23,10 +23,10 @@ function CompanyDegreeUnits() {
 
   useEffect(() => {
     setinternalDegreeId(params.degreeId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   useEffect(() => {
     setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikka"), setHeading("Työpaikkojen hallinta")
@@ -40,7 +40,7 @@ function CompanyDegreeUnits() {
 
   useEffect(() => {
     setFilteredUnits(degreeUnits);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [internalDegree]);
 
   // Searchbar logic
@@ -121,9 +121,9 @@ function CompanyDegreeUnits() {
               position:'relative',
               zIndex:'-1',
             },  */
-            '& .Mui-selected':{
-              position:'relative',
-              zIndex:'-1'
+            '& .Mui-selected': {
+              position: 'relative',
+              zIndex: '-1'
             },
             /* '& .Mui-disabled': {
               position:'relative',

@@ -9,17 +9,17 @@ import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 // Import state management
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // Import PDF Certificate Export
 import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
+import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
 
 const UnitList = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
   const { customerId } = useParams();
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
   const { evaluations, isLoading, evaluation, setEvaluation } =
     useEvaluations();
 
@@ -112,7 +112,7 @@ const UnitList = () => {
         {
           currentUser?.role === 'teacher' && evaluation && (
             <div className='wrapper-button-pdf'>
-              <PdfExportButton data={evaluation}/>
+              <PdfExportButton data={evaluation} />
             </div>
           )
         }

@@ -2,9 +2,9 @@ import { useLocation, useNavigate, useNavigationType, Outlet } from 'react-route
 import { Icon } from '@iconify/react';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import styles from './pageLayout.module.scss';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
 import UserNav from '../UserNav/UserNav';
 import { useEffect, useState } from 'react';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 const Waves = ({ fill }) => {
   return (
@@ -51,7 +51,8 @@ const getHeaderColor = (role) => {
 
 const PageLayout = () => {
   const { currentUser } = useAuthContext();
-  const { heading, subHeading, siteTitle } = useHeadingContext();
+  const { heading, subHeading, siteTitle } = useHeadingStore();
+
   const navigate = useNavigate();
   const location = useLocation();
   const navigationType = useNavigationType();
@@ -74,9 +75,14 @@ const PageLayout = () => {
     }))
   }, [])
 
+
   useEffect(() => {
     document.title = siteTitle ? `${siteTitle} | OsTu App` : "OsTu App";
   }, [siteTitle]);
+
+  useEffect(() => {
+    console.log('heading: ', heading)
+  }, [heading])
 
   return (
     <>

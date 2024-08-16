@@ -2,12 +2,12 @@ import { useState, useContext, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 
 import Searchbar from '../../../components/Searchbar/Searchbar';
 import Button from '../../../components/Button/Button';
 import PaginationButtons from '../../../components/PaginationButtons';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 
 // controls how many degrees are shown at once and renders them
@@ -20,7 +20,7 @@ const CheckLength = ({
   const startIndex = (currentPage - 1) * paginate;
   const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : allInternalDegrees;
-  
+
   const navigate = useNavigate();
 
   return (
@@ -30,7 +30,7 @@ const CheckLength = ({
           key={index}
           className='addDegree__container--list-item'
           //handleBack={() =>navigate(`/degrees/${params.degreeId}/units/tasks`)}
-          onClick={() =>navigate(`${degree._id}`)}
+          onClick={() => navigate(`${degree._id}`)}
         >
           <p>{degree.name.fi}</p>
         </div>
@@ -40,7 +40,8 @@ const CheckLength = ({
 };
 
 const AddDegree = () => {
-  const { setHeading, setSiteTitle, setSubHeading } = useHeadingContext();
+  const { setHeading, setSiteTitle, setSubHeading } = useHeadingStore();
+
   const [currentPage, setCurrentPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [paginate, setPaginate] = useState(5);
@@ -76,7 +77,7 @@ const AddDegree = () => {
     setHeading("Tutkintojen hallinta");
     setSubHeading("");
     setSiteTitle("Suoritusten hallinnointi")
-  })
+  }, [setHeading, setSubHeading, setSiteTitle])
 
   return (
     <div className='addDegree__wrapper'>
