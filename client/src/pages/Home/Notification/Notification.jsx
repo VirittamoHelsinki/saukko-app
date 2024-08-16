@@ -76,25 +76,29 @@ const Notification = () => {
       <h3>Suodatin</h3>
 
       <div className="notifications-filter">
-        <Select
-          sx={{ borderRadius: 0, height: "40px" }}
-          value={filterUser}
-          displayEmpty
-          onChange={handleFilterUserChange}
-          renderValue={(user) => {
-            if (!user) {
-              return <p className="placeholder">Valitse asiakas</p>
-            }
+        { 
+          role !== "customer" && (
+            <Select
+              sx={{ borderRadius: 0, height: "40px" }}
+              value={filterUser}
+              displayEmpty
+              onChange={handleFilterUserChange}
+              renderValue={(user) => {
+                if (!user) {
+                  return <p className="placeholder">Valitse asiakas</p>
+                }
 
-            return `${user.name} ${user.surname}`
-          }}
-        >
-          {
-            userMockData.map((user) => (
-              <MenuItem key={user._id} value={user}>{user.name} {user.surname}</MenuItem>
-            ))
-          }
-        </Select>
+                return `${user.name} ${user.surname}`
+              }}
+            >
+              {
+                userMockData.map((user) => (
+                  <MenuItem key={user._id} value={user}>{user.name} {user.surname}</MenuItem>
+                ))
+              }
+            </Select>
+          )
+        }
         <Select
           sx={{ borderRadius: 0, height: "40px" }}
           value={filterType}
@@ -122,7 +126,7 @@ const Notification = () => {
       <div className="notification-list">
         {
           notifications.map((notification) => {
-            // Bandaid fix for getting customer name until 
+            // Bandaid fix for getting customer name
             const customerRegex = /Asiakas: (?<customerName>.+)\n/gi;
             const regexResults = customerRegex.exec(notification.msg.content.body);
             const customerName = regexResults.groups.customerName
