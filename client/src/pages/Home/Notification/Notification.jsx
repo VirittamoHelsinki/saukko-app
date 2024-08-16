@@ -3,6 +3,7 @@ import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import { MenuItem, Select } from '@mui/material';
 import classNames from "classnames"
+import NotificationModal from './NotificationModal';
 
 import { fetchAllNotifications } from '../../../api/notification';
 
@@ -11,6 +12,7 @@ const Notification = () => {
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
   const [ notifications, setNotifications ] = useState([]);
+  const [ selectedNotification, setSelectedNotification ] = useState(null);
   
   // Fetch info for these in the future
   const [ filterUser, setFilterUser ] = useState("");
@@ -72,13 +74,19 @@ const Notification = () => {
   ]);
 
   return (
-    <div className='notifications__wrapper'>
-      <h3>Suodatin</h3>
+    <>
+      <NotificationModal
+        isOpen={!!selectedNotification}
+        notification={selectedNotification}
+        onClose={() => setSelectedNotification(null)}
+      />
+      <div className='notifications__wrapper'>
+        <h3>Suodatin</h3>
 
-      <div className="notifications-filter">
-        { 
-          role !== "customer" && (
-            <Select
+        <div className="notifications-filter">
+          {
+            role !== "customer" && (
+              <Select
               sx={{ borderRadius: 0, height: "40px" }}
               value={filterUser}
               displayEmpty
@@ -87,78 +95,82 @@ const Notification = () => {
                 if (!user) {
                   return <p className="placeholder">Valitse asiakas</p>
                 }
-
+                
                 return `${user.name} ${user.surname}`
               }}
-            >
-              {
-                userMockData.map((user) => (
-                  <MenuItem key={user._id} value={user}>{user.name} {user.surname}</MenuItem>
-                ))
-              }
-            </Select>
-          )
-        }
-        <Select
-          sx={{ borderRadius: 0, height: "40px" }}
-          value={filterType}
-          displayEmpty
-          onChange={handleFilterTypeChange}
-          renderValue={(value) => {
-            if (!value) {
-              return <p className="placeholder">Valitse ilmoitus</p>
-            }
-
-            return value
-          }}
-        >
-          {
-            typeMockData.map((type) => (
-              <MenuItem key={type} value={type}>{type}</MenuItem>
-            ))
-          }
-        </Select>
-
-      </div>
-
-      <h3>Ilmoitukset</h3>
-
-      <div className="notification-list">
-        {
-          notifications.map((notification) => {
-            // Bandaid fix for getting customer name
-            const customerRegex = /Asiakas: (?<customerName>.+)\n/gi;
-            const regexResults = customerRegex.exec(notification.msg.content.body);
-            const customerName = regexResults.groups.customerName
-
-            const noficationClasses = classNames(
-              "notification",
-              { [role]: true },
+              >
+                {
+                  userMockData.map((user) => (
+                    <MenuItem key={user._id} value={user}>{user.name} {user.surname}</MenuItem>
+                  ))
+                }
+              </Select>
             )
+          }
+          <Select
+            sx={{ borderRadius: 0, height: "40px" }}
+            value={filterType}
+            displayEmpty
+            onChange={handleFilterTypeChange}
+            renderValue={(value) => {
+              if (!value) {
+                return <p className="placeholder">Valitse ilmoitus</p>
+              }
+              
+              return value
+            }}
+            >
+            {
+              typeMockData.map((type) => (
+                <MenuItem key={type} value={type}>{type}</MenuItem>
+              ))
+            }
+          </Select>
 
-            console.log(notification);
-            
+        </div>
 
-            return (
-              <div className={noficationClasses} key={notification._id}>
-                <div className="notification__accent"></div>
-                <div className="notification__body">
-                  <div className="notification__content">
-                    <h3 className="notification__title">{notification.msg.content.title}</h3>
-                    <p className="notification__recipient">Asiakas: {customerName}</p>
-                  </div>
+        <h3>Ilmoitukset</h3>
 
-                  <div className="notification__badge">
-                    <span>uusi</span>
+        <div className="notification-list">
+          {
+            notifications.map((notification) => {
+              // Bandaid fix for getting customer name
+              const customerRegex = /Asiakas: (?<customerName>.+)\n/gi;
+              const regexResults = customerRegex.exec(notification.msg.content.body);
+              const customerName = regexResults.groups.customerName
+              
+              const noficationClasses = classNames(
+                "notification",
+                { [role]: true },
+              )
+              
+              console.log(notification);
+              
+              return (
+                <div
+                  className={noficationClasses}
+                  key={notification._id}
+                  onClick={() => setSelectedNotification(notification)}
+                >
+                  <div className="notification__accent"></div>
+                  <div className="notification__body">
+                    <div className="notification__content">
+                      <h3 className="notification__title">{notification.msg.content.title}</h3>
+                      <p className="notification__recipient">Asiakas: {customerName}</p>
+                    </div>
+
+                    <div className="notification__badge">
+                      <span>uusi</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )
-          })
-        }
-      </div>
+              )
+            })
+          }
+        </div>
 
-    </div>
+      </div>
+    </>
   );
 };
 
