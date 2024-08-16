@@ -13,8 +13,8 @@ const Notification = () => {
   const [ notifications, setNotifications ] = useState([]);
   
   // Fetch info for these in the future
-  const [ filterUser, setFilterUser ] = useState(null);
-  const [ filterType, setFilterType ] = useState(null);
+  const [ filterUser, setFilterUser ] = useState("");
+  const [ filterType, setFilterType ] = useState("");
   
   const role = currentUser?.role;
 
