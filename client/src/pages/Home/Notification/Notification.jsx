@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
+import { useAuthContext } from '../../../store/context/authContextProvider';
 import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import { MenuItem, Select } from '@mui/material';
+import classNames from "classnames"
 
 import { fetchAllNotifications } from '../../../api/notification';
 
 const Notification = () => {
+  const { currentUser } = useAuthContext();
+
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-
   const [ notifications, setNotifications ] = useState([]);
-
+  
   // Fetch info for these in the future
   const [ filterUser, setFilterUser ] = useState(null);
   const [ filterType, setFilterType ] = useState(null);
+  
+  const role = currentUser?.role;
 
   useEffect(() => {
     const fetch = async () => {
@@ -122,11 +127,16 @@ const Notification = () => {
             const regexResults = customerRegex.exec(notification.msg.content.body);
             const customerName = regexResults.groups.customerName
 
+            const noficationClasses = classNames(
+              "notification",
+              { [role]: true },
+            )
+
             console.log(notification);
             
 
             return (
-              <div className="notification" key={notification._id}>
+              <div className={noficationClasses} key={notification._id}>
                 <div className="notification__accent"></div>
                 <div className="notification__body">
                   <div className="notification__content">

@@ -24,13 +24,23 @@
   gap: 10px;
 
   .notification {
-    background-color: #FFC61E;
     height: 96px;
-
     display: grid;
     grid-template-columns: 10px 1fr;
     gap: 15px;
     cursor: pointer;
+
+    &.teacher {
+      background-color: #FFC61E;
+    }
+
+    &.supervisor {
+      background-color: #F5A3C7;
+    }
+
+    &.customer {
+      background-color: #9FC9EB;
+    }
 
     .notification__accent {
       height: 100%;
