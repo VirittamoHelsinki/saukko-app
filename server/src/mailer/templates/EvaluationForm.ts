@@ -34,16 +34,13 @@ export const sendEvaluationFormCustomerRequestContact = async (
   userId: string,
 ) => {
 
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>", params, to, userId);
-  
-
   const text =
     `
 Hei ${params.teacherName},
-  
+
 Asiakas ${params.customerName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
- 
- 
+
+
 Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
 Työpaikkaohjaaja: ${params.supervisorName}
@@ -54,7 +51,7 @@ Ylläpito
     `;
 
   const subject = 'Arviointilomake: asiakkaan yhteydenottopyyntö';
-  const html = mailerTemplate(text);
+  const html = mailerTemplate(text.trim());
 
   const emailObj: EmailObj = {
     content: {
@@ -86,13 +83,13 @@ export const sendEvaluationFormSupervisorRequestContact = async (
 Hei ${params.teacherName},
 
 Työpaikkaohjaaja ${params.supervisorName} pyytää yhteydenottoa liittyen seuraavaan 	suoritukseen:
-    
-    
+
+
 Asiakas: ${params.customerName}
-Tutkinto: ${params.degreeName} 
+Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
-    
-    
+
+
 Ystävällisin terveisin,
 Ylläpito
     `;
@@ -246,10 +243,10 @@ Tutkinnonosa on valmis tarkistettavaksi.
 
 Asiakas: ${params.customerName}
 Työpaikkaohjaaja: ${params.supervisorName}
-Tutkinto: ${params.degreeName} 
+Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
 Asiakkaan arvio: ${params.customerAssessment}
-Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
+Työpaikkaohjaajan arvio: ${params.supervisorAssessment}
 Lisätiedot: ${params.additionalInfo}
 
 
@@ -382,10 +379,10 @@ Tutkinnonosa on valmis tarkistettavaksi.
 
 Asiakas: ${params.customerName}
 Työpaikkaohjaaja: ${params.supervisorName}
-Tutkinto: ${params.degreeName} 
+Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
 Asiakkaan arvio: ${params.customerAssessment}
-Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
+Työpaikkaohjaajan arvio: ${params.supervisorAssessment}
 Lisätiedot: ${params.additionalInfo}
 
 
