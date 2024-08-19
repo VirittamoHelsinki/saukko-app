@@ -25,7 +25,7 @@ const Notification = () => {
       const fetchedNotifications = await fetchAllNotifications();
       console.log(fetchedNotifications);
 
-      setNotifications(fetchedNotifications);
+      setNotifications(fetchedNotifications || []);
     }
 
     fetch();
@@ -136,7 +136,7 @@ const Notification = () => {
             notifications.map((notification) => {
               // Bandaid fix for getting customer name
               const customerRegex = /Asiakas: (?<customerName>.+)\n/gi;
-              const regexResults = customerRegex.exec(notification.msg.content.body);
+              const regexResults = customerRegex.exec(notification.body);
               const customerName = regexResults?.groups.customerName || "N/A"
 
               const noficationClasses = classNames(
@@ -155,7 +155,7 @@ const Notification = () => {
                   <div className="notification__accent"></div>
                   <div className="notification__body">
                     <div className="notification__content">
-                      <h3 className="notification__title">{notification.msg.content.title}</h3>
+                      <h3 className="notification__title">{notification.title}</h3>
                       <p className="notification__recipient">Asiakas: {customerName}</p>
                     </div>
 
