@@ -1,6 +1,7 @@
 // Import React
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 // Import components
 // import WavesHeader from '../../../components/Header/WavesHeader';
@@ -18,8 +19,8 @@ import { Box } from '@mui/material';
 // Import state management
 /* import InternalApiContext from '../../../store/context/InternalApiContext'; */
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import { fetchAllEvaluations } from '../../../api/evaluation.js';
 
 
 // Import MUI
@@ -31,7 +32,12 @@ import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
 
 export default function CustomerList() {
   const navigate = useNavigate();
-  const { evaluations, refetchEvaluations } = useEvaluations();
+  /* const { evaluations, refetchEvaluations } = useEvaluations(); */
+
+  const { data: evaluations } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations()
+  });
 
   // Data from store management
   const { currentUser } = useAuthContext();
@@ -71,9 +77,7 @@ export default function CustomerList() {
   useEffect(() => {
     setHeading(`Tervetuloa ${currentUser?.firstName}`)
     setSiteTitle("Etusivu")
-    refetchEvaluations();
-    /* setInternalEvaluations(); */
-  }, [setHeading, setSiteTitle, currentUser, refetchEvaluations]);
+  }, [setHeading, setSiteTitle, currentUser]);
 
   // Find evaluations in progress
   const inProgress =

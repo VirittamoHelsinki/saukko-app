@@ -23,12 +23,19 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
 // import { sendEmails } from '../../../api/performance';
+import { useQuery } from '@tanstack/react-query';
+
 
 const UserPerformance = () => {
   const { currentUser } = useAuthContext();
+
+  const { data: evaluations, isLoading } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations()
+  });
 
   // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
 
@@ -36,7 +43,7 @@ const UserPerformance = () => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
   /*  const { evaluation, setEvaluation } = useContext(InternalApiContext); */
-  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
+  const { evaluation, setEvaluation } = useEvaluationStore();
 
   const evaluationId = evaluation?._id;
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();

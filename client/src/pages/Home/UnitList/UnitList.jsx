@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 // Import components
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UnitStatus from '../../../components/UnitStatus/UnitStatus';
 import Button from '../../../components/Button/Button';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
+/* import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx'; */
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
 
 // Import state management
 import { useAuthContext } from '../../../store/context/authContextProvider';
@@ -19,9 +21,14 @@ const UnitList = () => {
   const { currentUser } = useAuthContext();
   const { customerId } = useParams();
 
+  const { data: evaluations, isLoading } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations()
+  });
+
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
-  const { evaluations, isLoading, evaluation, setEvaluation } =
-    useEvaluations();
+
+  const { evaluation, setEvaluation } = useEvaluationStore();
 
   useEffect(() => {
     if (evaluation && currentUser) {
