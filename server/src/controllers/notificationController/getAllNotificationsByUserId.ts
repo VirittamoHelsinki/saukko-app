@@ -11,6 +11,7 @@ const getAllNotificationsByUserId = async (req: Request, res: Response) => {
     const notifications = await NotificationModel
       .find({ recipient: userId })
       .populate("recipient")
+      .populate("customer")
 
     res.status(200).json(notifications)
 

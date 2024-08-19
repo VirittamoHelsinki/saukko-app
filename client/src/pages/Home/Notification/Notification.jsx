@@ -134,10 +134,6 @@ const Notification = () => {
         <div className="notification-list">
           {
             notifications.map((notification) => {
-              // Bandaid fix for getting customer name
-              const customerRegex = /Asiakas: (?<customerName>.+)\n/gi;
-              const regexResults = customerRegex.exec(notification.body);
-              const customerName = regexResults?.groups.customerName || "N/A"
 
               const noficationClasses = classNames(
                 "notification",
@@ -145,6 +141,7 @@ const Notification = () => {
               )
 
               console.log(notification);
+              const customerName = `${notification.customer?.firstName} ${notification.customer?.lastName}`
 
               return (
                 <div

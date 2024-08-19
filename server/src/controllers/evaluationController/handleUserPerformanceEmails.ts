@@ -30,7 +30,7 @@ export const sendReadyEmails = (
   userRole: string,
   formIsReadyParams: any,
   emails: IEmails,
-  
+
   customerId: string,
   teacherId: string,
   supervisorId: string,
@@ -44,11 +44,13 @@ export const sendReadyEmails = (
         'TPO:n valmis lomake',
         emails.customerEmail,
         customerId,
+        customerId,
       );
       sendEvaluationFormSupervisorReadyMessageTeacher(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
         'TPO:n valmis lomake',
         emails.teacherEmail,
+        customerId,
         teacherId,
       );
 
@@ -60,12 +62,14 @@ export const sendReadyEmails = (
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
         'Asiakkaan valmis lomake',
         emails.supervisorEmail,
+        customerId,
         supervisorId,
       );
       sendEvaluationFormCustomerReadyMessageTeacher(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
         'Asiakkaan valmis lomake',
         emails.teacherEmail,
+        customerId,
         teacherId,
       );
       emailsSendTo.push(emails.supervisorEmail)
@@ -76,12 +80,14 @@ export const sendReadyEmails = (
         { ...formIsReadyParams, evaluationAccepted: EvaluationStatus.ACCEPTED },
         'Opettajan valmis lomake',
         emails.supervisorEmail,
+        customerId,
         supervisorId,
       );
       sendEvaluationFormTeacherReadyMessageCustomer(
         { ...formIsReadyParams, evaluationAccepted: EvaluationStatus.ACCEPTED },
         'Opettajan valmis lomake',
         emails.customerEmail,
+        customerId,
         customerId,
       );
       emailsSendTo.push(emails.supervisorEmail)
@@ -142,22 +148,42 @@ export const sendContactRequestEmails = (
   const emailsSendTo: Array<string> = []
 
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'customer') {
-    sendEvaluationFormCustomerRequestContact(requestContactParams, emails.teacherEmail, teacherId);
+    sendEvaluationFormCustomerRequestContact(
+      requestContactParams,
+      emails.teacherEmail,
+      customerId,
+      teacherId
+    );
     emailsSendTo.push(emails.teacherEmail)
   }
   if (selectedValues.pyydetaanYhteydenottoaOpettajalta && userRole === 'supervisor') {
-    sendEvaluationFormSupervisorRequestContact(requestContactParams, emails.teacherEmail, teacherId);
+    sendEvaluationFormSupervisorRequestContact(
+      requestContactParams,
+      emails.teacherEmail,
+      customerId,
+      teacherId
+    );
     emailsSendTo.push(emails.teacherEmail)
   }
   if (selectedValues.pyydetaanYhteydenottoaAsiakkaalta && userRole === 'teacher') {
-    sendEvaluationFormTeacherRequestContactMessageCustomer(requestContactParams, emails.customerEmail, customerId);
+    sendEvaluationFormTeacherRequestContactMessageCustomer(
+      requestContactParams,
+      emails.customerEmail,
+      customerId,
+      customerId
+    );
     emailsSendTo.push(emails.customerEmail)
   }
   if (selectedValues.pyydetaanYhteydenottoaOhjaajalta && userRole === 'teacher') {
-    sendEvaluationFormTeacherRequestContactMessageSupervisor({
-      ...requestContactParams,
-      vocationalCompetenceName: requestContactParams.unitName,
-    }, emails.supervisorEmail, supervisorId);
+    sendEvaluationFormTeacherRequestContactMessageSupervisor(
+      {
+        ...requestContactParams,
+        vocationalCompetenceName: requestContactParams.unitName,
+      },
+      emails.supervisorEmail,
+      customerId,
+      supervisorId
+    );
     emailsSendTo.push(emails.supervisorEmail)
   }
   return emailsSendTo
@@ -215,13 +241,6 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
     };
-
-    console.log(
-      "This right here officer.",
-      (evaluation.customerId as IUser)._id,
-      evaluation.teacherId,
-      evaluation.supervisorIds?.[0],
-    );
 
     const userRole: UserRole = getUserRole(user.role)
 
