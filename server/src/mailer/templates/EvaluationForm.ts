@@ -10,25 +10,32 @@ import {
   ISendEvaluationFormTeacherRequestContactMessageSupervisor,
 } from '../types';
 
-
 // Helper function to save notification
-const saveNotification = async (userId: string, subject: string, body: string) => {
+const saveNotification = async (
+  userId: string,
+  subject: string,
+  body: string
+) => {
   const notification = new NotificationModel({
-    recipientUserId: userId,
+    recipient: userId,
     isRead: false,
     isSeen: false,
-    msg: {
-      content: {
-        title: subject,
-        body: body,
-      },
-    },
+    title: subject,
+    body: body,
   });
+
   await notification.save();
 };
 
 // Asiakas pyytää yhteydenottoa
-export const sendEvaluationFormCustomerRequestContact = async (params: ISendEvaluationFormRequestContact, to: string, userId: string) => {
+export const sendEvaluationFormCustomerRequestContact = async (
+  params: ISendEvaluationFormRequestContact,
+  to: string,
+  userId: string,
+) => {
+
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>", params, to, userId);
+  
 
   const text =
     `
@@ -68,7 +75,11 @@ Ylläpito
 
 // Työpaikkaohjaaja pyytää yhteydenottoa
 
-export const sendEvaluationFormSupervisorRequestContact = async (params: ISendEvaluationFormRequestContact, to: string, userId: string) => {
+export const sendEvaluationFormSupervisorRequestContact = async (
+  params: ISendEvaluationFormRequestContact,
+  to: string,
+  userId: string,
+) => {
 
   const text =
     `
@@ -109,7 +120,11 @@ Ylläpito
 
 // Opettaja pyytää yhteydenottoa
 
-export const sendEvaluationFormTeacherRequestContactMessageCustomer = async (params: ISendEvaluationFormRequestContact, to: string, userId: string) => {
+export const sendEvaluationFormTeacherRequestContactMessageCustomer = async (
+  params: ISendEvaluationFormRequestContact,
+  to: string,
+  userId: string,
+) => {
 
   const text =
     `
@@ -147,7 +162,11 @@ Ylläpito
   await saveNotification(userId, subject, text);
 };
 
-export const sendEvaluationFormTeacherRequestContactMessageSupervisor = async (params: ISendEvaluationFormTeacherRequestContactMessageSupervisor, to: string, userId: string) => {
+export const sendEvaluationFormTeacherRequestContactMessageSupervisor = async (
+  params: ISendEvaluationFormTeacherRequestContactMessageSupervisor,
+  to: string,
+  userId: string,
+) => {
 
   const text =
     `
@@ -211,7 +230,12 @@ export interface ISendEvaluationFormSupervisorReadyMessageTeacher {
   additionalInfo: string;
 }
 
-export const sendEvaluationFormSupervisorReadyMessageCustomer = async (params: ISendEvaluationFormSupervisorReadyMessageCustomer, subject: string, to: string, userId: string) => {
+export const sendEvaluationFormSupervisorReadyMessageCustomer = async (
+  params: ISendEvaluationFormSupervisorReadyMessageCustomer,
+  subject: string,
+  to: string,
+  userId: string,
+) => {
 
   const text =
     `
@@ -252,7 +276,12 @@ Ylläpito
   await saveNotification(userId, subject, text);
 };
 
-export const sendEvaluationFormSupervisorReadyMessageTeacher = async (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string, userId: string) => {
+export const sendEvaluationFormSupervisorReadyMessageTeacher = async (
+  params: ISendEvaluationFormSupervisorReadyMessageTeacher,
+  subject: string,
+  to: string,
+  userId: string,
+) => {
 
   const text =
     `
@@ -292,7 +321,12 @@ Ylläpito
   await saveNotification(userId, subject, text);
 };
 
-export const sendEvaluationFormCustomerReadyMessageTeacher = async (params: ISendEvaluationFormSupervisorReadyMessageTeacher, subject: string, to: string, userId: string) => {
+export const sendEvaluationFormCustomerReadyMessageTeacher = async (
+  params: ISendEvaluationFormSupervisorReadyMessageTeacher,
+  subject: string,
+  to: string,
+  userId: string,
+) => {
 
   const text =
     `
@@ -332,7 +366,12 @@ Ylläpito
   await saveNotification(userId, subject, text);
 };
 
-export const sendEvaluationFormCustomerReadyMessageSupervisor = async (params: ISendEvaluationFormCustomerReadyMessageSupervisor, subject: string, to: string, userId: string) => {
+export const sendEvaluationFormCustomerReadyMessageSupervisor = async (
+  params: ISendEvaluationFormCustomerReadyMessageSupervisor,
+  subject: string,
+  to: string,
+  userId: string,
+) => {
 
   const text =
     `
@@ -375,11 +414,16 @@ Ylläpito
 
 // Opettajan valmis lomake
 
-export const sendEvaluationFormTeacherReadyMessageCustomer = async (params: ISendEvaluationFormTeacherReadyMessageCustomer, subject: string, to: string, userId: string) => {
+export const sendEvaluationFormTeacherReadyMessageCustomer = async (
+  params: ISendEvaluationFormTeacherReadyMessageCustomer,
+  subject: string,
+  to: string,
+  userId: string,
+) => {
 
   const text =
     `
-Hei ${params.customerFirstName}, 
+Hei ${params.customerFirstName},
 
 Uusi suoritus on valmis.
 
@@ -415,12 +459,17 @@ Ylläpito
 };
 
 
-export const sendEvaluationFormTeacherReadyMessageSupervisor = async (params: ISendEvaluationFormTeacherReadyMessageSupervisor, subject: string, to: string, userId: string) => {
+export const sendEvaluationFormTeacherReadyMessageSupervisor = async (
+  params: ISendEvaluationFormTeacherReadyMessageSupervisor,
+  subject: string,
+  to: string,
+  userId: string,
+) => {
 
 
   const text =
     `
-Hei ${params.supervisorFirstName}, 
+Hei ${params.supervisorFirstName},
 
 Uusi suoritus on valmis.
 
