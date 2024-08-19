@@ -137,7 +137,7 @@ const Notification = () => {
               // Bandaid fix for getting customer name
               const customerRegex = /Asiakas: (?<customerName>.+)\n/gi;
               const regexResults = customerRegex.exec(notification.msg.content.body);
-              const customerName = regexResults.groups.customerName
+              const customerName = regexResults?.groups.customerName || "N/A"
               
               const noficationClasses = classNames(
                 "notification",
