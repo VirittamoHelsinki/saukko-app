@@ -138,14 +138,14 @@ const Notification = () => {
               const customerRegex = /Asiakas: (?<customerName>.+)\n/gi;
               const regexResults = customerRegex.exec(notification.msg.content.body);
               const customerName = regexResults?.groups.customerName || "N/A"
-              
+
               const noficationClasses = classNames(
                 "notification",
                 { [role]: true },
               )
-              
+
               console.log(notification);
-              
+
               return (
                 <div
                   className={noficationClasses}
