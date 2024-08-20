@@ -79,7 +79,7 @@ const Router = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes key={location.pathname} location={location}>
           <Route path='/' element={<PageLayout />}>
-          
+
             {/* Placeholders for development */}
             <Route path='/test-page' element={<TestPage />} />
             <Route path="/verify-email/:token" element={<EmailVerification />} />
@@ -97,11 +97,11 @@ const Router = () => {
             {/* All logged in users */}
             {loggedIn && (
               <>
-                <Route path='/notifications' element={<Notification/>} />
+                <Route path='/notifications' element={<Notification />} />
                 <Route path='/profile' element={<ProfilePage />} />
                 <Route path='/unit-list/:customerId' element={<UnitList />} />
                 <Route path='/contract-info/:customerId' element={<ContractInfo />} />
-                <Route path='/userperformance/:unitId' element={<UserPerformance />} />
+                <Route path='/userperformance/:evaluationId/:unitId' element={<UserPerformance />} />
                 <Route path='/register-user' element={<RegisterUser />} />
               </>
             )}

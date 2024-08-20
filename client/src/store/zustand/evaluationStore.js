@@ -35,6 +35,7 @@ const useEvaluationStore = create((set) => ({
   chosenUnitId: null,
   setChosenUnitId: (chosenUnitId) => set(() => ({ chosenUnitId })),
   clearChosenUnitId: () => set({ chosenUnitId: null }),
+  resetEvaluation: () => set({ evaluation: null }),
 }));
 
 export default useEvaluationStore;

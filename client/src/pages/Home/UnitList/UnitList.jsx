@@ -22,7 +22,7 @@ const UnitList = () => {
 
   const { data: evaluations, isLoading } = useQuery({
     queryKey: ['evaluations'],
-    queryFn: () => fetchAllEvaluations()
+    queryFn: () => fetchAllEvaluations(),
   });
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
@@ -89,7 +89,7 @@ const UnitList = () => {
                 unitId={unit._id}
                 status={unit.status}
                 subheader={unit.name.fi}
-                link={`/userperformance/${unit._id}`}
+                link={`/userperformance/${evaluation._id}/${unit._id}`}
               />
             </div>
           ))}
