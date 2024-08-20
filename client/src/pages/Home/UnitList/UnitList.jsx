@@ -44,7 +44,7 @@ const UnitList = () => {
     setSiteTitle('Suoritukset');
     setSubHeading('Suoritukset');
 
-    if (!isLoading && !evaluation) {
+    if (!isLoading) {
       const ev = evaluations.find((ev) => ev.customerId._id === customerId);
 
       if (ev) {
