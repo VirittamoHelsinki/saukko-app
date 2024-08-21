@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 // Import components
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UnitStatus from '../../../components/UnitStatus/UnitStatus';
 import Button from '../../../components/Button/Button';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
 
 // Import state management
 import { useAuthContext } from '../../../store/context/authContextProvider';
@@ -13,15 +14,21 @@ import { useAuthContext } from '../../../store/context/authContextProvider';
 // Import PDF Certificate Export
 import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
 import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import { fetchAllEvaluations } from '../../../api/evaluation.js';
 
 const UnitList = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
   const { customerId } = useParams();
 
+  const { data: evaluations, isLoading } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations(),
+  });
+
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
-  const { evaluations, isLoading, evaluation, setEvaluation } =
-    useEvaluations();
+
+  const { evaluation, setEvaluation } = useEvaluationStore();
 
   useEffect(() => {
     if (evaluation && currentUser) {
@@ -38,7 +45,7 @@ const UnitList = () => {
     setSiteTitle('Suoritukset');
     setSubHeading('Suoritukset');
 
-    if (!isLoading && !evaluation) {
+    if (!evaluation && !isLoading) {
       const ev = evaluations.find((ev) => ev.customerId._id === customerId);
 
       if (ev) {
@@ -83,7 +90,7 @@ const UnitList = () => {
                 unitId={unit._id}
                 status={unit.status}
                 subheader={unit.name.fi}
-                link={`/userperformance/${unit._id}`}
+                link={`/userperformance/${evaluation._id}/${unit._id}`}
               />
             </div>
           ))}

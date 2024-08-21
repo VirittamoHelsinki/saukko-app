@@ -23,22 +23,32 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
+import { fetchAllEvaluations } from '../../../api/evaluation';
 // import { sendEmails } from '../../../api/performance';
+import { useQuery } from '@tanstack/react-query';
+
 
 const UserPerformance = () => {
   const { currentUser } = useAuthContext();
 
-  // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
+  const { data: evaluations, isLoading } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations(),
+    refetchOnMount: true,  // Refetch data when window regains focus
+    staleTime: 0,
+  });
+
 
   // eslint-disable-next-line no-unused-vars
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
-  /*  const { evaluation, setEvaluation } = useContext(InternalApiContext); */
-  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
+  const { evaluationId, unitId } = useParams();
+  const { evaluation: getEvaluation, setEvaluation } = useEvaluationStore();
 
-  const evaluationId = evaluation?._id;
+  const evaluation = !isLoading && !getEvaluation ? evaluations.find(evaluation => evaluation._id === evaluationId) : getEvaluation
+
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
@@ -68,21 +78,19 @@ const UserPerformance = () => {
   const [customerFirstName, setCustomerFirstName] = useState(null);
   const [customerLastName, setCustomerLastName] = useState(null);
 
-  const { unitId } = useParams();
   const [selectedRadio, setSelectedRadio] = useState({});
   const [unitObject, setUnitObject] = useState(null)
 
-
   useEffect(() => {
-    if (evaluation && evaluation.customerId) {
+    if (!isLoading && evaluation && evaluation.customerId) {
       setCustomerFirstName(`${evaluation?.customerId.firstName}`);
       setCustomerLastName(`${evaluation?.customerId.lastName}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customerFirstName, customerLastName]);
+  }, [customerFirstName, customerLastName, isLoading]);
 
   useEffect(() => {
-    if (evaluation) {
+    if (!isLoading, evaluation) {
       const foundUnit = evaluation.units.find(unit => unit._id === Number(unitId));
       if (foundUnit) {
         setUnitObject(foundUnit);
