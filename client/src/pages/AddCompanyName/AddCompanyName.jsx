@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Searchbar from '../../components/Searchbar/Searchbar';
 import Button from '../../components/Button/Button';
 import InternalApiContext from '../../store/context/InternalApiContext';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 // import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
 // import { buildDeprecatedPropsWarning } from '@mui/x-date-pickers/internals';
 
@@ -17,20 +17,20 @@ const CheckLength = ({
   const startIndex = (currentPage - 1) * paginate;
   const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : workplaces;
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   useEffect(() => {
     setSiteTitle("Lisää työpaikkaa"), setSubHeading(""), setHeading("Työpaikkojen hallinta")
   }, [setHeading, setSiteTitle, setSubHeading])
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <>
       {list.slice(startIndex, endIndex).map((company, index) => (
         <div
           key={index}
           className='addDegree__container--list-item'
-          style={{cursor:'pointer'}}
+          style={{ cursor: 'pointer' }}
           onClick={() => navigate(`${company._id}`)}
         >
           <p>{company.name}</p>
@@ -65,26 +65,26 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
           // Disable button if current page is the first page
           disabled={currentPage === 1}
           onClick={() => handlePageClick(currentPage - 1)}
-          style={{backgroundColor:'white', border:'none'}}
+          style={{ backgroundColor: 'white', border: 'none' }}
         >
           {'< '}
         </button>
         {/* Render numbered buttons */}
-      {pages.map((pageNum) => (
-        <button
-          key={pageNum}
-          onClick={() => handlePageClick(pageNum)}
-          className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
-            }`}
-        >
-          {pageNum}
-        </button>
-      ))}
+        {pages.map((pageNum) => (
+          <button
+            key={pageNum}
+            onClick={() => handlePageClick(pageNum)}
+            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
+              }`}
+          >
+            {pageNum}
+          </button>
+        ))}
         <button
           // Disable button if current page is the last page
           disabled={currentPage === pageCount}
           onClick={() => handlePageClick(currentPage + 1)}
-          style={{backgroundColor:'white', border:'none'}}
+          style={{ backgroundColor: 'white', border: 'none' }}
         >
           {' >'}
         </button>

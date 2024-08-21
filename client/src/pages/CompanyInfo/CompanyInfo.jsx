@@ -8,7 +8,6 @@ import Stepper from '../../components/Stepper/Stepper';
 import { fetchExternalCompanyData } from '../../api/workplace';
 import useStore from '../../store/zustand/formStore';
 import InternalApiContext from '../../store/context/InternalApiContext';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
 
 import { CiSearch } from 'react-icons/ci';
 import { RxCrossCircled } from 'react-icons/rx';
@@ -17,6 +16,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const CompanyInfo = () => {
   } = useStore();
 
   const { internalDegree } = useContext(InternalApiContext);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   useEffect(() => {
     setSiteTitle("Lisää työpaikka")

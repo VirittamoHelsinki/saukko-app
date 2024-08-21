@@ -13,12 +13,13 @@ import DegreeDescriptionModal from '../../components/EditDegreeModals/DegreeDesc
 import DeleteDataModal from '../../components/EditDegreeModals/DeleteDataModal';
 import styles from './createUnitSummary.module.scss'
 import classNames from 'classnames';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
 import { LinearProgress, Box } from '@mui/material';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 const CreateUnitesSummary = ({ allInternalDegrees }) => {
   const navigate = useNavigate();
-  const { setHeading, setSubHeading, setSiteTitle } = useHeadingContext();
+  const { setHeading, setSubHeading, setSiteTitle } = useHeadingStore();
+
   const { degreeId } = useParams();
   const [degreeDetails, setDegreeDetails] = useState(null);
   // console.log('🚀 ~ CreateUnitesSummary ~ degreeDetails:', degreeDetails);

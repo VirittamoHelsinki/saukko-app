@@ -14,29 +14,29 @@ import {
   resetPassword,
 } from '../../api/user';
 import { useAuthContext } from '../../store/context/authContextProvider';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 function ProfilePage() {
   // User info from AuthContext
   const { currentUser } = useAuthContext();
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // Logout
-/*   const navigate = useNavigate();
-
-  const LogOut = async () => {
-    try {
-      await logoutUser();
-      navigate('/');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
- */ 
-
-const [invalidPasswordError, setInvalidPasswordError] = useState(false);
+  /*   const navigate = useNavigate();
   
+    const LogOut = async () => {
+      try {
+        await logoutUser();
+        navigate('/');
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+   */
+
+  const [invalidPasswordError, setInvalidPasswordError] = useState(false);
+
   // State for opening & closing email pop up
   const [openEmailPopUp, setOpenEmailPopUp] = useState(false);
   const handleOpenEmailPopUp = () => setOpenEmailPopUp(true);
@@ -116,7 +116,7 @@ const [invalidPasswordError, setInvalidPasswordError] = useState(false);
   useEffect(() => {
     setSiteTitle("Profiili"), setSubHeading(""), setHeading("Oma profiili")
   }, [setHeading, setSiteTitle, setSubHeading])
-  
+
   return (
     <div className='profile__wrapper'>
       <section className='profile__container'>
@@ -191,7 +191,7 @@ const [invalidPasswordError, setInvalidPasswordError] = useState(false);
                 <PasswordInput value='passwordOld' inputName='passwordOld' label='Vanha salasana *' />
                 <PasswordInput value='passwordNew' inputName='passwordNew' label='Uusi salasana *' />
                 <PasswordInput value='passwordVerify' inputName='passwordVerify' label='Vahvista salasana *' />
-                {invalidPasswordError && <p style={{color: "red"}}>Tarkista salasanasi ja yritä uudelleen!</p>}
+                {invalidPasswordError && <p style={{ color: "red" }}>Tarkista salasanasi ja yritä uudelleen!</p>}
               </div>
             }
             buttonText='Vaihda salasana'

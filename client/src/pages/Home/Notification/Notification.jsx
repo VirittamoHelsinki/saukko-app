@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import { MenuItem, Select } from '@mui/material';
 
 import { fetchAllNotifications } from '../../../api/notification';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 const Notification = () => {
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
-  const [ notifications, setNotifications ] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   // Fetch info for these in the future
-  const [ filterUser, setFilterUser ] = useState(null);
-  const [ filterType, setFilterType ] = useState(null);
+  const [filterUser, setFilterUser] = useState(null);
+  const [filterType, setFilterType] = useState(null);
 
   useEffect(() => {
     const fetch = async () => {
@@ -22,7 +22,7 @@ const Notification = () => {
     }
 
     fetch();
-  }, [ ])
+  }, [])
 
   const userMockData = [
     {
@@ -123,7 +123,7 @@ const Notification = () => {
             const customerName = regexResults.groups.customerName
 
             console.log(notification);
-            
+
 
             return (
               <div className="notification" key={notification._id}>

@@ -22,9 +22,9 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 // import { updateEvaluationById } from '../../../api/evaluation';
 import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
+import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
 // import { sendEmails } from '../../../api/performance';
 
 const UserPerformance = () => {
@@ -39,7 +39,7 @@ const UserPerformance = () => {
   const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
 
   const evaluationId = evaluation?._id;
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { allInternalDegrees } = useContext(InternalApiContext);
@@ -269,7 +269,7 @@ const UserPerformance = () => {
     } else {
       setHeading(`Tervetuloa, ${customerFirstName}`);
     }
-  });
+  }, [setSiteTitle, setHeading, setSubHeading, currentUser, customerFirstName, customerLastName]);
 
   const handleEvaluation = () => {
     navigate(-1);

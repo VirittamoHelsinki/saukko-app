@@ -10,10 +10,10 @@ import PaginationButtons from '../../../components/PaginationButtons';
 
 // Import state management
 import useStore from '../../../store/zustand/formStore';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
 
 import useUnitsStore from '../../../store/zustand/unitsStore'
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 function DegreeUnits({ degree }) {
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
@@ -22,7 +22,7 @@ function DegreeUnits({ degree }) {
 
   // Get degree name from zustand store
   const { degreeName } = useStore();
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // Save degree units to state once degree is fetched
   const degreeUnits = degree.units;
@@ -31,7 +31,7 @@ function DegreeUnits({ degree }) {
   useEffect(() => {
     setSiteTitle("Suoritusten hallinnoi"), setSubHeading("Lisää uusi tutkinto"), setHeading("Tutkintojen hallinta")
     setFilteredUnits(degreeUnits);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);
 
   // Pagination logic
@@ -80,19 +80,19 @@ function DegreeUnits({ degree }) {
         <div className='degreeUnits__container--units'>
           {
             currentUnits
-            ? (
-              currentUnits.map((unit) => (
-                <SelectUnit
-                  key={unit._id}
-                  unit={unit}
-                  allUnits={degree.units}
-                />
-              ))
-            )
-            : 'ei dataa APIsta'
+              ? (
+                currentUnits.map((unit) => (
+                  <SelectUnit
+                    key={unit._id}
+                    unit={unit}
+                    allUnits={degree.units}
+                  />
+                ))
+              )
+              : 'ei dataa APIsta'
           }
         </div>
-        
+
         <PaginationButtons
           currentPage={page}
           pageCount={filteredUnits && Math.ceil(filteredUnits.length / unitsPerPage)}
