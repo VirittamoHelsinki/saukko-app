@@ -14,6 +14,7 @@ import { useAuthContext } from '../../../store/context/authContextProvider';
 // Import PDF Certificate Export
 import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
 import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import { fetchAllEvaluations } from '../../../api/evaluation.js';
 
 const UnitList = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const UnitList = () => {
     setSiteTitle('Suoritukset');
     setSubHeading('Suoritukset');
 
-    if (!isLoading) {
+    if (!evaluation && !isLoading) {
       const ev = evaluations.find((ev) => ev.customerId._id === customerId);
 
       if (ev) {

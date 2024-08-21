@@ -8,7 +8,10 @@ const useEvaluationStore = create((set) => ({
   supervisor: null,
 
   setCustomer: (customer) => set({ customer }),
-  setEvaluation: (evaluation) => set({ evaluation }),
+  setEvaluation: (evaluation) => {
+    set({ evaluation });
+    console.log('zustand evaluation:', evaluation);
+  },
   setWorkplace: (workplace) => set({ workplace }),
   setDepartment: (department) => set({ department }),
   setSupervisor: (supervisor) => set({ supervisor }),

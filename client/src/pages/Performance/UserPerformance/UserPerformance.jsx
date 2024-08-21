@@ -35,7 +35,7 @@ const UserPerformance = () => {
   const { data: evaluations, isLoading } = useQuery({
     queryKey: ['evaluations'],
     queryFn: () => fetchAllEvaluations(),
-    refetchOnWindowFocus: true,  // Refetch data when window regains focus
+    refetchOnMount: true,  // Refetch data when window regains focus
     staleTime: 0,
   });
 
@@ -44,9 +44,9 @@ const UserPerformance = () => {
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
   const { evaluationId, unitId } = useParams();
-  const { setEvaluation } = useEvaluationStore();
+  const { evaluation: getEvaluation, setEvaluation } = useEvaluationStore();
 
-  const evaluation = !isLoading ? evaluations.find(evaluation => evaluation._id === evaluationId) : null
+  const evaluation = !isLoading && !getEvaluation ? evaluations.find(evaluation => evaluation._id === evaluationId) : getEvaluation
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 

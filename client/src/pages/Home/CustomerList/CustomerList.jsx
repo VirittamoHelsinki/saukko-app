@@ -21,6 +21,8 @@ import { Box } from '@mui/material';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
 import { fetchAllEvaluations } from '../../../api/evaluation.js';
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
+
 
 
 // Import MUI
@@ -42,8 +44,14 @@ export default function CustomerList() {
   // Data from store management
   const { currentUser } = useAuthContext();
   const { setHeading, setSiteTitle } = useHeadingStore();
+  const { resetEvaluation } = useEvaluationStore();
+
   /*   const { evaluations, setInternalEvaluations, setInternalEvaluation } = */
   /*   useContext(InternalApiContext); */
+
+  useEffect(() => {
+    resetEvaluation();
+  }, [])
 
   const [isInfoButtonOpen, setIsInfoButtonOpen] = useState(false);
 
@@ -72,6 +80,10 @@ export default function CustomerList() {
         return '#FFFFFF'; // Default color if title is not recognized
     }
   };
+
+  // useEffect(() => {
+  //   resetEvaluation();
+  // }, [])
 
   // Set evaluations
   useEffect(() => {
