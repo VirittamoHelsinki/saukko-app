@@ -51,7 +51,7 @@ export default function CustomerList() {
 
   useEffect(() => {
     resetEvaluation();
-  }, [])
+  }, [resetEvaluation])
 
   const [isInfoButtonOpen, setIsInfoButtonOpen] = useState(false);
 
