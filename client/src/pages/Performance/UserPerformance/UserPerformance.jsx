@@ -82,6 +82,17 @@ const UserPerformance = () => {
   const [unitObject, setUnitObject] = useState(null)
 
   useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "test";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
+
+  useEffect(() => {
     if (!isLoading && evaluation && evaluation.customerId) {
       setCustomerFirstName(`${evaluation?.customerId.firstName}`);
       setCustomerLastName(`${evaluation?.customerId.lastName}`);
