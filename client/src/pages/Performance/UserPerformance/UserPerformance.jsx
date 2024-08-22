@@ -305,6 +305,10 @@ const UserPerformance = () => {
     }));
   }, []);
 
+  useEffect(() => {
+    console.log('testing selecting values: ', selectedValues)
+  })
+
   return (
     <div className='perfomance__wrapper'>
       <h2 className='degree-name'>{degreeName?.name.fi}</h2>
@@ -427,7 +431,7 @@ const UserPerformance = () => {
         )}
       </div>
 
-      <h2
+      {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <h2
         style={{
           textAlign: 'center',
           fontSize: '18px',
@@ -436,10 +440,10 @@ const UserPerformance = () => {
           color: h2Color, // Set the color dynamically
         }}
       >
-        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
-      </h2>
+        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Yhteenveto'}
+      </h2>}
 
-      <div className='buttons-and-form'>
+      {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <div className='buttons-and-form'>
         <form action='' className='form-wrapper'>
           <textarea
             placeholder={
@@ -454,7 +458,6 @@ const UserPerformance = () => {
             className='para-title-style'
             value={textAreaValue}
             onChange={(e) => setTextareaValue(e.target.value)}
-            disabled={isPalauteSectionDisabled()}
           />
         </form>
         <section className='section-buttons'>
@@ -470,7 +473,7 @@ const UserPerformance = () => {
             />
           </div>
         </section>
-      </div>
+      </div>}
 
       {/* Warning notification modal */}
       <NotificationModal
