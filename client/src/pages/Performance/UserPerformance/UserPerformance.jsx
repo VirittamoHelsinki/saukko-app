@@ -440,7 +440,7 @@ const UserPerformance = () => {
           color: h2Color, // Set the color dynamically
         }}
       >
-        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Yhteenveto suorituksesta'}
+        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Arvioinnin yhteenveto'}
       </h2>}
 
       {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <div className='buttons-and-form'>
