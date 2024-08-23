@@ -21,11 +21,6 @@ const UserNav = () => {
     setShowWarning(false);
   };
 
-  const handleProceed = () => {
-    setShowWarning(false);
-    setMenuIsOpen(true);
-  };
-
   useEffect(() => {
     const routesToExclude = [
       '/customer-list',
