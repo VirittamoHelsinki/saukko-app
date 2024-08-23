@@ -99,35 +99,32 @@ export const sendReadyEmails = (
   return emailsSendTo
 };
 
-const updateUnitStatus = (units: any) => {
-  return units.map((unit: any) => {
-    let allAssessmentsCompleted = true;
-    let anyAssessmentInProgress = false;
+const updateUnitStatus = (unit: any) => {
+  let allAssessmentsCompleted = true;
+  let anyAssessmentInProgress = false;
 
-    unit.assessments.forEach((assessment: any) => {
-      const { answer, answerTeacher, answerSupervisor } = assessment;
-      if ([answer, answerTeacher, answerSupervisor].some(ans => ans === 1 || ans === 2)) {
-        anyAssessmentInProgress = true;
-      }
-      if ([answer, answerTeacher, answerSupervisor].some(ans => ans === 0)) {
-        allAssessmentsCompleted = false;
-      }
-    });
-
-
-    if (unit.teacherReady) {
-      unit.status = 3;
-      console.log('set status to 3')
-    } else if ((allAssessmentsCompleted && unit.customerReady) || unit.customerReady) {
-      console.log('set status to 2')
-      unit.status = 2;
-    } else if (anyAssessmentInProgress) {
-      console.log('set status to 1')
-      unit.status = 1;
+  unit.assessments.forEach((assessment: any) => {
+    const { answer, answerTeacher, answerSupervisor } = assessment;
+    if ([answer, answerTeacher, answerSupervisor].some(ans => ans === 1 || ans === 2)) {
+      anyAssessmentInProgress = true;
     }
-
-    return unit;
+    if ([answer, answerTeacher, answerSupervisor].some(ans => ans === 0)) {
+      allAssessmentsCompleted = false;
+    }
   });
+
+  if (unit.teacherReady) {
+    unit.status = 3;
+    console.log('set status to 3')
+  } else if ((allAssessmentsCompleted && unit.customerReady) || unit.customerReady) {
+    console.log('set status to 2')
+    unit.status = 2;
+  } else if (anyAssessmentInProgress) {
+    console.log('set status to 1')
+    unit.status = 1;
+  }
+
+  return unit;
 };
 
 export const evaluationCompleted = (evaluation: any): boolean => {
@@ -193,6 +190,17 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
   try {
     const evaluation = await fetchEvaluationWithDetails(req.params.id);
 
+    console.log(">>>>", evaluation);
+    console.log("____", req.body)
+    console.log("####", JSON.stringify(req.body.units))
+
+    const {
+      updatedUnit,
+      selectedValues,
+      additionalInfo,
+    } = req.body;
+    
+
     if (!evaluation) {
       return res.status(404).send({ message: 'Evaluation not found' });
     }
@@ -201,22 +209,22 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
 
     const formIsReadyParams = {
       degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
-      unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
+      unitName: updatedUnit?.name?.fi || 'Unknown Unit',
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
       customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
-      additionalInfo: req.body.additionalInfo,
+      additionalInfo: additionalInfo,
       supervisorFirstName: evaluation.supervisorIds?.[0]?.firstName,
       customerFirstName: evaluation.customerId?.firstName,
       teacherFirstName: evaluation.teacherId?.firstName
     };
 
+    console.log("FORM IS READY PARAMS", formIsReadyParams);
+    
     const emails: IEmails = {
       customerEmail: evaluation.customerId?.email || 'Unknown Customer Email',
       teacherEmail: evaluation.teacherId?.email || 'Unknown Teacher Email',
       supervisorEmail: evaluation.supervisorIds?.[0]?.email || 'Unknown Supervisor Email',
     };
-
-    const selectedValues = req.body.selectedValues;
 
     const customerId = (evaluation.customerId as IUser)._id
     const teacherId = (evaluation.teacherId as IUser)._id
@@ -236,7 +244,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
 
     const requestContactParams: ISendEvaluationFormRequestContact = {
       degreeName: evaluation.degreeId?.name?.fi || 'Unknown Degree',
-      unitName: req.body.units?.[0]?.name?.fi || 'Unknown Unit',
+      unitName: updatedUnit?.name?.fi || 'Unknown Unit',
       teacherName: evaluation.teacherId?.firstName + ' ' + evaluation.teacherId?.lastName,
       customerName: evaluation.customerId?.firstName + ' ' + evaluation.customerId?.lastName || 'Unknown Customer',
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
@@ -255,7 +263,15 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       supervisorId,
     );
 
-    evaluation.units = updateUnitStatus(req.body.units);
+    const existingUnits = evaluation.units.filter((unit) => {
+      return (unit._id) !== (updatedUnit._id)
+    })
+
+
+    evaluation.units = [
+      ...existingUnits,
+      updateUnitStatus(updatedUnit),
+    ];
 
     evaluation.set({
       workTasks: req.body.workTasks || evaluation.workTasks,
