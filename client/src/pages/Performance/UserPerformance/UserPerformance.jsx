@@ -209,8 +209,8 @@ const UserPerformance = () => {
     }
     console.log("UNIT TO UPDATE", unitToUpdate);
     console.log("UPDATED UNIT", updatedUnit)
-    
-  
+
+
 
     const updatedData = {
       updatedUnit,
@@ -220,9 +220,9 @@ const UserPerformance = () => {
 
 
     try {
-      
+
       console.log(updatedData);
-      
+
 
       const response = await handleUserPerformanceEmails(
         `${evaluationId}`,
@@ -370,43 +370,51 @@ const UserPerformance = () => {
       <div style={{ fontSize: '20px', marginTop: '40px', marginLeft: '18px' }}>
         {currentUser?.role === 'teacher' ? (
           <>
-            <input
-              type='checkbox'
-              name='suoritusValmis'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  suoritusValmis: !selectedValues['suoritusValmis'],
-                })
-              }
-            />
-            <label> Suoritus Valmis </label>
+            <label>
+              <input
+                type='checkbox'
+                name='suoritusValmis'
+                checked={selectedValues['suoritusValmis']}
+                onChange={() =>
+                  setSelectedValues({
+                    ...selectedValues,
+                    suoritusValmis: !selectedValues['suoritusValmis'],
+                  })
+                }
+              />
+              <span> Suoritus Valmis </span>
+            </label>
             <br />
-            <input
-              type='checkbox'
-              name='yhteydenottoAsiakkaalta'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  pyydetaanYhteydenottoaAsiakkaalta:
-                    !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
-                })
-              }
-            />
-            <label> Pyydetään yhteydenottoa asiakkaalta</label>
+            <label>
+              <input
+                type='checkbox'
+                name='yhteydenottoAsiakkaalta'
+                checked={selectedValues['pyydetaanYhteydenottoaAsiakkaalta']}
+                onChange={() =>
+                  setSelectedValues({
+                    ...selectedValues,
+                    pyydetaanYhteydenottoaAsiakkaalta:
+                      !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
+                  })
+                }
+              />
+              <span> Pyydetään yhteydenottoa asiakkaalta</span>
+            </label>
             <br />
-            <input
-              type='checkbox'
-              name='yhteydenottoOhjaajalta'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  pyydetaanYhteydenottoaOhjaajalta:
-                    !selectedValues['pyydetaanYhteydenottoaOhjaajalta'],
-                })
-              }
-            />
-            <label> Pyydetään yhteydenottoa ohjaajalta </label>
+            <label>
+              <input
+                type='checkbox'
+                name='yhteydenottoOhjaajalta'
+                onChange={() =>
+                  setSelectedValues({
+                    ...selectedValues,
+                    pyydetaanYhteydenottoaOhjaajalta:
+                      !selectedValues['pyydetaanYhteydenottoaOhjaajalta'],
+                  })
+                }
+              />
+              <span> Pyydetään yhteydenottoa ohjaajalta </span>
+            </label>
           </>
         ) : (
           <>
