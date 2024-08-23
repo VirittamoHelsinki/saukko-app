@@ -23,8 +23,6 @@ const Notification = () => {
   useEffect(() => {
     const fetch = async () => {
       const fetchedNotifications = await fetchAllNotifications();
-      console.log(fetchedNotifications);
-
       setNotifications(fetchedNotifications || []);
     }
 
@@ -95,7 +93,7 @@ const Notification = () => {
                 if (!user) {
                   return <p className="placeholder">Valitse asiakas</p>
                 }
-                
+
                 return `${user.name} ${user.surname}`
               }}
               >
@@ -140,7 +138,6 @@ const Notification = () => {
                 { [role]: true },
               )
 
-              console.log(notification);
               const customerName = `${notification.customer?.firstName} ${notification.customer?.lastName}`
 
               return (
