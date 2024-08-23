@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 const CompanySummary = () => {
@@ -10,7 +10,7 @@ const CompanySummary = () => {
   const [workplace, setWorkplace] = useState({});
   const [degreeName, setDegreeName] = useState('');
 
-  const { setHeading } = useHeadingContext();
+  const { setHeading } = useHeadingStore();
 
   useEffect(() => {
     setHeading('Työpaikkojen hallinta');

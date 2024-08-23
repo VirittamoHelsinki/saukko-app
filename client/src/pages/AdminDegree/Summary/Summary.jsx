@@ -12,7 +12,7 @@ import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import { postDegree } from '../../../api/degree';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import WithDegree from '../../../HOC/withDegree';
 
 function Summary({ degree }) {
@@ -31,7 +31,7 @@ function Summary({ degree }) {
   } = useStore();
   const { allInternalDegrees, setAllInternalDegrees } = useContext(InternalApiContext);
   const { checkedUnits, clearCheckedUnits } = useUnitsStore();
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // NotificationModal
   const [notificationSuccess, setNotificationSuccess] = useState(false)

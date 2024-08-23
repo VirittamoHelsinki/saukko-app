@@ -8,12 +8,12 @@ import Stepper from '../../../components/Stepper/Stepper';
 
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import useStore from '../../../store/zustand/formStore';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import { postWorkplace } from '../../../api/workplace';
 import { registration } from '../../../api/user';
 import { fetchAllInternalWorkplaces } from '../../../api/workplace';
 import { Typography } from '@mui/material';
 import InfoList from '../../../components/InfoList/InfoList';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
@@ -31,7 +31,8 @@ function DegreeConfirmSelection() {
 
   const params = useParams();
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+
 
   useEffect(() => {
     setSiteTitle('Lisää työpaikka'),

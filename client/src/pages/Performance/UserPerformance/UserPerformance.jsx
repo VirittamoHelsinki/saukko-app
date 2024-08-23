@@ -22,24 +22,34 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 // import { updateEvaluationById } from '../../../api/evaluation';
 import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
+import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
+import { fetchAllEvaluations } from '../../../api/evaluation';
 // import { sendEmails } from '../../../api/performance';
+import { useQuery } from '@tanstack/react-query';
+
 
 const UserPerformance = () => {
   const { currentUser } = useAuthContext();
 
-  // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
+  const { data: evaluations, isLoading } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations(),
+    refetchOnMount: true,  // Refetch data when window regains focus
+    staleTime: 0,
+  });
+
 
   // eslint-disable-next-line no-unused-vars
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
-  /*  const { evaluation, setEvaluation } = useContext(InternalApiContext); */
-  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
+  const { evaluationId, unitId } = useParams();
+  const { evaluation: getEvaluation, setEvaluation } = useEvaluationStore();
 
-  const evaluationId = evaluation?._id;
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const evaluation = !isLoading && !getEvaluation ? evaluations.find(evaluation => evaluation._id === evaluationId) : getEvaluation
+
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { allInternalDegrees } = useContext(InternalApiContext);
@@ -68,21 +78,30 @@ const UserPerformance = () => {
   const [customerFirstName, setCustomerFirstName] = useState(null);
   const [customerLastName, setCustomerLastName] = useState(null);
 
-  const { unitId } = useParams();
   const [selectedRadio, setSelectedRadio] = useState({});
   const [unitObject, setUnitObject] = useState(null)
 
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "test";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
 
   useEffect(() => {
-    if (evaluation && evaluation.customerId) {
+    if (!isLoading && evaluation && evaluation.customerId) {
       setCustomerFirstName(`${evaluation?.customerId.firstName}`);
       setCustomerLastName(`${evaluation?.customerId.lastName}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customerFirstName, customerLastName]);
+  }, [customerFirstName, customerLastName, isLoading]);
 
   useEffect(() => {
-    if (evaluation) {
+    if (!isLoading, evaluation) {
       const foundUnit = evaluation.units.find(unit => unit._id === Number(unitId));
       if (foundUnit) {
         setUnitObject(foundUnit);
@@ -276,7 +295,7 @@ const UserPerformance = () => {
     } else {
       setHeading(`Tervetuloa, ${customerFirstName}`);
     }
-  });
+  }, [setSiteTitle, setHeading, setSubHeading, currentUser, customerFirstName, customerLastName]);
 
   const handleEvaluation = () => {
     navigate(-1);
@@ -292,6 +311,10 @@ const UserPerformance = () => {
       },
     }));
   }, []);
+
+  useEffect(() => {
+    console.log('testing selecting values: ', selectedValues)
+  })
 
   return (
     <div className='perfomance__wrapper'>
@@ -415,7 +438,7 @@ const UserPerformance = () => {
         )}
       </div>
 
-      <h2
+      {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <h2
         style={{
           textAlign: 'center',
           fontSize: '18px',
@@ -424,10 +447,10 @@ const UserPerformance = () => {
           color: h2Color, // Set the color dynamically
         }}
       >
-        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
-      </h2>
+        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Yhteenveto'}
+      </h2>}
 
-      <div className='buttons-and-form'>
+      {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <div className='buttons-and-form'>
         <form action='' className='form-wrapper'>
           <textarea
             placeholder={
@@ -442,7 +465,6 @@ const UserPerformance = () => {
             className='para-title-style'
             value={textAreaValue}
             onChange={(e) => setTextareaValue(e.target.value)}
-            disabled={isPalauteSectionDisabled()}
           />
         </form>
         <section className='section-buttons'>
@@ -458,7 +480,7 @@ const UserPerformance = () => {
             />
           </div>
         </section>
-      </div>
+      </div>}
 
       {/* Warning notification modal */}
       <NotificationModal

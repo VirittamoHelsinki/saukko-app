@@ -9,8 +9,8 @@ import NotificationModal from '../../../components/NotificationModal/Notificatio
 import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import { Typography } from '@mui/material';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 function EvaluationUnits() {
   const navigate = useNavigate();
@@ -21,14 +21,14 @@ function EvaluationUnits() {
   const { workplace } = useEvaluationStore();
   console.log("🚀 ~ EvaluationUnits ~ workplace:", workplace)
   const { openNotificationModal, setOpenNotificationModal } = useStore();
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-  console.log('workplace.degreeId:',workplace.degreeId);
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+  console.log('workplace.degreeId:', workplace.degreeId);
 
-  
 
-  useEffect(()=>{
+
+  useEffect(() => {
     setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
-  },[setHeading, setSiteTitle, setSubHeading]);
+  }, [setHeading, setSiteTitle, setSubHeading]);
   // Check if at least one unit is chosen and redirect
   const handleValidation = () => {
     if (checkedUnits.length > 0) {
@@ -71,12 +71,12 @@ function EvaluationUnits() {
         <div className='evaluationUnits__container--units'>
           {workplace && workplace.units
             ? workplace.units.map((unit) => (
-                <SelectUnit
-                  key={unit._id}
-                  unit={unit}
-                  allUnits={workplace.units}
-                />
-              ))
+              <SelectUnit
+                key={unit._id}
+                unit={unit}
+                allUnits={workplace.units}
+              />
+            ))
             : 'ei dataa APIsta'}
         </div>
 
@@ -95,10 +95,10 @@ function EvaluationUnits() {
           </Typography>
         }
         body={
-          <div style={{padding: '10px'}}>
-          <Typography style={{ fontSize: '14px' }}>
-            Valitse ainakin yksi tutkinnonosa.
-          </Typography>
+          <div style={{ padding: '10px' }}>
+            <Typography style={{ fontSize: '14px' }}>
+              Valitse ainakin yksi tutkinnonosa.
+            </Typography>
           </div>
         }
         open={openNotificationModal}

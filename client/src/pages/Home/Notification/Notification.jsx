@@ -6,6 +6,7 @@ import classNames from "classnames"
 import NotificationModal from './NotificationModal';
 
 import { fetchAllNotifications } from '../../../api/notification';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 const Notification = () => {
   const { currentUser } = useAuthContext();
@@ -27,7 +28,7 @@ const Notification = () => {
     }
 
     fetch();
-  }, [ ])
+  }, [])
 
   const userMockData = [
     {

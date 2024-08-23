@@ -7,7 +7,7 @@ import Searchbar from '../../../components/Searchbar/Searchbar';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 import InternalApiContext from '../../../store/context/InternalApiContext';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 
 // controls how many degrees are shown at once and renders them
@@ -54,7 +54,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
           // Disable button if current page is the first page
           disabled={currentPage === 1}
           onClick={() => handlePageClick(currentPage - 1)}
-          style={{border:'none', backgroundColor:'white',  margin:'0 10px'}}
+          style={{ border: 'none', backgroundColor: 'white', margin: '0 10px' }}
           className='arrow__button__left'
         >
           {'< '}
@@ -69,11 +69,11 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
             {pageNum}
           </button>
         ))}
-         <button
+        <button
           // Disable button if current page is the last page
           disabled={currentPage === pageCount}
           onClick={() => handlePageClick(currentPage + 1)}
-          style={{border:'none', backgroundColor:'white', margin:'0 10px' }}
+          style={{ border: 'none', backgroundColor: 'white', margin: '0 10px' }}
           className='arrow__button__right'
         >
           {' >'}
@@ -112,11 +112,11 @@ const CompanySearchPage = () => {
   // Get degrees from InternalApiContext
   const { allInternalDegrees, internalDegree } = useContext(InternalApiContext);
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   useEffect(() => {
     setSiteTitle("Lisää työpaikka"), setSubHeading("Lisää uusi työpaikka"), setHeading("Työpaikkojen hallinta")
-  })
+  }, [setSiteTitle, setSubHeading, setHeading])
   // Searchbar logic
   const handleSearch = (event) => {
     setCurrentPage(1) // Reset page when searching

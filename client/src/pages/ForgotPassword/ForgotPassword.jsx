@@ -3,14 +3,14 @@ import Button from '../../components/Button/Button';
 import Notification from '../../components/Notification/Notification';
 import * as EmailValidator from 'email-validator';
 import { forgotPassword } from '../../api/user';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 const ForgotPassword = () => {
   const color = '#00005E'
   const [email, setEmail] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [notificationVisible, setNotificationVisible] = useState(false);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const formRef = useRef();
   const emailRef = useRef();
@@ -38,9 +38,9 @@ const ForgotPassword = () => {
   };
 
 
-  useEffect(()=>{
+  useEffect(() => {
     setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
-  },[setHeading, setSiteTitle, setSubHeading])
+  }, [setHeading, setSiteTitle, setSubHeading])
 
   useEffect(() => {
     setButtonDisabled(email.length === 0);
@@ -63,33 +63,33 @@ const ForgotPassword = () => {
       {/* {!notificationVisible && <WavesHeader title='Saukko' fill='#9fc9eb' header={color} />} */}
       {!notificationVisible && (
         <>
-        <section className='forgotPassword__container'>
-          <h2>Unohtuiko salasana?</h2>
-          <p>Täytä sähköpostiosoitteesi alle, jotta saat<br></br>ohjeet salasanasi vaihtamiseen. </p>
-          <form ref={formRef} onSubmit={processForgotPassword}>
-            <section className='forgotPassword__container--form-text'>
-              <label htmlFor='email'>Sähköposti *</label>
-              <input
-                ref={emailRef}
-                type='email'
-                id='email'
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
+          <section className='forgotPassword__container'>
+            <h2>Unohtuiko salasana?</h2>
+            <p>Täytä sähköpostiosoitteesi alle, jotta saat<br></br>ohjeet salasanasi vaihtamiseen. </p>
+            <form ref={formRef} onSubmit={processForgotPassword}>
+              <section className='forgotPassword__container--form-text'>
+                <label htmlFor='email'>Sähköposti *</label>
+                <input
+                  ref={emailRef}
+                  type='email'
+                  id='email'
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
 
-              />
-            </section>
-          </form>
-        </section>
-         <section className='forgotPassword__form--bottom'>
-         <Button
-           style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
-           onClick={processForgotPassword}
-           type='submit'
-           text='Lähetä'
-         />
-       </section>
-       </>
+                />
+              </section>
+            </form>
+          </section>
+          <section className='forgotPassword__form--bottom'>
+            <Button
+              style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
+              onClick={processForgotPassword}
+              type='submit'
+              text='Lähetä'
+            />
+          </section>
+        </>
       )}
       {/* {!notificationVisible && (
         <section className='forgotPassword__form--bottom'>

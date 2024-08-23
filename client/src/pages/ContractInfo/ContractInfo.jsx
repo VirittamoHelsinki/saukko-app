@@ -3,17 +3,17 @@ import { useEffect, useState } from 'react';
 import { useEvaluations } from '../../store/context/EvaluationsContext.jsx';
 // Import components
 import { fetchInternalDegreeById } from '../../api/degree';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
 import InfoList from '../../components/InfoList/InfoList';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 
 
 import { useNavigate } from 'react-router-dom';
+import useHeadingStore from '../../store/zustand/useHeadingStore.js';
 
 const ContractInfo = () => {
   const navigate = useNavigate();
   const [degreeDetails, setDegreeDetails] = useState(null);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore;
 
   const { evaluation } = useEvaluations();
 

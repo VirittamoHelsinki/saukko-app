@@ -3,7 +3,7 @@ import alert from '../../assets/circle-red.svg'
 import Button from '../../components/Button/Button';
 import { loginUser } from '../../api/user';
 import { Icon } from '@iconify/react';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,7 +11,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState();
   const [errorMessage, setErrorMessage] = useState('');
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const processLogin = useCallback(async (e) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ const LoginPage = () => {
         console.error(err);
       }
     }
-  },[email, password]);
+  }, [email, password]);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -51,7 +51,7 @@ const LoginPage = () => {
     };
   }, [buttonDisabled, processLogin]);
 
-  
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
   }
@@ -62,9 +62,9 @@ const LoginPage = () => {
   }, [email, password]);
 
 
-  useEffect(()=>{
+  useEffect(() => {
     setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
-  },[setHeading, setSiteTitle, setSubHeading])
+  }, [setHeading, setSiteTitle, setSubHeading])
 
 
   // button styling/CSS
@@ -73,11 +73,11 @@ const LoginPage = () => {
     border: 'var(--link-disabled)',
     background: 'var(--link-disabled)',
   },
-  buttonStyleEnabled = {
-    color: 'var(--saukko-main-white)',
-    border: 'var(--saukko-main-black)',
-    background: 'var(--saukko-main-black)',
-  };
+    buttonStyleEnabled = {
+      color: 'var(--saukko-main-white)',
+      border: 'var(--saukko-main-black)',
+      background: 'var(--saukko-main-black)',
+    };
 
   return (
     <div className='loginPage__wrapper'>

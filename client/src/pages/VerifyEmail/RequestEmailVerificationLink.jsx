@@ -3,18 +3,18 @@ import Button from "../../components/Button/Button";
 //import WavesHeader from "../../components/Header/WavesHeader";
 import Notification from "../../components/Notification/Notification";
 import { requestEmailVerificationLinkAsync } from '../../api/user';
-import { useHeadingContext } from "../../store/context/headingContectProvider";
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 
 const RequestEmailVerificationLink = () => {
-  const [notificationVisible, setNotificationVisible] =  useState(false);
+  const [notificationVisible, setNotificationVisible] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
-  useEffect(()=>{
+  useEffect(() => {
     setSiteTitle(""), setSubHeading(""), setHeading("OsTu")
-  },[setHeading, setSiteTitle, setSubHeading])
+  }, [setHeading, setSiteTitle, setSubHeading])
 
   const handleFrom = async (e) => {
     e.preventDefault();

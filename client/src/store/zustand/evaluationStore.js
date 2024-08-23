@@ -1,16 +1,3 @@
-/* 
-  USAGE
-
-  Set data:
-
-    const { setCustomer, setEvaluation, setWorkplace, setSupervisor } = useEvaluationStore();
-    setEvaluation(someData);
-
-  Access data:
-
-    const { customer, evaluation, workplace, supervisor } = useEvaluationStore();
-*/
-
 import { create } from 'zustand';
 
 const useEvaluationStore = create((set) => ({
@@ -21,14 +8,17 @@ const useEvaluationStore = create((set) => ({
   supervisor: null,
 
   setCustomer: (customer) => set({ customer }),
-  setEvaluation: (evaluation) => set({ evaluation }),
+  setEvaluation: (evaluation) => {
+    set({ evaluation });
+    console.log('zustand evaluation:', evaluation);
+  },
   setWorkplace: (workplace) => set({ workplace }),
   setDepartment: (department) => set({ department }),
   setSupervisor: (supervisor) => set({ supervisor }),
 
   clearEvaluationFromStore: () => {
-    set({ 
-      customer: null, 
+    set({
+      customer: null,
       evaluation: null,
       workplace: null,
       department: null,
@@ -37,7 +27,7 @@ const useEvaluationStore = create((set) => ({
   },
 
   clearWorkplace: () => {
-    set({ 
+    set({
       workplace: null,
       department: null,
       supervisor: null,
@@ -48,7 +38,7 @@ const useEvaluationStore = create((set) => ({
   chosenUnitId: null,
   setChosenUnitId: (chosenUnitId) => set(() => ({ chosenUnitId })),
   clearChosenUnitId: () => set({ chosenUnitId: null }),
-
+  resetEvaluation: () => set({ evaluation: null }),
 }));
 
 export default useEvaluationStore;

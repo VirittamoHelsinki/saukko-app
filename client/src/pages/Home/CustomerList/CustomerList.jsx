@@ -1,6 +1,7 @@
 // Import React
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 // Import components
 // import WavesHeader from '../../../components/Header/WavesHeader';
@@ -18,8 +19,10 @@ import { Box } from '@mui/material';
 // Import state management
 /* import InternalApiContext from '../../../store/context/InternalApiContext'; */
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
+import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import { fetchAllEvaluations } from '../../../api/evaluation.js';
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
+
 
 
 // Import MUI
@@ -31,13 +34,24 @@ import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 export default function CustomerList() {
   const navigate = useNavigate();
-  const { evaluations, refetchEvaluations } = useEvaluations();
+  /* const { evaluations, refetchEvaluations } = useEvaluations(); */
+
+  const { data: evaluations } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations()
+  });
 
   // Data from store management
   const { currentUser } = useAuthContext();
-  const { setHeading, setSiteTitle } = useHeadingContext();
+  const { setHeading, setSiteTitle } = useHeadingStore();
+  const { resetEvaluation } = useEvaluationStore();
+
   /*   const { evaluations, setInternalEvaluations, setInternalEvaluation } = */
   /*   useContext(InternalApiContext); */
+
+  useEffect(() => {
+    resetEvaluation();
+  }, [resetEvaluation])
 
   const [isInfoButtonOpen, setIsInfoButtonOpen] = useState(false);
 
@@ -67,13 +81,15 @@ export default function CustomerList() {
     }
   };
 
+  // useEffect(() => {
+  //   resetEvaluation();
+  // }, [])
+
   // Set evaluations
   useEffect(() => {
     setHeading(`Tervetuloa ${currentUser?.firstName}`)
     setSiteTitle("Etusivu")
-    refetchEvaluations();
-    /* setInternalEvaluations(); */
-  }, [setHeading, setSiteTitle, currentUser, refetchEvaluations]);
+  }, [setHeading, setSiteTitle, currentUser]);
 
   // Find evaluations in progress
   const inProgress =
@@ -135,16 +151,16 @@ export default function CustomerList() {
         <div className='customerList__accordion'>
           {
             inProgress && inProgress.map((evaluation) => evaluation.customerId && (
-                <div
-                  key={`in-progress-${evaluation._id}`}
-                  className='customerList__element in-progress'
-                >
-                  <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
-                    {evaluation.customerId.firstName}{' '}
-                    {evaluation.customerId.lastName}
-                  </p>
-                </div>
-              )
+              <div
+                key={`in-progress-${evaluation._id}`}
+                className='customerList__element in-progress'
+              >
+                <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
+                  {evaluation.customerId.firstName}{' '}
+                  {evaluation.customerId.lastName}
+                </p>
+              </div>
+            )
             )
           }
 
