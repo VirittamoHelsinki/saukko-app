@@ -175,9 +175,14 @@ const UserPerformance = () => {
   };
 
 
+  // TODO: Change this to edit only a single unit so I have an idea what to do server side
+  // smh
   const handleSubmit = async () => {
-    const updatedUnits = evaluation.units.map((unit) => {
-      const updatedAssessments = unit.assessments.map((assessment) => {
+
+    const unitToUpdate = evaluation.units.find((unit) => unit._id === Number(unitId))
+    const updatedUnit = {
+      ...unitToUpdate,
+      assessments: unitToUpdate.assessments.map((assessment) => {
         const assessmentRadio = selectedRadio[assessment._id];
         let answer = assessment.answer;
         let answerSupervisor = assessment.answerSupervisor;
@@ -200,28 +205,29 @@ const UserPerformance = () => {
           answerSupervisor,
           answerTeacher,
         };
-      });
-
-      return {
-        ...unit,
-        assessments: updatedAssessments,
-        feedBack: textAreaValue,
-      };
-    });
+      })
+    }
+    console.log("UNIT TO UPDATE", unitToUpdate);
+    console.log("UPDATED UNIT", updatedUnit)
+    
+  
 
     const updatedData = {
-      units: updatedUnits,
+      updatedUnit,
       selectedValues: selectedValues,
       additionalInfo: textAreaValue,
     };
 
 
     try {
+      
+      console.log(updatedData);
+      
+
       const response = await handleUserPerformanceEmails(
         `${evaluationId}`,
         updatedData
       );
-
 
       // set response to the store
       setEvaluation(response);
@@ -230,6 +236,7 @@ const UserPerformance = () => {
     } catch (error) {
       console.error('Error updating evaluation:', error);
     }
+
     setIsButtonEnabled(true);
     handleNotificationModalOpen();
   };
@@ -237,17 +244,17 @@ const UserPerformance = () => {
   const getButtonText = () => {
     if (currentUser?.role === 'customer') {
       if (selectedValues['valmisLahetettavaksi']) {
-        return 'Tallenna ja Lähetä';
+        return 'Tallenna ja lähetä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
-        return 'Tallenna luonnos ja Lähettä pyyntö';
+        return 'Tallenna luonnos ja lähetä pyyntö';
       } else {
         return 'Tallenna luonnos';
       }
     } else if (currentUser?.role === 'supervisor') {
       if (selectedValues['valmisLahetettavaksi']) {
-        return 'Tallenna ja Lähetä';
+        return 'Tallenna ja lähetä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
-        return 'Tallenna luonnos ja Lähettä pyyntö';
+        return 'Tallenna luonnos ja lähetä pyyntö';
       } else {
         return 'Tallenna luonnos';
       }
@@ -278,8 +285,8 @@ const UserPerformance = () => {
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
 
   useEffect(() => {
-    setSiteTitle('Arviointi'),
-      setSubHeading('Ammattitaitovaatimusten arviointi');
+    setSiteTitle('Arviointi');
+    setSubHeading('Ammattitaitovaatimusten arviointi');
     if (
       currentUser &&
       (currentUser.role === 'teacher' || currentUser.role === 'supervisor')

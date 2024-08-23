@@ -1,25 +1,23 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-export interface IContent {
-  title: string;
-  body: string;
-}
-
-export interface IMessage {
-  content: IContent;
-}
-
 export interface INotificationObj {
-  msg: IMessage;
-  recipientUserId: Types.ObjectId;
+  recipient: Types.ObjectId;
+  customer: Types.ObjectId;
   isRead: boolean;
   isSeen: boolean;
+  title: string;
+  body: string;
 }
 
 export interface INotificationObjDocument extends INotificationObj, Document { }
 
 export const notificationObjSchema = new Schema<INotificationObjDocument>({
-  recipientUserId: {
+  recipient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null,
+  },
+  customer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     default: null,
@@ -32,16 +30,12 @@ export const notificationObjSchema = new Schema<INotificationObjDocument>({
     type: Boolean,
     required: true
   },
-  msg: {
-    content: {
-      title: {
-        type: String
-      },
-      body: {
-        type: String
-      }
-    }
-  }
+  title: {
+    type: String
+  },
+  body: {
+    type: String
+  },
 })
 
 export default mongoose.model<INotificationObjDocument & Document>("NotificationDocument", notificationObjSchema);
