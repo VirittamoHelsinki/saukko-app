@@ -384,7 +384,7 @@ const UserPerformance = () => {
                     })
                   }
                 />
-                <span> Suoritus Valmis </span>
+                <span> Suoritus valmis </span>
               </label>
 
               <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
@@ -400,7 +400,7 @@ const UserPerformance = () => {
                     })
                   }
                 />
-                <span> Pyydetään yhteydenottoa asiakkaalta</span>
+                <span> Pyydän yhteydenottoa asiakkaalta</span>
               </label>
 
               <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
@@ -415,7 +415,7 @@ const UserPerformance = () => {
                     })
                   }
                 />
-                <span> Pyydetään yhteydenottoa ohjaajalta </span>
+                <span> Pyydän yhteydenottoa ohjaajalta </span>
               </label>
             </>
           ) : (
