@@ -456,7 +456,6 @@ const UserPerformance = () => {
           style={{
             textAlign: 'center',
             fontSize: '18px',
-            textDecoration: 'underline',
             marginTop: '28px',
             color: h2Color, // Set the color dynamically
           }}
