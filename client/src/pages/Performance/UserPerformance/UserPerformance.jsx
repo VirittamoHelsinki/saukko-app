@@ -458,8 +458,9 @@ const UserPerformance = () => {
         {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Arvioinnin yhteenveto'}
       </h2>}
 
-      {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <div className='buttons-and-form'>
-        <form action='' className='form-wrapper'>
+
+      <div className='buttons-and-form'>
+        {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <form action='' className='form-wrapper'>
           <textarea
             placeholder={
               currentUser?.role === 'teacher'
@@ -474,7 +475,7 @@ const UserPerformance = () => {
             value={textAreaValue}
             onChange={(e) => setTextareaValue(e.target.value)}
           />
-        </form>
+        </form>}
         <section className='section-buttons'>
           <div className='buttons-wrapper'>
             <PageNavigationButtons handleBack={() => navigate(-1)} />
@@ -488,7 +489,7 @@ const UserPerformance = () => {
             />
           </div>
         </section>
-      </div>}
+      </div>
 
       {/* Warning notification modal */}
       <NotificationModal
