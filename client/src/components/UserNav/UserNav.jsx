@@ -7,7 +7,7 @@ import { useAuthContext } from '../../store/context/authContextProvider';
 import { logoutUser } from '../../api/user';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
-import { Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 const UserNav = () => {
   const { currentUser } = useAuthContext();
@@ -19,6 +19,11 @@ const UserNav = () => {
 
   const handleWarningClose = () => {
     setShowWarning(false);
+  };
+
+  const handleProceed = () => {
+    setShowWarning(false);
+    setMenuIsOpen(true);
   };
 
   useEffect(() => {
@@ -136,6 +141,14 @@ const UserNav = () => {
             Jos poistut sivulta, tallentamattomat tiedot menetetään.
           </p>
         </DialogContent>
+        <DialogActions sx={{ backgroundColor: '#FFF4B4', zIndex: 2 }}>
+          <Button onClick={handleWarningClose} sx={{ color: '#DCA500' }}>
+            Peruuta
+          </Button>
+          <Button onClick={handleProceed} sx={{ color: '#DCA500' }}>
+            Jatka
+          </Button>
+        </DialogActions>
       </Dialog>
       <div className='userNav__wrapper'>
         { /* Background shadow for the opened hamburger menu */}
