@@ -141,15 +141,42 @@ const UserNav = () => {
             Jos poistut sivulta, tallentamattomat tiedot menetetään.
           </p>
         </DialogContent>
-        <DialogActions sx={{ backgroundColor: '#FFF4B4', zIndex: 2 }}>
-          <Button onClick={handleWarningClose} sx={{ color: '#DCA500' }}>
+        <DialogActions sx={{ backgroundColor: '#FFF4B4', zIndex: 2, justifyContent: 'center', gap: '20px' }}>
+          <Button
+            onClick={handleWarningClose}
+            sx={{
+              color: '#0000BF',
+              borderColor: '#0000BF',
+              backgroundColor: 'white',
+              border: '2px solid',
+              padding: '10px 20px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 0, 191, 0.1)',
+              }
+            }}
+          >
             Peruuta
           </Button>
-          <Button onClick={handleProceed} sx={{ color: '#DCA500' }}>
-            Jatka
+          <Button
+            onClick={handleProceed}
+            sx={{
+              color: '#FFFFFF',
+              backgroundColor: '#0000BF',
+              padding: '10px 20px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              '&:hover': {
+                backgroundColor: '#0000A0',
+              }
+            }}
+          >
+            Poistu sivulta
           </Button>
         </DialogActions>
       </Dialog>
+
       <div className='userNav__wrapper'>
         { /* Background shadow for the opened hamburger menu */}
         <div className={`userNav__shadow ${menuIsOpen ? '' : 'hidden'}`} onClick={closeMenu}></div>
