@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -9,6 +9,7 @@ const TeacherPerformanceFeedBack = ({
   evaluation, setEvaluation, assessment, unit, selectedRadio, handleRadioChange, unitId
 }) => {
 
+  const [comment, setComment] = useState(assessment.comment.text);
 
   const valueMapping = {
     1: 'Osaa ohjatusti',
@@ -143,6 +144,8 @@ const TeacherPerformanceFeedBack = ({
         <TeacherComment
           assessmentId={assessment._id}
           selectedUnitId={unitId}
+          setComment={setComment}
+          comment={comment}
           assessment={assessment}
           evaluationId={evaluation._id}
           evaluation={evaluation}

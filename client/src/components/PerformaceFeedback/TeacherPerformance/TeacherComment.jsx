@@ -28,9 +28,9 @@ const TeacherComment = ({
   // Modal for teacher comment
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
-  const cancelTeacherComment = () => {
-    setComment(assessment.comment.text);
-  };
+  // const cancelTeacherComment = () => {
+  //   setComment(assessment.comment.text);
+  // };
 
   const handleCloseCommentModal = () => {
     setIsCommentModalOpen(false);
@@ -101,7 +101,11 @@ const TeacherComment = ({
           className='teacher-comment-button-wrapper'
           style={{ backgroundColor: getBackgroundColor() }}
         >
-          Lisää opettajan kommentti {/* </button> */}
+          {comment && (
+            <div style={{ marginRight: 135 }}>
+              Kommentti lisätty
+            </div>)}
+          Lisää kommentti {/* </button> */}
           <Icon icon='ph:note-pencil-light' color='grey' fontSize='1.8rem' />
         </button>
       </div>
@@ -117,7 +121,7 @@ const TeacherComment = ({
           dialogTitle: {
             fontSize: '16px',
             fontWeight: 'bold',
-            marginLeft: '5px',
+            marginLeft: '0px',
           },
         }}
         title={
@@ -125,28 +129,17 @@ const TeacherComment = ({
             sx={{
               fontSize: '16px',
               fontWeight: 'bold',
-              marginRight: '25px',
+              marginRight: '50px',
               marginLeft: '15px',
             }}
           >
-            Lisää opettajan kommentti
+
+            Kirjoita kommentti alla olevaan<br />
+            kenttään
           </Typography>
         }
         body={
           <>
-            <IconButton
-              aria-label='close'
-              onClick={handleCloseCommentModal}
-              sx={{
-                position: 'absolute',
-                right: 8,
-                top: 8,
-                color: 'black',
-                marginLeft: '2rem',
-              }}
-            >
-              <CancelOutlinedIcon />
-            </IconButton>
             <DialogContent>
               <Box>
                 <TextField
@@ -163,7 +156,7 @@ const TeacherComment = ({
                   multiline
                   variant='outlined'
                   sx={{
-                    width: '95%',
+                    width: '300px',
                     borderColor: 'black',
                     borderRadius: '0',
                     backgroundColor: 'white',
@@ -186,33 +179,15 @@ const TeacherComment = ({
                   sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    padding: '16px 16px 16px 0',
-                    marginTop: '20px',
+                    marginTop: '28px',
                   }}
                 >
-                  <Button
-                    text='Peruuta'
-                    variant='contained'
-                    style={{
-                      textTransform: 'none',
-                      backgroundColor: '#FFFFFF',
-                      border: '2px solid #0000BF',
-                      width: '152px',
-                      height: '56px',
-                      color: '#0000BF',
-                      fontWeight: 'bold',
-                      marginRight: '10px',
-                    }}
-                    onClick={cancelTeacherComment}
-                  ></Button>
                   <Button
                     text='Tallenna'
                     variant='contained'
                     style={{
                       textTransform: 'none',
                       backgroundColor: '#0000BF',
-                      width: '99px',
-                      height: '56px',
                       color: '#FFFFFF',
                       border: 'none',
                     }}
