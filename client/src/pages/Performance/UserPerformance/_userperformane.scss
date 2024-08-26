@@ -9,7 +9,6 @@
   padding-bottom: 3rem;
 
   .para-title-style {
-    margin-left: 18px;
     margin-bottom: 16px;
     margin-top: 18px;
     font-size: 16px;
@@ -39,25 +38,25 @@
   .buttons-and-form {
     display: flex;
     flex-direction: column;
-    align-items: start;
-    padding: 0 10px;
-    width: 100%;
 
     .form-wrapper {
-      width: 90%;
+      width: 100%;
     }
     .section-buttons {
-      width: 94%;
+      display: flex;
+      justify-content: center; 
+      width: 100%;
+      padding-top: 28px;
 
       .buttons-wrapper {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         width: 100%;
 
         .buttons__container-back {
           padding-top: 0;
-          width: 100%;
+          width: auto;
 
           .button__text {
             font-size: 16px;

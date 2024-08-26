@@ -81,6 +81,7 @@ const UserPerformance = () => {
   const [selectedRadio, setSelectedRadio] = useState({});
   const [unitObject, setUnitObject] = useState(null)
 
+
   useEffect(() => {
     const unloadCallback = (event) => {
       event.preventDefault();
@@ -209,8 +210,8 @@ const UserPerformance = () => {
     }
     console.log("UNIT TO UPDATE", unitToUpdate);
     console.log("UPDATED UNIT", updatedUnit)
-    
-  
+
+
 
     const updatedData = {
       updatedUnit,
@@ -220,9 +221,9 @@ const UserPerformance = () => {
 
 
     try {
-      
+
       console.log(updatedData);
-      
+
 
       const response = await handleUserPerformanceEmails(
         `${evaluationId}`,
@@ -367,120 +368,135 @@ const UserPerformance = () => {
 
       {error && <p>{error}</p>}
 
-      <div style={{ fontSize: '20px', marginTop: '40px', marginLeft: '18px' }}>
-        {currentUser?.role === 'teacher' ? (
-          <>
-            <input
-              type='checkbox'
-              name='suoritusValmis'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  suoritusValmis: !selectedValues['suoritusValmis'],
-                })
+      <div className='body' style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: '0 16px', marginTop: '28px' }}>
+        <div style={{ fontSize: '20px' }}>
+          {currentUser?.role === 'teacher' ? (
+            <>
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='suoritusValmis'
+                  checked={selectedValues['suoritusValmis']}
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      suoritusValmis: !selectedValues['suoritusValmis'],
+                    })
+                  }
+                />
+                <span> Suoritus valmis </span>
+              </label>
+
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='yhteydenottoAsiakkaalta'
+                  checked={selectedValues['pyydetaanYhteydenottoaAsiakkaalta']}
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      pyydetaanYhteydenottoaAsiakkaalta:
+                        !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
+                    })
+                  }
+                />
+                <span> Pyydän yhteydenottoa asiakkaalta</span>
+              </label>
+
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='yhteydenottoOhjaajalta'
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      pyydetaanYhteydenottoaOhjaajalta:
+                        !selectedValues['pyydetaanYhteydenottoaOhjaajalta'],
+                    })
+                  }
+                />
+                <span> Pyydän yhteydenottoa ohjaajalta </span>
+              </label>
+            </>
+          ) : (
+            <>
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='valmisLahetettavaksi'
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      valmisLahetettavaksi: !selectedValues['valmisLahetettavaksi'],
+                    })
+                  }
+                />
+                <span> Valmis lähetettäväksi </span>
+              </label>
+
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='pyydetaanYhteydenottoaOpettajalta'
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      pyydetaanYhteydenottoaOpettajalta:
+                        !selectedValues['pyydetaanYhteydenottoaOpettajalta'],
+                    })
+                  }
+                />
+                <span> Pyydetään yhteydenottoa opettajalta</span>
+              </label>
+            </>
+          )}
+        </div>
+
+        {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <h2
+          style={{
+            textAlign: 'center',
+            fontSize: '18px',
+            marginTop: '28px',
+            color: h2Color, // Set the color dynamically
+          }}
+        >
+          {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Arvioinnin yhteenveto'}
+        </h2>}
+
+
+        <div className='buttons-and-form'>
+          {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <form action='' className='form-wrapper'>
+            <textarea
+              placeholder={
+                currentUser?.role === 'teacher'
+                  ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
+                  : currentUser?.role === 'supervisor'
+                    ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
+                    : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
               }
+              rows={8}
+              cols={38}
+              className='para-title-style'
+              value={textAreaValue}
+              onChange={(e) => setTextareaValue(e.target.value)}
             />
-            <label> Suoritus Valmis </label>
-            <br />
-            <input
-              type='checkbox'
-              name='yhteydenottoAsiakkaalta'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  pyydetaanYhteydenottoaAsiakkaalta:
-                    !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
-                })
-              }
-            />
-            <label> Pyydetään yhteydenottoa asiakkaalta</label>
-            <br />
-            <input
-              type='checkbox'
-              name='yhteydenottoOhjaajalta'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  pyydetaanYhteydenottoaOhjaajalta:
-                    !selectedValues['pyydetaanYhteydenottoaOhjaajalta'],
-                })
-              }
-            />
-            <label> Pyydetään yhteydenottoa ohjaajalta </label>
-          </>
-        ) : (
-          <>
-            <input
-              type='checkbox'
-              name='valmisLahetettavaksi'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  valmisLahetettavaksi: !selectedValues['valmisLahetettavaksi'],
-                })
-              }
-            />
-            <label> Valmis lähetettäväksi </label>
-            <br />
-            <input
-              type='checkbox'
-              name='pyydetaanYhteydenottoaOpettajalta'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  pyydetaanYhteydenottoaOpettajalta:
-                    !selectedValues['pyydetaanYhteydenottoaOpettajalta'],
-                })
-              }
-            />
-            <label> Pyydetään yhteydenottoa opettajalta</label>
-          </>
-        )}
+          </form>}
+          <section className='section-buttons'>
+            <div className='buttons-wrapper'>
+              <PageNavigationButtons handleBack={() => navigate(-1)} />
+
+              <Button
+                id='submitButton'
+                style={buttonStyle}
+                type='submit'
+                text={getButtonText()}
+                onClick={handleSubmit}
+              // disabled={isPalauteSectionDisabled()}
+              />
+            </div>
+          </section>
+        </div>
       </div>
-
-      {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <h2
-        style={{
-          textAlign: 'center',
-          fontSize: '18px',
-          textDecoration: 'underline',
-          marginTop: '40px',
-          color: h2Color, // Set the color dynamically
-        }}
-      >
-        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Arvioinnin yhteenveto'}
-      </h2>}
-
-      {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <div className='buttons-and-form'>
-        <form action='' className='form-wrapper'>
-          <textarea
-            placeholder={
-              currentUser?.role === 'teacher'
-                ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
-                : currentUser?.role === 'supervisor'
-                  ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
-                  : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
-            }
-            rows={8}
-            cols={38}
-            className='para-title-style'
-            value={textAreaValue}
-            onChange={(e) => setTextareaValue(e.target.value)}
-          />
-        </form>
-        <section className='section-buttons'>
-          <div className='buttons-wrapper'>
-            <PageNavigationButtons handleBack={() => navigate(-1)} />
-            <Button
-              id='submitButton'
-              style={buttonStyle}
-              type='submit'
-              text={getButtonText()}
-              onClick={handleSubmit}
-            // disabled={isPalauteSectionDisabled()}
-            />
-          </div>
-        </section>
-      </div>}
 
       {/* Warning notification modal */}
       <NotificationModal
