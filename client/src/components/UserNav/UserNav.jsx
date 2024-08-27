@@ -149,9 +149,10 @@ const UserNav = () => {
               borderColor: '#0000BF',
               backgroundColor: 'white',
               border: '2px solid',
-              padding: '10px 20px',
+              padding: '8px 16px',
               fontSize: '16px',
               fontWeight: 'bold',
+              borderRadius: '0',
               '&:hover': {
                 backgroundColor: 'rgba(0, 0, 191, 0.1)',
               }
@@ -164,9 +165,10 @@ const UserNav = () => {
             sx={{
               color: '#FFFFFF',
               backgroundColor: '#0000BF',
-              padding: '10px 20px',
+              padding: '8px 16px',
               fontSize: '16px',
               fontWeight: 'bold',
+              borderRadius: '0',
               '&:hover': {
                 backgroundColor: '#0000A0',
               }
