@@ -4,12 +4,10 @@ import { Icon } from '@iconify/react';
 import NotificationModal from '../../NotificationModal/NotificationModal';
 import {
   Typography,
-  IconButton,
   Box,
   DialogContent,
   TextField,
 } from '@mui/material';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import Button from '../../Button/Button';
 
 const TeacherComment = ({
