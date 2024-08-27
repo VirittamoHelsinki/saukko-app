@@ -182,7 +182,8 @@ const ResetPassword = () => {
         type='warning'
         title='Salasanan vaihto epäonnistui'
         body='Yritä myöhemmin uudelleen'
-        open={true}
+        open={alertModalOpen}
+        handleClose={handleCloseAlertModal}
       />
 
     </div>
