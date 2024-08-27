@@ -6,6 +6,7 @@ import { Button, Grid, Typography } from '@mui/material';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import { logoutUser } from '../../api/user';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import NotificationModal from '../../pages/Home/Notification/NotificationModal';
 
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
@@ -89,7 +90,7 @@ const UserNav = () => {
   };
 
   const handleMenuToggle = () => {
-    const regex = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$|^\/company-info$|^\/internal\/degrees(\/[a-zA-Z0-9]+\/units(\/confirm-selection)?)?$|^\/(evaluation-form|evaluation-workplace|evaluation-units|evaluation-summary)$/;
+    const regex = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$|^\/company-info$|^\/internal\/degrees(\/[a-zA-Z0-9]+\/units(\/confirm-selection)?)?$|^\/(evaluation-form|evaluation-workplace|evaluation-units|evaluation-summary)$|^\/userperformance\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+$/;
 
     if (!menuIsOpen && regex.test(location.pathname)) {
       setShowWarning(true);

@@ -69,6 +69,7 @@ const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
+  const [openSuccessfulSketchModal, setOpenSuccessfulSketchModal] = useState(false);
 
   const navigate = useNavigate();
   const [lastLocation, setLastLocation] = useState(null);
@@ -175,6 +176,10 @@ const UserPerformance = () => {
     setOpenNotificationModal(true);
   };
 
+  const handleNotificationSketchModalOpen = () => {
+    setOpenSuccessfulSketchModal(true);
+  };
+
 
   // TODO: Change this to edit only a single unit so I have an idea what to do server side
   // smh
@@ -239,7 +244,11 @@ const UserPerformance = () => {
     }
 
     setIsButtonEnabled(true);
-    handleNotificationModalOpen();
+    if (selectedValues['suoritusValmis']) {
+      handleNotificationModalOpen();
+    } else {
+      handleNotificationSketchModalOpen();
+    }
   };
 
   const getButtonText = () => {
@@ -571,11 +580,19 @@ const UserPerformance = () => {
 
       <NotificationModal
         type='success'
-        title='Tiedot tallennettu!'
-        body='Tiedot on tallennettu OsTu-appin tietokantaan.'
+        title='Tiedot tallennettu'
+        body='Tiedot on tallennettu järjestelmään onnistuneesti.'
         open={openNotificationModal}
         handleClose={handleEvaluation}
       />
+      <NotificationModal
+        type='success'
+        title='Luonnos on tallennettu'
+        body='Jos pyysit yhteydenottoa, pyyntö on välitetty ohjaajalle ja/tai opettajalle.'
+        open={openSuccessfulSketchModal}
+        handleClose={handleEvaluation}
+      />
+
     </div>
   );
 };
