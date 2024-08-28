@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -15,20 +15,38 @@ import { useAuthContext } from '../../../store/context/authContextProvider';
 import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
 import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
 import { fetchAllEvaluations } from '../../../api/evaluation.js';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+
 
 const UnitList = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
   const { customerId } = useParams();
 
+  const [alertModalOpen, setAlertModalOpen] = useState(false)
+
+
   const { data: evaluations, isLoading } = useQuery({
     queryKey: ['evaluations'],
     queryFn: () => fetchAllEvaluations(),
+    onError: () => {
+      handleOpenAlertModal();
+    },
   });
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const { evaluation, setEvaluation } = useEvaluationStore();
+
+  const handleCloseAlertModal = () => {
+    setAlertModalOpen(false)
+  };
+
+  const handleOpenAlertModal = () => {
+    setAlertModalOpen(true);
+  };
+
+
 
   useEffect(() => {
     if (evaluation && currentUser) {
@@ -124,6 +142,13 @@ const UnitList = () => {
           )
         }
       </div>
+      <NotificationModal
+        type='warning'
+        title='Tietojen haku epäonnistui'
+        body='Yritä myöhemmin uudelleen.'
+        open={alertModalOpen}
+        handleClose={handleCloseAlertModal}
+      />
     </div>
   );
 };
