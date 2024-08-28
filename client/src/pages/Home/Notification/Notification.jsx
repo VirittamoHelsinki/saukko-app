@@ -5,19 +5,20 @@ import { MenuItem, Select } from '@mui/material';
 import classNames from "classnames"
 import NotificationModal from './NotificationModal';
 
+import { updateNotificationById } from '../../../api/notification';
 import { fetchAllNotifications } from '../../../api/notification';
 
 const Notification = () => {
   const { currentUser } = useAuthContext();
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-  const [ notifications, setNotifications ] = useState([]);
-  const [ selectedNotification, setSelectedNotification ] = useState(null);
-  
+  const [notifications, setNotifications] = useState([]);
+  const [selectedNotification, setSelectedNotification] = useState(null);
+
   // Fetch info for these in the future
-  const [ filterUser, setFilterUser ] = useState("");
-  const [ filterType, setFilterType ] = useState("");
-  
+  const [filterUser, setFilterUser] = useState("");
+  const [filterType, setFilterType] = useState("");
+
   const role = currentUser?.role;
 
   useEffect(() => {
@@ -28,6 +29,21 @@ const Notification = () => {
 
     fetch();
   }, [])
+
+  const handleNotificationClick = async (notification) => {
+    try {
+      await updateNotificationById(notification._id, { isSeen: true });
+      setSelectedNotification(notification);
+
+      setNotifications(prevNotifications =>
+        prevNotifications.map(n =>
+          n._id === notification._id ? { ...n, isSeen: true } : n
+        )
+      );
+    } catch (error) {
+      console.error('Error updating notification:', error);
+    }
+  };
 
   const userMockData = [
     {
@@ -85,17 +101,17 @@ const Notification = () => {
           {
             role !== "customer" && (
               <Select
-              sx={{ borderRadius: 0, height: "40px" }}
-              value={filterUser}
-              displayEmpty
-              onChange={handleFilterUserChange}
-              renderValue={(user) => {
-                if (!user) {
-                  return <p className="placeholder">Valitse asiakas</p>
-                }
+                sx={{ borderRadius: 0, height: "40px" }}
+                value={filterUser}
+                displayEmpty
+                onChange={handleFilterUserChange}
+                renderValue={(user) => {
+                  if (!user) {
+                    return <p className="placeholder">Valitse asiakas</p>
+                  }
 
-                return `${user.name} ${user.surname}`
-              }}
+                  return `${user.name} ${user.surname}`
+                }}
               >
                 {
                   userMockData.map((user) => (
@@ -114,10 +130,10 @@ const Notification = () => {
               if (!value) {
                 return <p className="placeholder">Valitse ilmoitus</p>
               }
-              
+
               return value
             }}
-            >
+          >
             {
               typeMockData.map((type) => (
                 <MenuItem key={type} value={type}>{type}</MenuItem>
@@ -136,6 +152,7 @@ const Notification = () => {
               const noficationClasses = classNames(
                 "notification",
                 { [role]: true },
+                { clicked: notification.isSeen }
               )
 
               const customerName = `${notification.customer?.firstName} ${notification.customer?.lastName}`
@@ -144,7 +161,7 @@ const Notification = () => {
                 <div
                   className={noficationClasses}
                   key={notification._id}
-                  onClick={() => setSelectedNotification(notification)}
+                  onClick={() => handleNotificationClick(notification)}
                 >
                   <div className="notification__accent"></div>
                   <div className="notification__body">
@@ -152,10 +169,11 @@ const Notification = () => {
                       <h3 className="notification__title">{notification.title}</h3>
                       <p className="notification__recipient">Asiakas: {customerName}</p>
                     </div>
-
-                    <div className="notification__badge">
-                      <span>uusi</span>
-                    </div>
+                    {!notification.isSeen && (
+                      <div className="notification__badge">
+                        <span>uusi</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )
