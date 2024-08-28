@@ -35,7 +35,7 @@ export default function CustomerList() {
   const navigate = useNavigate();
   /* const { evaluations, refetchEvaluations } = useEvaluations(); */
 
-  const [alertModalOpen, setAlertModalOpen] = useState(true)
+  const [alertModalOpen, setAlertModalOpen] = useState(false)
 
   const { data: evaluations } = useQuery({
     queryKey: ['evaluations'],
