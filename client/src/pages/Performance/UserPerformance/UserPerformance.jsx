@@ -44,6 +44,7 @@ const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
+  const [alertModalOpen, setAlertModalOpen] = useState(false)
   const { evaluationId, unitId } = useParams();
   const { evaluation: getEvaluation, setEvaluation } = useEvaluationStore();
 
@@ -180,6 +181,14 @@ const UserPerformance = () => {
     setOpenSuccessfulSketchModal(true);
   };
 
+  const handleCloseAlertModal = () => {
+    setAlertModalOpen(false)
+  };
+
+  const handleOpenAlertModal = () => {
+    setAlertModalOpen(true);
+  };
+
 
   // TODO: Change this to edit only a single unit so I have an idea what to do server side
   // smh
@@ -241,6 +250,7 @@ const UserPerformance = () => {
       setSelectedValues([]);
     } catch (error) {
       console.error('Error updating evaluation:', error);
+      handleOpenAlertModal();
     }
 
     setIsButtonEnabled(true);
@@ -591,6 +601,13 @@ const UserPerformance = () => {
         body='Jos pyysit yhteydenottoa, pyyntö on välitetty ohjaajalle ja/tai opettajalle.'
         open={openSuccessfulSketchModal}
         handleClose={handleEvaluation}
+      />
+      <NotificationModal
+        type='warning'
+        title='Lomakkeen lähetys epäonnistui'
+        body='Tarkista, että tiedot ovat oikein ja yritä uudelleen.'
+        open={alertModalOpen}
+        handleClose={handleCloseAlertModal}
       />
 
     </div>
