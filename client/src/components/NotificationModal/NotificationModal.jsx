@@ -89,7 +89,6 @@ function BootstrapDialogTitle(props) {
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CloseIcon />
         </IconButton>
       ) : null}
     </DialogTitle>
@@ -145,6 +144,7 @@ export default function CustomizedDialogs(props) {
         open={props.open}
         sx={{
           '& .MuiDialog-paper': {
+            width: '361px',
             background: bgColor,
             borderLeft: 'solid 8px',
             color,

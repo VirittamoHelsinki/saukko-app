@@ -181,7 +181,7 @@ const ResetPassword = () => {
       <NotificationModal
         type='warning'
         title='Salasanan vaihto epäonnistui'
-        body='Yritä myöhemmin uudelleen'
+        body='Yritä myöhemmin uudelleen.'
         open={alertModalOpen}
         handleClose={handleCloseAlertModal}
       />
