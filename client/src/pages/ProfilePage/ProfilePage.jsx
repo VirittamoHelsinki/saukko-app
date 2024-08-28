@@ -27,7 +27,7 @@ function ProfilePage() {
   };
 
   const handleOpenAlertModal = () => {
-    setAlertTitle(title);
+    setAlertModalOpen(true);
   };
 
   // Logout
