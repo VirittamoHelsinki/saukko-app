@@ -53,6 +53,11 @@ const ResetPassword = () => {
       return;
     }
 
+    if (password.length < 6) {
+      setPasswordError('Salasanan täytyy olla yli 6 merkkiä pitkä')
+      return;
+    }
+
     setPasswordError('');
 
     // Set isLoading to true when the request starts
