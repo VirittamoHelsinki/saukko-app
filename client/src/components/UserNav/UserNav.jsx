@@ -6,7 +6,6 @@ import { Button, Grid, Typography } from '@mui/material';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import { logoutUser } from '../../api/user';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import NotificationModal from '../../pages/Home/Notification/NotificationModal';
 
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 

@@ -35,12 +35,7 @@ const ResetPassword = () => {
 
   const handleOpenAlertModal = () => {
     setAlertModalOpen(true);
-    console.log('alertModalOpen:', alertModalOpen)
   };
-
-  useEffect(() => {
-    console.log('password error: ', passwordError)
-  }, [])
 
 
   const processResetPassword = async (e) => {
