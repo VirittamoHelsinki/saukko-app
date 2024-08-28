@@ -20,6 +20,15 @@ function ProfilePage() {
   // User info from AuthContext
   const { currentUser } = useAuthContext();
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+
+  const handleCloseAlertModal = () => {
+    setAlertModalOpen(false)
+  };
+
+  const handleOpenAlertModal = () => {
+    setAlertTitle(title);
+  };
 
   // Logout
   /*   const navigate = useNavigate();
@@ -52,8 +61,6 @@ function ProfilePage() {
     e.preventDefault();
     handleCloseEmailPopUp();
     handleOpenEmailNotification();
-
-    // Verify password & change email here
   };
 
   // State for opening & closing password pop up
@@ -109,6 +116,8 @@ function ProfilePage() {
         console.error("Failed to change the password", err)
         if (err.response && err.response.data && err.response.data.errorMessage === "Invalid password") {
           setInvalidPasswordError(true)
+        } else {
+          handleOpenAlertModal();
         }
       });
   }
@@ -207,6 +216,13 @@ function ProfilePage() {
             type='success'
             title='Tiedot päivitetty!'
             body='Voit seuraavalla kerralla kirjautua sisään uusia kirjautumistietoja käyttäen.'
+          />
+          <NotificationModal
+            type='warning'
+            title={'Salasanan vaihtaminen ei onnistunut'}
+            body={'Yritä hetken päästä uudelleen.'}
+            open={alertModalOpen}
+            handleClose={handleCloseAlertModal}
           />
         </div>
       </section>
