@@ -10,7 +10,6 @@ const NotificationBadge = (props) => {
   const { currentUser } = useAuthContext();
   const role = currentUser?.role;
   // eslint-disable-next-line no-unused-vars
-  const { number1, number2 } = props;
   const [newNotificationsCount, setNewNotificationsCount] = useState(null)
 
   useEffect(() => {

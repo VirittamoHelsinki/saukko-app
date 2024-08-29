@@ -7,6 +7,7 @@ export interface INotificationObj {
   isSeen: boolean;
   title: string;
   body: string;
+  type: string;
 }
 
 export interface INotificationObjDocument extends INotificationObj, Document { }
@@ -36,6 +37,9 @@ export const notificationObjSchema = new Schema<INotificationObjDocument>({
   body: {
     type: String
   },
+  type: {
+    type: String
+  }
 })
 
 export default mongoose.model<INotificationObjDocument & Document>("NotificationDocument", notificationObjSchema);

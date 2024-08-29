@@ -15,7 +15,8 @@ const saveNotification = async (
   recipientId: string,
   customerId: string,
   subject: string,
-  body: string
+  body: string,
+  type: string,
 ) => {
   const notification = new NotificationModel({
     recipient: recipientId,
@@ -24,6 +25,7 @@ const saveNotification = async (
     isSeen: false,
     title: subject,
     body: body,
+    type: type
   });
 
   await notification.save();
@@ -70,7 +72,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'requestContact');
 };
 
 // Työpaikkaohjaaja pyytää yhteydenottoa
@@ -115,7 +117,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'requestContact');
 
 };
 
@@ -161,7 +163,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'requestContact');
 };
 
 export const sendEvaluationFormTeacherRequestContactMessageSupervisor = async (
@@ -205,7 +207,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'requestContact');
 };
 
 // Arviointilomake: valmis lomake
@@ -277,7 +279,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview');
 };
 
 export const sendEvaluationFormSupervisorReadyMessageTeacher = async (
@@ -323,7 +325,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview');
 };
 
 export const sendEvaluationFormCustomerReadyMessageTeacher = async (
@@ -369,7 +371,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview');
 };
 
 export const sendEvaluationFormCustomerReadyMessageSupervisor = async (
@@ -415,7 +417,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview');
 };
 
 
@@ -463,7 +465,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'ready');
 };
 
 
@@ -510,5 +512,5 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text);
+  await saveNotification(recipientId, customerId, subject, text, 'ready');
 };

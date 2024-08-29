@@ -14,6 +14,7 @@ const Notification = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
   const [notifications, setNotifications] = useState([]);
   const [selectedNotification, setSelectedNotification] = useState(null);
+  const [filteredNotifications, setFilteredNotifications] = useState([]);
 
   // Fetch info for these in the future
   const [filterUser, setFilterUser] = useState("");
@@ -25,10 +26,26 @@ const Notification = () => {
     const fetch = async () => {
       const fetchedNotifications = await fetchAllNotifications();
       setNotifications(fetchedNotifications || []);
+      setFilteredNotifications(fetchedNotifications || []);
     }
 
     fetch();
   }, [])
+
+  useEffect(() => {
+    const applyFilters = () => {
+      let filtered = [...notifications];
+
+      if (filterType) {
+        console.log('filtertype:', filterType)
+        filtered = filtered.filter(notification => notification.type === filterType);
+      }
+
+      setFilteredNotifications(filtered);
+    };
+
+    applyFilters();
+  }, [filterType, notifications]);
 
   const handleNotificationClick = async (notification) => {
     try {
@@ -63,9 +80,10 @@ const Notification = () => {
     }
   ]
 
-  const typeMockData = [
-    "Valmis lomake",
-    "Yhteydenottopyyntö",
+  const typeData = [
+    { value: "ready", label: "Valmis lomake" },
+    { value: "readyForReview", label: "Valmis tarkistettavaksi" },
+    { value: "requestContact", label: "Yhteydenottopyyntö" },
   ];
 
   const handleFilterUserChange = (event) => {
@@ -129,13 +147,13 @@ const Notification = () => {
               if (!value) {
                 return <p className="placeholder">Valitse ilmoitus</p>
               }
-
-              return value
+              const type = typeData.find(type => type.value === value);
+              return type?.label;
             }}
           >
             {
-              typeMockData.map((type) => (
-                <MenuItem key={type} value={type}>{type}</MenuItem>
+              typeData.map((type) => (
+                <MenuItem key={type.value} value={type.value}>{type.label}</MenuItem>
               ))
             }
           </Select>
@@ -146,7 +164,7 @@ const Notification = () => {
 
         <div className="notification-list">
           {
-            notifications.map((notification) => {
+            filteredNotifications.map((notification) => {
 
               const noficationClasses = classNames(
                 "notification",
