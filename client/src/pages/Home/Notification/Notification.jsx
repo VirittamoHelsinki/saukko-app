@@ -15,6 +15,8 @@ const Notification = () => {
   const [notifications, setNotifications] = useState([]);
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [filteredNotifications, setFilteredNotifications] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [filteredCustomers, setFilteredCustomers] = useState([]);
 
   // Fetch info for these in the future
   const [filterUser, setFilterUser] = useState("");
@@ -25,6 +27,9 @@ const Notification = () => {
   useEffect(() => {
     const fetch = async () => {
       const fetchedNotifications = await fetchAllNotifications();
+      const uniqueCustomers = Array.from(new Set(fetchedNotifications.map(n => n.customer._id)))
+        .map(id => fetchedNotifications.find(n => n.customer._id === id).customer);
+      setCustomers(uniqueCustomers)
       setNotifications(fetchedNotifications || []);
       setFilteredNotifications(fetchedNotifications || []);
     }
@@ -40,11 +45,15 @@ const Notification = () => {
         filtered = filtered.filter(notification => notification.type === filterType);
       }
 
+      if (filterUser) {
+        filtered = filtered.filter(notification => notification.customer._id === filterUser);
+      }
+
       setFilteredNotifications(filtered);
     };
 
     applyFilters();
-  }, [filterType, notifications]);
+  }, [filterType, notifications, filterUser]);
 
   const handleNotificationClick = async (notification) => {
     try {
@@ -61,29 +70,11 @@ const Notification = () => {
     }
   };
 
-  const userMockData = [
-    {
-      _id: 1,
-      name: "Motsarella",
-      surname: "Pitsa",
-    },
-    {
-      _id: 2,
-      name: "Expresso",
-      surname: "Joninen",
-    },
-    {
-      _id: 3,
-      name: "Oswald",
-      surname: "Niinistö",
-    }
-  ]
-
   const typeData = [
     { value: "ready", label: "Valmis lomake" },
     { value: "readyForReview", label: "Valmis tarkistettavaksi" },
     { value: "requestContact", label: "Yhteydenottopyyntö" },
-    { value: "all", label: "Näytä kaikki" },
+    { value: "all", label: "Näytä kaikki ilmoitukset" },
   ];
 
   const handleFilterUserChange = (event) => {
@@ -122,17 +113,21 @@ const Notification = () => {
                 value={filterUser}
                 displayEmpty
                 onChange={handleFilterUserChange}
-                renderValue={(user) => {
-                  if (!user) {
-                    return <p className="placeholder">Valitse asiakas</p>
+                renderValue={(value) => {
+                  if (!value) {
+                    return <p className="placeholder">Valitse asiakas</p>;
                   }
 
-                  return `${user.name} ${user.surname}`
+                  const user = customers.find(user => user._id === value);
+                  return user ? `${user.firstName} ${user.lastName}` : 'Näytä kaikki asiakkaat';
                 }}
               >
+                <MenuItem value="">
+                  Näytä kaikki asiakkaat
+                </MenuItem>
                 {
-                  userMockData.map((user) => (
-                    <MenuItem key={user._id} value={user}>{user.name} {user.surname}</MenuItem>
+                  customers.map((user) => (
+                    <MenuItem key={user._id} value={user._id}>{user.firstName} {user.lastName}</MenuItem>
                   ))
                 }
               </Select>
