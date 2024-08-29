@@ -21,9 +21,11 @@ const updateNotificationById = async (notificationId, updatedData) => {
   }
 };
 
-const fetchUnseenNotificationCount = async () => {
+const fetchUnseenNotificationCount = async (userId) => {
   try {
-    const response = await axios.get('/api/notifications/unseen-count');
+    const response = await axios.get(
+      `/api/notifications/unseen-count/${userId}`
+    );
     return response.data.count;
   } catch (error) {
     console.log('Error fetching unseen notifications', error);
