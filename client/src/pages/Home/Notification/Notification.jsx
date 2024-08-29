@@ -18,7 +18,7 @@ const Notification = () => {
 
   // Fetch info for these in the future
   const [filterUser, setFilterUser] = useState("");
-  const [filterType, setFilterType] = useState("");
+  const [filterType, setFilterType] = useState("all");
 
   const role = currentUser?.role;
 
@@ -36,8 +36,7 @@ const Notification = () => {
     const applyFilters = () => {
       let filtered = [...notifications];
 
-      if (filterType) {
-        console.log('filtertype:', filterType)
+      if (filterType && filterType !== "all") {
         filtered = filtered.filter(notification => notification.type === filterType);
       }
 
@@ -84,6 +83,7 @@ const Notification = () => {
     { value: "ready", label: "Valmis lomake" },
     { value: "readyForReview", label: "Valmis tarkistettavaksi" },
     { value: "requestContact", label: "Yhteydenottopyyntö" },
+    { value: "all", label: "Näytä kaikki" },
   ];
 
   const handleFilterUserChange = (event) => {
@@ -147,6 +147,7 @@ const Notification = () => {
               if (!value) {
                 return <p className="placeholder">Valitse ilmoitus</p>
               }
+
               const type = typeData.find(type => type.value === value);
               return type?.label;
             }}
