@@ -64,9 +64,8 @@ const Notification = () => {
   ]
 
   const typeMockData = [
-    "Syntymäpäivä",
-    "Kuolinilmoitus",
-    "Uusi suoritus",
+    "Valmis lomake",
+    "Yhteydenottopyyntö",
   ];
 
   const handleFilterUserChange = (event) => {

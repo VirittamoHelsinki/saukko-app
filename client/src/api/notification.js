@@ -21,4 +21,18 @@ const updateNotificationById = async (notificationId, updatedData) => {
   }
 };
 
-export { fetchAllNotifications, updateNotificationById };
+const fetchUnseenNotificationCount = async () => {
+  try {
+    const response = await axios.get('/api/notifications/unseen-count');
+    return response.data.count;
+  } catch (error) {
+    console.log('Error fetching unseen notifications', error);
+    return 0;
+  }
+};
+
+export {
+  fetchAllNotifications,
+  updateNotificationById,
+  fetchUnseenNotificationCount,
+};
