@@ -217,6 +217,8 @@ const UserPerformance = () => {
       updatedUnit,
       selectedValues: selectedValues,
       additionalInfo: textAreaValue,
+      evaluationId: evaluationId,
+      unitId: unitId,
     };
 
 

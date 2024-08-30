@@ -69,7 +69,7 @@ const UnitList = () => {
     <div className='unitList__wrapper'>
       <div className='unitList__notifications'>
         <h3>Ilmoitukset</h3>
-        <NotificationBadge number1={10} number2={5} />
+        <NotificationBadge />
       </div>
       <div className='unitList__units'>
         {currentUser.role === 'customer' ? (
