@@ -190,16 +190,19 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
   try {
     const evaluation = await fetchEvaluationWithDetails(req.params.id);
 
-    console.log(">>>>", evaluation);
     console.log("____", req.body)
-    console.log("####", JSON.stringify(req.body.units))
 
     const {
       updatedUnit,
       selectedValues,
       additionalInfo,
+      evaluationId,
+      unitId
     } = req.body;
-    
+
+    console.log('evaluationId', evaluationId)
+    console.log('unitId', unitId)
+
 
     if (!evaluation) {
       return res.status(404).send({ message: 'Evaluation not found' });
@@ -219,7 +222,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
     };
 
     console.log("FORM IS READY PARAMS", formIsReadyParams);
-    
+
     const emails: IEmails = {
       customerEmail: evaluation.customerId?.email || 'Unknown Customer Email',
       teacherEmail: evaluation.teacherId?.email || 'Unknown Teacher Email',
