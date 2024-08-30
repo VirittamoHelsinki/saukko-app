@@ -5,52 +5,75 @@ import { MenuItem, Select } from '@mui/material';
 import classNames from "classnames"
 import NotificationModal from './NotificationModal';
 
+import { updateNotificationById } from '../../../api/notification';
 import { fetchAllNotifications } from '../../../api/notification';
 
 const Notification = () => {
   const { currentUser } = useAuthContext();
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-  const [ notifications, setNotifications ] = useState([]);
-  const [ selectedNotification, setSelectedNotification ] = useState(null);
-  
+  const [notifications, setNotifications] = useState([]);
+  const [selectedNotification, setSelectedNotification] = useState(null);
+  const [filteredNotifications, setFilteredNotifications] = useState([]);
+  const [customers, setCustomers] = useState([]);
+
   // Fetch info for these in the future
-  const [ filterUser, setFilterUser ] = useState("");
-  const [ filterType, setFilterType ] = useState("");
-  
+  const [filterUser, setFilterUser] = useState("");
+  const [filterType, setFilterType] = useState("all");
+
   const role = currentUser?.role;
 
   useEffect(() => {
     const fetch = async () => {
       const fetchedNotifications = await fetchAllNotifications();
+      const uniqueCustomers = Array.from(new Set(fetchedNotifications.map(n => n.customer._id)))
+        .map(id => fetchedNotifications.find(n => n.customer._id === id).customer);
+      setCustomers(uniqueCustomers)
       setNotifications(fetchedNotifications || []);
+      setFilteredNotifications(fetchedNotifications || []);
     }
 
     fetch();
   }, [])
 
-  const userMockData = [
-    {
-      _id: 1,
-      name: "Motsarella",
-      surname: "Pitsa",
-    },
-    {
-      _id: 2,
-      name: "Expresso",
-      surname: "Joninen",
-    },
-    {
-      _id: 3,
-      name: "Oswald",
-      surname: "Niinistö",
-    }
-  ]
+  useEffect(() => {
+    const applyFilters = () => {
+      let filtered = [...notifications];
 
-  const typeMockData = [
-    "Syntymäpäivä",
-    "Kuolinilmoitus",
-    "Uusi suoritus",
+      if (filterType && filterType !== "all") {
+        filtered = filtered.filter(notification => notification.type === filterType);
+      }
+
+      if (filterUser) {
+        filtered = filtered.filter(notification => notification.customer._id === filterUser);
+      }
+
+      setFilteredNotifications(filtered);
+    };
+
+    applyFilters();
+  }, [filterType, notifications, filterUser]);
+
+  const handleNotificationClick = async (notification) => {
+    try {
+      await updateNotificationById(notification._id, { isSeen: true });
+      setSelectedNotification(notification);
+
+      setNotifications(prevNotifications =>
+        prevNotifications.map(n =>
+          n._id === notification._id ? { ...n, isSeen: true } : n
+        )
+      );
+    } catch (error) {
+      console.error('Error updating notification:', error);
+    }
+  };
+
+  const typeData = [
+    { value: "ready", label: "Valmis lomake" },
+    { value: "readyForReview", label: "Valmis tarkistettavaksi" },
+    { value: "requestContact", label: "Yhteydenottopyyntö" },
+    { value: "all", label: "Näytä kaikki ilmoitukset" },
   ];
 
   const handleFilterUserChange = (event) => {
@@ -85,21 +108,25 @@ const Notification = () => {
           {
             role !== "customer" && (
               <Select
-              sx={{ borderRadius: 0, height: "40px" }}
-              value={filterUser}
-              displayEmpty
-              onChange={handleFilterUserChange}
-              renderValue={(user) => {
-                if (!user) {
-                  return <p className="placeholder">Valitse asiakas</p>
-                }
+                sx={{ borderRadius: 0, height: "40px" }}
+                value={filterUser}
+                displayEmpty
+                onChange={handleFilterUserChange}
+                renderValue={(value) => {
+                  if (!value) {
+                    return <p className="placeholder">Valitse asiakas</p>;
+                  }
 
-                return `${user.name} ${user.surname}`
-              }}
+                  const user = customers.find(user => user._id === value);
+                  return user ? `${user.firstName} ${user.lastName}` : 'Näytä kaikki asiakkaat';
+                }}
               >
+                <MenuItem value="">
+                  Näytä kaikki asiakkaat
+                </MenuItem>
                 {
-                  userMockData.map((user) => (
-                    <MenuItem key={user._id} value={user}>{user.name} {user.surname}</MenuItem>
+                  customers.map((user) => (
+                    <MenuItem key={user._id} value={user._id}>{user.firstName} {user.lastName}</MenuItem>
                   ))
                 }
               </Select>
@@ -114,13 +141,14 @@ const Notification = () => {
               if (!value) {
                 return <p className="placeholder">Valitse ilmoitus</p>
               }
-              
-              return value
+
+              const type = typeData.find(type => type.value === value);
+              return type?.label;
             }}
-            >
+          >
             {
-              typeMockData.map((type) => (
-                <MenuItem key={type} value={type}>{type}</MenuItem>
+              typeData.map((type) => (
+                <MenuItem key={type.value} value={type.value}>{type.label}</MenuItem>
               ))
             }
           </Select>
@@ -131,11 +159,12 @@ const Notification = () => {
 
         <div className="notification-list">
           {
-            notifications.map((notification) => {
+            filteredNotifications.map((notification) => {
 
               const noficationClasses = classNames(
                 "notification",
                 { [role]: true },
+                { clicked: notification.isSeen }
               )
 
               const customerName = `${notification.customer?.firstName} ${notification.customer?.lastName}`
@@ -144,7 +173,7 @@ const Notification = () => {
                 <div
                   className={noficationClasses}
                   key={notification._id}
-                  onClick={() => setSelectedNotification(notification)}
+                  onClick={() => handleNotificationClick(notification)}
                 >
                   <div className="notification__accent"></div>
                   <div className="notification__body">
@@ -152,10 +181,11 @@ const Notification = () => {
                       <h3 className="notification__title">{notification.title}</h3>
                       <p className="notification__recipient">Asiakas: {customerName}</p>
                     </div>
-
-                    <div className="notification__badge">
-                      <span>uusi</span>
-                    </div>
+                    {!notification.isSeen && (
+                      <div className="notification__badge">
+                        <span>uusi</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )

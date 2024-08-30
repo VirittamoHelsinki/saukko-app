@@ -24,7 +24,6 @@ import { fetchAllEvaluations } from '../../../api/evaluation.js';
 import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
 
 
-
 // Import MUI
 // import Accordion from '@mui/material/Accordion';
 // import AccordionSummary from '@mui/material/AccordionSummary';
@@ -36,9 +35,14 @@ export default function CustomerList() {
   const navigate = useNavigate();
   /* const { evaluations, refetchEvaluations } = useEvaluations(); */
 
+  const [alertModalOpen, setAlertModalOpen] = useState(false)
+
   const { data: evaluations } = useQuery({
     queryKey: ['evaluations'],
-    queryFn: () => fetchAllEvaluations()
+    queryFn: () => fetchAllEvaluations(),
+    onError: () => {
+      handleOpenAlertModal();
+    },
   });
 
   // Data from store management
@@ -61,6 +65,14 @@ export default function CustomerList() {
 
   const handleCloseInfoButton = () => {
     setIsInfoButtonOpen(false);
+  };
+
+  const handleCloseAlertModal = () => {
+    setAlertModalOpen(false)
+  };
+
+  const handleOpenAlertModal = () => {
+    setAlertModalOpen(true);
   };
 
   // Titles color for info button
@@ -131,7 +143,7 @@ export default function CustomerList() {
       {/* Notifications */}
       <div className='customerList__notifications'>
         <h3> Ilmoitukset </h3>
-        <NotificationBadge number1={10} number2={5} />
+        <NotificationBadge />
       </div>
 
       <div className='customerList__container'>
@@ -251,6 +263,13 @@ export default function CustomerList() {
         handleClose={handleCloseInfoButton}
       />
       {/* <UserNav /> */}
+      <NotificationModal
+        type='warning'
+        title='Tietojen haku epäonnistui'
+        body='Yritä myöhemmin uudelleen.'
+        open={alertModalOpen}
+        handleClose={handleCloseAlertModal}
+      />
     </div>
   );
 }

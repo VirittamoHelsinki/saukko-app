@@ -112,7 +112,7 @@ const UserNav = () => {
         sx={{
           '& .MuiDialog-paper': {
             position: 'relative',
-            background: 'linear-gradient(to right, #DCA500 0%, #FFF4B4 100%)', // Gradient background for the dialog
+            background: '#FFF4B4', // Gradient background for the dialog
             paddingLeft: '8px', // Space for the accent line
             '&::before': {
               content: '""',
@@ -150,7 +150,7 @@ const UserNav = () => {
               backgroundColor: 'white',
               border: '2px solid',
               padding: '8px 16px',
-              fontSize: '16px',
+              fontSize: '14px',
               fontWeight: 'bold',
               borderRadius: '0',
               '&:hover': {
@@ -166,7 +166,7 @@ const UserNav = () => {
               color: '#FFFFFF',
               backgroundColor: '#0000BF',
               padding: '8px 16px',
-              fontSize: '16px',
+              fontSize: '14px',
               fontWeight: 'bold',
               borderRadius: '0',
               '&:hover': {
