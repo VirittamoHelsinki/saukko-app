@@ -143,7 +143,7 @@ export default function CustomerList() {
       {/* Notifications */}
       <div className='customerList__notifications'>
         <h3> Ilmoitukset </h3>
-        <NotificationBadge number1={10} number2={5} />
+        <NotificationBadge />
       </div>
 
       <div className='customerList__container'>
