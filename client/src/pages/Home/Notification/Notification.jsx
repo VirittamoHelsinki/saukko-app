@@ -16,7 +16,6 @@ const Notification = () => {
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [filteredNotifications, setFilteredNotifications] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const [filteredCustomers, setFilteredCustomers] = useState([]);
 
   // Fetch info for these in the future
   const [filterUser, setFilterUser] = useState("");

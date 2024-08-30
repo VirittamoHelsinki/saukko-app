@@ -6,10 +6,9 @@ import { fetchUnseenNotificationCount } from '../../api/notification';
 
 import Link from "../NavButton/NavButton"
 
-const NotificationBadge = (props) => {
+const NotificationBadge = () => {
   const { currentUser } = useAuthContext();
   const role = currentUser?.role;
-  // eslint-disable-next-line no-unused-vars
   const [newNotificationsCount, setNewNotificationsCount] = useState(null)
 
   useEffect(() => {
