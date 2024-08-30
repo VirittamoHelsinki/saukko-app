@@ -57,7 +57,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import { Icon } from '@iconify/react';
 import Button from '@mui/material/Button'; // Add this import for the "OK" button
 import { Box } from '@mui/material';
@@ -89,7 +88,6 @@ function BootstrapDialogTitle(props) {
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CloseIcon />
         </IconButton>
       ) : null}
     </DialogTitle>
@@ -145,6 +143,7 @@ export default function CustomizedDialogs(props) {
         open={props.open}
         sx={{
           '& .MuiDialog-paper': {
+            width: '361px',
             background: bgColor,
             borderLeft: 'solid 8px',
             color,
