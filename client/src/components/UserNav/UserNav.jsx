@@ -89,7 +89,7 @@ const UserNav = () => {
   };
 
   const handleMenuToggle = () => {
-    const regex = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$|^\/company-info$|^\/internal\/degrees(\/[a-zA-Z0-9]+\/units(\/confirm-selection)?)?$|^\/(evaluation-form|evaluation-workplace|evaluation-units|evaluation-summary)$/;
+    const regex = /^\/degrees\/(?!add\b)[a-zA-Z0-9]+(\/(units|edit-units|units\/tasks|summary))?$|^\/company-info$|^\/internal\/degrees(\/[a-zA-Z0-9]+\/units(\/confirm-selection)?)?$|^\/(evaluation-form|evaluation-workplace|evaluation-units|evaluation-summary)$|^\/userperformance\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+$/;
 
     if (!menuIsOpen && regex.test(location.pathname)) {
       setShowWarning(true);
@@ -112,7 +112,7 @@ const UserNav = () => {
         sx={{
           '& .MuiDialog-paper': {
             position: 'relative',
-            background: 'linear-gradient(to right, #DCA500 0%, #FFF4B4 100%)', // Gradient background for the dialog
+            background: '#FFF4B4', // Gradient background for the dialog
             paddingLeft: '8px', // Space for the accent line
             '&::before': {
               content: '""',
@@ -141,15 +141,44 @@ const UserNav = () => {
             Jos poistut sivulta, tallentamattomat tiedot menetetään.
           </p>
         </DialogContent>
-        <DialogActions sx={{ backgroundColor: '#FFF4B4', zIndex: 2 }}>
-          <Button onClick={handleWarningClose} sx={{ color: '#DCA500' }}>
+        <DialogActions sx={{ backgroundColor: '#FFF4B4', zIndex: 2, justifyContent: 'center', gap: '20px' }}>
+          <Button
+            onClick={handleWarningClose}
+            sx={{
+              color: '#0000BF',
+              borderColor: '#0000BF',
+              backgroundColor: 'white',
+              border: '2px solid',
+              padding: '8px 16px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              borderRadius: '0',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 0, 191, 0.1)',
+              }
+            }}
+          >
             Peruuta
           </Button>
-          <Button onClick={handleProceed} sx={{ color: '#DCA500' }}>
-            Jatka
+          <Button
+            onClick={handleProceed}
+            sx={{
+              color: '#FFFFFF',
+              backgroundColor: '#0000BF',
+              padding: '8px 16px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              borderRadius: '0',
+              '&:hover': {
+                backgroundColor: '#0000A0',
+              }
+            }}
+          >
+            Poistu sivulta
           </Button>
         </DialogActions>
       </Dialog>
+
       <div className='userNav__wrapper'>
         { /* Background shadow for the opened hamburger menu */}
         <div className={`userNav__shadow ${menuIsOpen ? '' : 'hidden'}`} onClick={closeMenu}></div>
