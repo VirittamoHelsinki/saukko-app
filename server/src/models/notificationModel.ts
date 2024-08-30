@@ -8,6 +8,8 @@ export interface INotificationObj {
   title: string;
   body: string;
   type: string;
+  evaluationId: string;
+  unitId: string;
 }
 
 export interface INotificationObjDocument extends INotificationObj, Document { }
@@ -39,6 +41,12 @@ export const notificationObjSchema = new Schema<INotificationObjDocument>({
   },
   type: {
     type: String
+  },
+  evaluationId: {
+    type: String,
+  },
+  unitId: {
+    type: String,
   }
 })
 

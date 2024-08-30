@@ -34,6 +34,9 @@ export const sendReadyEmails = (
   customerId: string,
   teacherId: string,
   supervisorId: string,
+
+  evaluationId: string,
+  unitId: string
 ): Array<String> => {
   const emailsSendTo: Array<string> = []
 
@@ -45,6 +48,8 @@ export const sendReadyEmails = (
         emails.customerEmail,
         customerId,
         customerId,
+        evaluationId,
+        unitId
       );
       sendEvaluationFormSupervisorReadyMessageTeacher(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
@@ -52,6 +57,8 @@ export const sendReadyEmails = (
         emails.teacherEmail,
         customerId,
         teacherId,
+        evaluationId,
+        unitId
       );
 
       emailsSendTo.push(emails.customerEmail)
@@ -64,6 +71,8 @@ export const sendReadyEmails = (
         emails.supervisorEmail,
         customerId,
         supervisorId,
+        evaluationId,
+        unitId
       );
       sendEvaluationFormCustomerReadyMessageTeacher(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
@@ -71,6 +80,8 @@ export const sendReadyEmails = (
         emails.teacherEmail,
         customerId,
         teacherId,
+        evaluationId,
+        unitId
       );
       emailsSendTo.push(emails.supervisorEmail)
       emailsSendTo.push(emails.teacherEmail)
@@ -82,6 +93,8 @@ export const sendReadyEmails = (
         emails.supervisorEmail,
         customerId,
         supervisorId,
+        evaluationId,
+        unitId
       );
       sendEvaluationFormTeacherReadyMessageCustomer(
         { ...formIsReadyParams, evaluationAccepted: EvaluationStatus.ACCEPTED },
@@ -89,6 +102,8 @@ export const sendReadyEmails = (
         emails.customerEmail,
         customerId,
         customerId,
+        evaluationId,
+        unitId
       );
       emailsSendTo.push(emails.supervisorEmail)
       emailsSendTo.push(emails.customerEmail)
@@ -140,6 +155,9 @@ export const sendContactRequestEmails = (
   customerId: string,
   teacherId: string,
   supervisorId: string,
+
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const emailsSendTo: Array<string> = []
@@ -149,7 +167,9 @@ export const sendContactRequestEmails = (
       requestContactParams,
       emails.teacherEmail,
       customerId,
-      teacherId
+      teacherId,
+      evaluationId,
+      unitId
     );
     emailsSendTo.push(emails.teacherEmail)
   }
@@ -158,7 +178,9 @@ export const sendContactRequestEmails = (
       requestContactParams,
       emails.teacherEmail,
       customerId,
-      teacherId
+      teacherId,
+      evaluationId,
+      unitId
     );
     emailsSendTo.push(emails.teacherEmail)
   }
@@ -167,7 +189,9 @@ export const sendContactRequestEmails = (
       requestContactParams,
       emails.customerEmail,
       customerId,
-      customerId
+      customerId,
+      evaluationId,
+      unitId
     );
     emailsSendTo.push(emails.customerEmail)
   }
@@ -179,7 +203,9 @@ export const sendContactRequestEmails = (
       },
       emails.supervisorEmail,
       customerId,
-      supervisorId
+      supervisorId,
+      evaluationId,
+      unitId
     );
     emailsSendTo.push(emails.supervisorEmail)
   }
@@ -242,6 +268,9 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
         customerId,
         teacherId,
         supervisorId,
+
+        evaluationId,
+        unitId
       );
     }
 
@@ -264,6 +293,9 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       customerId,
       teacherId,
       supervisorId,
+
+      evaluationId,
+      unitId
     );
 
     const existingUnits = evaluation.units.filter((unit) => {

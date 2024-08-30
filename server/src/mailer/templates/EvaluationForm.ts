@@ -17,6 +17,8 @@ const saveNotification = async (
   subject: string,
   body: string,
   type: string,
+  evaluationId: string,
+  unitId: string
 ) => {
   const notification = new NotificationModel({
     recipient: recipientId,
@@ -25,7 +27,9 @@ const saveNotification = async (
     isSeen: false,
     title: subject,
     body: body,
-    type: type
+    type: type,
+    evaluationId: evaluationId,
+    unitId: unitId
   });
 
   await notification.save();
@@ -37,6 +41,8 @@ export const sendEvaluationFormCustomerRequestContact = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const text =
@@ -72,7 +78,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'requestContact');
+  await saveNotification(recipientId, customerId, subject, text, 'requestContact', evaluationId, unitId);
 };
 
 // Työpaikkaohjaaja pyytää yhteydenottoa
@@ -82,6 +88,8 @@ export const sendEvaluationFormSupervisorRequestContact = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const text =
@@ -117,7 +125,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'requestContact');
+  await saveNotification(recipientId, customerId, subject, text, 'requestContact', evaluationId, unitId);
 
 };
 
@@ -128,6 +136,8 @@ export const sendEvaluationFormTeacherRequestContactMessageCustomer = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const text =
@@ -163,7 +173,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'requestContact');
+  await saveNotification(recipientId, customerId, subject, text, 'requestContact', evaluationId, unitId);
 };
 
 export const sendEvaluationFormTeacherRequestContactMessageSupervisor = async (
@@ -171,6 +181,8 @@ export const sendEvaluationFormTeacherRequestContactMessageSupervisor = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const text =
@@ -207,7 +219,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'requestContact');
+  await saveNotification(recipientId, customerId, subject, text, 'requestContact', evaluationId, unitId);
 };
 
 // Arviointilomake: valmis lomake
@@ -241,6 +253,8 @@ export const sendEvaluationFormSupervisorReadyMessageCustomer = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const text =
@@ -279,7 +293,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'readyForReview');
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview', evaluationId, unitId);
 };
 
 export const sendEvaluationFormSupervisorReadyMessageTeacher = async (
@@ -288,6 +302,8 @@ export const sendEvaluationFormSupervisorReadyMessageTeacher = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const text =
@@ -325,7 +341,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'readyForReview');
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview', evaluationId, unitId);
 };
 
 export const sendEvaluationFormCustomerReadyMessageTeacher = async (
@@ -334,6 +350,8 @@ export const sendEvaluationFormCustomerReadyMessageTeacher = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const text =
@@ -371,7 +389,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'readyForReview');
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview', evaluationId, unitId);
 };
 
 export const sendEvaluationFormCustomerReadyMessageSupervisor = async (
@@ -380,6 +398,8 @@ export const sendEvaluationFormCustomerReadyMessageSupervisor = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const text =
@@ -417,7 +437,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'readyForReview');
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview', evaluationId, unitId);
 };
 
 
@@ -429,6 +449,8 @@ export const sendEvaluationFormTeacherReadyMessageCustomer = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
 
   const text =
@@ -465,7 +487,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'ready');
+  await saveNotification(recipientId, customerId, subject, text, 'ready', evaluationId, unitId);
 };
 
 
@@ -475,7 +497,11 @@ export const sendEvaluationFormTeacherReadyMessageSupervisor = async (
   to: string,
   customerId: string,
   recipientId: string,
+  evaluationId: string,
+  unitId: string
 ) => {
+
+  console.log('evaluationId in send: ', evaluationId)
 
 
   const text =
@@ -512,5 +538,5 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'ready');
+  await saveNotification(recipientId, customerId, subject, text, 'ready', evaluationId, unitId);
 };
