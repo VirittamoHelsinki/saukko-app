@@ -298,12 +298,12 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       unitId
     );
 
-    const existingUnits = evaluation.units.filter((unit) => {
+    const existingUnits = updatedUnit && evaluation.units.filter((unit) => {
       return (unit._id) !== (updatedUnit._id)
     })
 
 
-    evaluation.units = [
+    evaluation.units = updatedUnit && [
       ...existingUnits,
       updateUnitStatus(updatedUnit),
     ];
