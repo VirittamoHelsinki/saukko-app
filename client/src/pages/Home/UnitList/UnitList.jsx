@@ -1,27 +1,52 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 // Import components
 import NotificationBadge from '../../../components/NotificationBadge/NotificationBadge';
 import UnitStatus from '../../../components/UnitStatus/UnitStatus';
 import Button from '../../../components/Button/Button';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
 
 // Import state management
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // Import PDF Certificate Export
 import PdfExportButton from '../../../components/PdfCertificate/PdfExportButton.jsx';
+import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import { fetchAllEvaluations } from '../../../api/evaluation.js';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+
 
 const UnitList = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
   const { customerId } = useParams();
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-  const { evaluations, isLoading, evaluation, setEvaluation } =
-    useEvaluations();
+  const [alertModalOpen, setAlertModalOpen] = useState(false)
+
+
+  const { data: evaluations, isLoading } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations(),
+    onError: () => {
+      handleOpenAlertModal();
+    },
+  });
+
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+
+  const { evaluation, setEvaluation } = useEvaluationStore();
+
+  const handleCloseAlertModal = () => {
+    setAlertModalOpen(false)
+  };
+
+  const handleOpenAlertModal = () => {
+    setAlertModalOpen(true);
+  };
+
+
 
   useEffect(() => {
     if (evaluation && currentUser) {
@@ -38,10 +63,9 @@ const UnitList = () => {
     setSiteTitle('Suoritukset');
     setSubHeading('Suoritukset');
 
-    if (!isLoading && !evaluation) {
+    if (!evaluation && !isLoading) {
       const ev = evaluations.find((ev) => ev.customerId._id === customerId);
-      console.log("WHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHATWHAT", ev);
-      
+
       if (ev) {
         console.log('setting evaluation in userlist');
         setEvaluation(ev);
@@ -63,7 +87,7 @@ const UnitList = () => {
     <div className='unitList__wrapper'>
       <div className='unitList__notifications'>
         <h3>Ilmoitukset</h3>
-        <NotificationBadge number1={10} number2={5} />
+        <NotificationBadge />
       </div>
       <div className='unitList__units'>
         {currentUser.role === 'customer' ? (
@@ -84,7 +108,7 @@ const UnitList = () => {
                 unitId={unit._id}
                 status={unit.status}
                 subheader={unit.name.fi}
-                link={`/userperformance/${unit._id}`}
+                link={`/userperformance/${evaluation._id}/${unit._id}`}
               />
             </div>
           ))}
@@ -110,29 +134,21 @@ const UnitList = () => {
             }
           />
         </div>
-        <div className='wrapper-button-pdf'>
-          {
-            currentUser?.role === 'teacher' && evaluation && (
-              <PdfExportButton data={evaluation}/>
-            )
-          }
-
-          {/* {
-            evaluation && (
-              <PDFViewer style={{ 
-                position: 'absolute',
-                top: 0,
-                left: '-50%',
-                width: '200%',
-                height: '100%'
-              }}>
-                <PdfCertificate data={evaluation}/>
-              </PDFViewer>
-            )
-          } */}
-
-        </div>
+        {
+          currentUser?.role === 'teacher' && evaluation && (
+            <div className='wrapper-button-pdf'>
+              <PdfExportButton data={evaluation} />
+            </div>
+          )
+        }
       </div>
+      <NotificationModal
+        type='warning'
+        title='Tietojen haku epäonnistui'
+        body='Yritä myöhemmin uudelleen.'
+        open={alertModalOpen}
+        handleClose={handleCloseAlertModal}
+      />
     </div>
   );
 };

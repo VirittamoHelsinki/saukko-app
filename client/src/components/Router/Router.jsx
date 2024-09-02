@@ -46,6 +46,7 @@ const CreateUnitsSummary = React.lazy(() => import('../../pages/CreateSummary/Cr
 const SetPassword = React.lazy(() => import('../../pages/setPassword/SetPassword'));
 const RegisterUser = React.lazy(() => import('../../pages/RegisterUser/RegisterUser'));
 const CompanySummary = React.lazy(() => import('../../pages/CompanyInfo/CompanySummary/CompanySummary'));
+const Notification = React.lazy(() => import("../../pages/Home/Notification/Notification"));
 
 const Router = () => {
   let location = useLocation();
@@ -78,7 +79,7 @@ const Router = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes key={location.pathname} location={location}>
           <Route path='/' element={<PageLayout />}>
-          
+
             {/* Placeholders for development */}
             <Route path='/test-page' element={<TestPage />} />
             <Route path="/verify-email/:token" element={<EmailVerification />} />
@@ -96,10 +97,11 @@ const Router = () => {
             {/* All logged in users */}
             {loggedIn && (
               <>
+                <Route path='/notifications' element={<Notification />} />
                 <Route path='/profile' element={<ProfilePage />} />
                 <Route path='/unit-list/:customerId' element={<UnitList />} />
                 <Route path='/contract-info/:customerId' element={<ContractInfo />} />
-                <Route path='/userperformance/:unitId' element={<UserPerformance />} />
+                <Route path='/userperformance/:evaluationId/:unitId' element={<UserPerformance />} />
                 <Route path='/register-user' element={<RegisterUser />} />
               </>
             )}

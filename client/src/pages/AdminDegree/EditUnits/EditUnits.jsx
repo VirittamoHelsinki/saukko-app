@@ -5,8 +5,8 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import useStore from '../../../store/zustand/formStore';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import { Icon } from '@iconify/react';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import WithDegree from '../../../HOC/withDegree';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 
 function EditUnits({ degree }) {
@@ -15,8 +15,8 @@ function EditUnits({ degree }) {
 
   const { degreeName } = useStore();
   const { checkedUnits, setCheckedUnits } = useUnitsStore();
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
-  
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+
   const [editMode, setEditMode] = useState(false)
   const [editedUnits, setEditedUnits] = useState(checkedUnits);
 
@@ -47,13 +47,13 @@ function EditUnits({ degree }) {
       setEditMode(true)
       handleAddUnit()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputChange = (unitId, e) => {
     e.preventDefault();
     const inputValue = e.target.value;
-  
+
     const editedUnit = { name: { fi: inputValue }, _id: unitId };
 
     setEditedUnits((prevEditedUnits) => {
@@ -73,7 +73,7 @@ function EditUnits({ degree }) {
   const handleAddUnit = () => {
     // Generate a random _id for the new unit
     const randomId = Math.floor(1000000 + Math.random() * 9000000);
-    
+
     // Create a new unit object with an empty name and the random _id
     const newUnit = { name: { fi: "" }, _id: randomId };
 
@@ -85,14 +85,14 @@ function EditUnits({ degree }) {
     // Filter our the specified id
     setEditedUnits((prevEditedUnits) => prevEditedUnits.filter((unit) => unit._id !== id));
   }
-  
+
   const handleSubmit = () => {
     // Filter out units with an empty 'name.fi'
     const filteredUnits = editedUnits.filter(unit => unit.name.fi !== "");
     setCheckedUnits(filteredUnits);
     navigate(`/degrees/${params.degreeId}/units/tasks`)
   };
- 
+
   console.log(editedUnits);
 
   return (
@@ -105,9 +105,9 @@ function EditUnits({ degree }) {
         />
         <h1>{degree ? degree.name.fi : degreeName}</h1>
 
-        <button 
+        <button
           id='finishEditButton'
-          className={`edit-button ${editMode ? 'button-editable' : 'button-not-editable'}`} 
+          className={`edit-button ${editMode ? 'button-editable' : 'button-not-editable'}`}
           onClick={() => setEditMode(!editMode)}
         >
           {editMode ? 'Lopeta muokkaus' : 'Muokkaa tietoja'}
@@ -118,7 +118,7 @@ function EditUnits({ degree }) {
         {!editMode && editedUnits.length > 0 && (
           <div id='unitsNotEditable' className='units-not-editable'>
             {editedUnits.map((unit, index) => (
-              <p key={index}>{index+1}. {unit.name.fi}</p>
+              <p key={index}>{index + 1}. {unit.name.fi}</p>
             ))}
           </div>
         )}
@@ -135,8 +135,8 @@ function EditUnits({ degree }) {
             {editedUnits.length > 0 &&
               editedUnits.map(unit => (
                 <div className="input-wrapper" key={unit._id}>
-                  <input 
-                    key={unit._id} 
+                  <input
+                    key={unit._id}
                     defaultValue={unit.name.fi}
                     onChange={(e) => handleInputChange(unit._id, e)}
                   >
@@ -153,8 +153,8 @@ function EditUnits({ degree }) {
         )}
 
         <PageNavigationButtons
-          handleBack={degree.units ? 
-            () => navigate(`/degrees/${params.degreeId}/units`) : 
+          handleBack={degree.units ?
+            () => navigate(`/degrees/${params.degreeId}/units`) :
             () => navigate(`/degrees/${params.degreeId}`)
           }
           handleForward={handleSubmit}

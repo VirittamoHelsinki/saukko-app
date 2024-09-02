@@ -1,6 +1,7 @@
 // Import React
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 // Import components
 // import WavesHeader from '../../../components/Header/WavesHeader';
@@ -18,8 +19,10 @@ import { Box } from '@mui/material';
 // Import state management
 /* import InternalApiContext from '../../../store/context/InternalApiContext'; */
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
+import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import { fetchAllEvaluations } from '../../../api/evaluation.js';
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
+
 
 // Import MUI
 // import Accordion from '@mui/material/Accordion';
@@ -30,13 +33,29 @@ import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
 
 export default function CustomerList() {
   const navigate = useNavigate();
-  const { evaluations, refetchEvaluations } = useEvaluations();
+  /* const { evaluations, refetchEvaluations } = useEvaluations(); */
+
+  const [alertModalOpen, setAlertModalOpen] = useState(false)
+
+  const { data: evaluations } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations(),
+    onError: () => {
+      handleOpenAlertModal();
+    },
+  });
 
   // Data from store management
   const { currentUser } = useAuthContext();
-  const { setHeading, setSiteTitle } = useHeadingContext();
+  const { setHeading, setSiteTitle } = useHeadingStore();
+  const { resetEvaluation } = useEvaluationStore();
+
   /*   const { evaluations, setInternalEvaluations, setInternalEvaluation } = */
   /*   useContext(InternalApiContext); */
+
+  useEffect(() => {
+    resetEvaluation();
+  }, [resetEvaluation])
 
   const [isInfoButtonOpen, setIsInfoButtonOpen] = useState(false);
 
@@ -46,6 +65,14 @@ export default function CustomerList() {
 
   const handleCloseInfoButton = () => {
     setIsInfoButtonOpen(false);
+  };
+
+  const handleCloseAlertModal = () => {
+    setAlertModalOpen(false)
+  };
+
+  const handleOpenAlertModal = () => {
+    setAlertModalOpen(true);
   };
 
   // Titles color for info button
@@ -66,13 +93,15 @@ export default function CustomerList() {
     }
   };
 
+  // useEffect(() => {
+  //   resetEvaluation();
+  // }, [])
+
   // Set evaluations
   useEffect(() => {
     setHeading(`Tervetuloa ${currentUser?.firstName}`)
     setSiteTitle("Etusivu")
-    refetchEvaluations();
-    /* setInternalEvaluations(); */
-  }, [setHeading, setSiteTitle, currentUser, refetchEvaluations]);
+  }, [setHeading, setSiteTitle, currentUser]);
 
   // Find evaluations in progress
   const inProgress =
@@ -114,12 +143,11 @@ export default function CustomerList() {
       {/* Notifications */}
       <div className='customerList__notifications'>
         <h3> Ilmoitukset </h3>
-        <NotificationBadge number1={10} number2={5} />
+        <NotificationBadge />
       </div>
 
       <div className='customerList__container'>
         <h3>
-          {' '}
           Asiakkaiden suoritukset{' '}
           <span>
             <Icon
@@ -129,121 +157,70 @@ export default function CustomerList() {
               cursor={'pointer'}
               onClick={() => handleOpenInfoButton()}
             />
-          </span>{' '}
+          </span>
         </h3>
 
-        {/* In progress */}
-        {/* <Accordion disableGutters> */}
-        {/* <AccordionSummary
-            sx={{ backgroundColor: '#FFF4B4' }}
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1a-content'
-            id='panel1a-header'
-          >
-            <Typography sx={{ fontWeight: '600' }}>Kesken</Typography>
-
-          </AccordionSummary> */}
-        {/* <AccordionDetails> */}
         <div className='customerList__accordion'>
-          {inProgress &&
-            inProgress.map(
-              (evaluation, index) =>
-                evaluation.customerId && (
-                  <div
-                    key={index}
-                    className='customerList__accordion__inProgress'
-                  >
-                    <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
-                      {evaluation.customerId.firstName}{' '}
-                      {evaluation.customerId.lastName}
-                    </p>
-                  </div>
-                )
-            )}
-        </div>
-        <div className='customerList__accordion'>
-          {waitForProcessing &&
-            waitForProcessing.map(
-              (evaluation, index) =>
-                evaluation.customerId && (
-                  <div
-                    key={index}
-                    className='customerList__accordion__waitForProcessing'
-                  >
-                    <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
-                      {evaluation.customerId.firstName}{' '}
-                      {evaluation.customerId.lastName}
-                    </p>
-                  </div>
-                )
-            )}
-        </div>
-        {/* </AccordionDetails> */}
-        {/* </Accordion> */}
+          {
+            inProgress && inProgress.map((evaluation) => evaluation.customerId && (
+              <div
+                key={`in-progress-${evaluation._id}`}
+                className='customerList__element in-progress'
+              >
+                <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
+                  {evaluation.customerId.firstName}{' '}
+                  {evaluation.customerId.lastName}
+                </p>
+              </div>
+            )
+            )
+          }
 
-        {/* Not started */}
-        {/* <Accordion disableGutters>
-          <AccordionSummary
-            sx={{ backgroundColor: '#efeff0' }}
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel2a-content'
-            id='panel2a-header'
-          >
-            <Typography sx={{ fontWeight: '600' }}>Aloittamatta</Typography>
-          </AccordionSummary>
+          {
+            waitForProcessing && waitForProcessing.map((evaluation) => evaluation.customerId && (
+              <div
+                key={`wait-for-processing-${evaluation._id}`}
+                className='customerList__element waiting-for-processing'
+              >
+                <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
+                  {evaluation.customerId.firstName}{' '}
+                  {evaluation.customerId.lastName}
+                </p>
+              </div>
+            ))
+          }
 
-          <AccordionDetails> */}
-        <div className='customerList__accordion'>
-          {notStarted &&
-            notStarted.map((evaluation, index) => (
-              <div key={index} className='customerList__accordion__notStarted'>
+          {
+            notStarted && notStarted.map((evaluation) => evaluation.customerId && (
+              <div
+                key={`wait-for-processing-${evaluation._id}`}
+                className='customerList__element not-started'
+              >
+                <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
+                  {evaluation.customerId.firstName}{' '}
+                  {evaluation.customerId.lastName}
+                </p>
+              </div>
+            ))
+          }
+
+          {
+            completed && completed.map((evaluation) => evaluation.customerId && (
+              <div
+                key={`completed-${evaluation._id}`}
+                className='customerList__element completed'
+              >
                 <p
                   key={evaluation._id}
-                  onClick={() => handleChooseEvaluation(evaluation.customerId)}
+                  onClick={() => handleChooseEvaluation(evaluation._id)}
                 >
                   {evaluation.customerId.firstName}{' '}
                   {evaluation.customerId.lastName}
                 </p>
               </div>
-            ))}
+            ))
+          }
         </div>
-        {/* </AccordionDetails>
-        </Accordion> */}
-
-        {/* Completed */}
-        {/* <Accordion disableGutters> */}
-        {/* <AccordionSummary
-            sx={{ backgroundColor: '#E2F5F3' }}
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel3a-content'
-            id='panel3a-header'
-          >
-            <Typography sx={{ fontWeight: '600' }}>Suorittanut</Typography>
-          </AccordionSummary>
-
-          <AccordionDetails> */}
-        <div className='customerList__accordion'>
-          {completed &&
-            completed.map(
-              (evaluation, index) =>
-                evaluation.customerId && (
-                  <div
-                    key={index}
-                    className='customerList__accordion__completed'
-                  >
-                    <p
-                      key={evaluation._id}
-                      onClick={() => handleChooseEvaluation(evaluation._id)}
-                    >
-                      {evaluation.customerId.firstName}{' '}
-                      {evaluation.customerId.lastName}
-                    </p>
-                  </div>
-                )
-            )}
-        </div>
-        {/* </AccordionDetails> */}
-        {/* </Accordion> */}
       </div>
 
       <NotificationModal
@@ -286,6 +263,13 @@ export default function CustomerList() {
         handleClose={handleCloseInfoButton}
       />
       {/* <UserNav /> */}
+      <NotificationModal
+        type='warning'
+        title='Tietojen haku epäonnistui'
+        body='Yritä myöhemmin uudelleen.'
+        open={alertModalOpen}
+        handleClose={handleCloseAlertModal}
+      />
     </div>
   );
 }

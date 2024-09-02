@@ -11,11 +11,13 @@ router.get("/renew-token", authController.renew);
 router.get("/get-current-user", authController.getCurrentUser);
 router.get("/verify-email", authController.verifyEmail);
 router.get("/resend-email-verification", authController.resendEmailVerificationLink)
-router.get("/email-available", authController.isEmailAvailable)
+router.get("/email-available", authController.isEmailAvailable);
+
+router.put("/users/:id", authController.updateUser);
 
 router.delete("/users/:id", authController.deleteUserById);
 
-router.post("/register-user", authController.registerUser)
+router.post("/register-user", authController.registerUser);
 
 // Enable auth middleware for specific endpoints
 router.post(["/", "/change-password", "/request-pwd-change-token"], auth);

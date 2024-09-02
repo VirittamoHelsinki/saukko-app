@@ -12,6 +12,8 @@ export interface IUser extends Document {
   role: string;
   emailVerified: boolean;
   modified: number; // UNIX-timestamp in seconds
+  evaluationId?: Types.ObjectId;
+  workplaceId?: Types.ObjectId;
   isValidPassword: (password: string) => boolean;
   generateEmailVerificationToken: () => string;
   generateEmailVerificationLink: () => string;
@@ -55,16 +57,26 @@ export const userSchema = new Schema<IUser>({
   emailVerified: {
     type: Boolean,
     default: false,
-  }
+  },
+  evaluationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Evaluation', // Reference to the Evaluation model
+    default: null,
+  },
+  workplaceId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Workplace', // Reference to the Workplace model
+    default: null,
+  },
 });
 
 // method to check if password is correct
-userSchema.methods.isValidPassword = function (password: string) {
+userSchema.methods.isValidPassword = function(password: string) {
   bcrypt.compareSync(password, this.passwordHash)
 }
 
 // method to generate email verification token
-userSchema.methods.generateEmailVerificationToken = function () {
+userSchema.methods.generateEmailVerificationToken = function() {
   return jwt.sign(
     {
       id: this._id,
@@ -75,7 +87,7 @@ userSchema.methods.generateEmailVerificationToken = function () {
   );
 };
 
-userSchema.methods.generateEmailVerificationLink = function () {
+userSchema.methods.generateEmailVerificationLink = function() {
   return `${config.APP_URL
     }/verify-email/${this.generateEmailVerificationToken()}`
 }
@@ -98,8 +110,8 @@ userSchema.methods.generateResetPasswordToken =
     );
   };
 
-  
-  
+
+
 // method to generate reset-password token and link
 userSchema.methods.generateResetPasswordLink =
   function generateResetPasswordLink() {

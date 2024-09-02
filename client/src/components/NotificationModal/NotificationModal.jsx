@@ -57,7 +57,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import { Icon } from '@iconify/react';
 import Button from '@mui/material/Button'; // Add this import for the "OK" button
 import { Box } from '@mui/material';
@@ -73,7 +72,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 function BootstrapDialogTitle(props) {
   const { children, onClose, hideCloseButton, ...other } = props;
-  
+
 
   return (
     <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
@@ -89,7 +88,6 @@ function BootstrapDialogTitle(props) {
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          <CloseIcon />
         </IconButton>
       ) : null}
     </DialogTitle>
@@ -111,7 +109,7 @@ export default function CustomizedDialogs(props) {
     color = '#d18200';
   } else if (props.type === 'info') {
     icon = 'material-symbols:info';
-    bgColor = '#E5F6FD';
+    bgColor = '#FAFAFA';
     color = '#0288D1';
   } else if (props.type === 'success') {
     icon = 'material-symbols:check-circle';
@@ -145,6 +143,7 @@ export default function CustomizedDialogs(props) {
         open={props.open}
         sx={{
           '& .MuiDialog-paper': {
+            width: '361px',
             background: bgColor,
             borderLeft: 'solid 8px',
             color,
@@ -161,17 +160,17 @@ export default function CustomizedDialogs(props) {
           }
         }}
       >
-         {!props.hideIcon && (
-        <Icon
-          icon={icon}
-          style={{
-            position: 'absolute',
-            left: '16px',
-            top: '16px',
-            fontSize: '27px',
-            color: color,
-          }}
-        />
+        {!props.hideIcon && (
+          <Icon
+            icon={icon}
+            style={{
+              position: 'absolute',
+              left: '16px',
+              top: '16px',
+              fontSize: '27px',
+              color: color,
+            }}
+          />
         )}
 
         <BootstrapDialogTitle
@@ -182,8 +181,8 @@ export default function CustomizedDialogs(props) {
           {props.title}
         </BootstrapDialogTitle>
         <DialogContent>
-          <Box sx={{ color: 'black', marginBottom: '1rem', fontSize: '14px'}}>{props.body}</Box>
-          {props.type === 'alert' && !props.hideButton &&(
+          <Box sx={{ color: 'black', marginBottom: '1rem', fontSize: '14px' }}>{props.body}</Box>
+          {props.type === 'alert' && !props.hideButton && (
             <Button onClick={handleConfirm} color='primary' variant='contained'>
               Kyllä
             </Button>

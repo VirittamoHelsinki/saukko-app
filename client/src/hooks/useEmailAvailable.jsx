@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const useCheckEmailAvailability = (email) => {
-  const [ isAvailable, setAvailable ] = useState(false);
+  const [ isAvailable, setAvailable ] = useState(true);
 
   useEffect(() => {
     let ignore = false;

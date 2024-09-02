@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Button from "../../components/Button/Button";
 import Notification from "../../components/Notification/Notification";
+import NotificationModal from '../../components/NotificationModal/NotificationModal';
+
 import { resetPassword } from '../../api/user';
 
 const ResetPassword = () => {
@@ -13,43 +15,12 @@ const ResetPassword = () => {
   const [showPasswordVerify, setShowPasswordVerify] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState('')
+  const [alertModalOpen, setAlertModalOpen] = useState(false)
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
   const { token } = useParams();
-  // const [validToken, setValidToken] = useState(false);
-  // const [message, setMessage] = useState("")
   const color = "#00005E";
-
-  // const checkValidToken = async () => {
-  //   if (validToken) {
-  //     console.log('valid token');
-  //     console.log(validToken);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const validateToken = async () => {
-  //     try {
-  //       const response = await tokenValidation(token);
-  //       console.log(response);
-  //       if (response.status === 200) {
-  //         setValidToken(true);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //       setMessage(error.response.data.errorMessage)
-  //       setValidToken(false);
-  //     }
-  //   };
-
-  //   validateToken();
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // useEffect(() => {
-  //   checkValidToken();
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   useEffect(() => {
     const updateButtonDisabled = async () => {
@@ -58,14 +29,31 @@ const ResetPassword = () => {
     updateButtonDisabled();
   }, [password, confirmPassword]);
 
+  const handleCloseAlertModal = () => {
+    setAlertModalOpen(false)
+  };
+
+  const handleOpenAlertModal = () => {
+    setAlertModalOpen(true);
+  };
+
+
   const processResetPassword = async (e) => {
     e.preventDefault();
 
     // validate password and confirm password fields
     if (password !== confirmPassword) {
       console.log("Passwords do not match");
+      setPasswordError('Salasanat eivät täsmää')
       return;
     }
+
+    if (password.length < 6) {
+      setPasswordError('Salasanan täytyy olla yli 6 merkkiä pitkä')
+      return;
+    }
+
+    setPasswordError('');
 
     // Set isLoading to true when the request starts
     setIsLoading(true);
@@ -77,6 +65,7 @@ const ResetPassword = () => {
       setNotificationVisible(true);
     } catch (error) {
       console.log(error);
+      handleOpenAlertModal();
     } finally {
       setIsLoading(false);
     }
@@ -103,26 +92,15 @@ const ResetPassword = () => {
     background: "var(--saukko-main-black)"
   };
 
-  // if (!validToken) {
-  //   return (
-
-  //     <Notification
-  //       heading={message}
-  //       icon="emojione:angry-face"
-
-  //     />
-  //   )
-  // }
 
   return (
     <div className="resetPassword__wrapper">
-     {/*  {!notificationVisible && <WavesHeader title="Saukko" fill="#9fc9eb" />} */}
       {!notificationVisible && (
         <section className="resetPassword__container">
           <h2>Vaihda salasana</h2>
           <form onSubmit={processResetPassword}>
             <section className="resetPassword__container--form-text">
-              <label htmlFor="password">Luo uusi salasana *</label>
+              <label htmlFor="password">Uusi salasana *</label>
               <div className="password__container">
                 <input
                   ref={passwordRef}
@@ -146,7 +124,7 @@ const ResetPassword = () => {
                 )}
               </div>
               {/* Password verification input */}
-              <label htmlFor="confirmPassword">Vahvista salasana *</label>
+              <label htmlFor="confirmPassword">Vahvista uusi salasana *</label>
               <div className="password__container">
                 <input
                   ref={confirmPasswordRef}
@@ -169,6 +147,14 @@ const ResetPassword = () => {
                   </span>
                 )}
               </div>
+              {/* Error message display */}
+              {passwordError && (
+                <div className="error-message">
+                  <Icon icon="mdi:alert-circle-outline" className="error-icon" style={{ marginRight: 5 }} />
+                  <span>{passwordError}</span>
+                </div>
+              )}
+
               <div className="resetPassword__form--bottom">
                 <Button
                   style={buttonDisabled ? buttonStyleDisabled : buttonStyleEnabled}
@@ -190,9 +176,16 @@ const ResetPassword = () => {
           headingColor={'white'}
           icon='gg:check-o'
           iconColor={'white'}
-
         />
       )}
+      <NotificationModal
+        type='warning'
+        title='Salasanan vaihto epäonnistui'
+        body='Yritä myöhemmin uudelleen.'
+        open={alertModalOpen}
+        handleClose={handleCloseAlertModal}
+      />
+
     </div>
   );
 };

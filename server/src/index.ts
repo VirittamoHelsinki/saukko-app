@@ -14,6 +14,7 @@ import degreeRouter from "./routers/degreeRouter";
 import workplaceRouter from "./routers/workplaceRouter";
 import evaluationRouter from "./routers/evaluationRouter";
 import eReqRouter from "./routers/eReqRouter"
+import notificationRouter from "./routers/notificationRouter"
 import tokensMiddleware from "./middlewares/middleware.tokens";
 
 const app = express();
@@ -60,6 +61,7 @@ app.use("/api", degreeRouter);
 app.use("/api", workplaceRouter);
 app.use("/api", evaluationRouter);
 app.use("/api", eReqRouter);
+app.use("/api", notificationRouter);
 
 
 app.use('/api/status', (_req, res) => {

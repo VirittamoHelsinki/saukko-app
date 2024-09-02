@@ -9,7 +9,7 @@ import Stepper from '../../../components/Stepper/Stepper';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import InternalApiContext from '../../../store/context/InternalApiContext';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 // Import libraries
 import { Icon } from '@iconify/react';
@@ -30,7 +30,7 @@ function EvaluationWorkplace() {
 
   // Fetch workplaces & save to state
   const { workplaces } = useContext(InternalApiContext);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setHeading, setSiteTitle, setSubHeading } = useHeadingStore();
 
   const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
 
@@ -53,7 +53,7 @@ function EvaluationWorkplace() {
   const closeRedirectNotification = () => setRedirectNotification(false);
 
   useEffect(() => {
-    setSiteTitle('Suorituksetn aktivoiminen'),
+    setSiteTitle('Suorituksen aktivoiminen'),
       setSubHeading('Lisää uusi asiakas'),
       setHeading('Asiakkuudet');
   }, [setHeading, setSiteTitle, setSubHeading]);
@@ -186,97 +186,137 @@ function EvaluationWorkplace() {
         <div>
           {workplacesToMap
             ? workplacesToMap.map((workplace) => (
-                <Accordion
-                  className={`workplaces-accordion ${
-                    workplaceFromStore === workplace ? 'selected' : ''
+              <Accordion
+                className={`workplaces-accordion ${workplaceFromStore === workplace ? 'selected' : ''
                   }`}
-                  key={workplace._id}
-                  disableGutters
-                  square
+                key={workplace._id}
+                disableGutters
+                square
+                sx={{ position: 'static' }}
+              >
+                <AccordionSummary
                   sx={{ position: 'static' }}
+                  expandIcon={<ExpandMoreIcon />}
                 >
-                  <AccordionSummary
+                  <FormControlLabel
                     sx={{ position: 'static' }}
-                    expandIcon={<ExpandMoreIcon />}
-                  >
-                    <FormControlLabel
-                      sx={{ position: 'static' }}
-                      value={workplace.name}
-                      control={
-                        <Radio
-                          checked={workplaceFromStore === workplace}
-                          onChange={toggleWorkplace}
-                          value={workplace._id}
-                          theme={createTheme({
-                            palette: { primary: { main: '#0000BF' } },
-                          })}
-                        />
-                      }
-                      label={
-                        <div className='radio__label'>
-                          <p
-                            className={`radio__label-name ${
-                              workplaceFromStore === workplace ? 'selected' : ''
+                    value={workplace.name}
+                    control={
+                      <Radio
+                        checked={workplaceFromStore === workplace}
+                        onChange={toggleWorkplace}
+                        value={workplace._id}
+                        theme={createTheme({
+                          palette: { primary: { main: '#0000BF' } },
+                        })}
+                      />
+                    }
+                    label={
+                      <div className='radio__label'>
+                        <p
+                          className={`radio__label-name ${workplaceFromStore === workplace ? 'selected' : ''
                             }`}
-                          >
-                            {workplace.name}
-                          </p>
-                          <p className='radio__label-businessid'>
-                            Y- tunnus: {workplace.businessId}
-                          </p>
-                        </div>
-                      }
-                    />
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    {/* Departments */}
-                    {workplace.departments.length > 0 && (
-                      <>
-                        <Typography
+                        >
+                          {workplace.name}
+                        </p>
+                        <p className='radio__label-businessid'>
+                          Y- tunnus: {workplace.businessId}
+                        </p>
+                      </div>
+                    }
+                  />
+                </AccordionSummary>
+                <AccordionDetails>
+                  {/* Departments */}
+                  {workplace.departments.length > 0 && (
+                    <>
+                      <Typography
+                        sx={{ position: 'static' }}
+                        className='accordion-title'
+                      >
+                        {' '}
+                        Valitse yksikkö *{' '}
+                      </Typography>
+                      <Accordion
+                        disableGutters
+                        square
+                        className='accordion__wrapper'
+                      >
+                        <AccordionSummary
                           sx={{ position: 'static' }}
-                          className='accordion-title'
+                          expandIcon={<ExpandMoreIcon />}
                         >
-                          {' '}
-                          Valitse yksikkö *{' '}
-                        </Typography>
-                        <Accordion
-                          disableGutters
-                          square
-                          className='accordion__wrapper'
-                        >
-                          <AccordionSummary
-                            sx={{ position: 'static' }}
-                            expandIcon={<ExpandMoreIcon />}
-                          >
-                            Valitse
-                          </AccordionSummary>
-                          <AccordionDetails>
-                            {workplace.departments.map((department, index) => (
-                              <div
-                                className={`accordion__wrapper-details ${
-                                  departmentFromStore &&
-                                  departmentFromStore._id === department._id
-                                    ? 'selected'
-                                    : ''
+                          Valitse
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          {workplace.departments.map((department, index) => (
+                            <div
+                              className={`accordion__wrapper-details ${departmentFromStore &&
+                                departmentFromStore._id === department._id
+                                ? 'selected'
+                                : ''
                                 }`}
-                                key={index}
-                                onClick={toggleDepartment(department._id)}
-                              >
-                                <Typography>{department.name}</Typography>
-                                {departmentFromStore &&
-                                  department._id ===
-                                    departmentFromStore._id && (
-                                    <Icon icon='mdi:tick' />
-                                  )}
-                              </div>
-                            ))}
-                          </AccordionDetails>
-                        </Accordion>
-                      </>
-                    )}
+                              key={index}
+                              onClick={toggleDepartment(department._id)}
+                            >
+                              <Typography>{department.name}</Typography>
+                              {departmentFromStore &&
+                                department._id ===
+                                departmentFromStore._id && (
+                                  <Icon icon='mdi:tick' />
+                                )}
+                            </div>
+                          ))}
+                        </AccordionDetails>
+                      </Accordion>
+                    </>
+                  )}
 
-                    {/* Supervisors */}
-                    {workplace.departments.length === 0 && (
+                  {/* Supervisors */}
+                  {workplace.departments.length === 0 && (
+                    <>
+                      <Typography className='accordion-title'>
+                        Valitse työpaikkaohjaaja *
+                      </Typography>
+                      <Accordion
+                        disableGutters
+                        square
+                        className='accordion__wrapper'
+                      >
+                        <AccordionSummary
+                          sx={{ position: 'static' }}
+                          expandIcon={<ExpandMoreIcon />}
+                        >
+                          Valitse
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          {workplace.supervisors.map((supervisor) => (
+                            <div
+                              className={`accordion__wrapper-details ${supervisorFromStore &&
+                                supervisorFromStore._id === supervisor._id
+                                ? 'selected'
+                                : ''
+                                }`}
+                              key={supervisor._id}
+                              onClick={toggleSupervisor(supervisor._id)}
+                            >
+                              <Typography>
+                                {supervisor.firstName} {supervisor.lastName}
+                              </Typography>
+                              {supervisorFromStore &&
+                                supervisor._id ===
+                                supervisorFromStore._id && (
+                                  <Icon icon='mdi:tick' />
+                                )}
+                            </div>
+                          ))}
+                        </AccordionDetails>
+                      </Accordion>
+                    </>
+                  )}
+
+                  {workplace.departments.length > 0 &&
+                    departmentFromStore && (
                       <>
                         <Typography className='accordion-title'>
                           Valitse työpaikkaohjaaja *
@@ -293,81 +333,36 @@ function EvaluationWorkplace() {
                             Valitse
                           </AccordionSummary>
                           <AccordionDetails>
-                            {workplace.supervisors.map((supervisor) => (
-                              <div
-                                className={`accordion__wrapper-details ${
-                                  supervisorFromStore &&
-                                  supervisorFromStore._id === supervisor._id
+                            {workplace.departments.map((department) =>
+                              department.supervisors.map((supervisor) => (
+                                <div
+                                  className={`accordion__wrapper-details ${supervisorFromStore &&
+                                    supervisorFromStore._id === supervisor._id
                                     ? 'selected'
                                     : ''
-                                }`}
-                                key={supervisor._id}
-                                onClick={toggleSupervisor(supervisor._id)}
-                              >
-                                <Typography>
-                                  {supervisor.firstName} {supervisor.lastName}
-                                </Typography>
-                                {supervisorFromStore &&
-                                  supervisor._id ===
+                                    }`}
+                                  key={supervisor._id}
+                                  onClick={toggleSupervisor(supervisor._id)}
+                                >
+                                  <Typography>
+                                    {supervisor.firstName}{' '}
+                                    {supervisor.lastName}
+                                  </Typography>
+                                  {supervisorFromStore &&
+                                    supervisor._id ===
                                     supervisorFromStore._id && (
-                                    <Icon icon='mdi:tick' />
-                                  )}
-                              </div>
-                            ))}
-                          </AccordionDetails>
+                                      <Icon icon='mdi:tick' />
+                                    )}
+                                </div>
+                              ))
+                            )}
+                          </AccordionDetails>{' '}
                         </Accordion>
                       </>
                     )}
-
-                    {workplace.departments.length > 0 &&
-                      departmentFromStore && (
-                        <>
-                          <Typography className='accordion-title'>
-                            Valitse työpaikkaohjaaja *
-                          </Typography>
-                          <Accordion
-                            disableGutters
-                            square
-                            className='accordion__wrapper'
-                          >
-                            <AccordionSummary
-                              sx={{ position: 'static' }}
-                              expandIcon={<ExpandMoreIcon />}
-                            >
-                              Valitse
-                            </AccordionSummary>
-                            <AccordionDetails>
-                              {workplace.departments.map((department) =>
-                                department.supervisors.map((supervisor) => (
-                                  <div
-                                    className={`accordion__wrapper-details ${
-                                      supervisorFromStore &&
-                                      supervisorFromStore._id === supervisor._id
-                                        ? 'selected'
-                                        : ''
-                                    }`}
-                                    key={supervisor._id}
-                                    onClick={toggleSupervisor(supervisor._id)}
-                                  >
-                                    <Typography>
-                                      {supervisor.firstName}{' '}
-                                      {supervisor.lastName}
-                                    </Typography>
-                                    {supervisorFromStore &&
-                                      supervisor._id ===
-                                        supervisorFromStore._id && (
-                                        <Icon icon='mdi:tick' />
-                                      )}
-                                  </div>
-                                ))
-                              )}
-                            </AccordionDetails>{' '}
-                          </Accordion>
-                        </>
-                      )}
-                  </AccordionDetails>
-                </Accordion>
-              ))
+                </AccordionDetails>
+              </Accordion>
+            ))
             : 'ei dataa APIsta'}
         </div>
 
@@ -382,14 +377,14 @@ function EvaluationWorkplace() {
                 }
                 page={page}
                 onChange={handlePageChange}
-                /*  sx={{
-                  '& .MuiPaginationItem-root':{
-                    position: 'static'
-                },
-                  '& .Mui-disabled': {
-                    position: 'relative',
-                  }
-              }} */
+              /*  sx={{
+                '& .MuiPaginationItem-root':{
+                  position: 'static'
+              },
+                '& .Mui-disabled': {
+                  position: 'relative',
+                }
+            }} */
               />
             </div>
           )}

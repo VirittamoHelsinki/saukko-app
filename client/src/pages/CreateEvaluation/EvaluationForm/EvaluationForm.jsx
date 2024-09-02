@@ -7,7 +7,6 @@ import Stepper from '../../../components/Stepper/Stepper';
 import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 
 // Import MUI
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -16,6 +15,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import useCheckEmailAvailability from '../../../hooks/useEmailAvailable';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ function EvaluationForm() {
   const handleCloseDate = () => setOpenNotificationModalDate(false);
 
   const [showWarningModal, setShowWarningModal] = useState(false);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   useEffect(() => {
     setSiteTitle('Suorituksen aktiivoiminen'),
@@ -112,7 +112,7 @@ function EvaluationForm() {
       return
     }
 
-    
+
 
     // Form validation: startDate and endDate are Date objects
     if (typeof startDate === 'string' || typeof endDate === 'string') {
@@ -227,7 +227,7 @@ function EvaluationForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            { !emailIsAvailable && <label className="error">Sähköposti on jo käytössä.</label>}
+            {!emailIsAvailable && <label className="error">Sähköposti on jo käytössä.</label>}
           </div>
           <div className='form__startDate'>
             <label className='form_text'>Asiakkuuden aloituspäivä *</label>
@@ -238,12 +238,12 @@ function EvaluationForm() {
                   format='DD.MM.YYYY'
                   value={startDate}
                   onChange={(date) => setStartDate(date)}
-                  /* sx={{
-                    '.MuiOutlinedInput-root':{
-                      position:'relative',
-                      zIndex:'-1',
-                    }
-                  }} */
+                /* sx={{
+                  '.MuiOutlinedInput-root':{
+                    position:'relative',
+                    zIndex:'-1',
+                  }
+                }} */
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -256,12 +256,12 @@ function EvaluationForm() {
                   value={endDate}
                   onChange={(date) => setEndDate(date)}
                   minDate={startDate} // Set minDate to startDate
-                  /*  sx={{
-                    '.MuiOutlinedInput-root':{
-                      position:'relative',
-                      zIndex:'-1',
-                    }
-                  }} */
+                /*  sx={{
+                  '.MuiOutlinedInput-root':{
+                    position:'relative',
+                    zIndex:'-1',
+                  }
+                }} */
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -274,12 +274,12 @@ function EvaluationForm() {
                   disabled={true}
                   format='DD.MM.YYYY'
                   value={'DD.MM.YYYY'}
-                  /*  sx={{
-                    '.MuiOutlinedInput-root':{
-                      position:'relative',
-                      zIndex:'-1',
-                    }
-                  }} */
+                /*  sx={{
+                  '.MuiOutlinedInput-root':{
+                    position:'relative',
+                    zIndex:'-1',
+                  }
+                }} */
                 />
               </ThemeProvider>
             </LocalizationProvider>
@@ -354,7 +354,7 @@ function EvaluationForm() {
         body={
           <div style={{ padding: '10px' }}>
             <Typography style={{ fontSize: '14px' }}>
-              { openNotificationModalEmail }
+              {openNotificationModalEmail}
             </Typography>
           </div>
         }

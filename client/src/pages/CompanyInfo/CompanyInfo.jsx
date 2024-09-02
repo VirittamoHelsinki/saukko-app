@@ -8,7 +8,6 @@ import Stepper from '../../components/Stepper/Stepper';
 import { fetchExternalCompanyData } from '../../api/workplace';
 import useStore from '../../store/zustand/formStore';
 import InternalApiContext from '../../store/context/InternalApiContext';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
 
 import { CiSearch } from 'react-icons/ci';
 import { RxCrossCircled } from 'react-icons/rx';
@@ -17,6 +16,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const CompanyInfo = () => {
   } = useStore();
 
   const { internalDegree } = useContext(InternalApiContext);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   useEffect(() => {
     setSiteTitle("Lisää työpaikka")
@@ -136,6 +136,7 @@ const CompanyInfo = () => {
       lastName,
       email: työpaikkaohjaajaEmail,
       role: 'supervisor',
+      workplaceId: businessId
     };
   };
   //Adding the supervisors
@@ -195,7 +196,7 @@ const CompanyInfo = () => {
             aria-controls='panel1a-content'
             id='panel1a-header'
           >
-            <Typography 
+            <Typography
               sx={{ fontSize: '22px' }}>
               1. Työpaikka tiedot
             </Typography>
@@ -317,7 +318,7 @@ const CompanyInfo = () => {
                       <Icon icon={'lucide:trash'} color="red" />
                       <span>Poista</span>
                     </button>
-                    <button className="button--primary" onClick={() => {}} disabled>
+                    <button className="button--primary" onClick={() => { }} disabled>
                       <Icon icon={'lucide:plus'} />
                       <span>Muokkaa</span>
                     </button>
@@ -391,7 +392,7 @@ const CompanyInfo = () => {
           </form>
         </Accordion>
       </div>
-      
+
       <PageNavigationButtons
         handleBack={() => navigate('/add/companyname')}
         handleForward={handleForward}

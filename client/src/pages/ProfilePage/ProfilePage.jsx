@@ -14,29 +14,38 @@ import {
   resetPassword,
 } from '../../api/user';
 import { useAuthContext } from '../../store/context/authContextProvider';
-import { useHeadingContext } from '../../store/context/headingContectProvider';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 function ProfilePage() {
   // User info from AuthContext
   const { currentUser } = useAuthContext();
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
 
-  // Logout
-/*   const navigate = useNavigate();
-
-  const LogOut = async () => {
-    try {
-      await logoutUser();
-      navigate('/');
-    } catch (error) {
-      console.error(error);
-    }
+  const handleCloseAlertModal = () => {
+    setAlertModalOpen(false)
   };
 
- */ 
+  const handleOpenAlertModal = () => {
+    setAlertModalOpen(true);
+  };
 
-const [invalidPasswordError, setInvalidPasswordError] = useState(false);
+  // Logout
+  /*   const navigate = useNavigate();
   
+    const LogOut = async () => {
+      try {
+        await logoutUser();
+        navigate('/');
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+   */
+
+  const [invalidPasswordError, setInvalidPasswordError] = useState(false);
+
   // State for opening & closing email pop up
   const [openEmailPopUp, setOpenEmailPopUp] = useState(false);
   const handleOpenEmailPopUp = () => setOpenEmailPopUp(true);
@@ -52,8 +61,6 @@ const [invalidPasswordError, setInvalidPasswordError] = useState(false);
     e.preventDefault();
     handleCloseEmailPopUp();
     handleOpenEmailNotification();
-
-    // Verify password & change email here
   };
 
   // State for opening & closing password pop up
@@ -109,6 +116,8 @@ const [invalidPasswordError, setInvalidPasswordError] = useState(false);
         console.error("Failed to change the password", err)
         if (err.response && err.response.data && err.response.data.errorMessage === "Invalid password") {
           setInvalidPasswordError(true)
+        } else {
+          handleOpenAlertModal();
         }
       });
   }
@@ -116,7 +125,7 @@ const [invalidPasswordError, setInvalidPasswordError] = useState(false);
   useEffect(() => {
     setSiteTitle("Profiili"), setSubHeading(""), setHeading("Oma profiili")
   }, [setHeading, setSiteTitle, setSubHeading])
-  
+
   return (
     <div className='profile__wrapper'>
       <section className='profile__container'>
@@ -191,7 +200,7 @@ const [invalidPasswordError, setInvalidPasswordError] = useState(false);
                 <PasswordInput value='passwordOld' inputName='passwordOld' label='Vanha salasana *' />
                 <PasswordInput value='passwordNew' inputName='passwordNew' label='Uusi salasana *' />
                 <PasswordInput value='passwordVerify' inputName='passwordVerify' label='Vahvista salasana *' />
-                {invalidPasswordError && <p style={{color: "red"}}>Tarkista salasanasi ja yritä uudelleen!</p>}
+                {invalidPasswordError && <p style={{ color: "red" }}>Tarkista salasanasi ja yritä uudelleen!</p>}
               </div>
             }
             buttonText='Vaihda salasana'
@@ -207,6 +216,13 @@ const [invalidPasswordError, setInvalidPasswordError] = useState(false);
             type='success'
             title='Tiedot päivitetty!'
             body='Voit seuraavalla kerralla kirjautua sisään uusia kirjautumistietoja käyttäen.'
+          />
+          <NotificationModal
+            type='warning'
+            title={'Salasanan vaihtaminen ei onnistunut'}
+            body={'Yritä hetken päästä uudelleen.'}
+            open={alertModalOpen}
+            handleClose={handleCloseAlertModal}
           />
         </div>
       </section>

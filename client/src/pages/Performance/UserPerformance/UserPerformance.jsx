@@ -22,24 +22,35 @@ import InternalApiContext from '../../../store/context/InternalApiContext';
 // import { updateEvaluationById } from '../../../api/evaluation';
 import { handleUserPerformanceEmails } from '../../../api/evaluation';
 import { useAuthContext } from '../../../store/context/authContextProvider';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
-import { useEvaluations } from '../../../store/context/EvaluationsContext.jsx';
+import useHeadingStore from '../../../store/zustand/useHeadingStore.js';
+import useEvaluationStore from '../../../store/zustand/evaluationStore.js';
+import { fetchAllEvaluations } from '../../../api/evaluation';
 // import { sendEmails } from '../../../api/performance';
+import { useQuery } from '@tanstack/react-query';
+
 
 const UserPerformance = () => {
   const { currentUser } = useAuthContext();
 
-  // console.log('🚀 ~ UserPerformance ~ user:', currentUser);
+  const { data: evaluations, isLoading } = useQuery({
+    queryKey: ['evaluations'],
+    queryFn: () => fetchAllEvaluations(),
+    refetchOnMount: true,  // Refetch data when window regains focus
+    staleTime: 0,
+  });
+
 
   // eslint-disable-next-line no-unused-vars
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [textAreaValue, setTextareaValue] = useState('');
-  /*  const { evaluation, setEvaluation } = useContext(InternalApiContext); */
-  const { evaluations, isLoading, evaluation, setEvaluation } = useEvaluations();
+  const [alertModalOpen, setAlertModalOpen] = useState(false)
+  const { evaluationId, unitId } = useParams();
+  const { evaluation: getEvaluation, setEvaluation } = useEvaluationStore();
 
-  const evaluationId = evaluation?._id;
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const evaluation = !isLoading && !getEvaluation ? evaluations.find(evaluation => evaluation._id === evaluationId) : getEvaluation
+
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // console.log('🚀 ~ UserPerformance ~ evaluation:', evaluation);
   const { allInternalDegrees } = useContext(InternalApiContext);
@@ -59,6 +70,7 @@ const UserPerformance = () => {
   // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
+  const [openSuccessfulSketchModal, setOpenSuccessfulSketchModal] = useState(false);
 
   const navigate = useNavigate();
   const [lastLocation, setLastLocation] = useState(null);
@@ -68,21 +80,31 @@ const UserPerformance = () => {
   const [customerFirstName, setCustomerFirstName] = useState(null);
   const [customerLastName, setCustomerLastName] = useState(null);
 
-  const { unitId } = useParams();
   const [selectedRadio, setSelectedRadio] = useState({});
   const [unitObject, setUnitObject] = useState(null)
 
 
   useEffect(() => {
-    if (evaluation && evaluation.customerId) {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "test";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && evaluation && evaluation.customerId) {
       setCustomerFirstName(`${evaluation?.customerId.firstName}`);
       setCustomerLastName(`${evaluation?.customerId.lastName}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customerFirstName, customerLastName]);
+  }, [customerFirstName, customerLastName, isLoading]);
 
   useEffect(() => {
-    if (evaluation) {
+    if (!isLoading, evaluation) {
       const foundUnit = evaluation.units.find(unit => unit._id === Number(unitId));
       if (foundUnit) {
         setUnitObject(foundUnit);
@@ -155,10 +177,27 @@ const UserPerformance = () => {
     setOpenNotificationModal(true);
   };
 
+  const handleNotificationSketchModalOpen = () => {
+    setOpenSuccessfulSketchModal(true);
+  };
 
+  const handleCloseAlertModal = () => {
+    setAlertModalOpen(false)
+  };
+
+  const handleOpenAlertModal = () => {
+    setAlertModalOpen(true);
+  };
+
+
+  // TODO: Change this to edit only a single unit so I have an idea what to do server side
+  // smh
   const handleSubmit = async () => {
-    const updatedUnits = evaluation.units.map((unit) => {
-      const updatedAssessments = unit.assessments.map((assessment) => {
+
+    const unitToUpdate = evaluation.units.find((unit) => unit._id === Number(unitId))
+    const updatedUnit = {
+      ...unitToUpdate,
+      assessments: unitToUpdate.assessments.map((assessment) => {
         const assessmentRadio = selectedRadio[assessment._id];
         let answer = assessment.answer;
         let answerSupervisor = assessment.answerSupervisor;
@@ -181,28 +220,31 @@ const UserPerformance = () => {
           answerSupervisor,
           answerTeacher,
         };
-      });
+      })
+    }
+    console.log("UNIT TO UPDATE", unitToUpdate);
+    console.log("UPDATED UNIT", updatedUnit)
 
-      return {
-        ...unit,
-        assessments: updatedAssessments,
-        feedBack: textAreaValue,
-      };
-    });
+
 
     const updatedData = {
-      units: updatedUnits,
+      updatedUnit,
       selectedValues: selectedValues,
       additionalInfo: textAreaValue,
+      evaluationId: evaluationId,
+      unitId: unitId,
     };
 
 
     try {
+
+      console.log(updatedData);
+
+
       const response = await handleUserPerformanceEmails(
         `${evaluationId}`,
         updatedData
       );
-
 
       // set response to the store
       setEvaluation(response);
@@ -210,25 +252,31 @@ const UserPerformance = () => {
       setSelectedValues([]);
     } catch (error) {
       console.error('Error updating evaluation:', error);
+      handleOpenAlertModal();
     }
+
     setIsButtonEnabled(true);
-    handleNotificationModalOpen();
+    if (selectedValues['suoritusValmis']) {
+      handleNotificationModalOpen();
+    } else {
+      handleNotificationSketchModalOpen();
+    }
   };
 
   const getButtonText = () => {
     if (currentUser?.role === 'customer') {
       if (selectedValues['valmisLahetettavaksi']) {
-        return 'Tallenna ja Lähetä';
+        return 'Tallenna ja lähetä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
-        return 'Tallenna luonnos ja Lähettä pyyntö';
+        return 'Tallenna luonnos ja lähetä pyyntö';
       } else {
         return 'Tallenna luonnos';
       }
     } else if (currentUser?.role === 'supervisor') {
       if (selectedValues['valmisLahetettavaksi']) {
-        return 'Tallenna ja Lähetä';
+        return 'Tallenna ja lähetä';
       } else if (selectedValues['pyydetaanYhteydenottoaOpettajalta']) {
-        return 'Tallenna luonnos ja Lähettä pyyntö';
+        return 'Tallenna luonnos ja lähetä pyyntö';
       } else {
         return 'Tallenna luonnos';
       }
@@ -259,8 +307,8 @@ const UserPerformance = () => {
   const h2Color = isPalauteSectionDisabled() ? 'grey' : 'black';
 
   useEffect(() => {
-    setSiteTitle('Arviointi'),
-      setSubHeading('Ammattitaitovaatimusten arviointi');
+    setSiteTitle('Arviointi');
+    setSubHeading('Ammattitaitovaatimusten arviointi');
     if (
       currentUser &&
       (currentUser.role === 'teacher' || currentUser.role === 'supervisor')
@@ -269,7 +317,7 @@ const UserPerformance = () => {
     } else {
       setHeading(`Tervetuloa, ${customerFirstName}`);
     }
-  });
+  }, [setSiteTitle, setHeading, setSubHeading, currentUser, customerFirstName, customerLastName]);
 
   const handleEvaluation = () => {
     navigate(-1);
@@ -285,6 +333,10 @@ const UserPerformance = () => {
       },
     }));
   }, []);
+
+  useEffect(() => {
+    console.log('testing selecting values: ', selectedValues)
+  })
 
   return (
     <div className='perfomance__wrapper'>
@@ -337,120 +389,134 @@ const UserPerformance = () => {
 
       {error && <p>{error}</p>}
 
-      <div style={{ fontSize: '20px', marginTop: '40px', marginLeft: '18px' }}>
-        {currentUser?.role === 'teacher' ? (
-          <>
-            <input
-              type='checkbox'
-              name='suoritusValmis'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  suoritusValmis: !selectedValues['suoritusValmis'],
-                })
-              }
-            />
-            <label> Suoritus Valmis </label>
-            <br />
-            <input
-              type='checkbox'
-              name='yhteydenottoAsiakkaalta'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  pyydetaanYhteydenottoaAsiakkaalta:
-                    !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
-                })
-              }
-            />
-            <label> Pyydetään yhteydenottoa asiakkaalta</label>
-            <br />
-            <input
-              type='checkbox'
-              name='yhteydenottoOhjaajalta'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  pyydetaanYhteydenottoaOhjaajalta:
-                    !selectedValues['pyydetaanYhteydenottoaOhjaajalta'],
-                })
-              }
-            />
-            <label> Pyydetään yhteydenottoa ohjaajalta </label>
-          </>
-        ) : (
-          <>
-            <input
-              type='checkbox'
-              name='valmisLahetettavaksi'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  valmisLahetettavaksi: !selectedValues['valmisLahetettavaksi'],
-                })
-              }
-            />
-            <label> Valmis lähetettäväksi </label>
-            <br />
-            <input
-              type='checkbox'
-              name='pyydetaanYhteydenottoaOpettajalta'
-              onChange={() =>
-                setSelectedValues({
-                  ...selectedValues,
-                  pyydetaanYhteydenottoaOpettajalta:
-                    !selectedValues['pyydetaanYhteydenottoaOpettajalta'],
-                })
-              }
-            />
-            <label> Pyydään yhteydenottoa opettajalta</label>
-          </>
-        )}
-      </div>
+      <div className='body' style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: '0 16px', marginTop: '28px' }}>
+        <div style={{ fontSize: '20px' }}>
+          {currentUser?.role === 'teacher' ? (
+            <>
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='suoritusValmis'
+                  checked={selectedValues['suoritusValmis']}
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      suoritusValmis: !selectedValues['suoritusValmis'],
+                    })
+                  }
+                />
+                <span> Suoritus valmis </span>
+              </label>
 
-      <h2
-        style={{
-          textAlign: 'center',
-          fontSize: '18px',
-          textDecoration: 'underline',
-          marginTop: '40px',
-          color: h2Color, // Set the color dynamically
-        }}
-      >
-        {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Palaute'}
-      </h2>
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='yhteydenottoAsiakkaalta'
+                  checked={selectedValues['pyydetaanYhteydenottoaAsiakkaalta']}
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      pyydetaanYhteydenottoaAsiakkaalta:
+                        !selectedValues['pyydetaanYhteydenottoaAsiakkaalta'],
+                    })
+                  }
+                />
+                <span> Pyydän yhteydenottoa asiakkaalta</span>
+              </label>
 
-      <div className='buttons-and-form'>
-        <form action='' className='form-wrapper'>
-          <textarea
-            placeholder={
-              currentUser?.role === 'teacher'
-                ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
-                : currentUser?.role === 'supervisor'
-                  ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
-                  : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
-            }
-            rows={8}
-            cols={38}
-            className='para-title-style'
-            value={textAreaValue}
-            onChange={(e) => setTextareaValue(e.target.value)}
-            disabled={isPalauteSectionDisabled()}
-          />
-        </form>
-        <section className='section-buttons'>
-          <div className='buttons-wrapper'>
-            <PageNavigationButtons handleBack={() => navigate(-1)} />
-            <Button
-              id='submitButton'
-              style={buttonStyle}
-              type='submit'
-              text={getButtonText()}
-              onClick={handleSubmit}
-            // disabled={isPalauteSectionDisabled()}
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='yhteydenottoOhjaajalta'
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      pyydetaanYhteydenottoaOhjaajalta:
+                        !selectedValues['pyydetaanYhteydenottoaOhjaajalta'],
+                    })
+                  }
+                />
+                <span> Pyydän yhteydenottoa ohjaajalta </span>
+              </label>
+            </>
+          ) : (
+            <>
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='valmisLahetettavaksi'
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      valmisLahetettavaksi: !selectedValues['valmisLahetettavaksi'],
+                    })
+                  }
+                />
+                <span> Valmis lähetettäväksi </span>
+              </label>
+
+              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+                <input
+                  type='checkbox'
+                  name='pyydetaanYhteydenottoaOpettajalta'
+                  onChange={() =>
+                    setSelectedValues({
+                      ...selectedValues,
+                      pyydetaanYhteydenottoaOpettajalta:
+                        !selectedValues['pyydetaanYhteydenottoaOpettajalta'],
+                    })
+                  }
+                />
+                <span> Pyydetään yhteydenottoa opettajalta</span>
+              </label>
+            </>
+          )}
+        </div>
+
+        {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <h2
+          style={{
+            textAlign: 'center',
+            fontSize: '18px',
+            marginTop: '28px',
+            color: h2Color, // Set the color dynamically
+          }}
+        >
+          {currentUser?.role === 'customer' ? 'Lisätietoa' : 'Arvioinnin yhteenveto'}
+        </h2>}
+
+
+        <div className='buttons-and-form'>
+          {(selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) && <form action='' className='form-wrapper'>
+            <textarea
+              placeholder={
+                currentUser?.role === 'teacher'
+                  ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja ohjaajalle tutkinnon-osaan liittyvän viestin.'
+                  : currentUser?.role === 'supervisor'
+                    ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
+                    : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
+              }
+              rows={8}
+              cols={38}
+              className='para-title-style'
+              value={textAreaValue}
+              onChange={(e) => setTextareaValue(e.target.value)}
             />
-          </div>
-        </section>
+          </form>}
+          <section className='section-buttons'>
+            <div className='buttons-wrapper'>
+              <PageNavigationButtons handleBack={() => navigate(-1)} />
+
+              <Button
+                id='submitButton'
+                style={buttonStyle}
+                type='submit'
+                text={getButtonText()}
+                onClick={handleSubmit}
+              // disabled={isPalauteSectionDisabled()}
+              />
+            </div>
+          </section>
+        </div>
       </div>
 
       {/* Warning notification modal */}
@@ -526,11 +592,26 @@ const UserPerformance = () => {
 
       <NotificationModal
         type='success'
-        title='Tiedot tallennettu!'
-        body='Tiedot on tallennettu OsTu-appin tietokantaan.'
+        title='Tiedot tallennettu'
+        body='Tiedot on tallennettu järjestelmään onnistuneesti.'
         open={openNotificationModal}
         handleClose={handleEvaluation}
       />
+      <NotificationModal
+        type='success'
+        title='Luonnos on tallennettu'
+        body='Jos pyysit yhteydenottoa, pyyntö on välitetty ohjaajalle ja/tai opettajalle.'
+        open={openSuccessfulSketchModal}
+        handleClose={handleEvaluation}
+      />
+      <NotificationModal
+        type='warning'
+        title='Lomakkeen lähetys epäonnistui'
+        body='Tarkista, että tiedot ovat oikein ja yritä uudelleen.'
+        open={alertModalOpen}
+        handleClose={handleCloseAlertModal}
+      />
+
     </div>
   );
 };

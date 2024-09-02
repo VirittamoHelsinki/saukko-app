@@ -12,12 +12,12 @@ import { Typography } from '@mui/material';
 // Import state management
 import useEvaluationFormStore from '../../../store/zustand/evaluationFormStore';
 import { createEvaluation } from '../../../api/evaluation';
-import { registration } from '../../../api/user';
+import { registration, updateUser } from '../../../api/user';
 import useUnitsStore from '../../../store/zustand/unitsStore';
-import { useHeadingContext } from '../../../store/context/headingContectProvider';
 import InternalApiContext from '../../../store/context/InternalApiContext';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
 function EvaluationSummary() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function EvaluationSummary() {
   const { checkedUnits, clearCheckedUnits } = useUnitsStore();
   const { currentUser } = useAuthContext();
   const { setInternalEvaluations } = useContext(InternalApiContext);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingContext();
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const { allInternalDegrees } = useContext(InternalApiContext);
 
@@ -83,11 +83,11 @@ function EvaluationSummary() {
     },
     {
       title: 'Työtehtäväsi',
-      content:evaluation ? evaluation.workTasks : '',
+      content: evaluation ? evaluation.workTasks : '',
     },
     {
       title: 'Omat tavoitteesi',
-      content:evaluation ? evaluation.workGoals : '',
+      content: evaluation ? evaluation.workGoals : '',
     }
   ];
 
@@ -103,9 +103,23 @@ function EvaluationSummary() {
 
   const nameOfUnits = checkedUnits.map((unit) => unit.name.fi)
 
-  const unitsNameByOne = nameOfUnits.map((name) =>({
-    content : name,
+  const unitsNameByOne = nameOfUnits.map((name) => ({
+    content: name,
   }))
+
+  const updateUserWithEvaluationId = async (userId, evaluationId) => {
+    const updateUserData = {
+      evaluationId: evaluationId,
+    };
+
+    try {
+      const response = await updateUser(userId, updateUserData);
+      console.log('User updated with evaluationId:', response.data);
+    } catch (error) {
+      console.error('Error updating user with evaluationId:', error);
+      setErrorNotification(true);
+    }
+  };
 
   const handleUserPostReq = async () => {
     // Format data
@@ -115,6 +129,8 @@ function EvaluationSummary() {
       email: customer && customer.email ? customer.email : null,
       password: '123456',
       role: 'customer',
+      workplaceId: null,
+      evaluationId: null,
     };
     console.log('User POST request:', userRequestData);
 
@@ -126,15 +142,24 @@ function EvaluationSummary() {
     ) {
       const response = await registration(userRequestData);
       const userId = response.data.userId;
-      handleEvaluationPostReq(userId);
+      const evaluationId = await handleEvaluationPostReq(userId);
 
-      // Reset form data after successful submission
-      resetFormData();
-      clearCheckedUnits();
+      if (evaluationId) {
+        // Update the customer with the evaluationId
+        await updateUserWithEvaluationId(userId, evaluationId);
+
+        setSuccessNotification(true);
+        resetFormData();
+        clearCheckedUnits();
+      } else {
+        setErrorNotification(true);
+      }
+
     } else {
       setErrorNotification(true);
     }
   };
+
 
   const handleEvaluationPostReq = async (userId) => {
     // Format evaluation data
@@ -171,12 +196,13 @@ function EvaluationSummary() {
       console.log('Evaluation POST response:', response);
       setSuccessNotification(true);
       setInternalEvaluations(); // Save evaluation to InternalApiContext
+      return response._id
     } else {
       setErrorNotification(true);
     }
   };
 
-  const matchingDegree = allInternalDegrees.find((degree)=> degree._id === workplace.degreeId);
+  const matchingDegree = allInternalDegrees.find((degree) => degree._id === workplace.degreeId);
 
   let customerDegreeName = "No matching degree found";
   if (matchingDegree) {
@@ -212,10 +238,10 @@ function EvaluationSummary() {
         <h2 className='evaluation-summary-degreeName'>
           {customerDegreeName}
         </h2>
-        <InfoList 
-          className="evaluation-summary-degreeName-infoList" 
+        <InfoList
+          className="evaluation-summary-degreeName-infoList"
           data={unitsNameByOne}
-           />
+        />
         <PageNavigationButtons
           handleBack={() => navigate(`/evaluation-units`)}
           handleForward={handleUserPostReq}

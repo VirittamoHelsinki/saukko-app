@@ -69,3 +69,13 @@ jobs:
           slot-name: 'production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_8344fb2adde944ccac8b1ba3ccc86763 }}
+          continue-on-error: false  # Fails if Azure deploy fails
+
+  rollback:
+    if: failure()  # Only runs if the previous jobs fail
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revert last commit
+        run: |
+          git revert HEAD
+          git push origin dev
