@@ -1,7 +1,7 @@
 # **Saukko (StadinAO)**
 
 
-![DEVELOPMENT](https://img.shields.io/badge/SATGING-3d72a8)
+![DEVELOPMENT](https://img.shields.io/badge/STAGING-3d72a8)
 [![STAGING website status](https://img.shields.io/website?url=https%3A//saukko-dev-app-cf2pynvwyijf4.azurewebsites.net)](https://saukko-dev-app-cf2pynvwyijf4.azurewebsites.net)
 [![Build and deploy Node.js app to Azure Web App - saukko-dev-app-cf2pynvwyijf4](https://github.com/VirittamoHelsinki/saukko-app/actions/workflows/ci-update-env_saukko-dev-app-cf2pynvwyijf4.yml/badge.svg)](https://github.com/VirittamoHelsinki/saukko-app/actions/workflows/ci-update-env_saukko-dev-app-cf2pynvwyijf4.yml)
 
