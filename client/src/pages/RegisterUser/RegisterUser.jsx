@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { registration } from '../../api/user';
 import './_registerUser.scss';
+import useHeadingStore from '../../store/zustand/useHeadingStore';
+import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
+import { useNavigate } from 'react-router-dom';
 
 const Notification = ({ success, onTimeout, time = 3 }) => {
 	const [haveTime, setHaveTime] = useState(true)
@@ -30,11 +33,16 @@ const RegisterUser = () => {
 		firstName: '',
 		lastName: '',
 		email: '',
-		password: '',
 		role: 'teacher'
 	})
 	const [loading, setLoading] = useState(false)
 	const [success, setSuccess] = useState(null)
+
+	const navigate = useNavigate();
+
+
+	const { setSubHeading, setHeading } = useHeadingStore();
+
 
 	const onTimeout = () => setSuccess(null)
 
@@ -42,6 +50,11 @@ const RegisterUser = () => {
 		const { name, value } = e.target
 		setFormData({ ...formData, [name]: value })
 	}
+
+	useEffect(() => {
+		setSubHeading("Lisää uusi opettaja");
+		setHeading('Lisää uusi opettaja')
+	}, [setHeading, setSubHeading])
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -54,7 +67,6 @@ const RegisterUser = () => {
 				firstName: '',
 				lastName: '',
 				email: '',
-				password: '',
 				role: 'teacher'
 			})
 
@@ -68,23 +80,30 @@ const RegisterUser = () => {
 
 	return (
 		<div className="register-user">
-			<h2 className="h2">Uuden opettajan rekisteröinti</h2>
-			{(success !== null) && (
-				<Notification onTimeout={onTimeout} success={success} time={5} />
-			)}
+			{success !== null && <Notification onTimeout={onTimeout} success={success} time={5} />}
 			<form onSubmit={handleSubmit}>
-				<label htmlFor="firstName">Etunimi:</label><br />
-				<input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required /><br />
+				<div className="form-container">
+					<label className="section-title">Perustiedot</label>
+					<div className="form-group">
+						<label htmlFor="firstName">Etunimi*:</label>
+						<input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required />
+					</div>
+					<div className="form-group">
+						<label htmlFor="lastName">Sukunimi*:</label>
+						<input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
+					</div>
+					<div className="form-group">
+						<label htmlFor="email">Sähköposti*:</label>
+						<input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+					</div>
+				</div>
 
-				<label htmlFor="lastName">Sukunimi:</label><br />
-				<input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required /><br />
-
-				<label htmlFor="email">Sähköposti:</label><br />
-				<input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required /><br />
-				<label htmlFor="password">Salasana:</label><br />
-				<input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required /><br />
-				<br></br>
-				<button disabled={loading} type="submit">Lisää opettaja</button>
+				<PageNavigationButtons
+					handleBack={() => navigate(-1)}
+					handleForward={handleSubmit}
+					forwardButtonText={'Lisää opettaja'}
+					showForwardButton={true}
+				/>
 			</form>
 		</div>
 	);
