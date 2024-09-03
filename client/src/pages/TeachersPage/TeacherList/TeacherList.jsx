@@ -56,9 +56,13 @@ const TeacherList = () => {
 
 	useEffect(() => {
 		if (teachers?.data) {
-			setFilteredList(teachers.data);
+			let updatedList = teachers.data;
+			if (showArchived) {
+				updatedList = updatedList.filter(teacher => teacher.isArchived);
+			}
+			setFilteredList(updatedList);
 		}
-	}, [teachers]);
+	}, [teachers, showArchived]);
 
 	const handleToggleArchived = () => {
 		setShowArchived(prev => !prev);
