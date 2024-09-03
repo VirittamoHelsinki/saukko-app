@@ -47,6 +47,7 @@ const SetPassword = React.lazy(() => import('../../pages/setPassword/SetPassword
 const RegisterUser = React.lazy(() => import('../../pages/RegisterUser/RegisterUser'));
 const CompanySummary = React.lazy(() => import('../../pages/CompanyInfo/CompanySummary/CompanySummary'));
 const Notification = React.lazy(() => import("../../pages/Home/Notification/Notification"));
+const TeacherList = React.lazy(() => import('../../pages/TeachersPage/TeacherList/TeacherList'));
 
 const Router = () => {
   let location = useLocation();
@@ -144,6 +145,9 @@ const Router = () => {
 
                 {/* Units flow */}
                 <Route path='/create-units-summary' element={<CreateUnitsSummary />} />
+
+                {/* Teachers page */}
+                <Route path='/teacher-list' element={<TeacherList />} />
               </>
             )}
           </Route>

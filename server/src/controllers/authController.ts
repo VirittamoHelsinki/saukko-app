@@ -528,6 +528,17 @@ const updateUser = async (req: Request, res: Response) => {
   }
 }
 
+const getAllTeachers = async (req: Request, res: Response) => {
+  try {
+    const teachers = await userModel.find({ role: 'teacher' })
+    res.status(200).send(teachers);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching all teachers', error
+    });
+  }
+}
+
 
 
 export default {
@@ -544,5 +555,6 @@ export default {
   requestPasswordChangeTokenAsUser,
   deleteUserById,
   isEmailAvailable,
-  updateUser
+  updateUser,
+  getAllTeachers
 }

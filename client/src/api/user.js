@@ -31,6 +31,11 @@ const registration = async (registrationData) => {
   }
 };
 
+const fetchAllTeachers = async () => {
+  const response = await axios.get('/auth/teachers');
+  return response;
+};
+
 const logoutUser = async () => {
   await axios.get('/auth/logout');
 };
@@ -136,4 +141,5 @@ export {
   requestEmailVerificationLinkAsync,
   // The user must request a password reset token before the user can change the password
   requestPasswordChangeTokenAsUser,
+  fetchAllTeachers,
 };

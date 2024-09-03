@@ -65,7 +65,7 @@ const UserNav = () => {
       label: "Asiakkuudet",
     },
     {
-      to: "/404",
+      to: "/teacher-list",
       label: "Opettajat",
     },
   ];

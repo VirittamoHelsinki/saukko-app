@@ -33,5 +33,6 @@ router.post(
 );
 // router.post("/change-password", authController.changePassword);                         // REQUIRE AUTH TOKEN
 router.get("/logout", authController.logout);                                           // REQUIRE AUTH TOKEN
+router.get("/teachers", authController.getAllTeachers);
 
 export default router;
