@@ -129,7 +129,7 @@ const TeacherList = () => {
 						border: 'none',
 					}}
 					icon={'ic:baseline-plus'}
-					onClick={() => navigate(`/degrees`)}
+					onClick={() => navigate(`/register-user`)}
 				/>
 			</section>
 		</div>
