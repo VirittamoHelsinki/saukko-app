@@ -7,10 +7,11 @@ import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
-import { Autocomplete, TextField, Box } from '@mui/material';
+import { Autocomplete, TextField, List, ListItem, IconButton, ListItemText } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchInternalDegrees } from '../../api/degree';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Notification = ({ success, onTimeout, time = 3 }) => {
 	const [haveTime, setHaveTime] = useState(true);
@@ -46,6 +47,8 @@ const RegisterUser = () => {
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(null);
 	const navigate = useNavigate();
+	const [selectedDegrees, setSelectedDegrees] = useState([]);
+	const [inputValue, setInputValue] = useState('')
 
 	const { setSubHeading, setHeading } = useHeadingStore();
 
@@ -76,13 +79,21 @@ const RegisterUser = () => {
 	};
 
 	const handleDegreeChange = (event, value) => {
-		setFormData({ ...formData, degrees: value });
-	};
-
-	const handleDegreeChange2 = (event, value) => {
-		console.log('event:', event)
 		console.log('value:', value)
+		// Add selected degree to the list
+		if (value && !selectedDegrees.includes(value)) {
+			setSelectedDegrees((prevDegrees) => [...prevDegrees, value]);
+
+			setInputValue('');
+		}
 	}
+
+	const handleRemoveDegree = (degreeToRemove) => {
+		// Remove selected degree from the list
+		setSelectedDegrees((prevDegrees) =>
+			prevDegrees.filter((degree) => degree !== degreeToRemove)
+		);
+	};
 
 	useEffect(() => {
 		setSubHeading('Lisää uusi opettaja');
@@ -109,6 +120,10 @@ const RegisterUser = () => {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		console.log('selected degrees: ', selectedDegrees)
+	}, [])
 
 	return (
 		<div className="register-user">
@@ -165,31 +180,27 @@ const RegisterUser = () => {
 
 				<div className="form-container">
 					<label className="section-title">Opettajan tutkinnot*</label>
-
-					<Autocomplete
-						multiple
-						disablePortal
-						options={degrees}
-						freeSolo
-						getOptionLabel={(option) => option.name.fi} // Display degree.name.fi in the input
-						value={formData.degrees} // Bind to formData.degrees
-						onChange={handleDegreeChange} // Handle change in selection
-						sx={{
-							'& .MuiAutocomplete-inputRoot': {
-								backgroundColor: 'white',
-								borderRadius: '0px',
-							},
-							marginTop: 2,
-						}}
-						renderInput={(params) => (
-							<TextField {...params} label="Etsi tai kirjoita tutkinnon nimi" />
-						)}
-					/>
-
+					{/* Display selected degrees as a list */}
+					<List>
+						{selectedDegrees.map((degree, index) => (
+							<ListItem key={index} secondaryAction={
+								<IconButton edge="end" onClick={() => handleRemoveDegree(degree)}>
+									<DeleteIcon />
+								</IconButton>
+							}>
+								<ListItemText primary={degree} />
+							</ListItem>
+						))}
+					</List>
 					<Autocomplete
 						disablePortal
 						options={fetchedDegrees.map((degree) => degree.name.fi)}
-						oncChange={handleDegreeChange2}
+						onChange={handleDegreeChange}
+						value={null} // Don't control the selected option
+						inputValue={inputValue} // Control the input field
+						onInputChange={(event, newInputValue) => {
+							setInputValue(newInputValue); // Update input value on change
+						}}
 						sx={{
 							'& .MuiAutocomplete-inputRoot': {
 								backgroundColor: 'white',
@@ -200,6 +211,7 @@ const RegisterUser = () => {
 							<TextField {...params} label="Etsi tai kirjoita tutkinnon nimi" />
 						)}
 					/>
+
 				</div>
 
 				<PageNavigationButtons
