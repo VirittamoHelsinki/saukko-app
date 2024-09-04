@@ -60,7 +60,8 @@ export const userSchema = new Schema<IUser>({
   permissions: {
     type: String,
     required: true,
-    enum: ['admin', 'user']
+    enum: ['admin', 'user'],
+    default: 'user'
   },
   degrees: [{
     type: mongoose.Schema.Types.ObjectId,

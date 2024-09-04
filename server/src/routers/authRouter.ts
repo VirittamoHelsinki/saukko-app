@@ -18,6 +18,7 @@ router.put("/users/:id", authController.updateUser);
 router.delete("/users/:id", authController.deleteUserById);
 
 router.post("/register-user", authController.registerUser);
+router.post("/add-teacher", authController.addTeacher);
 
 // Enable auth middleware for specific endpoints
 router.post(["/", "/change-password", "/request-pwd-change-token"], auth);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { registration } from '../../api/user';
+import { addTeacher } from '../../api/user';
 import './_registerUser.scss';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
@@ -41,8 +41,8 @@ const RegisterUser = () => {
 		lastName: '',
 		email: '',
 		role: 'teacher',
-		permissions: 'Admin',
-		degrees: [],
+		permissions: 'admin',
+		degrees: [], // Store degree IDs here
 	});
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(null);
@@ -58,15 +58,6 @@ const RegisterUser = () => {
 		queryFn: fetchInternalDegrees,
 	});
 
-
-	const [degrees, setDegrees] = useState(fetchedDegrees);
-
-	useEffect(() => {
-		const degreeNames = fetchedDegrees.map(degree => degree.name.fi);
-		setDegrees(degreeNames);
-		setDegrees(fetchedDegrees);
-	}, [fetchedDegrees]);
-
 	const onTimeout = () => setSuccess(null);
 
 	const handleChange = (e) => {
@@ -79,20 +70,41 @@ const RegisterUser = () => {
 	};
 
 	const handleDegreeChange = (event, value) => {
-		console.log('value:', value)
-		// Add selected degree to the list
-		if (value && !selectedDegrees.includes(value)) {
-			setSelectedDegrees((prevDegrees) => [...prevDegrees, value]);
+		const selectedDegree = fetchedDegrees.find(degree => degree.name.fi === value);
+
+		if (selectedDegree && !selectedDegrees.includes(selectedDegree.name.fi)) {
+			// Update selected degrees with the name for display
+			setSelectedDegrees((prevDegrees) => [...prevDegrees, selectedDegree.name.fi]);
+
+			// Update formData with the degree ID
+			setFormData((prevFormData) => ({
+				...prevFormData,
+				degrees: [...prevFormData.degrees, selectedDegree._id]
+			}));
 
 			setInputValue('');
 		}
-	}
+	};
 
 	const handleRemoveDegree = (degreeToRemove) => {
-		// Remove selected degree from the list
-		setSelectedDegrees((prevDegrees) =>
-			prevDegrees.filter((degree) => degree !== degreeToRemove)
-		);
+		const degreeIndex = selectedDegrees.indexOf(degreeToRemove);
+
+		if (degreeIndex > -1) {
+			// Remove selected degree from the list
+			setSelectedDegrees((prevDegrees) =>
+				prevDegrees.filter((degree) => degree !== degreeToRemove)
+			);
+
+			// Remove the degree ID from formData
+			setFormData((prevFormData) => {
+				const newDegrees = [...prevFormData.degrees];
+				newDegrees.splice(degreeIndex, 1); // Remove the degree ID at the same index
+				return {
+					...prevFormData,
+					degrees: newDegrees
+				};
+			});
+		}
 	};
 
 	useEffect(() => {
@@ -104,15 +116,17 @@ const RegisterUser = () => {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			await registration(formData);
+			await addTeacher(formData);
 			setSuccess(true);
 			setFormData({
 				firstName: '',
 				lastName: '',
 				email: '',
 				role: 'teacher',
-				permissions: 'Admin'
+				permissions: 'admin',
+				degrees: []
 			});
+			setSelectedDegrees([]); // Clear the selected degrees list
 		} catch (error) {
 			console.error('Error with registration: ', error);
 			setSuccess(false);
@@ -120,10 +134,6 @@ const RegisterUser = () => {
 			setLoading(false);
 		}
 	};
-
-	useEffect(() => {
-		console.log('selected degrees: ', selectedDegrees)
-	}, [])
 
 	return (
 		<div className="register-user">
@@ -155,7 +165,7 @@ const RegisterUser = () => {
 							onChange={(e) => handleRadioChange(e.target.value)}
 						>
 							<FormControlLabel
-								value="Admin"
+								value="admin"
 								sx={{
 									'& .MuiSvgIcon-root': {
 										marginRight: '8px',
@@ -165,7 +175,7 @@ const RegisterUser = () => {
 								label="Admin"
 							/>
 							<FormControlLabel
-								value="Peruskäyttäjä"
+								value="user"
 								sx={{
 									'& .MuiSvgIcon-root': {
 										marginRight: '8px',
@@ -237,6 +247,7 @@ const RegisterUser = () => {
 									backgroundColor: 'white',
 									marginBottom: '8px', // Add some space between items
 								}}
+
 								secondaryAction={
 									<IconButton edge="end" onClick={() => handleRemoveDegree(degree)}>
 										<Icon
@@ -267,3 +278,4 @@ const RegisterUser = () => {
 };
 
 export default RegisterUser;
+

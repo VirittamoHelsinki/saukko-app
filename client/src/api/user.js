@@ -3,6 +3,38 @@ import Uvc from 'universal-cookie';
 
 const fetchCurrentUser = async () => axios.get('/auth/get-current-user');
 
+const addTeacher = async (registrationData) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    workplaceId,
+    evaluationId,
+    permissions,
+    degrees,
+  } = registrationData;
+  try {
+    const response = await axios.post('/auth/add-teacher', {
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      workplaceId,
+      evaluationId,
+      permissions,
+      degrees,
+    });
+    console.log('Registration response:', response.data);
+    return response;
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error;
+  }
+};
+
 const registration = async (registrationData) => {
   const {
     firstName,
@@ -142,4 +174,5 @@ export {
   // The user must request a password reset token before the user can change the password
   requestPasswordChangeTokenAsUser,
   fetchAllTeachers,
+  addTeacher,
 };
