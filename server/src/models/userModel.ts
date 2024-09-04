@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from '../utils/config'
 import { IJwtPayload, useCase } from "../types/jwtPayload";
+import { IDegree } from './degreeModel';
 
 export interface IUser extends Document {
   firstName: string;
@@ -10,6 +11,8 @@ export interface IUser extends Document {
   email: string;
   passwordHash: string;
   role: string;
+  permissions: string
+  degrees: Types.Array<Types.ObjectId> | Types.Array<IDegree>;
   emailVerified: boolean;
   modified: number; // UNIX-timestamp in seconds
   evaluationId?: Types.ObjectId;
@@ -54,6 +57,15 @@ export const userSchema = new Schema<IUser>({
     required: true,
     enum: ['customer', 'admin', 'teacher', 'supervisor'],
   },
+  permissions: {
+    type: String,
+    required: true,
+    enum: ['admin', 'user']
+  },
+  degrees: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Degree',
+  }],
   emailVerified: {
     type: Boolean,
     default: false,
