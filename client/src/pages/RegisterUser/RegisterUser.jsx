@@ -11,7 +11,7 @@ import { Autocomplete, TextField, List, ListItem, IconButton, ListItemText } fro
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchInternalDegrees } from '../../api/degree';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Icon } from '@iconify/react';
 
 const Notification = ({ success, onTimeout, time = 3 }) => {
 	const [haveTime, setHaveTime] = useState(true);
@@ -180,29 +180,7 @@ const RegisterUser = () => {
 
 				<div className="form-container">
 					<label className="section-title">Opettajan tutkinnot*</label>
-					{/* Display selected degrees as a list */}
-					<List>
-						{selectedDegrees.map((degree, index) => (
-							<ListItem key={index}
-								sx={{
-									width: '100%',
-									padding: '12px',
-									fontSize: '16px',
-									borderRadius: '0px',
-									boxSizing: 'border-box',
-									border: '2px solid black',
-									backgroundColor: 'white',
-									marginBottom: '8px', // Add some space between items
-								}}
-								secondaryAction={
-									<IconButton edge="end" onClick={() => handleRemoveDegree(degree)}>
-										<DeleteIcon />
-									</IconButton>
-								}>
-								<ListItemText primary={degree} />
-							</ListItem>
-						))}
-					</List>
+
 					<Autocomplete
 						disablePortal
 						options={fetchedDegrees.map((degree) => degree.name.fi)}
@@ -245,6 +223,35 @@ const RegisterUser = () => {
 							/>
 						)}
 					/>
+					{/* Display selected degrees as a list */}
+					<List>
+						{selectedDegrees.map((degree, index) => (
+							<ListItem key={index}
+								sx={{
+									width: '100%',
+									padding: '12px',
+									fontSize: '16px',
+									borderRadius: '0px',
+									boxSizing: 'border-box',
+									border: '2px solid black',
+									backgroundColor: 'white',
+									marginBottom: '8px', // Add some space between items
+								}}
+								secondaryAction={
+									<IconButton edge="end" onClick={() => handleRemoveDegree(degree)}>
+										<Icon
+											icon='material-symbols:delete-outline'
+											color='#B01038'
+											height='18'
+											preserveAspectRatio='xMinYMid meet'
+										/>
+
+									</IconButton>
+								}>
+								<ListItemText primary={degree} />
+							</ListItem>
+						))}
+					</List>
 
 				</div>
 
