@@ -3,6 +3,11 @@ import { registration } from '../../api/user';
 import './_registerUser.scss';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
+import Radio from '@mui/material/Radio';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControl from '@mui/material/FormControl';
+import { Autocomplete, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const Notification = ({ success, onTimeout, time = 3 }) => {
@@ -33,10 +38,12 @@ const RegisterUser = () => {
 		firstName: '',
 		lastName: '',
 		email: '',
-		role: 'teacher'
+		role: 'Admin'
 	})
 	const [loading, setLoading] = useState(false)
 	const [success, setSuccess] = useState(null)
+
+	const [degrees, setDegrees] = useState([])
 
 	const navigate = useNavigate();
 
@@ -50,6 +57,11 @@ const RegisterUser = () => {
 		const { name, value } = e.target
 		setFormData({ ...formData, [name]: value })
 	}
+
+
+	const handleRadioChange = (value) => {
+		setFormData({ ...formData, role: value }); // Update role in formData
+	};
 
 	useEffect(() => {
 		setSubHeading("Lisää uusi opettaja");
@@ -67,7 +79,7 @@ const RegisterUser = () => {
 				firstName: '',
 				lastName: '',
 				email: '',
-				role: 'teacher'
+				role: 'Admin'
 			})
 
 		} catch (error) {
@@ -98,17 +110,66 @@ const RegisterUser = () => {
 					</div>
 				</div>
 
+				<div className="form-container">
+					<label className="section-title">Opettajan käyttöoikeudet*</label>
+					<FormControl>
+						<RadioGroup
+							aria-labelledby="demo-form-control-label-placement"
+							name="role"
+							value={formData.role}
+							onChange={(e) => handleRadioChange(e.target.value)}
+						>
+							<FormControlLabel
+								value="Admin"
+								sx={{
+									'& .MuiSvgIcon-root': {
+										marginRight: '8px', // Adjusted the margin to position the icon closer to the text
+									},
+								}}
+								control={<Radio />}
+								label="Admin" // Added label text here
+							/>
+							<FormControlLabel
+								value="Peruskäyttäjä"
+								sx={{
+									'& .MuiSvgIcon-root': {
+										marginRight: '8px', // Consistent margin for both radio buttons
+									},
+								}}
+								control={<Radio />}
+								label="Peruskäyttäjä" // Added label text here
+							/>
+						</RadioGroup>
+					</FormControl>
+				</div>
+
+				<div className="form-container">
+					<label className="section-title">Opettajan tutkinnot*</label>
+					<Autocomplete
+						disablePortal
+						options={degrees}
+						sx={{
+							'& .MuiAutocomplete-inputRoot': {
+								backgroundColor: 'white', // Set autocomplete input background to white
+								borderRadius: '0px'
+							},
+						}}
+						renderInput={(params) => (
+							<TextField {...params} label="Etsi tai kirjoita tutkinnon nimi" />
+						)}
+					/>
+				</div>
+
 				<PageNavigationButtons
 					handleBack={() => navigate(-1)}
 					handleForward={handleSubmit}
-					forwardButtonText={'Lisää opettaja'}
+					forwardButtonText="Lisää opettaja"
 					showForwardButton={true}
 				/>
 			</form>
 		</div>
 	);
+};
 
-
-}
 
 export default RegisterUser
