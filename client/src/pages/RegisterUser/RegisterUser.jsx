@@ -183,11 +183,22 @@ const RegisterUser = () => {
 					{/* Display selected degrees as a list */}
 					<List>
 						{selectedDegrees.map((degree, index) => (
-							<ListItem key={index} secondaryAction={
-								<IconButton edge="end" onClick={() => handleRemoveDegree(degree)}>
-									<DeleteIcon />
-								</IconButton>
-							}>
+							<ListItem key={index}
+								sx={{
+									width: '100%',
+									padding: '12px',
+									fontSize: '16px',
+									borderRadius: '0px',
+									boxSizing: 'border-box',
+									border: '2px solid black',
+									backgroundColor: 'white',
+									marginBottom: '8px', // Add some space between items
+								}}
+								secondaryAction={
+									<IconButton edge="end" onClick={() => handleRemoveDegree(degree)}>
+										<DeleteIcon />
+									</IconButton>
+								}>
 								<ListItemText primary={degree} />
 							</ListItem>
 						))}
@@ -203,12 +214,35 @@ const RegisterUser = () => {
 						}}
 						sx={{
 							'& .MuiAutocomplete-inputRoot': {
+								width: '100%',
+								padding: '12px',
+								fontSize: '16px',
+								borderRadius: '0px',
+								boxSizing: 'border-box',
+								border: '2px solid black',
 								backgroundColor: 'white',
-								borderRadius: '0px'
+								overflow: 'hidden',
+							},
+							'& .MuiInputBase-input': {
+								padding: '0px', // Remove inner padding
+								whiteSpace: 'nowrap', // Prevent wrapping
+								overflow: 'hidden', // Prevent overflow
+								textOverflow: 'ellipsis', // Display ellipsis for overflow text
+							},
+							'& .MuiOutlinedInput-notchedOutline': {
+								border: 'none', // Remove the default MUI border
 							},
 						}}
+
 						renderInput={(params) => (
-							<TextField {...params} label="Etsi tai kirjoita tutkinnon nimi" />
+							<TextField
+								{...params}
+								label="" // Empty label to remove floating effect
+								placeholder="Etsi tai kirjoita tutkinnon nimi" // Use placeholder instead of label
+								InputLabelProps={{
+									shrink: false, // Prevent label from moving
+								}}
+							/>
 						)}
 					/>
 
