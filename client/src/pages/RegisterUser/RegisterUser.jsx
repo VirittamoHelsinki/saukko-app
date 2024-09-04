@@ -55,6 +55,15 @@ const RegisterUser = () => {
 		queryFn: fetchInternalDegrees,
 	});
 
+
+	const [degrees, setDegrees] = useState(fetchedDegrees);
+
+	useEffect(() => {
+		const degreeNames = fetchedDegrees.map(degree => degree.name.fi);
+		setDegrees(degreeNames);
+		setDegrees(fetchedDegrees);
+	}, [fetchedDegrees]);
+
 	const onTimeout = () => setSuccess(null);
 
 	const handleChange = (e) => {
@@ -65,6 +74,15 @@ const RegisterUser = () => {
 	const handleRadioChange = (value) => {
 		setFormData({ ...formData, permissions: value });
 	};
+
+	const handleDegreeChange = (event, value) => {
+		setFormData({ ...formData, degrees: value });
+	};
+
+	const handleDegreeChange2 = (event, value) => {
+		console.log('event:', event)
+		console.log('value:', value)
+	}
 
 	useEffect(() => {
 		setSubHeading('Lisää uusi opettaja');
@@ -149,8 +167,29 @@ const RegisterUser = () => {
 					<label className="section-title">Opettajan tutkinnot*</label>
 
 					<Autocomplete
+						multiple
+						disablePortal
+						options={degrees}
+						freeSolo
+						getOptionLabel={(option) => option.name.fi} // Display degree.name.fi in the input
+						value={formData.degrees} // Bind to formData.degrees
+						onChange={handleDegreeChange} // Handle change in selection
+						sx={{
+							'& .MuiAutocomplete-inputRoot': {
+								backgroundColor: 'white',
+								borderRadius: '0px',
+							},
+							marginTop: 2,
+						}}
+						renderInput={(params) => (
+							<TextField {...params} label="Etsi tai kirjoita tutkinnon nimi" />
+						)}
+					/>
+
+					<Autocomplete
 						disablePortal
 						options={fetchedDegrees.map((degree) => degree.name.fi)}
+						oncChange={handleDegreeChange2}
 						sx={{
 							'& .MuiAutocomplete-inputRoot': {
 								backgroundColor: 'white',
