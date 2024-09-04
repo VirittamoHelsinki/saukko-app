@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { registration } from '../../api/user';
 import './_registerUser.scss';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
@@ -7,11 +7,13 @@ import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { fetchInternalDegrees } from '../../api/degree';
 
 const Notification = ({ success, onTimeout, time = 3 }) => {
-	const [haveTime, setHaveTime] = useState(true)
+	const [haveTime, setHaveTime] = useState(true);
 
 	useEffect(() => {
 		const id = setTimeout(() => {
@@ -19,76 +21,76 @@ const Notification = ({ success, onTimeout, time = 3 }) => {
 			onTimeout();
 		}, time * 1000);
 		return () => clearTimeout(id);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [onTimeout, time]);
 
 	if (!haveTime) {
-		return null
+		return null;
 	}
 
 	return (
 		<div className={`notification ${success ? 'success' : 'error'}`}>
 			{success ? 'Opettaja lisätty onnistuneesti!' : 'Opettajan lisäys epäonnistui. Yritä uudelleen.'}
 		</div>
-	)
-}
+	);
+};
 
 const RegisterUser = () => {
 	const [formData, setFormData] = useState({
 		firstName: '',
 		lastName: '',
 		email: '',
-		role: 'Admin'
-	})
-	const [loading, setLoading] = useState(false)
-	const [success, setSuccess] = useState(null)
-
-	const [degrees, setDegrees] = useState([])
-
+		role: 'teacher',
+		permissions: 'Admin',
+		degrees: [],
+	});
+	const [loading, setLoading] = useState(false);
+	const [success, setSuccess] = useState(null);
 	const navigate = useNavigate();
-
 
 	const { setSubHeading, setHeading } = useHeadingStore();
 
+	// Fetch degrees using react-query
+	const { data: fetchedDegrees = [] } = useQuery({
+		queryKey: ['degrees'],
+		queryFn: fetchInternalDegrees,
+	});
 
-	const onTimeout = () => setSuccess(null)
+	const onTimeout = () => setSuccess(null);
 
 	const handleChange = (e) => {
-		const { name, value } = e.target
-		setFormData({ ...formData, [name]: value })
-	}
-
+		const { name, value } = e.target;
+		setFormData({ ...formData, [name]: value });
+	};
 
 	const handleRadioChange = (value) => {
-		setFormData({ ...formData, role: value }); // Update role in formData
+		setFormData({ ...formData, permissions: value });
 	};
 
 	useEffect(() => {
-		setSubHeading("Lisää uusi opettaja");
-		setHeading('Lisää uusi opettaja')
-	}, [setHeading, setSubHeading])
+		setSubHeading('Lisää uusi opettaja');
+		setHeading('Lisää uusi opettaja');
+	}, [setHeading, setSubHeading]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setLoading(true)
-		console.log(formData)
+		setLoading(true);
 		try {
-			await registration(formData)
-			setSuccess(true)
+			await registration(formData);
+			setSuccess(true);
 			setFormData({
 				firstName: '',
 				lastName: '',
 				email: '',
-				role: 'Admin'
-			})
-
+				role: 'teacher',
+				permissions: 'Admin'
+			});
 		} catch (error) {
-			console.error('Error with registration: ', error)
-			setSuccess(false)
+			console.error('Error with registration: ', error);
+			setSuccess(false);
 		} finally {
-			setLoading(false)
+			setLoading(false);
 		}
-	}
+	};
 
 	return (
 		<div className="register-user">
@@ -115,29 +117,29 @@ const RegisterUser = () => {
 					<FormControl>
 						<RadioGroup
 							aria-labelledby="demo-form-control-label-placement"
-							name="role"
-							value={formData.role}
+							name="permissions"
+							value={formData.permissions}
 							onChange={(e) => handleRadioChange(e.target.value)}
 						>
 							<FormControlLabel
 								value="Admin"
 								sx={{
 									'& .MuiSvgIcon-root': {
-										marginRight: '8px', // Adjusted the margin to position the icon closer to the text
+										marginRight: '8px',
 									},
 								}}
 								control={<Radio />}
-								label="Admin" // Added label text here
+								label="Admin"
 							/>
 							<FormControlLabel
 								value="Peruskäyttäjä"
 								sx={{
 									'& .MuiSvgIcon-root': {
-										marginRight: '8px', // Consistent margin for both radio buttons
+										marginRight: '8px',
 									},
 								}}
 								control={<Radio />}
-								label="Peruskäyttäjä" // Added label text here
+								label="Peruskäyttäjä"
 							/>
 						</RadioGroup>
 					</FormControl>
@@ -145,12 +147,13 @@ const RegisterUser = () => {
 
 				<div className="form-container">
 					<label className="section-title">Opettajan tutkinnot*</label>
+
 					<Autocomplete
 						disablePortal
-						options={degrees}
+						options={fetchedDegrees.map((degree) => degree.name.fi)}
 						sx={{
 							'& .MuiAutocomplete-inputRoot': {
-								backgroundColor: 'white', // Set autocomplete input background to white
+								backgroundColor: 'white',
 								borderRadius: '0px'
 							},
 						}}
@@ -171,5 +174,4 @@ const RegisterUser = () => {
 	);
 };
 
-
-export default RegisterUser
+export default RegisterUser;
