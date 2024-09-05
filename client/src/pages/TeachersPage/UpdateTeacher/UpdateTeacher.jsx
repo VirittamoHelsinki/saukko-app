@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
-import { addTeacher } from '../../api/user';
-import './_registerUser.scss';
-import useHeadingStore from '../../store/zustand/useHeadingStore';
-import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
+import { addTeacher } from '../../../api/user';
+import './_updateteacher.scss';
+import useHeadingStore from '../../../store/zustand/useHeadingStore';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Radio from '@mui/material/Radio';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
-import { Autocomplete, TextField, List, ListItem, IconButton, ListItemText } from '@mui/material';
+import { Autocomplete, TextField, List, ListItem, IconButton, ListItemText, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { fetchInternalDegrees } from '../../api/degree';
+import { fetchInternalDegrees } from '../../../api/degree';
 import { Icon } from '@iconify/react';
-import NotificationModal from '../../components/NotificationModal/NotificationModal';
-import useStore from '../../store/zustand/formStore';
+import NotificationModal from '../../../components/NotificationModal/NotificationModal';
+import useStore from '../../../store/zustand/formStore';
+import { useParams } from 'react-router-dom';
 
-const RegisterUser = () => {
+const UpdateTeacher = () => {
 	const [formData, setFormData] = useState({
 		firstName: '',
 		lastName: '',
@@ -28,6 +28,8 @@ const RegisterUser = () => {
 	const [selectedDegrees, setSelectedDegrees] = useState([]);
 	const [inputValue, setInputValue] = useState('')
 	const [alertModalOpen, setAlertModalOpen] = useState(false)
+
+	const { teacherId } = useParams();
 
 	const handleCloseAlertModal = () => {
 		setAlertModalOpen(false)
@@ -109,8 +111,8 @@ const RegisterUser = () => {
 	};
 
 	useEffect(() => {
-		setSubHeading('Lisää uusi opettaja');
 		setHeading('Opettajien hallinta');
+		setSubHeading('Muokkaa opettajan tietoja');
 	}, [setHeading, setSubHeading]);
 
 	const handleSubmit = async (e) => {
@@ -262,6 +264,28 @@ const RegisterUser = () => {
 					</List>
 
 				</div>
+				{/* Checkbox for Arkistoi opettaja */}
+				<div style={{ marginBottom: '15px' }}>
+					<FormControlLabel
+						control={
+							<Checkbox
+								checked={formData.archive || false} // Checkbox state
+								onChange={(e) => setFormData({ ...formData, archive: e.target.checked })} // Handle change
+								color="primary"
+							/>
+						}
+						label={
+							<div style={{ display: 'flex', alignItems: 'center' }}>
+								Arkistoi opettaja
+								<Tooltip title="Arkistoi opettaja, jos opettaja ei ole enää aktiivinen." placement="right">
+									<IconButton size="small" sx={{ marginLeft: '8px' }}>
+										<Icon icon="material-symbols:info-outline" width="20" height="20" />
+									</IconButton>
+								</Tooltip>
+							</div>
+						}
+					/>
+				</div>
 
 				<PageNavigationButtons
 					handleBack={() => navigate(-1)}
@@ -272,7 +296,7 @@ const RegisterUser = () => {
 			</form>
 			<NotificationModal
 				type='success'
-				title='Tiedot tallennettu'
+				title='Muutokset on tallennettu'
 				body='Tiedot on tallennettu järjestelmään onnistuneesti.'
 				open={openNotificationModal}
 				handleClose={handleEvaluation}
@@ -289,5 +313,5 @@ const RegisterUser = () => {
 	);
 };
 
-export default RegisterUser;
+export default UpdateTeacher;
 
