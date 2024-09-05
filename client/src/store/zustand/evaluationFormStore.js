@@ -27,9 +27,12 @@ const useEvaluationFormStore = create((set) => {
     setWorkGoals: (value) => set({ workGoals: value }),
 
     // Notification Modal setters
-    setOpenNotificationModalAllFields: (value) => set({ openNotificationModalAllFields: value }),
-    setOpenNotificationModalEmail: (value) => set({ openNotificationModalEmail: value }),
-    setOpenNotificationModalDate: (value) => set({ openNotificationModalDate: value }),
+    setOpenNotificationModalAllFields: (value) =>
+      set({ openNotificationModalAllFields: value }),
+    setOpenNotificationModalEmail: (value) =>
+      set({ openNotificationModalEmail: value }),
+    setOpenNotificationModalDate: (value) =>
+      set({ openNotificationModalDate: value }),
 
     // Notification Modal close handlers
     handleCloseAllFields: () => set({ openNotificationModalAllFields: false }),
@@ -40,22 +43,26 @@ const useEvaluationFormStore = create((set) => {
     setCustomer: (value) => set({ customer: value }),
     setEvaluation: (value) => set({ evaluation: value }),
 
+    selectedTeacherId: null,
+    setSelectedTeacherId: (id) => set({ selectedTeacherId: id }),
+
     // Other functions related to the evaluation form can be added here
     // New function to reset form data
-  resetFormData: () => {
-    set({
-      firstName: '',
-      lastName: '',
-      email: '',
-      startDate: null,
-      endDate: null,
-      workTasks: '',
-      workGoals: '',
-      customer: null,
-      evaluation: null,
-    });
-  },
+    resetFormData: () => {
+      set({
+        firstName: '',
+        lastName: '',
+        email: '',
+        startDate: null,
+        endDate: null,
+        workTasks: '',
+        workGoals: '',
+        customer: null,
+        evaluation: null,
+      });
+    },
   };
 });
 
 export default useEvaluationFormStore;
+

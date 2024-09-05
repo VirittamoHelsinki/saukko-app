@@ -37,7 +37,8 @@ function EvaluationForm() {
     setWorkTasks,
     setWorkGoals,
     setCustomer,
-    setEvaluation, // Include the new setters
+    setEvaluation,
+    // Include the new setters
     // ... add other state variables and setters as needed
   } = useEvaluationFormStore();
 
