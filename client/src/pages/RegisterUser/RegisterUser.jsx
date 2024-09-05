@@ -12,28 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchInternalDegrees } from '../../api/degree';
 import { Icon } from '@iconify/react';
-
-const Notification = ({ success, onTimeout, time = 3 }) => {
-	const [haveTime, setHaveTime] = useState(true);
-
-	useEffect(() => {
-		const id = setTimeout(() => {
-			setHaveTime(false);
-			onTimeout();
-		}, time * 1000);
-		return () => clearTimeout(id);
-	}, [onTimeout, time]);
-
-	if (!haveTime) {
-		return null;
-	}
-
-	return (
-		<div className={`notification ${success ? 'success' : 'error'}`}>
-			{success ? 'Opettaja lisätty onnistuneesti!' : 'Opettajan lisäys epäonnistui. Yritä uudelleen.'}
-		</div>
-	);
-};
+import NotificationModal from '../../components/NotificationModal/NotificationModal';
+import useStore from '../../store/zustand/formStore';
 
 const RegisterUser = () => {
 	const [formData, setFormData] = useState({
@@ -44,11 +24,20 @@ const RegisterUser = () => {
 		permissions: 'admin',
 		degrees: [], // Store degree IDs here
 	});
-	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(null);
 	const navigate = useNavigate();
 	const [selectedDegrees, setSelectedDegrees] = useState([]);
 	const [inputValue, setInputValue] = useState('')
+	const [alertModalOpen, setAlertModalOpen] = useState(false)
+
+	const handleCloseAlertModal = () => {
+		setAlertModalOpen(false)
+	};
+
+	const handleOpenAlertModal = () => {
+		setAlertModalOpen(true);
+	};
+
 
 	const { setSubHeading, setHeading } = useHeadingStore();
 
@@ -59,6 +48,21 @@ const RegisterUser = () => {
 	});
 
 	const onTimeout = () => setSuccess(null);
+
+
+	const { openNotificationModal, setOpenNotificationModal } = useStore();
+
+	const handleNotificationModalOpen = () => {
+		setOpenNotificationModal(true);
+	};
+
+	const handleEvaluation = () => {
+		navigate(-1);
+		setOpenNotificationModal(false);
+	};
+
+
+
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -114,7 +118,6 @@ const RegisterUser = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setLoading(true);
 		try {
 			await addTeacher(formData);
 			setSuccess(true);
@@ -126,18 +129,17 @@ const RegisterUser = () => {
 				permissions: 'admin',
 				degrees: []
 			});
-			setSelectedDegrees([]); // Clear the selected degrees list
+			setSelectedDegrees([]);
+			handleNotificationModalOpen();
 		} catch (error) {
 			console.error('Error with registration: ', error);
 			setSuccess(false);
-		} finally {
-			setLoading(false);
+			handleOpenAlertModal();
 		}
 	};
 
 	return (
 		<div className="register-user">
-			{success !== null && <Notification onTimeout={onTimeout} success={success} time={5} />}
 			<form onSubmit={handleSubmit}>
 				<div className="form-container">
 					<label className="section-title">Perustiedot</label>
@@ -273,7 +275,22 @@ const RegisterUser = () => {
 					showForwardButton={true}
 				/>
 			</form>
+			<NotificationModal
+				type='success'
+				title='Tiedot tallennettu'
+				body='Tiedot on tallennettu järjestelmään onnistuneesti.'
+				open={openNotificationModal}
+				handleClose={handleEvaluation}
+			/>
+			<NotificationModal
+				type='warning'
+				title='Lomakkeen lähetys epäonnistui'
+				body='Tarkista, että tiedot ovat oikein ja yritä uudelleen.'
+				open={alertModalOpen}
+				handleClose={handleCloseAlertModal}
+			/>
 		</div>
+
 	);
 };
 
