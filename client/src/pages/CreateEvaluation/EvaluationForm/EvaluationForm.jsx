@@ -16,6 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import useCheckEmailAvailability from '../../../hooks/useEmailAvailable';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
+import TeacherAutocomplete from '../../../components/TeacherAutocomplete/TeacherAutocomplete';
 
 function EvaluationForm() {
   const navigate = useNavigate();
@@ -301,6 +302,10 @@ function EvaluationForm() {
               value={workGoals}
               onChange={(e) => setWorkGoals(e.target.value)}
             />
+          </div>
+          <div className='form__tasks'>
+            <label className='form_text'>Sopimukseen liitetty opettaja</label>
+            <TeacherAutocomplete />
           </div>
         </form>
 
