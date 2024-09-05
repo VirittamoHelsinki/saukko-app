@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { addTeacher } from '../../../api/user';
 import './_updateteacher.scss';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
@@ -14,6 +13,7 @@ import { Icon } from '@iconify/react';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import useStore from '../../../store/zustand/formStore';
 import { useParams } from 'react-router-dom';
+import { updateUser, fetchUserById } from '../../../api/user';
 
 const UpdateTeacher = () => {
 	const [formData, setFormData] = useState({
@@ -21,26 +21,18 @@ const UpdateTeacher = () => {
 		lastName: '',
 		email: '',
 		role: 'teacher',
-		permissions: 'admin',
+		permissions: 'user',
 		degrees: [], // Store degree IDs here
+		isArchived: false, // Checkbox value
 	});
-	const navigate = useNavigate();
-	const [selectedDegrees, setSelectedDegrees] = useState([]);
-	const [inputValue, setInputValue] = useState('')
-	const [alertModalOpen, setAlertModalOpen] = useState(false)
-
+	const [selectedDegrees, setSelectedDegrees] = useState([]); // To display degree names
+	const [inputValue, setInputValue] = useState('');
+	const [alertModalOpen, setAlertModalOpen] = useState(false);
 	const { teacherId } = useParams();
-
-	const handleCloseAlertModal = () => {
-		setAlertModalOpen(false)
-	};
-
-	const handleOpenAlertModal = () => {
-		setAlertModalOpen(true);
-	};
-
+	const navigate = useNavigate();
 
 	const { setSubHeading, setHeading } = useHeadingStore();
+	const { openNotificationModal, setOpenNotificationModal } = useStore();
 
 	// Fetch degrees using react-query
 	const { data: fetchedDegrees = [] } = useQuery({
@@ -48,21 +40,37 @@ const UpdateTeacher = () => {
 		queryFn: fetchInternalDegrees,
 	});
 
+	// Fetch the teacher by ID and pre-fill form data
+	useEffect(() => {
+		const fetchTeacher = async () => {
+			const fetchedTeacher = await fetchUserById(teacherId);
+			console.log('fetchedTeacher:', fetchedTeacher);
 
-	const { openNotificationModal, setOpenNotificationModal } = useStore();
+			if (fetchedTeacher) {
+				// Pre-fill form with fetched teacher's data
+				setFormData({
+					firstName: fetchedTeacher.firstName,
+					lastName: fetchedTeacher.lastName,
+					email: fetchedTeacher.email,
+					role: fetchedTeacher.role || 'teacher',
+					permissions: fetchedTeacher.permissions || 'admin',
+					degrees: fetchedTeacher.degrees || [],
+					isArchived: fetchedTeacher.isArchived || false, // Checkbox state
+				});
 
-	const handleNotificationModalOpen = () => {
-		setOpenNotificationModal(true);
-	};
+				// Convert degrees from IDs to names for displaying
+				const degreeNames = fetchedDegrees
+					.filter((degree) => fetchedTeacher.degrees.includes(degree._id))
+					.map((degree) => degree.name.fi);
+				setSelectedDegrees(degreeNames);
+			}
+		};
+		if (fetchedDegrees.length > 0) {
+			fetchTeacher();
+		}
+	}, [teacherId, fetchedDegrees]);
 
-	const handleEvaluation = () => {
-		navigate(-1);
-		setOpenNotificationModal(false);
-	};
-
-
-
-
+	// Handling input changes
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setFormData({ ...formData, [name]: value });
@@ -72,60 +80,50 @@ const UpdateTeacher = () => {
 		setFormData({ ...formData, permissions: value });
 	};
 
+	// Handle degrees selection
 	const handleDegreeChange = (event, value) => {
-		const selectedDegree = fetchedDegrees.find(degree => degree.name.fi === value);
-
+		const selectedDegree = fetchedDegrees.find((degree) => degree.name.fi === value);
 		if (selectedDegree && !selectedDegrees.includes(selectedDegree.name.fi)) {
-			// Update selected degrees with the name for display
 			setSelectedDegrees((prevDegrees) => [...prevDegrees, selectedDegree.name.fi]);
-
-			// Update formData with the degree ID
 			setFormData((prevFormData) => ({
 				...prevFormData,
-				degrees: [...prevFormData.degrees, selectedDegree._id]
+				degrees: [...prevFormData.degrees, selectedDegree._id],
 			}));
-
 			setInputValue('');
 		}
 	};
 
+	// Handle removing a degree
 	const handleRemoveDegree = (degreeToRemove) => {
 		const degreeIndex = selectedDegrees.indexOf(degreeToRemove);
-
 		if (degreeIndex > -1) {
-			// Remove selected degree from the list
 			setSelectedDegrees((prevDegrees) =>
 				prevDegrees.filter((degree) => degree !== degreeToRemove)
 			);
-
-			// Remove the degree ID from formData
 			setFormData((prevFormData) => {
 				const newDegrees = [...prevFormData.degrees];
-				newDegrees.splice(degreeIndex, 1); // Remove the degree ID at the same index
+				newDegrees.splice(degreeIndex, 1);
 				return {
 					...prevFormData,
-					degrees: newDegrees
+					degrees: newDegrees,
 				};
 			});
 		}
 	};
 
-	useEffect(() => {
-		setHeading('Opettajien hallinta');
-		setSubHeading('Muokkaa opettajan tietoja');
-	}, [setHeading, setSubHeading]);
-
+	// Submit handler
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			await addTeacher(formData);
+			await updateUser(teacherId, formData);
 			setFormData({
 				firstName: '',
 				lastName: '',
 				email: '',
 				role: 'teacher',
 				permissions: 'admin',
-				degrees: []
+				degrees: [],
+				isArchived: false,
 			});
 			setSelectedDegrees([]);
 			handleNotificationModalOpen();
@@ -135,6 +133,19 @@ const UpdateTeacher = () => {
 		}
 	};
 
+	const handleNotificationModalOpen = () => setOpenNotificationModal(true);
+	const handleOpenAlertModal = () => setAlertModalOpen(true);
+	const handleCloseAlertModal = () => setAlertModalOpen(false);
+	const handleEvaluation = () => {
+		navigate(-1);
+		setOpenNotificationModal(false);
+	};
+
+	useEffect(() => {
+		setHeading('Opettajien hallinta');
+		setSubHeading('Muokkaa opettajan tietoja');
+	}, [setHeading, setSubHeading]);
+
 	return (
 		<div className="register-user">
 			<form onSubmit={handleSubmit}>
@@ -142,18 +153,40 @@ const UpdateTeacher = () => {
 					<label className="section-title">Perustiedot</label>
 					<div className="form-group">
 						<label htmlFor="firstName">Etunimi*:</label>
-						<input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} required />
+						<input
+							type="text"
+							id="firstName"
+							name="firstName"
+							value={formData.firstName}
+							onChange={handleChange}
+							required
+						/>
 					</div>
 					<div className="form-group">
 						<label htmlFor="lastName">Sukunimi*:</label>
-						<input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} required />
+						<input
+							type="text"
+							id="lastName"
+							name="lastName"
+							value={formData.lastName}
+							onChange={handleChange}
+							required
+						/>
 					</div>
 					<div className="form-group">
 						<label htmlFor="email">Sähköposti*:</label>
-						<input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+						<input
+							type="email"
+							id="email"
+							name="email"
+							value={formData.email}
+							onChange={handleChange}
+							required
+						/>
 					</div>
 				</div>
 
+				{/* Permissions */}
 				<div className="form-container">
 					<label className="section-title">Opettajan käyttöoikeudet*</label>
 					<FormControl>
@@ -165,21 +198,11 @@ const UpdateTeacher = () => {
 						>
 							<FormControlLabel
 								value="admin"
-								sx={{
-									'& .MuiSvgIcon-root': {
-										marginRight: '8px',
-									},
-								}}
 								control={<Radio />}
 								label="Admin"
 							/>
 							<FormControlLabel
 								value="user"
-								sx={{
-									'& .MuiSvgIcon-root': {
-										marginRight: '8px',
-									},
-								}}
 								control={<Radio />}
 								label="Peruskäyttäjä"
 							/>
@@ -187,18 +210,10 @@ const UpdateTeacher = () => {
 					</FormControl>
 				</div>
 
+				{/* Degrees */}
 				<div className="form-container">
 					<label className="section-title">Opettajan tutkinnot*</label>
-
 					<Autocomplete
-						disablePortal
-						options={fetchedDegrees.map((degree) => degree.name.fi)}
-						onChange={handleDegreeChange}
-						value={null} // Don't control the selected option
-						inputValue={inputValue} // Control the input field
-						onInputChange={(event, newInputValue) => {
-							setInputValue(newInputValue); // Update input value on change
-						}}
 						sx={{
 							'& .MuiAutocomplete-inputRoot': {
 								width: '100%',
@@ -220,22 +235,20 @@ const UpdateTeacher = () => {
 								border: 'none', // Remove the default MUI border
 							},
 						}}
-
+						disablePortal
+						options={fetchedDegrees.map((degree) => degree.name.fi)}
+						onChange={handleDegreeChange}
+						value={null}
+						inputValue={inputValue}
+						onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
 						renderInput={(params) => (
-							<TextField
-								{...params}
-								label="" // Empty label to remove floating effect
-								placeholder="Etsi tai kirjoita tutkinnon nimi" // Use placeholder instead of label
-								InputLabelProps={{
-									shrink: false, // Prevent label from moving
-								}}
-							/>
+							<TextField {...params} placeholder="Etsi tai kirjoita tutkinnon nimi" />
 						)}
 					/>
-					{/* Display selected degrees as a list */}
 					<List>
 						{selectedDegrees.map((degree, index) => (
-							<ListItem key={index}
+							<ListItem
+								key={index}
 								sx={{
 									width: '100%',
 									padding: '12px',
@@ -247,30 +260,23 @@ const UpdateTeacher = () => {
 									marginBottom: '8px', // Add some space between items
 								}}
 
-								secondaryAction={
-									<IconButton edge="end" onClick={() => handleRemoveDegree(degree)}>
-										<Icon
-											icon='material-symbols:delete-outline'
-											color='#B01038'
-											height='18'
-											preserveAspectRatio='xMinYMid meet'
-										/>
-
-									</IconButton>
-								}>
+							>
 								<ListItemText primary={degree} />
+								<IconButton edge="end" onClick={() => handleRemoveDegree(degree)}>
+									<Icon icon="material-symbols:delete-outline" color="#B01038" />
+								</IconButton>
 							</ListItem>
 						))}
 					</List>
-
 				</div>
+
 				{/* Checkbox for Arkistoi opettaja */}
 				<div style={{ marginBottom: '15px' }}>
 					<FormControlLabel
 						control={
 							<Checkbox
-								checked={formData.archive || false} // Checkbox state
-								onChange={(e) => setFormData({ ...formData, archive: e.target.checked })} // Handle change
+								checked={formData.isArchived || false} // Checkbox state
+								onChange={(e) => setFormData({ ...formData, isArchived: e.target.checked })} // Handle change
 								color="primary"
 							/>
 						}
@@ -287,31 +293,34 @@ const UpdateTeacher = () => {
 					/>
 				</div>
 
+
+
+				{/* Navigation Buttons */}
 				<PageNavigationButtons
 					handleBack={() => navigate(-1)}
 					handleForward={handleSubmit}
-					forwardButtonText="Lisää opettaja"
+					forwardButtonText="Tallenna muutokset"
 					showForwardButton={true}
 				/>
 			</form>
+
+			{/* Notification Modal */}
 			<NotificationModal
-				type='success'
-				title='Muutokset on tallennettu'
-				body='Tiedot on tallennettu järjestelmään onnistuneesti.'
+				type="success"
+				title="Muutokset on tallennettu"
+				body="Tiedot on tallennettu järjestelmään onnistuneesti."
 				open={openNotificationModal}
 				handleClose={handleEvaluation}
 			/>
 			<NotificationModal
-				type='warning'
-				title='Lomakkeen lähetys epäonnistui'
-				body='Tarkista, että tiedot ovat oikein ja yritä uudelleen.'
+				type="warning"
+				title="Lomakkeen lähetys epäonnistui"
+				body="Tarkista, että tiedot ovat oikein ja yritä uudelleen."
 				open={alertModalOpen}
 				handleClose={handleCloseAlertModal}
 			/>
 		</div>
-
 	);
 };
 
 export default UpdateTeacher;
-

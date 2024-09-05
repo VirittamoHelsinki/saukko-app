@@ -59,7 +59,10 @@ const TeacherList = () => {
 			let updatedList = teachers.data;
 			if (showArchived) {
 				updatedList = updatedList.filter(teacher => teacher.isArchived);
+			} else {
+				updatedList = updatedList.filter(teacher => !teacher.isArchived);
 			}
+
 			setFilteredList(updatedList);
 		}
 	}, [teachers, showArchived]);

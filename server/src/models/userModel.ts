@@ -17,6 +17,7 @@ export interface IUser extends Document {
   modified: number; // UNIX-timestamp in seconds
   evaluationId?: Types.ObjectId;
   workplaceId?: Types.ObjectId;
+  isArchived: boolean;
   isValidPassword: (password: string) => boolean;
   generateEmailVerificationToken: () => string;
   generateEmailVerificationLink: () => string;
@@ -81,6 +82,10 @@ export const userSchema = new Schema<IUser>({
     ref: 'Workplace', // Reference to the Workplace model
     default: null,
   },
+  isArchived: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 // method to check if password is correct

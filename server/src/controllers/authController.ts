@@ -600,6 +600,16 @@ const getAllTeachers = async (req: Request, res: Response) => {
   }
 }
 
+const getUserById = async (req: Request, res: Response) => {
+  try {
+    const user = await userModel.findById(req.params.id);
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 
 
 export default {
@@ -618,5 +628,6 @@ export default {
   isEmailAvailable,
   updateUser,
   getAllTeachers,
-  addTeacher
+  addTeacher,
+  getUserById,
 }

@@ -3,6 +3,12 @@ import Uvc from 'universal-cookie';
 
 const fetchCurrentUser = async () => axios.get('/auth/get-current-user');
 
+const fetchUserById = async (id) => {
+  if (!id) throw new Error('fetchUserById, id is undefined');
+  const response = await axios.get(`/auth/users/${id}`);
+  return response.data;
+};
+
 const addTeacher = async (registrationData) => {
   const {
     firstName,
@@ -175,4 +181,5 @@ export {
   requestPasswordChangeTokenAsUser,
   fetchAllTeachers,
   addTeacher,
+  fetchUserById,
 };
