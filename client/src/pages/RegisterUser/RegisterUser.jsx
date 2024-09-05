@@ -110,7 +110,7 @@ const RegisterUser = () => {
 
 	useEffect(() => {
 		setSubHeading('Lisää uusi opettaja');
-		setHeading('Lisää uusi opettaja');
+		setHeading('Opettajien hallinta');
 	}, [setHeading, setSubHeading]);
 
 	const handleSubmit = async (e) => {

@@ -27,7 +27,7 @@ const CheckLength = ({
 				<div
 					key={index}
 					className='addTeacher__container--list-item'
-					onClick={() => navigate(`${teacher._id}`)}
+					onClick={() => navigate(`/update-teacher/${teacher._id}`)}
 				>
 					<p>{teacher.firstName} {teacher.lastName}</p>
 				</div>
@@ -59,7 +59,10 @@ const TeacherList = () => {
 			let updatedList = teachers.data;
 			if (showArchived) {
 				updatedList = updatedList.filter(teacher => teacher.isArchived);
+			} else {
+				updatedList = updatedList.filter(teacher => !teacher.isArchived);
 			}
+
 			setFilteredList(updatedList);
 		}
 	}, [teachers, showArchived]);
