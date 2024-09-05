@@ -14,7 +14,9 @@ const TeacherAutocomplete = () => {
     const fetchTeachers = async () => {
       try {
         const response = await fetchAllTeachers();
-        setFetchedTeachers(response.data); // Assuming response.data contains the array of teachers
+        console.log('response.data:', response.data.filter((user) => user.permissions === 'admin'))
+        const adminTeachers = response.data.filter((user) => user.permissions === 'admin')
+        setFetchedTeachers(adminTeachers); // Assuming response.data contains the array of teachers
       } catch (error) {
         console.error('Error fetching teachers:', error);
       }
