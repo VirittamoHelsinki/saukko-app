@@ -3,6 +3,44 @@ import Uvc from 'universal-cookie';
 
 const fetchCurrentUser = async () => axios.get('/auth/get-current-user');
 
+const fetchUserById = async (id) => {
+  if (!id) throw new Error('fetchUserById, id is undefined');
+  const response = await axios.get(`/auth/users/${id}`);
+  return response.data;
+};
+
+const addTeacher = async (registrationData) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    workplaceId,
+    evaluationId,
+    permissions,
+    degrees,
+  } = registrationData;
+  try {
+    const response = await axios.post('/auth/add-teacher', {
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      workplaceId,
+      evaluationId,
+      permissions,
+      degrees,
+    });
+    console.log('Registration response:', response.data);
+    return response;
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error;
+  }
+};
+
 const registration = async (registrationData) => {
   const {
     firstName,
@@ -29,6 +67,11 @@ const registration = async (registrationData) => {
     console.error('Registration error:', error);
     throw error;
   }
+};
+
+const fetchAllTeachers = async () => {
+  const response = await axios.get('/auth/teachers');
+  return response;
 };
 
 const logoutUser = async () => {
@@ -136,4 +179,7 @@ export {
   requestEmailVerificationLinkAsync,
   // The user must request a password reset token before the user can change the password
   requestPasswordChangeTokenAsUser,
+  fetchAllTeachers,
+  addTeacher,
+  fetchUserById,
 };

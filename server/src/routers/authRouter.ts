@@ -18,6 +18,7 @@ router.put("/users/:id", authController.updateUser);
 router.delete("/users/:id", authController.deleteUserById);
 
 router.post("/register-user", authController.registerUser);
+router.post("/add-teacher", authController.addTeacher);
 
 // Enable auth middleware for specific endpoints
 router.post(["/", "/change-password", "/request-pwd-change-token"], auth);
@@ -33,5 +34,7 @@ router.post(
 );
 // router.post("/change-password", authController.changePassword);                         // REQUIRE AUTH TOKEN
 router.get("/logout", authController.logout);                                           // REQUIRE AUTH TOKEN
+router.get("/teachers", authController.getAllTeachers);
+router.get("/users/:id", authController.getUserById);
 
 export default router;

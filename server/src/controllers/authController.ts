@@ -33,6 +33,65 @@ const isEmailAvailable = async (req: Request, res: Response) => {
   }
 }
 
+const addTeacher = async (req: Request, res: Response) => {
+  const body = req.body;
+
+  if (req.user && req.user.role !== 'teacher') {
+    return res.status(401).json({ errorMessage: 'Forbidden' });
+  }
+
+  // Validation checks if any of the required fields are empty
+  if (!body.email) {
+    console.log("email empty")
+    return res.status(400).json({ errorMessage: "Empty Field" });
+  }
+
+  // Check if there is an existing user with the same email address
+  const existingUser = await userModel.findOne({ email: body.email });
+  if (existingUser) {
+    console.log("user already exists")
+    return res.status(400).json({ errorMessage: "User already exists" });
+  }
+
+  try {
+    // Create a new user object, with the provided name, email, password and role
+    let newUserObject = {
+      firstName: body.firstName,
+      lastName: body.lastName,
+      email: body.email,
+      role: body.role,
+      modified: Math.floor(Date.now() / 1000),
+      evaluationId: body.evaluationId,
+      workplaceId: body.workplaceId,
+      permissions: body.permissions,
+      degrees: body.degrees,
+    }
+
+    console.log('newUserObject:', newUserObject)
+
+    const newUser = new userModel(newUserObject);
+
+    // set password to the user object
+    newUser.setPassword('123321')
+
+    // save the user object to the database
+    await newUser.save()
+
+
+    const verificationLink = newUser.generateEmailVerificationLink();
+    console.log('verificationLink: ', verificationLink);
+    // Send verification email
+
+    sendVerificationEmail({ userEmail: newUser.email, verificationLink, recipentUserId: newUser._id });
+
+    res.status(201).json({ userId: newUser._id, message: 'User created. Verification email sent.' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+}
+
 // TODO: FIX THE LINK
 const registerUser = async (req: Request, res: Response) => {
   // Retrieve the request body
@@ -70,7 +129,9 @@ const registerUser = async (req: Request, res: Response) => {
       role: body.role,
       modified: Math.floor(Date.now() / 1000),
       evaluationId: body.evaluationId,
-      workplaceId: body.workplaceId
+      workplaceId: body.workplaceId,
+      permissions: body.permissions,
+      degrees: body.degrees,
     }
 
     const newUser = new userModel(newUserObject);
@@ -528,6 +589,27 @@ const updateUser = async (req: Request, res: Response) => {
   }
 }
 
+const getAllTeachers = async (req: Request, res: Response) => {
+  try {
+    const teachers = await userModel.find({ role: 'teacher' })
+    res.status(200).send(teachers);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Error fetching all teachers', error
+    });
+  }
+}
+
+const getUserById = async (req: Request, res: Response) => {
+  try {
+    const user = await userModel.findById(req.params.id);
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 
 
 export default {
@@ -544,5 +626,8 @@ export default {
   requestPasswordChangeTokenAsUser,
   deleteUserById,
   isEmailAvailable,
-  updateUser
+  updateUser,
+  getAllTeachers,
+  addTeacher,
+  getUserById,
 }
