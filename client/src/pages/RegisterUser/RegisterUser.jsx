@@ -24,7 +24,6 @@ const RegisterUser = () => {
 		permissions: 'admin',
 		degrees: [], // Store degree IDs here
 	});
-	const [success, setSuccess] = useState(null);
 	const navigate = useNavigate();
 	const [selectedDegrees, setSelectedDegrees] = useState([]);
 	const [inputValue, setInputValue] = useState('')
@@ -46,8 +45,6 @@ const RegisterUser = () => {
 		queryKey: ['degrees'],
 		queryFn: fetchInternalDegrees,
 	});
-
-	const onTimeout = () => setSuccess(null);
 
 
 	const { openNotificationModal, setOpenNotificationModal } = useStore();
@@ -120,7 +117,6 @@ const RegisterUser = () => {
 		e.preventDefault();
 		try {
 			await addTeacher(formData);
-			setSuccess(true);
 			setFormData({
 				firstName: '',
 				lastName: '',
@@ -133,7 +129,6 @@ const RegisterUser = () => {
 			handleNotificationModalOpen();
 		} catch (error) {
 			console.error('Error with registration: ', error);
-			setSuccess(false);
 			handleOpenAlertModal();
 		}
 	};
