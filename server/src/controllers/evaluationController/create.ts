@@ -1,5 +1,5 @@
 import UserModel from '../../models/userModel';
-import EvaluationModel from '../../models/evaluationModel'; // TODO: Typo in filename
+import EvaluationModel from '../../models/evaluationModel';
 import { Response } from 'express';
 import { Request } from '../../types/requestType';
 import { sendVerificationEmail } from '../../mailer/templates/newUserVerification';
@@ -8,9 +8,6 @@ import { fetchDegree, generateVerificationLink, mapCriteria, responseWithError }
 const create = async (req: Request, res: Response) => {
   const evaluationData = req.body;
   console.log('evaluationData:', evaluationData)
-  return;
-
-  //TODO: add email to teacher
 
   try {
     if (req.body.supervisorId) {
@@ -39,6 +36,17 @@ const create = async (req: Request, res: Response) => {
           console.error('Error fetching supervisor for notification: ', userError);
         }
       });
+    }
+
+    if (evaluation.selectedTeacherId) {
+      try {
+        const teacherId = evaluation.selectedTeacherId;
+        const teacher = await UserModel.findById(teacherId);
+        const verificationLink = generateVerificationLink(teacher!);
+        sendVerificationEmail({ userEmail: teacher!.email, verificationLink, recipentUserId: teacher!._id })
+      } catch (error) {
+        console.error('Error sending email to teacher', error)
+      }
     }
 
     res.status(201).send(evaluation);
