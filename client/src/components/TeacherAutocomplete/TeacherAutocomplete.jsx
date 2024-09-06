@@ -7,7 +7,7 @@ const TeacherAutocomplete = () => {
   const [fetchedTeachers, setFetchedTeachers] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
-  const { setSelectedTeacherId } = useEvaluationFormStore(); // Make sure the setter is available
+  const { setSelectedTeacher } = useEvaluationFormStore(); // Make sure the setter is available
 
   // Fetch teachers when the component mounts
   useEffect(() => {
@@ -34,7 +34,7 @@ const TeacherAutocomplete = () => {
 
     // If found, pass the teacher ID to the parent component
     if (selectedTeacher) {
-      setSelectedTeacherId(selectedTeacher._id); // Assuming teacher object has an 'id' field
+      setSelectedTeacher(selectedTeacher)
     }
   };
 

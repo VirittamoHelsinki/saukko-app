@@ -88,7 +88,11 @@ function EvaluationSummary() {
     {
       title: 'Omat tavoitteesi',
       content: evaluation ? evaluation.workGoals : '',
-    }
+    },
+    {
+      title: 'Opettaja',
+      content: evaluation ? (evaluation.teacher.firstName + ' ' + evaluation.teacher.lastName) : '',
+    },
   ];
 
   // Remove department from summaryData if there is no department

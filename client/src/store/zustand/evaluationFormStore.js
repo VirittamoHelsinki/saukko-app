@@ -1,4 +1,3 @@
-// Import create from zustand
 import { create } from 'zustand';
 
 const useEvaluationFormStore = create((set) => {
@@ -41,13 +40,22 @@ const useEvaluationFormStore = create((set) => {
 
     // Setter functions for customer and evaluation
     setCustomer: (value) => set({ customer: value }),
-    setEvaluation: (value) => set({ evaluation: value }),
 
-    selectedTeacherId: null,
-    setSelectedTeacherId: (id) => set({ selectedTeacherId: id }),
+    // Corrected setEvaluation to update with selectedTeacher
+    setEvaluation: (value) =>
+      set((state) => ({
+        evaluation: {
+          ...state.evaluation, // Maintain other fields in the evaluation
+          ...value, // Update only the fields passed in 'value'
+          teacher: state.selectedTeacher, // Add the selectedTeacher object from state
+        },
+      })),
 
-    // Other functions related to the evaluation form can be added here
-    // New function to reset form data
+    // State for the selected teacher
+    selectedTeacher: null,
+    setSelectedTeacher: (teacher) => set({ selectedTeacher: teacher }),
+
+    // Function to reset form data
     resetFormData: () => {
       set({
         firstName: '',
@@ -59,6 +67,7 @@ const useEvaluationFormStore = create((set) => {
         workGoals: '',
         customer: null,
         evaluation: null,
+        selectedTeacher: null,
       });
     },
   };
