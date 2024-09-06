@@ -1,6 +1,6 @@
 // Import react packages & dependencies
 import { useEffect, useState } from 'react';
-import { useEvaluations } from '../../store/context/EvaluationsContext.jsx';
+import useEvaluationStore from '../../store/zustand/evaluationStore.js';
 // Import components
 import { fetchInternalDegreeById } from '../../api/degree';
 import InfoList from '../../components/InfoList/InfoList';
@@ -13,9 +13,9 @@ import useHeadingStore from '../../store/zustand/useHeadingStore.js';
 const ContractInfo = () => {
   const navigate = useNavigate();
   const [degreeDetails, setDegreeDetails] = useState(null);
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore;
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
-  const { evaluation } = useEvaluations();
+  const { evaluation } = useEvaluationStore();
 
   useEffect(() => {
     setSiteTitle("Sopimus"), setSubHeading(evaluation?.customerId?.firstName + ' ' + evaluation?.customerId?.lastName), setHeading("Sopimus")

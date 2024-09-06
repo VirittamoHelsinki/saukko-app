@@ -7,6 +7,10 @@ import { fetchDegree, generateVerificationLink, mapCriteria, responseWithError }
 
 const create = async (req: Request, res: Response) => {
   const evaluationData = req.body;
+  console.log('evaluationData:', evaluationData)
+  return;
+
+  //TODO: add email to teacher
 
   try {
     if (req.body.supervisorId) {
