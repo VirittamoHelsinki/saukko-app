@@ -19,6 +19,7 @@ export interface IEvaluation extends Document {
   validFrom: Date;
   expiry: Date;
   units: IUnit[];
+  selectedTeacherId: mongoose.Schema.Types.ObjectId;
 }
 
 interface IDegree {
@@ -81,6 +82,10 @@ const evaluationSchema = new Schema<IEvaluation>({
     ref: 'User', // User._id
   },
   teacherId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // User._id
+  },
+  selectedTeacherId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // User._id
   },
