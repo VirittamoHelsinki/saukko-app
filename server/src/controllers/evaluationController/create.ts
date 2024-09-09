@@ -4,6 +4,7 @@ import { Response } from 'express';
 import { Request } from '../../types/requestType';
 import { sendVerificationEmail } from '../../mailer/templates/newUserVerification';
 import { fetchDegree, generateVerificationLink, mapCriteria, responseWithError } from './helper';
+import { sendOldSupervisorAddedEmail } from '../../mailer/templates/addingUserToAgreement';
 
 const create = async (req: Request, res: Response) => {
   const evaluationData = req.body;
@@ -38,17 +39,18 @@ const create = async (req: Request, res: Response) => {
       });
     }
 
-    if (evaluation.selectedTeacherId) {
-      try {
-        const teacherId = evaluation.teacherId;
-        const teacher = await UserModel.findById(teacherId);
-        const verificationLink = generateVerificationLink(teacher!);
-        sendVerificationEmail({ userEmail: teacher!.email, verificationLink, recipentUserId: teacher!._id })
-      } catch (error) {
-        console.error('Error sending email to teacher', error)
-      }
-    }
-
+    /*
+      if (evaluation.selectedTeacherId) {
+          try {
+            const teacherId = evaluation.teacherId;
+            const teacher = await UserModel.findById(teacherId);
+            const verificationLink = generateVerificationLink(teacher!);
+            sendVerificationEmail({ userEmail: teacher!.email, verificationLink, recipentUserId: teacher!._id })
+          } catch (error) {
+            console.error('Error sending email to teacher', error)
+          }
+        }
+     */
     res.status(201).send(evaluation);
   } catch (error) {
     responseWithError(res, 400, error);
