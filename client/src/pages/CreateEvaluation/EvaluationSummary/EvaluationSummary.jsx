@@ -170,7 +170,7 @@ function EvaluationSummary() {
     const evaluationRequestData = {
       degreeId: workplace && workplace.degreeId ? workplace.degreeId : null,
       customerId: userId,
-      teacherId: currentUser && currentUser.id ? currentUser.id : null,
+      teacherId: evaluation && evaluation.teacher._id ? evaluation.teacher._id : null,
       supervisorId: supervisor && supervisor._id ? supervisor._id : null,
       workplaceId: workplace && workplace._id ? workplace._id : null,
       units: checkedUnits,
@@ -181,8 +181,6 @@ function EvaluationSummary() {
         evaluation && evaluation.workTasks ? evaluation.workTasks : null,
       workGoals:
         evaluation && evaluation.workGoals ? evaluation.workGoals : null,
-      selectedTeacherId:
-        evaluation && evaluation.teacher._id ? evaluation.teacher._id : null,
     };
     console.log('Evaluation POST request:', evaluationRequestData);
 
@@ -196,8 +194,7 @@ function EvaluationSummary() {
       evaluationRequestData.startDate !== null &&
       evaluationRequestData.endDate !== null &&
       evaluationRequestData.workTasks !== null &&
-      evaluationRequestData.workGoals !== null &&
-      evaluationRequestData.selectedTeacherId !== null
+      evaluationRequestData.workGoals !== null
     ) {
       const response = await createEvaluation(evaluationRequestData);
       console.log('Evaluation POST response:', response);

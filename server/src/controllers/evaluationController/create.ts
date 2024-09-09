@@ -40,7 +40,7 @@ const create = async (req: Request, res: Response) => {
 
     if (evaluation.selectedTeacherId) {
       try {
-        const teacherId = evaluation.selectedTeacherId;
+        const teacherId = evaluation.teacherId;
         const teacher = await UserModel.findById(teacherId);
         const verificationLink = generateVerificationLink(teacher!);
         sendVerificationEmail({ userEmail: teacher!.email, verificationLink, recipentUserId: teacher!._id })
