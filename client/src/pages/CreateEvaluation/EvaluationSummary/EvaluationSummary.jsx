@@ -88,7 +88,11 @@ function EvaluationSummary() {
     {
       title: 'Omat tavoitteesi',
       content: evaluation ? evaluation.workGoals : '',
-    }
+    },
+    {
+      title: 'Opettaja',
+      content: evaluation ? (evaluation.teacher.firstName + ' ' + evaluation.teacher.lastName) : '',
+    },
   ];
 
   // Remove department from summaryData if there is no department
@@ -177,6 +181,8 @@ function EvaluationSummary() {
         evaluation && evaluation.workTasks ? evaluation.workTasks : null,
       workGoals:
         evaluation && evaluation.workGoals ? evaluation.workGoals : null,
+      selectedTeacherId:
+        evaluation && evaluation.teacher._id ? evaluation.teacher._id : null,
     };
     console.log('Evaluation POST request:', evaluationRequestData);
 
@@ -190,7 +196,8 @@ function EvaluationSummary() {
       evaluationRequestData.startDate !== null &&
       evaluationRequestData.endDate !== null &&
       evaluationRequestData.workTasks !== null &&
-      evaluationRequestData.workGoals !== null
+      evaluationRequestData.workGoals !== null &&
+      evaluationRequestData.selectedTeacherId !== null
     ) {
       const response = await createEvaluation(evaluationRequestData);
       console.log('Evaluation POST response:', response);
