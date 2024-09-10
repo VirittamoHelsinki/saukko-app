@@ -1,46 +1,25 @@
 .app__wrapper {
   .clientList__wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     padding-top: 3rem;
 
     .clientList__container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      flex-grow: 1;
-      overflow-y: auto;
-      width: 100%;
       padding: 10px;
 
-      .menuItem__container {
-        padding: 15px;
-        height: 110px;
-        width: 100%;
+      .clientList__list {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        
-        .menuItem__topRow {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
 
-          svg {
-            width: 40px;
-            height: 40px;
-          }
+        .customer-link {
+          color: var(----color-bus, #0000BF);
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          text-decoration-line: underline;
+          padding: 14px;
+          background-color: white;
+          border-bottom: 1px solid #CCC;
         }
-      }
-
-      .menuItem__container:nth-of-type(odd) {
-        background-color: #9FC9EB;
-      }
-
-      .menuItem__container:nth-of-type(even) {
-        background-color: #FFF4D4;
       }
     }
 
