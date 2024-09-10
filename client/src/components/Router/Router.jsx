@@ -151,6 +151,7 @@ const Router = () => {
 
                 {/* Clients page */}
                 <Route path='/client-list' element={<ClientList />} />
+                <Route path='/client/:id' element={<p>:P</p>} />
 
                 {/* Teachers page */}
                 <Route path='/teacher-list' element={<TeacherList />} />

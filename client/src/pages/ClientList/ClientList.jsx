@@ -51,7 +51,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 const CustomerLink = ({ user }) => {
   return (
     <Link
-      to="#"
+      to={`/client/${user._id}`}
       className="customer-link"
     >{ user.firstName } { user.lastName }</Link>
   )
