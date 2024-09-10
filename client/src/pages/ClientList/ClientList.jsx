@@ -1,16 +1,51 @@
 import { useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Icon } from '@iconify/react';
-import useStore from '../../store/zustand/formStore';
-import useEvaluationStore from '../../store/zustand/evaluationStore';
-import useUnitsStore from '../../store/zustand/unitsStore';
-import ExternalApiContext from '../../store/context/ExternalApiContext';
-import InternalApiContext from '../../store/context/InternalApiContext';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAllUsers } from '../../api/user';
+
+
+
+import { styled } from '@mui/material/styles';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
+import MuiAccordionDetails from '@mui/material/AccordionDetails';
+
+
+const Accordion = styled((props) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  '&::before': {
+    display: 'none',
+  },
+}));
+
+const AccordionSummary = styled((props) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor: 'rgba(0, 0, 0, .03)',
+
+  borderBottom: "1px solid #CCC",
+
+  '& .MuiAccordionSummary-content': {
+    marginLeft: theme.spacing(0),
+  },
+  ...theme.applyStyles('dark', {
+    backgroundColor: 'rgba(255, 255, 255, .05)',
+  }),
+}));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(0),
+}));
+
+
 
 
 const CustomerLink = ({ user }) => {
@@ -68,8 +103,8 @@ function ClientList() {
         <Accordion sx={{ backgroundColor: "#E6E6E6" }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1-content"
-            id="panel1-header"
+            aria-controls="panel2-content"
+            id="panel2-header"
           >
             Arkistoidut asiakkuudet
           </AccordionSummary>

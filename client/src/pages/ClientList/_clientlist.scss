@@ -5,6 +5,10 @@
     .clientList__container {
       padding: 10px;
 
+      display: flex;
+      flex-direction: column;
+      gap: 42px;
+
       .clientList__list {
         display: flex;
         flex-direction: column;
