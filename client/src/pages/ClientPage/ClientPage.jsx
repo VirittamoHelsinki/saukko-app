@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 
-function ClientList() {
+function ClientPage() {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
 
@@ -15,8 +15,8 @@ function ClientList() {
 
 
   return (
-    <div className='clientList__wrapper' id='main-wrapper'>
-      <section className='clientList__container'>
+    <div className='clientPage__wrapper' id='main-wrapper'>
+      <section className='clientPage__container'>
         <p>actual client page</p>
 
       </section>
@@ -25,4 +25,4 @@ function ClientList() {
 
 }
 
-export default ClientList;
+export default ClientPage;
