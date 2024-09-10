@@ -51,6 +51,7 @@ const TeacherList = React.lazy(() => import('../../pages/TeachersPage/TeacherLis
 const UpdateTeacher = React.lazy(() => import('../../pages/TeachersPage/UpdateTeacher/UpdateTeacher'));
 
 const ClientList = React.lazy(() => import('../../pages/ClientList/ClientList'));
+const ClientPage = React.lazy(() => import('../../pages/ClientPage/ClientPage'));
 
 const Router = () => {
   let location = useLocation();
@@ -151,7 +152,7 @@ const Router = () => {
 
                 {/* Clients page */}
                 <Route path='/client-list' element={<ClientList />} />
-                <Route path='/client/:id' element={<p>:P</p>} />
+                <Route path='/client/:id' element={<ClientPage />} />
 
                 {/* Teachers page */}
                 <Route path='/teacher-list' element={<TeacherList />} />
