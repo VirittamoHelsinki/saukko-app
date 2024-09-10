@@ -128,6 +128,11 @@ const updateUnitStatus = (unit: any) => {
     }
   });
 
+  if (unit.customerReady) {
+    console.log('set status to 2')
+    unit.status = 2;
+  }
+
   if (unit.teacherReady) {
     unit.status = 3;
     console.log('set status to 3')
