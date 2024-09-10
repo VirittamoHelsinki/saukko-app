@@ -63,10 +63,12 @@ const UserNav = () => {
     {
       to: "/404",
       label: "Asiakkuudet",
+      adminRequired: true,
     },
     {
       to: "/teacher-list",
       label: "Opettajat",
+      adminRequired: true,
     },
   ];
 
@@ -100,6 +102,8 @@ const UserNav = () => {
   };
 
 
+  console.log(">>>>>>>>>>>>>", currentUser);
+  
 
 
   return (
@@ -215,15 +219,21 @@ const UserNav = () => {
             </div>
 
             {currentUser && currentUser.role === 'teacher' && (
-              navigationLinkData.map(({ to, label }) => (
-                <div
-                  key={label}
-                  className='navListItem'
-                  onClick={() => handleNavigationLinkClick(to)}
-                >
-                  <p className='NavText'>{label}</p>
-                </div>
-              ))
+              navigationLinkData.map(({ to, label, adminRequired }) => {
+                if (adminRequired && currentUser.permissions !== "admin") {
+                  return null
+                }
+
+                return (
+                  <div
+                    key={label}
+                    className='navListItem'
+                    onClick={() => handleNavigationLinkClick(to)}
+                  >
+                    <p className='NavText'>{label}</p>
+                  </div>
+                )
+              })
             )}
 
             <div className='navListItem'>
