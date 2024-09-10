@@ -9,17 +9,22 @@ import InternalApiContext from '../../store/context/InternalApiContext';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useQuery } from '@tanstack/react-query';
+import { fetchAllUsers } from '../../api/user';
 
 function ClientList() {
   const navigate = useNavigate();
 
-  // Clear saved degree and unit data on first render
-  const { setDegreeId } = useContext(ExternalApiContext);
-  const { setEvaluation } = useContext(InternalApiContext);
-  const { resetDegreeData } = useStore();
-  const { clearWorkplace, clearEvaluationFromStore } = useEvaluationStore();
-  const { clearCheckedUnits } = useUnitsStore();
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+
+  const { data: users } = useQuery({
+    queryKey: ['users'],
+    queryFn: () => fetchAllUsers(),
+  });
+
+  const customers = users.filter((user) => user.role === "customer")
+  const activeCustomers = customers.filter((user) => user.isArchived === false)
+  const archivedCustomers = customers.filter((user) => user.isArchived === true)
 
   useEffect(() => {
     setSiteTitle("Asiakkuudet")
@@ -40,8 +45,9 @@ function ClientList() {
             Aktiiviset asiakkuudet
           </AccordionSummary>
           <AccordionDetails>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            {
+              activeCustomers.map((user) => <p>{ user.firstName } { user.lastName }</p>)
+            }
           </AccordionDetails>
         </Accordion>
 
@@ -54,8 +60,9 @@ function ClientList() {
             Arkistoidut asiakkuudet
           </AccordionSummary>
           <AccordionDetails>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            {
+              archivedCustomers.map((user) => <p>{ user.firstName } { user.lastName }</p>)
+            }
           </AccordionDetails>
         </Accordion>
 

@@ -101,11 +101,6 @@ const UserNav = () => {
     setMenuIsOpen((oldValue) => !oldValue);
   };
 
-
-  console.log(">>>>>>>>>>>>>", currentUser);
-  
-
-
   return (
     <>
       <Dialog

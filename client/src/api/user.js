@@ -74,6 +74,11 @@ const fetchAllTeachers = async () => {
   return response;
 };
 
+const fetchAllUsers = async () => {
+  const response = await axios.get("/api/users");
+  return response.data;
+}
+
 const logoutUser = async () => {
   await axios.get('/auth/logout');
 };
@@ -182,4 +187,5 @@ export {
   fetchAllTeachers,
   addTeacher,
   fetchUserById,
+  fetchAllUsers,
 };
