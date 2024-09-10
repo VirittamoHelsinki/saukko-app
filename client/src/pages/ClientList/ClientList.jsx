@@ -1,5 +1,5 @@
-import { useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -17,7 +17,7 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
+))(() => ({
   '&::before': {
     display: 'none',
   },
@@ -58,8 +58,6 @@ const CustomerLink = ({ user }) => {
 }
 
 function ClientList() {
-  const navigate = useNavigate();
-
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const { data: users } = useQuery({
@@ -94,7 +92,7 @@ function ClientList() {
           <AccordionDetails>
             <div className="clientList__list">
               {
-                activeCustomers.map((user) => <CustomerLink user={user} />)
+                activeCustomers.map((user) => <CustomerLink key={user._id} user={user} />)
               }
             </div>
           </AccordionDetails>
@@ -111,7 +109,7 @@ function ClientList() {
           <AccordionDetails>
             <div className="clientList__list">
               {
-                archivedCustomers.map((user) => <CustomerLink user={user} />)
+                archivedCustomers.map((user) => <CustomerLink key={user._id} user={user} />)
               }
             </div>
           </AccordionDetails>
