@@ -447,7 +447,7 @@ const resendEmailVerificationLink = async (req: Request, res: Response) => {
 
 const getCurrentUser = (req: Request, res: Response) => {
   if (req.user) {
-    const { firstName, lastName, email, role, emailVerified, _id } = req.user;
+    const { firstName, lastName, email, role, emailVerified, _id, permissions } = req.user;
 
     // Do not send whole user object, like password hash.
     return res.status(200).json({
@@ -457,6 +457,7 @@ const getCurrentUser = (req: Request, res: Response) => {
       email,
       role,
       emailVerified,
+      permissions,
     })
   }
 
