@@ -7,6 +7,8 @@ import useUnitsStore from '../../store/zustand/unitsStore';
 import ExternalApiContext from '../../store/context/ExternalApiContext';
 import InternalApiContext from '../../store/context/InternalApiContext';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
+import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function ClientList() {
   const navigate = useNavigate();
@@ -29,7 +31,34 @@ function ClientList() {
   return (
     <div className='clientList__wrapper' id='main-wrapper'>
       <section className='clientList__container'>
-        <h1>client list :P 😀</h1>
+        <Accordion sx={{ backgroundColor: "#E6E6E6" }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            Aktiiviset asiakkuudet
+          </AccordionSummary>
+          <AccordionDetails>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion sx={{ backgroundColor: "#E6E6E6" }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1-content"
+            id="panel1-header"
+          >
+            Arkistoidut asiakkuudet
+          </AccordionSummary>
+          <AccordionDetails>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </AccordionDetails>
+        </Accordion>
+
       </section>
     </div>
   );
