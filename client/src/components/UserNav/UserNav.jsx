@@ -53,7 +53,7 @@ const UserNav = () => {
       label: "Tutkinnot",
     },
     {
-      to: "add/companyname",
+      to: "/add/companyname",
       label: "Työpaikat",
     },
     {
@@ -61,7 +61,7 @@ const UserNav = () => {
       label: "+ Luo uusi sopimus",
     },
     {
-      to: "/404",
+      to: "/client-list",
       label: "Asiakkuudet",
       adminRequired: true,
     },
