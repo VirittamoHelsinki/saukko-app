@@ -15,7 +15,6 @@ import { createEvaluation } from '../../../api/evaluation';
 import { registration, updateUser } from '../../../api/user';
 import useUnitsStore from '../../../store/zustand/unitsStore';
 import InternalApiContext from '../../../store/context/InternalApiContext';
-import { useAuthContext } from '../../../store/context/authContextProvider';
 import useEvaluationStore from '../../../store/zustand/evaluationStore';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
 
@@ -26,7 +25,6 @@ function EvaluationSummary() {
   const { workplace, department, supervisor } = useEvaluationStore();
   const { customer, evaluation, resetFormData } = useEvaluationFormStore(); // Include resetFormData
   const { checkedUnits, clearCheckedUnits } = useUnitsStore();
-  const { currentUser } = useAuthContext();
   const { setInternalEvaluations } = useContext(InternalApiContext);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
