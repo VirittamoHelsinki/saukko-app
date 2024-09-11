@@ -4,7 +4,6 @@ import { fetchUserById } from '../../api/user';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from "dayjs"
-import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import { Icon } from '@iconify/react/dist/iconify.js';
 
 
@@ -41,9 +40,6 @@ function ClientPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
 
-  console.log(user);
-  
-
   const teacher = user?.evaluationId.teacherId;
   const supervisor = user?.evaluationId?.supervisorIds?.[0];
   const department = user?.workplaceId?.departments?.[0];
@@ -58,8 +54,6 @@ function ClientPage() {
         <p className="title">Asiakkuuden yhteenveto</p>
 
         <div className="clientPage__card">
-          {/* <p>{ JSON.stringify(user) }</p> */}
-
           <ClientInformationField
             fieldLabel={"Nimi"}
             fieldValue={`${user?.firstName} ${user?.lastName}`}
