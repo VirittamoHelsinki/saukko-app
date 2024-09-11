@@ -105,15 +105,15 @@ function ClientPage() {
         <p className="title">Asiakkaan tutkinnon osat</p>
         <div className="clientPage__card">
           {
-            units.map((unit) => (
-              <div className="clientPage__unit">
+            units.map((unit, index) => (
+              <div key={"unit" + index} className="clientPage__unit">
 
                 <p className="clientPage__unit-name">{unit.name.fi}</p>
 
                 <div className="clientPage__unit-assessments">
                   {
-                    unit.assessments.map((assessment) => (
-                      <p className="clientPage__unit-assessment">{assessment.name.fi}</p>
+                    unit.assessments.map((assessment, index) => (
+                      <p key={"assessment" + index} className="clientPage__unit-assessment">{assessment.name.fi}</p>
                     ))
                   }
                 </div>
