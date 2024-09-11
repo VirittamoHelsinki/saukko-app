@@ -34,6 +34,10 @@
           background-color: #ffe28c;
         }
 
+        &.waiting-for-processing-not-evaluated {
+          background-color: #ffaaaa;
+        }
+
         &.not-started {
           background-color: #e2e2e2;
         }

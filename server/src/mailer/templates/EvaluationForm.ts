@@ -540,3 +540,102 @@ Ylläpito
   sendEmail(emailObj);
   await saveNotification(recipientId, customerId, subject, text, 'ready', evaluationId, unitId);
 };
+
+export const sendRequireEvaluationMessageToCustomer = async (
+  params: ISendEvaluationFormSupervisorReadyMessageCustomer,
+  subject: string,
+  to: string,
+  customerId: string,
+  recipientId: string,
+  evaluationId: string,
+  unitId: string
+) => {
+
+  const text =
+    `
+Hei ${params.customerFirstName},
+
+Tutkinnonosa ${params.unitName} vaatii asiakkaan arviointia.
+
+
+Asiakas: ${params.customerName}
+Työpaikkaohjaaja: ${params.supervisorName}
+Tutkinto: ${params.degreeName}
+Tutkinnonosa: ${params.unitName}
+Asiakkaan arvio: ${params.customerAssessment}
+Työpaikkaohjaajan arvio: ${params.supervisorAssessment}
+Lisätiedot: ${params.additionalInfo}
+
+
+Ystävällisin terveisin,
+Ylläpito
+    `;
+
+  const html = mailerTemplate(text);
+
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview', evaluationId, unitId);
+};
+
+export const sendRequireEvaluationMessageToSupervisor = async (
+  params: ISendEvaluationFormCustomerReadyMessageSupervisor,
+  subject: string,
+  to: string,
+  customerId: string,
+  recipientId: string,
+  evaluationId: string,
+  unitId: string
+) => {
+
+  const text =
+    `
+Hei ${params.supervisorFirstName},
+
+Tutkinnonosa ${params.unitName} vaatii ohjaajan arviointia.
+
+
+Asiakas: ${params.customerName}
+Työpaikkaohjaaja: ${params.supervisorName}
+Tutkinto: ${params.degreeName}
+Tutkinnonosa: ${params.unitName}
+Asiakkaan arvio: ${params.customerAssessment}
+Työpaikkaohjaajan arvio: ${params.supervisorAssessment}
+Lisätiedot: ${params.additionalInfo}
+
+
+Ystävällisin terveisin,
+Ylläpito
+    `;
+
+  const html = mailerTemplate(text);
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
+  await saveNotification(recipientId, customerId, subject, text, 'readyForReview', evaluationId, unitId);
+};
+
+

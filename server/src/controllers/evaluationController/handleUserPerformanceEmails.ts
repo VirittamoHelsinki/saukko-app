@@ -13,6 +13,8 @@ import {
   sendEvaluationFormTeacherReadyMessageSupervisor,
   sendEvaluationFormTeacherRequestContactMessageCustomer,
   sendEvaluationFormTeacherRequestContactMessageSupervisor,
+  sendRequireEvaluationMessageToCustomer,
+  sendRequireEvaluationMessageToSupervisor,
 } from '../../mailer/templates/EvaluationForm';
 import { AssessmentStatus, EvaluationStatus, ISendEvaluationFormRequestContact, ISelectedValues, IEmails, UserRole } from '../../mailer/types';
 import { getUserRole } from '../../mailer/utils';
@@ -24,6 +26,46 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
     .populate('teacherId')
     .populate('supervisorIds')
     .populate('units');
+};
+
+export const sendRequireEvaluationEmails = (
+  userRole: string,
+  formIsReadyParams: any,
+  emails: IEmails,
+
+  customerId: string,
+  teacherId: string,
+
+  evaluationId: string,
+  unitId: string
+) => {
+
+  switch (userRole) {
+    case 'supervisor':
+      sendRequireEvaluationMessageToSupervisor(
+        { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
+        'Puuttuva arviointi',
+        emails.supervisorEmail,
+        customerId,
+        customerId,
+        evaluationId,
+        unitId
+      );
+      break;
+    case 'customer':
+      sendRequireEvaluationMessageToCustomer(
+        { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
+        'puuttuva arviointi',
+        emails.customerEmail,
+        customerId,
+        teacherId,
+        evaluationId,
+        unitId
+      );
+      break;
+    default:
+      console.error(`Unknown role: ${userRole}`);
+  }
 };
 
 export const sendReadyEmails = (
@@ -114,7 +156,33 @@ export const sendReadyEmails = (
   return emailsSendTo
 };
 
-const updateUnitStatus = (unit: any) => {
+interface ImessageObj {
+  user: {
+    role: string;
+  }
+  formIsReadyParams: {
+    degreeName: string;
+    unitName: string;
+    supervisorName: string;
+    customerName: string;
+    additionalInfo?: string;
+    supervisorFirstName?: string;
+    customerFirstName?: string;
+    teacherFirstName?: string;
+  };
+  emails: {
+    customerEmail: string;
+    teacherEmail: string;
+    supervisorEmail: string;
+  };
+  customerId: string;
+  teacherId: string;
+  supervisorId: string;
+  evaluationId: string;
+  unitId: string;
+}
+
+const updateUnitStatus = (unit: any, messageObj: ImessageObj) => {
   let allAssessmentsCompleted = true;
   let anyAssessmentInProgress = false;
 
@@ -128,19 +196,32 @@ const updateUnitStatus = (unit: any) => {
     }
   });
 
-  if (unit.customerReady) {
-    console.log('set status to 2')
+  if (unit.customerReady && !unit.supervisorReady && unit.teacherReady
+    || unit.customerReady && !unit.teacherReady && !unit.supervisorReady
+    || !unit.customerReady && unit.supervisorReady
+    || !unit.customerReady && unit.teacherReady) {
+    console.log('set status to 4');
+    unit.status = 4;
+    sendRequireEvaluationEmails(
+      messageObj.user.role,
+      messageObj.formIsReadyParams,
+      messageObj.emails,
+      messageObj.customerId,
+      messageObj.teacherId,
+      messageObj.evaluationId,
+      messageObj.unitId
+    )
+  } else if (unit.customerReady && unit.supervisorReady && !unit.teacherReady) {
+    console.log('set status to 2');
     unit.status = 2;
-  }
-
-  if (unit.teacherReady) {
+  } else if (unit.teacherReady) {
     unit.status = 3;
-    console.log('set status to 3')
+    console.log('set status to 3');
   } else if ((allAssessmentsCompleted && unit.customerReady) || unit.customerReady) {
-    console.log('set status to 2')
+    console.log('set status to 2');
     unit.status = 2;
   } else if (anyAssessmentInProgress) {
-    console.log('set status to 1')
+    console.log('set status to 1');
     unit.status = 1;
   }
 
@@ -303,14 +384,25 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       unitId
     );
 
-    const existingUnits = updatedUnit && evaluation.units.filter((unit) => {
+    const existingUnits = updatedUnit && evaluation.units.filter((unit: any) => {
       return (unit._id) !== (updatedUnit._id)
     })
+
+    const messageOjb = {
+
+    }
 
 
     evaluation.units = updatedUnit && [
       ...existingUnits,
-      updateUnitStatus(updatedUnit),
+      updateUnitStatus(updatedUnit, selectedValues,
+        role: userRole,
+        emails,
+        customerId,
+        teacherId,
+        supervisorId,
+        evaluationId,
+        unitId),
     ];
 
     evaluation.set({
