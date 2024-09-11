@@ -1,29 +1,16 @@
 .app__wrapper {
-  .clientList__wrapper {
+  .clientPage__wrapper {
     padding-top: 3rem;
 
-    .clientList__container {
-      padding: 10px;
+    .clientPage__container {
 
-      display: flex;
-      flex-direction: column;
-      gap: 42px;
+      .clientPage__client-information-container {
+        background: #F2F2F2;
+        padding: 28px 14px;
 
-      .clientList__list {
         display: flex;
         flex-direction: column;
-
-        .customer-link {
-          color: var(----color-bus, #0000BF);
-          font-size: 16px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: normal;
-          text-decoration-line: underline;
-          padding: 14px;
-          background-color: white;
-          border-bottom: 1px solid #CCC;
-        }
+        gap: 14px;
       }
     }
 
@@ -31,4 +18,43 @@
       font-size: 20px;
     }
   }
+}
+
+.client-information__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 16px;
+  font-style: normal;
+  line-height: normal;
+  color: var(----color-black-90, #1A1A1A);
+
+  &.disabled {
+    color: var(----color-black-40, #999);
+  }
+
+  .field {
+    font-weight: 700;
+    color: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    line-height: inherit;
+  }
+
+  .value {
+    color: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    line-height: inherit;
+  }
+}
+
+
+.title {
+  color: var(----color-black-90, #1A1A1A);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 1.5em;
 }
