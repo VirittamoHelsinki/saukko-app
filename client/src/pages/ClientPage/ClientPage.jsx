@@ -39,6 +39,9 @@ function ClientPage() {
   console.log(user);
   
 
+  const teacher = user?.evaluationId.teacherId
+  const supervisor = user?.evaluationId.supervisorIds[0]
+
 
   return (
     <div className='clientPage__wrapper' id='main-wrapper'>
@@ -59,31 +62,31 @@ function ClientPage() {
           />
           <ClientInformationField
             fieldLabel="Asiakkuuden aloituspäivä"
-            fieldValue=""
+            fieldValue={user?.evaluationId.startDate}
           />
           <ClientInformationField
             fieldLabel="Asiakkuuden lopetuspäivä"
-            fieldValue=""
+            fieldValue={user?.evaluationId.endDate}
           />
           <ClientInformationField
             fieldLabel="Työpaikka"
-            fieldValue=""
+            fieldValue={user?.workplaceId.name}
           />
           <ClientInformationField
             fieldLabel="Y-tunnus"
-            fieldValue=""
+            fieldValue={user?.workplaceId.businessId}
           />
           <ClientInformationField
             fieldLabel="Työpaikan yksikkö"
-            fieldValue=""
+            fieldValue={"TODO: wip"}
           />
           <ClientInformationField
             fieldLabel="Ohjaaja"
-            fieldValue=""
+            fieldValue={`${supervisor?.firstName} ${supervisor?.lastName}`}
           />
           <ClientInformationField
             fieldLabel="Opettaja"
-            fieldValue=""
+            fieldValue={`${teacher?.firstName} ${teacher?.lastName}`}
           />
           <ClientInformationField
             fieldLabel="Täydennysjakson päättymispäivä *"
