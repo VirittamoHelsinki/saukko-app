@@ -603,7 +603,17 @@ const getAllTeachers = async (req: Request, res: Response) => {
 
 const getUserById = async (req: Request, res: Response) => {
   try {
-    const user = await userModel.findById(req.params.id);
+    const user = await userModel
+    .findById(req.params.id)
+    .populate({
+      path: 'evaluationId',
+      populate: { path: 'teacherId' }
+    })
+    .populate({
+      path: 'evaluationId',
+      populate: { path: 'supervisorIds' }
+    })
+    .populate('workplaceId');
     res.status(200).json(user);
   } catch (error) {
     console.error('Error fetching user:', error);

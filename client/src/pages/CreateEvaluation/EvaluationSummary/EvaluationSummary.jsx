@@ -43,6 +43,9 @@ function EvaluationSummary() {
       setHeading('Asiakkuudet');
   }, [setSiteTitle, setHeading, setSubHeading]);
 
+  console.log(evaluation);
+  
+  
   // Data array for InfoList component
   const summaryData = [
     {
@@ -131,7 +134,7 @@ function EvaluationSummary() {
       email: customer && customer.email ? customer.email : null,
       password: '123456',
       role: 'customer',
-      workplaceId: null,
+      workplaceId: workplace._id,
       evaluationId: null,
     };
     console.log('User POST request:', userRequestData);
