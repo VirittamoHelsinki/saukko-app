@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 import { fetchUserById } from '../../api/user';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from "dayjs"
+import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 
 const formatDate = (date) => dayjs(date).format("DD.MM.YYYY")
@@ -43,8 +45,8 @@ function ClientPage() {
   
 
   const teacher = user?.evaluationId.teacherId;
-  const supervisor = user?.evaluationId.supervisorIds[0];
-  const department = user?.workplaceId.departments[0];
+  const supervisor = user?.evaluationId?.supervisorIds?.[0];
+  const department = user?.workplaceId?.departments?.[0];
 
   const units = user?.evaluationId.units || [];
 
@@ -68,19 +70,19 @@ function ClientPage() {
           />
           <ClientInformationField
             fieldLabel="Asiakkuuden aloituspäivä"
-            fieldValue={formatDate(user?.evaluationId.startDate)}
+            fieldValue={formatDate(user?.evaluationId?.startDate)}
           />
           <ClientInformationField
             fieldLabel="Asiakkuuden lopetuspäivä"
-            fieldValue={formatDate(user?.evaluationId.endDate)}
+            fieldValue={formatDate(user?.evaluationId?.endDate)}
           />
           <ClientInformationField
             fieldLabel="Työpaikka"
-            fieldValue={user?.workplaceId.name}
+            fieldValue={user?.workplaceId?.name}
           />
           <ClientInformationField
             fieldLabel="Y-tunnus"
-            fieldValue={user?.workplaceId.businessId}
+            fieldValue={user?.workplaceId?.businessId}
           />
           <ClientInformationField
             fieldLabel="Työpaikan yksikkö"
@@ -127,6 +129,13 @@ function ClientPage() {
           }
         </div>
 
+        <Link
+          className="navigation-button"
+          to="/client-list"
+        >
+          <Icon icon={"formkit:arrowleft"} />
+          <p>Takaisin</p>
+        </Link>
       </section>
     </div>
   );

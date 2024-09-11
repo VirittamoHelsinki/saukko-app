@@ -2,6 +2,25 @@
   .clientPage__wrapper {
     padding-top: 3rem;
 
+    .navigation-button {
+      width: 130px;
+      padding: 16px;
+      font-size: 16px;
+      text-decoration: none;
+      border: 2px solid var(--link-blue);
+      color: var(--link-blue);
+
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      * {
+        color: inherit;
+        font-size: inherit;
+      }
+    }
+
     .clientPage__container {
       padding: 10px;
 
