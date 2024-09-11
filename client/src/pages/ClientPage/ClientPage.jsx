@@ -3,7 +3,10 @@ import useHeadingStore from '../../store/zustand/useHeadingStore';
 import { fetchUserById } from '../../api/user';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import dayjs from "dayjs"
 
+
+const formatDate = (date) => dayjs(date).format("DD.MM.YYYY")
 
 const ClientInformationField = ({
   fieldLabel = "field",
@@ -41,6 +44,7 @@ function ClientPage() {
 
   const teacher = user?.evaluationId.teacherId
   const supervisor = user?.evaluationId.supervisorIds[0]
+  const department = user?.workplaceId.departments[0]
 
 
   return (
@@ -49,7 +53,7 @@ function ClientPage() {
 
         <p className="title">Asiakkuuden yhteenveto</p>
 
-        <div className="clientPage__client-information-container">
+        <div className="clientPage__card">
           {/* <p>{ JSON.stringify(user) }</p> */}
 
           <ClientInformationField
@@ -62,11 +66,11 @@ function ClientPage() {
           />
           <ClientInformationField
             fieldLabel="Asiakkuuden aloituspäivä"
-            fieldValue={user?.evaluationId.startDate}
+            fieldValue={formatDate(user?.evaluationId.startDate)}
           />
           <ClientInformationField
             fieldLabel="Asiakkuuden lopetuspäivä"
-            fieldValue={user?.evaluationId.endDate}
+            fieldValue={formatDate(user?.evaluationId.endDate)}
           />
           <ClientInformationField
             fieldLabel="Työpaikka"
@@ -78,7 +82,11 @@ function ClientPage() {
           />
           <ClientInformationField
             fieldLabel="Työpaikan yksikkö"
-            fieldValue={"TODO: wip"}
+            fieldValue={department?.name}
+          />
+          <ClientInformationField
+            fieldLabel="Työpaikan yksikkön lisätiedot"
+            fieldValue={department?.description}
           />
           <ClientInformationField
             fieldLabel="Ohjaaja"
@@ -92,6 +100,13 @@ function ClientPage() {
             fieldLabel="Täydennysjakson päättymispäivä *"
             disabled
           />
+
+        </div>
+
+
+        <p className="title">Asiakkaan tutkinnon osat</p>
+        <div className="clientPage__card">
+          
 
         </div>
 
