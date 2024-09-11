@@ -42,9 +42,11 @@ function ClientPage() {
   console.log(user);
   
 
-  const teacher = user?.evaluationId.teacherId
-  const supervisor = user?.evaluationId.supervisorIds[0]
-  const department = user?.workplaceId.departments[0]
+  const teacher = user?.evaluationId.teacherId;
+  const supervisor = user?.evaluationId.supervisorIds[0];
+  const department = user?.workplaceId.departments[0];
+
+  const units = user?.evaluationId.units || [];
 
 
   return (
@@ -106,8 +108,23 @@ function ClientPage() {
 
         <p className="title">Asiakkaan tutkinnon osat</p>
         <div className="clientPage__card">
-          
+          {
+            units.map((unit) => (
+              <div className="clientPage__unit">
 
+                <p className="clientPage__unit-name">{unit.name.fi}</p>
+
+                <div className="clientPage__unit-assessments">
+                  {
+                    unit.assessments.map((assessment) => (
+                      <p className="clientPage__unit-assessment">{assessment.name.fi}</p>
+                    ))
+                  }
+                </div>
+
+              </div>
+            ))
+          }
         </div>
 
       </section>

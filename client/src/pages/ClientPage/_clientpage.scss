@@ -3,6 +3,7 @@
     padding-top: 3rem;
 
     .clientPage__container {
+      padding: 10px;
 
       display: flex;
       flex-direction: column;
@@ -21,6 +22,38 @@
 
     h1 {
       font-size: 20px;
+    }
+  }
+}
+
+.clientPage__unit {
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .clientPage__unit-name {
+    color: var(----color-black-90, #1A1A1A);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 28px;
+  }
+
+  .clientPage__unit-assessments {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    .clientPage__assessment {
+      color: var(----color-black, var(--_components-switch-slideFill, #000));
+      font-family: "Helsinki Grotesk";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
     }
   }
 }
