@@ -34,7 +34,7 @@ interface IUser {
   id: mongoose.Schema.Types.ObjectId;
 }
 
-interface IUnit {
+export interface IUnit {
   _id: number;
   status: number;
   teacherReady: boolean;
@@ -150,7 +150,7 @@ const evaluationSchema = new Schema<IEvaluation>({
       status: {
         type: Number,
         default: 0,
-        enum: [0, 1, 2, 3],
+        enum: [0, 1, 2, 3, 4],
       },
       teacherReady: {
         type: Boolean,
