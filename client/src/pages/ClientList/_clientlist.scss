@@ -1,0 +1,34 @@
+.app__wrapper {
+  .clientList__wrapper {
+    padding-top: 3rem;
+
+    .clientList__container {
+      padding: 10px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 42px;
+
+      .clientList__list {
+        display: flex;
+        flex-direction: column;
+
+        .customer-link {
+          color: var(----color-bus, #0000BF);
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          text-decoration-line: underline;
+          padding: 14px;
+          background-color: white;
+          border-bottom: 1px solid #CCC;
+        }
+      }
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+  }
+}

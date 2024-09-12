@@ -48,7 +48,10 @@ const RegisterUser = React.lazy(() => import('../../pages/RegisterUser/RegisterU
 const CompanySummary = React.lazy(() => import('../../pages/CompanyInfo/CompanySummary/CompanySummary'));
 const Notification = React.lazy(() => import("../../pages/Home/Notification/Notification"));
 const TeacherList = React.lazy(() => import('../../pages/TeachersPage/TeacherList/TeacherList'));
-const UpdateTeacher = React.lazy(() => import('../../pages/TeachersPage/UpdateTeacher/UpdateTeacher'))
+const UpdateTeacher = React.lazy(() => import('../../pages/TeachersPage/UpdateTeacher/UpdateTeacher'));
+
+const ClientList = React.lazy(() => import('../../pages/ClientList/ClientList'));
+const ClientPage = React.lazy(() => import('../../pages/ClientPage/ClientPage'));
 
 const Router = () => {
   let location = useLocation();
@@ -146,6 +149,10 @@ const Router = () => {
 
                 {/* Units flow */}
                 <Route path='/create-units-summary' element={<CreateUnitsSummary />} />
+
+                {/* Clients page */}
+                <Route path='/client-list' element={<ClientList />} />
+                <Route path='/client/:id' element={<ClientPage />} />
 
                 {/* Teachers page */}
                 <Route path='/teacher-list' element={<TeacherList />} />
