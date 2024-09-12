@@ -106,11 +106,25 @@
   }
 }
 
+.title-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
-.title {
-  color: var(----color-black-90, #1A1A1A);
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+  .title {
+    color: var(----color-black-90, #1A1A1A);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .title-container__edit-button {
+    height: 100%;
+    aspect-ratio: 1;
+    border: none;
+    padding: 9px;
+    border-radius: 1000px;
+  }
 }
