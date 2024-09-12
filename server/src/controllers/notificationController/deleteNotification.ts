@@ -9,6 +9,8 @@ const deleteNotificationById = async (req: Request, res: Response) => {
     const notificationId = req.params.id;
     const notification = await NotificationModel.findByIdAndDelete(notificationId);
 
+    console.log(`deleted notification ${notification?._id} successfully`)
+
     res.status(200).json(notification)
 
   } catch (error) {
