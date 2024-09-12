@@ -10,6 +10,7 @@ export interface INotificationObj {
   type: string;
   evaluationId: string;
   unitId: string;
+  isArchived: boolean;
 }
 
 export interface INotificationObjDocument extends INotificationObj, Document { }
@@ -47,6 +48,10 @@ export const notificationObjSchema = new Schema<INotificationObjDocument>({
   },
   unitId: {
     type: String,
+  },
+  isArchived: {
+    type: Boolean,
+    default: false,
   }
 })
 
