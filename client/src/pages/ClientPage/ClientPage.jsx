@@ -5,6 +5,8 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from "dayjs"
 import { Icon } from '@iconify/react/dist/iconify.js';
+import ClientEditModal from '../../components/ClientEditModal';
+import Modal from '../../components/Modal';
 
 
 const formatDate = (date) => dayjs(date).format("DD.MM.YYYY")
@@ -117,7 +119,7 @@ function ClientPage() {
             </svg>
           </button>
         </div>
-        
+
         <div className="clientPage__card">
           {
             units.map((unit, index) => (
@@ -145,6 +147,11 @@ function ClientPage() {
           <Icon icon={"formkit:arrowleft"} />
           <p>Takaisin</p>
         </Link>
+
+        <Modal open={true} title="hello world">
+          <p>hello world, this is modal content</p>
+        </Modal>
+
       </section>
     </div>
   );
