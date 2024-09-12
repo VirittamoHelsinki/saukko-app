@@ -8,7 +8,10 @@ import {
   ISendEvaluationFormTeacherReadyMessageCustomer,
   ISendEvaluationFormTeacherReadyMessageSupervisor,
   ISendEvaluationFormTeacherRequestContactMessageSupervisor,
+  ISendEvaluationRequiresAction,
 } from '../types';
+import { IUnit } from '../../models/evaluationModel';
+import { IUser } from '../../models/userModel';
 
 // Helper function to save notification
 const saveNotification = async (
@@ -542,29 +545,19 @@ Ylläpito
 };
 
 export const sendRequireEvaluationMessageToCustomer = async (
-  params: ISendEvaluationFormSupervisorReadyMessageCustomer,
   subject: string,
   to: string,
-  customerId: string,
-  recipientId: string,
+  customer: IUser,
   evaluationId: string,
-  unitId: string
+  unitId: string,
+  unitName: string,
 ) => {
 
   const text =
     `
-Hei ${params.customerFirstName},
+Hei ${customer.firstName},
 
-Tutkinnonosa ${params.unitName} vaatii asiakkaan arviointia.
-
-
-Asiakas: ${params.customerName}
-Työpaikkaohjaaja: ${params.supervisorName}
-Tutkinto: ${params.degreeName}
-Tutkinnonosa: ${params.unitName}
-Asiakkaan arvio: ${params.customerAssessment}
-Työpaikkaohjaajan arvio: ${params.supervisorAssessment}
-Lisätiedot: ${params.additionalInfo}
+Tutkinnonosa ${unitName} vaatii asiakkaan arviointia.
 
 
 Ystävällisin terveisin,
@@ -587,33 +580,23 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'readyForReview', evaluationId, unitId);
+  await saveNotification(customer._id, customer._id, subject, text, 'requiresAction', evaluationId, unitId);
 };
 
 export const sendRequireEvaluationMessageToSupervisor = async (
-  params: ISendEvaluationFormCustomerReadyMessageSupervisor,
   subject: string,
   to: string,
-  customerId: string,
-  recipientId: string,
+  supervisor: IUser,
   evaluationId: string,
-  unitId: string
+  unitId: string,
+  unitName: string,
 ) => {
 
   const text =
     `
-Hei ${params.supervisorFirstName},
+Hei ${supervisor.firstName},
 
-Tutkinnonosa ${params.unitName} vaatii ohjaajan arviointia.
-
-
-Asiakas: ${params.customerName}
-Työpaikkaohjaaja: ${params.supervisorName}
-Tutkinto: ${params.degreeName}
-Tutkinnonosa: ${params.unitName}
-Asiakkaan arvio: ${params.customerAssessment}
-Työpaikkaohjaajan arvio: ${params.supervisorAssessment}
-Lisätiedot: ${params.additionalInfo}
+Tutkinnonosa ${unitName} vaatii ohjaajan arviointia.
 
 
 Ystävällisin terveisin,
@@ -635,7 +618,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(recipientId, customerId, subject, text, 'readyForReview', evaluationId, unitId);
+  await saveNotification(supervisor._id, supervisor._id, subject, text, 'requiresAction', evaluationId, unitId);
 };
 
 

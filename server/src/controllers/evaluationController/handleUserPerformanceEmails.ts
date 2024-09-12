@@ -1,5 +1,6 @@
+import userModel from '../../models/userModel';
 import { IUser, User } from '../../models/userModel';
-import EvaluationModel from '../../models/evaluationModel';
+import EvaluationModel, { IUnit } from '../../models/evaluationModel';
 import { Response } from 'express';
 import { Request } from '../../types/requestType';
 import {
@@ -30,37 +31,32 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
 
 export const sendRequireEvaluationEmails = (
   userRole: string,
-  formIsReadyParams: any,
-  emails: IEmails,
-
-  customerId: string,
-  teacherId: string,
-
+  customer: IUser,
+  supervisor: IUser,
   evaluationId: string,
-  unitId: string
+  unitId: string,
+  unitName: string,
 ) => {
 
   switch (userRole) {
     case 'supervisor':
       sendRequireEvaluationMessageToSupervisor(
-        { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
-        'Puuttuva arviointi',
-        emails.supervisorEmail,
-        customerId,
-        customerId,
+        'Arviointi vaatii toimenpiteitä',
+        supervisor.email,
+        supervisor,
         evaluationId,
-        unitId
+        unitId,
+        unitName,
       );
       break;
     case 'customer':
       sendRequireEvaluationMessageToCustomer(
-        { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
-        'puuttuva arviointi',
-        emails.customerEmail,
-        customerId,
-        teacherId,
+        'Arviointi vaatii toimenpiteitä',
+        customer.email,
+        customer,
         evaluationId,
-        unitId
+        unitId,
+        unitName,
       );
       break;
     default:
@@ -156,33 +152,17 @@ export const sendReadyEmails = (
   return emailsSendTo
 };
 
-interface ImessageObj {
-  user: {
-    role: string;
-  }
-  formIsReadyParams: {
-    degreeName: string;
-    unitName: string;
-    supervisorName: string;
-    customerName: string;
-    additionalInfo?: string;
-    supervisorFirstName?: string;
-    customerFirstName?: string;
-    teacherFirstName?: string;
-  };
-  emails: {
-    customerEmail: string;
-    teacherEmail: string;
-    supervisorEmail: string;
-  };
-  customerId: string;
-  teacherId: string;
-  supervisorId: string;
+
+interface IrequiresActionObj {
+  role: string;
+  customer: IUser;
+  supervisor: IUser;
   evaluationId: string;
   unitId: string;
 }
 
-const updateUnitStatus = (unit: any, messageObj: ImessageObj) => {
+
+const updateUnitStatus = (unit: IUnit, requiresActionObj: IrequiresActionObj) => {
   let allAssessmentsCompleted = true;
   let anyAssessmentInProgress = false;
 
@@ -202,15 +182,16 @@ const updateUnitStatus = (unit: any, messageObj: ImessageObj) => {
     || !unit.customerReady && unit.teacherReady) {
     console.log('set status to 4');
     unit.status = 4;
+
     sendRequireEvaluationEmails(
-      messageObj.user.role,
-      messageObj.formIsReadyParams,
-      messageObj.emails,
-      messageObj.customerId,
-      messageObj.teacherId,
-      messageObj.evaluationId,
-      messageObj.unitId
+      requiresActionObj.role,
+      requiresActionObj.customer,
+      requiresActionObj.supervisor,
+      requiresActionObj.evaluationId,
+      requiresActionObj.unitId,
+      unit.name.fi
     )
+
   } else if (unit.customerReady && unit.supervisorReady && !unit.teacherReady) {
     console.log('set status to 2');
     unit.status = 2;
@@ -368,7 +349,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
     };
 
-    const userRole: UserRole = getUserRole(user.role)
+    const userRole: UserRole = getUserRole(user.role)!
 
     sendContactRequestEmails(
       selectedValues,
@@ -388,21 +369,21 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       return (unit._id) !== (updatedUnit._id)
     })
 
-    const messageOjb = {
+    const customer = await userModel.findById(customerId)
+    const supervisor = await userModel.findById(supervisorId)
+
+    const requiresActionObj: IrequiresActionObj = {
+      role: userRole,
+      customer: customer!,
+      supervisor: supervisor!,
+      evaluationId: evaluationId,
+      unitId: unitId,
 
     }
 
-
     evaluation.units = updatedUnit && [
       ...existingUnits,
-      updateUnitStatus(updatedUnit, selectedValues,
-        role: userRole,
-        emails,
-        customerId,
-        teacherId,
-        supervisorId,
-        evaluationId,
-        unitId),
+      updateUnitStatus(updatedUnit, requiresActionObj),
     ];
 
     evaluation.set({

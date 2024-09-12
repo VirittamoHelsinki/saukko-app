@@ -34,7 +34,7 @@ interface IUser {
   id: mongoose.Schema.Types.ObjectId;
 }
 
-interface IUnit {
+export interface IUnit {
   _id: number;
   status: number;
   teacherReady: boolean;
