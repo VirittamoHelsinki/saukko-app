@@ -1,0 +1,116 @@
+.app__wrapper {
+  .clientPage__wrapper {
+    padding-top: 3rem;
+
+    .navigation-button {
+      width: 130px;
+      padding: 16px;
+      font-size: 16px;
+      text-decoration: none;
+      border: 2px solid var(--link-blue);
+      color: var(--link-blue);
+
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      * {
+        color: inherit;
+        font-size: inherit;
+      }
+    }
+
+    .clientPage__container {
+      padding: 10px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .clientPage__card {
+        background: #F2F2F2;
+        padding: 28px 14px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-bottom: 2rem;
+      }
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+  }
+}
+
+.clientPage__unit {
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .clientPage__unit-name {
+    color: var(----color-black-90, #1A1A1A);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 28px;
+  }
+
+  .clientPage__unit-assessments {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    .clientPage__assessment {
+      color: var(----color-black, var(--_components-switch-slideFill, #000));
+      font-family: "Helsinki Grotesk";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+  }
+}
+
+.client-information__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 16px;
+  font-style: normal;
+  line-height: normal;
+  color: var(----color-black-90, #1A1A1A);
+
+  &.disabled {
+    color: var(----color-black-40, #999);
+  }
+
+  .field {
+    font-weight: 700;
+    color: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    line-height: inherit;
+  }
+
+  .value {
+    color: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    line-height: inherit;
+  }
+}
+
+
+.title {
+  color: var(----color-black-90, #1A1A1A);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}

@@ -27,13 +27,16 @@ const UnitStatus = ({ unitId, status, subheader, link }) => {
     // img = <img src={blackicone} alt='Icone' />;
     header = 'Aloittamatta';
     backgroundColor = '#E2E2E2';
+  } else if (status === 4) {
+    header = 'Käsittelyssä';
+    backgroundColor = '#FFAAAA';
   }
 
   const handleClick = () => {
     setChosenUnitId(unitId)
     navigate(link)
   }
-  
+
   return (
     <div
       className='unitstatus-wrapper'
