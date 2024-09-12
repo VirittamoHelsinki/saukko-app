@@ -183,14 +183,27 @@ const updateUnitStatus = (unit: IUnit, requiresActionObj: IrequiresActionObj) =>
     console.log('set status to 4');
     unit.status = 4;
 
-    sendRequireEvaluationEmails(
-      requiresActionObj.role,
-      requiresActionObj.customer,
-      requiresActionObj.supervisor,
-      requiresActionObj.evaluationId,
-      requiresActionObj.unitId,
-      unit.name.fi
-    )
+    if (unit.customerReady && !unit.supervisorReady) {
+      sendRequireEvaluationEmails(
+        'supervisor',
+        requiresActionObj.customer,
+        requiresActionObj.supervisor,
+        requiresActionObj.evaluationId,
+        requiresActionObj.unitId,
+        unit.name.fi
+      )
+    } else {
+      sendRequireEvaluationEmails(
+        'customer',
+        requiresActionObj.customer,
+        requiresActionObj.supervisor,
+        requiresActionObj.evaluationId,
+        requiresActionObj.unitId,
+        unit.name.fi
+      )
+    }
+
+
 
   } else if (unit.customerReady && unit.supervisorReady && !unit.teacherReady) {
     console.log('set status to 2');

@@ -225,25 +225,30 @@ const UserPerformance = () => {
 
 
     switch (currentUser?.role) {
-      case 'customer':
+      case 'customer': {
         const customerReady = selectedValues['valmisLahetettavaksi'];
         updatedUnit = {
           ...updatedUnit,
           customerReady
-        }
+        };
         break;
-      case 'supervisor':
+      }
+      case 'supervisor': {
         const supervisorReady = selectedValues['valmisLahetettavaksi'];
         updatedUnit = {
           ...updatedUnit,
           supervisorReady
-        }
-      case 'teacher':
+        };
+        break;
+      }
+      case 'teacher': {
         const teacherReady = selectedValues['suoritusValmis'];
         updatedUnit = {
           ...updatedUnit,
           teacherReady
-        }
+        };
+        break;
+      }
     }
 
     console.log("UNIT TO UPDATE", unitToUpdate);
