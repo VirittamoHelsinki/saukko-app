@@ -1,54 +1,42 @@
-import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import { Modal } from "@mui/material"
+import { Icon } from "@iconify/react";
+import { useNavigate } from 'react-router-dom';
 
-const CustomDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
-    backgroundColor: "#F00",
-  },
-  '& .MuiDialogActions-root': {
-    padding: theme.spacing(1),
-    backgroundColor: "#F00",
-  },
-}));
-
-const CustomDialogTitle = (props) => {
-  const { children, onClose, ...other } = props;
+const NotificationModal = ({ isOpen, onClose }) => {
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label='close'
-          onClick={onClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          {/* <CancelOutlinedIcon /> */}
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  );
-}
+    <Modal
+      open={isOpen}
+      onClose={onClose}
+    >
 
-const ClientEditModal = ({ open, handleClose }) => {
-  return (
-    <CustomDialog open={open} handleClose={handleClose} >
-      <CustomDialogTitle>Hello world</CustomDialogTitle>
-      <p>hello world</p>
-    </CustomDialog>
+      <div
+        className="notification-modal"
+      >
+        <div className="notification-modal__header">
+          <svg onClick={() => onClose(false)} xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M12 1.5L7.5 6L12 10.5L10.5 12L6 7.5L1.5 12L0 10.5L4.5 6L0 1.5L1.5 0L6 4.5L10.5 0L12 1.5Z" fill="black" />
+          </svg>
+        </div>
+
+        <div className="notification-modal__body">
+          <h3 className="notification__title">Asiakkaan tietojen muokkaus</h3>
+          
+        </div>
+
+        <div className="notification-modal__footer">
+          <button
+            className='notification-modal__footer__button'
+            onClick={onClose}
+          >
+            <span>Tarkastele suoritusta</span>
+            <Icon icon="bx:right-arrow-alt" />
+          </button>
+        </div>
+      </div>
+
+    </Modal>
   )
 }
 
-export default ClientEditModal
+export default NotificationModal

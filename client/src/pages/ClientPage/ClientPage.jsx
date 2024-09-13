@@ -1,15 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
-import { fetchUserById } from '../../api/user';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from "dayjs"
 import { Icon } from '@iconify/react/dist/iconify.js';
-import ClientEditModal from '../../components/ClientEditModal';
-import Modal from '../../components/Modal';
+import { fetchUserById } from "../../api/user";
 
+import ClientEditModal from './ClientEditModal';
 
 const formatDate = (date) => dayjs(date).format("DD.MM.YYYY")
+
+
+const style = {
+};
+
 
 const ClientInformationField = ({
   fieldLabel = "field",
@@ -24,11 +28,10 @@ const ClientInformationField = ({
   )
 }
 
-
 function ClientPage() {
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
-
   const { id } = useParams()
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+  const [ open, setOpen ] = useState(true);
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -41,6 +44,10 @@ function ClientPage() {
     setHeading("Asiakkuuden yhteenveto")
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const teacher = user?.evaluationId.teacherId;
   const supervisor = user?.evaluationId?.supervisorIds?.[0];
@@ -148,9 +155,7 @@ function ClientPage() {
           <p>Takaisin</p>
         </Link>
 
-        <Modal open={true} title="hello world">
-          <p>hello world, this is modal content</p>
-        </Modal>
+        <ClientEditModal isOpen={true} onClose={handleClose} />
 
       </section>
     </div>

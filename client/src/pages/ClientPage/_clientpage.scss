@@ -44,6 +44,34 @@
     h1 {
       font-size: 20px;
     }
+
+    .edit-modal__form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+
+      .edit-modal__form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        label {
+          font-size: 16px;
+        }
+
+        input {
+          border: 2px solid #1A1A1A;
+          background: #FFF;
+          display: flex;
+          height: 56px;
+          padding: 16px 14px;
+          align-items: center;
+          gap: 124px;
+          align-self: stretch;
+        }
+      }
+    }
+
   }
 }
 
@@ -130,3 +158,5 @@
     border-radius: 1000px;
   }
 }
+
+
