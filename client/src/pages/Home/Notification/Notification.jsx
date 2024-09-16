@@ -5,9 +5,10 @@ import { MenuItem, Select } from '@mui/material';
 import classNames from "classnames"
 import NotificationModal from './NotificationModal';
 import SystemMessage from '../../../components/NotificationModal/NotificationModal';
-import { IconButton } from '@mui/material';
+import { IconButton, FormControlLabel, Switch } from '@mui/material';
 import { Icon } from '@iconify/react';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import UnarchiveIcon from '@mui/icons-material/Unarchive';
 import WarningDialog from '../../../components/WarningDialog/WarningDialog';
 
 import { fetchAllNotifications, deleteNotificationById, updateNotificationById } from '../../../api/notification';
@@ -21,7 +22,7 @@ const Notification = () => {
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [filteredNotifications, setFilteredNotifications] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const [notificationToDelete, setNotificationToDelete] = useState(null)
+  const [notificationToDelete, setNotificationToDelete] = useState(null);
 
   // For warning menu
   const [showWarning, setShowWarning] = useState(false);
@@ -37,23 +38,41 @@ const Notification = () => {
         await deleteNotificationById(notificationToDelete);
         setNotifications(prevNotifications => prevNotifications.filter(n => n._id !== notificationToDelete));
         setNotificationToDelete(null);
-        handleNotificationModalOpen();
+        handleNotificationModalOpenOnDelete();
       } catch (error) {
         console.error('Error deleting notification:', error);
       }
     }
   };
 
-  const [openSuccessSystemMessage, setOpenSuccessSystemMessage] = useState(false)
+  const [openSuccessSystemMessageOnDelete, setOpenSuccessSystemMessageOnDelete] = useState(false)
+  const [openSuccessSystemMessageOnArchive, setOpenSuccessSystemMessageOnArchive] = useState(false)
+  const [openSuccessSystemMessageOnUnarchive, setOpenSuccessSystemMessageOnUnarchive] = useState(false)
 
   // For success notification
-  const handleNotificationModalOpen = () => {
-    setOpenSuccessSystemMessage(true);
+  const handleNotificationModalOpenOnDelete = () => {
+    setOpenSuccessSystemMessageOnDelete(true);
   };
-
-  const handleNotificationModalClose = () => {
-    setOpenSuccessSystemMessage(false);
+  const handleNotificationModalOpenOnArchive = () => {
+    setOpenSuccessSystemMessageOnArchive(true);
+  };
+  const handleNotificationModalOpenOnUnarchive = () => {
+    setOpenSuccessSystemMessageOnUnarchive(true);
+  };
+  const handleNotificationModalCloseOnDelete = () => {
+    setOpenSuccessSystemMessageOnDelete(false);
   }
+  const handleNotificationModalCloseOnArchive = () => {
+    setOpenSuccessSystemMessageOnArchive(false);
+  }
+
+
+  //Archive
+  const [showArchived, setShowArchived] = useState(false);
+
+  const handleToggleArchived = () => {
+    setShowArchived(prev => !prev);
+  };
 
 
 
@@ -88,11 +107,15 @@ const Notification = () => {
         filtered = filtered.filter(notification => notification.customer._id === filterUser);
       }
 
+      if (showArchived) {
+        filtered = filtered.filter(notification => notification.isArchived === showArchived)
+      }
+
       setFilteredNotifications(filtered);
     };
 
     applyFilters();
-  }, [filterType, notifications, filterUser]);
+  }, [filterType, notifications, filterUser, showArchived]);
 
   const handleNotificationClick = async (notification) => {
     try {
@@ -129,9 +152,25 @@ const Notification = () => {
     setShowWarning(true);
   };
 
-  const handleArchiveNotification = () => {
-    console.log('archive notification')
-    setShowWarning(true)
+  const handleUnarchiveNotification = async (notification) => {
+    try {
+      await updateNotificationById(notification._id, { isArchived: false });
+      handleNotificationModalOpenOnUnarchive();
+
+    } catch (error) {
+      console.error('Error updating notification:', error);
+    }
+  }
+
+
+  const handleArchiveNotification = async (notification) => {
+    try {
+      await updateNotificationById(notification._id, { isArchived: true });
+      handleNotificationModalOpenOnArchive();
+
+    } catch (error) {
+      console.error('Error updating notification:', error);
+    }
   }
 
   useEffect(() => {
@@ -150,9 +189,24 @@ const Notification = () => {
         type='success'
         title='Ilmoitus on poistettu'
         body='Ilmoitus on poistettu järjestelmästä onnistuneesti.'
-        open={openSuccessSystemMessage}
-        handleClose={handleNotificationModalClose}
+        open={openSuccessSystemMessageOnDelete}
+        handleClose={handleNotificationModalCloseOnDelete}
       />
+      <SystemMessage
+        type='success'
+        title='Ilmoitus on arkistoitu'
+        body='Ilmoitus on arkistoitu onnistuneesti.'
+        open={openSuccessSystemMessageOnArchive}
+        handleClose={handleNotificationModalCloseOnArchive}
+      />
+      <SystemMessage
+        type='success'
+        title='Ilmoitus ei ole enää arkistoitu'
+        body='Ilmoitus on palautettu onnistuneesti.'
+        open={openSuccessSystemMessageOnUnarchive}
+        handleClose={handleNotificationModalCloseOnArchive}
+      />
+
       <NotificationModal
         isOpen={!!selectedNotification}
         notification={selectedNotification}
@@ -222,6 +276,11 @@ const Notification = () => {
 
         <h3>Ilmoitukset</h3>
 
+        <FormControlLabel
+          control={<Switch checked={showArchived} onChange={handleToggleArchived} />}
+          label="Näytä vain arkistoidut ilmoitukset"
+        />
+
         <div className="notification-list">
           {
             filteredNotifications.map((notification) => {
@@ -255,16 +314,27 @@ const Notification = () => {
 
                     {notification.isSeen && (
                       <div className="remove__content">
-                        <IconButton
-                          edge="end"
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent card click
-                            handleArchiveNotification(notification._id);
-                          }}
-                          sx={{ backgroundColor: 'white' }}
-                        >
-                          <ArchiveIcon />
-                        </IconButton>
+                        {showArchived ?
+                          (<IconButton
+                            edge="end"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click
+                              handleUnarchiveNotification(notification);
+                            }}
+                            sx={{ backgroundColor: 'white' }}
+                          >
+                            <UnarchiveIcon />
+                          </IconButton>) :
+                          (<IconButton
+                            edge="end"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click
+                              handleArchiveNotification(notification);
+                            }}
+                            sx={{ backgroundColor: 'white' }}
+                          >
+                            <ArchiveIcon />
+                          </IconButton>)}
 
                         <IconButton
                           edge="end"
