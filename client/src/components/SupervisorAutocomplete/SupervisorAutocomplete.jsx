@@ -2,49 +2,31 @@ import { useState, useEffect } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { fetchAllSupervisors } from '../../api/user';
 import useEvaluationFormStore from '../../store/zustand/evaluationFormStore';
+import { fetchInternalWorkplaceById } from '../../api/workplace';
 
-const SupervisorAutocomplete = () => {
-  const [fetchedSupervisors, setFetchedSupervisors] = useState([]);
+const SupervisorAutocomplete = ({ workplace, setValue, value  }) => {
   const [inputValue, setInputValue] = useState('');
 
-  const { setSelectedSupervisor } = useEvaluationFormStore(); // Make sure the setter is available
-
-  // Fetch Supervisors when the component mounts
-  useEffect(() => {
-    const fetchSupervisors = async () => {
-      try {
-        const fetchedSupervisors = await fetchAllSupervisors();
-
-        setFetchedSupervisors(fetchedSupervisors);
-      } catch (error) {
-        console.error('Error fetching Supervisors:', error);
-      }
-    };
-
-    fetchSupervisors();
-  }, []);
-
+  console.log("🚀 ~ SupervisorAutocomplete ~ workplace:", workplace);
+  console.log("🚀 ~ SupervisorAutocomplete ~ value:", value);
+  
   // Handle selecting a supervisor from the dropdown
-  const handleSupervisorChange = (event, newValue) => {
-    // Find the supervisor object from the fetchedSupervisors array
-    const selectedSupervisor = fetchedSupervisors.find(
-      (supervisor) => `${supervisor.firstName} ${supervisor.lastName}` === newValue
-    );
-
-    // If found, pass the supervisor ID to the parent component
-    if (selectedSupervisor) {
-      setSelectedSupervisor(selectedSupervisor)
-    }
+  const handleSupervisorChange = (_event, newValue) => {
+    setValue(newValue)
   };
+
+  console.log("🚀 ~ SupervisorAutocomplete - inputValue", inputValue);
+  
 
   return (
     <Autocomplete
+      disabled={workplace ? false : true}
       disablePortal
-      options={fetchedSupervisors.map(
-        (supervisor) => `${supervisor.firstName} ${supervisor.lastName}`
-      )}
+      options={workplace.supervisors}
+      getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
       onChange={handleSupervisorChange} // Handle selecting a supervisor
       inputValue={inputValue}
+      value={value}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue); // Update input value on change
       }}

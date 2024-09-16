@@ -8,6 +8,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Autocomplete, TextField, List, ListItem, IconButton, ListItemText, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { useState } from "react";
 import SupervisorAutocomplete from '../../components/SupervisorAutocomplete/SupervisorAutocomplete';
+import UnitAutocomplete from '../../components/UnitAutocomplete/UnitAutocomplete';
 
 const theme = createTheme({
   palette: {
@@ -44,19 +45,31 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
 		firstName: userToEdit.firstName,
 		lastName: userToEdit.lastName,
 		email: userToEdit.email,
+    workplace: userToEdit.workplaceId,
 		isArchived: false, // Checkbox value
 	});
 
   const [ evaluationFormData, setEvaluationFormData] = useState({
-    unitId: userToEdit.evaluationId.unitId,
-    supervisorId: userToEdit.evaluationId.supervisorIds[0],
+    supervisor: userToEdit.workplaceId.supervisors[0],
     startDate: userToEdit.evaluationId.startDate,
     endDate: userToEdit.evaluationId.endDate,
   });
 
+  const setWorkplace = (workplace) => {
+    setUserFormData({ ...userFormData, workplace })
+
+    setEvaluationFormData({
+      ...evaluationFormData,
+      supervisor: workplace.supervisors[0],
+    })
+  }
+
+  const setSupervisor = (supervisor) => {
+    setEvaluationFormData({ ...evaluationFormData, supervisor })
+  }
+
   console.log("🚀 ~ ClientEditModal ~  userToEdit:",  userToEdit);
   console.log("🚀 ~ ClientEditModal ~  evaluationFormData:",  evaluationFormData);
-  console.log("🚀 ~ ClientEditModal ~  userFormData:",  userFormData);
 
   return (
     <Modal
@@ -83,17 +96,35 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
           <form>
             <div className="form-container">
               <label className="form-label">Etunimi *</label>
-              <input type="text" id="firstName" name="firstName" />
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                value={userFormData.firstName}
+                onChange={(e) => setUserFormData({ ...userFormData, firstName: e.target.value })}
+              />
             </div>
 
             <div className="form-container">
               <label className="form-label">Sukunimi *</label>
-              <input type="text" id="lastName" name="lastName" />
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={userFormData.lastName}
+                onChange={(e) => setUserFormData({ ...userFormData, lastName: e.target.value })}
+              />
             </div>
 
             <div className="form-container">
               <label className="form-label">Sähköposti *</label>
-              <input type="text" id="email" name="email" />
+              <input
+                type="text"
+                id="email"
+                name="email"
+                value={userFormData.email}
+                onChange={(e) => setUserFormData({ ...userFormData, email: e.target.value })}
+              />
             </div>
 
             <div className="form-container">
@@ -122,12 +153,19 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
 
             <div className="form-container">
               <label className="form-label">Työpaikan yksikkö *</label>
-              <input type="text" id="unit" name="unit" />
+              <UnitAutocomplete
+                setValue={setWorkplace}
+                value={userFormData.workplace}
+              />
             </div>
 
             <div className="form-container">
               <label className="form-label">Ohjaaja *</label>
-              <SupervisorAutocomplete />
+              <SupervisorAutocomplete
+                workplace={userFormData.workplace}
+                setValue={setSupervisor}
+                value={evaluationFormData.supervisor}
+              />
             </div>
 
             <div className="form-container">

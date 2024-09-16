@@ -613,7 +613,10 @@ const getUserById = async (req: Request, res: Response) => {
       path: 'evaluationId',
       populate: { path: 'supervisorIds' }
     })
-    .populate('workplaceId');
+    .populate({
+      path: 'workplaceId',
+      populate: { path: 'supervisors' }
+    });
     res.status(200).json(user);
   } catch (error) {
     console.error('Error fetching user:', error);
