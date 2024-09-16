@@ -65,6 +65,9 @@ const Notification = () => {
   const handleNotificationModalCloseOnArchive = () => {
     setOpenSuccessSystemMessageOnArchive(false);
   }
+  const handleNotificationModalCloseOnUnarchive = () => {
+    setOpenSuccessSystemMessageOnUnarchive(false);
+  }
 
 
   //Archive
@@ -107,8 +110,14 @@ const Notification = () => {
         filtered = filtered.filter(notification => notification.customer._id === filterUser);
       }
 
-      if (showArchived) {
-        filtered = filtered.filter(notification => notification.isArchived === showArchived)
+      if (!showArchived) {
+        // Show only non-archived notifications if switch is off
+        filtered = filtered.filter(notification => !notification.isArchived);
+        console.log('filtered:', filtered)
+      } else {
+        // Show only archived notifications when switch is on
+        filtered = filtered.filter(notification => notification.isArchived);
+        console.log('filtered:', filtered)
       }
 
       setFilteredNotifications(filtered);
@@ -127,6 +136,7 @@ const Notification = () => {
           n._id === notification._id ? { ...n, isSeen: true } : n
         )
       );
+
     } catch (error) {
       console.error('Error updating notification:', error);
     }
@@ -152,26 +162,33 @@ const Notification = () => {
     setShowWarning(true);
   };
 
-  const handleUnarchiveNotification = async (notification) => {
-    try {
-      await updateNotificationById(notification._id, { isArchived: false });
-      handleNotificationModalOpenOnUnarchive();
-
-    } catch (error) {
-      console.error('Error updating notification:', error);
-    }
-  }
-
-
   const handleArchiveNotification = async (notification) => {
     try {
       await updateNotificationById(notification._id, { isArchived: true });
-      handleNotificationModalOpenOnArchive();
 
+      // Refetch all notifications after the update
+      const updatedNotifications = await fetchAllNotifications();
+      setNotifications(updatedNotifications || []);
+
+      handleNotificationModalOpenOnArchive();
     } catch (error) {
-      console.error('Error updating notification:', error);
+      console.error('Error archiving notification:', error);
     }
-  }
+  };
+
+  const handleUnarchiveNotification = async (notification) => {
+    try {
+      await updateNotificationById(notification._id, { isArchived: false });
+
+      // Refetch all notifications after the update
+      const updatedNotifications = await fetchAllNotifications();
+      setNotifications(updatedNotifications || []);
+
+      handleNotificationModalOpenOnUnarchive();
+    } catch (error) {
+      console.error('Error unarchiving notification:', error);
+    }
+  };
 
   useEffect(() => {
     setHeading('Ilmoitukset');
@@ -204,7 +221,7 @@ const Notification = () => {
         title='Ilmoitus ei ole enää arkistoitu'
         body='Ilmoitus on palautettu onnistuneesti.'
         open={openSuccessSystemMessageOnUnarchive}
-        handleClose={handleNotificationModalCloseOnArchive}
+        handleClose={handleNotificationModalCloseOnUnarchive}
       />
 
       <NotificationModal
