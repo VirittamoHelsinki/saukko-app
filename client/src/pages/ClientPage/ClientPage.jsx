@@ -31,7 +31,7 @@ const ClientInformationField = ({
 function ClientPage() {
   const { id } = useParams()
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
-  const [ open, setOpen ] = useState(true);
+  const [ open, setOpen ] = useState(false);
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -62,7 +62,7 @@ function ClientPage() {
 
         <div className='title-container'>
           <p className="title">Asiakkuuden yhteenveto</p>
-          <button className="title-container__edit-button">
+          <button className="title-container__edit-button" onClick={() => setOpen(true)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
               <path d="M5.00699 16.9825L0.726521 16.9693L0.713867 12.4901L11.7856 0.904297L16.0787 5.39674L5.00699 16.9825ZM11.7856 3.50519L2.5215 13.1994L2.52782 15.0853L4.32913 15.091L13.5932 5.39674L11.7856 3.50519Z" fill="#0000BF"/>
             </svg>
@@ -158,7 +158,7 @@ function ClientPage() {
         {
           user && (
             <ClientEditModal
-              isOpen={true}
+              isOpen={open}
               onClose={handleClose}
               userToEdit={user}
             />

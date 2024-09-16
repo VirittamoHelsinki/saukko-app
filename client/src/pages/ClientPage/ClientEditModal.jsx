@@ -70,8 +70,13 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
     setEvaluationFormData({ ...evaluationFormData, supervisor })
   }
 
-  console.log("🚀 ~ ClientEditModal ~  userToEdit:",  userToEdit);
-  console.log("🚀 ~ ClientEditModal ~  evaluationFormData:",  evaluationFormData);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    console.log("🚀 ~ ClientEditModal ~  userToEdit:",  userToEdit);
+    console.log("🚀 ~ ClientEditModal ~  evaluationFormData:",  evaluationFormData);
+
+    onClose(false);
+  }
 
   return (
     <Modal
@@ -95,7 +100,7 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
         </div>
 
         <div className="client-edit-modal__body">
-          <form>
+          <form onSubmit={onSubmit}>
             <div className="form-container">
               <label className="form-label">Etunimi *</label>
               <input
@@ -213,7 +218,7 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
 
             <button
               className="client-edit-modal__footer__button"
-              onClick={() => onClose(false)}
+              type="submit"
             >
               Hyväksy muutokset
             </button>
