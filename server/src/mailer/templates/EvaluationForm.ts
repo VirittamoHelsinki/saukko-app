@@ -548,6 +548,7 @@ export const sendRequireEvaluationMessageToCustomer = async (
   subject: string,
   to: string,
   customer: IUser,
+  supervisor: IUser,
   evaluationId: string,
   unitId: string,
   unitName: string,
@@ -580,13 +581,14 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(customer._id, customer._id, subject, text, 'requiresAction', evaluationId, unitId);
+  await saveNotification(customer._id, supervisor._id, subject, text, 'requiresAction', evaluationId, unitId);
 };
 
 export const sendRequireEvaluationMessageToSupervisor = async (
   subject: string,
   to: string,
   supervisor: IUser,
+  customer: IUser,
   evaluationId: string,
   unitId: string,
   unitName: string,
@@ -596,7 +598,8 @@ export const sendRequireEvaluationMessageToSupervisor = async (
     `
 Hei ${supervisor.firstName},
 
-Tutkinnonosa ${unitName} vaatii ohjaajan arviointia.
+Asiakkaan ${customer.firstName} ${customer.lastName}
+tutkinnonosa ${unitName} vaatii ohjaajan arviointia.
 
 
 Ystävällisin terveisin,
@@ -618,7 +621,7 @@ Ylläpito
   }
 
   sendEmail(emailObj);
-  await saveNotification(supervisor._id, supervisor._id, subject, text, 'requiresAction', evaluationId, unitId);
+  await saveNotification(supervisor._id, customer._id, subject, text, 'requiresAction', evaluationId, unitId);
 };
 
 

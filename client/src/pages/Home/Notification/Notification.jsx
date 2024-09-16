@@ -4,9 +4,14 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 import { MenuItem, Select } from '@mui/material';
 import classNames from "classnames"
 import NotificationModal from './NotificationModal';
+import SystemMessage from '../../../components/NotificationModal/NotificationModal';
+import { IconButton } from '@mui/material';
+import { Icon } from '@iconify/react';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import WarningDialog from '../../../components/WarningDialog/WarningDialog';
 
-import { updateNotificationById } from '../../../api/notification';
-import { fetchAllNotifications } from '../../../api/notification';
+import { fetchAllNotifications, deleteNotificationById, updateNotificationById } from '../../../api/notification';
+
 
 const Notification = () => {
   const { currentUser } = useAuthContext();
@@ -16,6 +21,41 @@ const Notification = () => {
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [filteredNotifications, setFilteredNotifications] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [notificationToDelete, setNotificationToDelete] = useState(null)
+
+  // For warning menu
+  const [showWarning, setShowWarning] = useState(false);
+
+  const handleWarningClose = () => {
+    setShowWarning(false);
+  };
+
+  const handleProceed = async () => {
+    setShowWarning(false);
+    if (notificationToDelete) {
+      try {
+        await deleteNotificationById(notificationToDelete);
+        setNotifications(prevNotifications => prevNotifications.filter(n => n._id !== notificationToDelete));
+        setNotificationToDelete(null);
+        handleNotificationModalOpen();
+      } catch (error) {
+        console.error('Error deleting notification:', error);
+      }
+    }
+  };
+
+  const [openSuccessSystemMessage, setOpenSuccessSystemMessage] = useState(false)
+
+  // For success notification
+  const handleNotificationModalOpen = () => {
+    setOpenSuccessSystemMessage(true);
+  };
+
+  const handleNotificationModalClose = () => {
+    setOpenSuccessSystemMessage(false);
+  }
+
+
 
   // Fetch info for these in the future
   const [filterUser, setFilterUser] = useState("");
@@ -84,6 +124,16 @@ const Notification = () => {
     setFilterType(event.target.value);
   }
 
+  const handleRemoveNotification = (notificationId) => {
+    setNotificationToDelete(notificationId);
+    setShowWarning(true);
+  };
+
+  const handleArchiveNotification = () => {
+    console.log('archive notification')
+    setShowWarning(true)
+  }
+
   useEffect(() => {
     setHeading('Ilmoitukset');
     setSiteTitle('Ilmoitukset');
@@ -96,10 +146,25 @@ const Notification = () => {
 
   return (
     <>
+      <SystemMessage
+        type='success'
+        title='Ilmoitus on poistettu'
+        body='Ilmoitus on poistettu järjestelmästä onnistuneesti.'
+        open={openSuccessSystemMessage}
+        handleClose={handleNotificationModalClose}
+      />
       <NotificationModal
         isOpen={!!selectedNotification}
         notification={selectedNotification}
         onClose={() => setSelectedNotification(null)}
+      />
+      <WarningDialog
+        title={'Haluatko varmasti poistaa ilmoituksen?'}
+        bodyText={'Ilmoitus poistetaan järjestelmästä pysyvästi.'}
+        buttonText={'Poista ilmoitus'}
+        showWarning={showWarning}
+        handleWarningClose={handleWarningClose}
+        handleProceed={handleProceed}
       />
       <div className='notifications__wrapper'>
         <h3>Suodatin</h3>
@@ -181,14 +246,44 @@ const Notification = () => {
                       <h3 className="notification__title">{notification.title}</h3>
                       <p className="notification__recipient">Asiakas: {customerName}</p>
                     </div>
+
                     {!notification.isSeen && (
                       <div className="notification__badge">
                         <span>uusi</span>
                       </div>
                     )}
+
+                    {notification.isSeen && (
+                      <div className="remove__content">
+                        <IconButton
+                          edge="end"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent card click
+                            handleArchiveNotification(notification._id);
+                          }}
+                          sx={{ backgroundColor: 'white' }}
+                        >
+                          <ArchiveIcon />
+                        </IconButton>
+
+                        <IconButton
+                          edge="end"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent card click
+                            handleRemoveNotification(notification._id);
+                          }}
+                          sx={{ backgroundColor: 'white' }}
+                        >
+                          <Icon
+                            icon="material-symbols:delete-outline"
+                            color="#B01038"
+                          />
+                        </IconButton>
+                      </div>
+                    )}
                   </div>
                 </div>
-              )
+              );
             })
           }
         </div>
