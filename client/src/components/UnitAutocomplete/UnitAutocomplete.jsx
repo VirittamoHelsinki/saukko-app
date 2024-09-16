@@ -1,27 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { fetchAllUnits } from '../../api/user';
 import useEvaluationFormStore from '../../store/zustand/evaluationFormStore';
+import { fetchEvaluationById } from '../../api/evaluation';
 
-const UnitAutocomplete = () => {
-  const [fetchedUnits, setFetchedUnits] = useState([]);
+const UnitAutocomplete = ({ evaluationId, value, setValue }) => {
+  const [ units, setUnits ] = useState([]);
   const [inputValue, setInputValue] = useState('');
-
-  const { setSelectedUnit } = useEvaluationFormStore(); // Make sure the setter is available
 
   // Fetch Units when the component mounts
   useEffect(() => {
     const fetchUnits = async () => {
       try {
-  
-        setFetchedUnits(adminUnits); // Assuming response.data contains the array of Units
+        const evaluation = await fetchEvaluationById(evaluationId);
+        setUnits(evaluation.units);
       } catch (error) {
         console.error('Error fetching Units:', error);
       }
     };
 
     fetchUnits();
-  }, []);
+  }, [ evaluationId ]);
 
   // Handle selecting a unit from the dropdown
   const handleUnitChange = (event, newValue) => {
@@ -32,19 +30,17 @@ const UnitAutocomplete = () => {
 
     // If found, pass the unit ID to the parent component
     if (selectedUnit) {
-      setSelectedUnit(selectedUnit)
+      setValue(selectedUnit)
     }
   };
 
   return (
     <Autocomplete
       disablePortal
-      options={fetchedUnits.map(
-        (unit) => `${unit.name.fi}`
-      )}
+      options={units.map((unit) => `${unit.name.fi}`)}
       onChange={handleUnitChange} // Handle selecting a unit
       inputValue={inputValue}
-      onInputChange={(event, newInputValue) => {
+      onInputChange={(_event, newInputValue) => {
         setInputValue(newInputValue); // Update input value on change
       }}
       sx={{
