@@ -79,6 +79,11 @@ const fetchAllUsers = async () => {
   return response.data;
 }
 
+const fetchAllSupervisors = async () => {
+  const response = await axios.get("/api/users?role=supervisor");
+  return response.data;
+}
+
 const logoutUser = async () => {
   await axios.get('/auth/logout');
 };
@@ -188,4 +193,5 @@ export {
   addTeacher,
   fetchUserById,
   fetchAllUsers,
+  fetchAllSupervisors,
 };
