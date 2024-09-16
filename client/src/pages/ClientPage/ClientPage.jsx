@@ -155,7 +155,15 @@ function ClientPage() {
           <p>Takaisin</p>
         </Link>
 
-        <ClientEditModal isOpen={true} onClose={handleClose} />
+        {
+          user && (
+            <ClientEditModal
+              isOpen={true}
+              onClose={handleClose}
+              userToEdit={user}
+            />
+          )
+        }
 
       </section>
     </div>

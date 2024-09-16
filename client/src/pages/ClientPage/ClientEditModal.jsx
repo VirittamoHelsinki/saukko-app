@@ -5,12 +5,9 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Typography } from '@mui/material';
-import useCheckEmailAvailability from '../../hooks/useEmailAvailable';
-import useHeadingStore from '../../store/zustand/useHeadingStore';
-import TeacherAutocomplete from '../../components/TeacherAutocomplete/TeacherAutocomplete';
 import { Autocomplete, TextField, List, ListItem, IconButton, ListItemText, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { useState } from "react";
+import SupervisorAutocomplete from '../../components/SupervisorAutocomplete/SupervisorAutocomplete';
 
 const theme = createTheme({
   palette: {
@@ -40,19 +37,26 @@ const theme = createTheme({
 
 import "./_clienteditmodal.scss";
 
-const ClientEditModal = ({ isOpen, onClose }) => {
+const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
+  
 
-	const [formData, setFormData] = useState({
-		firstName: '',
-		lastName: '',
-		email: '',
-		role: 'teacher',
-		permissions: 'user',
-		degrees: [], // Store degree IDs here
+	const [ userFormData, setUserFormData] = useState({
+		firstName: userToEdit.firstName,
+		lastName: userToEdit.lastName,
+		email: userToEdit.email,
 		isArchived: false, // Checkbox value
 	});
 
-  console.log("🚀 ~ ClientEditModal ~ isOpen:", isOpen);
+  const [ evaluationFormData, setEvaluationFormData] = useState({
+    unitId: userToEdit.evaluationId.unitId,
+    supervisorId: userToEdit.evaluationId.supervisorIds[0],
+    startDate: userToEdit.evaluationId.startDate,
+    endDate: userToEdit.evaluationId.endDate,
+  });
+
+  console.log("🚀 ~ ClientEditModal ~  userToEdit:",  userToEdit);
+  console.log("🚀 ~ ClientEditModal ~  evaluationFormData:",  evaluationFormData);
+  console.log("🚀 ~ ClientEditModal ~  userFormData:",  userFormData);
 
   return (
     <Modal
@@ -123,7 +127,7 @@ const ClientEditModal = ({ isOpen, onClose }) => {
 
             <div className="form-container">
               <label className="form-label">Ohjaaja *</label>
-              <input type="text" id="unit" name="unit" />
+              <SupervisorAutocomplete />
             </div>
 
             <div className="form-container">
@@ -142,8 +146,8 @@ const ClientEditModal = ({ isOpen, onClose }) => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={formData.isArchived || false} // Checkbox state
-                    onChange={(e) => setFormData({ ...formData, isArchived: e.target.checked })} // Handle change
+                    checked={ userFormData.isArchived || false} // Checkbox state
+                    onChange={(e) => setUserFormData({ ... userFormData, isArchived: e.target.checked })} // Handle change
                     color="primary"
                   />
                 }
