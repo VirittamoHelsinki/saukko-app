@@ -37,6 +37,7 @@ const theme = createTheme({
 });
 
 import "./_clienteditmodal.scss";
+import dayjs from "dayjs";
 
 const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
   
@@ -53,6 +54,7 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
     supervisor: userToEdit.workplaceId.supervisors[0],
     startDate: userToEdit.evaluationId.startDate,
     endDate: userToEdit.evaluationId.endDate,
+    extensionEndDate: userToEdit.evaluationId.extensionEndDate,
   });
 
   const setWorkplace = (workplace) => {
@@ -134,6 +136,7 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
                   <DesktopDatePicker
                     id="startDate"
                     format="DD.MM.YYYY"
+                    value={dayjs(evaluationFormData.startDate)}
                   />
                 </ThemeProvider>
               </LocalizationProvider>
@@ -146,6 +149,7 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
                   <DesktopDatePicker
                     id="endDate"
                     format="DD.MM.YYYY"
+                    value={dayjs(evaluationFormData.endDate)}
                   />
                 </ThemeProvider>
               </LocalizationProvider>
@@ -169,12 +173,17 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
             </div>
 
             <div className="form-container">
-              <label className="form-label">Täydennysjakson päättymispäivä *</label>
+              <label className="form-label">Täydennysjakson päättymispäivä</label>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <ThemeProvider theme={theme}>
                   <DesktopDatePicker
-                    id="x"
+                    id="extensionEndDate"
                     format="DD.MM.YYYY"
+                    value={
+                      evaluationFormData.extentionEndDate
+                      ? dayjs(evaluationFormData.extentionEndDate)
+                      : null
+                    }
                   />
                 </ThemeProvider>
               </LocalizationProvider>
