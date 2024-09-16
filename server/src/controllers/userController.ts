@@ -6,8 +6,6 @@ const getAllUsers = async (req: Request, res: Response) => {
   try {
       const query = req.query;
       const users = await userModel.find(query);
-      console.log("users", users)
-    
       res.status(200).json(users);
 
   } catch (error) {
