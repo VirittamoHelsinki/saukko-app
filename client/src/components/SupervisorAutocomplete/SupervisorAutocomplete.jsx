@@ -1,8 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { fetchAllSupervisors } from '../../api/user';
-import useEvaluationFormStore from '../../store/zustand/evaluationFormStore';
-import { fetchInternalWorkplaceById } from '../../api/workplace';
 
 const SupervisorAutocomplete = ({ workplace, setValue, value  }) => {
   const [inputValue, setInputValue] = useState('');
@@ -27,7 +24,7 @@ const SupervisorAutocomplete = ({ workplace, setValue, value  }) => {
       onChange={handleSupervisorChange} // Handle selecting a supervisor
       inputValue={inputValue}
       value={value}
-      onInputChange={(event, newInputValue) => {
+      onInputChange={(_event, newInputValue) => {
         setInputValue(newInputValue); // Update input value on change
       }}
       sx={{
