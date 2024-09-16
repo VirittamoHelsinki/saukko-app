@@ -76,7 +76,7 @@ export default function CustomerList() {
   };
 
   // Titles color for info button
-  const titles = ['Valmis', 'Käsittelyssä', 'Aloitettu', 'Aloittamatta', 'Arvio Puuttuu'];
+  const titles = ['Valmis', 'Käsittelyssä', 'Aloitettu', 'Aloittamatta', 'Arviointi Puuttuu'];
 
   const getTitleColor = (title) => {
     switch (title) {
