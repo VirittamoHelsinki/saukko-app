@@ -341,7 +341,12 @@ const Notification = () => {
                             sx={{ backgroundColor: 'white' }}
                           >
                             <UnarchiveIcon />
-                          </IconButton>) :
+                          </IconButton>
+
+
+
+
+                          ) :
                           (<IconButton
                             edge="end"
                             onClick={(e) => {
@@ -353,7 +358,7 @@ const Notification = () => {
                             <ArchiveIcon />
                           </IconButton>)}
 
-                        <IconButton
+                        {showArchived && <IconButton
                           edge="end"
                           onClick={(e) => {
                             e.stopPropagation(); // Prevent card click
@@ -365,7 +370,7 @@ const Notification = () => {
                             icon="material-symbols:delete-outline"
                             color="#B01038"
                           />
-                        </IconButton>
+                        </IconButton>}
                       </div>
                     )}
                   </div>
