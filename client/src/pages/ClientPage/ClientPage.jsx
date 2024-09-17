@@ -60,6 +60,8 @@ function ClientPage() {
     <div className='clientPage__wrapper' id='main-wrapper'>
       <section className='clientPage__container'>
 
+        <h1>Asiakkuuden hallinnointi</h1>
+
         <div className='title-container'>
           <p className="title">Asiakkuuden yhteenveto</p>
           <button className="title-container__edit-button" onClick={() => setOpen(true)}>
@@ -132,15 +134,19 @@ function ClientPage() {
             units.map((unit, index) => (
               <div key={"unit" + index} className="clientPage__unit">
 
-                <p className="clientPage__unit-name">{unit.name.fi}</p>
+                <ClientInformationField
+                  fieldLabel={"Tutkinnon nimi"}
+                  fieldValue={unit.name.fi}
+                />
 
-                <div className="clientPage__unit-assessments">
-                  {
-                    unit.assessments.map((assessment, index) => (
-                      <p key={"assessment" + index} className="clientPage__unit-assessment">{assessment.name.fi}</p>
-                    ))
+                <ClientInformationField
+                  fieldLabel={"Tutkinnon osat"}
+                  fieldValue={
+                    unit.assessments.reduce((acc, assessment) => {
+                      return acc + assessment.name.fi + "\n";
+                    }, "").trim()
                   }
-                </div>
+                />
 
               </div>
             ))
