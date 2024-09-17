@@ -76,7 +76,7 @@ export default function CustomerList() {
   };
 
   // Titles color for info button
-  const titles = ['Valmis', 'Käsittelyssä', 'Aloitettu', 'Aloittamatta'];
+  const titles = ['Valmis', 'Käsittelyssä', 'Aloitettu', 'Aloittamatta', 'Arviointi Puuttuu'];
 
   const getTitleColor = (title) => {
     switch (title) {
@@ -88,6 +88,8 @@ export default function CustomerList() {
         return '#B7D9F7';
       case 'Aloittamatta':
         return '#E2E2E2';
+      case 'ArvioPuuttuu':
+        return '#FFAAAA';
       default:
         return '#FFFFFF'; // Default color if title is not recognized
     }
@@ -103,14 +105,15 @@ export default function CustomerList() {
     setSiteTitle("Etusivu")
   }, [setHeading, setSiteTitle, currentUser]);
 
+
+
   // Find evaluations in progress
   const inProgress =
     evaluations &&
     evaluations.filter(
       (evaluation) =>
         evaluation.completed === false &&
-        evaluation.units.every((unit) => unit.status !== 2) &&
-        evaluation.units.some((unit) => unit.status > 0)
+        evaluation.units.some((unit) => unit.status === 1)
     );
   // Find evaluations waitin for processing
   const waitForProcessing =
@@ -119,6 +122,18 @@ export default function CustomerList() {
       (evaluation) =>
         evaluation && evaluation.units.some((unit) => unit.status === 2)
     );
+
+  console.log('waitForProcessing:', waitForProcessing)
+
+  // Find evaluations waitin for processing
+  const waitForProcessingNotEvaluated =
+    evaluations &&
+    evaluations.filter(
+      (evaluation) =>
+        evaluation && evaluation.units.some((unit) => unit.status === 4)
+    );
+
+  console.log('not evaluated', waitForProcessingNotEvaluated)
 
   // Find not started evaluations
   const notStarted =
@@ -133,6 +148,8 @@ export default function CustomerList() {
   const completed =
     evaluations &&
     evaluations.filter((evaluation) => evaluation.completed === true);
+
+  console.log('completed:', completed)
 
   const handleChooseEvaluation = (customer) => {
     navigate(`/unit-list/${customer._id}`);
@@ -190,6 +207,21 @@ export default function CustomerList() {
             ))
           }
 
+
+          {
+            waitForProcessingNotEvaluated && waitForProcessingNotEvaluated.map((evaluation) => evaluation.customerId && (
+              <div
+                key={`wait-for-processing-${evaluation._id}`}
+                className='customerList__element waiting-for-processing-not-evaluated'
+              >
+                <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
+                  {evaluation.customerId.firstName}{' '}
+                  {evaluation.customerId.lastName}
+                </p>
+              </div>
+            ))
+          }
+
           {
             notStarted && notStarted.map((evaluation) => evaluation.customerId && (
               <div
@@ -212,7 +244,7 @@ export default function CustomerList() {
               >
                 <p
                   key={evaluation._id}
-                  onClick={() => handleChooseEvaluation(evaluation._id)}
+                  onClick={() => handleChooseEvaluation(evaluation.customerId)}
                 >
                   {evaluation.customerId.firstName}{' '}
                   {evaluation.customerId.lastName}

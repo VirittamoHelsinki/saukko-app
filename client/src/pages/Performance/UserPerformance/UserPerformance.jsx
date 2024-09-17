@@ -195,7 +195,7 @@ const UserPerformance = () => {
   const handleSubmit = async () => {
 
     const unitToUpdate = evaluation.units.find((unit) => unit._id === Number(unitId))
-    const updatedUnit = {
+    let updatedUnit = {
       ...unitToUpdate,
       assessments: unitToUpdate.assessments.map((assessment) => {
         const assessmentRadio = selectedRadio[assessment._id];
@@ -222,10 +222,37 @@ const UserPerformance = () => {
         };
       })
     }
+
+
+    switch (currentUser?.role) {
+      case 'customer': {
+        const customerReady = selectedValues['valmisLahetettavaksi'];
+        updatedUnit = {
+          ...updatedUnit,
+          customerReady
+        };
+        break;
+      }
+      case 'supervisor': {
+        const supervisorReady = selectedValues['valmisLahetettavaksi'];
+        updatedUnit = {
+          ...updatedUnit,
+          supervisorReady
+        };
+        break;
+      }
+      case 'teacher': {
+        const teacherReady = selectedValues['suoritusValmis'];
+        updatedUnit = {
+          ...updatedUnit,
+          teacherReady
+        };
+        break;
+      }
+    }
+
     console.log("UNIT TO UPDATE", unitToUpdate);
     console.log("UPDATED UNIT", updatedUnit)
-
-
 
     const updatedData = {
       updatedUnit,
@@ -467,7 +494,7 @@ const UserPerformance = () => {
                     })
                   }
                 />
-                <span> Pyydetään yhteydenottoa opettajalta</span>
+                <span> Pyydän yhteydenottoa opettajalta</span>
               </label>
             </>
           )}

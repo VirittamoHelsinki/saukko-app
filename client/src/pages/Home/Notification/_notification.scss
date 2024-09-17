@@ -75,6 +75,19 @@
         .notification__recipient {
 
         }
+
+      }
+
+  
+      .remove__content {
+        padding: 6px;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        justify-content: space-between;
+        margin-bottom: auto;
+        margin-top: 5px;
+        margin-right: 5px;
       }
 
       .notification__badge {
@@ -86,6 +99,7 @@
         padding: 6px;
         margin-bottom: auto;
       }
+
     }
   }
 }

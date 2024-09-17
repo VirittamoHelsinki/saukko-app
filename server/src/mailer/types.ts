@@ -73,6 +73,16 @@ export interface ISendEvaluationFormTeacherReadyMessageSupervisor {
   additionalInfo: string;
 }
 
+export interface ISendEvaluationRequiresAction {
+  supervisorFirstName: string;
+  customerName: string;
+  supervisorName: string;
+  degreeName: string;
+  unitName: string;
+  evaluationAccepted: EvaluationStatus;
+  additionalInfo: string;
+}
+
 export interface ISelectedValues {
   pyydetaanYhteydenottoaOpettajalta: boolean,
   pyydetaanYhteydenottoaOhjaajalta: boolean,

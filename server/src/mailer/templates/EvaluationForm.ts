@@ -8,7 +8,10 @@ import {
   ISendEvaluationFormTeacherReadyMessageCustomer,
   ISendEvaluationFormTeacherReadyMessageSupervisor,
   ISendEvaluationFormTeacherRequestContactMessageSupervisor,
+  ISendEvaluationRequiresAction,
 } from '../types';
+import { IUnit } from '../../models/evaluationModel';
+import { IUser } from '../../models/userModel';
 
 // Helper function to save notification
 const saveNotification = async (
@@ -540,3 +543,85 @@ Ylläpito
   sendEmail(emailObj);
   await saveNotification(recipientId, customerId, subject, text, 'ready', evaluationId, unitId);
 };
+
+export const sendRequireEvaluationMessageToCustomer = async (
+  subject: string,
+  to: string,
+  customer: IUser,
+  supervisor: IUser,
+  evaluationId: string,
+  unitId: string,
+  unitName: string,
+) => {
+
+  const text =
+    `
+Hei ${customer.firstName},
+
+Tutkinnonosa ${unitName} vaatii asiakkaan arviointia.
+
+
+Ystävällisin terveisin,
+Ylläpito
+    `;
+
+  const html = mailerTemplate(text);
+
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
+  await saveNotification(customer._id, supervisor._id, subject, text, 'requiresAction', evaluationId, unitId);
+};
+
+export const sendRequireEvaluationMessageToSupervisor = async (
+  subject: string,
+  to: string,
+  supervisor: IUser,
+  customer: IUser,
+  evaluationId: string,
+  unitId: string,
+  unitName: string,
+) => {
+
+  const text =
+    `
+Hei ${supervisor.firstName},
+
+Asiakkaan ${customer.firstName} ${customer.lastName}
+tutkinnonosa ${unitName} vaatii ohjaajan arviointia.
+
+
+Ystävällisin terveisin,
+Ylläpito
+    `;
+
+  const html = mailerTemplate(text);
+  const emailObj: EmailObj = {
+    content: {
+      subject: subject,
+      plainText: text,
+      html: html
+    },
+    recipients: {
+      to: [{
+        address: to
+      }]
+    }
+  }
+
+  sendEmail(emailObj);
+  await saveNotification(supervisor._id, customer._id, subject, text, 'requiresAction', evaluationId, unitId);
+};
+
+

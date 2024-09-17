@@ -1,5 +1,6 @@
+import userModel from '../../models/userModel';
 import { IUser, User } from '../../models/userModel';
-import EvaluationModel from '../../models/evaluationModel';
+import EvaluationModel, { IUnit } from '../../models/evaluationModel';
 import { Response } from 'express';
 import { Request } from '../../types/requestType';
 import {
@@ -13,6 +14,8 @@ import {
   sendEvaluationFormTeacherReadyMessageSupervisor,
   sendEvaluationFormTeacherRequestContactMessageCustomer,
   sendEvaluationFormTeacherRequestContactMessageSupervisor,
+  sendRequireEvaluationMessageToCustomer,
+  sendRequireEvaluationMessageToSupervisor,
 } from '../../mailer/templates/EvaluationForm';
 import { AssessmentStatus, EvaluationStatus, ISendEvaluationFormRequestContact, ISelectedValues, IEmails, UserRole } from '../../mailer/types';
 import { getUserRole } from '../../mailer/utils';
@@ -24,6 +27,43 @@ const fetchEvaluationWithDetails = async (evaluationId: string) => {
     .populate('teacherId')
     .populate('supervisorIds')
     .populate('units');
+};
+
+export const sendRequireEvaluationEmails = (
+  userRole: string,
+  customer: IUser,
+  supervisor: IUser,
+  evaluationId: string,
+  unitId: string,
+  unitName: string,
+) => {
+
+  switch (userRole) {
+    case 'supervisor':
+      sendRequireEvaluationMessageToSupervisor(
+        'Arviointi vaatii toimenpiteitä',
+        supervisor.email,
+        supervisor,
+        customer,
+        evaluationId,
+        unitId,
+        unitName,
+      );
+      break;
+    case 'customer':
+      sendRequireEvaluationMessageToCustomer(
+        'Arviointi vaatii toimenpiteitä',
+        customer.email,
+        customer,
+        supervisor,
+        evaluationId,
+        unitId,
+        unitName,
+      );
+      break;
+    default:
+      console.error(`Unknown role: ${userRole}`);
+  }
 };
 
 export const sendReadyEmails = (
@@ -114,7 +154,17 @@ export const sendReadyEmails = (
   return emailsSendTo
 };
 
-const updateUnitStatus = (unit: any) => {
+
+interface IrequiresActionObj {
+  role: string;
+  customer: IUser;
+  supervisor: IUser;
+  evaluationId: string;
+  unitId: string;
+}
+
+
+const updateUnitStatus = (unit: IUnit, requiresActionObj: IrequiresActionObj) => {
   let allAssessmentsCompleted = true;
   let anyAssessmentInProgress = false;
 
@@ -128,14 +178,46 @@ const updateUnitStatus = (unit: any) => {
     }
   });
 
-  if (unit.teacherReady) {
+  if (unit.customerReady && !unit.supervisorReady && unit.teacherReady
+    || unit.customerReady && !unit.teacherReady && !unit.supervisorReady
+    || !unit.customerReady && unit.supervisorReady
+    || !unit.customerReady && unit.teacherReady) {
+    console.log('set status to 4');
+    unit.status = 4;
+
+    if (unit.customerReady && !unit.supervisorReady) {
+      sendRequireEvaluationEmails(
+        'supervisor',
+        requiresActionObj.customer,
+        requiresActionObj.supervisor,
+        requiresActionObj.evaluationId,
+        requiresActionObj.unitId,
+        unit.name.fi
+      )
+    } else {
+      sendRequireEvaluationEmails(
+        'customer',
+        requiresActionObj.customer,
+        requiresActionObj.supervisor,
+        requiresActionObj.evaluationId,
+        requiresActionObj.unitId,
+        unit.name.fi
+      )
+    }
+
+
+
+  } else if (unit.customerReady && unit.supervisorReady && !unit.teacherReady) {
+    console.log('set status to 2');
+    unit.status = 2;
+  } else if (unit.teacherReady) {
     unit.status = 3;
-    console.log('set status to 3')
+    console.log('set status to 3');
   } else if ((allAssessmentsCompleted && unit.customerReady) || unit.customerReady) {
-    console.log('set status to 2')
+    console.log('set status to 2');
     unit.status = 2;
   } else if (anyAssessmentInProgress) {
-    console.log('set status to 1')
+    console.log('set status to 1');
     unit.status = 1;
   }
 
@@ -282,7 +364,7 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       supervisorName: evaluation.supervisorIds?.[0]?.firstName + ' ' + evaluation.supervisorIds?.[0]?.lastName || 'Unknown Supervisor',
     };
 
-    const userRole: UserRole = getUserRole(user.role)
+    const userRole: UserRole = getUserRole(user.role)!
 
     sendContactRequestEmails(
       selectedValues,
@@ -298,14 +380,25 @@ const handleUserPerformanceEmails = async (req: Request, res: Response) => {
       unitId
     );
 
-    const existingUnits = updatedUnit && evaluation.units.filter((unit) => {
+    const existingUnits = updatedUnit && evaluation.units.filter((unit: any) => {
       return (unit._id) !== (updatedUnit._id)
     })
 
+    const customer = await userModel.findById(customerId)
+    const supervisor = await userModel.findById(supervisorId)
+
+    const requiresActionObj: IrequiresActionObj = {
+      role: userRole,
+      customer: customer!,
+      supervisor: supervisor!,
+      evaluationId: evaluationId,
+      unitId: unitId,
+
+    }
 
     evaluation.units = updatedUnit && [
       ...existingUnits,
-      updateUnitStatus(updatedUnit),
+      updateUnitStatus(updatedUnit, requiresActionObj),
     ];
 
     evaluation.set({
