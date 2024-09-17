@@ -1,14 +1,18 @@
 import { Modal } from "@mui/material"
 import { Icon } from "@iconify/react";
-import { useNavigate } from 'react-router-dom';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Autocomplete, TextField, List, ListItem, IconButton, ListItemText, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
+import { IconButton, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { useState } from "react";
 import SupervisorAutocomplete from '../../components/SupervisorAutocomplete/SupervisorAutocomplete';
 import UnitAutocomplete from '../../components/UnitAutocomplete/UnitAutocomplete';
+
+import dayjs from "dayjs";
+import { updateUser } from "../../api/user";
+import { updateEvaluation } from "../../api/evaluation";
+import "./_clienteditmodal.scss";
 
 const theme = createTheme({
   palette: {
@@ -36,12 +40,8 @@ const theme = createTheme({
   },
 });
 
-import "./_clienteditmodal.scss";
-import dayjs from "dayjs";
 
 const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
-  
-
 	const [ userFormData, setUserFormData] = useState({
 		firstName: userToEdit.firstName,
 		lastName: userToEdit.lastName,
@@ -70,10 +70,14 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
     setEvaluationFormData({ ...evaluationFormData, supervisor })
   }
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     console.log("🚀 ~ ClientEditModal ~  userToEdit:",  userToEdit);
     console.log("🚀 ~ ClientEditModal ~  evaluationFormData:",  evaluationFormData);
+    console.log("🚀 ~ ClientEditModal ~  userFormData:",  userFormData);
+
+    await updateUser(userToEdit._id, userFormData);
+    await updateEvaluation(userToEdit.evaluationId._id, evaluationFormData);
 
     onClose(false);
   }
@@ -142,6 +146,7 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
                     id="startDate"
                     format="DD.MM.YYYY"
                     value={dayjs(evaluationFormData.startDate)}
+                    onChange={(date) => setEvaluationFormData({ ...evaluationFormData, startDate: date })}
                   />
                 </ThemeProvider>
               </LocalizationProvider>
@@ -155,6 +160,7 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
                     id="endDate"
                     format="DD.MM.YYYY"
                     value={dayjs(evaluationFormData.endDate)}
+                    onChange={(date) => setEvaluationFormData({ ...evaluationFormData, endDate: date })}
                   />
                 </ThemeProvider>
               </LocalizationProvider>

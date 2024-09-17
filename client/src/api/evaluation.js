@@ -37,6 +37,15 @@ const fetchEvaluationById = async (evaluationId) => {
   }
 };
 
+const updateEvaluation = async (evaluationId, updatedData) => {
+  try {
+    const response = await axios.put(`/api/evaluation2/${evaluationId}`, updatedData);
+    return response.data;
+  } catch (error) {
+    console.log('Error updating evaluation:', error);
+  }
+};
+
 // Update evaluation by id
 const updateEvaluationById = async (evaluationId, updatedData) => {
   try {
@@ -75,6 +84,7 @@ export {
   createEvaluation,
   fetchAllEvaluations,
   fetchEvaluationById,
+  updateEvaluation,
   updateEvaluationById,
   sendEmail,
   handleUserPerformanceEmails,
