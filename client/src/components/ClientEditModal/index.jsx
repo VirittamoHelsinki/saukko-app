@@ -1,6 +1,5 @@
 import { Modal } from "@mui/material"
 import { Icon } from "@iconify/react";
-import { useNavigate } from 'react-router-dom';
 
 const NotificationModal = ({ isOpen, onClose }) => {
 

@@ -7,7 +7,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { IconButton, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { useState } from "react";
 import SupervisorAutocomplete from '../../components/SupervisorAutocomplete/SupervisorAutocomplete';
-import UnitAutocomplete from '../../components/UnitAutocomplete/UnitAutocomplete';
 
 import dayjs from "dayjs";
 import { updateUser } from "../../api/user";

@@ -11,7 +11,6 @@ const CloseIcon = () => (
 
 const ModalHeader = ({
   text,
-  handleClose,
 }) => {
   return (
     <div className="modal__header">
@@ -24,8 +23,6 @@ const ModalHeader = ({
 }
 
 const Modal = ({
-  open = false,
-  handleClose = () => {},
   children = [],
   title = "",
 }) => {

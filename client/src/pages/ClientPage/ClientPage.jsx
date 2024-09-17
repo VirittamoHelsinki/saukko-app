@@ -10,11 +10,6 @@ import ClientEditModal from './ClientEditModal';
 
 const formatDate = (date) => dayjs(date).format("DD.MM.YYYY")
 
-
-const style = {
-};
-
-
 const ClientInformationField = ({
   fieldLabel = "field",
   fieldValue = "-",
