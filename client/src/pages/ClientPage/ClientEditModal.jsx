@@ -57,24 +57,12 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
     extensionEndDate: userToEdit.evaluationId.extensionEndDate,
   });
 
-  const setWorkplace = (workplace) => {
-    setUserFormData({ ...userFormData, workplace })
-
-    setEvaluationFormData({
-      ...evaluationFormData,
-      supervisor: workplace.supervisors[0],
-    })
-  }
-
   const setSupervisor = (supervisor) => {
     setEvaluationFormData({ ...evaluationFormData, supervisor })
   }
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    console.log("🚀 ~ ClientEditModal ~  userToEdit:",  userToEdit);
-    console.log("🚀 ~ ClientEditModal ~  evaluationFormData:",  evaluationFormData);
-    console.log("🚀 ~ ClientEditModal ~  userFormData:",  userFormData);
 
     await updateUser(userToEdit._id, userFormData);
     await updateEvaluation(userToEdit.evaluationId._id, evaluationFormData);
@@ -164,14 +152,6 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
                   />
                 </ThemeProvider>
               </LocalizationProvider>
-            </div>
-
-            <div className="form-container">
-              <label className="form-label">Työpaikan yksikkö *</label>
-              <UnitAutocomplete
-                setValue={setWorkplace}
-                value={userFormData.workplace}
-              />
             </div>
 
             <div className="form-container">

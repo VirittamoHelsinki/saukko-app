@@ -12,7 +12,9 @@ const UnitAutocomplete = ({ setValue, value }) => {
       try {
         const workplaces = await fetchAllInternalWorkplaces();
         setFetchedUnits(workplaces);
-        console.log(workplaces);
+        
+        console.log("🚀 ~ UnitAutocomplete ~ workplaces:", workplaces);
+        
         
       } catch (error) {
         console.error('Error fetching Units:', error);

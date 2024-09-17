@@ -99,7 +99,7 @@ function ClientPage() {
             fieldValue={department?.name}
           />
           <ClientInformationField
-            fieldLabel="Työpaikan yksikkön lisätiedot"
+            fieldLabel="Työpaikan yksikön lisätiedot"
             fieldValue={department?.description}
           />
           <ClientInformationField
