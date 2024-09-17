@@ -13,6 +13,8 @@ import {
 } from '../../mailer/templates/addingUserToAgreement';
 import { sendVerificationEmail } from '../../mailer/templates/newUserVerification';
 
+// TODO: This does way more than just updates the evaluation
+// should be its own thing instead of "update".
 const update = async (req: Request, res: Response) => {
   try {
     const evaluation = await EvaluationModel.findById(req.params.id)

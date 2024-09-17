@@ -6,6 +6,7 @@ import getById from "./getById";
 import handleUserPerformanceEmails from "./handleUserPerformanceEmails";
 import sendEmailToTeacher from "./sendEmailToTeacher";
 import update from "./update";
+import actualUpdate from "./actualUpdate";
 
 export default {
   create,
@@ -16,4 +17,5 @@ export default {
   deleteById,
   sendEmailToTeacher,
   handleUserPerformanceEmails,
+  actualUpdate,
 };

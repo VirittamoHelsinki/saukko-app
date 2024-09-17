@@ -26,6 +26,26 @@ const fetchAllEvaluations = async () => {
   }
 };
 
+const fetchEvaluationById = async (evaluationId) => {
+  try {
+    const response = await axios.get(`/api/evaluation/${evaluationId}`);
+    console.log('RESPONSE', response.data);
+
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching single evaluation:', error);
+  }
+};
+
+const updateEvaluation = async (evaluationId, updatedData) => {
+  try {
+    const response = await axios.put(`/api/evaluation2/${evaluationId}`, updatedData);
+    return response.data;
+  } catch (error) {
+    console.log('Error updating evaluation:', error);
+  }
+};
+
 // Update evaluation by id
 const updateEvaluationById = async (evaluationId, updatedData) => {
   try {
@@ -63,6 +83,8 @@ const handleUserPerformanceEmails = async (evaluationId, updatedData) => {
 export {
   createEvaluation,
   fetchAllEvaluations,
+  fetchEvaluationById,
+  updateEvaluation,
   updateEvaluationById,
   sendEmail,
   handleUserPerformanceEmails,
