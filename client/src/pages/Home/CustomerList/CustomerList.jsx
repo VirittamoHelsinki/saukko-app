@@ -88,7 +88,7 @@ export default function CustomerList() {
         return '#B7D9F7';
       case 'Aloittamatta':
         return '#E2E2E2';
-      case 'ArvioPuuttuu':
+      case 'Arviointi Puuttuu':
         return '#FFAAAA';
       default:
         return '#FFFFFF'; // Default color if title is not recognized
@@ -113,27 +113,9 @@ export default function CustomerList() {
     evaluations.filter(
       (evaluation) =>
         evaluation.completed === false &&
-        evaluation.units.some((unit) => unit.status === 1)
-    );
-  // Find evaluations waitin for processing
-  const waitForProcessing =
-    evaluations &&
-    evaluations.filter(
-      (evaluation) =>
-        evaluation && evaluation.units.some((unit) => unit.status === 2)
+        evaluation.units.some((unit) => unit.status > 0)
     );
 
-  console.log('waitForProcessing:', waitForProcessing)
-
-  // Find evaluations waitin for processing
-  const waitForProcessingNotEvaluated =
-    evaluations &&
-    evaluations.filter(
-      (evaluation) =>
-        evaluation && evaluation.units.some((unit) => unit.status === 4)
-    );
-
-  console.log('not evaluated', waitForProcessingNotEvaluated)
 
   // Find not started evaluations
   const notStarted =
@@ -147,7 +129,7 @@ export default function CustomerList() {
   // Find completed evaluations
   const completed =
     evaluations &&
-    evaluations.filter((evaluation) => evaluation.completed === true);
+    evaluations.filter((evaluation) => evaluation.units.every((unit) => unit.status === 3));
 
   console.log('completed:', completed)
 
@@ -193,34 +175,6 @@ export default function CustomerList() {
             )
           }
 
-          {
-            waitForProcessing && waitForProcessing.map((evaluation) => evaluation.customerId && (
-              <div
-                key={`wait-for-processing-${evaluation._id}`}
-                className='customerList__element waiting-for-processing'
-              >
-                <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
-                  {evaluation.customerId.firstName}{' '}
-                  {evaluation.customerId.lastName}
-                </p>
-              </div>
-            ))
-          }
-
-
-          {
-            waitForProcessingNotEvaluated && waitForProcessingNotEvaluated.map((evaluation) => evaluation.customerId && (
-              <div
-                key={`wait-for-processing-${evaluation._id}`}
-                className='customerList__element waiting-for-processing-not-evaluated'
-              >
-                <p onClick={() => handleChooseEvaluation(evaluation.customerId)}>
-                  {evaluation.customerId.firstName}{' '}
-                  {evaluation.customerId.lastName}
-                </p>
-              </div>
-            ))
-          }
 
           {
             notStarted && notStarted.map((evaluation) => evaluation.customerId && (
