@@ -175,3 +175,30 @@
 }
 
 
+.footer-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+
+  .button--pdf {
+    padding: 16px;
+    font-size: 16px;
+    text-decoration: none;
+    
+    flex-grow: 2;
+    background: #0000BF;
+    color: white;
+    display: flex;
+    padding: 18px 14px;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
