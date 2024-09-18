@@ -44,6 +44,7 @@ export const sendRequireEvaluationEmails = (
         'Arviointi vaatii toimenpiteitä',
         supervisor.email,
         supervisor,
+        customer,
         evaluationId,
         unitId,
         unitName,
@@ -54,6 +55,7 @@ export const sendRequireEvaluationEmails = (
         'Arviointi vaatii toimenpiteitä',
         customer.email,
         customer,
+        supervisor,
         evaluationId,
         unitId,
         unitName,
@@ -176,10 +178,10 @@ const updateUnitStatus = (unit: IUnit, requiresActionObj: IrequiresActionObj) =>
     }
   });
 
-  if (unit.customerReady && !unit.supervisorReady && unit.teacherReady
-    || unit.customerReady && !unit.teacherReady && !unit.supervisorReady
-    || !unit.customerReady && unit.supervisorReady
-    || !unit.customerReady && unit.teacherReady) {
+  console.log('unit:', unit)
+
+  if (unit.customerReady && !unit.supervisorReady && !unit.teacherReady
+    || !unit.customerReady && unit.supervisorReady && !unit.teacherReady) {
     console.log('set status to 4');
     unit.status = 4;
 

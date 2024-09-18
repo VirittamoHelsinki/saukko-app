@@ -4,9 +4,15 @@ import { useHeadingContext } from '../../../store/context/headingContectProvider
 import { MenuItem, Select } from '@mui/material';
 import classNames from "classnames"
 import NotificationModal from './NotificationModal';
+import SystemMessage from '../../../components/NotificationModal/NotificationModal';
+import { IconButton, FormControlLabel, Switch } from '@mui/material';
+import { Icon } from '@iconify/react';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import UnarchiveIcon from '@mui/icons-material/Unarchive';
+import WarningDialog from '../../../components/WarningDialog/WarningDialog';
 
-import { updateNotificationById } from '../../../api/notification';
-import { fetchAllNotifications } from '../../../api/notification';
+import { fetchAllNotifications, deleteNotificationById, updateNotificationById } from '../../../api/notification';
+
 
 const Notification = () => {
   const { currentUser } = useAuthContext();
@@ -16,6 +22,62 @@ const Notification = () => {
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [filteredNotifications, setFilteredNotifications] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [notificationToDelete, setNotificationToDelete] = useState(null);
+
+  // For warning menu
+  const [showWarning, setShowWarning] = useState(false);
+
+  const handleWarningClose = () => {
+    setShowWarning(false);
+  };
+
+  const handleProceed = async () => {
+    setShowWarning(false);
+    if (notificationToDelete) {
+      try {
+        await deleteNotificationById(notificationToDelete);
+        setNotifications(prevNotifications => prevNotifications.filter(n => n._id !== notificationToDelete));
+        setNotificationToDelete(null);
+        handleNotificationModalOpenOnDelete();
+      } catch (error) {
+        console.error('Error deleting notification:', error);
+      }
+    }
+  };
+
+  const [openSuccessSystemMessageOnDelete, setOpenSuccessSystemMessageOnDelete] = useState(false)
+  const [openSuccessSystemMessageOnArchive, setOpenSuccessSystemMessageOnArchive] = useState(false)
+  const [openSuccessSystemMessageOnUnarchive, setOpenSuccessSystemMessageOnUnarchive] = useState(false)
+
+  // For success notification
+  const handleNotificationModalOpenOnDelete = () => {
+    setOpenSuccessSystemMessageOnDelete(true);
+  };
+  const handleNotificationModalOpenOnArchive = () => {
+    setOpenSuccessSystemMessageOnArchive(true);
+  };
+  const handleNotificationModalOpenOnUnarchive = () => {
+    setOpenSuccessSystemMessageOnUnarchive(true);
+  };
+  const handleNotificationModalCloseOnDelete = () => {
+    setOpenSuccessSystemMessageOnDelete(false);
+  }
+  const handleNotificationModalCloseOnArchive = () => {
+    setOpenSuccessSystemMessageOnArchive(false);
+  }
+  const handleNotificationModalCloseOnUnarchive = () => {
+    setOpenSuccessSystemMessageOnUnarchive(false);
+  }
+
+
+  //Archive
+  const [showArchived, setShowArchived] = useState(false);
+
+  const handleToggleArchived = () => {
+    setShowArchived(prev => !prev);
+  };
+
+
 
   // Fetch info for these in the future
   const [filterUser, setFilterUser] = useState("");
@@ -48,11 +110,21 @@ const Notification = () => {
         filtered = filtered.filter(notification => notification.customer._id === filterUser);
       }
 
+      if (!showArchived) {
+        // Show only non-archived notifications if switch is off
+        filtered = filtered.filter(notification => !notification.isArchived);
+        console.log('filtered:', filtered)
+      } else {
+        // Show only archived notifications when switch is on
+        filtered = filtered.filter(notification => notification.isArchived);
+        console.log('filtered:', filtered)
+      }
+
       setFilteredNotifications(filtered);
     };
 
     applyFilters();
-  }, [filterType, notifications, filterUser]);
+  }, [filterType, notifications, filterUser, showArchived]);
 
   const handleNotificationClick = async (notification) => {
     try {
@@ -64,6 +136,7 @@ const Notification = () => {
           n._id === notification._id ? { ...n, isSeen: true } : n
         )
       );
+
     } catch (error) {
       console.error('Error updating notification:', error);
     }
@@ -84,6 +157,39 @@ const Notification = () => {
     setFilterType(event.target.value);
   }
 
+  const handleRemoveNotification = (notificationId) => {
+    setNotificationToDelete(notificationId);
+    setShowWarning(true);
+  };
+
+  const handleArchiveNotification = async (notification) => {
+    try {
+      await updateNotificationById(notification._id, { isArchived: true });
+
+      // Refetch all notifications after the update
+      const updatedNotifications = await fetchAllNotifications();
+      setNotifications(updatedNotifications || []);
+
+      handleNotificationModalOpenOnArchive();
+    } catch (error) {
+      console.error('Error archiving notification:', error);
+    }
+  };
+
+  const handleUnarchiveNotification = async (notification) => {
+    try {
+      await updateNotificationById(notification._id, { isArchived: false });
+
+      // Refetch all notifications after the update
+      const updatedNotifications = await fetchAllNotifications();
+      setNotifications(updatedNotifications || []);
+
+      handleNotificationModalOpenOnUnarchive();
+    } catch (error) {
+      console.error('Error unarchiving notification:', error);
+    }
+  };
+
   useEffect(() => {
     setHeading('Ilmoitukset');
     setSiteTitle('Ilmoitukset');
@@ -96,10 +202,40 @@ const Notification = () => {
 
   return (
     <>
+      <SystemMessage
+        type='success'
+        title='Ilmoitus on poistettu'
+        body='Ilmoitus on poistettu järjestelmästä onnistuneesti.'
+        open={openSuccessSystemMessageOnDelete}
+        handleClose={handleNotificationModalCloseOnDelete}
+      />
+      <SystemMessage
+        type='success'
+        title='Ilmoitus on arkistoitu'
+        body='Ilmoitus on arkistoitu onnistuneesti.'
+        open={openSuccessSystemMessageOnArchive}
+        handleClose={handleNotificationModalCloseOnArchive}
+      />
+      <SystemMessage
+        type='success'
+        title='Ilmoitus ei ole enää arkistoitu'
+        body='Ilmoitus on palautettu onnistuneesti.'
+        open={openSuccessSystemMessageOnUnarchive}
+        handleClose={handleNotificationModalCloseOnUnarchive}
+      />
+
       <NotificationModal
         isOpen={!!selectedNotification}
         notification={selectedNotification}
         onClose={() => setSelectedNotification(null)}
+      />
+      <WarningDialog
+        title={'Haluatko varmasti poistaa ilmoituksen?'}
+        bodyText={'Ilmoitus poistetaan järjestelmästä pysyvästi.'}
+        buttonText={'Poista ilmoitus'}
+        showWarning={showWarning}
+        handleWarningClose={handleWarningClose}
+        handleProceed={handleProceed}
       />
       <div className='notifications__wrapper'>
         <h3>Suodatin</h3>
@@ -157,6 +293,11 @@ const Notification = () => {
 
         <h3>Ilmoitukset</h3>
 
+        <FormControlLabel
+          control={<Switch checked={showArchived} onChange={handleToggleArchived} />}
+          label="Näytä vain arkistoidut ilmoitukset"
+        />
+
         <div className="notification-list">
           {
             filteredNotifications.map((notification) => {
@@ -181,14 +322,60 @@ const Notification = () => {
                       <h3 className="notification__title">{notification.title}</h3>
                       <p className="notification__recipient">Asiakas: {customerName}</p>
                     </div>
+
                     {!notification.isSeen && (
                       <div className="notification__badge">
                         <span>uusi</span>
                       </div>
                     )}
+
+                    {notification.isSeen && (
+                      <div className="remove__content">
+                        {showArchived ?
+                          (<IconButton
+                            edge="end"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click
+                              handleUnarchiveNotification(notification);
+                            }}
+                            sx={{ backgroundColor: 'white' }}
+                          >
+                            <UnarchiveIcon />
+                          </IconButton>
+
+
+
+
+                          ) :
+                          (<IconButton
+                            edge="end"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click
+                              handleArchiveNotification(notification);
+                            }}
+                            sx={{ backgroundColor: 'white' }}
+                          >
+                            <ArchiveIcon />
+                          </IconButton>)}
+
+                        {showArchived && <IconButton
+                          edge="end"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent card click
+                            handleRemoveNotification(notification._id);
+                          }}
+                          sx={{ backgroundColor: 'white' }}
+                        >
+                          <Icon
+                            icon="material-symbols:delete-outline"
+                            color="#B01038"
+                          />
+                        </IconButton>}
+                      </div>
+                    )}
                   </div>
                 </div>
-              )
+              );
             })
           }
         </div>

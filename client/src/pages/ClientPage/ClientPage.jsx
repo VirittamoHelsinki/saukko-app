@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
-import { fetchUserById } from '../../api/user';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from "dayjs"
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { fetchUserById } from "../../api/user";
 
+import ClientEditModal from './ClientEditModal';
 
 const formatDate = (date) => dayjs(date).format("DD.MM.YYYY")
 
@@ -22,11 +23,10 @@ const ClientInformationField = ({
   )
 }
 
-
 function ClientPage() {
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
-
   const { id } = useParams()
+  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+  const [ open, setOpen ] = useState(false);
 
   const { data: user } = useQuery({
     queryKey: ['user'],
@@ -40,6 +40,10 @@ function ClientPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const teacher = user?.evaluationId.teacherId;
   const supervisor = user?.evaluationId?.supervisorIds?.[0];
   const department = user?.workplaceId?.departments?.[0];
@@ -51,7 +55,16 @@ function ClientPage() {
     <div className='clientPage__wrapper' id='main-wrapper'>
       <section className='clientPage__container'>
 
-        <p className="title">Asiakkuuden yhteenveto</p>
+        <h1>Asiakkuuden hallinnointi</h1>
+
+        <div className='title-container'>
+          <p className="title">Asiakkuuden yhteenveto</p>
+          <button className="title-container__edit-button" onClick={() => setOpen(true)}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+              <path d="M5.00699 16.9825L0.726521 16.9693L0.713867 12.4901L11.7856 0.904297L16.0787 5.39674L5.00699 16.9825ZM11.7856 3.50519L2.5215 13.1994L2.52782 15.0853L4.32913 15.091L13.5932 5.39674L11.7856 3.50519Z" fill="#0000BF"/>
+            </svg>
+          </button>
+        </div>
 
         <div className="clientPage__card">
           <ClientInformationField
@@ -83,7 +96,7 @@ function ClientPage() {
             fieldValue={department?.name}
           />
           <ClientInformationField
-            fieldLabel="Työpaikan yksikkön lisätiedot"
+            fieldLabel="Työpaikan yksikön lisätiedot"
             fieldValue={department?.description}
           />
           <ClientInformationField
@@ -102,21 +115,33 @@ function ClientPage() {
         </div>
 
 
-        <p className="title">Asiakkaan tutkinnon osat</p>
+        <div className='title-container'>
+          <p className="title">Asiakkaan tutkinnon osat</p>
+          <button className="title-container__edit-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+              <path d="M5.00699 16.9825L0.726521 16.9693L0.713867 12.4901L11.7856 0.904297L16.0787 5.39674L5.00699 16.9825ZM11.7856 3.50519L2.5215 13.1994L2.52782 15.0853L4.32913 15.091L13.5932 5.39674L11.7856 3.50519Z" fill="#0000BF"/>
+            </svg>
+          </button>
+        </div>
+
         <div className="clientPage__card">
           {
             units.map((unit, index) => (
               <div key={"unit" + index} className="clientPage__unit">
 
-                <p className="clientPage__unit-name">{unit.name.fi}</p>
+                <ClientInformationField
+                  fieldLabel={"Tutkinnon nimi"}
+                  fieldValue={unit.name.fi}
+                />
 
-                <div className="clientPage__unit-assessments">
-                  {
-                    unit.assessments.map((assessment, index) => (
-                      <p key={"assessment" + index} className="clientPage__unit-assessment">{assessment.name.fi}</p>
-                    ))
+                <ClientInformationField
+                  fieldLabel={"Tutkinnon osat"}
+                  fieldValue={
+                    unit.assessments.reduce((acc, assessment) => {
+                      return acc + assessment.name.fi + "\n";
+                    }, "").trim()
                   }
-                </div>
+                />
 
               </div>
             ))
@@ -130,6 +155,17 @@ function ClientPage() {
           <Icon icon={"formkit:arrowleft"} />
           <p>Takaisin</p>
         </Link>
+
+        {
+          user && (
+            <ClientEditModal
+              isOpen={open}
+              onClose={handleClose}
+              userToEdit={user}
+            />
+          )
+        }
+
       </section>
     </div>
   );

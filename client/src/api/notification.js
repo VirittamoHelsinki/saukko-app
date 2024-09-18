@@ -21,6 +21,15 @@ const updateNotificationById = async (notificationId, updatedData) => {
   }
 };
 
+const deleteNotificationById = async (notificationId) => {
+  try {
+    const response = await axios.delete(`/api/notifications/${notificationId}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const fetchUnseenNotificationCount = async (userId) => {
   try {
     const response = await axios.get(
@@ -37,4 +46,5 @@ export {
   fetchAllNotifications,
   updateNotificationById,
   fetchUnseenNotificationCount,
+  deleteNotificationById,
 };
