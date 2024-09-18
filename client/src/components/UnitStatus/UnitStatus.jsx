@@ -51,6 +51,9 @@ const UnitStatus = ({ unitId, unit, subheader, assessment, currentUser, link }) 
     } else if (!unit.customerReady && unit.supervisorReady) {
       header = 'Käsittelyssä';
       backgroundColor = '#FFAAAA';
+    } else if (unit.supervisorReady && unit.supervisorReady) {
+      header = 'Käsittelyssä';
+      backgroundColor = '#FFE28C';
     } else if (assessment.answerTeacher === 0) {
       header = 'Aloittamatta';
       backgroundColor = '#E2E2E2';
