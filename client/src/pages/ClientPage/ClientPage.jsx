@@ -5,8 +5,10 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from "dayjs"
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { fetchUserById } from "../../api/user";
+import PdfExportButton from '../../components/PdfCertificate/PdfExportButton.jsx';
 
 import ClientEditModal from './ClientEditModal';
+import { fetchEvaluationById } from '../../api/evaluation.js';
 
 const formatDate = (date) => dayjs(date).format("DD.MM.YYYY")
 
@@ -27,11 +29,28 @@ function ClientPage() {
   const { id } = useParams()
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
   const [ open, setOpen ] = useState(false);
+  const [ evaluation, setEvaluation ] = useState(null);
 
   const { data: user } = useQuery({
     queryKey: ['user'],
     queryFn: () => fetchUserById(id),
   });
+
+  useEffect(() => {
+    const fetchEvaluation = async () => {
+      try {
+        const evaluation = await fetchEvaluationById(user?.evaluationId?._id);
+        setEvaluation(evaluation);
+      } catch (error) {
+        console.error('Error fetching evaluation:', error);
+      }
+    };
+
+    if (user) {
+      fetchEvaluation();
+    }
+  }, [ user ]);
+  
 
   useEffect(() => {
     setSiteTitle("Asiakkuuden yhteenveto")
@@ -148,13 +167,22 @@ function ClientPage() {
           }
         </div>
 
-        <Link
-          className="navigation-button"
-          to="/client-list"
-        >
-          <Icon icon={"formkit:arrowleft"} />
-          <p>Takaisin</p>
-        </Link>
+        <div className="footer-buttons">
+          <Link
+            className="navigation-button"
+            to="/client-list"
+          >
+            <Icon icon={"formkit:arrowleft"} />
+            <p>Takaisin</p>
+          </Link>
+
+          {
+            user && evaluation && (
+              <PdfExportButton data={evaluation} label="Vie PDF-muotoon"/>
+            )
+          }
+        </div>
+
 
         {
           user && (
