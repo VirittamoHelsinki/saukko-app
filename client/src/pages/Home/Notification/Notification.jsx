@@ -300,7 +300,9 @@ const Notification = () => {
 
         <div className="notification-list">
           {
-            filteredNotifications.map((notification) => {
+            filteredNotifications
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((notification) => {
 
               const noficationClasses = classNames(
                 "notification",
