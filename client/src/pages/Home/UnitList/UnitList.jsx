@@ -98,7 +98,6 @@ const UnitList = () => {
         ) : (
           <h3>Asiakkaan suoritukset</h3>
         )}
-        {console.log('evaluation: ', evaluation)}
         {evaluation &&
           evaluation.units &&
           evaluation.units.map((unit) => (
@@ -106,8 +105,11 @@ const UnitList = () => {
               <UnitStatus
                 key={unit._id}
                 unitId={unit._id}
+                unit={unit}
                 status={unit.status}
                 subheader={unit.name.fi}
+                assessment={unit.assessments[0]}
+                currentUser={currentUser}
                 link={`/userperformance/${evaluation._id}/${unit._id}`}
               />
             </div>
