@@ -4,11 +4,12 @@ import useEvaluationStore from '../../store/zustand/evaluationStore.js';
 // Import components
 import { fetchInternalDegreeById } from '../../api/degree';
 import InfoList from '../../components/InfoList/InfoList';
-import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
-
+import { Link } from 'react-router-dom';
+import { Icon } from '@iconify/react';
 
 import { useNavigate } from 'react-router-dom';
 import useHeadingStore from '../../store/zustand/useHeadingStore.js';
+import PdfExportButton from '../../components/PdfCertificate/PdfExportButton.jsx';
 
 const ContractInfo = () => {
   const navigate = useNavigate();
@@ -18,7 +19,9 @@ const ContractInfo = () => {
   const { evaluation } = useEvaluationStore();
 
   useEffect(() => {
-    setSiteTitle("Sopimus"), setSubHeading(evaluation?.customerId?.firstName + ' ' + evaluation?.customerId?.lastName), setHeading("Sopimus")
+    setSiteTitle("Sopimus")
+    setSubHeading(evaluation?.customerId?.firstName + ' ' + evaluation?.customerId?.lastName)
+    setHeading("Sopimus")
     const degree = async () => {
       try {
         const response = await fetchInternalDegreeById(evaluation?.degreeId);
@@ -75,135 +78,106 @@ const ContractInfo = () => {
     supervisorEmails = supervisorEmails.slice(0, -2);
   }
 
+  console.log("🚀 ~ ContractInfo ~ evaluation:", evaluation);
+  
+
   const data = [
     {
-      title: 'Nimi',
+      title: 'Asiakkaan nimi',
       content: `${evaluation?.customerId?.firstName} ${evaluation?.customerId?.lastName}`,
     },
     {
-      title: 'Sähköposti',
+      title: 'Asiakkaan sähköposti',
       content: evaluation && evaluation?.customerId?.email,
     },
     {
-      title: 'Asiakkuuden aloituspäivä',
-      content: formatDate(startDateString),
+      title: 'Sopimuksen kesto',
+      content: `${formatDate(startDateString)} - ${formatDate(endDateString)}`,
     },
     {
-      title: 'Asiakkuuden lopetuspäivä',
-      content: formatDate(endDateString),
+      title: 'Opettajan nimi',
+      content: evaluation?.teacherId?.firstName + ' ' + evaluation?.teacherId?.lastName,
     },
     {
-      title: 'Työpaikka',
-      content: evaluation?.workplaceId?.name,
+      title: 'Opettajan sähköposti',
+      content: evaluation?.teacherId?.email
     },
     {
-      title: 'Y-tunnus',
-      content: evaluation?.workplaceId?.businessId,
+      title: 'Työpaikka ja yksikkö',
+      content: `${evaluation?.workplaceId?.name}, ${evaluation?.workplaceId?.departmentId?.name || '-'}`,
     },
     {
-      title: 'Yksikkö',
-      content: evaluation?.workplaceId?.departmentId?.name || '-',
-    },
-    {
-      title: 'Työpaikkaohjaaja',
+      title: 'Ohjaaja',
       content: supervisorNames,
     },
     {
-      title: 'TPO:n sähköposti',
+      title: 'Ohjaajan sähköposti',
       content: supervisorEmails,
     },
     {
-      title: 'Tutkinnon nimi',
-      content: degreeDetails && degreeDetails?.name.fi,
+      title: "",
+      content: "",
     },
     {
-      title: 'Määräyksen diaarinumero',
-      content: degreeDetails && degreeDetails?.diaryNumber,
-    },
-    {
-      title: 'Määräyksen päättöspäivämäärä',
-      content:
-        degreeDetails && degreeDetails.regulationDate
-          ? formatDateWithStringMonth(degreeDetails.regulationDate)
-          : '-',
-    },
-    {
-      title: 'Voimaantulo',
-      content:
-        degreeDetails && degreeDetails.validFrom
-          ? formatDateWithStringMonth(degreeDetails.validFrom)
-          : '-',
-    },
-    {
-      title: 'Voimassaolon päätyminen',
-      content:
-        degreeDetails && degreeDetails.expiry
-          ? formatDateWithStringMonth(degreeDetails.expiry)
-          : '-',
-    },
-    {
-      title: 'Siirtymäajan päättymisaika',
-      content:
-        degreeDetails && degreeDetails.transitionEnds
-          ? formatDateWithStringMonth(degreeDetails.transitionEnds)
-          : '-',
-    },
-    {
-      title: 'Työtehtävä',
+      title: 'Työtehtävät',
       content: evaluation?.workTasks,
     },
     {
       title: 'Omat tavoitteet',
       content: evaluation?.workGoals,
     },
+    {
+      title: "",
+      content: "",
+    },
+    {
+      title: 'Tutkinnon nimi',
+      content: evaluation?.degreeId?.name?.fi,
+    },
+    {
+      title: 'Tutkinnon osat',
+      content: evaluation?.degreeId?.units?.map(unit => unit.name.fi).join("\n"),
+    },
   ];
 
   return (
     <div className='contractInfo__wrapper'>
       <div className='contractInfo__container'>
+
+        <h1
+          style={{
+            color: "#1A1A1A",
+            fontSize: "24px",
+            fontStyle: "normal",
+            fontWeight: 700,
+            lineHeight: "normal",
+            marginBottom: "40px",
+            marginLeft: "10px",
+          }}
+        >
+          Sopimuksen yhteenveto
+        </h1>
+
         <section className='contractInfo__container--description'>
           <InfoList data={data} />
         </section>
-        <section
-          className='contractInfo__container--description'
-          style={{
-            marginTop: '4rem',
-            backgroundColor: '#f2f2f2',
-            padding: '1rem 3.5rem',
-          }}
-        >
-          <ul>
-            {evaluation &&
-              evaluation?.units?.map((unit, index) => (
-                <li key={index}>
-                  <h4 style={{ margin: '6px 0' }}>{unit.name.fi}</h4>
-                  {unit &&
-                    unit?.assessments?.map((assessment, innerIndex) => (
-                      <ul key={innerIndex}>
-                        <li style={{ padding: '2px' }}>
-                          {innerIndex + 1}. {assessment?.name?.fi}
-                        </li>
-                      </ul>
-                    ))}
-                  {index !== evaluation?.units?.length - 1 && (
-                    <hr style={{ margin: '12px 0' }} />
-                  )}
-                </li>
-              ))}
-          </ul>
-        </section>
       </div>
-      <PageNavigationButtons
-        handleBackText={'Takaisin'}
-        //handleBack={() => navigate(`/degrees/add`)}
-        handleBack={() => {
-          setSubHeading('')
-          navigate('/')
-        }}
-        showForwardButton={false}
-        icon={'mingcute:pencil-line'}
-        style={{ textAlign: 'left' }}
-      />
+
+      <div className="footer-buttons">
+        <Link
+          className="navigation-button"
+          to={`/unit-list/${evaluation.customerId._id}`}
+        >
+          <Icon icon={"formkit:arrowleft"} />
+          <p>Takaisin</p>
+        </Link>
+
+        {
+          evaluation && (
+            <PdfExportButton data={evaluation} label="Vie PDF-muotoon"/>
+          )
+        }
+      </div>
     </div>
   );
 };

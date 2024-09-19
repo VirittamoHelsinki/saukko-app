@@ -23,7 +23,7 @@ const getAllForCurrentUser = async (req: Request, res: Response) => {
 
     const evaluations = await EvaluationModel.find(getFilter())
       .populate('customerId', 'firstName lastName email')
-      .populate('teacherId', 'firstName lastName')
+      .populate('teacherId', 'firstName lastName email')
       .populate('supervisorIds', 'firstName lastName email')
       .populate("degreeId")
       .populate('workplaceId');
