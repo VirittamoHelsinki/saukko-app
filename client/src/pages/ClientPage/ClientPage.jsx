@@ -112,16 +112,12 @@ function ClientPage() {
             fieldValue={formatDate(user?.evaluationId?.endDate)}
           />
           <ClientInformationField
-            fieldLabel="Työpaikka"
-            fieldValue={user?.workplaceId?.name}
+            fieldLabel="Työpaikka ja yksikkö"
+            fieldValue={`${evaluation?.workplaceId?.name}, ${department?.name || '-'}`}
           />
           <ClientInformationField
             fieldLabel="Y-tunnus"
             fieldValue={user?.workplaceId?.businessId}
-          />
-          <ClientInformationField
-            fieldLabel="Työpaikan yksikkö"
-            fieldValue={department?.name}
           />
           <ClientInformationField
             fieldLabel="Työpaikan yksikön lisätiedot"
@@ -140,9 +136,7 @@ function ClientPage() {
             fieldValue={evaluation?.extensionEndDate}
             disabled={!evaluation?.extensionEndDate}
           />
-
         </div>
-
 
         <div className='title-container'>
           <p className="title">Asiakkaan tutkinnon osat</p>
