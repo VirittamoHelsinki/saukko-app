@@ -30,11 +30,23 @@ function ClientPage() {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
   const [ open, setOpen ] = useState(false);
   const [ evaluation, setEvaluation ] = useState(null);
+  const [ user, setUser ] = useState(null);
 
-  const { data: user } = useQuery({
-    queryKey: ['user'],
-    queryFn: () => fetchUserById(id),
-  });
+  // fetchuserbyid in useeffect
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await fetchUserById(id);
+        setUser(user);
+      }
+      catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+    if (id) {
+      fetchUser();
+    }
+  }, [id]);
 
   useEffect(() => {
     const fetchEvaluation = async () => {
