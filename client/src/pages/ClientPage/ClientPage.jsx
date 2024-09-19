@@ -67,9 +67,6 @@ function ClientPage() {
   const supervisor = user?.evaluationId?.supervisorIds?.[0];
   const department = user?.workplaceId?.departments?.[0];
 
-  const units = user?.evaluationId.units || [];
-
-
   return (
     <div className='clientPage__wrapper' id='main-wrapper'>
       <section className='clientPage__container'>
@@ -144,27 +141,23 @@ function ClientPage() {
         </div>
 
         <div className="clientPage__card">
-          {
-            units.map((unit, index) => (
-              <div key={"unit" + index} className="clientPage__unit">
+          <div className="clientPage__unit">
 
-                <ClientInformationField
-                  fieldLabel={"Tutkinnon nimi"}
-                  fieldValue={unit.name.fi}
-                />
+            <ClientInformationField
+              fieldLabel={"Tutkinnon nimi"}
+              fieldValue={evaluation?.degreeId?.name.fi}
+            />
 
-                <ClientInformationField
-                  fieldLabel={"Tutkinnon osat"}
-                  fieldValue={
-                    unit.assessments.reduce((acc, assessment) => {
-                      return acc + assessment.name.fi + "\n";
-                    }, "").trim()
-                  }
-                />
+            <ClientInformationField
+              fieldLabel={"Tutkinnon osat"}
+              fieldValue={
+                evaluation?.degreeId?.units?.reduce((acc, unit) => {
+                  return acc + unit.name.fi + "\n";
+                }, "").trim()
+              }
+            />
 
-              </div>
-            ))
-          }
+          </div>
         </div>
 
         <div className="footer-buttons">
