@@ -1,8 +1,7 @@
 // Import react packages & dependencies
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useEvaluationStore from '../../store/zustand/evaluationStore.js';
 // Import components
-import { fetchInternalDegreeById } from '../../api/degree';
 import InfoList from '../../components/InfoList/InfoList';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
@@ -11,7 +10,6 @@ import useHeadingStore from '../../store/zustand/useHeadingStore.js';
 import PdfExportButton from '../../components/PdfCertificate/PdfExportButton.jsx';
 
 const ContractInfo = () => {
-  const [_degreeDetails, setDegreeDetails] = useState(null); // Unused variable?
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const { evaluation } = useEvaluationStore();
@@ -20,18 +18,6 @@ const ContractInfo = () => {
     setSiteTitle("Sopimus")
     setSubHeading(evaluation?.customerId?.firstName + ' ' + evaluation?.customerId?.lastName)
     setHeading("Sopimus")
-    const degree = async () => {
-      try {
-        const response = await fetchInternalDegreeById(evaluation?.degreeId);
-        console.log('Degree details: ', response);
-        setDegreeDetails(response);
-      } catch (error) {
-        console.error(error);
-        throw error; // Throw the error for the caller to handle
-      }
-    };
-
-    degree();
   }, [evaluation, setHeading, setSiteTitle, setSubHeading]);
 
   function formatDate(dateString) {
