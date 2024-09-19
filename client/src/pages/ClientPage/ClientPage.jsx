@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import dayjs from "dayjs"
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { fetchUserById } from "../../api/user";

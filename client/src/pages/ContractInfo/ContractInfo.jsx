@@ -7,13 +7,11 @@ import InfoList from '../../components/InfoList/InfoList';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 
-import { useNavigate } from 'react-router-dom';
 import useHeadingStore from '../../store/zustand/useHeadingStore.js';
 import PdfExportButton from '../../components/PdfCertificate/PdfExportButton.jsx';
 
 const ContractInfo = () => {
-  const navigate = useNavigate();
-  const [degreeDetails, setDegreeDetails] = useState(null);
+  const [_degreeDetails, setDegreeDetails] = useState(null); // Unused variable?
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const { evaluation } = useEvaluationStore();
@@ -42,16 +40,6 @@ const ContractInfo = () => {
     const month = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Get month with leading zero if necessary (Note: January is 0)
     const year = startDate.getFullYear();
     return `${day}.${month}.${year}`;
-  }
-
-  function formatDateWithStringMonth(dateString) {
-    const months = ['tammikuuta', 'helmikuuta', 'maaliskuuta', 'huhtikuuta', 'toukokuuta', 'kesäkuuta', 'heinäkuuta', 'elokuuta', 'syyskuuta', 'lokakuuta', 'marraskuuta', 'joulukuuta'];
-    const startDate = new Date(dateString);
-    const day = startDate.getDate().toString().padStart(2, '0'); // Get day with leading zero if necessary
-    const monthIndex = startDate.getMonth();
-    const monthName = months[monthIndex];
-    const year = startDate.getFullYear();
-    return `${day}.${monthName} ${year}`;
   }
 
   const startDateString = evaluation?.startDate; // Get start date from evaluation object
