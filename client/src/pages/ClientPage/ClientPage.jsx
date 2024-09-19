@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import dayjs from "dayjs"
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { fetchUserById } from "../../api/user";
@@ -30,11 +29,23 @@ function ClientPage() {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
   const [ open, setOpen ] = useState(false);
   const [ evaluation, setEvaluation ] = useState(null);
+  const [ user, setUser ] = useState(null);
 
-  const { data: user } = useQuery({
-    queryKey: ['user'],
-    queryFn: () => fetchUserById(id),
-  });
+  // fetchuserbyid in useeffect
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await fetchUserById(id);
+        setUser(user);
+      }
+      catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+    if (id) {
+      fetchUser();
+    }
+  }, [id]);
 
   useEffect(() => {
     const fetchEvaluation = async () => {
@@ -66,9 +77,6 @@ function ClientPage() {
   const teacher = user?.evaluationId.teacherId;
   const supervisor = user?.evaluationId?.supervisorIds?.[0];
   const department = user?.workplaceId?.departments?.[0];
-
-  const units = user?.evaluationId.units || [];
-
 
   return (
     <div className='clientPage__wrapper' id='main-wrapper'>
@@ -103,16 +111,12 @@ function ClientPage() {
             fieldValue={formatDate(user?.evaluationId?.endDate)}
           />
           <ClientInformationField
-            fieldLabel="Työpaikka"
-            fieldValue={user?.workplaceId?.name}
+            fieldLabel="Työpaikka ja yksikkö"
+            fieldValue={`${evaluation?.workplaceId?.name}, ${department?.name || '-'}`}
           />
           <ClientInformationField
             fieldLabel="Y-tunnus"
             fieldValue={user?.workplaceId?.businessId}
-          />
-          <ClientInformationField
-            fieldLabel="Työpaikan yksikkö"
-            fieldValue={department?.name}
           />
           <ClientInformationField
             fieldLabel="Työpaikan yksikön lisätiedot"
@@ -128,15 +132,14 @@ function ClientPage() {
           />
           <ClientInformationField
             fieldLabel="Täydennysjakson päättymispäivä *"
-            disabled
+            fieldValue={evaluation?.extensionEndDate}
+            disabled={!evaluation?.extensionEndDate}
           />
-
         </div>
-
 
         <div className='title-container'>
           <p className="title">Asiakkaan tutkinnon osat</p>
-          <button className="title-container__edit-button">
+          <button className="title-container__edit-button" style={{ display: "none" }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
               <path d="M5.00699 16.9825L0.726521 16.9693L0.713867 12.4901L11.7856 0.904297L16.0787 5.39674L5.00699 16.9825ZM11.7856 3.50519L2.5215 13.1994L2.52782 15.0853L4.32913 15.091L13.5932 5.39674L11.7856 3.50519Z" fill="#0000BF"/>
             </svg>
@@ -144,27 +147,23 @@ function ClientPage() {
         </div>
 
         <div className="clientPage__card">
-          {
-            units.map((unit, index) => (
-              <div key={"unit" + index} className="clientPage__unit">
+          <div className="clientPage__unit">
 
-                <ClientInformationField
-                  fieldLabel={"Tutkinnon nimi"}
-                  fieldValue={unit.name.fi}
-                />
+            <ClientInformationField
+              fieldLabel={"Tutkinnon nimi"}
+              fieldValue={evaluation?.degreeId?.name.fi}
+            />
 
-                <ClientInformationField
-                  fieldLabel={"Tutkinnon osat"}
-                  fieldValue={
-                    unit.assessments.reduce((acc, assessment) => {
-                      return acc + assessment.name.fi + "\n";
-                    }, "").trim()
-                  }
-                />
+            <ClientInformationField
+              fieldLabel={"Tutkinnon osat"}
+              fieldValue={
+                evaluation?.degreeId?.units?.reduce((acc, unit) => {
+                  return acc + unit.name.fi + "\n";
+                }, "").trim()
+              }
+            />
 
-              </div>
-            ))
-          }
+          </div>
         </div>
 
         <div className="footer-buttons">
