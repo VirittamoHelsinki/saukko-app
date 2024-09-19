@@ -146,6 +146,7 @@ const Notification = () => {
     { value: "ready", label: "Valmis lomake" },
     { value: "readyForReview", label: "Valmis tarkistettavaksi" },
     { value: "requestContact", label: "Yhteydenottopyyntö" },
+    { value: "requiresAction", label: "Arviointi vaatii toimenpiteitä" },
     { value: "all", label: "Näytä kaikki ilmoitukset" },
   ];
 
@@ -304,81 +305,81 @@ const Notification = () => {
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((notification) => {
 
-              const noficationClasses = classNames(
-                "notification",
-                { [role]: true },
-                { clicked: notification.isSeen }
-              )
+                const noficationClasses = classNames(
+                  "notification",
+                  { [role]: true },
+                  { clicked: notification.isSeen }
+                )
 
-              const customerName = `${notification.customer?.firstName} ${notification.customer?.lastName}`
+                const customerName = `${notification.customer?.firstName} ${notification.customer?.lastName}`
 
-              return (
-                <div
-                  className={noficationClasses}
-                  key={notification._id}
-                  onClick={() => handleNotificationClick(notification)}
-                >
-                  <div className="notification__accent"></div>
-                  <div className="notification__body">
-                    <div className="notification__content">
-                      <h3 className="notification__title">{notification.title}</h3>
-                      <p className="notification__recipient">Asiakas: {customerName}</p>
+                return (
+                  <div
+                    className={noficationClasses}
+                    key={notification._id}
+                    onClick={() => handleNotificationClick(notification)}
+                  >
+                    <div className="notification__accent"></div>
+                    <div className="notification__body">
+                      <div className="notification__content">
+                        <h3 className="notification__title">{notification.title}</h3>
+                        <p className="notification__recipient">Asiakas: {customerName}</p>
+                      </div>
+
+                      {!notification.isSeen && (
+                        <div className="notification__badge">
+                          <span>uusi</span>
+                        </div>
+                      )}
+
+                      {notification.isSeen && (
+                        <div className="remove__content">
+                          {showArchived ?
+                            (<IconButton
+                              edge="end"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent card click
+                                handleUnarchiveNotification(notification);
+                              }}
+                              sx={{ backgroundColor: 'white' }}
+                            >
+                              <UnarchiveIcon />
+                            </IconButton>
+
+
+
+
+                            ) :
+                            (<IconButton
+                              edge="end"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent card click
+                                handleArchiveNotification(notification);
+                              }}
+                              sx={{ backgroundColor: 'white' }}
+                            >
+                              <ArchiveIcon />
+                            </IconButton>)}
+
+                          {showArchived && <IconButton
+                            edge="end"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click
+                              handleRemoveNotification(notification._id);
+                            }}
+                            sx={{ backgroundColor: 'white' }}
+                          >
+                            <Icon
+                              icon="material-symbols:delete-outline"
+                              color="#B01038"
+                            />
+                          </IconButton>}
+                        </div>
+                      )}
                     </div>
-
-                    {!notification.isSeen && (
-                      <div className="notification__badge">
-                        <span>uusi</span>
-                      </div>
-                    )}
-
-                    {notification.isSeen && (
-                      <div className="remove__content">
-                        {showArchived ?
-                          (<IconButton
-                            edge="end"
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent card click
-                              handleUnarchiveNotification(notification);
-                            }}
-                            sx={{ backgroundColor: 'white' }}
-                          >
-                            <UnarchiveIcon />
-                          </IconButton>
-
-
-
-
-                          ) :
-                          (<IconButton
-                            edge="end"
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent card click
-                              handleArchiveNotification(notification);
-                            }}
-                            sx={{ backgroundColor: 'white' }}
-                          >
-                            <ArchiveIcon />
-                          </IconButton>)}
-
-                        {showArchived && <IconButton
-                          edge="end"
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent card click
-                            handleRemoveNotification(notification._id);
-                          }}
-                          sx={{ backgroundColor: 'white' }}
-                        >
-                          <Icon
-                            icon="material-symbols:delete-outline"
-                            color="#B01038"
-                          />
-                        </IconButton>}
-                      </div>
-                    )}
                   </div>
-                </div>
-              );
-            })
+                );
+              })
           }
         </div>
 
