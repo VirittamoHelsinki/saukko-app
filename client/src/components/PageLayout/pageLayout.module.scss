@@ -1,11 +1,11 @@
-$header-height: 115px;
+$header-height: 130px;
 
 .container {
   user-select: none;
   //height: 100vh;
   height: 100%;
   width: 100vw;
-  position: relative; 
+  position: relative;
 }
 
 .container header {
@@ -17,37 +17,57 @@ $header-height: 115px;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  z-index: 10; 
+  z-index: 10;
+}
+
+.header__user {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  z-index: 10;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #1A1A1A;
+
+}
+
+.initials {
+  border-radius: 11px;
+  border: 1px solid #FFEDB8;
+  background: #FFF2CC;
+
+  display: flex;
+  width: 20px;
+  height: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #1A1A1A;
+  text-align: center;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.full-name {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .container header h1 {
   font-size: 18px;
-  margin-top: 0.5em;
-}
-
-.container header .buttonContainer {
-  position: absolute;
-  left: 10px;
-  font-size: 38px;
-  height: 100%;
-  display: flex;
-  z-index: 999;
-}
-
-.buttonContainer button {
-  background: none;
-  border: none;
-  margin-left: 0.75rem;
-}
-
-.container header div button svg {
-  font-size: 32px;
 }
 
 .container main {
   min-height: calc(100vh - $header-height);
   z-index: 1;
-  position: relative; 
+  position: relative;
 }
 
 .container header .headerBox {
@@ -57,7 +77,8 @@ $header-height: 115px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
+  padding-bottom: 20px;
 }
 
 header svg {
@@ -69,8 +90,8 @@ header svg {
     margin-left: 2rem;
   }
   .container main {
-    margin: 1rem auto; 
-    max-width: 50%; 
+    margin: 1rem auto;
+    max-width: 50%;
   }
 }
 
