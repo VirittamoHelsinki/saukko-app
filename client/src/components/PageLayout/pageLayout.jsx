@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useNavigationType, Outlet } from 'react-router-dom';
+import { useLocation, useNavigate, useNavigationType, Outlet, Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import styles from './pageLayout.module.scss';
@@ -66,6 +66,10 @@ const PageLayout = () => {
   const logoColor = currentUser?.role ? '#000' : '#fff';
   const showBackButton = navigationType !== 'POP' && location.key !== 'default';
   const renderHeader = currentUser && currentUser.role;
+
+  const initials = currentUser?.firstName?.charAt(0) + currentUser?.lastName?.charAt(0);
+  const fullName = currentUser?.firstName + " " + currentUser?.lastName;
+
   useEffect(() => {
     // Add pages in array below, where the waves header should not render
     const wavesHeadingDisabledPaths = ["verify-email",]
@@ -100,6 +104,11 @@ const PageLayout = () => {
               {<h1>{heading}</h1>}
               {<p>{subHeading}</p>}
             </div>
+
+            <Link to="/profile" className={styles.header__user}>
+              <div className={styles.initials}>{initials}</div>
+              <div className={styles["full-name"]}>{fullName}</div>
+            </Link>
             <Waves fill={headerColor} />
           </header>
         )}
