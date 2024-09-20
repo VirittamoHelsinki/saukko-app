@@ -108,7 +108,7 @@ const TeacherPerformanceFeedBack = ({
                 >
                   <FormControlLabel
                     value='Osaa ohjatusti'
-                    disabled={disableRadioButtons}
+                    disabled={disableRadioButtons && 'Opettajan merkintä'}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '70px',
@@ -124,7 +124,7 @@ const TeacherPerformanceFeedBack = ({
                   />
                   <FormControlLabel
                     value='Osaa itsenäisesti'
-                    disabled={disableRadioButtons}
+                    disabled={disableRadioButtons && item.info !== 'Opettajan merkintä'}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '8%',
