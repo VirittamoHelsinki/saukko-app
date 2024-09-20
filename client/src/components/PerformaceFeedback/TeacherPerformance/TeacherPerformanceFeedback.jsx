@@ -25,14 +25,14 @@ const TeacherPerformanceFeedBack = ({
           disabled: true,
           unitId: unit._id,
           assessmentId: assessment._id,
-          answer: assessment.answer,
+          answer: (unit.customerReady) ? assessment.answer : '',
         },
         {
           info: 'TPO:n havainto',
           disabled: true,
           unitId: unit._id,
           assessmentId: assessment._id,
-          answerSupervisor: assessment.answerSupervisor,
+          answerSupervisor: (unit.supervisorReady) ? assessment.answerSupervisor : '',
         },
         {
           info: 'Opettajan merkintä',
