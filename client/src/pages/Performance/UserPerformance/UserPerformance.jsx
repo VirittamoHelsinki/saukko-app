@@ -283,7 +283,7 @@ const UserPerformance = () => {
     }
 
     setIsButtonEnabled(true);
-    if (selectedValues['suoritusValmis']) {
+    if (selectedValues['suoritusValmis'] || selectedValues['valmisLahetettavaksi']) {
       handleNotificationModalOpen();
     } else {
       handleNotificationSketchModalOpen();
