@@ -57,7 +57,7 @@ const UnitStatus = ({ unitId, unit, subheader, assessment, currentUser, link }) 
     } else if (assessment.answerTeacher === 0) {
       header = 'Aloittamatta';
       backgroundColor = '#E2E2E2';
-    } else if (assessment.answerTeacher === 1 || assessment.answerTeacher === 2) {
+    } else if (assessment.answerTeacher === 1 || assessment.answerTeacher === 2 || assessment.answer === 1 || assessment.answer === 2) {
       header = 'Aloitettu';
       backgroundColor = '#B7D9F7';
     }
