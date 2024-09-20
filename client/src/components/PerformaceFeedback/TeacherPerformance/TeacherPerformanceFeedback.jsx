@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import TeacherComment from './TeacherComment';
 
 const TeacherPerformanceFeedBack = ({
-  evaluation, setEvaluation, assessment, unit, selectedRadio, handleRadioChange, unitId
+  evaluation, setEvaluation, assessment, unit, selectedRadio, handleRadioChange, unitId, currentUser
 }) => {
 
 
@@ -78,6 +78,8 @@ const TeacherPerformanceFeedBack = ({
     return assessment.answerTeacher !== 0 ? '#FFF4B4' : '#F2F2F2';
   };
 
+  const disableRadioButtons = currentUser && currentUser.role === 'teacher' && unit.teacherReady;
+
   return (
     <div className='feedback__wrapper'
       style={{ backgroundColor: getBackgroundColor() }}
@@ -106,6 +108,7 @@ const TeacherPerformanceFeedBack = ({
                 >
                   <FormControlLabel
                     value='Osaa ohjatusti'
+                    disabled={disableRadioButtons || item.info !== 'Opettajan merkintä'}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '70px',
@@ -121,6 +124,7 @@ const TeacherPerformanceFeedBack = ({
                   />
                   <FormControlLabel
                     value='Osaa itsenäisesti'
+                    disabled={disableRadioButtons || item.info !== 'Opettajan merkintä'}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '8%',

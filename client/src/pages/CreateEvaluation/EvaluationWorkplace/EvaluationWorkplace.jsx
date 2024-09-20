@@ -24,6 +24,7 @@ import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { createTheme } from '@mui/material/styles';
+import TeacherSelection from '../../../components/TeacherSelection/TeacherSelection';
 
 function EvaluationWorkplace() {
   const navigate = useNavigate();
@@ -124,6 +125,8 @@ function EvaluationWorkplace() {
   const handlePageChange = (event, value) => {
     setPage(value);
   };
+
+
 
   const indexOfLastWorkplace = page * workplacesPerPage;
   const indexOfFirstWorkplace = indexOfLastWorkplace - workplacesPerPage;
@@ -312,8 +315,12 @@ function EvaluationWorkplace() {
                           ))}
                         </AccordionDetails>
                       </Accordion>
+                      {/* Teachers */}
+                      <TeacherSelection workplace={workplaceFromStore} />
                     </>
                   )}
+
+
 
                   {workplace.departments.length > 0 &&
                     departmentFromStore && (
@@ -358,6 +365,7 @@ function EvaluationWorkplace() {
                             )}
                           </AccordionDetails>{' '}
                         </Accordion>
+                        <TeacherSelection workplace={workplaceFromStore} />
                       </>
                     )}
                 </AccordionDetails>

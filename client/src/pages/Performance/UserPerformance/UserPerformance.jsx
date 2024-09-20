@@ -321,6 +321,7 @@ const UserPerformance = () => {
     }
   };
 
+
   const isPalauteSectionDisabled = () => {
     if (currentUser?.role === 'teacher') {
       return !selectedValues['suoritusValmis'];
@@ -361,9 +362,12 @@ const UserPerformance = () => {
     }));
   }, []);
 
-  useEffect(() => {
-    console.log('testing selecting values: ', selectedValues)
-  })
+  const customerOrSupervisorDisabled = unitObject && (currentUser.role === 'customer' && unitObject.customerReady
+    || currentUser.role === 'supervisor' && unitObject.supervisorReady);
+
+  const currentUserCustomerOrSupervisor = currentUser.role === 'customer' || currentUser.role === 'supervisor';
+
+  const teacherDisabled = unitObject && (currentUser.role === 'teacher' && unitObject.teacherReady);
 
   return (
     <div className='perfomance__wrapper'>
@@ -398,6 +402,7 @@ const UserPerformance = () => {
                     selectedRadio={selectedRadio[assess._id] || {}}
                     handleRadioChange={handleRadioChange}
                     selectedUnitId={selectedUnitId}
+                    currentUser={currentUser}
                   />
                 ) : (
                   <PerformancesFeedback
@@ -420,7 +425,7 @@ const UserPerformance = () => {
         <div style={{ fontSize: '20px' }}>
           {currentUser?.role === 'teacher' ? (
             <>
-              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+              {!teacherDisabled && <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
                 <input
                   type='checkbox'
                   name='suoritusValmis'
@@ -433,9 +438,9 @@ const UserPerformance = () => {
                   }
                 />
                 <span> Suoritus valmis </span>
-              </label>
+              </label>}
 
-              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+              {!teacherDisabled && <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
                 <input
                   type='checkbox'
                   name='yhteydenottoAsiakkaalta'
@@ -449,9 +454,9 @@ const UserPerformance = () => {
                   }
                 />
                 <span> Pyydän yhteydenottoa asiakkaalta</span>
-              </label>
+              </label>}
 
-              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+              {!teacherDisabled && <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
                 <input
                   type='checkbox'
                   name='yhteydenottoOhjaajalta'
@@ -464,11 +469,11 @@ const UserPerformance = () => {
                   }
                 />
                 <span> Pyydän yhteydenottoa ohjaajalta </span>
-              </label>
+              </label>}
             </>
           ) : (
             <>
-              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+              {!customerOrSupervisorDisabled && <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
                 <input
                   type='checkbox'
                   name='valmisLahetettavaksi'
@@ -479,10 +484,10 @@ const UserPerformance = () => {
                     })
                   }
                 />
-                <span> Valmis lähetettäväksi </span>
-              </label>
+                <span> Valmis tarkistettavaksi</span>
+              </label>}
 
-              <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
+              {!customerOrSupervisorDisabled && <label style={{ fontSize: '16px', display: 'block', marginBottom: '14px' }}>
                 <input
                   type='checkbox'
                   name='pyydetaanYhteydenottoaOpettajalta'
@@ -495,7 +500,7 @@ const UserPerformance = () => {
                   }
                 />
                 <span> Pyydän yhteydenottoa opettajalta</span>
-              </label>
+              </label>}
             </>
           )}
         </div>
@@ -532,15 +537,18 @@ const UserPerformance = () => {
           <section className='section-buttons'>
             <div className='buttons-wrapper'>
               <PageNavigationButtons handleBack={() => navigate(-1)} />
-
-              <Button
-                id='submitButton'
-                style={buttonStyle}
-                type='submit'
-                text={getButtonText()}
-                onClick={handleSubmit}
-              // disabled={isPalauteSectionDisabled()}
-              />
+              {
+                ((!customerOrSupervisorDisabled && currentUserCustomerOrSupervisor) || (currentUser.role === 'teacher' && !teacherDisabled))
+                &&
+                < Button
+                  id='submitButton'
+                  style={buttonStyle}
+                  type='submit'
+                  text={getButtonText()}
+                  onClick={handleSubmit}
+                // disabled={isPalauteSectionDisabled()}
+                />
+              }
             </div>
           </section>
         </div>

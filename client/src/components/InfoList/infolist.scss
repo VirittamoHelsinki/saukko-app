@@ -7,10 +7,21 @@
 
   ul li {
     //height: auto;
-    padding: 8px 20px;
+    padding: 14px 16px;
     line-height: 20px;
     font-size: 16px;
     min-height: 45px;
     align-content: center;
+    background-color: #ffffff;
+    min-height: 70px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    white-space: pre;
+
+    &:nth-child(even) {
+      background-color: #f2f2f2;
+    }
   }
 }

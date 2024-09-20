@@ -53,7 +53,7 @@ export const notificationObjSchema = new Schema<INotificationObjDocument>({
     type: Boolean,
     default: false,
   }
-})
+}, { timestamps: true })
 
 export default mongoose.model<INotificationObjDocument & Document>("NotificationDocument", notificationObjSchema);
 
