@@ -43,7 +43,7 @@ const TeacherSelection = ({ workplace }) => {
 
     // If found, pass the teacher ID to the parent component
     if (selectedTeacher) {
-      setSelectedTeacher(selectedTeacher)
+      setSelectedTeacher(teacherId)
     }
   };
 
