@@ -8,7 +8,7 @@ const getById = async (req: Request, res: Response) => {
   try {
     const evaluation = await EvaluationModel.findById(req.params.id)
       .populate('customerId', 'firstName lastName')
-      .populate('teacherId', 'firstName lastName')
+      .populate('teacherId', 'firstName lastName email')
       .populate('supervisorIds', 'firstName lastName')
       .populate("degreeId")
       .populate('workplaceId');
