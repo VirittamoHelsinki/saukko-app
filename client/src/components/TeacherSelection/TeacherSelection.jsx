@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Icon } from '@iconify/react';
 import { fetchAllTeachers } from '../../api/user'; // Adjust import path as needed
-import { updateEvaluationById } from '../../api/evaluation';
 import useEvaluationFormStore from '../../store/zustand/evaluationFormStore';
 
 const TeacherSelection = ({ workplace }) => {
