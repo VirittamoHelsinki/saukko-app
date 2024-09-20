@@ -61,14 +61,14 @@ const TeacherPerformanceFeedBack = ({
         acc[item.info] = item.answerTeacher || '';
         handleRadioChange([item.info], acc[item.info], assessment._id)
       }
-      /*       if (item.info === 'Itsearviointi') {
-              acc[item.info] = item.answer || '';
-              handleRadioChange([item.info], acc[item.info], assessment._id)
-            }
-            if (item.info === 'TPO:n havainto') {
-              acc[item.info] = item.answerSupervisor || ''
-              handleRadioChange([item.info], acc[item.info], assessment._id)
-            } */
+      if (item.info === 'Itsearviointi') {
+        acc[item.info] = item.answer || '';
+        handleRadioChange([item.info], acc[item.info], assessment._id)
+      }
+      if (item.info === 'TPO:n havainto') {
+        acc[item.info] = item.answerSupervisor || ''
+        handleRadioChange([item.info], acc[item.info], assessment._id)
+      }
       return acc;
     }, {});
 
@@ -108,7 +108,7 @@ const TeacherPerformanceFeedBack = ({
                 >
                   <FormControlLabel
                     value='Osaa ohjatusti'
-                    disabled={disableRadioButtons && 'Opettajan merkintä'}
+                    disabled={disableRadioButtons || item.info !== 'Opettajan merkintä'}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '70px',
@@ -124,7 +124,7 @@ const TeacherPerformanceFeedBack = ({
                   />
                   <FormControlLabel
                     value='Osaa itsenäisesti'
-                    disabled={disableRadioButtons && item.info !== 'Opettajan merkintä'}
+                    disabled={disableRadioButtons || item.info !== 'Opettajan merkintä'}
                     sx={{
                       '& .MuiSvgIcon-root': {
                         marginRight: '8%',
