@@ -50,10 +50,10 @@ const ClientEditModal = ({ isOpen, onClose, userToEdit }) => {
 	});
 
   const [ evaluationFormData, setEvaluationFormData] = useState({
-    supervisor: userToEdit.workplaceId.supervisors[0],
-    startDate: userToEdit.evaluationId.startDate,
-    endDate: userToEdit.evaluationId.endDate,
-    extensionEndDate: userToEdit.evaluationId.extensionEndDate,
+    supervisor: userToEdit.workplaceId?.supervisors[0],
+    startDate: userToEdit.evaluationId?.startDate,
+    endDate: userToEdit.evaluationId?.endDate,
+    extensionEndDate: userToEdit.evaluationId?.extensionEndDate,
   });
 
   const setSupervisor = (supervisor) => {

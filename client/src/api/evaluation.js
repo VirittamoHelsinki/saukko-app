@@ -29,7 +29,7 @@ const fetchAllEvaluations = async () => {
 const fetchEvaluationById = async (evaluationId) => {
   try {
     const response = await axios.get(`/api/evaluation/${evaluationId}`);
-    console.log('RESPONSE', response.data);
+    console.log('RESPONSE EVALUATION', response.data);
 
     return response.data;
   } catch (error) {

@@ -10,8 +10,7 @@ const PerformancesFeedback = ({
   unit,
   selectedRadio,
   handleRadioChange,
-  currentUser
-
+  currentUser,
 }) => {
 
   const valueMapping = {
@@ -81,6 +80,8 @@ const PerformancesFeedback = ({
 
   }, [assessment._id, handleRadioChange, infodataForSelectedAssessment]);
 
+  const disableRadioButtons = currentUser.role === 'customer' && unit.customerReady || currentUser.role === 'supervisor' && unit.supervisorReady;
+
   return (
     <div
       className='feedbackpage__wrapper'
@@ -103,6 +104,7 @@ const PerformancesFeedback = ({
                 control={
                   <Radio />
                 }
+                disabled={disableRadioButtons}
                 checked={selectedRadio[item.info] === 1}
                 label='Osaa ohjatusti'
                 labelPlacement='top'
@@ -112,6 +114,7 @@ const PerformancesFeedback = ({
                 control={
                   <Radio />
                 }
+                disabled={disableRadioButtons}
                 checked={selectedRadio[item.info] === 2}
                 label='Osaa itsenäisesti'
                 labelPlacement='top'
