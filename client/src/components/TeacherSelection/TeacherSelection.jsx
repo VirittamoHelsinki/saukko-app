@@ -3,16 +3,14 @@ import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Icon } from '@iconify/react';
 import { fetchAllTeachers } from '../../api/user'; // Adjust import path as needed
+import { updateEvaluationById } from '../../api/evaluation';
 import useEvaluationFormStore from '../../store/zustand/evaluationFormStore';
-
-
-
 
 const TeacherSelection = ({ workplace }) => {
 
   const [fetchedTeachers, setFetchedTeachers] = useState([]);
 
-  const { setSelectedTeacher, selectedTeacher } = useEvaluationFormStore();
+  const { setSelectedTeacher, selectedTeacher, setEvaluation } = useEvaluationFormStore();
 
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -43,11 +41,15 @@ const TeacherSelection = ({ workplace }) => {
 
     // If found, pass the teacher ID to the parent component
     if (selectedTeacher) {
-      setSelectedTeacher(teacherId)
-    }
-  };
+      setSelectedTeacher(selectedTeacher)
 
-  // TODO: Only select teachers that have the same degree as the workplace
+      setEvaluation((prevState) => ({
+        ...prevState,
+        teacherId: teacherId,
+      }));
+    }
+
+  };
 
   return (
     <>
