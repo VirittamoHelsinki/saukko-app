@@ -33,7 +33,7 @@ const UnitStatus = ({ unitId, unit, subheader, assessment, currentUser, link }) 
     if (unit.supervisorReady) {
       header = 'Käsittelyssä';
       backgroundColor = '#FFE28C';
-    } else if (unit.cus - omerReady && !unit.supervisorReady) {
+    } else if (unit.customerReady && !unit.supervisorReady) {
       header = 'Käsittelyssä';
       backgroundColor = '#FFAAAA';
     } else if (assessment.answerSupervisor === 0) {
