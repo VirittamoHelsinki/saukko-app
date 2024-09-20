@@ -61,14 +61,14 @@ const TeacherPerformanceFeedBack = ({
         acc[item.info] = item.answerTeacher || '';
         handleRadioChange([item.info], acc[item.info], assessment._id)
       }
-      if (item.info === 'Itsearviointi') {
-        acc[item.info] = item.answer || '';
-        handleRadioChange([item.info], acc[item.info], assessment._id)
-      }
-      if (item.info === 'TPO:n havainto') {
-        acc[item.info] = item.answerSupervisor || ''
-        handleRadioChange([item.info], acc[item.info], assessment._id)
-      }
+      /*       if (item.info === 'Itsearviointi') {
+              acc[item.info] = item.answer || '';
+              handleRadioChange([item.info], acc[item.info], assessment._id)
+            }
+            if (item.info === 'TPO:n havainto') {
+              acc[item.info] = item.answerSupervisor || ''
+              handleRadioChange([item.info], acc[item.info], assessment._id)
+            } */
       return acc;
     }, {});
 
