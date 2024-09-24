@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Searchbar from '../../components/Searchbar/Searchbar';
 import Button from '../../components/Button/Button';
 import InternalApiContext from '../../store/context/InternalApiContext';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
@@ -29,6 +28,7 @@ const CheckLength = ({
     <>
       {list.slice(startIndex, endIndex).map((company, index) => (
         <Link
+          key={index}
           to={`/add/companyname/${company._id}`}
           className='addCompany__link'
           disabled={true}
@@ -40,77 +40,77 @@ const CheckLength = ({
   );
 };
 
-const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
-  // Maximum number of numbered buttons to show at a time
-  const maxButtons = 5;
+// const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
+//   // Maximum number of numbered buttons to show at a time
+//   const maxButtons = 5;
 
-  // Start position of numbered buttons to show
-  const start = currentPage - Math.floor(maxButtons / 2);
+//   // Start position of numbered buttons to show
+//   const start = currentPage - Math.floor(maxButtons / 2);
 
-  // End position of numbered buttons to show
-  const end = start + maxButtons;
+//   // End position of numbered buttons to show
+//   const end = start + maxButtons;
 
-  let pages = [];
-  // Create an array of pages to show based on the start and end position
-  for (let i = start; i < end; i++) {
-    if (i >= 1 && i <= pageCount) {
-      pages.push(i);
-    }
-  }
+//   let pages = [];
+//   // Create an array of pages to show based on the start and end position
+//   for (let i = start; i < end; i++) {
+//     if (i >= 1 && i <= pageCount) {
+//       pages.push(i);
+//     }
+//   }
 
-  return (
-    <div className='addCompany__container--list-pagination'>
-      <section className='addCompany__container--list-pagination-nums'>
-        <button
-          // Disable button if current page is the first page
-          disabled={currentPage === 1}
-          onClick={() => handlePageClick(currentPage - 1)}
-          style={{ backgroundColor: 'white', border: 'none' }}
-        >
-          {'< '}
-        </button>
-        {/* Render numbered buttons */}
-        {pages.map((pageNum) => (
-          <button
-            key={pageNum}
-            onClick={() => handlePageClick(pageNum)}
-            className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
-              }`}
-          >
-            {pageNum}
-          </button>
-        ))}
-        <button
-          // Disable button if current page is the last page
-          disabled={currentPage === pageCount}
-          onClick={() => handlePageClick(currentPage + 1)}
-          style={{ backgroundColor: 'white', border: 'none' }}
-        >
-          {' >'}
-        </button>
-      </section>
-      {/* Render previous and next buttons */}
-      {/* <section className='addCompany__container--list-pagination-arrows'>
-        <button
-          // Disable button if current page is the first page
-          disabled={currentPage === 1}
-          onClick={() => handlePageClick(currentPage - 1)}
-          className='arrow__button'
-        >
-          {'< Previous'}
-        </button>
-        <button
-          // Disable button if current page is the last page
-          disabled={currentPage === pageCount}
-          onClick={() => handlePageClick(currentPage + 1)}
-          className='arrow__button'
-        >
-          {'Next >'}
-        </button>
-      </section> */}
-    </div>
-  );
-};
+//   return (
+//     <div className='addCompany__container--list-pagination'>
+//       <section className='addCompany__container--list-pagination-nums'>
+//         <button
+//           // Disable button if current page is the first page
+//           disabled={currentPage === 1}
+//           onClick={() => handlePageClick(currentPage - 1)}
+//           style={{ backgroundColor: 'white', border: 'none' }}
+//         >
+//           {'< '}
+//         </button>
+//         {/* Render numbered buttons */}
+//         {pages.map((pageNum) => (
+//           <button
+//             key={pageNum}
+//             onClick={() => handlePageClick(pageNum)}
+//             className={`pagination__button ${pageNum === currentPage ? 'pagination__button--active' : ''
+//               }`}
+//           >
+//             {pageNum}
+//           </button>
+//         ))}
+//         <button
+//           // Disable button if current page is the last page
+//           disabled={currentPage === pageCount}
+//           onClick={() => handlePageClick(currentPage + 1)}
+//           style={{ backgroundColor: 'white', border: 'none' }}
+//         >
+//           {' >'}
+//         </button>
+//       </section>
+//       {/* Render previous and next buttons */}
+//       {/* <section className='addCompany__container--list-pagination-arrows'>
+//         <button
+//           // Disable button if current page is the first page
+//           disabled={currentPage === 1}
+//           onClick={() => handlePageClick(currentPage - 1)}
+//           className='arrow__button'
+//         >
+//           {'< Previous'}
+//         </button>
+//         <button
+//           // Disable button if current page is the last page
+//           disabled={currentPage === pageCount}
+//           onClick={() => handlePageClick(currentPage + 1)}
+//           className='arrow__button'
+//         >
+//           {'Next >'}
+//         </button>
+//       </section> */}
+//     </div>
+//   );
+// };
 
 const AddCompanyName = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -127,25 +127,25 @@ const AddCompanyName = () => {
   console.log('Internal saukko database workplaces: ', workplaces);
 
 
-  // Searchbar logic
-  const handleSearch = (event) => {
-    setCurrentPage(1); // Reset page when searching
-    setFilteredList(
-      workplaces.filter((company) =>
-        company.name.toLowerCase().includes(event.target.value.toLowerCase())
-      )
-    );
-  };
+  // // Searchbar logic
+  // const handleSearch = (event) => {
+  //   setCurrentPage(1); // Reset page when searching
+  //   setFilteredList(
+  //     workplaces.filter((company) =>
+  //       company.name.toLowerCase().includes(event.target.value.toLowerCase())
+  //     )
+  //   );
+  // };
 
-  // Pagination logic
-  const pageCount =
-    filteredList.length > 0
-      ? Math.ceil(filteredList.length / paginate)
-      : Math.ceil(workplaces.length / paginate);
+  // // Pagination logic
+  // const pageCount =
+  //   filteredList.length > 0
+  //     ? Math.ceil(filteredList.length / paginate)
+  //     : Math.ceil(workplaces.length / paginate);
 
-  const handlePageClick = (pageNum) => {
-    setCurrentPage(pageNum);
-  };
+  // const handlePageClick = (pageNum) => {
+  //   setCurrentPage(pageNum);
+  // };
 
   return (
     <div className='addCompany__wrapper'>
