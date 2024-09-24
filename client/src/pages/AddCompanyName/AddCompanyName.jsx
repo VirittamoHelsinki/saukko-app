@@ -1,11 +1,13 @@
 import { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Searchbar from '../../components/Searchbar/Searchbar';
 import Button from '../../components/Button/Button';
 import InternalApiContext from '../../store/context/InternalApiContext';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 // import { arrayIncludes } from '@mui/x-date-pickers/internals/utils/utils';
 // import { buildDeprecatedPropsWarning } from '@mui/x-date-pickers/internals';
+
+import "./styles.scss";
 
 // controls how many company name are shown at once and renders them
 const CheckLength = ({
@@ -29,7 +31,7 @@ const CheckLength = ({
       {list.slice(startIndex, endIndex).map((company, index) => (
         <div
           key={index}
-          className='addDegree__container--list-item'
+          className='addCompany__container--list-item'
           style={{ cursor: 'pointer' }}
           onClick={() => navigate(`${company._id}`)}
         >
@@ -59,8 +61,8 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
   }
 
   return (
-    <div className='addDegree__container--list-pagination'>
-      <section className='addDegree__container--list-pagination-nums'>
+    <div className='addCompany__container--list-pagination'>
+      <section className='addCompany__container--list-pagination-nums'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
@@ -90,7 +92,7 @@ const PageButtons = ({ currentPage, pageCount, handlePageClick }) => {
         </button>
       </section>
       {/* Render previous and next buttons */}
-      {/* <section className='addDegree__container--list-pagination-arrows'>
+      {/* <section className='addCompany__container--list-pagination-arrows'>
         <button
           // Disable button if current page is the first page
           disabled={currentPage === 1}
@@ -148,8 +150,22 @@ const AddCompanyName = () => {
   };
 
   return (
-    <div className='addDegree__wrapper'>
-      <section className='addDegree__container'>
+    <div className='addCompany__wrapper'>
+      <section className='addCompany__container'>
+
+        <h1>Työpaikkojen hallinnointi</h1>
+
+        <h2>Työpaikat</h2>
+
+        <Link
+          to="#"
+          className='addCompany__container--list-item'
+          style={{ cursor: 'pointer' }}
+        >
+          <p>Helsingin kaupunki</p>
+        </Link>
+
+
         <Button
           id='addWorkplaceButton'
           text='Lisää työpaikka'
@@ -168,7 +184,7 @@ const AddCompanyName = () => {
 
         <Searchbar id='workplaceSearchbar' handleSearch={handleSearch} placeholder={'Etsi työpaikka'} />
 
-        <div className='addDegree__container--list'>
+        <div className='addCompany__container--list'>
           <CheckLength
             filteredList={filteredList}
             workplaces={workplaces}
