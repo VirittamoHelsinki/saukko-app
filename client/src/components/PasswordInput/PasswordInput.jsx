@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import useStore from '../../store/zustand/formStore';
 import { Icon } from '@iconify/react';
-import useHeadingStore from '../../store/zustand/useHeadingStore';
+/* import useHeadingStore from '../../store/zustand/useHeadingStore'; */
 
 /**
  * The PasswordInput component accepts two props: one for a label and one for
@@ -20,12 +20,12 @@ const PasswordInput = (props) => {
   // State variables for password visibility toggling
   const [showPassword, setShowPassword] = useState(false);
 
-  const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+  /* const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore(); */
 
-  useEffect(() => {
-    setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
-  }, [setHeading, setSiteTitle, setSubHeading])
-
+  // useEffect(() => {
+  //   setSiteTitle("Suorituksen aktiivoiminen"), setSubHeading("Lisää uusi asiakas"), setHeading("Asiakkuudet")
+  // }, [setHeading, setSiteTitle, setSubHeading])
+  //
 
   // Toggle password visibility for password input
   const togglePasswordVisibility = () => {
