@@ -11,7 +11,6 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchInternalDegrees } from '../../../api/degree';
 import { Icon } from '@iconify/react';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
-import useStore from '../../../store/zustand/formStore';
 import { useParams } from 'react-router-dom';
 import { updateUser, fetchUserById } from '../../../api/user';
 
@@ -28,11 +27,11 @@ const UpdateTeacher = () => {
 	const [selectedDegrees, setSelectedDegrees] = useState([]); // To display degree names
 	const [inputValue, setInputValue] = useState('');
 	const [alertModalOpen, setAlertModalOpen] = useState(false);
+	const [openSuccessfulUpdateModal, setOpenSuccessfulUpdateModal] = useState(false);
 	const { teacherId } = useParams();
 	const navigate = useNavigate();
 
 	const { setSubHeading, setHeading } = useHeadingStore();
-	const { openNotificationModal, setOpenNotificationModal } = useStore();
 
 	// Fetch degrees using react-query
 	const { data: fetchedDegrees = [] } = useQuery({
@@ -133,12 +132,12 @@ const UpdateTeacher = () => {
 		}
 	};
 
-	const handleNotificationModalOpen = () => setOpenNotificationModal(true);
+	const handleNotificationModalOpen = () => setOpenSuccessfulUpdateModal(true);
 	const handleOpenAlertModal = () => setAlertModalOpen(true);
 	const handleCloseAlertModal = () => setAlertModalOpen(false);
 	const handleEvaluation = () => {
+		setOpenSuccessfulUpdateModal(false);
 		navigate(-1);
-		setOpenNotificationModal(false);
 	};
 
 	useEffect(() => {
@@ -309,7 +308,7 @@ const UpdateTeacher = () => {
 				type="success"
 				title="Muutokset on tallennettu"
 				body="Tiedot on tallennettu järjestelmään onnistuneesti."
-				open={openNotificationModal}
+				open={openSuccessfulUpdateModal}
 				handleClose={handleEvaluation}
 			/>
 			<NotificationModal
