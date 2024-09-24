@@ -155,25 +155,42 @@ const AddCompanyName = () => {
 
         <h1>Työpaikkojen hallinnointi</h1>
 
-        <h2>Työpaikat</h2>
+        <div className="addCompany__section">
+          <h2>Työpaikat</h2>
 
-        <Link
-          to="#"
-          className='addCompany__link'
-          style={{ cursor: 'pointer' }}
-        >
-          <p>Helsingin kaupunki</p>
-        </Link>
+          <Link
+            to="#"
+            className='addCompany__link'
+            style={{ cursor: 'pointer' }}
+            >
+            <p>Helsingin kaupunki</p>
+          </Link>
+        </div>
 
+
+        <div className="addCompany__section">
+          <h2>Yksiköt</h2>
+
+          <div className='addCompany__container--list'>
+            <CheckLength
+              filteredList={filteredList}
+              workplaces={workplaces}
+              paginate={paginate}
+              currentPage={currentPage}
+            />
+          </div>
+          {/* <PageButtons
+            currentPage={currentPage}
+            pageCount={pageCount}
+            handlePageClick={handlePageClick}
+          /> */}
+        </div>
 
         <Button
           id='addWorkplaceButton'
-          text='Lisää työpaikka'
+          text='Lisää yksikkö'
           style={{
-            marginLeft: '20%',
-            marginBottom: '10px',
-            marginTop: '10px',
-            width: '60%',
+            width: '100%',
             backgroundColor: '#0000BF',
             color: 'white',
             border: 'none',
@@ -182,21 +199,6 @@ const AddCompanyName = () => {
           onClick={() => navigate(`/company-info`)}
         />
 
-        <Searchbar id='workplaceSearchbar' handleSearch={handleSearch} placeholder={'Etsi työpaikka'} />
-
-        <div className='addCompany__container--list'>
-          <CheckLength
-            filteredList={filteredList}
-            workplaces={workplaces}
-            paginate={paginate}
-            currentPage={currentPage}
-          />
-        </div>
-        <PageButtons
-          currentPage={currentPage}
-          pageCount={pageCount}
-          handlePageClick={handlePageClick}
-        />
       </section>
     </div>
   );

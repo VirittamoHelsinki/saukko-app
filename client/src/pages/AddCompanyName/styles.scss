@@ -46,12 +46,21 @@
       font-size: 18px;
     }
 
+    .addCompany__section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+
     .addCompany__container--list {
       display: flex;
       flex-direction: column;
       width: 100%;
       gap: 8px;
-      margin-top: 1rem;
 
       .addCompany__container--list-item {
         display: flex;
