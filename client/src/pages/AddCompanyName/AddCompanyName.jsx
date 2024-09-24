@@ -113,9 +113,11 @@ const CheckLength = ({
 // };
 
 const AddCompanyName = () => {
+  // eslint-disable-next-line no-unused-vars
   const [currentPage, setCurrentPage] = useState(1);
   // eslint-disable-next-line no-unused-vars
   const [paginate, setPaginate] = useState(5);
+  // eslint-disable-next-line no-unused-vars
   const [filteredList, setFilteredList] = useState([]);
 
   const navigate = useNavigate();
