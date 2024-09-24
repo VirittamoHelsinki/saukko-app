@@ -65,9 +65,8 @@ function ProfilePage() {
     // Get input values
     const form = e.target;
     const newEmail = form.querySelector("[name='new-email']").value;
-    const password = form.querySelector("[name='passwordOld']").value;
 
-    // Ensure there's a new email provided
+    // Ensure a new email is provided
     if (!newEmail) {
       console.error('New email is required');
       return;
@@ -75,9 +74,8 @@ function ProfilePage() {
 
     try {
       // Call the updateUser API to update the user's email
-      await updateUser(currentUser._id, { email: newEmail, password: password });
+      await updateUser(currentUser.id, { email: newEmail });
 
-      // Assuming currentUser is updated globally through context or similar
       console.log('Email updated successfully');
 
       // Close the email pop-up and show success notification
@@ -87,7 +85,6 @@ function ProfilePage() {
       console.error('Error updating email:', error);
       handleOpenAlertModal();
     }
-
   };
 
   // State for opening & closing password pop up
@@ -179,19 +176,29 @@ function ProfilePage() {
 
           {/* Change email pop-up */}
           <PopUpForm
-            title='Vaihda sähköpostiosoite'
+            title="Vaihda sähköpostiosoite" // "Change Email"
             content={
-              <div className='popup-form'>
-                <PasswordInput
-                  value='passwordOld'
-                  inputName='passwordOld'
-                  label='Vahvista nykyinen salasana *'
+              <div className="popup-form">
+                {/* Old/current email input */}
+                <label htmlFor="old-email">Nykyinen sähköposti *</label> {/* "Current email" */}
+                <input
+                  type="email"
+                  name="old-email"
+                  required
+                  defaultValue={currentUser?.email}
+                  readOnly
                 />
-                <label htmlFor='new-email'>Anna uusi sähköposti *</label>
-                <input type='email' name='new-email' required />
+
+                {/* New email input */}
+                <label htmlFor="new-email">Anna uusi sähköposti *</label> {/* "Enter new email" */}
+                <input
+                  type="email"
+                  name="new-email"
+                  required
+                />
               </div>
             }
-            buttonText='Lähetä'
+            buttonText="Lähetä" // "Submit"
             open={openEmailPopUp}
             handleClose={handleCloseEmailPopUp}
             handleSubmit={handleSubmitEmailPopUp}
