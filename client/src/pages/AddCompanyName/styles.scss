@@ -16,6 +16,24 @@
     width: 100%;
     gap: 20px;
 
+    .addCompany__link {
+      background: #D0E6F7;
+      display: flex;
+      padding: 18px 14px;
+      align-items: center;
+      gap: 10px;
+      align-self: stretch;
+      text-decoration: none;
+
+      & > p {
+        color: var(----color-black-90, #1A1A1A);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+      }
+    }
+
     .button__container {
       flex-direction: row-reverse;
 

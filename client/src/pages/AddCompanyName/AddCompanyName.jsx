@@ -159,7 +159,7 @@ const AddCompanyName = () => {
 
         <Link
           to="#"
-          className='addCompany__container--list-item'
+          className='addCompany__link'
           style={{ cursor: 'pointer' }}
         >
           <p>Helsingin kaupunki</p>
