@@ -25,18 +25,16 @@ const CheckLength = ({
     setSiteTitle("Lisää työpaikkaa"), setSubHeading(""), setHeading("Työpaikkojen hallinta")
   }, [setHeading, setSiteTitle, setSubHeading])
 
-  const navigate = useNavigate();
   return (
     <>
       {list.slice(startIndex, endIndex).map((company, index) => (
-        <div
-          key={index}
-          className='addCompany__container--list-item'
-          style={{ cursor: 'pointer' }}
-          onClick={() => navigate(`${company._id}`)}
+        <Link
+          to={`/add/companyname/${company._id}`}
+          className='addCompany__link'
+          disabled={true}
         >
           <p>{company.name}</p>
-        </div>
+        </Link>
       ))}
     </>
   );
@@ -161,7 +159,7 @@ const AddCompanyName = () => {
           <Link
             to="#"
             className='addCompany__link'
-            style={{ cursor: 'pointer' }}
+            disabled={true}
             >
             <p>Helsingin kaupunki</p>
           </Link>
