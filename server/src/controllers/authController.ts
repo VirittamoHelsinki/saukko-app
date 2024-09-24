@@ -11,6 +11,7 @@ import { PasswordValidator } from '../utils/password';
 import { passwordValidationOptions } from '../options';
 import { sendVerificationEmail, sendVerificationDoneEmail } from '../mailer/templates/newUserVerification';
 import { sendResetPasswordEmail, sendResetPasswordSuccessEmail } from '../mailer/templates/resetPassword';
+import notificationModel from '../models/notificationModel';
 
 const _responseWithError = (res: Response, statusCode: number, err: any, optionalMessage?: string) => {
   if (err.message) {
@@ -464,6 +465,7 @@ const getCurrentUser = (req: Request, res: Response) => {
   res.status(401).json({ errorMessage: 'Unauthorized' })
 }
 
+// TODO: copy this logic to notifications delete and test with postman
 // Helper function to delete evaluations
 const deleteEvaluations = async (userId: string) => {
   const evaluations = await evaluationModel.find({
@@ -533,6 +535,25 @@ const deleteUser = async (userId: string) => {
   return userResult.deletedCount;
 };
 
+
+const deleteNotifications = async (userId: string) => {
+  const notifications = await notificationModel.find({
+    $or: [
+      { recipient: userId },
+      { customer: userId },
+    ],
+  }).exec();
+
+  let notificationsDeletedCount = 0;
+
+  for (const notification of notifications) {
+    await notificationModel.deleteOne({ _id: notification._id });
+    notificationsDeletedCount++;
+  }
+
+  return notificationsDeletedCount;
+}
+
 // Main controller function
 const deleteUserById = async (req: Request, res: Response) => {
   try {
@@ -541,11 +562,13 @@ const deleteUserById = async (req: Request, res: Response) => {
     const evaluationsDeletedCount = await deleteEvaluations(userId);
     const workplacesUpdatedCount = await updateWorkplaces(userId);
     const userDeletedCount = await deleteUser(userId);
+    const notificationDeleteCount = await deleteNotifications(userId);
 
     const responseMessage = {
       evaluationsDeleted: evaluationsDeletedCount,
       workplacesUpdated: workplacesUpdatedCount,
       userDeleted: userDeletedCount,
+      notificationsDeleted: notificationDeleteCount,
     };
 
     if (evaluationsDeletedCount > 0 || userDeletedCount > 0) {
@@ -604,19 +627,19 @@ const getAllTeachers = async (req: Request, res: Response) => {
 const getUserById = async (req: Request, res: Response) => {
   try {
     const user = await userModel
-    .findById(req.params.id)
-    .populate({
-      path: 'evaluationId',
-      populate: { path: 'teacherId' }
-    })
-    .populate({
-      path: 'evaluationId',
-      populate: { path: 'supervisorIds' }
-    })
-    .populate({
-      path: 'workplaceId',
-      populate: { path: 'supervisors' }
-    });
+      .findById(req.params.id)
+      .populate({
+        path: 'evaluationId',
+        populate: { path: 'teacherId' }
+      })
+      .populate({
+        path: 'evaluationId',
+        populate: { path: 'supervisorIds' }
+      })
+      .populate({
+        path: 'workplaceId',
+        populate: { path: 'supervisors' }
+      });
     res.status(200).json(user);
   } catch (error) {
     console.error('Error fetching user:', error);
