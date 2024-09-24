@@ -179,219 +179,33 @@ const CompanyInfo = () => {
 
   return (
     <div className='companyInfo__wrapper'>
+
+      <h1>Työpaikkojen hallinnointi</h1>
+      <h2>Lisää uusi yksikkö</h2>
+
       <div className='info__stepper__container'>
         <Stepper activePage={1} totalPages={4} data={stepperData} />
       </div>
-      <div style={{ margin: '16px', marginBottom: '28px', marginTop: '60px' }}>
-        <Accordion
-          className='heading_style'
-          sx={{
-            backgroundColor: '#F2F2F2',
-            paddingTop: '17px',
-            paddingBottom: '20px',
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1a-content'
-            id='panel1a-header'
-          >
-            <Typography
-              sx={{ fontSize: '22px' }}>
-              1. Työpaikka tiedot
-            </Typography>
-          </AccordionSummary>
-          <form onSubmit={handleForward}>
-            <div>
-              <label
-                className='workplace-form-label'
-                htmlFor='business-id-input'
-              >
-                Työpaikan Y-tunnus *
-              </label>
-              <div className='text_input businessID__search-field'>
-                <input
-                  type='text'
-                  id='business-id-input'
-                  className='text_input_businessID'
-                  name='Työpaikan Y-tunnus'
-                  required
-                  placeholder='1234567-6'
-                  value={businessId}
-                  onChange={handleBusinessId}
-                />
-                <RxCrossCircled
-                  className='cross-icon-style'
-                  aria-hidden='true'
-                  onClick={handleClearBusinessId}
-                />
-                <CiSearch
-                  className='search-icon-style'
-                  aria-hidden='true'
-                  onClick={handleSearchClick}
-                />
-              </div>
-              <label
-                className='workplace-form-label'
-                htmlFor='company-name-input'
-              >
-                Työpaikka *
-              </label>
-              <div className='text_input businessInformation'>
-                <input
-                  type='text'
-                  className='text_input_businessInformation'
-                  id='company-name-input'
-                  name='Työpaikan Y-tunnus'
-                  required
-                  value={editedCompanyName || (name && name.name) || ''}
-                  onChange={handleCompanyName}
-                ></input>
-              </div>
-              <label htmlFor='department' className='workplace-form-label'>
-                Yksikkö (ei pakollinen)
-              </label>
-              <div className='text_input businessInformation'>
-                <input
-                  className='text_input_businessInformation'
-                  id='department-name-input'
-                  name='Työpaikan yksikkö'
-                  onChange={handleDepartment}
-                />
-              </div>
-            </div>
-          </form>
-        </Accordion>
+
+
+      <div className="card">
+        <p>Työpaikan tiedot</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Nimi</th>
+              <th>Y-tunnus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Helsingin kaupunki</td>
+              <td>070-5658-9</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div style={{ margin: '16px', marginBottom: '28px' }}>
-        <Accordion
-          className='heading_style'
-          heading='2. Työpaikkaohjaajan tiedot'
-          language='en'
-          sx={{
-            backgroundColor: '#F2F2F2',
-            paddingTop: '17px',
-            paddingBottom: '20px',
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1a-content'
-            id='panel1a-header'
-          >
-            <Typography sx={{ fontSize: '22px' }}>
-              2. Työpaikkaohjaajan tiedot
-            </Typography>
-          </AccordionSummary>
-          <div className='ohjaajat-info'>
-            {supervisors
-              .map((ohjaaja, index) => (
-                <div
-                  key={index}
-                  style={{
-                    borderBottom: '4px solid white',
-                    marginTop: '9px',
-                    marginBottom: '9px',
-                    padding: '20px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '20px',
-                  }}
-                >
-                  <div className='supervisor-information'>
-                    <div className='field'>
-                      <p className='field-name'>Etunimi:</p>
-                      <p className='field-value'>{ohjaaja.firstName}</p>
-                    </div>
-                    <div className='field'>
-                      <p className='field-name'>Sukunimi:</p>
-                      <p className='field-value'>{ohjaaja.lastName}</p>
-                    </div>
-                    <div className='field'>
-                      <p className='field-name'>Sähköposti:</p>
-                      <p className='field-value'>{ohjaaja.email}</p>
-                    </div>
-                  </div>
-
-                  <div className="delete-edit-buttons">
-                    <button className="button--secondary" onClick={() => deleteSupervisor(index)}>
-                      <Icon icon={'lucide:trash'} color="red" />
-                      <span>Poista</span>
-                    </button>
-                    <button className="button--primary" onClick={() => { }} disabled>
-                      <Icon icon={'lucide:plus'} />
-                      <span>Muokkaa</span>
-                    </button>
-                  </div>
-
-                </div>
-              ))}
-          </div>
-
-
-          <form onSubmit={handleForward}>
-            <div>
-              <label
-                className='workplace-form-label'
-                htmlFor='first-name-input'
-              >
-                Etunimi *
-              </label>
-              <div className='text_input supervisorInformation'>
-                <input
-                  className='text_input_supervisorInformation'
-                  id='first-name-input'
-                  name='Etunimi'
-                  required
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-              </div>
-              <label className='workplace-form-label' htmlFor='last-name-input'>
-                Sukunimi *
-              </label>
-              <div className='text_input supervisorInformation'>
-                <input
-                  className='text_input_supervisorInformation'
-                  id='last-name-input'
-                  name='Sukunimi'
-                  required
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </div>
-              <label className='workplace-form-label' htmlFor='email-input'>
-                Sähkoposti *
-              </label>
-              <div className='text_input supervisorInformation'>
-                <input
-                  className='text_input_supervisorInformation'
-                  id='email-input'
-                  name='Sähkoposti'
-                  type='email'
-                  required
-                  value={työpaikkaohjaajaEmail}
-                  onChange={(e) => setTyöpaikkaohjaajaEmail(e.target.value)}
-                />
-              </div>
-              <Button
-                text='Lisää ohjaaja'
-                style={{
-                  marginLeft: '17%',
-                  marginBottom: '30px',
-                  backgroundColor: '#0000BF',
-                  color: 'white',
-                  marginTop: '25px',
-                  width: '65%',
-                  border: 'none',
-                }}
-                icon={'ic:baseline-plus'}
-                onClick={addSupervisors}
-              />
-            </div>
-          </form>
-        </Accordion>
-      </div>
+    
 
       <PageNavigationButtons
         handleBack={() => navigate('/add/companyname')}

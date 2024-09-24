@@ -1,6 +1,48 @@
 .companyInfo__wrapper {
   padding: 3rem 0;
 
+  h1 {
+    color: var(----color-black-90, #1A1A1A);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 0.7rem;
+  }
+
+  h2 {
+    color: var(----color-black-90, #1A1A1A);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 2rem;
+  }
+
+  .card {
+    display: flex;
+    padding: 28px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+    background: var(----color-black-5, #F2F2F2);
+    margin-bottom: 28px;
+
+    p {
+      color: var(----color-black-90, #1A1A1A);
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+  }
+
   .heading_style {
     color: #1a1a1a;
     font-family: Helsinki Grotesk;
@@ -8,17 +50,6 @@
     font-style: normal;
     font-weight: 500;
   }
-
-  // .text_input {
-  //   margin: 10px 20px;
-  //   height: 50px;
-  //   padding: 12px;
-  //   display: flex;
-  //   align-items: center;
-  //   gap: 10px;
-  //   background-color: white;
-  //   border: 2px solid black;
-  // }
 
   .text_input {
     width: auto;
