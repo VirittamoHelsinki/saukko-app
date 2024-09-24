@@ -15,6 +15,8 @@ import {
 } from '../../api/user';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
+import { updateUser } from '../../api/user';
+
 
 function ProfilePage() {
   // User info from AuthContext
@@ -57,10 +59,35 @@ function ProfilePage() {
   const handleCloseEmailNotification = () => setOpenEmailNotification(false);
 
   // Email form handler
-  const handleSubmitEmailPopUp = (e) => {
+  const handleSubmitEmailPopUp = async (e) => {
     e.preventDefault();
-    handleCloseEmailPopUp();
-    handleOpenEmailNotification();
+
+    // Get input values
+    const form = e.target;
+    const newEmail = form.querySelector("[name='new-email']").value;
+    const password = form.querySelector("[name='passwordOld']").value;
+
+    // Ensure there's a new email provided
+    if (!newEmail) {
+      console.error('New email is required');
+      return;
+    }
+
+    try {
+      // Call the updateUser API to update the user's email
+      await updateUser(currentUser._id, { email: newEmail, password: password });
+
+      // Assuming currentUser is updated globally through context or similar
+      console.log('Email updated successfully');
+
+      // Close the email pop-up and show success notification
+      handleCloseEmailPopUp();
+      handleOpenEmailNotification();
+    } catch (error) {
+      console.error('Error updating email:', error);
+      handleOpenAlertModal();
+    }
+
   };
 
   // State for opening & closing password pop up
