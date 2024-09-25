@@ -1,6 +1,8 @@
 // Import components & libraries
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { IconButton, Box, DialogContent, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import Stepper from '../../components/Stepper/Stepper';
@@ -13,10 +15,10 @@ import { CiSearch } from 'react-icons/ci';
 import { RxCrossCircled } from 'react-icons/rx';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
+import NotificationModal from '../../components/NotificationModal/NotificationModal';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
@@ -44,6 +46,16 @@ const CompanyInfo = () => {
 
   const { internalDegree } = useContext(InternalApiContext);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
+
+  const [openInfoButton, setOpenInfoButton] = useState(false);
+
+  const handleOpenInfoButton = () => {
+    setOpenInfoButton(true);
+  };
+
+  const handleCloseInfoButton = () => {
+    setOpenInfoButton(false);
+  };
 
   useEffect(() => {
     setSiteTitle("Lisää työpaikka")
@@ -207,7 +219,18 @@ const CompanyInfo = () => {
       </div>
 
       <div className="card">
-        <p>Yksikön tiedot</p>
+        <p>
+          Yksikön tiedot 
+          <span>
+            <Icon
+              icon='material-symbols:info'
+              color='#0288D1'
+              style={{ verticalAlign: 'text-bottom', fontSize: '21px', marginLeft: "5px" }}
+              cursor={'pointer'}
+              onClick={() => handleOpenInfoButton()}
+            />
+          </span>  
+        </p>
 
         <div className="card__field">
           <label htmlFor='department' className=''>
@@ -241,6 +264,32 @@ const CompanyInfo = () => {
         handleForward={handleForward}
         showForwardButton={true}
         disabled={supervisors.length === 0}
+      />
+
+      <NotificationModal
+        type='iconInfo'
+        hideIcon={true}
+        body={
+          <div>
+            <IconButton
+              aria-label='close'
+              onClick={handleCloseInfoButton}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: 'black',
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <DialogContent>
+              Mikäli yksiköllä on alaosasto, luo uusi yksikkötieto erottamalla alaosasto kauttaviivalla (esim. Uusix verstas / pyöräpaja)
+            </DialogContent>
+          </div>
+        }
+        open={openInfoButton}
+        handleClose={handleCloseInfoButton}
       />
     </div>
   );
