@@ -257,6 +257,25 @@ const CompanyInfo = () => {
           />
         </div>
       </div>
+
+      <div className="card">
+        <p>Ohjaajien tiedot</p>
+
+        <Button
+          id='addSupervisorButton'
+          text='Lisää uusi ohjaaja'
+          style={{
+            width: '100%',
+            backgroundColor: '#0000BF',
+            color: 'white',
+            border: 'none',
+            direction: 'rtl',
+
+          }}
+          icon={'ic:baseline-plus'}
+          onClick={() => navigate(`/company-info`)}
+        />
+      </div>
     
 
       <PageNavigationButtons
