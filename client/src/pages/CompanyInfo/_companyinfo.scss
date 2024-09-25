@@ -19,6 +19,49 @@
     margin-bottom: 2rem;
   }
 
+  .supervisor {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 20px;
+
+    .supervisor__info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      .supervisor__info-title {
+        color: var(----color-black-90, #1A1A1A);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        margin-bottom: 0;
+      }
+  
+      .supervisor__info-name {
+        color: var(----color-black-90, #1A1A1A);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        margin-bottom: 0;
+      }
+  
+      .supervisor__info-email {
+        color: var(----color-black-90, #1A1A1A);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        margin-bottom: 0;
+      }
+    }
+
+  }
+
   .card {
     display: flex;
     padding: 28px 14px;

@@ -147,8 +147,7 @@ const CompanyInfo = () => {
 
   return (
     <div className='companyInfo__wrapper'>
-
-      <h1>Työpaikkojen hallinnointi {JSON.stringify(openAddSupervisorModal)}</h1>
+      <h1>Työpaikkojen hallinnointi</h1>
       <h2>Lisää uusi yksikkö</h2>
 
       <div className='info__stepper__container'>
@@ -231,8 +230,32 @@ const CompanyInfo = () => {
           icon={'ic:baseline-plus'}
           onClick={ handleOpenAddSupervisorModal }
         />
+
+        {
+          supervisors.map((supervisor, index) => (
+            <div key={supervisor._id} className="supervisor">
+              <div className="supervisor__info">
+                <p className="supervisor__info-title">Ohjaaja</p>
+                <p className="supervisor__info-name">{supervisor.firstName} {supervisor.lastName}</p>
+                <p className="supervisor__info-email">{supervisor.email}</p>
+              </div>
+
+              <IconButton
+                className="delete-button"
+                style={{ backgroundColor: 'white' }}
+                edge="end"
+                onClick={() => deleteSupervisor(index)}
+              >
+                <Icon
+                  icon='material-symbols:delete-outline'
+                  color='#B01038'
+                  preserveAspectRatio='xMinYMid meet'
+                />
+              </IconButton>
+            </div>
+          ))
+        }
       </div>
-    
 
       <PageNavigationButtons
         handleBack={() => navigate('/add/companyname')}
@@ -270,6 +293,8 @@ const CompanyInfo = () => {
       <AddSupervisorModal
         isOpen={openAddSupervisorModal}
         onClose={handleCloseAddSupervisorModal}
+        setSupervisors={setSupervisors}
+        supervisors={supervisors}
       />
     </div>
   );

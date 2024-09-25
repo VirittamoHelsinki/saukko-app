@@ -40,21 +40,22 @@ const theme = createTheme({
 });
 
 
-const AddSupervisorModal = ({ isOpen, onClose }) => {
+const AddSupervisorModal = ({ isOpen, onClose, supervisors, setSupervisors }) => {
 	const [ userFormData, setUserFormData] = useState({
 		firstName: "",
 		lastName: "",
 		email: "",
 	});
 
-  const setSupervisor = (supervisor) => {
-    setEvaluationFormData({ ...evaluationFormData, supervisor })
-  }
-
   const onSubmit = async (event) => {
     event.preventDefault();
 
-
+    setSupervisors(([ ...supervisors, userFormData ]));
+    setUserFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+    });
     onClose(false);
   }
 
