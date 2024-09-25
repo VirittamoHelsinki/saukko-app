@@ -97,37 +97,6 @@ const CompanyInfo = () => {
     setSupervisors(supervisors.filter((_, i) => i !== index))
   }
 
-  // Function to create a new supervisor object
-  const createSupervisor = (firstName, lastName, työpaikkaohjaajaEmail) => {
-    return {
-      firstName,
-      lastName,
-      email: työpaikkaohjaajaEmail,
-      role: 'supervisor',
-      workplaceId: businessId
-    };
-  };
-  //Adding the supervisors
-  const addSupervisors = () => {
-    if (firstName && lastName && työpaikkaohjaajaEmail) {
-
-      const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-      if (!emailPattern.test(työpaikkaohjaajaEmail)) {
-        return;
-      }
-
-      const newSupervisor = createSupervisor(
-        firstName,
-        lastName,
-        työpaikkaohjaajaEmail
-      );
-      setSupervisors([...supervisors, newSupervisor]);
-      setFirstName('');
-      setLastName('');
-      setTyöpaikkaohjaajaEmail('');
-    }
-  };
-
   const handleForward = (e) => {
     e.preventDefault();
 
