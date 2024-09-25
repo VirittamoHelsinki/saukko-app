@@ -19,48 +19,66 @@ import { updateUser } from '../../api/user';
 
 
 function ProfilePage() {
+
   // User info from AuthContext
   const { currentUser } = useAuthContext();
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
   const [alertModalOpen, setAlertModalOpen] = useState(false);
   const [emailChangeFailedModalOpen, setEmailChangeFailedModalOpen] = useState(false);
+  const [invalidPasswordError, setInvalidPasswordError] = useState(false);
 
-  const handleCloseAlertModal = () => {
-    setAlertModalOpen(false)
-  };
+  // State for opening & closing modals
+  const [openEmailPopUp, setOpenEmailPopUp] = useState(false);
+  const [openEmailNotification, setOpenEmailNotification] = useState(false);
 
-  const handleOpenAlertModal = () => {
-    setAlertModalOpen(true);
-  };
+  const handleCloseAlertModal = () => setAlertModalOpen(false);
+  const handleOpenAlertModal = () => setAlertModalOpen(true);
 
   const handleCloseEmailChangeFailedModal = () => setEmailChangeFailedModalOpen(false);
   const handleOpenEmailChangeFailedModal = () => setEmailChangeFailedModalOpen(true);
 
-  // Logout
-  /*   const navigate = useNavigate();
-  
-    const LogOut = async () => {
-      try {
-        await logoutUser();
-        navigate('/');
-      } catch (error) {
-        console.error(error);
-      }
-    };
-  
-   */
-
-  const [invalidPasswordError, setInvalidPasswordError] = useState(false);
-
-  // State for opening & closing email pop up
-  const [openEmailPopUp, setOpenEmailPopUp] = useState(false);
   const handleOpenEmailPopUp = () => setOpenEmailPopUp(true);
   const handleCloseEmailPopUp = () => setOpenEmailPopUp(false);
 
-  // State for opening & closing email notification
-  const [openEmailNotification, setOpenEmailNotification] = useState(false);
   const handleOpenEmailNotification = () => setOpenEmailNotification(true);
   const handleCloseEmailNotification = () => setOpenEmailNotification(false);
+
+  // Handle Email Change Submission
+  const handleSubmitEmailPopUp = async (e) => {
+    e.preventDefault();
+
+    // Get input values
+    const form = e.target;
+    const currentPassword = form.querySelector("[name='current-password']").value;
+    const newEmail = form.querySelector("[name='new-email']").value;
+
+    // Ensure a new email is provided
+    if (!newEmail) {
+      console.error('New email is required');
+      return;
+    }
+
+    try {
+      // Verify current password
+      const response = await requestPasswordChangeTokenAsUser(currentPassword);
+
+      if (response.status !== 200) {
+        setInvalidPasswordError(true);
+        return;
+      }
+
+      // If password is correct, update the email
+      await updateUser(currentUser.id, { email: newEmail });
+      console.log('Email updated successfully');
+
+      // Close the email pop-up and show success notification
+      handleCloseEmailPopUp();
+      handleOpenEmailNotification();
+    } catch (error) {
+      console.error('Error updating email:', error);
+      handleOpenEmailChangeFailedModal();
+    }
+  };
 
   const handleSubmitPasswordPopUp = (e) => {
     e.preventDefault();
@@ -102,47 +120,6 @@ function ProfilePage() {
       });
   };
 
-  const handleSubmitEmailPopUp = async (e) => {
-    e.preventDefault();
-
-    // Get input values
-    const form = e.target;
-    const currentPassword = form.querySelector("[name='current-password']").value;
-    const newEmail = form.querySelector("[name='new-email']").value;
-
-    // Ensure a new email is provided
-    if (!newEmail) {
-      console.error('New email is required');
-      return;
-    }
-
-    try {
-      // Verify the current password before proceeding
-      const response = await requestPasswordChangeTokenAsUser(currentPassword);
-
-      if (response.status !== 200) {
-        throw new Error('Incorrect password');
-      }
-
-      // Call the updateUser API to update the user's email
-      await updateUser(currentUser.id, { email: newEmail });
-
-      console.log('Email updated successfully');
-
-      // Close the email pop-up and show success notification
-      handleCloseEmailPopUp();
-      handleOpenEmailNotification();
-    } catch (error) {
-      console.error('Error updating email:', error);
-
-      if (error.message === 'Incorrect password') {
-        // Show alert modal if the password is incorrect
-        handleOpenAlertModal();
-      } else {
-        handleOpenAlertModal(); // Handle other possible errors
-      }
-    }
-  };
 
   // State for opening & closing password pop up
   const [openPasswordPopUp, setOpenPasswordPopUp] = useState(false);
@@ -203,8 +180,7 @@ function ProfilePage() {
             handleClose={handleCloseEmailPopUp}
             handleSubmit={handleSubmitEmailPopUp}
           />
-
-          {/* Change email success notification */}
+          {/* Success Notification for Email Change */}
           <NotificationModal
             open={openEmailNotification}
             handleClose={handleCloseEmailNotification}
@@ -213,11 +189,11 @@ function ProfilePage() {
             body='Voit seuraavalla kerralla kirjautua sisään uusia kirjautumistietoja käyttäen.'
           />
 
-          {/* Change email failure notification */}
+          {/* Failure Notification for Email Change */}
           <NotificationModal
             open={emailChangeFailedModalOpen}
             handleClose={handleCloseEmailChangeFailedModal}
-            type='error'
+            type='warning'
             title='Sähköpostin vaihtaminen epäonnistui'
             body='Sähköpostin vaihtaminen ei onnistunut. Yritä uudelleen.'
           />
