@@ -244,13 +244,6 @@ function ProfilePage() {
             open={alertModalOpen}
             handleClose={handleCloseAlertModal}
           />
-          <NotificationModal
-            type='warning'
-            title={'Sähköpostin vaihtaminen ei onnistunut'}
-            body={'Yritä hetken päästä uudelleen.'}
-            open={alertModalOpen}
-            handleClose={handleCloseAlertModal}
-          />
         </div>
       </section>
       {/* <section className='profile__logout'>
