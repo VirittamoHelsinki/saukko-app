@@ -24,9 +24,9 @@
     padding: 28px 14px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 28px;
     background: var(----color-black-5, #F2F2F2);
-    margin-bottom: 28px;
+    margin-bottom: 24px;
+    gap: 14px;
 
     p {
       color: var(----color-black-90, #1A1A1A);
@@ -34,12 +34,22 @@
       font-style: normal;
       font-weight: 500;
       line-height: normal;
+      margin-bottom: 14px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
+    }
+
+    .card__field {
+      width: 100%;
+
+      .text_input {
+        margin-top: 4px;
+        width: 100%;
+      }
     }
   }
 
@@ -54,10 +64,8 @@
   .text_input {
     width: auto;
     padding: 12px;
-    margin: 10px 20px;
     box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
     display: flex;
-    gap: 10px;
     background-color: white;
     border: 2px solid black;
   }

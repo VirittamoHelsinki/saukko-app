@@ -205,6 +205,35 @@ const CompanyInfo = () => {
           </tbody>
         </table>
       </div>
+
+      <div className="card">
+        <p>Yksikön tiedot</p>
+
+        <div className="card__field">
+          <label htmlFor='department' className=''>
+            Yksikön nimi
+          </label>
+          <input
+            className='text_input'
+            id='department-name-input'
+            name='Työpaikan yksikkö'
+            onChange={handleDepartment}
+          />
+        </div>
+
+        <div className="card__field">
+          <label htmlFor='department' className=''>
+            Yksikön nimi
+          </label>
+          <textarea
+            className='text_input'
+            id='department-name-input'
+            name='Työpaikan yksikkö'
+            rows={8}
+            onChange={handleDepartment}
+          />
+        </div>
+      </div>
     
 
       <PageNavigationButtons
