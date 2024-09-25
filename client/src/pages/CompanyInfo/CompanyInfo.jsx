@@ -20,6 +20,8 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 
+import AddSupervisorModal from '../../components/AddSupervisorModal/AddSupervisorModal';
+
 const CompanyInfo = () => {
   const navigate = useNavigate();
   const {
@@ -48,6 +50,7 @@ const CompanyInfo = () => {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   const [openInfoButton, setOpenInfoButton] = useState(false);
+  const [openAddSupervisorModal, setOpenAddSupervisorModal] = useState(false);
 
   const handleOpenInfoButton = () => {
     setOpenInfoButton(true);
@@ -55,6 +58,14 @@ const CompanyInfo = () => {
 
   const handleCloseInfoButton = () => {
     setOpenInfoButton(false);
+  };
+
+  const handleOpenAddSupervisorModal = () => {
+    setOpenAddSupervisorModal(true);
+  };
+
+  const handleCloseAddSupervisorModal = () => {
+    setOpenAddSupervisorModal(false);
   };
 
   useEffect(() => {
@@ -81,61 +92,6 @@ const CompanyInfo = () => {
       url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`,
     },
   ];
-
-  const handleBusinessId = (event) => {
-    const value = event.target.value;
-
-    const regex = /^[0-9]{7}-[0-9]$/;
-
-    setBusinessId(value);
-    setName('');
-
-    if (regex.test(value)) {
-      setBusinessIdError('');
-    } else {
-      setBusinessIdError('Invalid format');
-    }
-  };
-
-  const handleCompanyName = (event) => {
-    const value = event.target.value;
-    setEditedCompanyName(value);
-  };
-
-  const handleDepartment = (event) => {
-    setDepartmentName({ name: event.target.value });
-  };
-
-  const fetchCompanyName = async (businessID) => {
-    try {
-      const data = await fetchExternalCompanyData(businessID);
-
-      setName(data);
-      console.log('Company Name:', data);
-    } catch (error) {
-      throw new Error('Failed to fetch company name');
-    }
-  };
-
-  const handleClearBusinessId = () => {
-    setBusinessId('');
-    setName(null);
-    setBusinessIdError('');
-  };
-
-  const handleSearchClick = async () => {
-    if (!businessIDError && businessId) {
-      try {
-        if (editedCompanyName) {
-          setName(editedCompanyName);
-        } else {
-          await fetchCompanyName(businessId);
-        }
-      } catch (error) {
-        console.error('Failed to fetch company name:', error);
-      }
-    }
-  };
 
   const deleteSupervisor = (index) => {
     setSupervisors(supervisors.filter((_, i) => i !== index))
@@ -192,7 +148,7 @@ const CompanyInfo = () => {
   return (
     <div className='companyInfo__wrapper'>
 
-      <h1>Työpaikkojen hallinnointi</h1>
+      <h1>Työpaikkojen hallinnointi {JSON.stringify(openAddSupervisorModal)}</h1>
       <h2>Lisää uusi yksikkö</h2>
 
       <div className='info__stepper__container'>
@@ -240,20 +196,20 @@ const CompanyInfo = () => {
             className='text_input'
             id='department-name-input'
             name='Työpaikan yksikkö'
-            onChange={handleDepartment}
+            onChange={() => {}}
           />
         </div>
 
         <div className="card__field">
           <label htmlFor='department' className=''>
-            Yksikön nimi
+            Yksikön lisätiedot
           </label>
           <textarea
             className='text_input'
             id='department-name-input'
             name='Työpaikan yksikkö'
             rows={8}
-            onChange={handleDepartment}
+            onChange={() => {}}
           />
         </div>
       </div>
@@ -273,7 +229,7 @@ const CompanyInfo = () => {
 
           }}
           icon={'ic:baseline-plus'}
-          onClick={() => navigate(`/company-info`)}
+          onClick={ handleOpenAddSupervisorModal }
         />
       </div>
     
@@ -309,6 +265,11 @@ const CompanyInfo = () => {
         }
         open={openInfoButton}
         handleClose={handleCloseInfoButton}
+      />
+
+      <AddSupervisorModal
+        isOpen={openAddSupervisorModal}
+        onClose={handleCloseAddSupervisorModal}
       />
     </div>
   );
