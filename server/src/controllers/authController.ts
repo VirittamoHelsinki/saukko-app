@@ -603,15 +603,35 @@ const updateUser = async (req: Request, res: Response) => {
     const userId = req.params.id;
     const updatedData = req.body;
 
-    const updateUser = await userModel.findByIdAndUpdate(userId, updatedData, { new: true })
+    // Find the existing user by ID
+    const existingUser = await userModel.findById(userId);
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-    res.status(200).send(updateUser);
+    // Check if email is being updated
+    const emailChanged = updatedData.email && updatedData.email !== existingUser.email;
+
+    // Update the user with new data
+    const updatedUser = await userModel.findByIdAndUpdate(userId, updatedData, { new: true });
+
+    // If email has changed, send verification email
+    if (emailChanged) {
+      const verificationLink = updatedUser!.generateEmailVerificationLink();
+      sendVerificationEmail({
+        userEmail: updatedUser!.email,
+        verificationLink,
+        recipentUserId: updatedUser!._id,
+      });
+      console.log('Verification email sent to new email address.');
+    }
+
+    res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(500).json({
-      message: 'Error updating user', error
-    })
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Error updating user', error });
   }
-}
+};
 
 const getAllTeachers = async (req: Request, res: Response) => {
   try {
