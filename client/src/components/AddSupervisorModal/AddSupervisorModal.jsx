@@ -50,6 +50,11 @@ const AddSupervisorModal = ({ isOpen, onClose, supervisors, setSupervisors }) =>
   const onSubmit = async (event) => {
     event.preventDefault();
 
+    const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+    if (!emailPattern.test(userFormData.email)) {
+      return;
+    }
+
     setSupervisors(([ ...supervisors, userFormData ]));
     setUserFormData({
       firstName: "",
