@@ -91,8 +91,11 @@ function DegreeConfirmSelection() {
     try {
       setIsLoading(true);
 
+      console.log(1, departments);
+      
+
       // Prepare workplace data
-      const departmentData = Object.keys(departments).map((key) => {
+      const departmentData = Object.keys(departments || {}).map((key) => {
         const department = { name: departments[key] };
         // Check if the department exists in Zustand
         if (departments[key].length > 0) {
@@ -101,8 +104,10 @@ function DegreeConfirmSelection() {
         return department;
       });
 
+      console.log(2);
+
       const workplaceData = {
-        businessId: businessId,
+        businessId: "-",
         name: name ? name.name : editedCompanyName,
         departments: departmentData,
         degreeId: params.degreeId,
@@ -120,7 +125,7 @@ function DegreeConfirmSelection() {
         })),
       };
 
-      console.log('Sending workplace Data:', workplaceData);
+      console.log('>>>>>>>>>>>>> Sending workplace Data:', workplaceData);
 
       // Create the workplace first
       const response = await postWorkplace(workplaceData);
@@ -260,7 +265,7 @@ function DegreeConfirmSelection() {
       {isSuccess && (
         <NotificationModal
           type='success'
-          title='Uusi työpaikka lisätty'
+          title='Uusi yksikkö lisätty'
           body='Tiedot on tallennettu OsTu-appin tietokantaan.'
           open={openNotificationModal}
           redirectLink='/add/companyname'
