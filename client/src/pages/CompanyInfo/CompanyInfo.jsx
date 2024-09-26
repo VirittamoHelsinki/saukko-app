@@ -69,8 +69,8 @@ const CompanyInfo = () => {
   };
 
   useEffect(() => {
-    setSiteTitle("Lisää työpaikka")
-    setSubHeading("Lisää uusi työpaikka")
+    setSiteTitle("Lisää yksikkö")
+    setSubHeading("Lisää uusi yksikkö")
     setHeading("Työpaikkojen hallinta")
   }, [setSiteTitle, setSubHeading, setHeading]);
 
@@ -88,7 +88,7 @@ const CompanyInfo = () => {
       url: `/internal/degrees/${internalDegree._id}/units`,
     },
     {
-      label: 'Vahvista',
+      label: 'Vahvista tiedot',
       url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`,
     },
   ];
@@ -102,8 +102,6 @@ const CompanyInfo = () => {
 
     // Form validation: check for empty fields
     if (
-      !businessId ||
-      (!name && !editedCompanyName) ||
       supervisors.length === 0
     ) {
       alert('Please fill in all required fields.');
@@ -157,25 +155,28 @@ const CompanyInfo = () => {
         </p>
 
         <div className="card__field">
-          <label htmlFor='department' className=''>
-            Yksikön nimi
+          <label htmlFor='department-name-input' className=''>
+            Yksikön nimi *
           </label>
           <input
             className='text_input'
             id='department-name-input'
             name='Työpaikan yksikkö'
-            onChange={() => {}}
+            placeholder="Kirjoita yksikön nimi"
+            required
+            onChange={(event) => setDepartmentName(event.target.value)}
           />
         </div>
 
         <div className="card__field">
-          <label htmlFor='department' className=''>
+          <label htmlFor='department-description-input' className=''>
             Yksikön lisätiedot
           </label>
           <textarea
             className='text_input'
-            id='department-name-input'
-            name='Työpaikan yksikkö'
+            id='department-description-input'
+            name='Yksikön lisätiedot'
+            placeholder="Mahdollisia lisätietoja yksiköstä kuten sijainti."
             rows={8}
             onChange={() => {}}
           />
