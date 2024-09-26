@@ -1,6 +1,105 @@
 .companyInfo__wrapper {
   padding: 3rem 0;
 
+  h1 {
+    color: var(----color-black-90, #1A1A1A);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 0.7rem;
+  }
+
+  h2 {
+    color: var(----color-black-90, #1A1A1A);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 2rem;
+  }
+
+  .supervisor {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 15px;
+
+    &:first-of-type {
+      margin-top: 20px;
+    }
+
+    .supervisor__info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      .supervisor__info-title {
+        color: var(----color-black-90, #1A1A1A);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        margin-bottom: 0;
+      }
+  
+      .supervisor__info-name {
+        color: var(----color-black-90, #1A1A1A);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin-bottom: 0;
+      }
+  
+      .supervisor__info-email {
+        color: var(----color-black-90, #1A1A1A);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin-bottom: 0;
+      }
+    }
+
+  }
+
+  .card {
+    display: flex;
+    padding: 28px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    background: var(----color-black-5, #F2F2F2);
+    margin-bottom: 24px;
+    gap: 14px;
+
+    p {
+      color: var(----color-black-90, #1A1A1A);
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      margin-bottom: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;;
+    }
+
+    .card__field {
+      width: 100%;
+
+      .text_input {
+        margin-top: 4px;
+        width: 100%;
+      }
+    }
+  }
+
   .heading_style {
     color: #1a1a1a;
     font-family: Helsinki Grotesk;
@@ -9,24 +108,12 @@
     font-weight: 500;
   }
 
-  // .text_input {
-  //   margin: 10px 20px;
-  //   height: 50px;
-  //   padding: 12px;
-  //   display: flex;
-  //   align-items: center;
-  //   gap: 10px;
-  //   background-color: white;
-  //   border: 2px solid black;
-  // }
-
   .text_input {
     width: auto;
+    font-size: 16px;
     padding: 12px;
-    margin: 10px 20px;
     box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
     display: flex;
-    gap: 10px;
     background-color: white;
     border: 2px solid black;
   }

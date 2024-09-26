@@ -1,53 +1,53 @@
 // Import components & libraries
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { IconButton, DialogContent } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import Stepper from '../../components/Stepper/Stepper';
 
-import { fetchExternalCompanyData } from '../../api/workplace';
 import useStore from '../../store/zustand/formStore';
 import InternalApiContext from '../../store/context/InternalApiContext';
-
-import { CiSearch } from 'react-icons/ci';
-import { RxCrossCircled } from 'react-icons/rx';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
+import NotificationModal from '../../components/NotificationModal/NotificationModal';
+
+import AddSupervisorModal from '../../components/AddSupervisorModal/AddSupervisorModal';
 
 const CompanyInfo = () => {
   const navigate = useNavigate();
   const {
-    businessId,
-    setBusinessId,
-    businessIDError,
-    setBusinessIdError,
-    name,
     setName,
-    // eslint-disable-next-line no-unused-vars
-    departments,
-    setDepartmentName,
-    editedCompanyName,
-    setEditedCompanyName,
     supervisors,
     setSupervisors,
-    firstName,
-    setFirstName,
-    lastName,
-    setLastName,
-    työpaikkaohjaajaEmail,
-    setTyöpaikkaohjaajaEmail,
   } = useStore();
 
   const { internalDegree } = useContext(InternalApiContext);
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
+  const [openInfoButton, setOpenInfoButton] = useState(false);
+  const [openAddSupervisorModal, setOpenAddSupervisorModal] = useState(false);
+
+  const handleOpenInfoButton = () => {
+    setOpenInfoButton(true);
+  };
+ 
+  const handleCloseInfoButton = () => {
+    setOpenInfoButton(false);
+  };
+
+  const handleOpenAddSupervisorModal = () => {
+    setOpenAddSupervisorModal(true);
+  };
+
+  const handleCloseAddSupervisorModal = () => {
+    setOpenAddSupervisorModal(false);
+  };
+
   useEffect(() => {
-    setSiteTitle("Lisää työpaikka")
-    setSubHeading("Lisää uusi työpaikka")
+    setSiteTitle("Lisää yksikkö")
+    setSubHeading("Lisää uusi yksikkö")
     setHeading("Työpaikkojen hallinta")
   }, [setSiteTitle, setSubHeading, setHeading]);
 
@@ -65,108 +65,20 @@ const CompanyInfo = () => {
       url: `/internal/degrees/${internalDegree._id}/units`,
     },
     {
-      label: 'Vahvista',
+      label: 'Vahvista tiedot',
       url: `/internal/degrees/${internalDegree._id}/units/confirm-selection`,
     },
   ];
 
-  const handleBusinessId = (event) => {
-    const value = event.target.value;
-
-    const regex = /^[0-9]{7}-[0-9]$/;
-
-    setBusinessId(value);
-    setName('');
-
-    if (regex.test(value)) {
-      setBusinessIdError('');
-    } else {
-      setBusinessIdError('Invalid format');
-    }
-  };
-
-  const handleCompanyName = (event) => {
-    const value = event.target.value;
-    setEditedCompanyName(value);
-  };
-
-  const handleDepartment = (event) => {
-    setDepartmentName({ name: event.target.value });
-  };
-
-  const fetchCompanyName = async (businessID) => {
-    try {
-      const data = await fetchExternalCompanyData(businessID);
-
-      setName(data);
-      console.log('Company Name:', data);
-    } catch (error) {
-      throw new Error('Failed to fetch company name');
-    }
-  };
-
-  const handleClearBusinessId = () => {
-    setBusinessId('');
-    setName(null);
-    setBusinessIdError('');
-  };
-
-  const handleSearchClick = async () => {
-    if (!businessIDError && businessId) {
-      try {
-        if (editedCompanyName) {
-          setName(editedCompanyName);
-        } else {
-          await fetchCompanyName(businessId);
-        }
-      } catch (error) {
-        console.error('Failed to fetch company name:', error);
-      }
-    }
-  };
-
   const deleteSupervisor = (index) => {
     setSupervisors(supervisors.filter((_, i) => i !== index))
   }
-
-  // Function to create a new supervisor object
-  const createSupervisor = (firstName, lastName, työpaikkaohjaajaEmail) => {
-    return {
-      firstName,
-      lastName,
-      email: työpaikkaohjaajaEmail,
-      role: 'supervisor',
-      workplaceId: businessId
-    };
-  };
-  //Adding the supervisors
-  const addSupervisors = () => {
-    if (firstName && lastName && työpaikkaohjaajaEmail) {
-
-      const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-      if (!emailPattern.test(työpaikkaohjaajaEmail)) {
-        return;
-      }
-
-      const newSupervisor = createSupervisor(
-        firstName,
-        lastName,
-        työpaikkaohjaajaEmail
-      );
-      setSupervisors([...supervisors, newSupervisor]);
-      setFirstName('');
-      setLastName('');
-      setTyöpaikkaohjaajaEmail('');
-    }
-  };
 
   const handleForward = (e) => {
     e.preventDefault();
 
     // Form validation: check for empty fields
     if (
-      !businessId ||
-      (!name && !editedCompanyName) ||
       supervisors.length === 0
     ) {
       alert('Please fill in all required fields.');
@@ -179,218 +91,117 @@ const CompanyInfo = () => {
 
   return (
     <div className='companyInfo__wrapper'>
+      <h1>Työpaikkojen hallinnointi</h1>
+      <h2>Lisää uusi yksikkö</h2>
+
       <div className='info__stepper__container'>
         <Stepper activePage={1} totalPages={4} data={stepperData} />
       </div>
-      <div style={{ margin: '16px', marginBottom: '28px', marginTop: '60px' }}>
-        <Accordion
-          className='heading_style'
-          sx={{
-            backgroundColor: '#F2F2F2',
-            paddingTop: '17px',
-            paddingBottom: '20px',
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1a-content'
-            id='panel1a-header'
-          >
-            <Typography
-              sx={{ fontSize: '22px' }}>
-              1. Työpaikka tiedot
-            </Typography>
-          </AccordionSummary>
-          <form onSubmit={handleForward}>
-            <div>
-              <label
-                className='workplace-form-label'
-                htmlFor='business-id-input'
-              >
-                Työpaikan Y-tunnus *
-              </label>
-              <div className='text_input businessID__search-field'>
-                <input
-                  type='text'
-                  id='business-id-input'
-                  className='text_input_businessID'
-                  name='Työpaikan Y-tunnus'
-                  required
-                  placeholder='1234567-6'
-                  value={businessId}
-                  onChange={handleBusinessId}
-                />
-                <RxCrossCircled
-                  className='cross-icon-style'
-                  aria-hidden='true'
-                  onClick={handleClearBusinessId}
-                />
-                <CiSearch
-                  className='search-icon-style'
-                  aria-hidden='true'
-                  onClick={handleSearchClick}
-                />
-              </div>
-              <label
-                className='workplace-form-label'
-                htmlFor='company-name-input'
-              >
-                Työpaikka *
-              </label>
-              <div className='text_input businessInformation'>
-                <input
-                  type='text'
-                  className='text_input_businessInformation'
-                  id='company-name-input'
-                  name='Työpaikan Y-tunnus'
-                  required
-                  value={editedCompanyName || (name && name.name) || ''}
-                  onChange={handleCompanyName}
-                ></input>
-              </div>
-              <label htmlFor='department' className='workplace-form-label'>
-                Yksikkö (ei pakollinen)
-              </label>
-              <div className='text_input businessInformation'>
-                <input
-                  className='text_input_businessInformation'
-                  id='department-name-input'
-                  name='Työpaikan yksikkö'
-                  onChange={handleDepartment}
-                />
-              </div>
-            </div>
-          </form>
-        </Accordion>
+
+
+      <div className="card">
+        <p>Työpaikan tiedot</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Nimi</th>
+              <th>Y-tunnus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Helsingin kaupunki</td>
+              <td>070-5658-9</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div style={{ margin: '16px', marginBottom: '28px' }}>
-        <Accordion
-          className='heading_style'
-          heading='2. Työpaikkaohjaajan tiedot'
-          language='en'
-          sx={{
-            backgroundColor: '#F2F2F2',
-            paddingTop: '17px',
-            paddingBottom: '20px',
+
+      <div className="card">
+        <p>
+          Yksikön tiedot 
+          <span>
+            <Icon
+              icon='material-symbols:info'
+              color='#0288D1'
+              style={{ verticalAlign: 'text-bottom', fontSize: '21px', marginLeft: "5px" }}
+              cursor={'pointer'}
+              onClick={() => handleOpenInfoButton()}
+            />
+          </span>  
+        </p>
+
+        <div className="card__field">
+          <label htmlFor='department-name-input' className=''>
+            Yksikön nimi *
+          </label>
+          <input
+            className='text_input'
+            id='department-name-input'
+            name='Työpaikan yksikkö'
+            placeholder="Kirjoita yksikön nimi"
+            required
+            onChange={(event) => setName({ name: event.target.value })}
+          />
+        </div>
+
+        <div className="card__field">
+          <label htmlFor='department-description-input' className=''>
+            Yksikön lisätiedot
+          </label>
+          <textarea
+            className='text_input'
+            id='department-description-input'
+            name='Yksikön lisätiedot'
+            placeholder="Mahdollisia lisätietoja yksiköstä kuten sijainti."
+            rows={8}
+            onChange={() => {}}
+          />
+        </div>
+      </div>
+
+      <div className="card">
+        <p>Ohjaajien tiedot</p>
+
+        <Button
+          id='addSupervisorButton'
+          text='Lisää uusi ohjaaja'
+          style={{
+            width: '100%',
+            backgroundColor: '#0000BF',
+            color: 'white',
+            border: 'none',
+            direction: 'rtl',
+
           }}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1a-content'
-            id='panel1a-header'
-          >
-            <Typography sx={{ fontSize: '22px' }}>
-              2. Työpaikkaohjaajan tiedot
-            </Typography>
-          </AccordionSummary>
-          <div className='ohjaajat-info'>
-            {supervisors
-              .map((ohjaaja, index) => (
-                <div
-                  key={index}
-                  style={{
-                    borderBottom: '4px solid white',
-                    marginTop: '9px',
-                    marginBottom: '9px',
-                    padding: '20px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '20px',
-                  }}
-                >
-                  <div className='supervisor-information'>
-                    <div className='field'>
-                      <p className='field-name'>Etunimi:</p>
-                      <p className='field-value'>{ohjaaja.firstName}</p>
-                    </div>
-                    <div className='field'>
-                      <p className='field-name'>Sukunimi:</p>
-                      <p className='field-value'>{ohjaaja.lastName}</p>
-                    </div>
-                    <div className='field'>
-                      <p className='field-name'>Sähköposti:</p>
-                      <p className='field-value'>{ohjaaja.email}</p>
-                    </div>
-                  </div>
+          icon={'ic:baseline-plus'}
+          onClick={ handleOpenAddSupervisorModal }
+        />
 
-                  <div className="delete-edit-buttons">
-                    <button className="button--secondary" onClick={() => deleteSupervisor(index)}>
-                      <Icon icon={'lucide:trash'} color="red" />
-                      <span>Poista</span>
-                    </button>
-                    <button className="button--primary" onClick={() => { }} disabled>
-                      <Icon icon={'lucide:plus'} />
-                      <span>Muokkaa</span>
-                    </button>
-                  </div>
+        {
+          supervisors.map((supervisor, index) => (
+            <div key={supervisor._id} className="supervisor">
+              <div className="supervisor__info">
+                <p className="supervisor__info-title">Ohjaaja</p>
+                <p className="supervisor__info-name">{supervisor.firstName} {supervisor.lastName}</p>
+                <p className="supervisor__info-email">{supervisor.email}</p>
+              </div>
 
-                </div>
-              ))}
-          </div>
-
-
-          <form onSubmit={handleForward}>
-            <div>
-              <label
-                className='workplace-form-label'
-                htmlFor='first-name-input'
+              <IconButton
+                className="delete-button"
+                style={{ backgroundColor: 'white' }}
+                edge="end"
+                onClick={() => deleteSupervisor(index)}
               >
-                Etunimi *
-              </label>
-              <div className='text_input supervisorInformation'>
-                <input
-                  className='text_input_supervisorInformation'
-                  id='first-name-input'
-                  name='Etunimi'
-                  required
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                <Icon
+                  icon='material-symbols:delete-outline'
+                  color='#B01038'
+                  preserveAspectRatio='xMinYMid meet'
                 />
-              </div>
-              <label className='workplace-form-label' htmlFor='last-name-input'>
-                Sukunimi *
-              </label>
-              <div className='text_input supervisorInformation'>
-                <input
-                  className='text_input_supervisorInformation'
-                  id='last-name-input'
-                  name='Sukunimi'
-                  required
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </div>
-              <label className='workplace-form-label' htmlFor='email-input'>
-                Sähkoposti *
-              </label>
-              <div className='text_input supervisorInformation'>
-                <input
-                  className='text_input_supervisorInformation'
-                  id='email-input'
-                  name='Sähkoposti'
-                  type='email'
-                  required
-                  value={työpaikkaohjaajaEmail}
-                  onChange={(e) => setTyöpaikkaohjaajaEmail(e.target.value)}
-                />
-              </div>
-              <Button
-                text='Lisää ohjaaja'
-                style={{
-                  marginLeft: '17%',
-                  marginBottom: '30px',
-                  backgroundColor: '#0000BF',
-                  color: 'white',
-                  marginTop: '25px',
-                  width: '65%',
-                  border: 'none',
-                }}
-                icon={'ic:baseline-plus'}
-                onClick={addSupervisors}
-              />
+              </IconButton>
             </div>
-          </form>
-        </Accordion>
+          ))
+        }
       </div>
 
       <PageNavigationButtons
@@ -398,6 +209,39 @@ const CompanyInfo = () => {
         handleForward={handleForward}
         showForwardButton={true}
         disabled={supervisors.length === 0}
+      />
+
+      <NotificationModal
+        type='iconInfo'
+        hideIcon={true}
+        body={
+          <div>
+            <IconButton
+              aria-label='close'
+              onClick={handleCloseInfoButton}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: 'black',
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <DialogContent>
+              Mikäli yksiköllä on alaosasto, luo uusi yksikkötieto erottamalla alaosasto kauttaviivalla (esim. Uusix verstas / pyöräpaja)
+            </DialogContent>
+          </div>
+        }
+        open={openInfoButton}
+        handleClose={handleCloseInfoButton}
+      />
+
+      <AddSupervisorModal
+        isOpen={openAddSupervisorModal}
+        onClose={handleCloseAddSupervisorModal}
+        setSupervisors={setSupervisors}
+        supervisors={supervisors}
       />
     </div>
   );
