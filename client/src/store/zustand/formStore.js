@@ -29,7 +29,7 @@ const useStore = create((set) => {
     businessIDError: '',
     editedCompanyName: null,
     name: null,
-    departments: [],
+    department: "",
     supervisors: [],
     firstName: '',
     lastName: '',

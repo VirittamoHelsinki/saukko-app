@@ -164,7 +164,7 @@ const CompanyInfo = () => {
             name='Työpaikan yksikkö'
             placeholder="Kirjoita yksikön nimi"
             required
-            onChange={(event) => setDepartmentName(event.target.value)}
+            onChange={(event) => setName({ name: event.target.value })}
           />
         </div>
 

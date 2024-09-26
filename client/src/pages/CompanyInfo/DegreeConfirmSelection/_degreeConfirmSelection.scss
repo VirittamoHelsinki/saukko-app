@@ -17,8 +17,6 @@
     overflow-y: auto;
 
     .confirmSelection__infolist-wrapper {
-      padding: 20px;
-
       .confirmSelection__infolist-item {
         padding: 10px 5px;
 
@@ -155,12 +153,11 @@
 
 .second__title {
   font-size: 16px;
-  margin-left: 10px;
+  margin-left: 0px;
   padding: 10px 0px 4px 0px;
 }
 .second__paragraph {
   font-size: 14px;
-  margin-left: 14px;
 }
 
 @media (min-width: 768px) {
