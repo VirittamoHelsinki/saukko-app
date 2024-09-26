@@ -19,7 +19,6 @@ const CompanyInfo = () => {
   const navigate = useNavigate();
   const {
     setName,
-    // eslint-disable-next-line no-unused-vars
     supervisors,
     setSupervisors,
   } = useStore();
@@ -33,7 +32,7 @@ const CompanyInfo = () => {
   const handleOpenInfoButton = () => {
     setOpenInfoButton(true);
   };
-
+ 
   const handleCloseInfoButton = () => {
     setOpenInfoButton(false);
   };
