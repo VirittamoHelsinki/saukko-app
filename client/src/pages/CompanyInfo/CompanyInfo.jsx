@@ -9,6 +9,7 @@ import Stepper from '../../components/Stepper/Stepper';
 
 import useStore from '../../store/zustand/formStore';
 import InternalApiContext from '../../store/context/InternalApiContext';
+import { Icon } from '@iconify/react/dist/iconify.js';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 
@@ -18,6 +19,7 @@ const CompanyInfo = () => {
   const navigate = useNavigate();
   const {
     setName,
+    // eslint-disable-next-line no-unused-vars
     supervisors,
     setSupervisors,
   } = useStore();
