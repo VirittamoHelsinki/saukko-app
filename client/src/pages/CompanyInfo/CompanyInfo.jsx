@@ -1,22 +1,14 @@
 // Import components & libraries
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { IconButton, Box, DialogContent, Typography } from '@mui/material';
+import { IconButton, DialogContent } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '../../components/Button/Button';
 import PageNavigationButtons from '../../components/PageNavigationButtons/PageNavigationButtons';
 import Stepper from '../../components/Stepper/Stepper';
 
-import { fetchExternalCompanyData } from '../../api/workplace';
 import useStore from '../../store/zustand/formStore';
 import InternalApiContext from '../../store/context/InternalApiContext';
-
-import { CiSearch } from 'react-icons/ci';
-import { RxCrossCircled } from 'react-icons/rx';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Icon } from '@iconify/react/dist/iconify.js';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
 import NotificationModal from '../../components/NotificationModal/NotificationModal';
 
@@ -25,25 +17,9 @@ import AddSupervisorModal from '../../components/AddSupervisorModal/AddSuperviso
 const CompanyInfo = () => {
   const navigate = useNavigate();
   const {
-    businessId,
-    setBusinessId,
-    businessIDError,
-    setBusinessIdError,
-    name,
     setName,
-    // eslint-disable-next-line no-unused-vars
-    departments,
-    setDepartmentName,
-    editedCompanyName,
-    setEditedCompanyName,
     supervisors,
     setSupervisors,
-    firstName,
-    setFirstName,
-    lastName,
-    setLastName,
-    työpaikkaohjaajaEmail,
-    setTyöpaikkaohjaajaEmail,
   } = useStore();
 
   const { internalDegree } = useContext(InternalApiContext);

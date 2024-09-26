@@ -18,7 +18,6 @@ function DegreeConfirmSelection() {
   const navigate = useNavigate();
   const {
     supervisors,
-    businessId,
     name,
     editedCompanyName,
     departments,

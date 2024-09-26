@@ -1,44 +1,7 @@
 import { Modal } from "@mui/material"
-import { Icon } from "@iconify/react";
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { IconButton, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import { useState } from "react";
-import SupervisorAutocomplete from '../../components/SupervisorAutocomplete/SupervisorAutocomplete';
 
-import dayjs from "dayjs";
-import { updateUser } from "../../api/user";
-import { updateEvaluation } from "../../api/evaluation";
 import "./_addsupervisormodal.scss";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#0000BF',
-    },
-  },
-  components: {
-    MuiButtonBase: {
-      styleOverrides: {
-        root: {
-          '&.Mui-selected': {
-            borderRadius: '0px',
-          },
-          '&:not(.Mui-selected)': {
-            borderRadius: '0px',
-          },
-          '&.MuiPickersDay-root:not(.Mui-selected)': {
-            borderColor: '#FF0000',
-            backgroundColor: 'white',
-          },
-        },
-      },
-    },
-  },
-});
-
 
 const AddSupervisorModal = ({ isOpen, onClose, supervisors, setSupervisors }) => {
 	const [ userFormData, setUserFormData] = useState({
