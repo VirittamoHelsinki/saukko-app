@@ -72,7 +72,7 @@ const CompanySummary = () => {
           {workplace.supervisors &&
             workplace.supervisors.map((ohjaaja) => (
               <div key={ohjaaja._id} className='workplace__infolist-item'>
-                <h2 className='second__title'>Työpaikkaohjaaja</h2>
+                <h2 className='second__title'>Ohjaaja</h2>
                 <p className='second__paragraph'>
                   {ohjaaja?.firstName} {ohjaaja?.lastName}
                 </p>

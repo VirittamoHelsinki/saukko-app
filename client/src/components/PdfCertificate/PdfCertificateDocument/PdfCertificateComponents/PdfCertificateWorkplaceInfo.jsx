@@ -36,7 +36,7 @@ const PdfCertificateWorkplaceInfo = ({
     <View style={styles.workplaceInfoWrapper}>
       <View  style={styles.workplaceInfoStatic}>
         <CustomText style={styles.text} fontSize={12}>Opettaja:</CustomText>
-        <CustomText style={styles.text} fontSize={12}>Työpaikkaohjaaja:</CustomText>
+        <CustomText style={styles.text} fontSize={12}>Ohjaaja:</CustomText>
         <CustomText style={styles.text} fontSize={12}>Työpaikka:</CustomText>
         <CustomText style={styles.text} fontSize={12}>Sopimusaika:</CustomText>
       </View>

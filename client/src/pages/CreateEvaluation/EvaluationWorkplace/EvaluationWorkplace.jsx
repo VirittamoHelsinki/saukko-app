@@ -279,7 +279,7 @@ function EvaluationWorkplace() {
                   {workplace.departments.length === 0 && (
                     <>
                       <Typography className='accordion-title'>
-                        Valitse työpaikkaohjaaja *
+                        Valitse ohjaaja *
                       </Typography>
                       <Accordion
                         disableGutters
@@ -326,7 +326,7 @@ function EvaluationWorkplace() {
                     departmentFromStore && (
                       <>
                         <Typography className='accordion-title'>
-                          Valitse työpaikkaohjaaja *
+                          Valitse ohjaaja *
                         </Typography>
                         <Accordion
                           disableGutters
@@ -414,8 +414,8 @@ function EvaluationWorkplace() {
       />
       <NotificationModal
         type='warning'
-        title='Työpaikkaohjaajan valinta epäonnistui'
-        body='Valitse ensin työpaikka ja sitten työpaikalle kuuluva työpaikkaohjaaja'
+        title='Ohjaajan valinta epäonnistui'
+        body='Valitse ensin työpaikka ja sitten työpaikalle kuuluva ohjaaja'
         open={supervisorNotification}
         handleClose={closeSupervisorNotification}
       />
@@ -425,7 +425,7 @@ function EvaluationWorkplace() {
         body={
           <div style={{ padding: '10px' }}>
             <Typography style={{ fontSize: '14px' }}>
-              Valitse ensin työpaikka, yksikkö ja työpaikkaohjaaja.
+              Valitse ensin työpaikka, yksikkö ja ohjaaja.
             </Typography>
           </div>
         }
