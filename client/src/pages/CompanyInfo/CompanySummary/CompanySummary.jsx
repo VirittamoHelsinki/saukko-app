@@ -70,7 +70,7 @@ const CompanySummary = () => {
           <div className='workplace__infolist-item'>
             <h2 className='second__title'>Yksikön lisätiedot</h2>
             <p className='second__paragraph'>
-              -
+              { workplace.info }
             </p>
           </div>
 

@@ -13,6 +13,7 @@ import { registration } from '../../../api/user';
 import { fetchAllInternalWorkplaces } from '../../../api/workplace';
 import { Typography } from '@mui/material';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
+import { v4 as uuidv4 } from 'uuid';
 
 function DegreeConfirmSelection() {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ function DegreeConfirmSelection() {
     editedCompanyName,
     departments,
     resetWorkplaceData,
+    additionalInfo,
   } = useStore();
 
   const { setinternalDegreeId, internalDegree, degreeFound, setWorkplaces } =
@@ -90,9 +92,6 @@ function DegreeConfirmSelection() {
     try {
       setIsLoading(true);
 
-      console.log(1, departments);
-      
-
       // Prepare workplace data
       const departmentData = Object.keys(departments || {}).map((key) => {
         const department = { name: departments[key] };
@@ -103,11 +102,10 @@ function DegreeConfirmSelection() {
         return department;
       });
 
-      console.log(2);
-
       const workplaceData = {
-        businessId: "-",
+        businessId: uuidv4(),
         name: name ? name.name : editedCompanyName,
+        info: additionalInfo ? additionalInfo.additionalInfo : "-",
         departments: departmentData,
         degreeId: params.degreeId,
         units: checkedUnits.map((unit) => ({
@@ -192,6 +190,9 @@ function DegreeConfirmSelection() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isFailure]);
 
+  console.log("🚀 ~ confirmSelection ~ additionalInfo:", additionalInfo);
+  
+
   return (
     <div className='confirmSelection__wrapper'>
       <section className='confirmSelection__container'>
@@ -218,7 +219,7 @@ function DegreeConfirmSelection() {
           <div className='confirmSelection__infolist-item'>
             <h2 className='second__title'>Yksikön lisätiedot</h2>
             <p className='second__paragraph'>
-              -
+              { additionalInfo.additionalInfo }
             </p>
           </div>
 

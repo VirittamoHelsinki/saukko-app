@@ -26,7 +26,7 @@ const CheckLength = ({
 
   return (
     <>
-      {list.slice(startIndex, endIndex).map((company, index) => (
+      {list.map((company, index) => (
         <Link
           key={index}
           to={`/add/companyname/${company._id}`}
