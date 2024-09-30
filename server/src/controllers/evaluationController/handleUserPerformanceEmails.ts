@@ -84,7 +84,7 @@ export const sendReadyEmails = (
     case 'supervisor':
       sendEvaluationFormSupervisorReadyMessageCustomer(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
-        'TPO:n valmis lomake',
+        'Ohjaajan valmis lomake',
         emails.customerEmail,
         customerId,
         customerId,
@@ -93,7 +93,7 @@ export const sendReadyEmails = (
       );
       sendEvaluationFormSupervisorReadyMessageTeacher(
         { ...formIsReadyParams, customerAssessment: AssessmentStatus.READY, supervisorAssessment: AssessmentStatus.READY },
-        'TPO:n valmis lomake',
+        'Ohjaajan valmis lomake',
         emails.teacherEmail,
         customerId,
         teacherId,

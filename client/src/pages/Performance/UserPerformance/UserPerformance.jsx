@@ -208,7 +208,7 @@ const UserPerformance = () => {
           if (currentUser?.role === 'customer') {
             answer = selectedRadio[assessment._id]?.['Itsearviointi'] ? selectedRadio[assessment._id]?.['Itsearviointi'] : 0;
           } else if (currentUser?.role === 'supervisor') {
-            answerSupervisor = selectedRadio[assessment._id]?.['TPO havainto'] ? selectedRadio[assessment._id]?.['TPO havainto'] : 0;
+            answerSupervisor = selectedRadio[assessment._id]?.['Ohjaaja havainto'] ? selectedRadio[assessment._id]?.['Ohjaaja havainto'] : 0;
           } else if (currentUser?.role === 'teacher') {
             answerTeacher = selectedRadio[assessment._id]?.['Opettajan merkintä'] ? selectedRadio[assessment._id]?.['Opettajan merkintä'] : 0;
           }
