@@ -159,7 +159,7 @@ describe.skip('Email Sending Functions', () => {
     const text = `
     Hei ${exampleParams.teacherName},
 
-    Työpaikkaohjaaja ${exampleParams.supervisorName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
+    Ohjaaja ${exampleParams.supervisorName} pyytää yhteydenottoa liittyen seuraavaan suoritukseen:
 
     Asiakas: ${exampleParams.customerName}
     Tutkinto: ${exampleParams.degreeName}
@@ -168,7 +168,7 @@ describe.skip('Email Sending Functions', () => {
     Ystävällisin terveisin,
     Ylläpito
     `;
-    const subject = 'Arviointilomake: työpaikkaohjaajan yhteydenottopyyntö';
+    const subject = 'Arviointilomake: ohjaajan yhteydenottopyyntö';
     const html = mailTemplate(text.trim());
     const emailObj: EmailObj = {
       content: { subject, plainText: text.trim(), html },
@@ -186,7 +186,7 @@ describe.skip('Email Sending Functions', () => {
 
     Tutkinto: ${exampleParams.degreeName}
     Tutkinnonosa: ${exampleParams.unitName}
-    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Ohjaaja: ${exampleParams.supervisorName}
 
     Ystävällisin terveisin,
     Ylläpito
@@ -232,11 +232,11 @@ describe.skip('Email Sending Functions', () => {
     Tutkinnonosa on valmis tarkistettavaksi.
 
     Asiakas: ${exampleParams.customerName}
-    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Ohjaaja: ${exampleParams.supervisorName}
     Tutkinto: ${exampleParams.degreeName}
     Tutkinnonosa: ${exampleParams.unitName}
     Asiakkaan arvio: ${exampleParams.customerAssessment}
-    Työpaikkaohjaajan arvio: ${exampleParams.supervisorAssessment}
+    Ohjaajan arvio: ${exampleParams.supervisorAssessment}
     Lisätiedot: ${exampleParams.additionalInfo}
 
     Ystävällisin terveisin,
@@ -259,11 +259,11 @@ describe.skip('Email Sending Functions', () => {
     Tutkinnonosa on valmis tarkistettavaksi.
 
     Asiakas: ${exampleParams.customerName}
-    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Ohjaaja: ${exampleParams.supervisorName}
     Tutkinto: ${exampleParams.degreeName}
     Tutkinnonosa: ${exampleParams.unitName}
     Asiakkaan arvio: ${exampleParams.customerAssessment}
-    Työpaikkaohjaajan arvio: ${exampleParams.supervisorAssessment}
+    Ohjaajan arvio: ${exampleParams.supervisorAssessment}
     Lisätiedot: ${exampleParams.additionalInfo}
 
     Ystävällisin terveisin,
@@ -286,11 +286,11 @@ describe.skip('Email Sending Functions', () => {
     Tutkinnonosa on valmis tarkistettavaksi.
 
     Asiakas: ${exampleParams.customerName}
-    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Ohjaaja: ${exampleParams.supervisorName}
     Tutkinto: ${exampleParams.degreeName}
     Tutkinnonosa: ${exampleParams.unitName}
     Asiakkaan arvio: ${exampleParams.customerAssessment}
-    Työpaikkaohjaajan arvio: ${exampleParams.supervisorAssessment}
+    Ohjaajan arvio: ${exampleParams.supervisorAssessment}
     Lisätiedot: ${exampleParams.additionalInfo}
 
     Ystävällisin terveisin,
@@ -313,11 +313,11 @@ describe.skip('Email Sending Functions', () => {
     Tutkinnonosa on valmis tarkistettavaksi.
 
     Asiakas: ${exampleParams.customerName}
-    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Ohjaaja: ${exampleParams.supervisorName}
     Tutkinto: ${exampleParams.degreeName}
     Tutkinnonosa: ${exampleParams.unitName}
     Asiakkaan arvio: ${exampleParams.customerAssessment}
-    Työpaikkaohjaajan arvio: ${exampleParams.supervisorAssessment}
+    Ohjaajan arvio: ${exampleParams.supervisorAssessment}
     Lisätiedot: ${exampleParams.additionalInfo}
 
     Ystävällisin terveisin,
@@ -340,7 +340,7 @@ describe.skip('Email Sending Functions', () => {
     Uusi suoritus on valmis.
 
     Asiakas: ${exampleParams.customerName}
-    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Ohjaaja: ${exampleParams.supervisorName}
     Tutkinto: ${exampleParams.degreeName}
     Tutkinnonosa: ${exampleParams.unitName}
     Suoritus hyväksytty: ${exampleParams.evaluationAccepted}
@@ -366,7 +366,7 @@ describe.skip('Email Sending Functions', () => {
     Uusi suoritus on valmis.
 
     Asiakas: ${exampleParams.customerName}
-    Työpaikkaohjaaja: ${exampleParams.supervisorName}
+    Ohjaaja: ${exampleParams.supervisorName}
     Tutkinto: ${exampleParams.degreeName}
     Tutkinnonosa: ${exampleParams.unitName}
     Suoritus hyväksytty: ${exampleParams.evaluationAccepted}

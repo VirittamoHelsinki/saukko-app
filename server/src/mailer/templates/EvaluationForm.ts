@@ -57,7 +57,7 @@ Asiakas ${params.customerName} pyytää yhteydenottoa liittyen seuraavaan suorit
 
 Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 
 
 Ystävällisin terveisin,
@@ -99,7 +99,7 @@ export const sendEvaluationFormSupervisorRequestContact = async (
     `
 Hei ${params.teacherName},
 
-Työpaikkaohjaaja ${params.supervisorName} pyytää yhteydenottoa liittyen seuraavaan 	suoritukseen:
+Ohjaaja ${params.supervisorName} pyytää yhteydenottoa liittyen seuraavaan 	suoritukseen:
 
 
 Asiakas: ${params.customerName}
@@ -111,7 +111,7 @@ Ystävällisin terveisin,
 Ylläpito
     `;
 
-  const subject = 'Arviointilomake: työpaikkaohjaajan yhteydenottopyyntö';
+  const subject = 'Arviointilomake: ohjaajan yhteydenottopyyntö';
   const html = mailerTemplate(text);
 
   const emailObj: EmailObj = {
@@ -152,7 +152,7 @@ Opettaja ${params.teacherName} pyytää yhteydenottoa liittyen seuraavaan suorit
 
 Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 
 
 Ystävällisin terveisin,
@@ -268,11 +268,11 @@ Tutkinnonosa on valmis tarkistettavaksi.
 
 
 Asiakas: ${params.customerName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
 Asiakkaan arvio: ${params.customerAssessment}
-Työpaikkaohjaajan arvio: ${params.supervisorAssessment}
+Ohjaajan arvio: ${params.supervisorAssessment}
 Lisätiedot: ${params.additionalInfo}
 
 
@@ -317,11 +317,11 @@ Tutkinnonosa on valmis tarkistettavaksi.
 
 
 Asiakas: ${params.customerName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 Tutkinto: ${params.degreeName} 
 Tutkinnonosa: ${params.unitName}
 Asiakkaan arvio: ${params.customerAssessment}
-Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
+Ohjaajan arvio: ${params.supervisorAssessment}	
 Lisätiedot: ${params.additionalInfo}
 
 
@@ -365,11 +365,11 @@ Tutkinnonosa on valmis tarkistettavaksi.
 
 
 Asiakas: ${params.customerName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 Tutkinto: ${params.degreeName} 
 Tutkinnonosa: ${params.unitName}
 Asiakkaan arvio: ${params.customerAssessment}
-Työpaikkaohjaajan arvio: ${params.supervisorAssessment}	
+Ohjaajan arvio: ${params.supervisorAssessment}	
 Lisätiedot: ${params.additionalInfo}
 
 
@@ -413,11 +413,11 @@ Tutkinnonosa on valmis tarkistettavaksi.
 
 
 Asiakas: ${params.customerName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
 Asiakkaan arvio: ${params.customerAssessment}
-Työpaikkaohjaajan arvio: ${params.supervisorAssessment}
+Ohjaajan arvio: ${params.supervisorAssessment}
 Lisätiedot: ${params.additionalInfo}
 
 
@@ -464,7 +464,7 @@ Uusi suoritus on valmis.
 
 
 Asiakas: ${params.customerName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
 Suoritus hyväksytty: ${params.evaluationAccepted}
@@ -515,7 +515,7 @@ Uusi suoritus on valmis.
 
 
 Asiakas: ${params.customerName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 Tutkinto: ${params.degreeName}
 Tutkinnonosa: ${params.unitName}
 Suoritus hyväksytty: ${params.evaluationAccepted}

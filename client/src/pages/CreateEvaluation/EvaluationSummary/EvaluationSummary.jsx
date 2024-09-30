@@ -77,7 +77,7 @@ function EvaluationSummary() {
       content: department ? department.name : '',
     },
     {
-      title: 'Työpaikkaohjaaja',
+      title: 'Ohjaaja',
       content: supervisor
         ? `${supervisor.firstName} ${supervisor.lastName}`
         : '',
