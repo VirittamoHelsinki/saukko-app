@@ -28,7 +28,7 @@ const TeacherPerformanceFeedBack = ({
           answer: (unit.customerReady) ? assessment.answer : '',
         },
         {
-          info: 'TPO:n havainto',
+          info: 'Ohjaajan havainto',
           disabled: true,
           unitId: unit._id,
           assessmentId: assessment._id,
