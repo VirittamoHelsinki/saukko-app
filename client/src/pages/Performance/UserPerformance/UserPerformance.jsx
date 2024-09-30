@@ -527,6 +527,7 @@ const UserPerformance = () => {
                     ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
                     : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
               }
+              maxLength={2000}
               rows={8}
               cols={38}
               className='para-title-style'
