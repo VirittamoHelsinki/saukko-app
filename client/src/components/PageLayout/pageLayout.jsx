@@ -90,7 +90,7 @@ const PageLayout = () => {
 
   return (
     <>
-      <UserNav />
+      { currentUser && <UserNav /> }
       <div className={styles.container}>
         {renderHeader && !headingIsDisabled && (
           <header>
