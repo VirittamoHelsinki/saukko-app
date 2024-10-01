@@ -16,6 +16,7 @@ import NotificationModal from '../../../components/NotificationModal/Notificatio
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import WithDegree from '../../../HOC/withDegree';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
+import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
 function DegreeInfo({ degree, loading }) {
   const navigate = useNavigate();
@@ -132,16 +133,14 @@ function DegreeInfo({ degree, loading }) {
     color: '#fff',
     border: 'red',
     padding: '1rem',
-    marginTop: '20px',
-    width: '90%',
+    width: '100%',
   };
   const buttonStyleEdit = {
-    background: '#fff',
-    color: '#0000bf',
+    background: '#0000bf',
+    color: '#fff',
     border: 'solid 2px #0000bf',
     padding: '0 1rem',
-    marginTop: '20px',
-    width: '90%',
+    width: '100%',
   };
 
   // Form validation
@@ -179,30 +178,23 @@ function DegreeInfo({ degree, loading }) {
           totalPages={4}
           data={stepperData}
         />
-        <h1 className='degree-title'>
-          {degree ? degree?.name?.fi : degreeName}
-        </h1>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          {currentUser?.role === 'teacher' && (
-            <Button
-              id='editButton'
-              onClick={handleEditToggle}
-              type='submit'
-              style={isEditable ? buttonStyleSave : buttonStyleEdit}
-              text={isEditable ? 'Lopeta muokkaus' : 'Muokkaa tietoja'}
-              icon={'mingcute:pencil-line'}
-            />
-          )}
-        </div>
+
+        <FieldValueCard title="Tutkinnon nimi" value={degree ? degree?.name?.fi : degreeName} />
+
+        {currentUser?.role === 'teacher' && (
+          <Button
+            id='editButton'
+            onClick={handleEditToggle}
+            type='submit'
+            style={isEditable ? buttonStyleSave : buttonStyleEdit}
+            text={isEditable ? 'Lopeta muokkaus' : 'Muokkaa tietoja'}
+            icon={'mingcute:pencil-line'}
+          />
+        )}
 
         <div className='degreeInfo__container--info'>
           <div className='degreeInfo__container--info--block'>
-            <h1>Tutkinnon suorittaneen osaaminen</h1>
+            <h1>Tutkinnon suorittaneen osaamsssinen</h1>
             {degreeDescription ? (
               <div
                 id='degreeDescriptionTextBox'
