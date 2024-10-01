@@ -12,11 +12,11 @@ import "./styles.scss";
 const CheckLength = ({
   filteredList,
   workplaces,
-  paginate,
-  currentPage,
+  //paginate,
+  //currentPage,
 }) => {
-  const startIndex = (currentPage - 1) * paginate;
-  const endIndex = startIndex + paginate;
+  //const startIndex = (currentPage - 1) * paginate;
+  //const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : workplaces;
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
@@ -26,7 +26,7 @@ const CheckLength = ({
 
   return (
     <>
-      {list.slice(startIndex, endIndex).map((company, index) => (
+      {list.map((company, index) => (
         <Link
           key={index}
           to={`/add/companyname/${company._id}`}
