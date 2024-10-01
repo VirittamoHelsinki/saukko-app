@@ -24,6 +24,7 @@ import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCri
 import WithDegree from '../../../HOC/withDegree';
 import RequirementsAndCriteriaEditingModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaEditingModal';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
+import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
 function SpecifyTasks({ degree }) {
   const navigate = useNavigate();
@@ -149,7 +150,9 @@ function SpecifyTasks({ degree }) {
     <div className='specify-tasks__wrapper'>
       <section className='specify-tasks__container'>
         <Stepper activePage={3} totalPages={4} data={stepperData} />
-        <h1>{degree ? degree.name.fi : degreeName}</h1>
+
+        <FieldValueCard title="Valittu tutkinto" value={degree ? degree?.name?.fi : degreeName} />
+
         <h3 className='degree-guidance'>Muokkaa tutkinnonosa</h3>
         <Box sx={{ flexGrow: 1, fontWeight: 'bold' }}>
           <Paper
