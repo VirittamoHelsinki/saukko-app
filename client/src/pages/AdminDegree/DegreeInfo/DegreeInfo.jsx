@@ -194,32 +194,28 @@ function DegreeInfo({ degree, loading }) {
 
         <div className='degreeInfo__container--info'>
           <div className='degreeInfo__container--info--block'>
-            <h1>Tutkinnon suorittaneen osaamsssinen</h1>
-            {degreeDescription ? (
-              <div
-                id='degreeDescriptionTextBox'
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
+            <p>Tutkinnon suorittaneen osaaminen</p>
+            <div
+              id='degreeDescriptionTextBox'
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <ContentEditable
+                html={degreeDescription === 'N/A' ? 'Täydennä puuttuvat tiedot' : degreeDescription}
+                onChange={(e) => {
+                  setDegreeDescription(e.target.value === 'Täydennä puuttuvat tiedot' ? 'N/A' : e.target.value);
+                  setIsContentChanged(true);
                 }}
-              >
-                <ContentEditable
-                  html={degreeDescription === 'N/A' ? 'Täydennä puuttuvat tiedot' : degreeDescription}
-                  onChange={(e) => {
-                    setDegreeDescription(e.target.value === 'Täydennä puuttuvat tiedot' ? 'N/A' : e.target.value);
-                    setIsContentChanged(true);
-                  }}
-                  tagName='p'
-                  disabled={!isEditable}
-                  className={isEditable ? 'border-input' : ''}
-                />
-              </div>
-            ) : (
-              <p>Täydennä puuttuvat tiedot</p>
-            )}
+                tagName='p'
+                disabled={!isEditable}
+                className={isEditable ? 'border-input' : ''}
+              />
+            </div>
           </div>
           <div className='degreeInfo__container--info--block dark'>
-            <p>Tutkinon nimi</p>
+            <p>Tutkinnon nimi</p>
             <div
               id='degreeNameTextBox'
               style={{
