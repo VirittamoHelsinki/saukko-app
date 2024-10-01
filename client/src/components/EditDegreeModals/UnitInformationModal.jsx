@@ -126,7 +126,7 @@ const UnitInformationModal = ({
 
               {/* Degree unit's ATV */}
               <Typography sx={{ fontSize: '15px', fontWeight: 'bold' }}>
-                Ammattitatitovaatimukset ja kriteerit
+                Ammattitaitovaatimukset ja kriteerit
               </Typography>
             </Box>
             <Box>
