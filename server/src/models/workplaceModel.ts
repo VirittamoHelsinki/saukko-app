@@ -3,6 +3,7 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 export interface IWorkplace extends Document {
   businessId: string;
   name: string;
+  info: string;
   supervisors: Types.ObjectId[];
   departments: IDepartment[];
   degreeId: Types.ObjectId;
@@ -57,6 +58,10 @@ const workplaceSchema = new Schema<IWorkplace>({
     name: {
       type: String,
       required: true,
+    },
+    // Name of the workplace
+    info: {
+      type: String,
     },
     // Array of User IDs who are supervisors at the workplace
     supervisors: [

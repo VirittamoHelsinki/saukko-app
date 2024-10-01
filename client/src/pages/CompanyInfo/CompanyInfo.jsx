@@ -21,6 +21,7 @@ const CompanyInfo = () => {
     setName,
     supervisors,
     setSupervisors,
+    setAdditionalInfo,
   } = useStore();
 
   const { internalDegree } = useContext(InternalApiContext);
@@ -155,7 +156,7 @@ const CompanyInfo = () => {
             name='Yksikön lisätiedot'
             placeholder="Mahdollisia lisätietoja yksiköstä kuten sijainti."
             rows={8}
-            onChange={() => {}}
+            onChange={(event) => setAdditionalInfo({ additionalInfo: event.target.value })}
           />
         </div>
       </div>
