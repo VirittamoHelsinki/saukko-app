@@ -55,7 +55,7 @@ const CompanySummary = () => {
           <div className='workplace__infolist-item'>
             <h2 className='second__title'>Työpaikka</h2>
             <p className='second__paragraph'>
-              Helsinin kaupunki
+              Helsingin kaupunki
             </p>
             <p className='second__paragraph'>
               070-5658-9
@@ -70,7 +70,7 @@ const CompanySummary = () => {
           <div className='workplace__infolist-item'>
             <h2 className='second__title'>Yksikön lisätiedot</h2>
             <p className='second__paragraph'>
-              -
+              { workplace.info }
             </p>
           </div>
 
