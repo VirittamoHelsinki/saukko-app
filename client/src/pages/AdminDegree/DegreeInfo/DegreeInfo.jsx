@@ -179,7 +179,7 @@ function DegreeInfo({ degree, loading }) {
           data={stepperData}
         />
 
-        <FieldValueCard title="Tutkinnon nimi" value={degree ? degree?.name?.fi : degreeName} />
+        <FieldValueCard title="Valittu tutkinto" value={degree ? degree?.name?.fi : degreeName} />
 
         {currentUser?.role === 'teacher' && (
           <Button
