@@ -32,6 +32,10 @@
         flex-direction: column;
         gap: 5px;
 
+        & > p:first-child {
+          font-weight: bold;
+        }
+
         h1 {
           margin-bottom: 15px;
           text-align: center;
