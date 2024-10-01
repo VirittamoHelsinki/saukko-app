@@ -14,6 +14,7 @@ import WithDegree from '../../../HOC/withDegree';
 
 import useUnitsStore from '../../../store/zustand/unitsStore'
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
+import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
 function DegreeUnits({ degree }) {
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
@@ -75,7 +76,7 @@ function DegreeUnits({ degree }) {
           data={stepperData}
         />
 
-        <h1>{degree ? degree?.name.fi : degreeName}</h1>
+        <FieldValueCard title="Valittu tutkinto" value={degree ? degree?.name?.fi : degreeName} />
 
         <div className='degreeUnits__container--units'>
           {
