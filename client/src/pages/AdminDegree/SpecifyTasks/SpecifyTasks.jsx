@@ -11,18 +11,11 @@ import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 // Import MUI
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import MobileStepper from '@mui/material/MobileStepper';
+
 import { useTheme } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 // Import criteria modal
-import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 import WithDegree from '../../../HOC/withDegree';
-import RequirementsAndCriteriaEditingModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaEditingModal';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
@@ -33,15 +26,19 @@ function SpecifyTasks({ degree }) {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // Initialize state
+  // eslint-disable-next-line
   const [isEditing, setIsEditing] = useState(false);
+  // eslint-disable-next-line
   const [assessmentToEdit, setAssessmenetToEdit] = useState(null)
   const [assessments, setAssessments] = useState([]);
+  // eslint-disable-next-line
   const [activeStep, setActiveStep] = useState(0); // Index of the selected unit
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
 
   // Modal for criteria info
+  // eslint-disable-next-line
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   useEffect(() => {
@@ -72,33 +69,25 @@ function SpecifyTasks({ degree }) {
     },
   ];
 
-  // Text Stepper
-  const theme = useTheme();
-  const maxSteps = checkedUnits.length;
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
+  // eslint-disable-next-line
   const handleOpenCriteriaModal = () => {
     setIsCriteriaModalOpen(true);
   };
 
+  // eslint-disable-next-line
   const handleCloseCriteriaModal = () => {
     setIsEditing(false)
     setIsCriteriaModalOpen(false);
   };
 
+  // eslint-disable-next-line
   const handleEditButtonClick = (assessmentToEdit) => {
     setAssessmenetToEdit(assessmentToEdit)
     setIsEditing(true)
     setIsCriteriaModalOpen(true);
   };
 
+  // eslint-disable-next-line
   const modalHandleSave = (title, criteria) => {
     // Check if user actually has checked units
     if (!checkedUnits[activeStep]) {
@@ -114,7 +103,8 @@ function SpecifyTasks({ degree }) {
       },
     ]);
   }
-
+  
+  // eslint-disable-next-line
   const editModalHandleSave = (newAssessment) => {
     // Check if user actually has checked units
     if (!checkedUnits[activeStep]) {
@@ -153,7 +143,7 @@ function SpecifyTasks({ degree }) {
 
         <FieldValueCard title="Valittu tutkinto" value={degree ? degree?.name?.fi : degreeName} />
 
-        <p style={{ fontSize: 18, }}>Tutkinnon osat ja tehtävät</p>
+        <p style={{ fontSize: 18, marginTop: 10, }}>Tutkinnon osat ja tehtävät</p>
         <div className="unit-list">
           {
             checkedUnits.map((unit, index) => (
@@ -181,7 +171,7 @@ function SpecifyTasks({ degree }) {
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
           handleForward={handleSubmit}
-          forwardButtonText={'Vahvista valinnat'}
+          forwardButtonText={'Seuraava'}
           showForwardButton={true}
 
         />
