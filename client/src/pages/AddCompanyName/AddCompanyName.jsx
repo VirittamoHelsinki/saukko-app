@@ -12,10 +12,10 @@ import "./styles.scss";
 const CheckLength = ({
   filteredList,
   workplaces,
-  paginate,
-  currentPage,
+  //paginate,
+  //currentPage,
 }) => {
-  const startIndex = (currentPage - 1) * paginate;
+  //const startIndex = (currentPage - 1) * paginate;
   //const endIndex = startIndex + paginate;
   const list = filteredList.length > 0 ? filteredList : workplaces;
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
