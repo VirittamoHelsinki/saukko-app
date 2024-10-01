@@ -11,8 +11,6 @@ import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 // Import MUI
-
-import { useTheme } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 // Import criteria modal
 import WithDegree from '../../../HOC/withDegree';
@@ -103,7 +101,7 @@ function SpecifyTasks({ degree }) {
       },
     ]);
   }
-  
+
   // eslint-disable-next-line
   const editModalHandleSave = (newAssessment) => {
     // Check if user actually has checked units
