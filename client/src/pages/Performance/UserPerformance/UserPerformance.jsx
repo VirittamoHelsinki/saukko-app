@@ -208,7 +208,7 @@ const UserPerformance = () => {
           if (currentUser?.role === 'customer') {
             answer = selectedRadio[assessment._id]?.['Itsearviointi'] ? selectedRadio[assessment._id]?.['Itsearviointi'] : 0;
           } else if (currentUser?.role === 'supervisor') {
-            answerSupervisor = selectedRadio[assessment._id]?.['TPO havainto'] ? selectedRadio[assessment._id]?.['TPO havainto'] : 0;
+            answerSupervisor = selectedRadio[assessment._id]?.['Ohjaajan havainto'] ? selectedRadio[assessment._id]?.['Ohjaajan havainto'] : 0;
           } else if (currentUser?.role === 'teacher') {
             answerTeacher = selectedRadio[assessment._id]?.['Opettajan merkintä'] ? selectedRadio[assessment._id]?.['Opettajan merkintä'] : 0;
           }
@@ -527,6 +527,7 @@ const UserPerformance = () => {
                     ? 'Palautuksen yhteydessä voit jättää asiakkaalle ja opettajalle tutkinnon-osaan liittyvän viestin.'
                     : 'Palautuksen yhteydessä voit jättää opettajalle tutkinnonosaan liittyvän viestin.'
               }
+              maxLength={2000}
               rows={8}
               cols={38}
               className='para-title-style'
