@@ -1,54 +1,51 @@
 param location string = resourceGroup().location
 param app_name string = resourceGroup().name
 
-var appServicePlanName = '${app_name}-asp'
-var webappName = '${app_name}-app'
-var appInsightName = '${app_name}-insight'
-var cosmosDbName = '${app_name}-cosmos'
-
-// App Service Plan Module
-module appService 'modules/appService.bicep' = {
-  name: 'appServiceModule'
+module appService 'modules/app-service.bicep' = {
+  name: 'AppServiceModule'
   params: {
     location: location
-    appServicePlanName: appServicePlanName
-    skuName: 'B1'
-    skuTier: 'Basic'
-    skuSize: 'B1'
+    app_name: app_name
   }
 }
 
-// Application Insights Module
-module appInsights 'modules/appInsights.bicep' = {
-  name: 'appInsightsModule'
+module functionApp 'modules/function-app.bicep' = {
+  name: 'FunctionAppModule'
   params: {
     location: location
-    appInsightName: appInsightName
+    app_name: app_name
+    appServicePlanId: appService.outputs.id
   }
 }
 
-// Cosmos DB Module
-module cosmosDb 'modules/cosmosDb.bicep' = {
-  name: 'cosmosDbModule'
+module cosmosDb 'modules/cosmos-db.bicep' = {
+  name: 'CosmosDbModule'
   params: {
     location: location
-    cosmosDbName: cosmosDbName
+    app_name: app_name
   }
 }
 
-// Web App Module
-module webApp 'modules/webApp.bicep' = {
-  name: 'webAppModule'
+module communication 'modules/communication-services.bicep' = {
+  name: 'CommunicationServicesModule'
   params: {
-    location: location
-    webAppName: webappName
-    appServicePlanId: appService.outputs.appServicePlanId
-    appInsightInstrumentationKey: appInsights.outputs.instrumentationKey
-    appInsightConnectionString: appInsights.outputs.connectionString
-    mongoDbConnectionString: cosmosDb.outputs.mongoDbConnectionString
-    emailServiceConnectionString: ''  // Add value from a relevant module
-    queueEndpoint: ''  // Add value from a relevant module
-    queueConnectionString: ''  // Add value from a relevant module
-    senderDomain: ''  // Add value from a relevant module
+    app_name: app_name
   }
 }
+
+module monitoring 'modules/monitoring.bicep' = {
+  name: 'MonitoringModule'
+  params: {
+    location: location
+    app_name: app_name
+  }
+}
+
+module queueStorage 'modules/queue-storage.bicep' = {
+  name: 'QueueStorageModule'
+  params: {
+    location: location
+    app_name: app_name
+  }
+}
+
