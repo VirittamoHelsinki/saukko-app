@@ -11,18 +11,9 @@ import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 // Import MUI
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import MobileStepper from '@mui/material/MobileStepper';
-import { useTheme } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 // Import criteria modal
-import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 import WithDegree from '../../../HOC/withDegree';
-import RequirementsAndCriteriaEditingModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaEditingModal';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
@@ -33,15 +24,19 @@ function SpecifyTasks({ degree }) {
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
   // Initialize state
+  // eslint-disable-next-line
   const [isEditing, setIsEditing] = useState(false);
+  // eslint-disable-next-line
   const [assessmentToEdit, setAssessmenetToEdit] = useState(null)
   const [assessments, setAssessments] = useState([]);
+  // eslint-disable-next-line
   const [activeStep, setActiveStep] = useState(0); // Index of the selected unit
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
 
   // Modal for criteria info
+  // eslint-disable-next-line
   const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
 
   useEffect(() => {
@@ -72,33 +67,25 @@ function SpecifyTasks({ degree }) {
     },
   ];
 
-  // Text Stepper
-  const theme = useTheme();
-  const maxSteps = checkedUnits.length;
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
+  // eslint-disable-next-line
   const handleOpenCriteriaModal = () => {
     setIsCriteriaModalOpen(true);
   };
 
+  // eslint-disable-next-line
   const handleCloseCriteriaModal = () => {
     setIsEditing(false)
     setIsCriteriaModalOpen(false);
   };
 
+  // eslint-disable-next-line
   const handleEditButtonClick = (assessmentToEdit) => {
     setAssessmenetToEdit(assessmentToEdit)
     setIsEditing(true)
     setIsCriteriaModalOpen(true);
   };
 
+  // eslint-disable-next-line
   const modalHandleSave = (title, criteria) => {
     // Check if user actually has checked units
     if (!checkedUnits[activeStep]) {
@@ -115,6 +102,7 @@ function SpecifyTasks({ degree }) {
     ]);
   }
 
+  // eslint-disable-next-line
   const editModalHandleSave = (newAssessment) => {
     // Check if user actually has checked units
     if (!checkedUnits[activeStep]) {
@@ -153,141 +141,35 @@ function SpecifyTasks({ degree }) {
 
         <FieldValueCard title="Valittu tutkinto" value={degree ? degree?.name?.fi : degreeName} />
 
-        <h3 className='degree-guidance'>Muokkaa tutkinnonosa</h3>
-        <Box sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-          <Paper
-            square
-            elevation={0}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              height: 20,
-              pl: 2,
-            }}
-          />
-          <Paper square elevation={0}>
-            <form>
-              <MobileStepper
-                sx={{
-                  bgcolor: '#f2f2f2',
-                }}
-                variant='text'
-                steps={maxSteps}
-                position='static'
-                activeStep={activeStep}
-                nextButton={
-                  <Button
-                    id='nextButton'
-                    sx={{
-                      fontWeight: 'bold',
-                      color: '#000000',
-                      //position:'static'
-                    }}
-                    size='small'
-                    onClick={handleNext}
-                    disabled={activeStep === maxSteps - 1}
-                  >
-                    Seuraava
-                    {theme.direction === 'rtl' ? (
-                      <KeyboardArrowLeft />
-                    ) : (
-                      <KeyboardArrowRight />
-                    )}
-                  </Button>
-                }
-                backButton={
-                  <Button
-                    id='backButton'
-                    sx={{
-                      fontWeight: 'bold',
-                      color: '#000000',
-                      //position: 'static'
-                    }}
-                    size='small'
-                    onClick={handleBack}
-                    disabled={activeStep === 0}
-                  >
-                    {theme.direction === 'rtl' ? (
-                      <KeyboardArrowRight />
-                    ) : (
-                      <KeyboardArrowLeft />
-                    )}
-                    Edellinen
-                  </Button>
-                }
-              />
-              <h4 className='degree-guidance'>
-                Lisää ammattitaitovaatimukset ja kriteerit
-              </h4>
-              <h3 className='unit-guidance'>
-                {checkedUnits[activeStep]?.name?.fi}
-              </h3>
+        <p style={{ fontSize: 18, marginTop: 10, }}>Tutkinnon osat ja tehtävät</p>
+        <div className="unit-list">
+          {
+            checkedUnits.map((unit, index) => (
+              <div key={index} className="unit">
+                <div className="unit__info">
+                  <p style={{ fontWeight: "bold" }}>{unit.name.fi}</p>
+                  <p>Ei lisättyjä tehtäviä</p>
+                  <p>Ei lisättyjä tehtäviä</p>
+                  <p>Ei lisättyjä tehtäviä</p>
+                  <p>Ei lisättyjä tehtäviä</p>
+                </div>
 
-              {
-                isEditing ? (
-                  <RequirementsAndCriteriaEditingModal
-                    open={isCriteriaModalOpen}
-                    onClose={handleCloseCriteriaModal}
-                    title='Ammattitaitovaatimuksen tiedot'
-                    modalUnitName={checkedUnits[activeStep]?.name.fi}
-                    requirementsTitle='Ammattitaitovaatimuksen nimi'
-                    criteria='Kriteerit'
-                    onSave={editModalHandleSave}
-                    assessmentToEdit={assessmentToEdit}
-                    hideCancelButton
-                  />
-                ) : (
-                  <RequirementsAndCriteriaModal
-                    open={isCriteriaModalOpen}
-                    onClose={handleCloseCriteriaModal}
-                    title='Ammattitaitovaatimuksen tiedot'
-                    modalUnitName={checkedUnits[activeStep]?.name.fi}
-                    requirementsTitle='Ammattitaitovaatimuksen nimi'
-                    criteria='Kriteerit'
-                    onSave={modalHandleSave}
-                    hideCancelButton
-                  />
-                )
-              }
+                <button className="unit__button edit">
+                  <Icon icon={"mingcute:pencil-line"} fontSize={22} />
+                </button>
 
-              <div>
-                {
-                  assessments
-                    .filter((assessment) => assessment.unitId === checkedUnits[activeStep]?._id)
-                    .map((assessment, index) => (
-                      <li key={index} className='list_group_skills_titles'>
-                        <span className='title'>
-                          {index + 1}. {assessment.name}
-                        </span>
-                        <Icon
-                          icon='uil:pen'
-                          color='#0000bf'
-                          onClick={() => handleEditButtonClick(assessment)}
-                        />
-                      </li>
-                    )
-                    )
-                }
+                <button className="unit__button delete">
+                  <Icon icon={"material-symbols:delete-outline"} fontSize={22} />
+                </button>
               </div>
-              <Button
-                id='addCriteriaButton'
-                onClick={handleOpenCriteriaModal}
-                className='add-criteria-btn'
-                sx={{
-                  paddingLeft: 0,
-                  textTransform: 'none',
-                }}
-              >
-                + Lisää ammattitaitovaatimukset
-              </Button>
-            </form>
-          </Paper>
-        </Box>
+            ))
+          }
+        </div>
 
         <PageNavigationButtons
           handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
           handleForward={handleSubmit}
-          forwardButtonText={'Vahvista valinnat'}
+          forwardButtonText={'Seuraava'}
           showForwardButton={true}
 
         />
