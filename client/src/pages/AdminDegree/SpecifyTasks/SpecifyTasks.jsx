@@ -22,6 +22,61 @@ import Button from '../../../components/Button/Button';
 
 
 
+const ModalDegreeEdit = ({ open, setOpen }) => {
+  const [ innerState, setInnerState ] = useState("first-view")
+  const modalTitle = innerState === "first-view"
+    ? "Tutkinnon osan muokkaus"
+    : "Ammattitaitovaatimuksen lisääminen"
+
+  return (
+    <Modal open={open} setOpen={setOpen} title={modalTitle}>
+      <FieldValueCard title="Valittu tutkinnon osa" value={"Hello world"} />
+
+      {
+        innerState === "first-view" && (
+          <>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <p style={{ fontWeight: "bold" }}>Ammattitaitovaatimukset ja kriteerit</p>
+              <p>Ei lisättyjä ammattitaitovaatimuksia</p>
+            </div>
+
+            <Button
+              text="Lisää uusi ammattitaitovaatimus"
+              variant="contained"
+              style={{ backgroundColor: "#0000BF", color: "white", border: "none", direction: "rtl" }}
+              icon="ic:baseline-plus"
+              onClick={() => setInnerState("second-view")}
+            />
+          </>
+        )
+      }
+
+      {
+        innerState === "second-view" && (
+          <>
+            <label>Ammattitaitovaatimuksen nimi *</label>
+            <input></input>
+            <label>Kriteerit *</label>
+            <textarea></textarea>
+
+            <Button
+              text="Lisää ammattitaitovaatimus"
+              variant="contained"
+              style={{ backgroundColor: "#0000BF", color: "white", border: "none", }}
+              icon="ic:baseline-plus"
+              onClick={() => setInnerState("first-view")}
+            />
+          </>
+        )
+      }
+
+
+    </Modal>
+  )
+}
+
+
+
 function SpecifyTasks({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -145,20 +200,7 @@ function SpecifyTasks({ degree }) {
 
   return (
     <>
-      <Modal open={isOpen} setOpen={setOpen} title="Tutkinnon osan muokkaus">
-        <FieldValueCard title="Valittu tutkinnon osa" value={"Hello world"} />
-        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <p style={{ fontWeight: "bold" }}>Ammattitaitovaatimukset ja kriteerit</p>
-          <p>Ei lisättyjä ammattitaitovaatimuksia</p>
-        </div>
-
-        <Button
-          text="Lisää uusi ammattitaitovaatimus"
-          variant="contained"
-          style={{ backgroundColor: "#0000BF", color: "white", border: "none", direction: "rtl" }}
-          icon="ic:baseline-plus"
-        />
-      </Modal>
+      <ModalDegreeEdit open={true} setOpen={setOpen} title="Tutkinnon osan muokkaus" />
 
 
       <div className='specify-tasks__wrapper'>
