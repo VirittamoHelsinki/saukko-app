@@ -17,6 +17,10 @@ import WithDegree from '../../../HOC/withDegree';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
+import Modal from "../../../components/Modal";
+
+
+
 function SpecifyTasks({ degree }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -34,6 +38,10 @@ function SpecifyTasks({ degree }) {
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
+
+
+  // Modal test
+  const [isOpen, setOpen] = useState(true);
 
   // Modal for criteria info
   // eslint-disable-next-line
@@ -135,46 +143,51 @@ function SpecifyTasks({ degree }) {
   };
 
   return (
-    <div className='specify-tasks__wrapper'>
-      <section className='specify-tasks__container'>
-        <Stepper activePage={3} totalPages={4} data={stepperData} />
+    <>
+      <Modal open={isOpen} setOpen={setOpen} title="Tutkinnon osan muokkaus">
+        <p>Hello world!</p>
+      </Modal>
+      <div className='specify-tasks__wrapper'>
+        <section className='specify-tasks__container'>
+          <Stepper activePage={3} totalPages={4} data={stepperData} />
 
-        <FieldValueCard title="Valittu tutkinto" value={degree ? degree?.name?.fi : degreeName} />
+          <FieldValueCard title="Valittu tutkinto" value={degree ? degree?.name?.fi : degreeName} />
 
-        <p style={{ fontSize: 18, marginTop: 10, }}>Tutkinnon osat ja tehtävät</p>
-        <div className="unit-list">
-          {
-            checkedUnits.map((unit, index) => (
-              <div key={index} className="unit">
-                <div className="unit__info">
-                  <p style={{ fontWeight: "bold" }}>{unit.name.fi}</p>
-                  <p>Ei lisättyjä tehtäviä</p>
-                  <p>Ei lisättyjä tehtäviä</p>
-                  <p>Ei lisättyjä tehtäviä</p>
-                  <p>Ei lisättyjä tehtäviä</p>
+          <p style={{ fontSize: 18, marginTop: 10, }}>Tutkinnon osat ja tehtävät</p>
+          <div className="unit-list">
+            {
+              checkedUnits.map((unit, index) => (
+                <div key={index} className="unit">
+                  <div className="unit__info">
+                    <p style={{ fontWeight: "bold" }}>{unit.name.fi}</p>
+                    <p>Ei lisättyjä tehtäviä</p>
+                    <p>Ei lisättyjä tehtäviä</p>
+                    <p>Ei lisättyjä tehtäviä</p>
+                    <p>Ei lisättyjä tehtäviä</p>
+                  </div>
+
+                  <button className="unit__button edit">
+                    <Icon icon={"mingcute:pencil-line"} fontSize={22} />
+                  </button>
+
+                  <button className="unit__button delete">
+                    <Icon icon={"material-symbols:delete-outline"} fontSize={22} />
+                  </button>
                 </div>
+              ))
+            }
+          </div>
 
-                <button className="unit__button edit">
-                  <Icon icon={"mingcute:pencil-line"} fontSize={22} />
-                </button>
-
-                <button className="unit__button delete">
-                  <Icon icon={"material-symbols:delete-outline"} fontSize={22} />
-                </button>
-              </div>
-            ))
-          }
-        </div>
-
-        <PageNavigationButtons
-          handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
-          handleForward={handleSubmit}
-          forwardButtonText={'Seuraava'}
-          showForwardButton={true}
-
-        />
-      </section>
-    </div>
+          <PageNavigationButtons
+            handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
+            handleForward={handleSubmit}
+            forwardButtonText={'Seuraava'}
+            showForwardButton={true}
+            
+            />
+        </section>
+      </div>
+    </>
   );
 }
 

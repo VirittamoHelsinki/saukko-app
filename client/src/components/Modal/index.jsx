@@ -1,38 +1,34 @@
-
-
-
+import { default as MUIModal } from "@mui/material/Modal";
 import "./index.scss";
-
-const CloseIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
-    <path d="M14.75 2.0625L9.3125 7.5L14.75 12.9375L12.9375 14.75L7.5 9.3125L2.0625 14.75L0.25 12.9375L5.6875 7.5L0.25 2.0625L2.0625 0.25L7.5 5.6875L12.9375 0.25L14.75 2.0625Z" fill="black"/>
-  </svg>
-);
-
-const ModalHeader = ({
-  text,
-}) => {
-  return (
-    <div className="modal__header">
-      <p className="header__title">{ text }</p>
-      <button className="header__close-button">
-        <CloseIcon />
-      </button>
-    </div>
-  );
-}
 
 const Modal = ({
   children = [],
   title = "",
+  open,
+  setOpen,
 }) => {
   return (
-    <div className="modal">
-      <ModalHeader text={title}/>
-      <div className="modal__children">
-        { children }
+    <MUIModal
+      open={open}
+      onClose={() => setOpen(false)}
+    >
+
+      <div className="modal">
+        <div className="modal__header">
+          <p className="modal__title">{ title }</p>
+
+          <svg onClick={() => onClose(false)} xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M12 1.5L7.5 6L12 10.5L10.5 12L6 7.5L1.5 12L0 10.5L4.5 6L0 1.5L1.5 0L6 4.5L10.5 0L12 1.5Z" fill="black" />
+          </svg>
+        </div>
+
+        <div className="modal__body">
+          { children }
+        </div>
+
       </div>
-    </div>
+
+    </MUIModal>
   )
 }
 
