@@ -18,6 +18,7 @@ import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
 import Modal from "../../../components/Modal";
+import Button from '../../../components/Button/Button';
 
 
 
@@ -145,8 +146,21 @@ function SpecifyTasks({ degree }) {
   return (
     <>
       <Modal open={isOpen} setOpen={setOpen} title="Tutkinnon osan muokkaus">
-        <p>Hello world!</p>
+        <FieldValueCard title="Valittu tutkinnon osa" value={"Hello world"} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          <p style={{ fontWeight: "bold" }}>Ammattitaitovaatimukset ja kriteerit</p>
+          <p>Ei lisättyjä ammattitaitovaatimuksia</p>
+        </div>
+
+        <Button
+          text="Lisää uusi ammattitaitovaatimus"
+          variant="contained"
+          style={{ backgroundColor: "#0000BF", color: "white", border: "none", direction: "rtl" }}
+          icon="ic:baseline-plus"
+        />
       </Modal>
+
+
       <div className='specify-tasks__wrapper'>
         <section className='specify-tasks__container'>
           <Stepper activePage={3} totalPages={4} data={stepperData} />
