@@ -22,15 +22,18 @@ import Button from '../../../components/Button/Button';
 
 
 
-const ModalDegreeEdit = ({ open, setOpen }) => {
+const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
   const [ innerState, setInnerState ] = useState("first-view")
   const modalTitle = innerState === "first-view"
     ? "Tutkinnon osan muokkaus"
     : "Ammattitaitovaatimuksen lisääminen"
 
+  console.log(unitToEdit);
+    
+
   return (
     <Modal open={open} setOpen={setOpen} title={modalTitle}>
-      <FieldValueCard title="Valittu tutkinnon osa" value={"########"} />
+      <FieldValueCard title="Valittu tutkinnon osa" value={unitToEdit.name.fi} />
 
       {
         innerState === "first-view" && (
@@ -89,25 +92,15 @@ function SpecifyTasks({ degree }) {
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
-  // Initialize state
   // eslint-disable-next-line
-  const [isEditing, setIsEditing] = useState(false);
-  // eslint-disable-next-line
-  const [assessmentToEdit, setAssessmenetToEdit] = useState(null)
   const [assessments, setAssessments] = useState([]);
-  // eslint-disable-next-line
-  const [activeStep, setActiveStep] = useState(0); // Index of the selected unit
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
 
-
   // Modal test
-  const [open, setOpen] = useState(true);
-
-  // Modal for criteria info
-  // eslint-disable-next-line
-  const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
+  const [open, setOpen] = useState(true)
+  const [unitToEdit, setUnitToEdit] = useState(null)
 
   useEffect(() => {
     setSiteTitle("Suoritusten hallinnointi")
@@ -138,24 +131,6 @@ function SpecifyTasks({ degree }) {
   ];
 
   // eslint-disable-next-line
-  const handleOpenCriteriaModal = () => {
-    setIsCriteriaModalOpen(true);
-  };
-
-  // eslint-disable-next-line
-  const handleCloseCriteriaModal = () => {
-    setIsEditing(false)
-    setIsCriteriaModalOpen(false);
-  };
-
-  // eslint-disable-next-line
-  const handleEditButtonClick = (assessmentToEdit) => {
-    setAssessmenetToEdit(assessmentToEdit)
-    setIsEditing(true)
-    setIsCriteriaModalOpen(true);
-  };
-
-  // eslint-disable-next-line
   const modalHandleSave = (title, criteria) => {
     // Check if user actually has checked units
     if (!checkedUnits[activeStep]) {
@@ -172,25 +147,11 @@ function SpecifyTasks({ degree }) {
     ]);
   }
 
-  // eslint-disable-next-line
-  const editModalHandleSave = (newAssessment) => {
-    // Check if user actually has checked units
-    if (!checkedUnits[activeStep]) {
-      return;
-    }
-
-    console.log({ newAssessment });
-
-    setAssessments((prevAssessments) => {
-      const filteredAssessments = prevAssessments
-        .filter((oldAssessment => oldAssessment.unitId !== newAssessment.unitId));
-
-      return [
-        ...filteredAssessments,
-        newAssessment,
-      ]
-    });
+  const handleOpenModal = (unit) => {
+    setUnitToEdit(unit)
+    setOpen(true)
   }
+
 
   // Form submission handler
   const handleSubmit = () => {
@@ -206,7 +167,12 @@ function SpecifyTasks({ degree }) {
 
   return (
     <>
-      <ModalDegreeEdit open={open} setOpen={setOpen} title="Tutkinnon osan muokkaus" />
+      <ModalDegreeEdit
+        open={open}
+        setOpen={setOpen}
+        title="Tutkinnon osan muokkaus"
+        unitToEdit={unitToEdit}
+      />
 
 
       <div className='specify-tasks__wrapper'>
@@ -223,12 +189,9 @@ function SpecifyTasks({ degree }) {
                   <div className="unit__info">
                     <p style={{ fontWeight: "bold" }}>{unit.name.fi}</p>
                     <p>Ei lisättyjä tehtäviä</p>
-                    <p>Ei lisättyjä tehtäviä</p>
-                    <p>Ei lisättyjä tehtäviä</p>
-                    <p>Ei lisättyjä tehtäviä</p>
                   </div>
 
-                  <button className="unit__button edit">
+                  <button className="unit__button edit" onClick={() => handleOpenModal(unit)}>
                     <Icon icon={"mingcute:pencil-line"} fontSize={22} />
                   </button>
 
