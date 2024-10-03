@@ -3,8 +3,6 @@ param app_name string = resourceGroup().name
 param keyVaultName string = '${app_name}-kv'
 
 var skuName = 'B1'
-var skuTier = 'Basic'
-var skuSize = 'B1'
 
 module appService 'modules/app-service.bicep' = {
   name: 'AppServiceModule'
@@ -33,7 +31,13 @@ module functionApp 'modules/function-app.bicep' = {
   params: {
     location: location
     app_name: app_name
-    appServicePlanId: appService.outputs.id
+    aspNodeJsAppServiceId: appService.outputs.aspId
+    appInsightsInstrumentationKey: monitoring.outputs.instrumentationKey
+    appInsightsConnectionString: monitoring.outputs.connectionString
+    applicationInsightsId: monitoring.outputs.applicationInsightsId
+    keyVaultName: keyVaultName
+    mailFromSenderDomain: communication.outputs.mailFromSenderDomain
+    mailerQueueEndpoint: queueStorage.outputs.mailerQueueEndpoint
   }
 }
 
@@ -66,7 +70,6 @@ module queueStorage 'modules/queue-storage.bicep' = {
   name: 'QueueStorageModule'
   params: {
     location: location
-    app_name: app_name
     keyVaultName: keyVaultName
   }
 }

@@ -9,14 +9,19 @@ var emailServiceName = '${app_name}-es-${uniqueString(resourceGroup().id)}'
 resource Communication_Services 'Microsoft.Communication/communicationServices@2023-06-01-preview' = {
   name: communicationServicesName
   location: 'global'
+  tags: {}
   properties: {
     dataLocation: 'Europe'
+    linkedDomains: [
+      AzureManagedDomain.id
+    ]
   }
 }
 
 resource Email_Service 'Microsoft.Communication/emailServices@2023-06-01-preview' = {
   name: emailServiceName
   location: 'global'
+  tags: {}
   properties: {
     dataLocation: 'Europe'
   }

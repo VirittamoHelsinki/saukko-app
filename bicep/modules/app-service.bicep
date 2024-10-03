@@ -115,4 +115,5 @@ resource NodeJS_AppService 'Microsoft.Web/sites@2023-01-01' = {
 }
 
 output id string = NodeJS_AppService.id
+output aspId string = ASP_NodeJS_AppService.id
 
