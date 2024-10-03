@@ -1,14 +1,11 @@
 param location string
 param app_name string
-
 param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
-
 param mailFromSenderDomain string
-
 param keyVaultName string
-
 param mailerQueueEndpoint string
+param environment string
 
 var skuName = 'B1'
 var skuTier = 'Basic'
@@ -16,6 +13,7 @@ var skuSize = 'B1'
 var appServicePlanName = '${app_name}-asp'
 var webappName = '${app_name}-app-${uniqueString(resourceGroup().id)}'
 var queueStorageName = 'queue${uniqueString(resourceGroup().id)}'
+
 
 
 resource ASP_NodeJS_AppService 'Microsoft.Web/serverfarms@2023-01-01' = {
@@ -75,39 +73,15 @@ resource NodeJS_AppService 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'APP_URL'
-          value: '.'
+          value: 'https://${webappName}.azurewebsites.net'
         }
         {
           name: 'JWT_SECRET'
-          value: '.'
-        }
-        {
-          name: 'EMAIL_SERVICE'
-          value: '.'
-        }
-        {
-          name: 'EMAIL_SERVICE_HOST'
-          value: '.'
-        }
-        {
-          name: 'EMAIL_SERVICE_PORT'
-          value: '.'
-        }
-        {
-          name: 'EMAIL_SERVICE_USER'
-          value: '.'
-        }
-        {
-          name: 'EMAIL_SERVICE_PASSWORD'
-          value: ''
-        }
-        {
-          name: 'EMAIL_SERVICE_FROM'
-          value: '.'
+          value: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=JWT_SECRET)'
         }
         {
           name: 'NODE_ENV'
-          value: 'staging|production'
+          value: environment
         }
       ]
     }

@@ -1,6 +1,7 @@
 param location string = resourceGroup().location
 param app_name string = resourceGroup().name
 param keyVaultName string = '${app_name}-kv'
+param environment string
 
 var skuName = 'B1'
 
@@ -14,6 +15,7 @@ module appService 'modules/app-service.bicep' = {
     keyVaultName: keyVaultName
     mailFromSenderDomain: communication.outputs.mailFromSenderDomain
     mailerQueueEndpoint: queueStorage.outputs.mailerQueueEndpoint
+    environment: environment
   }
 }
 
