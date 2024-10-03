@@ -23,24 +23,74 @@ import Button from '../../../components/Button/Button';
 
 
 const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
+  const addAssessment = useUnitsStore((state) => state.addAssessment);
+
+  // Use a proper form state management library
+  const [ assessmentName, setAssessmentName ] = useState("")
+  const [ assessmentCriteria, setAssessmentCriteria ] = useState("")
+
   const [ innerState, setInnerState ] = useState("first-view")
   const modalTitle = innerState === "first-view"
     ? "Tutkinnon osan muokkaus"
     : "Ammattitaitovaatimuksen lisääminen"
 
-  console.log(unitToEdit);
+
+
+/*   const handleClose = () => {
+    setAssessmentName("")
+    setAssessmentCriteria("")
+    setOpen(false)
+  } */
+
+  const addNewAssessmentToUnit = (event) => {
+    event.preventDefault()
+    //addAssessment: (unitId, assessmentName, criteria)
+
+    console.log("HELLO", unitToEdit, assessmentName, assessmentCriteria)
+    
+
+    addAssessment(unitToEdit._id, assessmentName, assessmentCriteria)
+    setAssessmentName("")
+    setAssessmentCriteria("")
+    setInnerState("first-view")
+  }
+
+  console.log(unitToEdit)
+  
     
 
   return (
     <Modal open={open} setOpen={setOpen} title={modalTitle}>
-      <FieldValueCard title="Valittu tutkinnon osa" value={unitToEdit.name.fi} />
+      <FieldValueCard title="Valittu tutkinnon osa" value={unitToEdit?.name.fi} />
 
       {
         innerState === "first-view" && (
           <>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <p style={{ fontWeight: "bold" }}>Ammattitaitovaatimukset ja kriteerit</p>
-              <p>Ei lisättyjä ammattitaitovaatimuksia</p>
+              <p className="assessment-title" style={{ fontWeight: "bold" }}>Ammattitaitovaatimukset ja kriteerit</p>
+              <div className="assessment-list">
+                {
+                  (!unitToEdit?.assessments || unitToEdit?.assessments?.length === 0)
+                  ? <p>Ei lisättyjä ammattitaitovaatimuksia</p>
+                  : (
+                    unitToEdit?.assessments?.map((assessment, index) => (
+                      <div key={index} className="assessment">
+                        <div className="assessment__info">
+                          <p>{ index + 1 }. {assessment.name.fi}</p>
+                        </div>
+
+                        <button className="assessment__button edit" onClick={() => handleOpenModal(unit)}>
+                          <Icon icon={"mingcute:pencil-line"} fontSize={20} />
+                        </button>
+
+                        <button className="assessment__button delete">
+                          <Icon icon={"material-symbols:delete-outline"} fontSize={20} />
+                        </button>
+                      </div>
+                    ))
+                  )
+                }
+              </div>
             </div>
 
             <Button
@@ -57,14 +107,25 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
       {
         innerState === "second-view" && (
           <>
-            <form style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <form
+              style={{ display: "flex", flexDirection: "column", gap: 16 }}
+              onSubmit={(e) => addNewAssessmentToUnit(e)}
+            >
               <div className="form__field">
                 <label>Ammattitaitovaatimuksen nimi *</label>
-                <input></input>
+                <input
+                  placeholder='Ammattitaitovaatimuksen nimi'
+                  value={assessmentName}
+                  onChange={(e) => setAssessmentName(e.target.value)}
+                ></input>
               </div>
               <div className="form__field">
                 <label>Kriteerit *</label>
-                <textarea></textarea>
+                <textarea
+                  placeholder='Kriteerit'
+                  value={assessmentCriteria}
+                  onChange={(e) => setAssessmentCriteria(e.target.value)}
+                ></textarea>
               </div>
             </form>
 
@@ -73,7 +134,7 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
               variant="contained"
               style={{ backgroundColor: "#0000BF", color: "white", border: "none", }}
               icon="ic:baseline-plus"
-              onClick={() => setInnerState("first-view")}
+              onClick={addNewAssessmentToUnit}
             />
           </>
         )
@@ -107,6 +168,9 @@ function SpecifyTasks({ degree }) {
     setSubHeading("Lisää uusi tutkinto")
     setHeading("Tutkintojen hallinta")
   }, [checkedUnits, setHeading, setSiteTitle, setSubHeading]);
+
+  console.log(checkedUnits);
+  
 
   // Labels and urls for stepper
   const stepperData = [

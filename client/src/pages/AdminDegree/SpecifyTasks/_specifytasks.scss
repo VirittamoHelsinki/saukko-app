@@ -160,3 +160,56 @@
     padding-top: 1rem;
   }
 }
+
+
+// THIS IS FOR THE MODAL
+.assessment-list {
+  display: flex;
+  flex-direction: column;
+
+  .assessment {
+    padding: 10px;
+    display: grid;
+    align-items: center;
+    gap: 14px;
+    grid-template-columns: 1fr auto auto;
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    &__button {
+      background: white;
+      border: none;
+      background: var(----color-black-5, #F2F2F2);
+      border-radius: 999px;
+      margin-bottom: auto;
+      padding: 3px;
+
+      display: grid;
+      place-items: center;
+
+      & > * {
+        user-select: none;
+      }
+
+      &.edit {
+        color: #0000BF;
+      }
+
+      &.delete {
+        color: #B01038;
+      }
+    }
+    
+    &:nth-child(odd) {
+      background: var(----color-black-5, #F2F2F2);
+
+      & .assessment__button {
+        background: white;
+      }
+    }
+  }
+}
