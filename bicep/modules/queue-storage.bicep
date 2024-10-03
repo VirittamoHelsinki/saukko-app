@@ -67,7 +67,7 @@ resource mailerQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@202
 }
   
 resource queueKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = {
-  name: '${keyVaultName}/QueueConnectionString'
+  name: '${keyVaultName}/QUEUE_STORAGE_CONNECTION_STRING'
   properties: {
     value: QueueStorage.listKeys().keys[0].value
   }

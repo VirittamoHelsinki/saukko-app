@@ -38,7 +38,7 @@ resource AzureManagedDomain 'Microsoft.Communication/emailServices/domains@2023-
 }
 
 resource communicationKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = {
-  name: '${keyVaultName}/PrimaryConnectionString'
+  name: '${keyVaultName}/EMAIL_SERVICE_CONNECTION_STRING'
   properties: {
     value: Communication_Services.listKeys().primaryConnectionString
   }

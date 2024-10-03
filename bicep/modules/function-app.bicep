@@ -53,7 +53,7 @@ resource Functions_App 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'MONGODB_URI'
-          value: '@Microsoft.KeyVault(VaultName=${keyVaultName}/CosmosDBConnectionString)'
+          value: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=MONGODB_URI)'
         }
         {
           name: 'MAILER_QUEUE_ENDPOINT'
@@ -61,11 +61,11 @@ resource Functions_App 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'QUEUE_STORAGE_CONNECTION_STRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${queueStorageName};AccountKey=@Microsoft.KeyVault(VaultName=${keyVaultName}/QueueConnectionString;EndpointSuffix=core.windows.net'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${queueStorageName};AccountKey=@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=QUEUE_STORAGE_CONNECTION_STRING;EndpointSuffix=core.windows.net'
         }
         {
           name: 'EMAIL_SERVICE_CONNECTION_STRING'
-          value: '@Microsoft.KeyVault(VaultName=${keyVaultName}/PrimaryConnectionString)'
+          value: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=EMAIL_SERVICE_CONNECTION_STRING)'
         }
         {
           name: 'EMAIL_FROM_SENDER_DOMAIN'

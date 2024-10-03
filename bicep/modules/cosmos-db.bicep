@@ -62,7 +62,7 @@ resource Cosmos_Mongo 'Microsoft.DocumentDB/databaseAccounts@2024-02-15-preview'
 }
 
 resource cosmosKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = {
-  name: '${keyVaultName}/CosmosDBConnectionString'
+  name: '${keyVaultName}/MONGODB_URI'
   properties: {
     value: Cosmos_Mongo.listConnectionStrings().connectionStrings[0].connectionString
   }
