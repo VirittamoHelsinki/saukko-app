@@ -1,6 +1,6 @@
 .modal {
   max-height: 90vh;
-  overflow: auto;
+  overflow-y: auto;
   background-color: white;
   width: 361px;
   position: absolute;
@@ -44,5 +44,42 @@
     display: flex;
     flex-direction: column;
     gap: 28px;
+  }
+}
+
+
+.form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    height: 56px;
+    padding: 16px 14px;
+    align-items: center;
+    gap: 124px;
+    align-self: stretch;
+    border: 2px solid #1a1a1a;
+    outline: none;
+    font-size: 16px;
+  }
+
+  textarea {
+    width: 100%;
+    height: 200px;
+    padding: 16px 14px;
+    align-items: center;
+    gap: 124px;
+    align-self: stretch;
+    border: 2px solid #1a1a1a;
+    outline: none;
+    font-size: 16px;
+
   }
 }

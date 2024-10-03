@@ -30,7 +30,7 @@ const ModalDegreeEdit = ({ open, setOpen }) => {
 
   return (
     <Modal open={open} setOpen={setOpen} title={modalTitle}>
-      <FieldValueCard title="Valittu tutkinnon osa" value={"Hello world"} />
+      <FieldValueCard title="Valittu tutkinnon osa" value={"########"} />
 
       {
         innerState === "first-view" && (
@@ -54,10 +54,16 @@ const ModalDegreeEdit = ({ open, setOpen }) => {
       {
         innerState === "second-view" && (
           <>
-            <label>Ammattitaitovaatimuksen nimi *</label>
-            <input></input>
-            <label>Kriteerit *</label>
-            <textarea></textarea>
+            <form style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <div className="form__field">
+                <label>Ammattitaitovaatimuksen nimi *</label>
+                <input></input>
+              </div>
+              <div className="form__field">
+                <label>Kriteerit *</label>
+                <textarea></textarea>
+              </div>
+            </form>
 
             <Button
               text="Lisää ammattitaitovaatimus"
@@ -97,7 +103,7 @@ function SpecifyTasks({ degree }) {
 
 
   // Modal test
-  const [isOpen, setOpen] = useState(true);
+  const [open, setOpen] = useState(true);
 
   // Modal for criteria info
   // eslint-disable-next-line
@@ -200,7 +206,7 @@ function SpecifyTasks({ degree }) {
 
   return (
     <>
-      <ModalDegreeEdit open={true} setOpen={setOpen} title="Tutkinnon osan muokkaus" />
+      <ModalDegreeEdit open={open} setOpen={setOpen} title="Tutkinnon osan muokkaus" />
 
 
       <div className='specify-tasks__wrapper'>
