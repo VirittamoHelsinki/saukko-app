@@ -24,47 +24,70 @@ import Button from '../../../components/Button/Button';
 
 const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
   const addAssessment = useUnitsStore((state) => state.addAssessment);
+  const setCheckedUnits = useUnitsStore((state) => state.setCheckedUnits);
+  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
   // Use a proper form state management library
   const [ assessmentName, setAssessmentName ] = useState("")
   const [ assessmentCriteria, setAssessmentCriteria ] = useState("")
+  const [ assessmentToEdit, setAssessmentToEdit ] = useState(null)
 
-  const [ innerState, setInnerState ] = useState("first-view")
-  const modalTitle = innerState === "first-view"
-    ? "Tutkinnon osan muokkaus"
-    : "Ammattitaitovaatimuksen lisääminen"
+  // Not proud but it'll do for now
+  const [ innerState, setInnerState ] = useState("overview")
+  let modalTitle
+  {
+    if (innerState === "overview") {
+      modalTitle = "Tutkinnon osan muokkaus"
+    } else if (innerState === "add-assessment") {
+      modalTitle = "Ammattitaitovaatimuksen lisääminen"
+    } else if (innerState === "edit-assessment") {
+      modalTitle = "Ammattitaitovaatimuksen muokkaus"
+    }
+  }
 
-
-
-/*   const handleClose = () => {
-    setAssessmentName("")
-    setAssessmentCriteria("")
-    setOpen(false)
-  } */
+  const handleEditButtonClick = (assessmentToEdit) => {
+    setAssessmentToEdit(assessmentToEdit)
+    setInnerState("edit-assessment")
+  }
 
   const addNewAssessmentToUnit = (event) => {
-    event.preventDefault()
-    //addAssessment: (unitId, assessmentName, criteria)
-
-    console.log("HELLO", unitToEdit, assessmentName, assessmentCriteria)
-    
+    event.preventDefault()    
 
     addAssessment(unitToEdit._id, assessmentName, assessmentCriteria)
     setAssessmentName("")
     setAssessmentCriteria("")
-    setInnerState("first-view")
+    setInnerState("overview")
+  } 
+
+  const editAssessmentInUnit = (event) => {
+    event.preventDefault()
+
+    // Hyi, refaktoroin huomenna :D
+    const otherUnits = checkedUnits.filter((unit) => unit._id !== unitToEdit._id)
+
+    const otherAssessments = unitToEdit.assessments.filter((assessment) => assessment._id !== assessmentToEdit._id)
+    unitToEdit.assessments = otherAssessments
+
+    setCheckedUnits([...otherUnits, unitToEdit])
+    addAssessment(unitToEdit._id, assessmentName, assessmentCriteria, )
+    
+    setAssessmentName("")
+    setAssessmentCriteria("")
+    setInnerState("overview")
   }
 
-  console.log(unitToEdit)
-  
+  const handleDeleteAssessment = (assessment) => {
+    console.log(assessment);
     
+
+  }
 
   return (
     <Modal open={open} setOpen={setOpen} title={modalTitle}>
       <FieldValueCard title="Valittu tutkinnon osa" value={unitToEdit?.name.fi} />
 
       {
-        innerState === "first-view" && (
+        innerState === "overview" && (
           <>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
               <p className="assessment-title" style={{ fontWeight: "bold" }}>Ammattitaitovaatimukset ja kriteerit</p>
@@ -79,12 +102,12 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
                           <p>{ index + 1 }. {assessment.name.fi}</p>
                         </div>
 
-                        <button className="assessment__button edit" onClick={() => handleOpenModal(unit)}>
+                        <button className="assessment__button edit" onClick={() => handleEditButtonClick(assessment)}>
                           <Icon icon={"mingcute:pencil-line"} fontSize={20} />
                         </button>
 
                         <button className="assessment__button delete">
-                          <Icon icon={"material-symbols:delete-outline"} fontSize={20} />
+                          <Icon icon={"material-symbols:delete-outline"} fontSize={20} onClick={() => handleDeleteAssessment(assessment)} />
                         </button>
                       </div>
                     ))
@@ -98,14 +121,14 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
               variant="contained"
               style={{ backgroundColor: "#0000BF", color: "white", border: "none", direction: "rtl" }}
               icon="ic:baseline-plus"
-              onClick={() => setInnerState("second-view")}
+              onClick={() => setInnerState("add-assessment")}
             />
           </>
         )
       }
 
       {
-        innerState === "second-view" && (
+        innerState === "add-assessment" && (
           <>
             <form
               style={{ display: "flex", flexDirection: "column", gap: 16 }}
@@ -135,6 +158,43 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
               style={{ backgroundColor: "#0000BF", color: "white", border: "none", }}
               icon="ic:baseline-plus"
               onClick={addNewAssessmentToUnit}
+            />
+          </>
+        )
+      }
+
+      {
+        // I'm sorry...
+        innerState === "edit-assessment" && (
+          <>
+            <form
+              style={{ display: "flex", flexDirection: "column", gap: 16 }}
+              onSubmit={(e) => addNewAssessmentToUnit(e)}
+            >
+              <div className="form__field">
+                <label>Ammattitaitovaatimuksen nimi *</label>
+                <input
+                  placeholder='Ammattitaitovaatimuksen nimi'
+                  value={assessmentName}
+                  onChange={(e) => setAssessmentName(e.target.value)}
+                ></input>
+              </div>
+              <div className="form__field">
+                <label>Kriteerit *</label>
+                <textarea
+                  placeholder='Kriteerit'
+                  value={assessmentCriteria}
+                  onChange={(e) => setAssessmentCriteria(e.target.value)}
+                ></textarea>
+              </div>
+            </form>
+
+            <Button
+              text="Lisää ammattitaitovaatimus"
+              variant="contained"
+              style={{ backgroundColor: "#0000BF", color: "white", border: "none", }}
+              icon="ic:baseline-plus"
+              onClick={editAssessmentInUnit}
             />
           </>
         )
