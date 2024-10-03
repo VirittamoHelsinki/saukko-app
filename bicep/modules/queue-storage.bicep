@@ -1,5 +1,6 @@
 param location string
 param app_name string
+param keyVaultName string
 
 var queueStorageName = 'queue${uniqueString(resourceGroup().id)}'
 var mailerQueueName = 'mailer'
@@ -33,3 +34,12 @@ resource mailerQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@202
   parent: queueService
   name: mailerQueueName
 }
+
+resource queueKeyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = {
+  name: '${keyVaultName}/QueueConnectionString'
+  properties: {
+    value: QueueStorage.listKeys().keys[0].value
+  }
+}
+
+output mailerQueueEndpoint string = '${QueueStorage.properties.primaryEndpoints.queue}/${mailerQueueName}'

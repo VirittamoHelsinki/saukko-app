@@ -4,11 +4,19 @@ param app_name string
 param appInsightsInstrumentationKey string
 param appInsightsConnectionString string
 
+param mailFromSenderDomain string
+
+param keyVaultName string
+
+param mailerQueueEndpoint string
+
 var skuName = 'B1'
 var skuTier = 'Basic'
 var skuSize = 'B1'
 var appServicePlanName = '${app_name}-asp'
 var webappName = '${app_name}-app-${uniqueString(resourceGroup().id)}'
+var queueStorageName = 'queue${uniqueString(resourceGroup().id)}'
+
 
 resource ASP_NodeJS_AppService 'Microsoft.Web/serverfarms@2023-01-01' = {
   name: appServicePlanName
@@ -47,23 +55,23 @@ resource NodeJS_AppService 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'MONGODB_URI'
-          value: Cosmos_Mongo.listConnectionStrings().connectionStrings[0].connectionString
+          value: '@Microsoft.KeyVault(VaultName=${keyVaultName}/CosmosDBConnectionString)'
         }
         {
           name: 'EMAIL_FROM_SENDER_DOMAIN'
-          value: AzureManagedDomain.properties.mailFromSenderDomain
+          value: mailFromSenderDomain
         }
         {
           name: 'EMAIL_SERVICE_CONNECTION_STRING'
-          value: Communication_Services.listKeys().primaryConnectionString
+          value: '@Microsoft.KeyVault(VaultName=${keyVaultName}/PrimaryConnectionString)'
         }
         {
           name: 'MAILER_QUEUE_ENDPOINT'
-          value: '${QueueStorage.properties.primaryEndpoints.queue}/${mailerQueueName}'
+          value: mailerQueueEndpoint
         }
         {
           name: 'QUEUE_STORAGE_CONNECTION_STRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${queueStorageName};AccountKey=${QueueStorage.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${queueStorageName};AccountKey=@Microsoft.KeyVault(VaultName=${keyVaultName}/QueueConnectionString;EndpointSuffix=core.windows.net'
         }
         {
           name: 'APP_URL'
