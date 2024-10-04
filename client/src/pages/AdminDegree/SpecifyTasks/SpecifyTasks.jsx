@@ -24,6 +24,7 @@ import Button from '../../../components/Button/Button';
 
 const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
   const addAssessment = useUnitsStore((state) => state.addAssessment);
+  const editAssessment = useUnitsStore((state) => state.editAssessment);
   const setCheckedUnits = useUnitsStore((state) => state.setCheckedUnits);
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
@@ -62,14 +63,7 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
   const editAssessmentInUnit = (event) => {
     event.preventDefault()
 
-    // Hyi, refaktoroin huomenna :D
-    const otherUnits = checkedUnits.filter((unit) => unit._id !== unitToEdit._id)
-
-    const otherAssessments = unitToEdit.assessments.filter((assessment) => assessment._id !== assessmentToEdit._id)
-    unitToEdit.assessments = otherAssessments
-
-    setCheckedUnits([...otherUnits, unitToEdit])
-    addAssessment(unitToEdit._id, assessmentName, assessmentCriteria, )
+    editAssessment(unitToEdit._id, assessmentToEdit._id, assessmentName, assessmentCriteria)
 
     setAssessmentName("")
     setAssessmentCriteria("")
@@ -220,7 +214,7 @@ function SpecifyTasks({ degree }) {
   const addAssessment = useUnitsStore((state) => state.addAssessment);
 
   // Modal test
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const [unitToEdit, setUnitToEdit] = useState(null)
 
   useEffect(() => {
@@ -312,7 +306,13 @@ function SpecifyTasks({ degree }) {
                 <div key={index} className="unit">
                   <div className="unit__info">
                     <p style={{ fontWeight: "bold" }}>{unit.name.fi}</p>
-                    <p>Ei lisättyjä tehtäviä</p>
+                    {
+                      (unit.assessments && unit.assessments.length > 0)
+                      ? unit.assessments.map((assessment, index) => (
+                        <p key={index}>{index + 1}. {assessment.name.fi}</p>
+                      ))
+                      : <p>Ei lisättyjä tehtäviä</p>
+                    }
                   </div>
 
                   <button className="unit__button edit" onClick={() => handleOpenModal(unit)}>
