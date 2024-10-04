@@ -34,6 +34,12 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
 
   // Not proud but it'll do for now
   const [ innerState, setInnerState ] = useState("overview")
+
+  useEffect(() => {
+    setInnerState("overview")
+  }, [open])
+
+
   let modalTitle
   {
     if (innerState === "overview") {
@@ -45,9 +51,12 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
     }
   }
 
-  const handleEditButtonClick = (assessmentToEdit) => {
-    setAssessmentToEdit(assessmentToEdit)
+  const handleEditButtonClick = (unit, assessment) => {
+    setAssessmentToEdit(assessment)
     setInnerState("edit-assessment")
+
+    setAssessmentName(assessment.name.fi)
+    setAssessmentCriteria(assessment.criteria[0].fi)
   }
 
   const addNewAssessmentToUnit = (event) => {
@@ -95,7 +104,7 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
 
                         <button
                           className="assessment__button edit"
-                          onClick={() => handleEditButtonClick(unit, assessment)}
+                          onClick={() => handleEditButtonClick(unitToEdit, assessment)}
                         >
                           <Icon icon={"mingcute:pencil-line"} fontSize={20} />
                         </button>
@@ -225,10 +234,7 @@ function SpecifyTasks({ degree }) {
     setSubHeading("Lisää uusi tutkinto")
     setHeading("Tutkintojen hallinta")
   }, [checkedUnits, setHeading, setSiteTitle, setSubHeading]);
-
-  console.log(checkedUnits);
   
-
   // Labels and urls for stepper
   const stepperData = [
     {
@@ -251,28 +257,11 @@ function SpecifyTasks({ degree }) {
     },
   ];
 
-  // eslint-disable-next-line
-  const modalHandleSave = (title, criteria) => {
-    // Check if user actually has checked units
-    if (!checkedUnits[activeStep]) {
-      return;
-    }
-
-    setAssessments((prevAssessments) => [
-      ...prevAssessments,
-      {
-        unitId: checkedUnits[activeStep]._id, // error
-        name: title,
-        criteria: criteria,
-      },
-    ]);
-  }
 
   const handleOpenModal = (unit) => {
     setUnitToEdit(unit)
     setOpen(true)
   }
-
 
   // Form submission handler
   const handleSubmit = () => {
