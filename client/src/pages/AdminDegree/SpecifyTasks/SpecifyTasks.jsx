@@ -26,8 +26,6 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
   const addAssessment = useUnitsStore((state) => state.addAssessment);
   const editAssessment = useUnitsStore((state) => state.editAssessment);
   const deleteAssessment = useUnitsStore((state) => state.deleteAssessment);
-  const setCheckedUnits = useUnitsStore((state) => state.setCheckedUnits);
-  const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
   // Use a proper form state management library
   const [ assessmentName, setAssessmentName ] = useState("")
@@ -216,6 +214,7 @@ function SpecifyTasks({ degree }) {
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
+  const toggleUnit = useUnitsStore((state) => state.toggleUnit);
 
   // Modal test
   const [open, setOpen] = useState(false)
@@ -323,7 +322,7 @@ function SpecifyTasks({ degree }) {
                     <Icon icon={"mingcute:pencil-line"} fontSize={22} />
                   </button>
 
-                  <button className="unit__button delete">
+                  <button className="unit__button delete" onClick={() => toggleUnit(unit)}>
                     <Icon icon={"material-symbols:delete-outline"} fontSize={22} />
                   </button>
                 </div>
