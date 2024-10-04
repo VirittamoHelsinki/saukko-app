@@ -22,6 +22,7 @@ import Button from '../../../components/Button/Button';
 
 
 
+
 const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
   const addAssessment = useUnitsStore((state) => state.addAssessment);
   const editAssessment = useUnitsStore((state) => state.editAssessment);
@@ -49,6 +50,63 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
     } else if (innerState === "edit-assessment") {
       modalTitle = "Ammattitaitovaatimuksen muokkaus"
     }
+  }
+
+  const handleClick = () => {
+    // Check if the input value is empty
+    if (assessmentCriteria.trim() === '') {
+      setAssessmentCriteria('• '); // Insert a bullet point
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    const key = event.key
+
+    if (key === "Enter") {
+      event.preventDefault()
+      const { selectionStart, selectionEnd } = event.target
+
+      setAssessmentCriteria((oldValue => {
+        const start = oldValue.slice(0, selectionStart)
+        const end = oldValue.slice(selectionEnd)
+
+        return `${start}\n• ${end}`
+      }))
+
+      setTimeout(() => {
+        event.target.setSelectionRange(selectionStart + 3, selectionStart + 3)
+      }, 0)
+
+      return
+    }
+
+    if (key === "Backspace") {
+      return
+    }
+  }
+
+  const onPaste = (event) => {
+    event.preventDefault()
+    const { selectionStart, selectionEnd } = event.target
+
+    // Get pasted data via clipboard API
+    const clipboardData = event.clipboardData || window.clipboardData;
+    const pastedData = clipboardData.getData('Text');
+
+    setAssessmentCriteria((oldValue => {
+      const start = oldValue.slice(0, selectionStart)
+      const end = oldValue.slice(selectionEnd)
+      const formattedData = `${start}${pastedData}${end}`
+        .split("\n")
+        .map((line) => line.startsWith("• ") ? line : `• ${line}`)
+        .join("\n")
+
+      return formattedData
+    }))
+
+    setTimeout(() => { 
+      event.target.setSelectionRange(selectionStart, selectionStart)
+    }, 0)
   }
 
   const handleEditButtonClick = (unit, assessment) => {
@@ -150,6 +208,10 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
               <div className="form__field">
                 <label>Kriteerit *</label>
                 <textarea
+                  onPaste={onPaste}
+                  onKeyDown={handleKeyDown}
+                  onClick={handleClick}
+                  onFocus={handleClick}
                   placeholder='Kriteerit'
                   value={assessmentCriteria}
                   onChange={(e) => setAssessmentCriteria(e.target.value)}
@@ -187,6 +249,10 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
               <div className="form__field">
                 <label>Kriteerit *</label>
                 <textarea
+                  onPaste={onPaste}
+                  onKeyDown={handleKeyDown}
+                  onClick={handleClick}
+                  onFocus={handleClick}
                   placeholder='Kriteerit'
                   value={assessmentCriteria}
                   onChange={(e) => setAssessmentCriteria(e.target.value)}
