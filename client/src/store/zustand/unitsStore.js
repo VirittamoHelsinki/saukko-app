@@ -118,8 +118,22 @@ const useUnitsStore = create((set) => ({
     });
   },
 
+  deleteAssessment: (unitId, assessmentId) => {
+    set((state) => {
+      const updatedUnits = state.checkedUnits.map((unit) => {
+        if (unit._id !== unitId) {
+          return unit;
+        }
+        // unit is the unit to edit
+        unit.assessments = unit.assessments.filter((assessment) => assessment._id !== assessmentId);
 
+        return unit;
+      });
 
+      return { checkedUnits: updatedUnits };
+    });
+  },
+  
   clearCheckedUnits: () => {
     set({ checkedUnits: [] });
   },

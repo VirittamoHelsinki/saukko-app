@@ -25,6 +25,7 @@ import Button from '../../../components/Button/Button';
 const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
   const addAssessment = useUnitsStore((state) => state.addAssessment);
   const editAssessment = useUnitsStore((state) => state.editAssessment);
+  const deleteAssessment = useUnitsStore((state) => state.deleteAssessment);
   const setCheckedUnits = useUnitsStore((state) => state.setCheckedUnits);
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
 
@@ -70,10 +71,8 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
     setInnerState("overview")
   }
 
-  const handleDeleteAssessment = (assessment) => {
-    console.log(assessment);
-
-
+  const handleDeleteButtonClick = (unit, assessment) => {
+    deleteAssessment(unit._id, assessment._id)
   }
 
   return (
@@ -96,12 +95,17 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
                           <p>{ index + 1 }. {assessment.name.fi}</p>
                         </div>
 
-                        <button className="assessment__button edit" onClick={() => handleEditButtonClick(assessment)}>
+                        <button
+                          className="assessment__button edit"
+                          onClick={() => handleEditButtonClick(unit, assessment)}
+                        >
                           <Icon icon={"mingcute:pencil-line"} fontSize={20} />
                         </button>
 
-                        <button className="assessment__button delete">
-                          <Icon icon={"material-symbols:delete-outline"} fontSize={20} onClick={() => handleDeleteAssessment(assessment)} />
+                        <button
+                          className="assessment__button delete"
+                          onClick={() => handleDeleteButtonClick(unitToEdit, assessment)}>
+                          <Icon icon={"material-symbols:delete-outline"} fontSize={20} />
                         </button>
                       </div>
                     ))
