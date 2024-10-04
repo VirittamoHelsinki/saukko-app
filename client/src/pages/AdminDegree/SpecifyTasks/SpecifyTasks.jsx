@@ -51,13 +51,13 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
   }
 
   const addNewAssessmentToUnit = (event) => {
-    event.preventDefault()    
+    event.preventDefault()
 
     addAssessment(unitToEdit._id, assessmentName, assessmentCriteria)
     setAssessmentName("")
     setAssessmentCriteria("")
     setInnerState("overview")
-  } 
+  }
 
   const editAssessmentInUnit = (event) => {
     event.preventDefault()
@@ -70,7 +70,7 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
 
     setCheckedUnits([...otherUnits, unitToEdit])
     addAssessment(unitToEdit._id, assessmentName, assessmentCriteria, )
-    
+
     setAssessmentName("")
     setAssessmentCriteria("")
     setInnerState("overview")
@@ -78,7 +78,7 @@ const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
 
   const handleDeleteAssessment = (assessment) => {
     console.log(assessment);
-    
+
 
   }
 
