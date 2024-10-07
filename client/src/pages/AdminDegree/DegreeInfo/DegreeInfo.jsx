@@ -18,6 +18,41 @@ import WithDegree from '../../../HOC/withDegree';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
+
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { IconButton, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
+
+import { Input, Textarea, DatePicker } from '../../../components/Input';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#0000BF',
+    },
+  },
+  components: {
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            borderRadius: '0px',
+          },
+          '&:not(.Mui-selected)': {
+            borderRadius: '0px',
+          },
+          '&.MuiPickersDay-root:not(.Mui-selected)': {
+            borderColor: '#FF0000',
+            backgroundColor: 'white',
+          },
+        },
+      },
+    },
+  },
+});
+
 function DegreeInfo({ degree, loading }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -340,6 +375,19 @@ function DegreeInfo({ degree, loading }) {
               />
             </div>
           </div>
+
+          <Input
+            label="hello world"
+
+          />
+
+          <Textarea
+            label="TEXTAREA"
+          />
+
+          <DatePicker
+            label="DATEPICKER"
+          />
         </div>
 
         <Hyperlink

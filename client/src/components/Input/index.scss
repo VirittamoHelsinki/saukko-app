@@ -3,6 +3,18 @@
   flex-direction: column;
   gap: 5px;
 
+  &.date-picker {
+    height: 56px;
+
+
+
+    input {
+      height: 56px;
+      padding: 0;
+      margin: 0;
+    }
+  }
+
   &__label {
     font-size: 16px;
     color: var(----color-black-90, #1A1A1A);
@@ -16,6 +28,7 @@
     background: none;
     color: var(----color-black-90, #1A1A1A);
     border: 2px solid black;
+    font-size: 16px;
   }
 
   textarea {
