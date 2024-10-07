@@ -1,0 +1,24 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  &__label {
+    font-size: 16px;
+    color: var(----color-black-90, #1A1A1A);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    height: 56px;
+    padding: 12px;
+    background: none;
+    color: var(----color-black-90, #1A1A1A);
+    border: 2px solid black;
+  }
+
+  textarea {
+    height: 164px;
+  }
+}
