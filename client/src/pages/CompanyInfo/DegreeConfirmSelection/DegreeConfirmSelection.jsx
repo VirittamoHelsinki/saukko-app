@@ -219,7 +219,7 @@ function DegreeConfirmSelection() {
           <div className='confirmSelection__infolist-item'>
             <h2 className='second__title'>Yksikön lisätiedot</h2>
             <p className='second__paragraph'>
-              { additionalInfo.additionalInfo }
+              { additionalInfo ? additionalInfo?.additionalInfo : "-" }
             </p>
           </div>
 
