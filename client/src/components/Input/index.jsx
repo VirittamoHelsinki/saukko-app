@@ -1,8 +1,6 @@
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { IconButton, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
 import dayjs from 'dayjs';
 
 import "./index.scss";

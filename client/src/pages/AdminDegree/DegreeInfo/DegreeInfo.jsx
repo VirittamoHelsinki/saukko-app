@@ -11,7 +11,6 @@ import Stepper from '../../../components/Stepper/Stepper';
 import Hyperlink from '../../../components/Hyperlink/Hyperlink';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import Button from '../../../components/Button/Button';
-import ContentEditable from 'react-contenteditable';
 import NotificationModal from '../../../components/NotificationModal/NotificationModal';
 import { useAuthContext } from '../../../store/context/authContextProvider';
 import WithDegree from '../../../HOC/withDegree';
@@ -47,7 +46,6 @@ function DegreeInfo({ degree, loading }) {
 
   // Set state
   const [isContentChanged, setIsContentChanged] = useState(false);
-  const [isEditable, setIsEditable] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   // Opening / closing notificationModal
@@ -126,6 +124,10 @@ function DegreeInfo({ degree, loading }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [degree]);
 
+  useEffect(() => {
+    setIsContentChanged(true)
+  }, [ degreeDescription, degreeName, diaryNumber, regulationDate, validFrom, expiry, transitionEnds ])
+
   // Toggle text editable mode
   const handleEditToggle = () => {
     setIsEditing((prevState) => !prevState);
@@ -171,7 +173,7 @@ function DegreeInfo({ degree, loading }) {
   }
 
   if (loading) {
-    return <div>loading...</div>
+    return <div>{ text[selectedLanguage].loadingMessage }</div>
   }
 
   return (
@@ -190,8 +192,8 @@ function DegreeInfo({ degree, loading }) {
             id='editButton'
             onClick={handleEditToggle}
             type='submit'
-            style={isEditable ? buttonStyleSave : buttonStyleEdit}
-            text={isEditable ? 'Lopeta muokkaus' : 'Muokkaa tietoja'}
+            style={isEditing ? buttonStyleSave : buttonStyleEdit}
+            text={isEditing ? 'Lopeta muokkaus' : 'Muokkaa tietoja'}
             icon={'mingcute:pencil-line'}
           />
         )}
