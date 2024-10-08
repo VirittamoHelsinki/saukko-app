@@ -15,32 +15,36 @@
     flex-grow: 1;
     overflow-y: auto;
 
+    .degreeInfo__container--edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     .degreeInfo__container--info {
       display: flex;
       flex-direction: column;
-      text-align: left;
       margin: 30px 0px;
 
-      .degreeInfo__container--info--block {
-        padding: 14px;
+      .degreeInfo__field {
         display: flex;
         flex-direction: column;
         gap: 5px;
+        padding: 11px 24px;
+
+        &:nth-child(even) {
+          background-color: var(--grayscale-background-box);
+        }
 
         & > p:first-child {
           font-weight: bold;
         }
 
-        h1 {
-          margin-bottom: 15px;
-          text-align: center;
-          font-weight: 400;
-        }
-
-        &.dark {
-          background-color: var(--grayscale-background-box);
+        &__title {
+          margin-bottom: 5px;
         }
       }
+
     }
 
     h1,

@@ -45,14 +45,17 @@ function Summary({ degree }) {
   const regex = /(<([^>]+)>)/gi;
   const degreeDescriptionCleaned = degreeDescription?.replace(regex, '');
 
-  function parseDate(dateString) {
-    const datePattern = /^\d{2}\.\d{2}.\d{4}$/;
-    if (datePattern.test(dateString)) {
-      const [day, month, year] = dateString.split('.');
-      const date = new Date(year, month - 1, day);
-      return date;
+  // Parse date or handle "N/A" or empty string
+  function parseDate(value) {
+    if (value === null || value === 'N/A' || value === '') {
+      return null; // Return the placeholder text for missing data
     } else {
-      return null;
+      const dateObj = new Date(value);
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+      const year = dateObj.getFullYear();
+      const formattedDate = `${day}.${month}.${year}`;
+      return formattedDate;
     }
   }
 
@@ -94,10 +97,10 @@ function Summary({ degree }) {
       archived: false,
       infoURL: degree.examInfoURL,
       units: checkedUnits,
-      regulationDate: parseDate(regulationDate),
-      transitionEnds: parseDate(transitionEnds),
-      validFrom: parseDate(validFrom),
-      expiry: parseDate(expiry),
+      regulationDate: (regulationDate),
+      transitionEnds: (transitionEnds),
+      validFrom: (validFrom),
+      expiry: (expiry),
     };
     console.log('Data for post request:', degreeData)
 
@@ -152,13 +155,13 @@ function Summary({ degree }) {
           <strong>Määräyksen diaarinumero</strong>
           <li>{diaryNumber}</li>
           <strong> Määräyksen päätöspäivämäärä</strong>
-          <li>{regulationDate}</li>
+          <li>{parseDate(regulationDate)}</li>
           <strong>Voimaantulo</strong>
-          <li>{validFrom}</li>
+          <li>{parseDate(validFrom)}</li>
           <strong>Voimassaolon päättyminen</strong>
-          <li>{expiry}</li>
+          <li>{parseDate(expiry)}</li>
           <strong>Siirtymäajan päättymisaika</strong>
-          <li>{transitionEnds}</li>
+          <li>{parseDate(transitionEnds)}</li>
         </ul>
 
         <PageNavigationButtons
