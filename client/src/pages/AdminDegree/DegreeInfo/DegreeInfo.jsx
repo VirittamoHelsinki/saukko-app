@@ -18,40 +18,8 @@ import WithDegree from '../../../HOC/withDegree';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
-
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { IconButton, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
-
 import { Input, Textarea, DatePicker } from '../../../components/Input';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#0000BF',
-    },
-  },
-  components: {
-    MuiButtonBase: {
-      styleOverrides: {
-        root: {
-          '&.Mui-selected': {
-            borderRadius: '0px',
-          },
-          '&:not(.Mui-selected)': {
-            borderRadius: '0px',
-          },
-          '&.MuiPickersDay-root:not(.Mui-selected)': {
-            borderColor: '#FF0000',
-            backgroundColor: 'white',
-          },
-        },
-      },
-    },
-  },
-});
 
 function DegreeInfo({ degree, loading }) {
   const navigate = useNavigate();
@@ -80,6 +48,7 @@ function DegreeInfo({ degree, loading }) {
   // Set state
   const [isContentChanged, setIsContentChanged] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   // Opening / closing notificationModal
   const [openNotificationModalDate, setOpenNotificationModalDate] = useState(false)
@@ -108,7 +77,7 @@ function DegreeInfo({ degree, loading }) {
   // Parse date or handle "N/A" or empty string
   function parseDate(value) {
     if (value === null || value === 'N/A' || value === '') {
-      return 'Täydennä puuttuvat tiedot'; // Return the placeholder text for missing data
+      return null; // Return the placeholder text for missing data
     } else {
       const dateObj = new Date(value);
       const day = dateObj.getDate().toString().padStart(2, '0');
@@ -127,10 +96,10 @@ function DegreeInfo({ degree, loading }) {
       setDegreeDescription(degree?.description?.fi);
       setDegreeName(degree?.name?.fi);
       setDiaryNumber(degree?.diaryNumber);
-      setRegulationDate(parseDate(degree?.regulationDate));
-      setValidFrom(parseDate(degree.validFrom));
-      setExpiry(parseDate(degree.expiry));
-      setTransitionEnds(parseDate(degree.transitionEnds));
+      setRegulationDate((degree?.regulationDate));
+      setValidFrom((degree.validFrom));
+      setExpiry((degree.expiry));
+      setTransitionEnds((degree.transitionEnds));
     } else {
       // If fetch by ID fails set data from allDegrees
       if (
@@ -159,7 +128,7 @@ function DegreeInfo({ degree, loading }) {
 
   // Toggle text editable mode
   const handleEditToggle = () => {
-    setIsEditable((prevState) => !prevState);
+    setIsEditing((prevState) => !prevState);
   };
 
   // Button styling/CSS
@@ -227,168 +196,96 @@ function DegreeInfo({ degree, loading }) {
           />
         )}
 
-        <div className='degreeInfo__container--info'>
-          <div className='degreeInfo__container--info--block'>
-            <p>Tutkinnon suorittaneen osaaminen</p>
-            <div
-              id='degreeDescriptionTextBox'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <ContentEditable
-                html={degreeDescription === 'N/A' ? 'Täydennä puuttuvat tiedot' : degreeDescription}
-                onChange={(e) => {
-                  setDegreeDescription(e.target.value === 'Täydennä puuttuvat tiedot' ? 'N/A' : e.target.value);
-                  setIsContentChanged(true);
-                }}
-                tagName='p'
-                disabled={!isEditable}
-                className={isEditable ? 'border-input' : ''}
-              />
+        {
+          !isEditing && (
+            <div className="degreeInfo__container--info">
+              <div className="degreeInfo__field">
+                <p className="degreeInfo__title">Tutkinnon suorittaneen osaaminen</p>
+                <p className="degreeInfo__value">{degreeDescription || '-'}</p>
+              </div>
+              <div className="degreeInfo__field">
+                <p className="degreeInfo__title">Tutkinnon nimi</p>
+                <p className="degreeInfo__value">{degreeName}</p>
+              </div>
+              <div className="degreeInfo__field">
+                <p className="degreeInfo__title">Määräyksen diaarinumero</p>
+                <p className="degreeInfo__value">{diaryNumber}</p>
+              </div>
+              <div className="degreeInfo__field">
+                <p className="degreeInfo__title">Määräyksen päätöspäivämäärä</p>
+                <p className="degreeInfo__value">{parseDate(regulationDate)}</p>
+              </div>
+              <div className="degreeInfo__field">
+                <p className="degreeInfo__title">Voimaantulo</p>
+                <p className="degreeInfo__value">{parseDate(validFrom)}</p>
+              </div>
+              <div className="degreeInfo__field">
+                <p className="degreeInfo__title">Voimassaolon päättyminen</p>
+                <p className="degreeInfo__value">{expiry ? parseDate(expiry) : '-'}</p>
+              </div>
+              <div className="degreeInfo__field">
+                <p className="degreeInfo__title">Siirtymäajan päättymisaika</p>
+                <p className="degreeInfo__value">{transitionEnds ? parseDate(transitionEnds) : '-'}</p>
+              </div>
             </div>
-          </div>
-          <div className='degreeInfo__container--info--block dark'>
-            <p>Tutkinnon nimi</p>
-            <div
-              id='degreeNameTextBox'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <ContentEditable
-                html={degreeName ?? "degreeName is NULL"}
-                onChange={(e) => {
-                  setDegreeName(e.target.value)
-                  setIsContentChanged(true)
-                }}
-                tagName='p'
-                disabled={!isEditable}
-                className={isEditable ? 'border-input' : ''}
-              />
-            </div>
-          </div>
-          <div className='degreeInfo__container--info--block'>
-            <p>Määräyksen diaarinumero</p>
-            <div
-              id='diaryNumberTextBox'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <ContentEditable
-                html={diaryNumber ?? "diaryNumber is NULL"}
-                onChange={(e) => {
-                  setDiaryNumber(e.target.value)
-                  setIsContentChanged(true)
-                }}
-                tagName='p'
-                disabled={!isEditable}
-                className={isEditable ? 'border-input' : ''}
-              />
-            </div>
-          </div>
-          <div className='degreeInfo__container--info--block dark'>
-            <p>Määräyksen päätöspäivämäärä</p>
-            <div
-              id='regulationDateTextBox'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <ContentEditable
-                html={regulationDate ?? "regulationDate is NULL"}
-                onChange={(e) => {
-                  setRegulationDate(e.target.value)
-                  setIsContentChanged(true)
-                }}
-                tagName='p'
-                disabled={!isEditable}
-                className={isEditable ? 'border-input' : ''}
-              />
-            </div>
-          </div>
-          <div className='degreeInfo__container--info--block'>
-            <p>Voimaantulo</p>
-            <div
-              id='validFromTextBox'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <ContentEditable
-                html={validFrom ?? "validFrom is NULL"}
-                onChange={(e) => {
-                  setValidFrom(e.target.value)
-                  setIsContentChanged(true)
-                }}
-                tagName='p'
-                disabled={!isEditable}
-                className={isEditable ? 'border-input' : ''}
-              />
-            </div>
-          </div>
-          <div className='degreeInfo__container--info--block dark'>
-            <p>Voimassaolon päättyminen</p>
-            <div
-              id='expiryTextBox'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <ContentEditable
-                html={expiry ?? "expiry is NULL"}
-                onChange={(e) => {
-                  setExpiry(e.target.value)
-                  setIsContentChanged(true)
-                }}
-                tagName='p'
-                disabled={!isEditable}
-                className={isEditable ? 'border-input' : ''}
-              />
-            </div>
-          </div>
-          <div className='degreeInfo__container--info--block'>
-            <p>Siirtymäajan päättymisaika</p>
-            <div
-              id='transitionEndsTextBox'
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <ContentEditable
-                html={transitionEnds ?? "transitionEnds is NULL"}
-                onChange={(e) => {
-                  setTransitionEnds(e.target.value)
-                  setIsContentChanged(true)
-                }}
-                tagName='p'
-                disabled={!isEditable}
-                className={isEditable ? 'border-input' : ''}
-              />
-            </div>
-          </div>
+          )
+        }
 
-          <Input
-            label="hello world"
+        {
+          isEditing && (
+            <div className="degreeInfo__container--edit-form">
+              <Textarea
+                label="Tutkinnon suorittaneen osaaminen *"
+                value={degreeDescription}
+                onChange={(e) => setDegreeDescription(e.target.value)}
+                placeholder="Täydennä puuttuvat tiedot"
+              />
 
-          />
+              <Input
+                label="Tutkinnon nimi"
+                value={degreeName}
+                onChange={(e) => setDegreeName(e.target.value)}
+                placeholder="Kirjoita tutkinnon nimi"
+              />
 
-          <Textarea
-            label="TEXTAREA"
-          />
+              <Input
+                label="Määräyksen diaarinumero"
+                value={diaryNumber}
+                onChange={(e) => setDiaryNumber(e.target.value)}
+                placeholder="Kirjoita diaarinumero"
+              />
 
-          <DatePicker
-            label="DATEPICKER"
-          />
-        </div>
+              <DatePicker
+                label="Määräyksen päätöspäivämäärä"
+                value={regulationDate}
+                onChange={(e) => setRegulationDate(e.target.value)}
+                placeholder="Valitse päivämäärä"
+              />
+
+              <DatePicker
+                label="Voimaantulo"
+                value={validFrom}
+                onChange={(e) => setValidFrom(e.target.value)}
+                placeholder="Valitse päivämäärä"
+              />
+
+              <DatePicker
+                label="Voimassaolon päättyminen"
+                value={expiry}
+                onChange={(e) => setExpiry(e.target.value)}
+                placeholder="Valitse päivämäärä"
+              />
+
+              <DatePicker
+                label="Siirtymäajan päättymisaika"
+                value={transitionEnds}
+                onChange={(e) => setTransitionEnds(e.target.value)}
+                placeholder="Valitse päivämäärä"
+              />
+
+            </div>
+          )
+        }
 
         <Hyperlink
           linkText={'Lue lisää tästä linkistä'}

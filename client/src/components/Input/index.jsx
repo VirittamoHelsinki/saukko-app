@@ -3,6 +3,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { IconButton, Checkbox, FormControlLabel, Tooltip } from '@mui/material';
+import dayjs from 'dayjs';
 
 import "./index.scss";
 
@@ -35,7 +36,7 @@ const Textarea = ({ label, value, onChange, placeholder, required }) => {
   );
 };
 
-const DatePicker = ({ label, value, onChange, placeholder, required }) => {
+const DatePicker = ({ label, value, onChange }) => {
   return (
     <div className="input date-picker">
       <label className="input__label">{label}</label>
@@ -43,11 +44,8 @@ const DatePicker = ({ label, value, onChange, placeholder, required }) => {
 
         <DesktopDatePicker
           id="--"
-          format="DD.MM.YYYY"
-          value={value}
+          value={dayjs(value)}
           onChange={onChange}
-          placeholder={placeholder}
-          required={required}
           sx={{
             '.MuiInputBase-root': {
               "border": "2px solid black",
@@ -56,9 +54,12 @@ const DatePicker = ({ label, value, onChange, placeholder, required }) => {
                 "border": "none",
                 "fontSize": "16px",
               },
-              padding: "0 10px",
+              padding: "0 10px 0 0",
               '& fieldset': {
                 border: 'none',
+              },
+              '& input': {
+                padding: "0 0 0 10px",
               },
             },
           }}
