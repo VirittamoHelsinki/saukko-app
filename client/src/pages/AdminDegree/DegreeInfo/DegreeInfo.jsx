@@ -173,7 +173,7 @@ function DegreeInfo({ degree, loading }) {
   }
 
   if (loading) {
-    return <div>{ text[selectedLanguage].loadingMessage }</div>
+    return <div>loading...</div>
   }
 
   return (
