@@ -258,28 +258,28 @@ function DegreeInfo({ degree, loading }) {
               <DatePicker
                 label="Määräyksen päätöspäivämäärä"
                 value={regulationDate}
-                onChange={(e) => setRegulationDate(e.target.value)}
+                onChange={(value) => setRegulationDate(value)}
                 placeholder="Valitse päivämäärä"
               />
 
               <DatePicker
                 label="Voimaantulo"
                 value={validFrom}
-                onChange={(e) => setValidFrom(e.target.value)}
+                onChange={(value) => setValidFrom(value)}
                 placeholder="Valitse päivämäärä"
               />
 
               <DatePicker
                 label="Voimassaolon päättyminen"
                 value={expiry}
-                onChange={(e) => setExpiry(e.target.value)}
+                onChange={(value) => setExpiry(value)}
                 placeholder="Valitse päivämäärä"
               />
 
               <DatePicker
                 label="Siirtymäajan päättymisaika"
                 value={transitionEnds}
-                onChange={(e) => setTransitionEnds(e.target.value)}
+                onChange={(value) => setTransitionEnds(value)}
                 placeholder="Valitse päivämäärä"
               />
 

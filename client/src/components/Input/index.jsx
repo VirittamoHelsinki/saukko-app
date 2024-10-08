@@ -46,6 +46,7 @@ const DatePicker = ({ label, value, onChange }) => {
           id="--"
           value={dayjs(value)}
           onChange={onChange}
+          format="DD.MM.YYYY"
           sx={{
             '.MuiInputBase-root': {
               "border": "2px solid black",
