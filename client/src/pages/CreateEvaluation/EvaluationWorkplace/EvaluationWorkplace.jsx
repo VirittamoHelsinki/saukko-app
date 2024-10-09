@@ -24,6 +24,7 @@ import Pagination from '@mui/material/Pagination';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { createTheme } from '@mui/material/styles';
+import TeacherSelection from '../../../components/TeacherSelection/TeacherSelection';
 
 function EvaluationWorkplace() {
   const navigate = useNavigate();
@@ -124,6 +125,8 @@ function EvaluationWorkplace() {
   const handlePageChange = (event, value) => {
     setPage(value);
   };
+
+
 
   const indexOfLastWorkplace = page * workplacesPerPage;
   const indexOfFirstWorkplace = indexOfLastWorkplace - workplacesPerPage;
@@ -276,7 +279,7 @@ function EvaluationWorkplace() {
                   {workplace.departments.length === 0 && (
                     <>
                       <Typography className='accordion-title'>
-                        Valitse työpaikkaohjaaja *
+                        Valitse ohjaaja *
                       </Typography>
                       <Accordion
                         disableGutters
@@ -312,14 +315,18 @@ function EvaluationWorkplace() {
                           ))}
                         </AccordionDetails>
                       </Accordion>
+                      {/* Teachers */}
+                      <TeacherSelection workplace={workplaceFromStore} />
                     </>
                   )}
+
+
 
                   {workplace.departments.length > 0 &&
                     departmentFromStore && (
                       <>
                         <Typography className='accordion-title'>
-                          Valitse työpaikkaohjaaja *
+                          Valitse ohjaaja *
                         </Typography>
                         <Accordion
                           disableGutters
@@ -358,6 +365,7 @@ function EvaluationWorkplace() {
                             )}
                           </AccordionDetails>{' '}
                         </Accordion>
+                        <TeacherSelection workplace={workplaceFromStore} />
                       </>
                     )}
                 </AccordionDetails>
@@ -406,8 +414,8 @@ function EvaluationWorkplace() {
       />
       <NotificationModal
         type='warning'
-        title='Työpaikkaohjaajan valinta epäonnistui'
-        body='Valitse ensin työpaikka ja sitten työpaikalle kuuluva työpaikkaohjaaja'
+        title='Ohjaajan valinta epäonnistui'
+        body='Valitse ensin työpaikka ja sitten työpaikalle kuuluva ohjaaja'
         open={supervisorNotification}
         handleClose={closeSupervisorNotification}
       />
@@ -417,7 +425,7 @@ function EvaluationWorkplace() {
         body={
           <div style={{ padding: '10px' }}>
             <Typography style={{ fontSize: '14px' }}>
-              Valitse ensin työpaikka, yksikkö ja työpaikkaohjaaja.
+              Valitse ensin työpaikka, yksikkö ja ohjaaja.
             </Typography>
           </div>
         }

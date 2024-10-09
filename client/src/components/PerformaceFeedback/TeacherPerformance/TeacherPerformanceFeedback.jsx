@@ -25,14 +25,14 @@ const TeacherPerformanceFeedBack = ({
           disabled: true,
           unitId: unit._id,
           assessmentId: assessment._id,
-          answer: assessment.answer,
+          answer: (unit.customerReady) ? assessment.answer : '',
         },
         {
-          info: 'TPO:n havainto',
+          info: 'Ohjaajan havainto',
           disabled: true,
           unitId: unit._id,
           assessmentId: assessment._id,
-          answerSupervisor: assessment.answerSupervisor,
+          answerSupervisor: (unit.supervisorReady) ? assessment.answerSupervisor : '',
         },
         {
           info: 'Opettajan merkintä',
@@ -45,7 +45,7 @@ const TeacherPerformanceFeedBack = ({
       ]);
     }) : [
       { info: 'Itsearviointi', disabled: true, answer: '' },
-      { info: 'TPO:n havainto', disabled: true, answerSupervisor: '' },
+      { info: 'Ohjaajan havainto', disabled: true, answerSupervisor: '' },
       { info: 'Opettajan merkintä', disabled: false, answerTeacher: '', comment: { text: '' } }
     ];
   }, [evaluation]);
@@ -65,7 +65,7 @@ const TeacherPerformanceFeedBack = ({
         acc[item.info] = item.answer || '';
         handleRadioChange([item.info], acc[item.info], assessment._id)
       }
-      if (item.info === 'TPO:n havainto') {
+      if (item.info === 'Ohjaajan havainto') {
         acc[item.info] = item.answerSupervisor || ''
         handleRadioChange([item.info], acc[item.info], assessment._id)
       }

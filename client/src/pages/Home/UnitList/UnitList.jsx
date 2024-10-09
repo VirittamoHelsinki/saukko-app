@@ -108,7 +108,7 @@ const UnitList = () => {
                 unit={unit}
                 status={unit.status}
                 subheader={unit.name.fi}
-                assessment={unit.assessments[0]}
+                assessment={unit.assessments[0]} // TODO: Unit may not have any assessments, this will lead to a crash if so. UnitStatus has no case for an empty assessment object.
                 currentUser={currentUser}
                 link={`/userperformance/${evaluation._id}/${unit._id}`}
               />

@@ -15,53 +15,111 @@ import {
 } from '../../api/user';
 import { useAuthContext } from '../../store/context/authContextProvider';
 import useHeadingStore from '../../store/zustand/useHeadingStore';
+import { updateUser } from '../../api/user';
+
 
 function ProfilePage() {
+
   // User info from AuthContext
   const { currentUser } = useAuthContext();
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
   const [alertModalOpen, setAlertModalOpen] = useState(false);
-
-  const handleCloseAlertModal = () => {
-    setAlertModalOpen(false)
-  };
-
-  const handleOpenAlertModal = () => {
-    setAlertModalOpen(true);
-  };
-
-  // Logout
-  /*   const navigate = useNavigate();
-  
-    const LogOut = async () => {
-      try {
-        await logoutUser();
-        navigate('/');
-      } catch (error) {
-        console.error(error);
-      }
-    };
-  
-   */
-
+  const [emailChangeFailedModalOpen, setEmailChangeFailedModalOpen] = useState(false);
   const [invalidPasswordError, setInvalidPasswordError] = useState(false);
 
-  // State for opening & closing email pop up
+  // State for opening & closing modals
   const [openEmailPopUp, setOpenEmailPopUp] = useState(false);
+  const [openEmailNotification, setOpenEmailNotification] = useState(false);
+
+  const handleCloseAlertModal = () => setAlertModalOpen(false);
+  const handleOpenAlertModal = () => setAlertModalOpen(true);
+
+  const handleCloseEmailChangeFailedModal = () => setEmailChangeFailedModalOpen(false);
+  const handleOpenEmailChangeFailedModal = () => setEmailChangeFailedModalOpen(true);
+
   const handleOpenEmailPopUp = () => setOpenEmailPopUp(true);
   const handleCloseEmailPopUp = () => setOpenEmailPopUp(false);
 
-  // State for opening & closing email notification
-  const [openEmailNotification, setOpenEmailNotification] = useState(false);
   const handleOpenEmailNotification = () => setOpenEmailNotification(true);
   const handleCloseEmailNotification = () => setOpenEmailNotification(false);
 
-  // Email form handler
-  const handleSubmitEmailPopUp = (e) => {
+  // Handle Email Change Submission
+  const handleSubmitEmailPopUp = async (e) => {
     e.preventDefault();
-    handleCloseEmailPopUp();
-    handleOpenEmailNotification();
+
+    // Get input values
+    const form = e.target;
+    const currentPassword = form.querySelector("[name='current-password']").value;
+    const newEmail = form.querySelector("[name='new-email']").value;
+
+    // Ensure a new email is provided
+    if (!newEmail) {
+      console.error('New email is required');
+      return;
+    }
+
+    try {
+      // Verify current password
+      const response = await requestPasswordChangeTokenAsUser(currentPassword);
+
+      if (response.status !== 200) {
+        setInvalidPasswordError(true);
+        return;
+      }
+
+      // If password is correct, update the email
+      await updateUser(currentUser.id, { email: newEmail });
+      console.log('Email updated successfully');
+
+      // Close the email pop-up and show success notification
+      handleCloseEmailPopUp();
+      handleOpenEmailNotification();
+    } catch (error) {
+      console.error('Error updating email:', error);
+      handleOpenEmailChangeFailedModal();
+    }
   };
+
+  const handleSubmitPasswordPopUp = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const oldPassword = form.querySelector("[name='passwordOld']").value;
+    const newPassword = form.querySelector("[name='passwordNew']").value;
+    const verifyPassword = form.querySelector("[name='passwordVerify']").value;
+
+    if (newPassword !== verifyPassword) {
+      form.querySelector("[name='passwordVerify']").setCustomValidity('Salasanat eivät täsmää.');
+      form.querySelector("[name='passwordVerify']").reportValidity();
+      return;
+    } else {
+      form.querySelector("[name='passwordVerify']").setCustomValidity('');
+      form.querySelector("[name='passwordVerify']").reportValidity();
+    }
+
+    requestPasswordChangeTokenAsUser(oldPassword)
+      .then((response) => {
+        if (response.status === 200) {
+          return;
+        } else throw new Error(`Request "change-token" failed with status ${response.status}`);
+      })
+      .then(() => resetPassword(newPassword))
+      .then((response) => {
+        if (response.status === 200) {
+          handleClosePasswordPopUp();
+          handleOpenPasswordNotification();
+        } else throw new Error(`Password reset failed with status ${response.status}`);
+      })
+      .catch((err) => {
+        console.error("Failed to change password:", err);
+        if (err.response && err.response.data?.errorMessage === "Invalid password") {
+          setInvalidPasswordError(true);
+        } else {
+          handleOpenAlertModal();
+        }
+      });
+  };
+
 
   // State for opening & closing password pop up
   const [openPasswordPopUp, setOpenPasswordPopUp] = useState(false);
@@ -76,56 +134,12 @@ function ProfilePage() {
   const handleClosePasswordNotification = () =>
     setOpenPasswordNotification(false);
 
-  // Password form handler
-  const handleSubmitPasswordPopUp = (e) => {
-    e.preventDefault();
 
-    // Get input values
-    const form = e.target;
-    const oldPassword = form.querySelector("[name='passwordOld']").value;
-    const newPassword = form.querySelector("[name='passwordNew']").value;
-    const verifyPassword = form.querySelector("[name='passwordVerify']").value;
-
-    if (newPassword !== verifyPassword) {
-      console.log(newPassword, verifyPassword)
-      form.querySelector("[name='passwordVerify']").setCustomValidity('Salasanat eivät täsmää.');
-      form.querySelector("[name='passwordVerify']").reportValidity();
-      return;
-    } else {
-      form.querySelector("[name='passwordVerify']").setCustomValidity('');
-      form.querySelector("[name='passwordVerify']").reportValidity();
-    }
-
-    requestPasswordChangeTokenAsUser(oldPassword)
-      .then((response) => {
-        console.log("We have a response", response)
-        if (response.status === 200) {
-          // "change-token" is set as HTTP-Only
-          return;
-        } else throw new Error(`Request "change-token" was failed, server returned ${response.status}`);
-      })
-      .then(() => resetPassword(newPassword))
-      .then((response) => { // this is the password change response
-        if (response.status === 200) {
-          // "change-token" is now erased from the cookie jar
-          handleClosePasswordPopUp();
-          handleOpenPasswordNotification();
-        } else throw new Error(`Request "password-reset" was failed, server returned ${response.status}`)
-      })
-      .catch((err) => {
-        console.error("Failed to change the password", err)
-        if (err.response && err.response.data && err.response.data.errorMessage === "Invalid password") {
-          setInvalidPasswordError(true)
-        } else {
-          handleOpenAlertModal();
-        }
-      });
-  }
 
   useEffect(() => {
     setSiteTitle("Profiili"), setSubHeading(""), setHeading("Oma profiili")
   }, [setHeading, setSiteTitle, setSubHeading])
-
+  // TODO: create notification for failed email change and red errormessage when password is incorrect 
   return (
     <div className='profile__wrapper'>
       <section className='profile__container'>
@@ -149,28 +163,24 @@ function ProfilePage() {
               className='profile__container-row-arrow'
             />
           </div>
-
           {/* Change email pop-up */}
           <PopUpForm
-            title='Vaihda sähköpostiosoite'
+            title="Vaihda sähköpostiosoite"
             content={
-              <div className='popup-form'>
-                <PasswordInput
-                  value='passwordOld'
-                  inputName='passwordOld'
-                  label='Vahvista nykyinen salasana *'
-                />
-                <label htmlFor='new-email'>Anna uusi sähköposti *</label>
-                <input type='email' name='new-email' required />
+              <div className="popup-form">
+                <label htmlFor="current-password">Anna nykyinen salasana *</label>
+                <input type="password" name="current-password" required />
+                {invalidPasswordError && <p style={{ color: "red" }}>Tarkista salasanasi ja yritä uudelleen!</p>}
+                <label htmlFor="new-email">Anna uusi sähköposti *</label>
+                <input type="email" name="new-email" required />
               </div>
             }
-            buttonText='Lähetä'
+            buttonText="Lähetä"
             open={openEmailPopUp}
             handleClose={handleCloseEmailPopUp}
             handleSubmit={handleSubmitEmailPopUp}
           />
-
-          {/* Change email notification */}
+          {/* Success Notification for Email Change */}
           <NotificationModal
             open={openEmailNotification}
             handleClose={handleCloseEmailNotification}
@@ -178,7 +188,17 @@ function ProfilePage() {
             title='Sähköposti vaihdettu!'
             body='Voit seuraavalla kerralla kirjautua sisään uusia kirjautumistietoja käyttäen.'
           />
+
+          {/* Failure Notification for Email Change */}
+          <NotificationModal
+            open={emailChangeFailedModalOpen}
+            handleClose={handleCloseEmailChangeFailedModal}
+            type='warning'
+            title='Sähköpostin vaihtaminen epäonnistui'
+            body='Sähköpostin vaihtaminen ei onnistunut. Yritä uudelleen.'
+          />
         </div>
+
         <div className='profile__container---change-password'>
           <div
             className='profile__container--row'

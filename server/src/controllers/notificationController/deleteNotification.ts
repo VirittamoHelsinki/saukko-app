@@ -19,6 +19,30 @@ const deleteNotificationById = async (req: Request, res: Response) => {
   }
 }
 
+const deleteNotificationsByUserId = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
 
-export default deleteNotificationById;
+    // Use deleteMany to remove all notifications matching the userId in one go
+    const result = await NotificationModel.deleteMany({
+      $or: [
+        { customer: userId },
+        { recipient: userId },
+      ],
+    });
+
+    // result.deletedCount contains the number of deleted documents
+    res.status(200).json({ deletedCount: result.deletedCount });
+
+  } catch (error) {
+    console.error('Failed to delete notifications', error);
+    res.status(500).json({ message: 'Failed to delete notifications' });
+  }
+}
+
+export default
+  {
+    deleteNotificationById,
+    deleteNotificationsByUserId
+  };
 

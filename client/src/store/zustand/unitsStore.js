@@ -64,31 +64,76 @@ const useUnitsStore = create((set) => ({
   addAssessment: (unitId, assessment, criteria) => {
     set((state) => {
       const updatedUnits = state.checkedUnits.map((unit) => {
-        if (unit._id === unitId) {
-          // Ensure that assessments is always an array and add the assessment
-          const assessments = Array.isArray(unit.assessments)
-            ? [...unit.assessments]
-            : [];
-          const randomId = Math.floor(1000000 + Math.random() * 9000000);
-          assessments.push({
-            name: { fi: assessment },
-            criteria: [{ fi: criteria, _id: randomId }],
-            _id: randomId,
-          });
-
-          // Add the assessment to the unit
-          return {
-            ...unit,
-            assessments,
-          };
+        if (unit._id !== unitId) {
+          return unit;
         }
-        return unit;
-      });
-      const updatedUnitsData = { checkedUnits: updatedUnits };
-      return updatedUnitsData;
+
+        if (!unit.assessments) {
+          unit.assessments = [];
+        }
+
+        const randomId = Math.floor(1000000 + Math.random() * 9000000);
+        unit.assessments.push({
+          name: { fi: assessment },
+          criteria: [{ fi: criteria, _id: randomId }],
+          _id: randomId,
+        });
+
+        // Add the assessment to the unit
+        return unit
+      })
+
+      return { checkedUnits: updatedUnits };
     });
   },
 
+  editAssessment: (unitId, assessmentId, newAssessmentName, newAssessmentCriteria) => {
+    set((state) => {
+      const updatedUnits = state.checkedUnits.map((unit) => {
+        if (unit._id !== unitId) {
+          return unit;
+        }
+
+        // unit is the unit to edit
+        unit.assessments = unit.assessments.map((assessment) => {
+          if (assessment._id !== assessmentId) {
+            return assessment;
+          }
+
+          // assessment is the assessment to edit
+          return {
+            ...assessment,
+            name: {
+              ...assessment.name,
+              fi: newAssessmentName,
+            },
+            criteria: newAssessmentCriteria,
+          };
+        });
+
+        return unit;
+      });
+
+      return { checkedUnits: updatedUnits };
+    });
+  },
+
+  deleteAssessment: (unitId, assessmentId) => {
+    set((state) => {
+      const updatedUnits = state.checkedUnits.map((unit) => {
+        if (unit._id !== unitId) {
+          return unit;
+        }
+        // unit is the unit to edit
+        unit.assessments = unit.assessments.filter((assessment) => assessment._id !== assessmentId);
+
+        return unit;
+      });
+
+      return { checkedUnits: updatedUnits };
+    });
+  },
+  
   clearCheckedUnits: () => {
     set({ checkedUnits: [] });
   },

@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  min-height: 100vh;
 
   .workplace__container {
     display: flex;
@@ -16,7 +15,7 @@
     overflow-y: auto;
 
     .workplace__infolist-wrapper {
-      padding: 20px 20px 0 20px;
+      padding: 20px 0px 0 0px;
 
       .workplace__infolist-item {
         padding: 10px 5px;

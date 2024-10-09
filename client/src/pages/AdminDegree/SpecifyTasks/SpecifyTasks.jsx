@@ -11,19 +11,272 @@ import Stepper from '../../../components/Stepper/Stepper';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 // Import MUI
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import MobileStepper from '@mui/material/MobileStepper';
-import { useTheme } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 // Import criteria modal
-import RequirementsAndCriteriaModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaModal';
 import WithDegree from '../../../HOC/withDegree';
-import RequirementsAndCriteriaEditingModal from '../../../components/RequirementsAndCriteriaModal/RequirementsAndCriteriaEditingModal';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
+import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
+
+import Modal from "../../../components/Modal";
+import Button from '../../../components/Button/Button';
+
+
+
+
+const ModalDegreeEdit = ({ open, setOpen, unitToEdit }) => {
+  const addAssessment = useUnitsStore((state) => state.addAssessment);
+  const editAssessment = useUnitsStore((state) => state.editAssessment);
+  const deleteAssessment = useUnitsStore((state) => state.deleteAssessment);
+
+  // Use a proper form state management library
+  const [ assessmentName, setAssessmentName ] = useState("")
+  const [ assessmentCriteria, setAssessmentCriteria ] = useState("")
+  const [ assessmentToEdit, setAssessmentToEdit ] = useState(null)
+
+  // Not proud but it'll do for now
+  const [ innerState, setInnerState ] = useState("overview")
+
+  useEffect(() => {
+    setInnerState("overview")
+  }, [open])
+
+
+  let modalTitle
+  {
+    if (innerState === "overview") {
+      modalTitle = "Tutkinnon osan muokkaus"
+    } else if (innerState === "add-assessment") {
+      modalTitle = "Ammattitaitovaatimuksen lisääminen"
+    } else if (innerState === "edit-assessment") {
+      modalTitle = "Ammattitaitovaatimuksen muokkaus"
+    }
+  }
+
+  const handleClick = () => {
+    // Check if the input value is empty
+    if (assessmentCriteria.trim() === '') {
+      setAssessmentCriteria('• '); // Insert a bullet point
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    const key = event.key
+
+    if (key === "Enter") {
+      event.preventDefault()
+      const { selectionStart, selectionEnd } = event.target
+
+      setAssessmentCriteria((oldValue => {
+        const start = oldValue.slice(0, selectionStart)
+        const end = oldValue.slice(selectionEnd)
+
+        return `${start}\n• ${end}`
+      }))
+
+      setTimeout(() => {
+        event.target.setSelectionRange(selectionStart + 3, selectionStart + 3)
+      }, 0)
+
+      return
+    }
+
+    if (key === "Backspace") {
+      return
+    }
+  }
+
+  const onPaste = (event) => {
+    event.preventDefault()
+    const { selectionStart, selectionEnd } = event.target
+
+    // Get pasted data via clipboard API
+    const clipboardData = event.clipboardData || window.clipboardData;
+    const pastedData = clipboardData.getData('Text');
+
+    setAssessmentCriteria((oldValue => {
+      const start = oldValue.slice(0, selectionStart)
+      const end = oldValue.slice(selectionEnd)
+      const formattedData = `${start}${pastedData}${end}`
+        .split("\n")
+        .map((line) => line.startsWith("• ") ? line : `• ${line}`)
+        .join("\n")
+
+      return formattedData
+    }))
+
+    setTimeout(() => { 
+      event.target.setSelectionRange(selectionStart, selectionStart)
+    }, 0)
+  }
+
+  const handleEditButtonClick = (unit, assessment) => {
+    setAssessmentToEdit(assessment)
+    setInnerState("edit-assessment")
+
+    setAssessmentName(assessment.name.fi)
+    setAssessmentCriteria(assessment.criteria[0].fi)
+  }
+
+  const addNewAssessmentToUnit = (event) => {
+    event.preventDefault()
+
+    addAssessment(unitToEdit._id, assessmentName, assessmentCriteria)
+    setAssessmentName("")
+    setAssessmentCriteria("")
+    setInnerState("overview")
+  }
+
+  const editAssessmentInUnit = (event) => {
+    event.preventDefault()
+
+    editAssessment(unitToEdit._id, assessmentToEdit._id, assessmentName, assessmentCriteria)
+
+    setAssessmentName("")
+    setAssessmentCriteria("")
+    setInnerState("overview")
+  }
+
+  const handleDeleteButtonClick = (unit, assessment) => {
+    deleteAssessment(unit._id, assessment._id)
+  }
+
+  return (
+    <Modal open={open} setOpen={setOpen} title={modalTitle}>
+      <FieldValueCard title="Valittu tutkinnon osa" value={unitToEdit?.name.fi} />
+
+      {
+        innerState === "overview" && (
+          <>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <p className="assessment-title" style={{ fontWeight: "bold" }}>Ammattitaitovaatimukset ja kriteerit</p>
+              <div className="assessment-list">
+                {
+                  (!unitToEdit?.assessments || unitToEdit?.assessments?.length === 0)
+                  ? <p>Ei lisättyjä ammattitaitovaatimuksia</p>
+                  : (
+                    unitToEdit?.assessments?.map((assessment, index) => (
+                      <div key={index} className="assessment">
+                        <div className="assessment__info">
+                          <p>{ index + 1 }. {assessment.name.fi}</p>
+                        </div>
+
+                        <button
+                          className="assessment__button edit"
+                          onClick={() => handleEditButtonClick(unitToEdit, assessment)}
+                        >
+                          <Icon icon={"mingcute:pencil-line"} fontSize={20} />
+                        </button>
+
+                        <button
+                          className="assessment__button delete"
+                          onClick={() => handleDeleteButtonClick(unitToEdit, assessment)}>
+                          <Icon icon={"material-symbols:delete-outline"} fontSize={20} />
+                        </button>
+                      </div>
+                    ))
+                  )
+                }
+              </div>
+            </div>
+
+            <Button
+              text="Lisää uusi ammattitaitovaatimus"
+              variant="contained"
+              style={{ backgroundColor: "#0000BF", color: "white", border: "none", direction: "rtl" }}
+              icon="ic:baseline-plus"
+              onClick={() => setInnerState("add-assessment")}
+            />
+          </>
+        )
+      }
+
+      {
+        innerState === "add-assessment" && (
+          <>
+            <form
+              style={{ display: "flex", flexDirection: "column", gap: 16 }}
+              onSubmit={(e) => addNewAssessmentToUnit(e)}
+            >
+              <div className="form__field">
+                <label>Ammattitaitovaatimuksen nimi *</label>
+                <input
+                  placeholder='Ammattitaitovaatimuksen nimi'
+                  value={assessmentName}
+                  onChange={(e) => setAssessmentName(e.target.value)}
+                ></input>
+              </div>
+              <div className="form__field">
+                <label>Kriteerit *</label>
+                <textarea
+                  onPaste={onPaste}
+                  onKeyDown={handleKeyDown}
+                  onClick={handleClick}
+                  onFocus={handleClick}
+                  placeholder='Kriteerit'
+                  value={assessmentCriteria}
+                  onChange={(e) => setAssessmentCriteria(e.target.value)}
+                ></textarea>
+              </div>
+            </form>
+
+            <Button
+              text="Lisää ammattitaitovaatimus"
+              variant="contained"
+              style={{ backgroundColor: "#0000BF", color: "white", border: "none", }}
+              icon="ic:baseline-plus"
+              onClick={addNewAssessmentToUnit}
+            />
+          </>
+        )
+      }
+
+      {
+        // I'm sorry...
+        innerState === "edit-assessment" && (
+          <>
+            <form
+              style={{ display: "flex", flexDirection: "column", gap: 16 }}
+              onSubmit={(e) => addNewAssessmentToUnit(e)}
+            >
+              <div className="form__field">
+                <label>Ammattitaitovaatimuksen nimi *</label>
+                <input
+                  placeholder='Ammattitaitovaatimuksen nimi'
+                  value={assessmentName}
+                  onChange={(e) => setAssessmentName(e.target.value)}
+                ></input>
+              </div>
+              <div className="form__field">
+                <label>Kriteerit *</label>
+                <textarea
+                  onPaste={onPaste}
+                  onKeyDown={handleKeyDown}
+                  onClick={handleClick}
+                  onFocus={handleClick}
+                  placeholder='Kriteerit'
+                  value={assessmentCriteria}
+                  onChange={(e) => setAssessmentCriteria(e.target.value)}
+                ></textarea>
+              </div>
+            </form>
+
+            <Button
+              text="Lisää ammattitaitovaatimus"
+              variant="contained"
+              style={{ backgroundColor: "#0000BF", color: "white", border: "none", }}
+              icon="ic:baseline-plus"
+              onClick={editAssessmentInUnit}
+            />
+          </>
+        )
+      }
+
+
+    </Modal>
+  )
+}
+
+
 
 function SpecifyTasks({ degree }) {
   const navigate = useNavigate();
@@ -31,24 +284,23 @@ function SpecifyTasks({ degree }) {
 
   const { setSiteTitle, setSubHeading, setHeading } = useHeadingStore();
 
-  // Initialize state
-  const [isEditing, setIsEditing] = useState(false);
-  const [assessmentToEdit, setAssessmenetToEdit] = useState(null)
+  // eslint-disable-next-line
   const [assessments, setAssessments] = useState([]);
-  const [activeStep, setActiveStep] = useState(0); // Index of the selected unit
   const { degreeName } = useStore();
   const checkedUnits = useUnitsStore((state) => state.checkedUnits);
   const addAssessment = useUnitsStore((state) => state.addAssessment);
+  const toggleUnit = useUnitsStore((state) => state.toggleUnit);
 
-  // Modal for criteria info
-  const [isCriteriaModalOpen, setIsCriteriaModalOpen] = useState(false);
+  // Modal test
+  const [open, setOpen] = useState(false)
+  const [unitToEdit, setUnitToEdit] = useState(null)
 
   useEffect(() => {
     setSiteTitle("Suoritusten hallinnointi")
     setSubHeading("Lisää uusi tutkinto")
     setHeading("Tutkintojen hallinta")
   }, [checkedUnits, setHeading, setSiteTitle, setSubHeading]);
-
+  
   // Labels and urls for stepper
   const stepperData = [
     {
@@ -71,66 +323,10 @@ function SpecifyTasks({ degree }) {
     },
   ];
 
-  // Text Stepper
-  const theme = useTheme();
-  const maxSteps = checkedUnits.length;
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleOpenCriteriaModal = () => {
-    setIsCriteriaModalOpen(true);
-  };
-
-  const handleCloseCriteriaModal = () => {
-    setIsEditing(false)
-    setIsCriteriaModalOpen(false);
-  };
-
-  const handleEditButtonClick = (assessmentToEdit) => {
-    setAssessmenetToEdit(assessmentToEdit)
-    setIsEditing(true)
-    setIsCriteriaModalOpen(true);
-  };
-
-  const modalHandleSave = (title, criteria) => {
-    // Check if user actually has checked units
-    if (!checkedUnits[activeStep]) {
-      return;
-    }
-
-    setAssessments((prevAssessments) => [
-      ...prevAssessments,
-      {
-        unitId: checkedUnits[activeStep]._id, // error
-        name: title,
-        criteria: criteria,
-      },
-    ]);
-  }
-
-  const editModalHandleSave = (newAssessment) => {
-    // Check if user actually has checked units
-    if (!checkedUnits[activeStep]) {
-      return;
-    }
-
-    console.log({ newAssessment });
-
-    setAssessments((prevAssessments) => {
-      const filteredAssessments = prevAssessments
-        .filter((oldAssessment => oldAssessment.unitId !== newAssessment.unitId));
-
-      return [
-        ...filteredAssessments,
-        newAssessment,
-      ]
-    });
+  const handleOpenModal = (unit) => {
+    setUnitToEdit(unit)
+    setOpen(true)
   }
 
   // Form submission handler
@@ -146,150 +342,59 @@ function SpecifyTasks({ degree }) {
   };
 
   return (
-    <div className='specify-tasks__wrapper'>
-      <section className='specify-tasks__container'>
-        <Stepper activePage={3} totalPages={4} data={stepperData} />
-        <h1>{degree ? degree.name.fi : degreeName}</h1>
-        <h3 className='degree-guidance'>Muokkaa tutkinnonosa</h3>
-        <Box sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-          <Paper
-            square
-            elevation={0}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              height: 20,
-              pl: 2,
-            }}
-          />
-          <Paper square elevation={0}>
-            <form>
-              <MobileStepper
-                sx={{
-                  bgcolor: '#f2f2f2',
-                }}
-                variant='text'
-                steps={maxSteps}
-                position='static'
-                activeStep={activeStep}
-                nextButton={
-                  <Button
-                    id='nextButton'
-                    sx={{
-                      fontWeight: 'bold',
-                      color: '#000000',
-                      //position:'static'
-                    }}
-                    size='small'
-                    onClick={handleNext}
-                    disabled={activeStep === maxSteps - 1}
-                  >
-                    Seuraava
-                    {theme.direction === 'rtl' ? (
-                      <KeyboardArrowLeft />
-                    ) : (
-                      <KeyboardArrowRight />
-                    )}
-                  </Button>
-                }
-                backButton={
-                  <Button
-                    id='backButton'
-                    sx={{
-                      fontWeight: 'bold',
-                      color: '#000000',
-                      //position: 'static'
-                    }}
-                    size='small'
-                    onClick={handleBack}
-                    disabled={activeStep === 0}
-                  >
-                    {theme.direction === 'rtl' ? (
-                      <KeyboardArrowRight />
-                    ) : (
-                      <KeyboardArrowLeft />
-                    )}
-                    Edellinen
-                  </Button>
-                }
-              />
-              <h4 className='degree-guidance'>
-                Lisää ammattitaitovaatimukset ja kriteerit
-              </h4>
-              <h3 className='unit-guidance'>
-                {checkedUnits[activeStep]?.name?.fi}
-              </h3>
+    <>
+      <ModalDegreeEdit
+        open={open}
+        setOpen={setOpen}
+        title="Tutkinnon osan muokkaus"
+        unitToEdit={unitToEdit}
+      />
 
-              {
-                isEditing ? (
-                  <RequirementsAndCriteriaEditingModal
-                    open={isCriteriaModalOpen}
-                    onClose={handleCloseCriteriaModal}
-                    title='Ammattitaitovaatimuksen tiedot'
-                    modalUnitName={checkedUnits[activeStep]?.name.fi}
-                    requirementsTitle='Ammattitaitovaatimuksen nimi'
-                    criteria='Kriteerit'
-                    onSave={editModalHandleSave}
-                    assessmentToEdit={assessmentToEdit}
-                    hideCancelButton
-                  />
-                ) : (
-                  <RequirementsAndCriteriaModal
-                    open={isCriteriaModalOpen}
-                    onClose={handleCloseCriteriaModal}
-                    title='Ammattitaitovaatimuksen tiedot'
-                    modalUnitName={checkedUnits[activeStep]?.name.fi}
-                    requirementsTitle='Ammattitaitovaatimuksen nimi'
-                    criteria='Kriteerit'
-                    onSave={modalHandleSave}
-                    hideCancelButton
-                  />
-                )
-              }
 
-              <div>
-                {
-                  assessments
-                    .filter((assessment) => assessment.unitId === checkedUnits[activeStep]?._id)
-                    .map((assessment, index) => (
-                      <li key={index} className='list_group_skills_titles'>
-                        <span className='title'>
-                          {index + 1}. {assessment.name}
-                        </span>
-                        <Icon
-                          icon='uil:pen'
-                          color='#0000bf'
-                          onClick={() => handleEditButtonClick(assessment)}
-                        />
-                      </li>
-                    )
-                    )
-                }
-              </div>
-              <Button
-                id='addCriteriaButton'
-                onClick={handleOpenCriteriaModal}
-                className='add-criteria-btn'
-                sx={{
-                  paddingLeft: 0,
-                  textTransform: 'none',
-                }}
-              >
-                + Lisää ammattitaitovaatimukset
-              </Button>
-            </form>
-          </Paper>
-        </Box>
+      <div className='specify-tasks__wrapper'>
+        <section className='specify-tasks__container'>
+          <Stepper activePage={3} totalPages={4} data={stepperData} />
 
-        <PageNavigationButtons
-          handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
-          handleForward={handleSubmit}
-          forwardButtonText={'Vahvista valinnat'}
-          showForwardButton={true}
+          <FieldValueCard title="Valittu tutkinto" value={degree ? degree?.name?.fi : degreeName} />
 
-        />
-      </section>
-    </div>
+          <p style={{ fontSize: 18, marginTop: 10, }}>Tutkinnon osat ja tehtävät</p>
+          <div className="unit-list">
+            {
+              checkedUnits.map((unit, index) => (
+                <div key={index} className="unit">
+                  <div className="unit__info">
+                    <p style={{ fontWeight: "bold" }}>{unit.name.fi}</p>
+                    {
+                      (unit.assessments && unit.assessments.length > 0)
+                      ? unit.assessments.map((assessment, index) => (
+                        <p key={index}>{index + 1}. {assessment.name.fi}</p>
+                      ))
+                      : <p>Ei lisättyjä tehtäviä</p>
+                    }
+                  </div>
+
+                  <button className="unit__button edit" onClick={() => handleOpenModal(unit)}>
+                    <Icon icon={"mingcute:pencil-line"} fontSize={22} />
+                  </button>
+
+                  <button className="unit__button delete" onClick={() => toggleUnit(unit)}>
+                    <Icon icon={"material-symbols:delete-outline"} fontSize={22} />
+                  </button>
+                </div>
+              ))
+            }
+          </div>
+
+          <PageNavigationButtons
+            handleBack={() => navigate(`/degrees/${params.degreeId}/edit-units`)}
+            handleForward={handleSubmit}
+            forwardButtonText={'Seuraava'}
+            showForwardButton={true}
+            
+            />
+        </section>
+      </div>
+    </>
   );
 }
 

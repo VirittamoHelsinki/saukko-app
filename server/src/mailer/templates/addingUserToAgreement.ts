@@ -17,7 +17,7 @@ Sinut on liitetty osaamisen tunnistamisen toteutukseen.
 
 
 Tutkinto: ${params.degreeName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 Opettaja: ${params.teacherName}
 
 
@@ -104,7 +104,7 @@ Sinut on liitetty henkilön ${params.customerName} osaamisen tunnistamisen toteu
 
 Asiakas: ${params.customerName}
 Tutkinto: ${params.degreeName}
-Työpaikkaohjaaja: ${params.supervisorName}
+Ohjaaja: ${params.supervisorName}
 
 
 Vahvista sähköpostiosoitteesi ja määritä tilisi loppuun <a href="${params.verificationLink}">tästä linkistä</a>.
@@ -118,7 +118,7 @@ Ylläpito
 
   const mail: EmailObj = {
     content: {
-      subject: 'Uusi työpaikkaohjaaja liitetty suoritukseen',
+      subject: 'Uusi ohjaaja liitetty suoritukseen',
       plainText: text,
       html: mailerTemplate(text),
     },
@@ -162,7 +162,7 @@ Ylläpito
 
   const mail: EmailObj = {
     content: {
-      subject: 'Vanha työpaikkaohjaaja liitetty suoritukseen',
+      subject: 'Vanha ohjaaja liitetty suoritukseen',
       plainText: text,
       html: mailerTemplate(text),
     },

@@ -7,6 +7,7 @@ import useUnitsStore from '../../../store/zustand/unitsStore';
 import { Icon } from '@iconify/react';
 import WithDegree from '../../../HOC/withDegree';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
+import FieldValueCard from '../../../components/FieldValueCard/FieldValueCard';
 
 
 function EditUnits({ degree }) {
@@ -103,7 +104,8 @@ function EditUnits({ degree }) {
           totalPages={4}
           data={stepperData}
         />
-        <h1>{degree ? degree.name.fi : degreeName}</h1>
+        
+        <FieldValueCard title="Valittu tutkinto" value={degree ? degree?.name?.fi : degreeName} />
 
         <button
           id='finishEditButton'

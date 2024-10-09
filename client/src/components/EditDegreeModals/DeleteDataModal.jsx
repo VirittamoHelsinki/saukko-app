@@ -10,7 +10,7 @@ const DeleteDataModal = ({
     <NotificationModal
       type='alert'
       hideButton={true}
-      title='Olet arkistoinnissa tietoa.'
+      title='Olet arkistoimassa tietoa.'
       open={isDeleteDataModalOpen}
       dialogStyles={{
         dialogPaper: {
@@ -28,7 +28,7 @@ const DeleteDataModal = ({
       }}
       body={
         <Box>
-          <Typography style={{fontSize: '14px'}}>Oletko arkistoinnissa tietoa, joka liittyy 2 työnantajaan. Oletko varma?</Typography>
+          <Typography style={{fontSize: '14px'}}>Olet arkistoimassa tietoa, joka liittyy 2 työnantajaan. Oletko varma?</Typography>
           <Box
             style={{
               display: 'flex',

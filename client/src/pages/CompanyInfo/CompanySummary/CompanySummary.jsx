@@ -55,24 +55,29 @@ const CompanySummary = () => {
           <div className='workplace__infolist-item'>
             <h2 className='second__title'>Työpaikka</h2>
             <p className='second__paragraph'>
-              {workplace ? workplace.name : ''}
+              Helsingin kaupunki
             </p>
             <p className='second__paragraph'>
-              {' '}
-              {workplace ? workplace.businessId : ''}
+              070-5658-9
             </p>
           </div>
-          {workplace.departments &&
-            workplace.departments.map((department) => (
-              <div key={department._id} className='workplace__infolist-item'>
-                <h2 className='second__title'>Yksikko</h2>
-                <p className='second__paragraph'>{department.name}</p>
-              </div>
-            ))}
+          <div className='workplace__infolist-item'>
+            <h2 className='second__title'>Yksikkö</h2>
+            <p className='second__paragraph'>
+              {workplace ? workplace.name : ''}
+            </p>
+          </div>
+          <div className='workplace__infolist-item'>
+            <h2 className='second__title'>Yksikön lisätiedot</h2>
+            <p className='second__paragraph'>
+              { workplace.info }
+            </p>
+          </div>
+
           {workplace.supervisors &&
             workplace.supervisors.map((ohjaaja) => (
               <div key={ohjaaja._id} className='workplace__infolist-item'>
-                <h2 className='second__title'>Työpaikkaohjaaja</h2>
+                <h2 className='second__title'>Ohjaaja</h2>
                 <p className='second__paragraph'>
                   {ohjaaja?.firstName} {ohjaaja?.lastName}
                 </p>
@@ -84,18 +89,16 @@ const CompanySummary = () => {
                 </p>
               </div>
             ))}
-        </div>
-        <div className='degree-section-wrapper'>
-          <h1 className='degree-name'>{degreeName}</h1>
-          <div>
-            {workplace.units &&
-              workplace.units.map((unit) => (
-                <div key={unit._id} className='degree-units'>
-                  <p>{unit.name.fi}</p>
-                </div>
-              ))}
+          <div className='workplace__infolist-item' style={{ marginTop: '20px' }}>
+            <h2 className='second__title'>{degreeName}</h2>
+            {
+              workplace.units && workplace.units.map((unit) => (
+                <p key={unit._id} className='second__paragraph'>{unit.name.fi}</p>
+              ))
+            }
           </div>
         </div>
+
         <PageNavigationButtons
           handleBack={() => navigate(`/add/companyname`)}
           forwardButtonText={'Muokkaa tietoja'}

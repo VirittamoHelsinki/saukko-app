@@ -75,14 +75,14 @@ const fetchAllTeachers = async () => {
 };
 
 const fetchAllUsers = async () => {
-  const response = await axios.get("/api/users");
+  const response = await axios.get('/api/users');
   return response.data;
-}
+};
 
 const fetchAllSupervisors = async () => {
-  const response = await axios.get("/api/users?role=supervisor");
+  const response = await axios.get('/api/users?role=supervisor');
   return response.data;
-}
+};
 
 const logoutUser = async () => {
   await axios.get('/auth/logout');
@@ -170,7 +170,8 @@ const updateUser = async (userId, updatedData) => {
     const response = await axios.put(`/auth/users/${userId}`, updatedData);
     return response.data;
   } catch (error) {
-    console.log('Error fetching single evaluation:', error);
+    console.error('Failed to update user:', error);
+    throw error;
   }
 };
 

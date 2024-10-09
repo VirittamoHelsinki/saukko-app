@@ -93,7 +93,14 @@ function CompanyDegreeUnits() {
           totalPages={4}
           data={stepperData}
         />
-        <h2>{degreeFound && internalDegree && internalDegree.name && internalDegree.name.fi} </h2>
+
+        <div className="card">
+          <p>Valittu tutkinto</p>
+          <p>{degreeFound && internalDegree && internalDegree.name && internalDegree.name.fi}</p>
+        </div>
+
+        <p style={{ fontSize: 16 }}>Valitse tutkinnonosat</p>
+
         <Searchbar
           id='searchbarTutkinnonosat'
           handleSearch={handleSearch}

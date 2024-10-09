@@ -44,7 +44,7 @@ const PerformancesFeedback = ({
     return evaluation ? evaluation.units.flatMap((unit) => {
       return unit.assessments.flatMap((assessment) => [
         {
-          info: currentUser.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
+          info: currentUser.role === 'customer' ? 'Itsearviointi' : 'Ohjaajan havainto',
           disabled: false,
           unitId: unit._id,
           assessmentId: assessment._id,
@@ -53,7 +53,7 @@ const PerformancesFeedback = ({
         },
       ]);
     }) : [{
-      info: currentUser.role === 'customer' ? 'Itsearviointi' : 'TPO havainto',
+      info: currentUser.role === 'customer' ? 'Itsearviointi' : 'Ohjaajan havainto',
       disabled: false,
     }]
   }, [evaluation, currentUser.role])
@@ -71,7 +71,7 @@ const PerformancesFeedback = ({
         acc[item.info] = item.answer || '';
         handleRadioChange([item.info], acc[item.info], assessment._id)
       }
-      if (item.info === 'TPO havainto') {
+      if (item.info === 'Ohjaajan havainto') {
         acc[item.info] = item.answerSupervisor || ''
         handleRadioChange([item.info], acc[item.info], assessment._id)
       }
