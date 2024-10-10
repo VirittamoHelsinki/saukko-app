@@ -25,9 +25,12 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { createTheme } from '@mui/material/styles';
 import TeacherSelection from '../../../components/TeacherSelection/TeacherSelection';
+import { fetchAllTeachers } from '../../../api/user';
 
 function EvaluationWorkplace() {
   const navigate = useNavigate();
+
+  const [ allTeachers, setAllTeachers ] = useState([])
 
   // Fetch workplaces & save to state
   const { workplaces } = useContext(InternalApiContext);
@@ -59,6 +62,20 @@ function EvaluationWorkplace() {
     setHeading('Asiakkuudet')
   }, [setHeading, setSiteTitle, setSubHeading]);
 
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const teachers = await fetchAllTeachers();
+        setAllTeachers(teachers.data);
+      } catch (error) {
+        console.error('Error fetching teachers:', error);
+      }
+    };
+
+    fetchTeachers();
+  }, []);
+
+  
   // Workplace selection
   const toggleWorkplace = (event) => {
     clearWorkplace();
@@ -68,7 +85,7 @@ function EvaluationWorkplace() {
     setWorkplace(foundWorkplace);
   };
   console.log('Workplace form store:', workplaceFromStore);
-
+  
   // Department selection
   const toggleDepartment = (departmentId) => () => {
     setSupervisor(null);
@@ -82,7 +99,7 @@ function EvaluationWorkplace() {
     }
   };
   console.log('Department from store:', departmentFromStore);
-
+  
   // Supervisor selection
   const toggleSupervisor = (supervisorId) => () => {
     if (
@@ -94,8 +111,8 @@ function EvaluationWorkplace() {
         (supervisor) => supervisor._id === supervisorId
       );
       findSupervisorById
-        ? setSupervisor(findSupervisorById)
-        : setSupervisorNotification(true);
+      ? setSupervisor(findSupervisorById)
+      : setSupervisorNotification(true);
     } else if (
       workplaceFromStore &&
       workplaceFromStore.departments.length === 0
@@ -109,12 +126,13 @@ function EvaluationWorkplace() {
     }
   };
   console.log('Supervisor from store:', supervisorFromStore);
-
+  
   // Pagination
   const [page, setPage] = useState(1);
   const [needsPagination, setNeedsPagination] = useState(false);
   const workplacesPerPage = 5;
-
+  
+  // TODO: This seems unfunctional
   useEffect(() => {
     const contentHeight = document.querySelector(
       '.evaluationWorkplace__container'
@@ -122,13 +140,11 @@ function EvaluationWorkplace() {
     const viewportHeight = window.innerHeight;
     setNeedsPagination(contentHeight > 1.3 * viewportHeight);
   }, []);
-
+  
   const handlePageChange = (event, value) => {
     setPage(value);
   };
-
-
-
+  
   const indexOfLastWorkplace = page * workplacesPerPage;
   const indexOfFirstWorkplace = indexOfLastWorkplace - workplacesPerPage;
   const paginatedWorkplaces = filteredWorkplaces?.slice(
@@ -136,47 +152,51 @@ function EvaluationWorkplace() {
     indexOfLastWorkplace
   );
   const workplacesToMap = needsPagination
-    ? paginatedWorkplaces
-    : filteredWorkplaces;
-
+  ? paginatedWorkplaces
+  : filteredWorkplaces;
+  
+  
   // Searchbar
   const handleSearch = (event) => {
     setPage(1);
     setFilteredWorkplaces(
       workplaces.filter((workplace) =>
         workplace.name.toLowerCase().includes(event.target.value.toLowerCase())
-      )
-    );
-  };
+    )
+  );
+};
 
-  // Validate data and redirect
-  const validationHandler = () => {
-    if (workplaceFromStore && supervisorFromStore) {
-      navigate('/evaluation-units');
-    } else {
-      setRedirectNotification(true);
-    }
-  };
+// Validate data and redirect
+const validationHandler = () => {
+  if (workplaceFromStore && supervisorFromStore) {
+    navigate('/evaluation-units');
+  } else {
+    setRedirectNotification(true);
+  }
+};
 
-  // Stepper labels & urls
-  const stepperData = [
-    {
-      label: 'Lisää tiedot',
-      url: '/evaluation-form',
-    },
-    {
-      label: 'Valitse työpaikka',
-      url: '/evaluation-workplace',
-    },
-    {
-      label: 'Valitse tutkinnonosat',
-      url: '/evaluation-units',
-    },
-    {
-      label: 'Aktivoi suoritus',
-      url: '/evaluation-summary',
-    },
-  ];
+// Stepper labels & urls
+const stepperData = [
+  {
+    label: 'Lisää tiedot',
+    url: '/evaluation-form',
+  },
+  {
+    label: 'Valitse työpaikka',
+    url: '/evaluation-workplace',
+  },
+  {
+    label: 'Valitse tutkinnonosat',
+    url: '/evaluation-units',
+  },
+  {
+    label: 'Aktivoi suoritus',
+    url: '/evaluation-summary',
+  },
+];
+
+  console.log("allTeachers", allTeachers);
+  console.log("workplacesToMap", workplacesToMap);
 
   return (
     <div className='evaluationWorkplace__wrapper'>
@@ -191,8 +211,7 @@ function EvaluationWorkplace() {
           {workplacesToMap
             ? workplacesToMap.map((workplace) => (
               <Accordion
-                className={`workplaces-accordion ${workplaceFromStore === workplace ? 'selected' : ''
-                  }`}
+                className={`workplaces-accordion ${workplaceFromStore === workplace ? 'selected' : ''}`}
                 key={workplace._id}
                 disableGutters
                 square
