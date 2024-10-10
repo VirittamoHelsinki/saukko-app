@@ -101,6 +101,7 @@ const CompanySummary = () => {
 
         <PageNavigationButtons
           handleBack={() => navigate(`/add/companyname`)}
+          handleForward={() => navigate(`/add/companyname/${companyId}/edit`)}
           forwardButtonText={'Muokkaa tietoja'}
           showForwardButton={true}
           style={{
