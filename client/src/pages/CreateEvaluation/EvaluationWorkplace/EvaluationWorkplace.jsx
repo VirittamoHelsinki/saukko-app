@@ -39,7 +39,7 @@ function EvaluationWorkplace() {
   const [filteredWorkplaces, setFilteredWorkplaces] = useState(workplaces);
 
   // Setter functions from evaluationStore
-  const { setWorkplace, setDepartment, setSupervisor, clearWorkplace } =
+  const { setWorkplace, setSupervisor, clearWorkplace } =
     useEvaluationStore();
 
   // Getter functions from evaluationStore
