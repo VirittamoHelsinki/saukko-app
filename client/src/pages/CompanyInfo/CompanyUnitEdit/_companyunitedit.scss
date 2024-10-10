@@ -69,30 +69,28 @@
           background: var(----color-black-5, #F2F2F2);
           border-radius: 999px;
           margin-bottom: auto;
-          padding: 3px;
-
           margin-top: auto;
-    
+          padding: 6px;
           display: grid;
           place-items: center;
-    
+
           & > * {
             -webkit-user-select: none;
             user-select: none;
           }
-    
+
           &.edit {
             color: #0000BF;
           }
-    
+
           &.delete {
             color: #B01038;
           }
         }
-        
+
         &:nth-child(odd) {
           background: var(----color-black-5, #F2F2F2);
-    
+
           & .button {
             background: white;
           }
