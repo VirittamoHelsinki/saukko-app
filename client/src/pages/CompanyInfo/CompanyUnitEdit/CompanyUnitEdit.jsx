@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
-import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const CompanySummary = () => {
   const { companyId } = useParams();
@@ -62,6 +62,7 @@ const CompanySummary = () => {
                 070-5658-9
               </p>
             </div>
+
           </div>
 
           <div className='unit-edit__item'>
@@ -71,6 +72,15 @@ const CompanySummary = () => {
                 {workplace ? workplace.name : '-'}
               </p>
             </div>
+
+            { /* empty div to make the grid look proper */ }
+            <div></div>
+
+            <button
+              className="button edit"
+            >
+              <Icon icon={"mingcute:pencil-line"} fontSize={20} />
+            </button>
           </div>
 
           <div className='unit-edit__item'>
@@ -97,18 +107,47 @@ const CompanySummary = () => {
                     {ohjaaja?.email}
                   </p>
                 </div>
+
+                <button className="button edit">
+                  <Icon icon={"mingcute:pencil-line"} fontSize={20} />
+                </button>
+
+                <button className="button delete">
+                  <Icon icon={"material-symbols:delete-outline"} fontSize={20} />
+                </button>
               </div>
             ))}
-            
+
+          <div className='unit-edit__item'>
+            <button className="new-supervisor">
+              + Lisää uusi ohjaaja
+            </button>
+          </div>
+
+          <div className="unit-edit__item">
+            <div className="unit-edit__text-container">
+              <h2 className='second__title'>Tutkinnon nimi</h2>
+              <p className='second__paragraph'>{degreeName}</p>
+            </div>
+          </div>
+
+
           <div className='unit-edit__item'>
             <div className="unit-edit__text-container">
-              <h2 className='second__title'>{degreeName}</h2>
+              <h2 className='second__title'>Tutkinnon osat</h2>
               {
                 workplace.units && workplace.units.map((unit) => (
                   <p key={unit._id} className='second__paragraph'>{unit.name.fi}</p>
                 ))
               }
             </div>
+
+            { /* empty div to make the grid look proper */ }
+            <div></div>
+
+            <button className="button edit">
+              <Icon icon={"mingcute:pencil-line"} fontSize={20} />
+            </button>
           </div>
 
         </div>

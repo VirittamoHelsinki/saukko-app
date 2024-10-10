@@ -26,7 +26,29 @@
       .unit-edit__item {
         display: grid;
         grid-template-columns: 1fr auto auto;
+        gap: 10px;
         padding: 14px 16px;
+
+        .new-supervisor {
+          display: flex;
+          width: 100%;
+          height: 56px;
+          padding: 18px 14px;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+          background: var(----color-bus, #0000BF);
+          grid-column: 1 / 4;
+          color: var(----color-white, #FFF);
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+          outline: none;
+          border: none;
+          margin: 10px 0;
+        }
 
         .unit-edit__text-container {
           display: flex;
@@ -38,6 +60,41 @@
           }
           .second__paragraph {
             font-size: 14px;
+          }
+        }
+
+        .button {
+          background: white;
+          border: none;
+          background: var(----color-black-5, #F2F2F2);
+          border-radius: 999px;
+          margin-bottom: auto;
+          padding: 3px;
+
+          margin-top: auto;
+    
+          display: grid;
+          place-items: center;
+    
+          & > * {
+            -webkit-user-select: none;
+            user-select: none;
+          }
+    
+          &.edit {
+            color: #0000BF;
+          }
+    
+          &.delete {
+            color: #B01038;
+          }
+        }
+        
+        &:nth-child(odd) {
+          background: var(----color-black-5, #F2F2F2);
+    
+          & .button {
+            background: white;
           }
         }
       }
