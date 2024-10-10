@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import { fetchAllTeachers } from '../../api/user'; // Adjust import path as needed
 import useEvaluationFormStore from '../../store/zustand/evaluationFormStore';
 
-const TeacherSelection = ({ workplace }) => {
+const TeacherSelection = ({ workplace, adminsOnly = true }) => {
 
   const [fetchedTeachers, setFetchedTeachers] = useState([]);
 
@@ -20,7 +20,7 @@ const TeacherSelection = ({ workplace }) => {
 
         const adminTeachers = workplace ?
           response.data.filter((user) =>
-            user.permissions === 'admin' && user.degrees.some(degree => degree === workplaceDegreeId)
+            (adminsOnly && user.permissions === 'admin') && user.degrees.some(degree => degree === workplaceDegreeId)
           ) : [];
 
         setFetchedTeachers(adminTeachers); // Assuming response.data contains the array of teachers
@@ -30,7 +30,7 @@ const TeacherSelection = ({ workplace }) => {
     };
 
     fetchTeachers();
-  }, [workplace]);
+  }, [workplace, adminsOnly]);
 
   // Handle selecting a teacher from the dropdown
   const handleTeacherChange = (teacherId) => {
