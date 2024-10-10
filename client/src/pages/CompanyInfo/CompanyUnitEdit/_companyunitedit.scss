@@ -23,6 +23,10 @@
 
     .unit-edit__info {
 
+      .archive-toggle-container {
+        padding: 14px 16px;
+      }
+
       .unit-edit__item {
         display: grid;
         grid-template-columns: 1fr auto auto;
@@ -57,9 +61,11 @@
  
           .second__title {
             font-size: 16px;
+            margin: 0;
+            padding: 0;
           }
           .second__paragraph {
-            font-size: 14px;
+            font-size: 16px;
           }
         }
 

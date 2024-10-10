@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import { Checkbox, FormControlLabel, Switch } from '@mui/material';
+import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 
 const CompanySummary = () => {
   const { companyId } = useParams();
@@ -150,7 +152,21 @@ const CompanySummary = () => {
             </button>
           </div>
 
+          <div className="archive-toggle-container">
+            <FormControlLabel
+              control={<Checkbox checked={false} onChange={() => {}} color="primary" />}
+              label="Arkistoi yksikkö"
+            />
+          </div>
         </div>
+
+        <PageNavigationButtons
+          handleBack={() => navigate(`/add/companyname/${companyId}`)}
+          handleForward={() => {}}
+          forwardButtonText="Tallenna muutokset"
+          showForwardButton={true}
+          icon={<div></div>} // empty div to hide the icon
+        />
 
       </section>
     </div>
