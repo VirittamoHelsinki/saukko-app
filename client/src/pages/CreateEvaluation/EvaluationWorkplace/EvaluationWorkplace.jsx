@@ -54,17 +54,18 @@ function EvaluationWorkplace() {
   const closeRedirectNotification = () => setRedirectNotification(false);
 
   useEffect(() => {
-    setSiteTitle('Suorituksen aktivoiminen'),
-      setSubHeading('Lisää uusi asiakas'),
-      setHeading('Asiakkuudet');
+    setSiteTitle('Suorituksen aktivoiminen')
+    setSubHeading('Lisää uusi asiakas')
+    setHeading('Asiakkuudet')
   }, [setHeading, setSiteTitle, setSubHeading]);
+
   // Workplace selection
   const toggleWorkplace = (event) => {
     clearWorkplace();
-    const findWorkplaceById = workplaces.find(
+    const foundWorkplace = workplaces.find(
       (workplace) => workplace._id === event.target.value
     );
-    setWorkplace(findWorkplaceById);
+    setWorkplace(foundWorkplace);
   };
   console.log('Workplace form store:', workplaceFromStore);
 
@@ -72,10 +73,10 @@ function EvaluationWorkplace() {
   const toggleDepartment = (departmentId) => () => {
     setSupervisor(null);
     if (workplaceFromStore && workplaceFromStore.departments.length > 0) {
-      const findDepartmentById = workplaceFromStore.departments.find(
+      const foundDepartment = workplaceFromStore.departments.find(
         (department) => department._id === departmentId
       );
-      setDepartment(findDepartmentById);
+      setDepartment(foundDepartment);
     } else {
       setDepartmentNotification(true);
     }
@@ -217,64 +218,15 @@ function EvaluationWorkplace() {
                     label={
                       <div className='radio__label'>
                         <p
-                          className={`radio__label-name ${workplaceFromStore === workplace ? 'selected' : ''
-                            }`}
+                          className={`radio__label-name ${workplaceFromStore === workplace ? 'selected' : ''}`}
                         >
                           {workplace.name}
-                        </p>
-                        <p className='radio__label-businessid'>
-                          Y- tunnus: {workplace.businessId}
                         </p>
                       </div>
                     }
                   />
                 </AccordionSummary>
                 <AccordionDetails>
-                  {/* Departments */}
-                  {workplace.departments.length > 0 && (
-                    <>
-                      <Typography
-                        sx={{ position: 'static' }}
-                        className='accordion-title'
-                      >
-                        {' '}
-                        Valitse yksikkö *{' '}
-                      </Typography>
-                      <Accordion
-                        disableGutters
-                        square
-                        className='accordion__wrapper'
-                      >
-                        <AccordionSummary
-                          sx={{ position: 'static' }}
-                          expandIcon={<ExpandMoreIcon />}
-                        >
-                          Valitse
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          {workplace.departments.map((department, index) => (
-                            <div
-                              className={`accordion__wrapper-details ${departmentFromStore &&
-                                departmentFromStore._id === department._id
-                                ? 'selected'
-                                : ''
-                                }`}
-                              key={index}
-                              onClick={toggleDepartment(department._id)}
-                            >
-                              <Typography>{department.name}</Typography>
-                              {departmentFromStore &&
-                                department._id ===
-                                departmentFromStore._id && (
-                                  <Icon icon='mdi:tick' />
-                                )}
-                            </div>
-                          ))}
-                        </AccordionDetails>
-                      </Accordion>
-                    </>
-                  )}
-
                   {/* Supervisors */}
                   {workplace.departments.length === 0 && (
                     <>
@@ -316,7 +268,7 @@ function EvaluationWorkplace() {
                         </AccordionDetails>
                       </Accordion>
                       {/* Teachers */}
-                      <TeacherSelection workplace={workplaceFromStore} />
+                      <TeacherSelection workplace={workplace} />
                     </>
                   )}
 
@@ -365,7 +317,7 @@ function EvaluationWorkplace() {
                             )}
                           </AccordionDetails>{' '}
                         </Accordion>
-                        <TeacherSelection workplace={workplaceFromStore} />
+                        <TeacherSelection workplace={workplace} />
                       </>
                     )}
                 </AccordionDetails>
