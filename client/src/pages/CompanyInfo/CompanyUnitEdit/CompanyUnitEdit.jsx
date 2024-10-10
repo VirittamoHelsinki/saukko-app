@@ -44,10 +44,75 @@ const CompanySummary = () => {
   }, [companyId]);
 
   return (
-    <div className='workplace__wrapper'>
-      <section className='workplace__container'>
-        <h1>Työpaikkojen hallinta</h1>
-        <p>Muokkaa yksikkön tietoja</p>
+    <div className='unit-edit__wrapper'>
+      <section className='unit-edit__container'>
+        <div className="unit-edit__header">
+          <h1>Työpaikkojen hallinta</h1>
+          <p>Muokkaa yksikkön tietoja</p>
+        </div>
+
+        <div className='unit-edit__info'>
+          <div className='unit-edit__item'>
+            <div className="unit-edit__text-container">
+              <h2 className='second__title'>Työpaikka</h2>
+              <p className='second__paragraph'>
+                Helsingin kaupunki
+              </p>
+              <p className='second__paragraph'>
+                070-5658-9
+              </p>
+            </div>
+          </div>
+
+          <div className='unit-edit__item'>
+            <div className="unit-edit__text-container">
+              <h2 className='second__title'>Yksikkö</h2>
+              <p className='second__paragraph'>
+                {workplace ? workplace.name : '-'}
+              </p>
+            </div>
+          </div>
+
+          <div className='unit-edit__item'>
+            <div className="unit-edit__text-container">
+              <h2 className='second__title'>Yksikön lisätiedot</h2>
+              <p className='second__paragraph'>
+                { workplace?.info ? workplace.info : "-"}
+              </p>
+            </div>
+          </div>
+
+          {workplace.supervisors &&
+            workplace.supervisors.map((ohjaaja) => (
+              <div key={ohjaaja._id} className='unit-edit__item'>
+                <div className="unit-edit__text-container">
+                  <h2 className='second__title'>Ohjaaja</h2>
+                  <p className='second__paragraph'>
+                    {ohjaaja?.firstName} {ohjaaja?.lastName}
+                  </p>
+                  <p
+                    className='second__paragraph'
+                    style={{ marginBottom: '10px' }}
+                  >
+                    {ohjaaja?.email}
+                  </p>
+                </div>
+              </div>
+            ))}
+            
+          <div className='unit-edit__item'>
+            <div className="unit-edit__text-container">
+              <h2 className='second__title'>{degreeName}</h2>
+              {
+                workplace.units && workplace.units.map((unit) => (
+                  <p key={unit._id} className='second__paragraph'>{unit.name.fi}</p>
+                ))
+              }
+            </div>
+          </div>
+
+        </div>
+
       </section>
     </div>
   );
