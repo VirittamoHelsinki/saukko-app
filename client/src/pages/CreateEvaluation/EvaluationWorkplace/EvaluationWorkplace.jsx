@@ -87,17 +87,6 @@ function EvaluationWorkplace() {
   console.log('Workplace form store:', workplaceFromStore);
   
   // Department selection
-  const toggleDepartment = (departmentId) => () => {
-    setSupervisor(null);
-    if (workplaceFromStore && workplaceFromStore.departments.length > 0) {
-      const foundDepartment = workplaceFromStore.departments.find(
-        (department) => department._id === departmentId
-      );
-      setDepartment(foundDepartment);
-    } else {
-      setDepartmentNotification(true);
-    }
-  };
   console.log('Department from store:', departmentFromStore);
   
   // Supervisor selection

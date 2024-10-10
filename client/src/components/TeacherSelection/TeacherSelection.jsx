@@ -30,7 +30,7 @@ const TeacherSelection = ({ workplace, adminsOnly = true }) => {
     };
 
     fetchTeachers();
-  }, [workplace]);
+  }, [workplace, adminsOnly]);
 
   // Handle selecting a teacher from the dropdown
   const handleTeacherChange = (teacherId) => {
