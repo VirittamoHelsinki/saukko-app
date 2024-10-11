@@ -17,13 +17,14 @@ const CompanySummary = () => {
   const [isSupervisorModalOpen, setIsSupervisorModalOpen] = useState(false);
 
   // Workplace unit state
-  const [unitName, setUnitName] = useState('');
-  const [supervisors, setSupervisors] = useState([]);
-  const [assessments, setAssessments] = useState([]);
-  const [archive, setArchive] = useState(false);
-
+  const [unitName, setUnitName] = useState(''); // Yksikön nimi
+  const [supervisors, setSupervisors] = useState([]); // Yksikön ohjaajat
+  const [assessments, setAssessments] = useState([]); // Yksikön tutkinnonosat
+  const [archive, setArchive] = useState(false); // Yksikön arkistointi
 
   const { setHeading } = useHeadingStore();
+
+
 
   useEffect(() => {
     const fetchWorkplaces = async () => {
@@ -46,6 +47,8 @@ const CompanySummary = () => {
 
     fetchWorkplaces().then((workplaceData) => {
       if (workplaceData && workplaceData.degreeId) {
+        console.log(workplace);
+        
         setWorkplace(workplaceData);
         fetchDegreeName(workplaceData.degreeId).then((degreeName) => {
           if (degreeName) {
@@ -106,27 +109,27 @@ const CompanySummary = () => {
           </div>
 
           {workplace.supervisors &&
-            workplace.supervisors.map((ohjaaja) => (
-              <div key={ohjaaja._id} className='unit-edit__item'>
+            workplace.supervisors.map((supervisor) => (
+              <div key={supervisor._id} className='unit-edit__item'>
                 <div className="unit-edit__text-container">
                   <h2 className='second__title'>Ohjaaja</h2>
                   <p className='second__paragraph'>
-                    {ohjaaja?.firstName} {ohjaaja?.lastName}
+                    { `${supervisor?.firstName} ${supervisor?.lastName} `}
+                    { supervisor?.archived && <span style={{ color: 'red', fontSize: 14, fontStyle: "italic", }}>(Arkistoitu)</span> }
                   </p>
                   <p
                     className='second__paragraph'
                     style={{ marginBottom: '10px' }}
                   >
-                    {ohjaaja?.email}
+                    {supervisor?.email}
                   </p>
                 </div>
 
+                { /* empty div to make the grid look proper */ }
+                <div></div>
+
                 <button className="button edit">
                   <Icon icon={"mingcute:pencil-line"} fontSize={20} />
-                </button>
-
-                <button className="button delete">
-                  <Icon icon={"material-symbols:delete-outline"} fontSize={20} />
                 </button>
               </div>
             ))}
