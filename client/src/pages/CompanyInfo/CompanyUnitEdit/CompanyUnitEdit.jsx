@@ -5,12 +5,23 @@ import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { Checkbox, FormControlLabel, Switch } from '@mui/material';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
+import AddSupervisorModal from '../../../components/AddSupervisorModal/AddSupervisorModal';
 
 const CompanySummary = () => {
   const { companyId } = useParams();
   const navigate = useNavigate();
   const [workplace, setWorkplace] = useState({});
   const [degreeName, setDegreeName] = useState('');
+
+  // Modal state
+  const [isSupervisorModalOpen, setIsSupervisorModalOpen] = useState(false);
+
+  // Workplace unit state
+  const [unitName, setUnitName] = useState('');
+  const [supervisors, setSupervisors] = useState([]);
+  const [assessments, setAssessments] = useState([]);
+  const [archive, setArchive] = useState(false);
+
 
   const { setHeading } = useHeadingStore();
 
@@ -121,7 +132,7 @@ const CompanySummary = () => {
             ))}
 
           <div className='unit-edit__item'>
-            <button className="new-supervisor">
+            <button className="new-supervisor" onClick={() => setIsSupervisorModalOpen(true)}>
               + Lisää uusi ohjaaja
             </button>
           </div>
@@ -166,6 +177,13 @@ const CompanySummary = () => {
           forwardButtonText="Tallenna muutokset"
           showForwardButton={true}
           icon={<div></div>} // empty div to hide the icon
+        />
+
+        <AddSupervisorModal
+          isOpen={isSupervisorModalOpen}
+          onClose={() => setIsSupervisorModalOpen(false)}
+          //setSupervisors={setSupervisors}
+          //supervisors={supervisors}
         />
 
       </section>
