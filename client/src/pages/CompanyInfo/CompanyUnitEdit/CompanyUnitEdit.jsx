@@ -36,10 +36,10 @@ const CompanySummary = () => {
       }
     };
 
-    const fetchDegreeName = async (degreeId) => {
+    const fetchDegree = async (degreeId) => {
       try {
         const response = await axios.get(`/api/internal/degree/${degreeId}`);
-        return response.data.name.fi;
+        return response.data;
       } catch (error) {
         console.error('Failed to fetch degree data', error);
       }
@@ -48,11 +48,11 @@ const CompanySummary = () => {
     fetchWorkplaces().then((workplaceData) => {
       if (workplaceData && workplaceData.degreeId) {
         console.log(workplace);
-        
+
         setWorkplace(workplaceData);
-        fetchDegreeName(workplaceData.degreeId).then((degreeName) => {
-          if (degreeName) {
-            setDegreeName(degreeName);
+        fetchDegree(workplaceData.degreeId).then((degree) => {
+          if (degree && degree.name.fi) {
+            setDegreeName(degree.name.fi);
           }
         });
       }
