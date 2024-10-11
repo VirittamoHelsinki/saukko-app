@@ -47,9 +47,8 @@ const CompanySummary = () => {
 
     fetchWorkplaces().then((workplaceData) => {
       if (workplaceData && workplaceData.degreeId) {
-        console.log(workplace);
-
         setWorkplace(workplaceData);
+        setSupervisors(workplaceData.supervisors);
         fetchDegree(workplaceData.degreeId).then((degree) => {
           if (degree && degree.name.fi) {
             setDegreeName(degree.name.fi);
@@ -58,6 +57,16 @@ const CompanySummary = () => {
       }
     });
   }, [companyId]);
+
+  const submitChanges = () => {
+    console.log("Submitting changes...");
+    // TODO: Implement submission
+    // Set workplace's name to new name
+    // Set archive to new archive status
+    // Set assessments to new assessments
+
+    // Save edited supervisors and create new ones
+  }
 
   return (
     <div className='unit-edit__wrapper'>
@@ -108,8 +117,7 @@ const CompanySummary = () => {
             </div>
           </div>
 
-          {workplace.supervisors &&
-            workplace.supervisors.map((supervisor) => (
+          {supervisors.map((supervisor) => (
               <div key={supervisor._id} className='unit-edit__item'>
                 <div className="unit-edit__text-container">
                   <h2 className='second__title'>Ohjaaja</h2>
@@ -119,7 +127,6 @@ const CompanySummary = () => {
                   </p>
                   <p
                     className='second__paragraph'
-                    style={{ marginBottom: '10px' }}
                   >
                     {supervisor?.email}
                   </p>
@@ -185,8 +192,8 @@ const CompanySummary = () => {
         <AddSupervisorModal
           isOpen={isSupervisorModalOpen}
           onClose={() => setIsSupervisorModalOpen(false)}
-          //setSupervisors={setSupervisors}
-          //supervisors={supervisors}
+          setSupervisors={setSupervisors}
+          supervisors={supervisors}
         />
 
       </section>
