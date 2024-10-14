@@ -6,6 +6,8 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { Checkbox, FormControlLabel, Switch } from '@mui/material';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import AddSupervisorModal from '../../../components/AddSupervisorModal/AddSupervisorModal';
+import { postWorkplace } from '../../../api/workplace';
+import { registration, updateUser } from '../../../api/user';
 
 const CompanySummary = () => {
   const { companyId } = useParams();
@@ -17,7 +19,6 @@ const CompanySummary = () => {
   const [isSupervisorModalOpen, setIsSupervisorModalOpen] = useState(false);
 
   // Workplace unit state
-  const [unitName, setUnitName] = useState(''); // Yksikön nimi
   const [supervisors, setSupervisors] = useState([]); // Yksikön ohjaajat
   const [assessments, setAssessments] = useState([]); // Yksikön tutkinnonosat
   const [archive, setArchive] = useState(false); // Yksikön arkistointi
@@ -58,14 +59,71 @@ const CompanySummary = () => {
     });
   }, [companyId]);
 
-  const submitChanges = () => {
+  const submitChanges = async () => {
     console.log("Submitting changes...");
     // TODO: Implement submission
-    // Set workplace's name to new name
-    // Set archive to new archive status
-    // Set assessments to new assessments
 
-    // Save edited supervisors and create new ones
+    /*
+
+      1a. Update old supervisors with potential new data
+      1b. Create potential new supervisors
+      2a. Update workplace with new supervisor ids
+      2b. Update workplace with new name, archive status, and assessments
+      2c. Save workplace
+    */
+
+    const supervisorPromises = supervisors.map(async (supervisor) => {
+      console.log(supervisor);
+
+      if (supervisor._id) {
+        // Update existing supervisor
+
+        console.log("Updating existing supervisor...");
+
+        const updatedUser = await updateUser(supervisor._id, {
+          firstName: supervisor.firstName,
+          lastName: supervisor.lastName,
+          email: supervisor.email,
+          archived: supervisor.archived || false,
+        });
+
+        return updatedUser._id
+      }
+
+      // Create new supervisor
+      console.log("Creating new supervisor...");
+
+      const newSupervisorData = {
+        firstName: supervisor.firstName,
+        lastName: supervisor.lastName,
+        email: supervisor.email,
+        password: '12341234',
+        role: 'supervisor',
+        workplaceId: workplace._id,
+        evaluationId: null
+      };
+
+      // Register the supervisor and get the userId
+      const userResponse = await registration(newSupervisorData);
+      const userId = userResponse.data.userId;
+      return userId;
+    });
+
+    console.log(supervisorPromises);
+    //This gives an array of supervisor userIds.
+    const supervisorIds = await Promise.all(supervisorPromises);
+    console.log(supervisorIds);
+
+    // Update the workplace with supervisor IDs
+    const updatedWorkplaceData = {
+      name: workplace.name,
+      supervisors: supervisorIds,
+      archived: archive,
+      departments: workplace.departments, // Currently unused
+      assessments: workplace.assessments,
+    };
+
+    await postWorkplace({ ...workplace, ...updatedWorkplaceData });
   }
 
   return (
@@ -118,7 +176,7 @@ const CompanySummary = () => {
           </div>
 
           {supervisors.map((supervisor) => (
-              <div key={supervisor._id} className='unit-edit__item'>
+              <div key={`supervisor-${supervisor.email}`} className='unit-edit__item'>
                 <div className="unit-edit__text-container">
                   <h2 className='second__title'>Ohjaaja</h2>
                   <p className='second__paragraph'>
@@ -183,7 +241,7 @@ const CompanySummary = () => {
 
         <PageNavigationButtons
           handleBack={() => navigate(`/add/companyname/${companyId}`)}
-          handleForward={() => {}}
+          handleForward={submitChanges}
           forwardButtonText="Tallenna muutokset"
           showForwardButton={true}
           icon={<div></div>} // empty div to hide the icon
