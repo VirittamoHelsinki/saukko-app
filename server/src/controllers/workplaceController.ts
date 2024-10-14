@@ -5,7 +5,7 @@ const getAllWorkplaces = async (req: Request, res: Response) => {
   try {
     const workplaces =
       await workplaceModel.find({})
-        .populate('supervisors', ['firstName', 'lastName', 'email'])
+        .populate('supervisors', ['firstName', 'lastName', 'email', "isArchived"])
         .populate('departments.supervisors', ['firstName', 'lastName', 'email']);
 
     res.json(workplaces);
@@ -23,7 +23,7 @@ const getWorkplaceById = async (req: Request, res: Response) => {
     // Fetch the workplace data based on the provided workplaceId
     const workplace =
       await workplaceModel.findById(workplaceId)
-        .populate('supervisors', ['firstName', 'lastName', 'email'])
+        .populate('supervisors', ['firstName', 'lastName', 'email', "isArchived"])
         .populate('departments.supervisors', ['firstName', 'lastName', 'email']);
 
     if (!workplace) {
@@ -96,11 +96,11 @@ const updateWorkplace = async (req: Request, res: Response) => {
     // Populate the supervisors and department supervisors fields with
     // basic user information.
     updatedWorkplace = await updatedWorkplace.populate(
-      'supervisors', ['firstName', 'lastName', 'email']
+      'supervisors', ['firstName', 'lastName', 'email', 'isArchived']
     )
-    updatedWorkplace = await updatedWorkplace.populate(
-      'departments.supervisors', ['firstName', 'lastName', 'email']
-    )
+    // updatedWorkplace = await updatedWorkplace.populate(
+    //   'departments.supervisors', ['firstName', 'lastName', 'email']
+    // )
 
     res.json(updatedWorkplace)
 

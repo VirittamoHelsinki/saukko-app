@@ -8,6 +8,7 @@ import PageNavigationButtons from '../../../components/PageNavigationButtons/Pag
 import AddSupervisorModal from '../../../components/AddSupervisorModal/AddSupervisorModal';
 import { postWorkplace } from '../../../api/workplace';
 import { registration, updateUser } from '../../../api/user';
+import EditSupervisorModal from '../../../components/EditSupervisorModal/EditSupervisorModal';
 
 const CompanySummary = () => {
   const { companyId } = useParams();
@@ -16,7 +17,9 @@ const CompanySummary = () => {
   const [degreeName, setDegreeName] = useState('');
 
   // Modal state
-  const [isSupervisorModalOpen, setIsSupervisorModalOpen] = useState(false);
+  const [isAddSupervisorModalOpen, setIsAddSupervisorModalOpen] = useState(false);
+  const [isEditSupervisorModalOpen, setIsEditSupervisorModalOpen] = useState(false);
+  const [supervisorToEdit, setSupervisorToEdit] = useState(null);
 
   // Workplace unit state
   const [supervisors, setSupervisors] = useState([]); // Yksikön ohjaajat
@@ -50,6 +53,8 @@ const CompanySummary = () => {
       if (workplaceData && workplaceData.degreeId) {
         setWorkplace(workplaceData);
         setSupervisors(workplaceData.supervisors);
+        console.log(">>", workplaceData.supervisors);
+        
         fetchDegree(workplaceData.degreeId).then((degree) => {
           if (degree && degree.name.fi) {
             setDegreeName(degree.name.fi);
@@ -58,6 +63,11 @@ const CompanySummary = () => {
       }
     });
   }, [companyId]);
+
+  const handleEditButtonClick = (supervisor) => {
+    setSupervisorToEdit(supervisor);
+    setIsEditSupervisorModalOpen(true);
+  }
 
   const submitChanges = async () => {
     console.log("Submitting changes...");
@@ -84,7 +94,7 @@ const CompanySummary = () => {
           firstName: supervisor.firstName,
           lastName: supervisor.lastName,
           email: supervisor.email,
-          archived: supervisor.archived || false,
+          isArchived: supervisor.isArchived || false,
         });
 
         return updatedUser._id
@@ -100,7 +110,8 @@ const CompanySummary = () => {
         password: '12341234',
         role: 'supervisor',
         workplaceId: workplace._id,
-        evaluationId: null
+        evaluationId: null,
+        isArchived: false,
       };
 
       // Register the supervisor and get the userId
@@ -177,13 +188,13 @@ const CompanySummary = () => {
             </div>
           </div>
 
-          {supervisors.map((supervisor) => (
-              <div key={`supervisor-${supervisor.email}`} className='unit-edit__item'>
+          {supervisors.map((supervisor, index) => (
+              <div key={`supervisor-${index}`} className='unit-edit__item'>
                 <div className="unit-edit__text-container">
                   <h2 className='second__title'>Ohjaaja</h2>
                   <p className='second__paragraph'>
                     { `${supervisor?.firstName} ${supervisor?.lastName} `}
-                    { supervisor?.archived && <span style={{ color: 'red', fontSize: 14, fontStyle: "italic", }}>(Arkistoitu)</span> }
+                    { supervisor?.isArchived && <span style={{ color: 'red', fontSize: 14, fontStyle: "italic", }}>(Arkistoitu)</span> }
                   </p>
                   <p
                     className='second__paragraph'
@@ -196,7 +207,7 @@ const CompanySummary = () => {
                 <div></div>
 
                 <button className="button edit">
-                  <Icon icon={"mingcute:pencil-line"} fontSize={20} />
+                  <Icon icon={"mingcute:pencil-line"} fontSize={20} onClick={() => handleEditButtonClick(supervisor)} />
                 </button>
               </div>
             ))}
@@ -250,10 +261,18 @@ const CompanySummary = () => {
         />
 
         <AddSupervisorModal
-          isOpen={isSupervisorModalOpen}
-          onClose={() => setIsSupervisorModalOpen(false)}
+          isOpen={isAddSupervisorModalOpen}
+          onClose={() => setIsAddSupervisorModalOpen(false)}
           setSupervisors={setSupervisors}
           supervisors={supervisors}
+        />
+
+        <EditSupervisorModal
+          isOpen={isEditSupervisorModalOpen}
+          onClose={() => setIsEditSupervisorModalOpen(false)}
+          setSupervisors={setSupervisors}
+          supervisors={supervisors}
+          supervisorToEdit={supervisorToEdit}
         />
 
       </section>
