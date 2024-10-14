@@ -341,6 +341,11 @@ function SpecifyTasks({ degree }) {
     navigate(`/degrees/${params.degreeId}/summary`); // Navigate to the next page
   };
 
+  console.log(checkedUnits);
+
+  const everyUnitHasAtLeastOneAssessment = checkedUnits.every(unit => unit.assessments?.length > 0);
+  
+
   return (
     <>
       <ModalDegreeEdit
@@ -390,8 +395,8 @@ function SpecifyTasks({ degree }) {
             handleForward={handleSubmit}
             forwardButtonText={'Seuraava'}
             showForwardButton={true}
-            
-            />
+            disabled={!everyUnitHasAtLeastOneAssessment}
+          />
         </section>
       </div>
     </>
