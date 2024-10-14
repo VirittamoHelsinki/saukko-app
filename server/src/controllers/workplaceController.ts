@@ -57,6 +57,7 @@ const deleteWorkplaceById = async (req: Request, res: Response) => {
 
 // General update method that allows updating any field in the workplace document.
 // Might want to replace this with more specific update methods.
+// NOT USED AT ALL 😢
 const updateWorkplace = async (req: Request, res: Response) => {
   try {
     const workplaceId = req.params.id;
@@ -109,6 +110,7 @@ const updateWorkplace = async (req: Request, res: Response) => {
   }
 }
 
+// Also used to update workplaces for some reason.
 const createWorkplace = async (req: Request, res: Response) => {
   try {
     // Extract workplace data from the request body
