@@ -124,6 +124,8 @@ const CompanySummary = () => {
     };
 
     await postWorkplace({ ...workplace, ...updatedWorkplaceData });
+
+    window.location.reload() // bandaid fix for getting latest data :o
   }
 
   return (
