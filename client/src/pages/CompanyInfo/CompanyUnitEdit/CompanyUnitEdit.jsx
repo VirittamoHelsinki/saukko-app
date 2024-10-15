@@ -9,6 +9,7 @@ import AddSupervisorModal from '../../../components/AddSupervisorModal/AddSuperv
 import { postWorkplace } from '../../../api/workplace';
 import { registration, updateUser } from '../../../api/user';
 import EditSupervisorModal from '../../../components/EditSupervisorModal/EditSupervisorModal';
+import PageHeader from '../../../components/PageHeader/PageHeader';
 
 const CompanySummary = () => {
   const { companyId } = useParams();
@@ -25,10 +26,6 @@ const CompanySummary = () => {
   const [supervisors, setSupervisors] = useState([]); // Yksikön ohjaajat
   const [assessments, setAssessments] = useState([]); // Yksikön tutkinnonosat
   const [archive, setArchive] = useState(false); // Yksikön arkistointi
-
-  const { setHeading } = useHeadingStore();
-
-
 
   useEffect(() => {
     const fetchWorkplaces = async () => {
@@ -53,8 +50,6 @@ const CompanySummary = () => {
       if (workplaceData && workplaceData.degreeId) {
         setWorkplace(workplaceData);
         setSupervisors(workplaceData.supervisors);
-        console.log(">>", workplaceData.supervisors);
-        
         fetchDegree(workplaceData.degreeId).then((degree) => {
           if (degree && degree.name.fi) {
             setDegreeName(degree.name.fi);
@@ -142,10 +137,7 @@ const CompanySummary = () => {
   return (
     <div className='unit-edit__wrapper'>
       <section className='unit-edit__container'>
-        <div className="unit-edit__header">
-          <h1>Työpaikkojen hallinta</h1>
-          <p>Muokkaa yksikkön tietoja</p>
-        </div>
+        <PageHeader title="Työpaikkojen hallinta" subTitle="Muokkaa yksikkön tietoja" />
 
         <div className='unit-edit__info'>
           <div className='unit-edit__item'>
