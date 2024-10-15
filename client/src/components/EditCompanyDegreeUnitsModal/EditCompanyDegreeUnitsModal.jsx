@@ -14,7 +14,7 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen }) => {
 
   return (
     <Modal
-      title='Muokkaa yksikön nimeä'
+      title='Yksikön tutkinnon tutkinnon osat'
       open={isOpen}
       setOpen={setOpen}
     >
@@ -25,9 +25,9 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen }) => {
           <button
             className="edit-supervisor-modal__footer__button"
             type="submit"
-            disabled={newWorkplaceName?.trim() === ""}
+            disabled={false}
           >
-            Vaihda yksikön nimi
+            Hyväksy muutokset
           </button>
         </form>
       </div>

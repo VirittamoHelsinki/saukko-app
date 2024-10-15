@@ -10,6 +10,7 @@ import { registration, updateUser } from '../../../api/user';
 import EditSupervisorModal from '../../../components/EditSupervisorModal/EditSupervisorModal';
 import PageHeader from '../../../components/PageHeader/PageHeader';
 import EditCompanyNameModal from '../../../components/EditCompanyNameModal/EditCompanyNameModal';
+import EditCompanyDegreeUnitsModal from '../../../components/EditCompanyDegreeUnitsModal/EditCompanyDegreeUnitsModal';
 
 const CompanySummary = () => {
   const { companyId } = useParams();
@@ -22,6 +23,7 @@ const CompanySummary = () => {
   const [isAddSupervisorModalOpen, setIsAddSupervisorModalOpen] = useState(false);
   const [isEditSupervisorModalOpen, setIsEditSupervisorModalOpen] = useState(false);
   const [supervisorToEdit, setSupervisorToEdit] = useState(null);
+  const [isEditCompanyDegreeUnitsModalOpen, setIsEditCompanyDegreeUnitsModalOpen] = useState(false);
 
   // Workplace unit state
   const [supervisors, setSupervisors] = useState([]); // Yksikön ohjaajat
@@ -235,7 +237,7 @@ const CompanySummary = () => {
             { /* empty div to make the grid look proper */ }
             <div></div>
 
-            <button className="button edit">
+            <button className="button edit" onClick={() => setIsEditCompanyDegreeUnitsModalOpen(true)}>
               <Icon icon={"mingcute:pencil-line"} fontSize={20} />
             </button>
           </div>
@@ -276,6 +278,11 @@ const CompanySummary = () => {
           setSupervisors={setSupervisors}
           supervisors={supervisors}
           supervisorToEdit={supervisorToEdit}
+        />
+        
+        <EditCompanyDegreeUnitsModal
+          isOpen={isEditCompanyDegreeUnitsModalOpen}
+          setOpen={setIsEditCompanyDegreeUnitsModalOpen}
         />
 
       </section>
