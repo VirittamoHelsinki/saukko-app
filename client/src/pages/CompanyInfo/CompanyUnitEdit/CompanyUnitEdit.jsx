@@ -10,6 +10,63 @@ import { postWorkplace } from '../../../api/workplace';
 import { registration, updateUser } from '../../../api/user';
 import EditSupervisorModal from '../../../components/EditSupervisorModal/EditSupervisorModal';
 import PageHeader from '../../../components/PageHeader/PageHeader';
+import Modal from '../../../components/Modal';
+
+const CompanyNameEditModal = ({ isOpen, setOpen, setWorkplace, workplace }) => {
+  const [ newWorkplaceName, setNewWorkplaceName ] = useState("");
+
+  useEffect(() => {
+    setNewWorkplaceName(workplace.name);
+  }, [workplace]);
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+
+    if (newWorkplaceName.trim() === "") {
+      return;
+    }
+
+    const updatedWorkplace = {
+      ...workplace,
+      name: newWorkplaceName,
+    };
+
+    setWorkplace(updatedWorkplace);
+    setOpen(false);
+  }
+
+  return (
+    <Modal
+      title='Muokkaa yksikön nimeä'
+      open={isOpen}
+      setOpen={setOpen}
+    >
+      <div className="edit-supervisor-modal__body">
+        <form onSubmit={onSubmit}>
+          <div className="form-container">
+            <label className="form-label">Yksikön nimi *</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={newWorkplaceName}
+              onChange={(e) => setNewWorkplaceName(e.target.value)}
+            />
+          </div>
+
+          <button
+            className="edit-supervisor-modal__footer__button"
+            type="submit"
+          >
+            Hyväksy muutokset
+          </button>
+        </form>
+      </div>
+
+
+    </Modal>
+  )
+}
 
 const CompanySummary = () => {
   const { companyId } = useParams();
@@ -18,6 +75,7 @@ const CompanySummary = () => {
   const [degreeName, setDegreeName] = useState('');
 
   // Modal state
+  const [isNameEditModalOpen, setIsNameEditModalOpen] = useState(false);
   const [isAddSupervisorModalOpen, setIsAddSupervisorModalOpen] = useState(false);
   const [isEditSupervisorModalOpen, setIsEditSupervisorModalOpen] = useState(false);
   const [supervisorToEdit, setSupervisorToEdit] = useState(null);
@@ -83,8 +141,6 @@ const CompanySummary = () => {
       if (supervisor._id) {
         // Update existing supervisor
 
-        console.log("Updating existing supervisor...");
-
         const updatedUser = await updateUser(supervisor._id, {
           firstName: supervisor.firstName,
           lastName: supervisor.lastName,
@@ -96,8 +152,6 @@ const CompanySummary = () => {
       }
 
       // Create new supervisor
-      console.log("Creating new supervisor...");
-
       const newSupervisorData = {
         firstName: supervisor.firstName,
         lastName: supervisor.lastName,
@@ -115,10 +169,8 @@ const CompanySummary = () => {
       return userId;
     });
 
-    console.log(supervisorPromises);
     //This gives an array of supervisor userIds.
     const supervisorIds = await Promise.all(supervisorPromises);
-    console.log(supervisorIds);
 
     // Update the workplace with supervisor IDs
     const updatedWorkplaceData = {
@@ -166,6 +218,7 @@ const CompanySummary = () => {
 
             <button
               className="button edit"
+              onClick={() => setIsNameEditModalOpen(true)}
             >
               <Icon icon={"mingcute:pencil-line"} fontSize={20} />
             </button>
@@ -181,7 +234,7 @@ const CompanySummary = () => {
           </div>
 
           {supervisors.map((supervisor, index) => (
-              <div key={`supervisor-${index}`} className='unit-edit__item'>
+              <div key={`supervisor-${supervisor.email}`} className='unit-edit__item'>
                 <div className="unit-edit__text-container">
                   <h2 className='second__title'>Ohjaaja</h2>
                   <p className='second__paragraph'>
@@ -238,7 +291,7 @@ const CompanySummary = () => {
 
           <div className="archive-toggle-container">
             <FormControlLabel
-              control={<Checkbox checked={false} onChange={() => {}} color="primary" />}
+              control={<Checkbox checked={archive} onChange={(event) => setArchive(event.target.checked)} color="primary" />}
               label="Arkistoi yksikkö"
             />
           </div>
@@ -250,6 +303,13 @@ const CompanySummary = () => {
           forwardButtonText="Tallenna muutokset"
           showForwardButton={true}
           icon={<div></div>} // empty div to hide the icon
+        />
+
+        <CompanyNameEditModal
+          isOpen={isNameEditModalOpen}
+          setOpen={setIsNameEditModalOpen}
+          setWorkplace={setWorkplace}
+          workplace={workplace}
         />
 
         <AddSupervisorModal
