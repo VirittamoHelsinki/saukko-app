@@ -10,63 +10,7 @@ import { postWorkplace } from '../../../api/workplace';
 import { registration, updateUser } from '../../../api/user';
 import EditSupervisorModal from '../../../components/EditSupervisorModal/EditSupervisorModal';
 import PageHeader from '../../../components/PageHeader/PageHeader';
-import Modal from '../../../components/Modal';
-
-const CompanyNameEditModal = ({ isOpen, setOpen, setWorkplace, workplace }) => {
-  const [ newWorkplaceName, setNewWorkplaceName ] = useState("");
-
-  useEffect(() => {
-    setNewWorkplaceName(workplace.name);
-  }, [workplace]);
-
-  const onSubmit = async (event) => {
-    event.preventDefault();
-
-    if (newWorkplaceName.trim() === "") {
-      return;
-    }
-
-    const updatedWorkplace = {
-      ...workplace,
-      name: newWorkplaceName,
-    };
-
-    setWorkplace(updatedWorkplace);
-    setOpen(false);
-  }
-
-  return (
-    <Modal
-      title='Muokkaa yksikön nimeä'
-      open={isOpen}
-      setOpen={setOpen}
-    >
-      <div className="edit-supervisor-modal__body">
-        <form onSubmit={onSubmit}>
-          <div className="form-container">
-            <label className="form-label">Yksikön nimi *</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={newWorkplaceName}
-              onChange={(e) => setNewWorkplaceName(e.target.value)}
-            />
-          </div>
-
-          <button
-            className="edit-supervisor-modal__footer__button"
-            type="submit"
-          >
-            Hyväksy muutokset
-          </button>
-        </form>
-      </div>
-
-
-    </Modal>
-  )
-}
+import EditCompanyNameModal from '../../../components/EditCompanyNameModal/EditCompanyNameModal';
 
 const CompanySummary = () => {
   const { companyId } = useParams();
@@ -305,7 +249,7 @@ const CompanySummary = () => {
           icon={<div></div>} // empty div to hide the icon
         />
 
-        <CompanyNameEditModal
+        <EditCompanyNameModal
           isOpen={isNameEditModalOpen}
           setOpen={setIsNameEditModalOpen}
           setWorkplace={setWorkplace}
