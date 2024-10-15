@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import useHeadingStore from '../../../store/zustand/useHeadingStore';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { Checkbox, FormControlLabel, Switch } from '@mui/material';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
@@ -52,6 +51,11 @@ const CompanySummary = () => {
       if (workplaceData && workplaceData.degreeId) {
         setWorkplace(workplaceData);
         setSupervisors(workplaceData.supervisors);
+        setArchive(workplaceData.archived);
+
+        console.log(workplaceData);
+        
+
         fetchDegree(workplaceData.degreeId).then((degree) => {
           if (degree && degree.name.fi) {
             setDegreeName(degree.name.fi);
@@ -121,9 +125,12 @@ const CompanySummary = () => {
       name: workplace.name,
       supervisors: supervisorIds,
       archived: archive,
-      departments: workplace.departments, // Currently unused
+      //departments: workplace.departments, // Currently unused
       assessments: workplace.assessments,
     };
+
+    console.log(updatedWorkplaceData);
+    
 
     await postWorkplace({ ...workplace, ...updatedWorkplaceData });
 
@@ -133,7 +140,7 @@ const CompanySummary = () => {
   return (
     <div className='unit-edit__wrapper'>
       <section className='unit-edit__container'>
-        <PageHeader title="Työpaikkojen hallinta" subTitle="Muokkaa yksikkön tietoja" />
+        <PageHeader title="Työpaikkojen hallinta" subTitle="Muokkaa yksikön tietoja" />
 
         <div className='unit-edit__info'>
           <div className='unit-edit__item'>

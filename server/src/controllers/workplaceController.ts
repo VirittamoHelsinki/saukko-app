@@ -114,7 +114,7 @@ const updateWorkplace = async (req: Request, res: Response) => {
 const createWorkplace = async (req: Request, res: Response) => {
   try {
     // Extract workplace data from the request body
-    const { businessId, name, supervisors, departments, units, degreeId, info } = req.body;
+    const { businessId, name, supervisors, departments, units, degreeId, info, archived } = req.body;
 
     // Check if a workplace with the same businessId already exists
     const existingWorkplace = await workplaceModel.findOne({ businessId });
@@ -128,6 +128,7 @@ const createWorkplace = async (req: Request, res: Response) => {
       existingWorkplace.departments = departments;
       existingWorkplace.units = units;
       existingWorkplace.degreeId = degreeId;
+      existingWorkplace.archived = archived;
       await existingWorkplace.save();
       console.log(" workplace updated successfully");
       //  returning the updated document as a response

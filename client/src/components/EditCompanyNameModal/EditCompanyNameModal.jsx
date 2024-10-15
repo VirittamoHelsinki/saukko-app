@@ -46,7 +46,7 @@ const EditCompanyNameModal = ({ isOpen, setOpen, setWorkplace, workplace }) => {
           <button
             className="edit-supervisor-modal__footer__button"
             type="submit"
-            disabled={newWorkplaceName.trim() === ""}
+            disabled={newWorkplaceName?.trim() === ""}
           >
             Vaihda yksikön nimi
           </button>
