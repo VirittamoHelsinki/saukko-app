@@ -67,9 +67,11 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace, setWorkplace 
     })
   }
 
+  const amountOfCheckedUnits = unitsToCheck.filter((unit) => unit.checked).length;
+
   return (
     <Modal
-      title='Yksikön tutkinnon tutkinnon osat'
+      title='Yksikköön liitetyn tutkinnon osat'
       open={isOpen}
       setOpen={setOpen}
     >
@@ -78,8 +80,8 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace, setWorkplace 
         <FieldValueCard title="Valittu tutkinto" value={degree?.name?.fi || "-"}  />
 
         <form onSubmit={onSubmit}>
-          <Searchbar id='searchbarId' handleSearch={() => {}} placeholder={'Etsi tutkinnon osia'} />
-
+          {/* <Searchbar id='searchbarId' handleSearch={() => {}} placeholder={'Etsi tutkinnon osia'} /> */}
+          <h4>Valitse vähintään yksi tutkinnon osa</h4>
 
           <div className="toggle-button-list">
             {
@@ -96,9 +98,9 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace, setWorkplace 
 
 
           <button
-            className="edit-supervisor-modal__footer__button"
+            className="edit-company-degree-units-modal__footer__button"
             type="submit"
-            disabled={false}
+            disabled={amountOfCheckedUnits === 0}
           >
             Hyväksy muutokset
           </button>

@@ -86,7 +86,7 @@
 }
 
 
-.edit-supervisor-modal__footer__button {
+.edit-company-degree-units-modal__footer__button {
   background-color: #0000bf;
   color: white;
   padding: 0 20px;
@@ -100,4 +100,9 @@
   align-items: center;
   gap: 10px;
   font-size: 16px;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
