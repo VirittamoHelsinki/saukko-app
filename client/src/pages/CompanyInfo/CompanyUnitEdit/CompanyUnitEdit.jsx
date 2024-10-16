@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { Checkbox, FormControlLabel, Switch } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import PageNavigationButtons from '../../../components/PageNavigationButtons/PageNavigationButtons';
 import AddSupervisorModal from '../../../components/AddSupervisorModal/AddSupervisorModal';
 import { postWorkplace } from '../../../api/workplace';
@@ -29,7 +29,7 @@ const CompanyUnitEdit = () => {
 
   // Workplace unit state
   const [supervisors, setSupervisors] = useState([]); // Yksikön ohjaajat
-  const [assessments, setAssessments] = useState([]); // Yksikön tutkinnonosat
+  //const [assessments, setAssessments] = useState([]); // Yksikön tutkinnonosat
   const [archive, setArchive] = useState(false); // Yksikön arkistointi
 
   useEffect(() => {

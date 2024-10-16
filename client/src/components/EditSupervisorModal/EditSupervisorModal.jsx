@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, Modal } from "@mui/material"
+import { Checkbox, FormControlLabel, Modal } from "@mui/material"
 import { useEffect, useState } from "react";
 
 import "./_editsupervisormodal.scss";
@@ -19,7 +19,6 @@ const EditSupervisorModal = ({ isOpen, onClose, supervisors, setSupervisors, sup
       isArchived: supervisorToEdit?.isArchived || false,
     });
   }, [supervisorToEdit]);
-  
 
   const onSubmit = async (event) => {
     event.preventDefault();

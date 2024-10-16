@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import Modal from "../Modal";
 import FieldValueCard from "../FieldValueCard/FieldValueCard";
-import Searchbar from "../Searchbar/Searchbar";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import { fetchInternalDegreeById } from "../../api/degree";
 
-const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace, setWorkplace }) => {  
+const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace, setWorkplace }) => {
 
   const [ degree, setDegree ] = useState(null);
   const [ unitsToCheck, setUnitsToCheck ] = useState([]);
@@ -62,7 +60,7 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace, setWorkplace 
         return u;
       })
 
-      
+
       return newState;
     })
   }
@@ -80,7 +78,6 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace, setWorkplace 
         <FieldValueCard title="Valittu tutkinto" value={degree?.name?.fi || "-"}  />
 
         <form onSubmit={onSubmit}>
-          {/* <Searchbar id='searchbarId' handleSearch={() => {}} placeholder={'Etsi tutkinnon osia'} /> */}
           <h4>Valitse vähintään yksi tutkinnon osa</h4>
 
           <div className="toggle-button-list">
