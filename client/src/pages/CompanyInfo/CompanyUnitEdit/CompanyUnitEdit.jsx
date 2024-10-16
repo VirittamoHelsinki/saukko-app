@@ -281,6 +281,7 @@ const CompanyUnitEdit = () => {
           isOpen={isEditCompanyDegreeUnitsModalOpen}
           setOpen={setIsEditCompanyDegreeUnitsModalOpen}
           workplace={workplace}
+          setWorkplace={setWorkplace}
         />
 
       </section>

@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import ToggleButton from "../ToggleButton/ToggleButton";
 import { fetchInternalDegreeById } from "../../api/degree";
 
-const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace }) => {  
+const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace, setWorkplace }) => {  
 
   const [ degree, setDegree ] = useState(null);
   const [ unitsToCheck, setUnitsToCheck ] = useState([]);
@@ -39,6 +39,16 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
+    const newUnits = unitsToCheck
+    .filter((unit) => unit.checked)
+    .map((unit) => ({
+        _id: unit._id,
+        name: { fi: unit.name.fi },
+        assessments: unit.assessments,
+      }
+    ))
+
+    setWorkplace({ ...workplace, units: newUnits });
     setOpen(false);
   }
 
