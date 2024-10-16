@@ -11,6 +11,7 @@ import EditSupervisorModal from '../../../components/EditSupervisorModal/EditSup
 import PageHeader from '../../../components/PageHeader/PageHeader';
 import EditCompanyNameModal from '../../../components/EditCompanyNameModal/EditCompanyNameModal';
 import EditCompanyDegreeUnitsModal from '../../../components/EditCompanyDegreeUnitsModal/EditCompanyDegreeUnitsModal';
+import EditCompanyInfoModal from '../../../components/EditCompanyInfoModal/EditCompanyInfoModal';
 
 const CompanyUnitEdit = () => {
   const { companyId } = useParams();
@@ -20,6 +21,7 @@ const CompanyUnitEdit = () => {
 
   // Modal state
   const [isNameEditModalOpen, setIsNameEditModalOpen] = useState(false);
+  const [isInfoEditModalOpen, setIsInfoEditModalOpen] = useState(false);
   const [isAddSupervisorModalOpen, setIsAddSupervisorModalOpen] = useState(false);
   const [isEditSupervisorModalOpen, setIsEditSupervisorModalOpen] = useState(false);
   const [supervisorToEdit, setSupervisorToEdit] = useState(null);
@@ -181,6 +183,13 @@ const CompanyUnitEdit = () => {
                 { workplace?.info ? workplace.info : "-"}
               </p>
             </div>
+
+            { /* empty div to make the grid look proper */ }
+            <div></div>
+
+            <button className="button edit">
+              <Icon icon={"mingcute:pencil-line"} fontSize={20} onClick={() => setIsInfoEditModalOpen(true)} />
+            </button>
           </div>
 
           {supervisors.map((supervisor) => (
@@ -208,7 +217,7 @@ const CompanyUnitEdit = () => {
             ))}
 
           <div className='unit-edit__item'>
-            <button className="new-supervisor" onClick={() => setIsSupervisorModalOpen(true)}>
+            <button className="new-supervisor" onClick={() => setIsAddSupervisorModalOpen(true)}>
               + Lisää uusi ohjaaja
             </button>
           </div>
@@ -262,6 +271,13 @@ const CompanyUnitEdit = () => {
           workplace={workplace}
         />
 
+        <EditCompanyInfoModal
+          isOpen={isInfoEditModalOpen}
+          setOpen={setIsInfoEditModalOpen}
+          setWorkplace={setWorkplace}
+          workplace={workplace}
+        />
+
         <AddSupervisorModal
           isOpen={isAddSupervisorModalOpen}
           onClose={() => setIsAddSupervisorModalOpen(false)}
@@ -276,7 +292,7 @@ const CompanyUnitEdit = () => {
           supervisors={supervisors}
           supervisorToEdit={supervisorToEdit}
         />
-        
+
         <EditCompanyDegreeUnitsModal
           isOpen={isEditCompanyDegreeUnitsModalOpen}
           setOpen={setIsEditCompanyDegreeUnitsModalOpen}
