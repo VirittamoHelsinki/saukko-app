@@ -13,7 +13,11 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace }) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const degreeId = workplace.degreeId;
+      const degreeId = workplace?.degreeId;
+      if (!degreeId) {
+        return;
+      }
+
       const degree = await fetchInternalDegreeById(degreeId);
 
       // Create an array of objects with the unit's _id and checked status
@@ -38,6 +42,21 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace }) => {
     setOpen(false);
   }
 
+  const toggleUnit = (unit) => {
+    setUnitsToCheck((prevState) => {
+      console.log(unit);
+      const newState = prevState.map((u) => {
+        if (u._id === unit._id) {
+          return { ...u, checked: !u.checked }
+        }
+        return u;
+      })
+
+      
+      return newState;
+    })
+  }
+
   return (
     <Modal
       title='Yksikön tutkinnon tutkinnon osat'
@@ -59,7 +78,7 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace }) => {
                   key={`unit-${index}`}
                   label={`${index + 1}. ${unit.name.fi}`}
                   checked={unit.checked}
-                  onChange={() => {}}
+                  onChange={() => toggleUnit(unit)}
                 />
               ))
             }

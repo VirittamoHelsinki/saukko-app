@@ -15,7 +15,7 @@ const NotSelected = () => (
 
 const ToggleButton = ({ label, checked, onChange }) => {
   return (
-    <div className="toggle-button">
+    <div className="toggle-button" onClick={onChange}>
 
         <div className="checkbox">
           {
