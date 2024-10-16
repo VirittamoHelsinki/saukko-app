@@ -12,7 +12,7 @@ import PageHeader from '../../../components/PageHeader/PageHeader';
 import EditCompanyNameModal from '../../../components/EditCompanyNameModal/EditCompanyNameModal';
 import EditCompanyDegreeUnitsModal from '../../../components/EditCompanyDegreeUnitsModal/EditCompanyDegreeUnitsModal';
 
-const CompanySummary = () => {
+const CompanyUnitEdit = () => {
   const { companyId } = useParams();
   const navigate = useNavigate();
   const [workplace, setWorkplace] = useState({});
@@ -290,4 +290,4 @@ const CompanySummary = () => {
   );
 };
 
-export default CompanySummary;
+export default CompanyUnitEdit;
