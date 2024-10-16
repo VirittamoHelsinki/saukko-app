@@ -1,12 +1,16 @@
-.edit-supervisor-modal__body {
+.edit-company-degree-units-modal__body {
   display: flex;
   flex-direction: column;
   gap: 26px;
 
   form {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+
+    .toggle-button-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 28px 0;
+    }
 
     .form-container {
       display: flex;
