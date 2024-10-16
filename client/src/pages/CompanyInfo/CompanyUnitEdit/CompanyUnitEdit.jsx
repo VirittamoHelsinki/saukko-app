@@ -131,13 +131,10 @@ const CompanyUnitEdit = () => {
       assessments: workplace.assessments,
     };
 
-    console.log(updatedWorkplaceData);
-    
-
     await postWorkplace({ ...workplace, ...updatedWorkplaceData });
 
     window.location.reload() // bandaid fix for getting latest data :o
-  }
+  }  
 
   return (
     <div className='unit-edit__wrapper'>
@@ -186,7 +183,7 @@ const CompanyUnitEdit = () => {
             </div>
           </div>
 
-          {supervisors.map((supervisor, index) => (
+          {supervisors.map((supervisor) => (
               <div key={`supervisor-${supervisor.email}`} className='unit-edit__item'>
                 <div className="unit-edit__text-container">
                   <h2 className='second__title'>Ohjaaja</h2>
@@ -283,6 +280,7 @@ const CompanyUnitEdit = () => {
         <EditCompanyDegreeUnitsModal
           isOpen={isEditCompanyDegreeUnitsModalOpen}
           setOpen={setIsEditCompanyDegreeUnitsModalOpen}
+          workplace={workplace}
         />
 
       </section>

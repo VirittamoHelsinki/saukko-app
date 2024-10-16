@@ -4,11 +4,33 @@ import FieldValueCard from "../FieldValueCard/FieldValueCard";
 import Searchbar from "../Searchbar/Searchbar";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import ToggleButton from "../ToggleButton/ToggleButton";
+import { fetchInternalDegreeById } from "../../api/degree";
 
-const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace }) => {
+const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace }) => {  
+
+  const [ degree, setDegree ] = useState(null);
+  const [ unitsToCheck, setUnitsToCheck ] = useState([]);
 
   useEffect(() => {
-  }, []);
+    const fetch = async () => {
+      const degreeId = workplace.degreeId;
+      const degree = await fetchInternalDegreeById(degreeId);
+
+      // Create an array of objects with the unit's _id and checked status
+      const unitData = degree.units.map((unit) => {
+        if (workplace.units.find((otherUnit) => otherUnit._id === unit._id)) {
+          return { ...unit, checked: true }
+        }
+
+        return { ...unit, checked: false }
+      })
+
+      setDegree(degree);
+      setUnitsToCheck(unitData);
+    }
+
+    fetch()
+  }, [ workplace ]);  
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -24,23 +46,23 @@ const EditCompanyDegreeUnitsModal = ({ isOpen, setOpen, workplace }) => {
     >
       <div className="edit-company-degree-units-modal__body">
 
-        <FieldValueCard title="Valittu tutkinto" value="tutkinnon nimi"  />
+        <FieldValueCard title="Valittu tutkinto" value={degree?.name?.fi || "-"}  />
 
         <form onSubmit={onSubmit}>
           <Searchbar id='searchbarId' handleSearch={() => {}} placeholder={'Etsi tutkinnon osia'} />
 
 
           <div className="toggle-button-list">
-            <ToggleButton
-              label="1. Huolto- ja korjaustyöt"
-              checked={false}
-              onChange={() => {}}
-            />
-            <ToggleButton
-              label="2. Pintavauriotyöt"
-              checked={true}
-              onChange={() => {}}
-            />
+            {
+              unitsToCheck.map((unit, index) => (
+                <ToggleButton
+                  key={`unit-${index}`}
+                  label={`${index + 1}. ${unit.name.fi}`}
+                  checked={unit.checked}
+                  onChange={() => {}}
+                />
+              ))
+            }
           </div>
 
 
