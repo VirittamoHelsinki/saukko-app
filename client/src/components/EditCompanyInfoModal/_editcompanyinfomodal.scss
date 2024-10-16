@@ -1,0 +1,99 @@
+.edit-supervisor-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      label {
+        font-size: 16px;
+        color: var(----color-black-90, #1A1A1A);
+      }
+
+
+
+      .MuiOutlinedInput-root {
+        width: 100%;
+        border: 2px solid black;
+        border-radius: 0px;
+        // position: static;
+
+        * {
+        border: none;
+        outline: none;
+        }
+      }
+
+      .Mui-focused {
+        fieldset {
+          border: none;
+          //position: static;
+        }
+      }
+
+      .MuiOutlinedInput-input::placeholder {
+        opacity: 1;
+        position: static;
+      }
+
+      .Mui-error {
+        fieldset {
+          border: none;
+          //position: static;
+        }
+      }
+
+      /* Calendar icon */
+      .MuiInputAdornment-root {
+
+        svg {
+          color: black;
+          //position: static;
+        }
+      }
+
+      /* Disabled date picker style */
+      .Mui-disabled {
+        border-color: #999898;
+        //position: static;
+
+        svg {
+          color: #999898;
+          //position: static;
+        }
+      }
+    
+
+      & > input {
+        padding: 16px 14px;
+        font-size: 16px;
+        border: 2px solid #1A1A1A;
+      }
+    }
+  }
+}
+
+
+.edit-supervisor-modal__footer__button {
+  background-color: #0000bf;
+  color: white;
+  padding: 0 20px;
+  height: 50px;
+  border-radius: 0;
+  width: 100%;
+  border: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}

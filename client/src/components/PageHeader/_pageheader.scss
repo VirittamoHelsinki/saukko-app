@@ -1,0 +1,22 @@
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 16px;
+
+  &__title {
+    color: var(----color-black-90, #1A1A1A);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  &__subtitle {
+    color: var(----color-black-90, #1A1A1A);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
