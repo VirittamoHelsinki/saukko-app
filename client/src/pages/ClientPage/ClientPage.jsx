@@ -112,15 +112,15 @@ function ClientPage() {
           />
           <ClientInformationField
             fieldLabel="Työpaikka ja yksikkö"
-            fieldValue={`${evaluation?.workplaceId?.name}, ${department?.name || '-'}`}
+            fieldValue={`Helsingin kaupunki, ${evaluation?.workplaceId?.name}`}
           />
-          <ClientInformationField
+          {/* <ClientInformationField
             fieldLabel="Y-tunnus"
             fieldValue={user?.workplaceId?.businessId}
-          />
+          /> */}
           <ClientInformationField
-            fieldLabel="Työpaikan yksikön lisätiedot"
-            fieldValue={department?.description}
+            fieldLabel="Yksikön lisätiedot"
+            fieldValue={user.workplaceId.info}
           />
           <ClientInformationField
             fieldLabel="Ohjaaja"
