@@ -5,7 +5,7 @@ const getAllWorkplaces = async (req: Request, res: Response) => {
   try {
     const workplaces =
       await workplaceModel.find({})
-        .populate('supervisors', ['firstName', 'lastName', 'email'])
+        .populate('supervisors', ['firstName', 'lastName', 'email', "isArchived"])
         .populate('departments.supervisors', ['firstName', 'lastName', 'email']);
 
     res.json(workplaces);
@@ -23,7 +23,7 @@ const getWorkplaceById = async (req: Request, res: Response) => {
     // Fetch the workplace data based on the provided workplaceId
     const workplace =
       await workplaceModel.findById(workplaceId)
-        .populate('supervisors', ['firstName', 'lastName', 'email'])
+        .populate('supervisors', ['firstName', 'lastName', 'email', "isArchived"])
         .populate('departments.supervisors', ['firstName', 'lastName', 'email']);
 
     if (!workplace) {
@@ -57,6 +57,7 @@ const deleteWorkplaceById = async (req: Request, res: Response) => {
 
 // General update method that allows updating any field in the workplace document.
 // Might want to replace this with more specific update methods.
+// NOT USED AT ALL 😢
 const updateWorkplace = async (req: Request, res: Response) => {
   try {
     const workplaceId = req.params.id;
@@ -95,11 +96,11 @@ const updateWorkplace = async (req: Request, res: Response) => {
     // Populate the supervisors and department supervisors fields with
     // basic user information.
     updatedWorkplace = await updatedWorkplace.populate(
-      'supervisors', ['firstName', 'lastName', 'email']
+      'supervisors', ['firstName', 'lastName', 'email', 'isArchived']
     )
-    updatedWorkplace = await updatedWorkplace.populate(
-      'departments.supervisors', ['firstName', 'lastName', 'email']
-    )
+    // updatedWorkplace = await updatedWorkplace.populate(
+    //   'departments.supervisors', ['firstName', 'lastName', 'email']
+    // )
 
     res.json(updatedWorkplace)
 
@@ -109,10 +110,11 @@ const updateWorkplace = async (req: Request, res: Response) => {
   }
 }
 
+// Also used to update workplaces for some reason.
 const createWorkplace = async (req: Request, res: Response) => {
   try {
     // Extract workplace data from the request body
-    const { businessId, name, supervisors, departments, units, degreeId, info } = req.body;
+    const { businessId, name, supervisors, departments, units, degreeId, info, archived } = req.body;
 
     // Check if a workplace with the same businessId already exists
     const existingWorkplace = await workplaceModel.findOne({ businessId });
@@ -126,6 +128,7 @@ const createWorkplace = async (req: Request, res: Response) => {
       existingWorkplace.departments = departments;
       existingWorkplace.units = units;
       existingWorkplace.degreeId = degreeId;
+      existingWorkplace.archived = archived;
       await existingWorkplace.save();
       console.log(" workplace updated successfully");
       //  returning the updated document as a response

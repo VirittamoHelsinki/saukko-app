@@ -94,6 +94,10 @@ function DegreeUnits({ degree }) {
           }
         </div>
 
+        <div className='degreeUnits__container--units'>
+          
+        </div>
+
         <PaginationButtons
           currentPage={page}
           pageCount={filteredUnits && Math.ceil(filteredUnits.length / unitsPerPage)}

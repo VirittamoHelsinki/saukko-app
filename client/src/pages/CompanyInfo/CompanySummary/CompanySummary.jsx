@@ -70,7 +70,7 @@ const CompanySummary = () => {
           <div className='workplace__infolist-item'>
             <h2 className='second__title'>Yksikön lisätiedot</h2>
             <p className='second__paragraph'>
-              { workplace.info }
+              { workplace?.info ? workplace.info : "-"}
             </p>
           </div>
 
@@ -101,6 +101,7 @@ const CompanySummary = () => {
 
         <PageNavigationButtons
           handleBack={() => navigate(`/add/companyname`)}
+          handleForward={() => navigate(`/add/companyname/${companyId}/edit`)}
           forwardButtonText={'Muokkaa tietoja'}
           showForwardButton={true}
           style={{

@@ -1,0 +1,23 @@
+.toggle-button {
+  background: #F2F2F2;
+  padding: 16px 14px;
+  
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+
+  .checkbox {
+    height: 24px;
+
+    & > * {
+      height: 100%;
+      aspect-ratio: 1;
+    }
+  }
+
+  label {
+    font-size: 16px;
+    color: var(----color-black-90, #1A1A1A);
+  }
+}

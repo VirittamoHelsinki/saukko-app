@@ -1,0 +1,142 @@
+.edit-supervisor-modal {
+  width: 364px;
+  background-color: white;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  border: none;
+  outline: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  display: flex;
+  flex-direction: column;
+
+  .edit-supervisor-modal__header {
+    display: flex;
+    flex-direction: row;
+    padding: 30px;
+    
+    .header__title {
+      color: var(----color-black-90, #1A1A1A);
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    svg {
+      margin-left: auto;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+      }
+    }
+  }
+
+  .edit-supervisor-modal__body {
+    padding: 0 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 30px;
+
+      .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        label {
+          font-size: 16px;
+          color: var(----color-black-90, #1A1A1A);
+        }
+
+
+
+        .MuiOutlinedInput-root {
+          width: 100%;
+          border: 2px solid black;
+          border-radius: 0px;
+         // position: static;
+
+         * {
+          border: none;
+          outline: none;
+         }
+        }
+
+        .Mui-focused {
+          fieldset {
+            border: none;
+            //position: static;
+          }
+        }
+
+        .MuiOutlinedInput-input::placeholder {
+          opacity: 1;
+          position: static;
+        }
+
+        .Mui-error {
+          fieldset {
+            border: none;
+            //position: static;
+          }
+        }
+
+        /* Calendar icon */
+        .MuiInputAdornment-root {
+
+          svg {
+            color: black;
+            //position: static;
+          }
+        }
+
+        /* Disabled date picker style */
+        .Mui-disabled {
+          border-color: #999898;
+          //position: static;
+
+          svg {
+            color: #999898;
+            //position: static;
+          }
+        }
+      
+
+        & > input {
+          padding: 16px 14px;
+          font-size: 16px;
+          border: 2px solid #1A1A1A;
+        }
+      }
+    }
+  }
+
+
+  .edit-supervisor-modal__footer__button {
+    background-color: #0000bf;
+    color: white;
+    padding: 0 20px;
+    height: 50px;
+    border-radius: 0;
+    width: 100%;
+    border: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+  }
+}

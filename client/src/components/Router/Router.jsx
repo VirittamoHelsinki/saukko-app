@@ -49,6 +49,7 @@ const CompanySummary = React.lazy(() => import('../../pages/CompanyInfo/CompanyS
 const Notification = React.lazy(() => import("../../pages/Home/Notification/Notification"));
 const TeacherList = React.lazy(() => import('../../pages/TeachersPage/TeacherList/TeacherList'));
 const UpdateTeacher = React.lazy(() => import('../../pages/TeachersPage/UpdateTeacher/UpdateTeacher'));
+const CompanyUnitEdit = React.lazy(() => import('../../pages/CompanyInfo/CompanyUnitEdit/CompanyUnitEdit'));
 
 const ClientList = React.lazy(() => import('../../pages/ClientList/ClientList'));
 const ClientPage = React.lazy(() => import('../../pages/ClientPage/ClientPage'));
@@ -136,6 +137,7 @@ const Router = () => {
                 {/* Workplace flow */}
                 <Route path='/add/companyname' element={<AddCompanyName />} />
                 <Route path='/add/companyname/:companyId' element={<CompanySummary />} />
+                <Route path='/add/companyname/:companyId/edit' element={<CompanyUnitEdit />} />
                 <Route path='/company-info' element={<CompanyInfo />} />
                 <Route path='/internal/degrees' element={<CompanySearchPage />} />
                 <Route path='internal/degrees/:degreeId/units' element={<CompanyDegreeUnits />} />

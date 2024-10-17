@@ -181,7 +181,7 @@ const CompanyInfo = () => {
 
         {
           supervisors.map((supervisor, index) => (
-            <div key={supervisor._id} className="supervisor">
+            <div key={`supervisor-${index}`} className="supervisor">
               <div className="supervisor__info">
                 <p className="supervisor__info-title">Ohjaaja</p>
                 <p className="supervisor__info-name">{supervisor.firstName} {supervisor.lastName}</p>

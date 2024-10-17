@@ -4,6 +4,7 @@ export interface IWorkplace extends Document {
   businessId: string;
   name: string;
   info: string;
+  archived: boolean;
   supervisors: Types.ObjectId[];
   departments: IDepartment[];
   degreeId: Types.ObjectId;
@@ -62,6 +63,10 @@ const workplaceSchema = new Schema<IWorkplace>({
     // Name of the workplace
     info: {
       type: String,
+    },
+    archived: {
+      type: Boolean,
+      default: false,
     },
     // Array of User IDs who are supervisors at the workplace
     supervisors: [
