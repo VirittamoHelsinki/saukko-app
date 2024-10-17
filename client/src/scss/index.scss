@@ -53,3 +53,7 @@
 @import '../pages/ClientList/clientlist';
 @import '../pages/ClientPage/clientpage';
 @import '../pages/CompanyInfo/CompanyUnitEdit/companyunitedit';
+
+p {
+  text-wrap: wrap !important;
+}
