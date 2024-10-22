@@ -50,6 +50,9 @@ function ClientPage() {
   useEffect(() => {
     const fetchEvaluation = async () => {
       try {
+        console.log("user", user);
+        
+        
         const evaluation = await fetchEvaluationById(user?.evaluationId?._id);
         setEvaluation(evaluation);
       } catch (error) {
@@ -74,9 +77,8 @@ function ClientPage() {
     setOpen(false);
   };
 
-  const teacher = user?.evaluationId.teacherId;
+  const teacher = user?.evaluationId?.teacherId;
   const supervisor = user?.evaluationId?.supervisorIds?.[0];
-  const department = user?.workplaceId?.departments?.[0];
 
   return (
     <div className='clientPage__wrapper' id='main-wrapper'>
@@ -112,15 +114,15 @@ function ClientPage() {
           />
           <ClientInformationField
             fieldLabel="Työpaikka ja yksikkö"
-            fieldValue={`${evaluation?.workplaceId?.name}, ${department?.name || '-'}`}
+            fieldValue={`Helsingin kaupunki, ${evaluation?.workplaceId?.name}`}
           />
-          <ClientInformationField
+          {/* <ClientInformationField
             fieldLabel="Y-tunnus"
             fieldValue={user?.workplaceId?.businessId}
-          />
+          /> */}
           <ClientInformationField
-            fieldLabel="Työpaikan yksikön lisätiedot"
-            fieldValue={department?.description}
+            fieldLabel="Yksikön lisätiedot"
+            fieldValue={user?.workplaceId?.info}
           />
           <ClientInformationField
             fieldLabel="Ohjaaja"
@@ -158,7 +160,7 @@ function ClientPage() {
               fieldLabel={"Tutkinnon osat"}
               fieldValue={
                 evaluation?.degreeId?.units?.reduce((acc, unit) => {
-                  return acc + unit.name.fi + "\n";
+                  return acc + "- " + unit.name.fi + "\n";
                 }, "").trim()
               }
             />

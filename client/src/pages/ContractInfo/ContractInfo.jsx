@@ -76,9 +76,13 @@ const ContractInfo = () => {
       title: 'Opettajan sähköposti',
       content: evaluation?.teacherId?.email
     },
+    // {
+    //   title: 'Työpaikka',
+    //   content: `Helsingin kaupunki`,
+    // },
     {
-      title: 'Työpaikka ja yksikkö',
-      content: `${evaluation?.workplaceId?.name}, ${evaluation?.workplaceId?.departmentId?.name || '-'}`,
+      title: 'Yksikkö',
+      content: `${evaluation?.workplaceId?.name}`,
     },
     {
       title: 'Ohjaaja',

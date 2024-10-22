@@ -21,12 +21,15 @@ const UnitStatus = ({ unitId, unit, subheader, assessment, currentUser, link }) 
     } else if (!unit.customerReady && unit.supervisorReady) {
       header = 'Käsittelyssä';
       backgroundColor = '#FFAAAA';
-    } else if (assessment.answer === 0) {
+    } else if (assessment?.answer === 0) {
       header = 'Aloittamatta';
       backgroundColor = '#E2E2E2';
-    } else if (assessment.answer === 1 || assessment.answer === 2) {
+    } else if (assessment?.answer === 1 || assessment?.answer === 2) {
       header = 'Aloitettu';
       backgroundColor = '#B7D9F7';
+    } else {
+      header = 'Oops! Assessment not found!';
+      backgroundColor = '#E2E2E2';
     }
 
   } else if (currentUser.role === 'supervisor') {
@@ -36,12 +39,15 @@ const UnitStatus = ({ unitId, unit, subheader, assessment, currentUser, link }) 
     } else if (unit.customerReady && !unit.supervisorReady) {
       header = 'Käsittelyssä';
       backgroundColor = '#FFAAAA';
-    } else if (assessment.answerSupervisor === 0) {
+    } else if (assessment?.answerSupervisor === 0) {
       header = 'Aloittamatta';
       backgroundColor = '#E2E2E2';
-    } else if (assessment.answerSupervisor === 1 || assessment.answerSupervisor === 2) {
+    } else if (assessment?.answerSupervisor === 1 || assessment?.answerSupervisor === 2) {
       header = 'Aloitettu';
       backgroundColor = '#B7D9F7';
+    } else {
+      header = 'Oops! Assessment not found!';
+      backgroundColor = '#E2E2E2';
     }
 
   } else if (currentUser.role === 'teacher') {
@@ -54,11 +60,14 @@ const UnitStatus = ({ unitId, unit, subheader, assessment, currentUser, link }) 
     } else if (unit.supervisorReady && unit.supervisorReady) {
       header = 'Käsittelyssä';
       backgroundColor = '#FFE28C';
-    } else if (assessment.answerTeacher === 1 || assessment.answerTeacher === 2 || assessment.answer === 1 || assessment.answer === 2) {
+    } else if (assessment?.answerTeacher === 1 || assessment?.answerTeacher === 2 || assessment?.answer === 1 || assessment?.answer === 2) {
       header = 'Aloitettu';
       backgroundColor = '#B7D9F7';
-    } else if (assessment.answerTeacher === 0) {
+    } else if (assessment?.answerTeacher === 0) {
       header = 'Aloittamatta';
+      backgroundColor = '#E2E2E2';
+    } else {
+      header = 'Oops! Assessment not found!';
       backgroundColor = '#E2E2E2';
     }
 
